@@ -1,16 +1,20 @@
 #include "gpio_drv.h"
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <ti/drivers/GPIO.h>
-#include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/PIN.h>
+#include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/pin/PINCC26XX.h>
-
 
 #include "ti_drivers_config.h"
 
 #if 0
+const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST = CONFIG_GPIO_BUTTON_0;
+const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST = CONFIG_GPIO_BUTTON_1;
+const uint_least8_t CONFIG_GPIO_LED_0_CONST = CONFIG_GPIO_LED_0;
+const uint_least8_t CONFIG_GPIO_LED_1_CONST = CONFIG_GPIO_LED_1;
+
 GPIO_PinConfig gpioPinConfigs[] = {
     /* CONFIG_GPIO_BUTTON_0 : LaunchPad Button BTN-1 (Left) */
     GPIOCC26XX_DIO_13 | GPIO_DO_NOT_CONFIG,
@@ -41,11 +45,6 @@ GPIO_CallbackFxn gpioCallbackFunctions[] = {
     /* CONFIG_GPIO_LED_1 : LaunchPad LED Green */
     NULL,
 };
-
-const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST = CONFIG_GPIO_BUTTON_0;
-const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST = CONFIG_GPIO_BUTTON_1;
-const uint_least8_t CONFIG_GPIO_LED_0_CONST = CONFIG_GPIO_LED_0;
-const uint_least8_t CONFIG_GPIO_LED_1_CONST = CONFIG_GPIO_LED_1;
 
 
 /*
@@ -86,7 +85,7 @@ const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {
  *
  *  Note: GPIO interrupts are cleared prior to invoking callbacks.
  */
-void gpioButtonFxn0(uint_least8_t index){
+void gpioButtonFxn0(uint_least8_t index) {
     /* Toggle an LED */
     GPIO_toggle(CONFIG_GPIO_LED_0);
     GPIO_toggle(CONFIG_GPIO_LED_1);
@@ -99,14 +98,13 @@ void gpioButtonFxn0(uint_least8_t index){
  *
  *  Note: GPIO interrupts are cleared prior to invoking callbacks.
  */
-void gpioButtonFxn1(uint_least8_t index){
+void gpioButtonFxn1(uint_least8_t index) {
     /* Toggle an LED */
     GPIO_toggle(CONFIG_GPIO_LED_1);
     GPIO_toggle(CONFIG_GPIO_LED_0);
 }
 
-
-void init_gpio(void){
+void init_gpio(void) {
     GPIO_init();
 
     /* Configure the LED and button pins */
@@ -127,7 +125,7 @@ void init_gpio(void){
      *  If more than one input pin is available for your device, interrupts
      *  will be enabled on CONFIG_GPIO_BUTTON1.
      */
-    if (CONFIG_GPIO_BUTTON_0 != CONFIG_GPIO_BUTTON_1) {
+    if(CONFIG_GPIO_BUTTON_0 != CONFIG_GPIO_BUTTON_1) {
         /* Configure BUTTON1 pin */
         GPIO_setConfig(CONFIG_GPIO_BUTTON_1, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
@@ -135,5 +133,4 @@ void init_gpio(void){
         GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);
         GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
     }
-
 }
