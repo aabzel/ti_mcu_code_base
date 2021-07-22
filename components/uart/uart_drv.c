@@ -11,8 +11,13 @@
 #include "ti_drivers_config.h"
 #include "uart_drv.h"
 
-UART_Handle uart;
+#ifdef HAS_CLI
+#include "uart_string_reader.h"
+#endif
+
+UART_Handle uart_0;
 char input;
+UartHandle_t huart_dbg = {0};
 
 UARTCC26XX_Object uartCC26XXObjects[CONFIG_UART_COUNT];
 
@@ -45,12 +50,30 @@ const UART_Config UART_config[CONFIG_UART_COUNT] = {
 const uint_least8_t CONFIG_UART_0_CONST = CONFIG_UART_0;
 const uint_least8_t UART_count = CONFIG_UART_COUNT;
 
+
+// Read callback function
+static void readCallback(UART_Handle handle, char *rxBuf, size_t size){
+  huart_dbg.rx_cnt++  ;
+  huart_dbg.rx_int = true;
+  huart_dbg.rx_byte = *(rxBuf);
+//  UART_write(uart, rxBuf, 1);
+}
+
+// Write callback function
+static void writeCallback(UART_Handle handle, void *rxBuf, size_t size){
+    huart_dbg.tx_cnt++;
+#ifdef HAS_CLI
+    huart_dbg.tx_int = true;
+    huart_dbg.tx_cpl_cnt++;
+#endif /*HAS_CLI*/
+}
+
+
 void init_uart(void) {
     const char echoPrompt[] = "UART0 115200 init ok\r\n";
     UART_Params uartParams;
 
     /* Call driver init functions */
-    GPIO_init();
     UART_init();
 
     /* Configure the LED pin */
@@ -58,14 +81,18 @@ void init_uart(void) {
 
     /* Create a UART with data processing off. */
     UART_Params_init(&uartParams);
-    uartParams.writeDataMode = UART_DATA_BINARY;
-    uartParams.readDataMode = UART_DATA_BINARY;
-    uartParams.readReturnMode = UART_RETURN_FULL;
     uartParams.baudRate = 115200;
+    uartParams.writeMode     = UART_MODE_CALLBACK;
+    uartParams.writeDataMode = UART_DATA_BINARY;
+	uartParams.writeCallback = writeCallback;
 
-    uart = UART_open(CONFIG_UART_0, &uartParams);
+    uartParams.readMode     = UART_MODE_CALLBACK;
+    uartParams.readDataMode = UART_DATA_BINARY;
+	uartParams.readCallback  = readCallback;
 
-    if(uart == NULL) {
+	uart_0 = UART_open(CONFIG_UART_0, &uartParams);
+
+    if(uart_0 == NULL) {
         /* UART_open() failed */
         while(1)
             ;
@@ -74,18 +101,42 @@ void init_uart(void) {
     /* Turn on user LED to indicate successful initialization */
     GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
-    UART_write(uart, echoPrompt, sizeof(echoPrompt));
+    UART_write(uart_0, echoPrompt, sizeof(echoPrompt));
+    UART_read(uart_0, &input, 1);
+#ifdef HAS_CLI
+    huart_dbg.init_done = true;
+    huart_dbg.base_address = (uint32_t*)DEBUG_UART;
+#endif /*HAS_CLI*/
 
-    /* Loop forever echoing */
-#if 0
-    while (1) {
-        UART_read(uart, &input, 1);
-        UART_write(uart, &input, 1);
-    }
-#endif
+}
+
+int putchar_uart(int ch) {
+  uint32_t init_tx_cnt=huart_dbg.tx_cnt;
+  UART_write(uart_0, &ch, 1);
+  while(init_tx_cnt==huart_dbg.tx_cnt){
+
+  }
+  return ch;
+}
+
+void tune_read_char(void){
+    UART_read(uart_0, &input, 1);
 }
 
 void proc_uart(void) {
-    UART_read(uart, &input, 1);
-    UART_write(uart, &input, 1);
+   //
+    //UART_write(uart, &input, 1);
 }
+
+
+bool uart_send_debug(const uint8_t *tx_buffer, uint16_t len) {
+  bool res = true;
+  uint32_t init_tx_cnt=huart_dbg.tx_cnt;
+  UART_write(uart_0, (uint8_t *)tx_buffer, len);
+  while(init_tx_cnt==huart_dbg.tx_cnt){
+
+  }
+  return res;
+}
+
+
