@@ -50,6 +50,9 @@ const UART_Config UART_config[CONFIG_UART_COUNT] = {
 const uint_least8_t CONFIG_UART_0_CONST = CONFIG_UART_0;
 const uint_least8_t UART_count = CONFIG_UART_COUNT;
 
+void UART0IntHandler(void){
+
+}
 
 // Read callback function
 static void readCallback(UART_Handle handle, char *rxBuf, size_t size){

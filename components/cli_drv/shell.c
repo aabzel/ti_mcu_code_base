@@ -369,6 +369,7 @@ void process_shell_cmd(char *cmd_line) {
 void reboot(void) {
   LOG_INFO(SYS, "Reboot device");
   //NVIC_SystemReset();
+
 }
 
 bool cmd_soft_reboot(int32_t argc, char *argv[]) {

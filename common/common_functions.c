@@ -22,10 +22,12 @@ void common_loop(uint64_t loop_start_time) {
 #endif
 }
 
+uint32_t g_iteration_cnt = 10;
 void common_main_loop(void) {
   LOG_NOTICE(SYS, "Main Task started, time_ms=%" PRIu32, get_time_ms32());
 
   for (;;) {
+    g_iteration_cnt++;
     MAIN_LOOP_START;
     // MEASURE_TASK_INTERVAL(LED, 10000, common_update_leds_state);
     common_loop(loop_start_time);

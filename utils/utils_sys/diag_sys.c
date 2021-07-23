@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "debug_info.h"
 #include "io_utils.h"
 #include "version.h"
 #include "writer_generic.h"
@@ -46,18 +47,6 @@ bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr,
   return res;
 }
 
-void print_vector_table(void) {
-  io_printf(CRLF "Vector table" CRLF);
-  io_printf("Stack: %x " CRLF, *((uint32_t *)0x00000000));
-  io_printf("Reset: %x " CRLF, *((uint32_t *)0x00000004));
-  io_printf("Clock Security System: %x " CRLF, *((uint32_t *)0x00000008));
-  io_printf("All class of fault: %x " CRLF, *((uint32_t *)0x0000000C));
-  io_printf("Memory management: %x " CRLF, *((uint32_t *)0x00000010));
-  io_printf("Pre-fetch fault: %x " CRLF, *((uint32_t *)0x00000014));
-  io_printf("Undefined instruction: %x " CRLF, *((uint32_t *)0x00000018));
-  io_printf("USART1 global interrupt: %x " CRLF, *((uint32_t *)0x000000D4));
-  io_printf("USART2 global interrupt: %x " CRLF, *((uint32_t *)0x000000D8));
-}
 
 extern void main(void);
 

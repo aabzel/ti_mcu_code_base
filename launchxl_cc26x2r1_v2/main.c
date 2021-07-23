@@ -12,23 +12,19 @@
 #include "io_utils.h"
 #include "log.h"
 #include "sw_init.h"
-
-static void init_hw(void) {
-    Board_init();
-    NoRTOS_start();
-    init_gpio();
-    init_uart();
-}
-
-
-uint32_t g_iteration_cnt = 10;
+#include "hw_init.h"
 
 int main(void) {
-    bool res=false;
-    init_hw();
-    sw_init();
+    bool res = false;
+    res = hw_init()&&res;
+
+    res = sw_init()&&res;
+
     io_printf("init %s" CRLF, res ? "OF" : "Error");
+
     common_main_loop();
+    /*Unreachable line*/
+    while(1){
 
-
+    }
 }

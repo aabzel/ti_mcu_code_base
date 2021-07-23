@@ -22,6 +22,8 @@ extern UART_Handle uart_0;
 extern char input;
 extern UartHandle_t huart_dbg;
 
+void UART0IntHandler(void);
+
 void init_uart(void);
 void proc_uart(void);
 void tune_read_char(void);

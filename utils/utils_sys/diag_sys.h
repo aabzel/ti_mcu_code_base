@@ -22,7 +22,6 @@ extern "C" {
 #define ROM_START 0x00000000
 #define ROM_END (ROM_START + ROM_SIZE)
 
-void print_vector_table(void);
 void print_sysinfo(void);
 void Error_Handler(void);
 bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr,

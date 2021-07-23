@@ -104,7 +104,7 @@ void gpioButtonFxn1(uint_least8_t index) {
     GPIO_toggle(CONFIG_GPIO_LED_0);
 }
 
-void init_gpio(void) {
+void gpio_init(void) {
     GPIO_init();
 
     /* Configure the LED and button pins */
@@ -133,4 +133,47 @@ void init_gpio(void) {
         GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);
         GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
     }
+}
+
+bool gpio_get_state(char port_pin_char, uint8_t port_pin_num, uint8_t *logic_level){
+    uint_fast8_t value= GPIO_read  (  (uint_least8_t ) port_pin_num   );
+    *logic_level = (uint8_t) value;
+    return true;
+}
+
+bool gpio_set_state(char port_pin_char, uint8_t port_pin_num, uint8_t logic_level) {
+    GPIO_write ( (uint_least8_t) port_pin_num, (unsigned int ) logic_level );
+    return true;
+}
+
+
+/**/
+char *get_gpio_mode(char port, uint8_t pin){
+    char *name = "_";
+    GPIO_PinConfig pin_cfg = 0;
+    if (pin<CONFIG_TI_DRIVERS_PIN_COUNT) {
+       GPIO_getConfig( (uint_least8_t) pin, &pin_cfg );
+    }
+    return name;
+}
+
+uint8_t get_gpio_alter_fun(char port, uint8_t pin){
+    return 0xFF;
+}
+
+char* get_gpio_pull_mode(char port, uint8_t pin){
+    return "_";
+}
+
+char* get_gpio_type(char port, uint8_t pin){
+    return "_";
+}
+
+uint8_t get_mcu_pin(char port, uint8_t pin){
+    return 0xFF;
+}
+
+bool gpio_toggle(char port, uint8_t pin) {
+    GPIO_toggle ( (uint_least8_t)   pin);
+    return true;
 }

@@ -51,6 +51,7 @@ void print_sys_info(void);
 bool print_16bit_types(void *val);
 bool explore_stack_dir(void);
 bool is_little_endian(void);
+bool print_vector_table(void);
 
 #ifdef __cplusplus
 }

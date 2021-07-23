@@ -44,13 +44,15 @@ bool is_little_endian(void) {
   return bint.u8[0] == 4;
 }
 
- void print_version_s(ostream_t *stream) {
+void print_version_s(ostream_t *stream) {
   oprintf(stream, "Date     : %s " CRLF, __DATE__);
   oprintf(stream, "Time     : %s " CRLF, __TIME__);
   oprintf(stream, "TimeStamp: %s " CRLF, __TIMESTAMP__);
   oprintf(stream, "Cstd     : %u " CRLF, __STDC__);
   oprintf(stream, "STDC_VER : %u " CRLF, __STDC_VERSION__);
+  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
   oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
+  oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
 //  oprintf(stream, "IAR_SYSTEMS_ICC %u " CRLF, __IAR_SYSTEMS_ICC__);
   // oprintf (stream, "ARM_BUILD %u ", ARM_BUILD);
   //oprintf(stream, "IAR VER  :%u " CRLF, __VER__);
@@ -66,8 +68,7 @@ bool is_little_endian(void) {
 #ifdef HAS_DEBUG
   oputs(stream, " Debug" CRLF);
 #endif
-  oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
-  oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
+  //oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
   oputs(stream, "by aabdev" CRLF);
   oputs(stream, CRLF);
 }
@@ -97,7 +98,7 @@ void print_sys_info(void) {
   io_printf("Boot reset handler: 0x%x " CRLF, *((uint32_t *)(0x00000004)));
   io_printf("App  reset handler: 0x%x " CRLF,
             *((uint32_t *)(APP_START_ADDRESS + 4)));
-  io_printf("addr of main() 0x%p" CRLF, main);
+  io_printf("addr of main() 0x08%p" CRLF, main);
 }
 
 /*platform spesific data type calculator */
@@ -121,4 +122,15 @@ bool print_16bit_types(void *val) {
   union16bit.u16 = reverse_byte_order_uint16(union16bit.u16);
   print_u16_un(union16bit);
   return true;
+}
+
+bool print_vector_table(void){
+    uint32_t* addres = 0;
+    uint32_t offset=0,num=0;
+    io_printf(CRLF "Vector table" CRLF);
+    for(offset=0, num=0; offset <= 4*53; offset+=4,num++) {
+        addres =(uint32_t*) offset;
+        io_printf("number %2u Addr: 0x%08p Handler: 0x%08x" CRLF,num, addres, *(addres));
+    }
+    return true;
 }
