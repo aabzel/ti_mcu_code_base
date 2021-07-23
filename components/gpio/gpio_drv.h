@@ -43,9 +43,9 @@ extern const PIN_Config BoardGpioInitTable[];
 void gpio_init(void);
 
 /*GPIO API*/
-bool gpio_get_state(char port_pin_char, uint8_t port_pin_num, uint8_t *logic_level);
+bool gpio_get_state(char port_pin_char, uint8_t port_pin_num, uint8_t* logic_level);
 bool gpio_set_state(char port_pin_char, uint8_t port_pin_num, uint8_t logic_level);
-char *get_gpio_mode(char port, uint8_t pin);
+char* get_gpio_mode(char port, uint8_t pin);
 uint8_t get_gpio_alter_fun(char port, uint8_t pin);
 char* get_gpio_pull_mode(char port, uint8_t pin);
 char* get_gpio_type(char port, uint8_t pin);

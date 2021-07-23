@@ -15,6 +15,14 @@
 extern "C" {
 #endif
 
+#define RAM_SIZE (80 * 1024)
+#define RAM_START 0x20000000
+#define RAM_END (RAM_START + RAM_SIZE)
+
+#define ROM_SIZE ( 352 * 1024)
+#define ROM_START 0x00000000
+#define ROM_END (ROM_START + ROM_SIZE)
+
 extern uint32_t critical_nesting_level;
 
 bool isFromInterrupt(void);

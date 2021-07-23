@@ -19,7 +19,6 @@ extern "C" {
 #else
 #define CORTEX_M4_COMMANDS
 #endif
-
   
 #define SHELL_COMMANDS                                                         \
   COMMON_COMMANDS                                                              \

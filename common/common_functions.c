@@ -17,8 +17,8 @@ void common_loop(uint64_t loop_start_time) {
   }
 
 #ifdef HAS_CLI
-  cli_process();
-  //MEASURE_TASK_INTERVAL(UART, 300, cli_process);
+  //cli_process();
+  MEASURE_TASK_INTERVAL(UART, 30, cli_process);
 #endif
 }
 

@@ -5,28 +5,34 @@
 
 #include "uart_common.h"
 
-#define CONFIG_UART_COUNT 1
-/*
- *  TX: DIO3
- *  RX: DIO2
- */
+
+#define CONFIG_UART_COUNT 2
 #define UART_RX_ARRAY_SIZE 500U
 #define UART_RX_FIFO_ARRAY_SIZE 100U
 #define UART_TX_ARRAY_SIZE 600U
+
 #define DEBUG_UART 0x40001000
+
 #define CONFIG_UART_0 0
+#define CONFIG_UART_1 1
+
 #define CONFIG_TI_DRIVERS_UART_COUNT 1
 
 extern const uint_least8_t CONFIG_UART_0_CONST;
 extern UART_Handle uart_0;
-extern char input;
+extern UART_Handle uart_1;
+extern char input0;
+extern char input1;
+
 extern UartHandle_t huart_dbg;
 
-void UART0IntHandler(void);
 
-void init_uart(void);
-void proc_uart(void);
+bool init_uart(void);
+
 void tune_read_char(void);
-bool uart_send_debug(const uint8_t *tx_buffer, uint16_t len) ;
+bool uart_send_debug(const uint8_t* tx_buffer, uint16_t len);
+bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len);
+uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling);
+bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate);
 
 #endif /* INIT_UART_H  */

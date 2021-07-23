@@ -23,13 +23,11 @@ void cli_init(void) {
 }
 
 bool cli_process(void) {
-#if 1
     if (true==huart_dbg.rx_int) {
         uart_string_reader_rx_callback(&cmd_reader, (char) huart_dbg.rx_byte );
         huart_dbg.rx_int = false;
         UART_read(uart_0, &huart_dbg.rx_byte, 1);
     }
-#endif
 
     bool res = false;
     static bool entry = false;

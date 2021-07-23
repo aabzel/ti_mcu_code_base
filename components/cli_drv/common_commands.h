@@ -16,13 +16,6 @@
 #define TIM_COMMANDS
 #endif
 
-#ifdef HAS_UART
-#define UART_COMMANDS
-// #include "uart_commands.h"
-#else
-#define UART_COMMANDS
-#endif
-
 #ifdef HAS_SPI
 #include "spi_commands.h"
 #else
@@ -39,6 +32,12 @@
 #include "clock_commands.h"
 #else
 #define CLOCK_COMMANDS
+#endif
+
+#ifdef HAS_UART
+#include "uart_commands.h"
+#else
+#define UART_COMMANDS
 #endif
 
 #define COMMON_COMMANDS                                                        \
