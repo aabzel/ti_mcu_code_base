@@ -7,9 +7,7 @@
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/pin/PINCC26XX.h>
 
-#include "ti_drivers_config.h"
 
-#if 0
 const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST = CONFIG_GPIO_BUTTON_0;
 const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST = CONFIG_GPIO_BUTTON_1;
 const uint_least8_t CONFIG_GPIO_LED_0_CONST = CONFIG_GPIO_LED_0;
@@ -77,12 +75,9 @@ const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {
     .intPriority = (~0),
     .swiPriority = 0
 };
-#endif /*comment*/
 
 /*
- *  ======== gpioButtonFxn0 ========
  *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_0.
- *
  *  Note: GPIO interrupts are cleared prior to invoking callbacks.
  */
 void gpioButtonFxn0(uint_least8_t index) {
@@ -92,10 +87,8 @@ void gpioButtonFxn0(uint_least8_t index) {
 }
 
 /*
- *  ======== gpioButtonFxn1 ========
  *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_1.
  *  This may not be used for all boards.
- *
  *  Note: GPIO interrupts are cleared prior to invoking callbacks.
  */
 void gpioButtonFxn1(uint_least8_t index) {
@@ -105,6 +98,12 @@ void gpioButtonFxn1(uint_least8_t index) {
 }
 
 void gpio_init(void) {
+    /* ==== /ti/drivers/PIN initialization ==== */
+    if (PIN_init(BoardGpioInitTable) != PIN_SUCCESS) {
+        /* Error with PIN_init */
+        while (1);
+    }
+
     GPIO_init();
 
     /* Configure the LED and button pins */

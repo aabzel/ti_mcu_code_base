@@ -9,8 +9,6 @@
 #include <ti/drivers/power/PowerCC26X2.h>
 #include <ti/drivers/uart/UARTCC26XX.h>
 
-
-#include "ti_drivers_config.h"
 #include "uart_drv.h"
 
 #ifdef HAS_CLI
@@ -113,7 +111,7 @@ static bool init_uart0(void) {
     UART_init();
 
     /* Configure the LED pin */
-    GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+   // GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
     /* Create a UART with data processing off. */
     UART_Params_init(&uart0Params);
@@ -135,7 +133,7 @@ static bool init_uart0(void) {
     }
 
     /* Turn on user LED to indicate successful initialization */
-    GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
+  //  GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
 
     UART_write(uart_0, echoPrompt, sizeof(echoPrompt));
     UART_read(uart_0, &input0, 1);
