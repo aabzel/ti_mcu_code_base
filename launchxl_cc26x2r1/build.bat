@@ -1,4 +1,5 @@
 echo off
+call %cd%\..\download_code_base.bat
 rem set  ide_tool=C:\ti\ccs1040\ccs\eclipse\jre\bin\java.exe startup.jar
 set  ide_tool=C:\ti\ccs1030\ccs\eclipse\eclipsec -noSplash
 set  workspace_dir=%cd%\..\
