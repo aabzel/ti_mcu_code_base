@@ -36,7 +36,6 @@ typedef struct {
 #define EXT_WDT_TEST
 #endif
 
-void process_shell_cmd(char* cmd_line);
 void shell_prompt(void);
 bool cmd_calc(int32_t argc, char* argv[]);
 bool cmd_find_addr(int32_t argc, char* argv[]);
@@ -54,7 +53,6 @@ bool dump_cmd_result_ex(bool res, const char* message);
 bool cmd_wd_test(int32_t argc, char* argv[]);
 bool cmd_wd_test_hw(int32_t argc, char* argv[]);
 bool cmd_sysinfo(int32_t argc, char* argv[]);
-void help_dump_key(const char* subName1, const char* subName2);
 void reboot(void);
 
 #define TEST_FIRMWARE_COMMANDS SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),

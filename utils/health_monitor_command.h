@@ -8,7 +8,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "shell.h"
+#include "base_cmd.h"
 
 bool health_monitor_command(int32_t argc, char *argv[]);
 

@@ -11,7 +11,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "ostream.h"
-#include "shell.h"
+#include "base_cmd.h"
 #include "str_utils.h"
 #include "sys_tick.h"
 #include "systick.h"

@@ -2,7 +2,7 @@
 
 #include "common_commands.h"
 #include "log.h"
-#include "shell.h"
+#include "base_cmd.h"
 
 #ifdef __cplusplus
 extern "C" {

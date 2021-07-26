@@ -6,7 +6,7 @@
 #include "data_utils.h"
 #include "diag_page_nums.h"
 #include "diag_report.h"
-#include "shell.h"
+#include "base_cmd.h"
 #include "sys.h"
 #include "table_utils.h"
 #include "writer_generic.h"

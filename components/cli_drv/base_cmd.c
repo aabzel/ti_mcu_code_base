@@ -1,21 +1,21 @@
-#include "shell.h"
+#include "base_cmd.h"
 
 #include <ctype.h>
 #include <inttypes.h>
 #include <string.h>
 
+#include "device_id.h"
+#include "debug_info.h"
+#include "diag_sys.h"
 #include "clocks.h"
 #include "convert.h"
-#include "debug_info.h"
-#include "device_id.h"
-#include "diag_sys.h"
 #include "io_utils.h"
-#include "log_commands.h"
+#include "log.h"
 #include "none_blocking_pause.h"
 #include "oprintf.h"
-#include "read_mem.h"
-#include "shell_commands.h"
 #include "str_utils.h"
+#include "read_mem.h"
+
 #ifdef HAS_TIM
 #include "tim.h"
 #endif /*HAS_TIM*/
@@ -27,85 +27,9 @@
 #include "print_buffer.h"
 #endif
 
-static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
-
 bool show_shell_prompt = true;
 bool user_mode = true;
 
-/*logic AND for keyWords */
-static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const subName1, const char* const subName2) {
-    bool res = false;
-    if(NULL != cmd) {
-        if((NULL == subName1) && (NULL == subName2)) {
-            res = true;
-        } else if((NULL != subName1) && (NULL == subName2)) {
-            /*one subname done*/
-            res = false;
-            if(NULL != cmd->short_name) {
-                if(NULL != str_case_str(cmd->short_name, subName1)) {
-                    res = true;
-                }
-            }
-            if(NULL != cmd->long_name) {
-                if(NULL != str_case_str(cmd->long_name, subName1)) {
-                    res = true;
-                }
-            }
-            if(NULL != cmd->description) {
-                if(NULL != str_case_str(cmd->description, subName1)) {
-                    res = true;
-                }
-            }
-        } else if((NULL != subName1) && (NULL != subName2)) {
-            /*two subnames done*/
-            res = false;
-            if(NULL != cmd->short_name) {
-                if(NULL != str_case_str(cmd->short_name, subName1)) {
-                    if(NULL != str_case_str(cmd->short_name, subName2)) {
-                        res = true;
-                    }
-                }
-            }
-            if(NULL != cmd->long_name) {
-                if(NULL != str_case_str(cmd->long_name, subName1)) {
-                    if(NULL != str_case_str(cmd->long_name, subName2)) {
-                        res = true;
-                    }
-                }
-            }
-            if(NULL != cmd->description) {
-                if(NULL != str_case_str(cmd->description, subName1)) {
-                    if(NULL != str_case_str(cmd->description, subName2)) {
-                        res = true;
-                    }
-                }
-            }
-        }
-    }
-
-    return res;
-}
-
-void help_dump_key(const char* subName1, const char* subName2) {
-    const shell_cmd_info_t* cmd = shell_commands;
-    io_printf("Available commands:");
-    if(subName1) {
-        io_printf("Key1:%s" CRLF, subName1);
-    }
-    if(subName2) {
-        io_printf("Key2:%s" CRLF, subName2);
-    }
-    io_putstr(CRLF);
-    io_putstr("|   short |          long command | Description" CRLF);
-    io_putstr("|---------|-----------------------|-----" CRLF);
-    while(cmd->handler) {
-        if(is_print_cmd(cmd, subName1, subName2)) {
-            io_printf("|%8s |%22s | %s" CRLF, cmd->short_name ? cmd->short_name : "",
-                      cmd->long_name ? cmd->long_name : "", cmd->description ? cmd->description : "");
-        }
-        cmd++;
-    }
-}
 
 bool cmd_help(int32_t argc, char* argv[]) {
     bool res = false;
@@ -302,65 +226,6 @@ bool dump_cmd_result_ex(bool res, const char* message) {
     return res;
 }
 
-/* Compare S1 and S2, ignoring case, returning less than, equal to or
-   greater than zero if S1 is lexicographically less than,
-   equal to or greater than S2.  */
-int __strcasecmp(const char* s1, const char* s2) {
-    const unsigned char* p1 = (const unsigned char*)s1;
-    const unsigned char* p2 = (const unsigned char*)s2;
-    int result;
-    if(p1 == p2)
-        return 0;
-    while((result = tolower(*p1) - tolower(*p2++)) == 0)
-        if(*p1++ == '\0')
-            break;
-    return result;
-}
-
-void process_shell_cmd(char* cmd_line) {
-    static int shell_argc = 0;
-    static char* shell_argv[SHELL_MAX_ARG_COUNT];
-    char* p = cmd_line;
-    const shell_cmd_info_t* cmd = shell_commands;
-
-    shell_argc = 0;
-    memset(shell_argv, 0, sizeof(shell_argv));
-    while((shell_argc < SHELL_MAX_ARG_COUNT) && (*p != 0)) {
-        while(isspace((uint8_t)*p)) {
-            p++;
-        }
-        if(*p != '\0') {
-            shell_argv[shell_argc] = p;
-            shell_argc++;
-            while(*p && !isspace((uint8_t)*p)) {
-                p++;
-            }
-            if(*p != '\0') {
-                *p = '\0';
-                p++;
-            }
-        }
-    }
-    if(shell_argc == 0) {
-        shell_prompt();
-        return;
-    }
-    while(cmd->handler) {
-        if((cmd->long_name && __strcasecmp(cmd->long_name, shell_argv[0]) == 0) ||
-           (cmd->short_name && __strcasecmp(cmd->short_name, shell_argv[0]) == 0)) {
-            cmd->handler(shell_argc - 1, shell_argv + 1);
-            shell_prompt();
-            return;
-        }
-        cmd++;
-    }
-    if(user_mode) {
-        LOG_ERROR(SYS, "Unknown command [%s]", shell_argv[0]);
-    } else {
-        dump_cmd_result_ex(false, "Unknown command");
-    }
-    shell_prompt();
-}
 
 void reboot(void) {
     LOG_INFO(SYS, "Reboot device");
@@ -379,23 +244,28 @@ bool cmd_soft_reboot(int32_t argc, char* argv[]) {
     return res;
 }
 
+#define MAX_RPT_CMD_LEN 50U
 bool cmd_repeat(int32_t argc, char* argv[]) {
     bool res = false;
     if(3 == argc) {
-        char command[50] = "";
+        char read_command[MAX_RPT_CMD_LEN] = "";
+        char temp_command[MAX_RPT_CMD_LEN] = "";
         res = true;
         uint32_t period_ms;
         uint32_t num;
-        strncpy(command, argv[0], sizeof(command));
+        strncpy(read_command, argv[0], sizeof(read_command));
         if(true == res) {
             res = try_str2uint32(argv[1], &period_ms);
         }
         if(true == res) {
             res = try_str2uint32(argv[2], &num);
         }
-        uint32_t iter = 0;
+        uint32_t iter = 0U;
+        replace_char(read_command, '_', ' ');
         for(iter = 0; iter < num; iter++) {
-            process_shell_cmd(command);
+            io_printf("execute command [%s]" CRLF, read_command);
+            strncpy(temp_command,read_command,sizeof(temp_command));
+            process_shell_cmd(temp_command);
             wait_in_loop_ms(period_ms);
         }
     } else {

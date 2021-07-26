@@ -1,14 +1,13 @@
-
 #include "uart_string_reader.h"
 
 #include <stdint.h>
 #include <string.h>
 
-#include "uart_drv.h"
+#include "cli_manager.h"
 #include "io_utils.h"
-#include "shell.h"
 #include "sys.h"
 #include "timer_utils.h"
+#include "uart_drv.h"
 
 uint64_t uart_rx_last_data_time_stamp_us = 0U;
 

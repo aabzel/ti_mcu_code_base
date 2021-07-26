@@ -169,3 +169,28 @@ bool wildcmp(const char *wild, const char *string) {
   }
   return !*wild;
 }
+
+int replace_char(char *in_out_str, char orig, char rep) {
+  char *ix = in_out_str;
+  int n = 0;
+  while ((ix = strchr(ix, orig)) != NULL) {
+    *ix++ = rep;
+    n++;
+  }
+  return n;
+}
+
+/* Compare S1 and S2, ignoring case, returning less than, equal to or
+   greater than zero if S1 is lexicographically less than,
+   equal to or greater than S2.  */
+int __strcasecmp(const char* s1, const char* s2) {
+    const unsigned char* p1 = (const unsigned char*)s1;
+    const unsigned char* p2 = (const unsigned char*)s2;
+    int result;
+    if(p1 == p2)
+        return 0;
+    while((result = tolower(*p1) - tolower(*p2++)) == 0)
+        if(*p1++ == '\0')
+            break;
+    return result;
+}

@@ -12,13 +12,13 @@
 #include "bit_utils_test.h"
 #include "byte_utils_test.h"
 #include "float_utils_test.h"
-
+#include "test_string_utils.h"
 
 /*Compile time assemble array */
 unit_test_info_t test_list[] = {{"type_transform", test_type_transformation},
                                 DATA_UTILS_TEST_SUIT
-			   
                                 FLOAT_UTILS_TEST_SUIT
+                                STRING_UTILS_TEST_SUIT
                                 BYTE_UTILS_TEST_SUIT
                                 BIT_UTILS_TEST_SUIT
                                 {"64bit_mult", test_64bit_mult},

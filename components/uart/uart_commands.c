@@ -8,7 +8,7 @@
 #include "diag_report.h"
 #include "log.h"
 #include "ostream.h"
-#include "shell.h"
+#include "base_cmd.h"
 #include "table_utils.h"
 #include "uart_common.h"
 #include "uart_drv.h"
