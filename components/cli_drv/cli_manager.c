@@ -4,19 +4,23 @@
  */
 #include "cli_manager.h"
 
+#include <ctype.h>
+
 #include "base_cmd.h"
+#include "data_utils.h"
 #include "io_utils.h"
 #include "log_commands.h"
 #include "none_blocking_pause.h"
 #include "shell_commands.h"
-#include "uart_string_reader.h"
+#include "str_utils.h"
+#include "table_utils.h"
 #include "uart_drv.h"
+#include "uart_string_reader.h"
 #include "writer_generic.h"
 
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
-
 
 /*logic AND for keyWords */
 static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const subName1, const char* const subName2) {
@@ -72,9 +76,8 @@ static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const su
     return res;
 }
 
-
 void cli_init(void) {
-    if (false == uart_string_reader_init(&cmd_reader)) {
+    if(false == uart_string_reader_init(&cmd_reader)) {
         cli_init_done = false;
     } else {
         set_echo(true);
@@ -83,22 +86,22 @@ void cli_init(void) {
 }
 
 bool cli_process(void) {
-    if (true==huart_dbg.rx_int) {
-        uart_string_reader_rx_callback(&cmd_reader, (char) huart_dbg.rx_byte );
-        huart_dbg.rx_int = false;
-        UART_read(uart_0, &huart_dbg.rx_byte, 1);
+    if(true == huart[0].rx_int) {
+        uart_string_reader_rx_callback(&cmd_reader, (char)huart[0].rx_byte);
+        huart[0].rx_int = false;
+        UART_read(huart[0].uart_h, &huart[0].rx_byte, 1);
     }
 
     bool res = false;
     static bool entry = false;
-    if (false == entry) {
+    if(false == entry) {
         /* recursive protection from test which call during execution */
-        if (true == cli_init_done) {
+        if(true == cli_init_done) {
             entry = true;
             cli_task_cnt++;
-            if (true == huart_dbg.tx_int) {
+            if(true == huart[0].tx_int) {
                 dbg_o.f_transmit(&dbg_o);
-                huart_dbg.tx_int = false;
+                huart[0].tx_int = false;
             }
             uart_string_reader_proccess(&cmd_reader);
             res = true;
@@ -166,15 +169,20 @@ void help_dump_key(const char* subName1, const char* subName2) {
         io_printf("Key2:%s" CRLF, subName2);
     }
     io_putstr(CRLF);
-    io_putstr("|   short |          long command | Description" CRLF);
-    io_putstr("|---------|-----------------------|-----" CRLF);
+    static const table_col_t cols[] = {
+        {10, "short"}, {20, "long command"}, {13, "Description"}
+    };
+    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     while(cmd->handler) {
         if(is_print_cmd(cmd, subName1, subName2)) {
-            io_printf("|%8s |%22s | %s" CRLF, cmd->short_name ? cmd->short_name : "",
-                      cmd->long_name ? cmd->long_name : "", cmd->description ? cmd->description : "");
+            io_printf(TSEP" %8s "TSEP , cmd->short_name ? cmd->short_name : "");
+            io_printf(" %18s " TSEP , cmd->long_name ? cmd->long_name : "");
+            io_printf(" %s " , cmd->description ? cmd->description : "");
+            io_printf(CRLF);
         }
         wait_in_loop_ms(4);
 
         cmd++;
     }
+    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
 }

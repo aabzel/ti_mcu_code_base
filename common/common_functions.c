@@ -3,28 +3,28 @@
 #include <inttypes.h>
 
 #include "clocks.h"
-#include "log.h"
 #ifdef HAS_CLI
 #include "cli_manager.h"
 #endif
-
+#include "io_utils.h"
+#include "log.h"
 #include "task_info.h"
-//#include "reboot_info.h"
+#include "uart_drv.h"
 
 void common_loop(uint64_t loop_start_time) {
   if (0u == loop_start_time) {
-    //return;
+    return;
   }
 
+  MEASURE_TASK_INTERVAL(UART1, 10, proc_uart1);
 #ifdef HAS_CLI
-  //cli_process();
-  MEASURE_TASK_INTERVAL(UART, 30, cli_process);
+  MEASURE_TASK_INTERVAL(CLI, 30, cli_process);
 #endif
 }
 
 uint32_t g_iteration_cnt = 10;
 void common_main_loop(void) {
-  LOG_NOTICE(SYS, "Main Task started, time_ms=%" PRIu32, get_time_ms32());
+  io_printf( "Main Task started, time_ms=%u" CRLF, get_time_ms32());
 
   for (;;) {
     g_iteration_cnt++;

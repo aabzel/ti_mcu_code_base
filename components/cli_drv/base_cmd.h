@@ -15,8 +15,6 @@ extern "C" {
 #define SHELL_MAX_ARG_COUNT 12
 #define SHELL_MAX_CMD_LEN 40
 
-#define SHELL_CMD(long_cmd, short_cmd, func, description)                                                              \
-    { short_cmd, long_cmd, description, func }
 
 extern bool show_shell_prompt;
 extern bool user_mode;

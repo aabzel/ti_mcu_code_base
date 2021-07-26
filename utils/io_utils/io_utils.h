@@ -7,8 +7,6 @@ extern "C" {
 
 #include <stdbool.h>
 
-
-
 #define CRLF "\r\n"
 
 #define io_puts io_putstr

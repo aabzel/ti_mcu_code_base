@@ -46,6 +46,11 @@
 			<location>C:/projects/code_base/components</location>
 		</link>
 		<link>
+			<name>protocols</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/protocols</locationURI>
+		</link>
+		<link>
 			<name>startup_cc13x2_cc26x2_ccs.c</name>
 			<type>1</type>
 			<locationURI>COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR/kernel/nortos/startup/startup_cc13x2_cc26x2_ccs.c</locationURI>

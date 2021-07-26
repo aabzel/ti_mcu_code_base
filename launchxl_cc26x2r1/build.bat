@@ -1,7 +1,9 @@
 echo off
 
 rem set  ide_tool=C:\ti\ccs1040\ccs\eclipse\jre\bin\java.exe startup.jar
-set  ide_tool=C:\ti\ccs1040\ccs\eclipse\eclipsec -noSplash
+set  ide_tool_path=%1
+rem set  ide_tool=C:\ti\ccs1040\ccs\eclipse\eclipsec -noSplash
+set  ide_tool=%ide_tool_path% -noSplash
 set  workspace_dir=%cd%\..\
 echo workspace_dir=%workspace_dir%
 set  project_name=launchxl_cc26x2r1

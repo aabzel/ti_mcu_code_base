@@ -7,6 +7,7 @@
 #include "device_id.h"
 #include "debug_info.h"
 #include "diag_sys.h"
+#include "cli_manager.h"
 #include "clocks.h"
 #include "convert.h"
 #include "io_utils.h"

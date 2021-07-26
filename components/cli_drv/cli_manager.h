@@ -15,6 +15,9 @@
 extern uint32_t cli_task_cnt;
 extern bool cli_init_done;
 
+#define SHELL_CMD(long_cmd, short_cmd, func, description)                                                              \
+    { short_cmd, long_cmd, description, func }
+
 void cli_init(void);
 bool cli_process(void);
 void process_shell_cmd(char* cmd_line);

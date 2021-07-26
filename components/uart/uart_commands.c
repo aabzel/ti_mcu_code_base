@@ -2,13 +2,13 @@
 
 #include <inttypes.h>
 
+#include "base_cmd.h"
 #include "convert.h"
 #include "data_utils.h"
 #include "diag_page_nums.h"
 #include "diag_report.h"
 #include "log.h"
 #include "ostream.h"
-#include "base_cmd.h"
 #include "table_utils.h"
 #include "uart_common.h"
 #include "uart_drv.h"
@@ -34,9 +34,9 @@ bool diag_page_uarts(ostream_t* stream) {
 
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
 
-    io_printf("rx %u byte " CRLF, huart_dbg.rx_byte_cnt);
-    io_printf("tx %u byte " CRLF, huart_dbg.tx_byte_cnt);
-    io_printf("tx cpl %u cnt " CRLF, huart_dbg.tx_cpl_cnt);
+    io_printf("rx %u byte " CRLF, huart[0].rx_byte_cnt);
+    io_printf("tx %u byte " CRLF, huart[0].tx_byte_cnt);
+    io_printf("tx cpl %u cnt " CRLF, huart[0].tx_cpl_cnt);
     return true;
 }
 
@@ -112,7 +112,7 @@ bool uart_init_command(int32_t argc, char* argv[]) {
         }
     } else {
         LOG_ERROR(UART, "Usage: us instance baudrate");
-        LOG_INFO(UART, "instance [1...8]");
+        LOG_INFO(UART, "instance [0...1]");
         LOG_INFO(UART, "baudrate ");
     }
     return res;
@@ -128,7 +128,7 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
     uint8_t uart_num = 0;
     uint8_t over_sampling = 0;
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
-    for(uart_num = 1; uart_num <= CONFIG_UART_COUNT; uart_num++) {
+    for(uart_num = 0; uart_num < CONFIG_UART_COUNT; uart_num++) {
         io_printf(TSEP);
         io_printf(" %02u  " TSEP, uart_num);
         baud_rate = uart_get_baud_rate(uart_num, &mantissa, &fraction, &over_sampling);
@@ -140,8 +140,8 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
         } else {
             io_printf("          " TSEP, baud_rate);
         }
-        io_printf(" %07u " TSEP, 0);
-        io_printf(" %07u " TSEP, 0);
+        io_printf(" %07u " TSEP, huart[uart_num].rx_cnt);
+        io_printf(" %07u " TSEP, huart[uart_num].tx_cnt);
         io_printf(" %7s " TSEP, "undef");
         io_printf(CRLF);
     }

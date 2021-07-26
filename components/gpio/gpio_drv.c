@@ -7,7 +7,6 @@
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/pin/PINCC26XX.h>
 
-
 const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST = CONFIG_GPIO_BUTTON_0;
 const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST = CONFIG_GPIO_BUTTON_1;
 const uint_least8_t CONFIG_GPIO_LED_0_CONST = CONFIG_GPIO_LED_0;
@@ -23,7 +22,6 @@ GPIO_PinConfig gpioPinConfigs[] = {
     /* CONFIG_GPIO_LED_1 : LaunchPad LED Green */
     GPIOCC26XX_DIO_07 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW,
 };
-
 
 /*
  *  ======== gpioCallbackFunctions ========
@@ -44,17 +42,14 @@ GPIO_CallbackFxn gpioCallbackFunctions[] = {
     NULL,
 };
 
-
 /*
  *  ======== GPIOCC26XX_config ========
  */
-const GPIOCC26XX_Config GPIOCC26XX_config = {
-    .pinConfigs = (GPIO_PinConfig *)gpioPinConfigs,
-    .callbacks = (GPIO_CallbackFxn *)gpioCallbackFunctions,
-    .numberOfPinConfigs = 4,
-    .numberOfCallbacks = 4,
-    .intPriority = (~0)
-};
+const GPIOCC26XX_Config GPIOCC26XX_config = {.pinConfigs = (GPIO_PinConfig*)gpioPinConfigs,
+                                             .callbacks = (GPIO_CallbackFxn*)gpioCallbackFunctions,
+                                             .numberOfPinConfigs = 4,
+                                             .numberOfCallbacks = 4,
+                                             .intPriority = (~0)};
 
 #define CONFIG_PIN_COUNT 4
 
@@ -68,13 +63,9 @@ const PIN_Config BoardGpioInitTable[CONFIG_PIN_COUNT + 1] = {
     /* LaunchPad LED Green, Parent Signal: CONFIG_GPIO_LED_1 GPIO Pin, (DIO7) */
     CONFIG_PIN_3 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
 
-    PIN_TERMINATE
-};
+    PIN_TERMINATE};
 
-const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {
-    .intPriority = (~0),
-    .swiPriority = 0
-};
+const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {.intPriority = (~0), .swiPriority = 0};
 
 /*
  *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_0.
@@ -99,9 +90,10 @@ void gpioButtonFxn1(uint_least8_t index) {
 
 void gpio_init(void) {
     /* ==== /ti/drivers/PIN initialization ==== */
-    if (PIN_init(BoardGpioInitTable) != PIN_SUCCESS) {
+    if(PIN_init(BoardGpioInitTable) != PIN_SUCCESS) {
         /* Error with PIN_init */
-        while (1);
+        while(1)
+            ;
     }
 
     GPIO_init();

@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+#include "base_cmd.h"
 #include "convert.h"
 #include "core_driver.h"
 #include "ctype.h"
@@ -13,7 +14,6 @@
 #include "io_utils.h"
 #include "log.h"
 #include "ostream.h"
-#include "base_cmd.h"
 #include "str_utils.h"
 #include "sys_tick.h"
 #include "table_utils.h"

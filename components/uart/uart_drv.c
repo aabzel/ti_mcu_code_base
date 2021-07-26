@@ -1,28 +1,25 @@
+#include "uart_drv.h"
+
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
-#include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
+#ifdef DeviceFamily_CC26X2
 #include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
+#include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/Power.h>
 #include <ti/drivers/UART.h>
 #include <ti/drivers/power/PowerCC26X2.h>
 #include <ti/drivers/uart/UARTCC26XX.h>
+#endif
 
-#include "uart_drv.h"
 
 #ifdef HAS_CLI
 #include "uart_string_reader.h"
 #endif
 
-UART_Handle uart_0;
-UART_Handle uart_1;
-
-char input0;
-char input1;
-
-UartHandle_t huart_dbg = {0};
-UartHandle_t huart1 = {0};
+UartHandle_t huart[CONFIG_UART_COUNT] = {0};
 
 UARTCC26XX_Object uartCC26XXObjects[CONFIG_UART_COUNT];
 
@@ -45,20 +42,20 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[CONFIG_UART_COUNT] = {
      .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_4_8,
      .errorFxn = NULL},
 
-     {.baseAddr = UART1_BASE,
-      .intNum = INT_UART1_COMB,
-      .intPriority = (~0),
-      .swiPriority = 0,
-      .powerMngrId = PowerCC26XX_PERIPH_UART1,
-      .ringBufPtr = uartCC26XXRingBuffer1,
-      .ringBufSize = sizeof(uartCC26XXRingBuffer1),
-      .rxPin = IOID_0,
-      .txPin = IOID_1,
-      .ctsPin = PIN_UNASSIGNED,
-      .rtsPin = PIN_UNASSIGNED,
-      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
-      .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_4_8,
-      .errorFxn = NULL},
+    {.baseAddr = UART1_BASE,
+     .intNum = INT_UART1_COMB,
+     .intPriority = (~0),
+     .swiPriority = 0,
+     .powerMngrId = PowerCC26XX_PERIPH_UART1,
+     .ringBufPtr = uartCC26XXRingBuffer1,
+     .ringBufSize = sizeof(uartCC26XXRingBuffer1),
+     .rxPin = IOID_0,
+     .txPin = IOID_1,
+     .ctsPin = PIN_UNASSIGNED,
+     .rtsPin = PIN_UNASSIGNED,
+     .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
+     .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_4_8,
+     .errorFxn = NULL},
 };
 
 const UART_Config UART_config[CONFIG_UART_COUNT] = {
@@ -66,44 +63,42 @@ const UART_Config UART_config[CONFIG_UART_COUNT] = {
      .fxnTablePtr = &UARTCC26XX_fxnTable,
      .object = &uartCC26XXObjects[CONFIG_UART_0],
      .hwAttrs = &uartCC26XXHWAttrs[CONFIG_UART_0]},
-     {/* CONFIG_UART_1 */
-      .fxnTablePtr = &UARTCC26XX_fxnTable,
-      .object = &uartCC26XXObjects[CONFIG_UART_1],
-      .hwAttrs = &uartCC26XXHWAttrs[CONFIG_UART_1]},
+    {/* CONFIG_UART_1 */
+     .fxnTablePtr = &UARTCC26XX_fxnTable,
+     .object = &uartCC26XXObjects[CONFIG_UART_1],
+     .hwAttrs = &uartCC26XXHWAttrs[CONFIG_UART_1]},
 };
 
 const uint_least8_t CONFIG_UART_0_CONST = CONFIG_UART_0;
 const uint_least8_t UART_count = CONFIG_UART_COUNT;
 
-static void readCallback(UART_Handle handle, char* rxBuf, size_t size) {
-    huart_dbg.rx_cnt++;
-    huart_dbg.rx_int = true;
-    huart_dbg.rx_byte = *(rxBuf);
-    //  UART_write(uart, rxBuf, 1);
+static void uart0ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
+    huart[0].rx_cnt++;
+    huart[0].rx_int = true;
+    huart[0].rx_byte = *(rxBuf);
 }
 
-static void writeCallback(UART_Handle handle, void* rxBuf, size_t size) {
-    huart_dbg.tx_cnt++;
-#ifdef HAS_CLI
-    huart_dbg.tx_int = true;
-    huart_dbg.tx_cpl_cnt++;
-#endif /*HAS_CLI*/
+static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
+    huart[0].tx_cnt++;
+    huart[0].tx_int = true;
+    huart[0].tx_cpl_cnt++;
 }
 
 static void uart1ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
-    huart1.rx_cnt++;
-    huart1.rx_int = true;
-    huart1.rx_byte = *(rxBuf);
+    huart[1].rx_cnt++;
+    huart[1].rx_int = true;
+    huart[1].rx_byte = *(rxBuf);
 }
 
 static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
-    huart1.tx_cnt++;
-    huart1.tx_int = true;
-    huart1.tx_cpl_cnt++;
+    huart[1].tx_cnt++;
+    huart[1].tx_int = true;
+    huart[1].tx_cpl_cnt++;
 }
 
 static bool init_uart0(void) {
     bool res = false;
+    memset(&huart[0],0x00,sizeof(huart[0]));
     const char echoPrompt[] = "UART0 115200 init ok\r\n";
     UART_Params uart0Params;
 
@@ -117,15 +112,15 @@ static bool init_uart0(void) {
     uart0Params.baudRate = 115200;
     uart0Params.writeMode = UART_MODE_CALLBACK;
     uart0Params.writeDataMode = UART_DATA_BINARY;
-    uart0Params.writeCallback = writeCallback;
+    uart0Params.writeCallback = uart0WriteCallback;
 
     uart0Params.readMode = UART_MODE_CALLBACK;
     uart0Params.readDataMode = UART_DATA_BINARY;
-    uart0Params.readCallback = readCallback;
+    uart0Params.readCallback = uart0ReadCallback;
 
-    uart_0 = UART_open(CONFIG_UART_0, &uart0Params);
+    huart[0].uart_h = UART_open(CONFIG_UART_0, &uart0Params);
 
-    if(NULL == uart_0) {
+    if(NULL == huart[0].uart_h) {
         res = false;
     } else {
         res = true;
@@ -133,18 +128,20 @@ static bool init_uart0(void) {
 
     /* Turn on user LED to indicate successful initialization */
 
-
-    UART_write(uart_0, echoPrompt, sizeof(echoPrompt));
-    UART_read(uart_0, &input0, 1);
-#ifdef HAS_CLI
-    huart_dbg.init_done = true;
-    huart_dbg.base_address = (uint32_t*)DEBUG_UART;
-#endif /*HAS_CLI*/
+    UART_write(huart[0].uart_h, echoPrompt, sizeof(echoPrompt));
+    UART_read(huart[0].uart_h, &huart[0].rx_byte, 1);
+    huart[0].init_done = true;
+    huart[0].base_address = (uint32_t*)DEBUG_UART;
     return res;
 }
 
 static bool init_uart1(void) {
     bool res = false;
+    memset(&huart[1],0x00,sizeof(huart[1]));
+    huart[1].rx_cnt=0;
+    huart[1].tx_cnt=0;
+    huart[1].tx_cpl_cnt=0;
+    huart[1].tx_byte_cnt=0;
     const char echoPrompt[] = "UART1 115200 init ok\r\n";
     UART_Params uart1Params;
 
@@ -164,16 +161,16 @@ static bool init_uart1(void) {
     uart1Params.readDataMode = UART_DATA_BINARY;
     uart1Params.readCallback = uart1ReadCallback;
 
-    uart_1 = UART_open(CONFIG_UART_1, &uart1Params);
+    huart[1].uart_h = UART_open(CONFIG_UART_1, &uart1Params);
 
-    if(NULL == uart_1) {
+    if(NULL == huart[1].uart_h ) {
         res = false;
     } else {
         res = true;
     }
 
-    UART_write(uart_1, echoPrompt, sizeof(echoPrompt));
-    UART_read(uart_1, &input1, 1);
+    UART_write(huart[1].uart_h, echoPrompt, sizeof(echoPrompt));
+    UART_read(huart[1].uart_h, &huart[1].rx_byte, 1);
     return res;
 }
 
@@ -184,46 +181,29 @@ bool init_uart(void) {
     return res;
 }
 
-int putchar_uart(int ch) {
-    uint32_t init_tx_cnt = huart_dbg.tx_cnt;
-    UART_write(uart_0, &ch, 1);
-    while(init_tx_cnt == huart_dbg.tx_cnt) {
+int cli_putchar_uart(int ch) {
+    uint32_t init_tx_cnt = huart[0].tx_cnt;
+    UART_write(huart[0].uart_h, &ch, 1);
+    while(init_tx_cnt == huart[0].tx_cnt) {
     }
     return ch;
 }
 
-void tune_read_char(void) { UART_read(uart_0, &input0, 1); }
+void cli_tune_read_char(void) { UART_read(huart[0].uart_h, &huart[0].rx_byte, 1); }
 
-bool uart_send_debug(const uint8_t* tx_buffer, uint16_t len) {
+bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;
-    uint32_t init_tx_cnt = huart_dbg.tx_cnt;
-    UART_write(uart_0, (uint8_t*)tx_buffer, len);
-    while(init_tx_cnt == huart_dbg.tx_cnt) {
-    }
-    return res;
-}
-
-bool uart1_send(const uint8_t* tx_buffer, uint16_t len) {
-    bool res = true;
-    uint32_t init_tx_cnt = huart1.tx_cnt;
-    UART_write(uart_1, (uint8_t*)tx_buffer, len);
-    while(init_tx_cnt == huart1.tx_cnt) {
+    uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
+    UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
+    while(init_tx_cnt == huart[uart_num].tx_cnt) {
     }
     return res;
 }
 
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
     bool res = false;
-    switch(uart_num) {
-    case 0:
-        res = uart_send_debug(array, array_len);
-        break;
-    case 1:
-        res = uart1_send(array, array_len) ;
-        break;
-    default:
-        res = false;
-        break;
+    if(uart_num < CONFIG_UART_COUNT) {
+        res = uart_send_ll(uart_num, array, array_len);
     }
     return res;
 }
@@ -233,3 +213,18 @@ uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* frac
 }
 
 bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate) { return false; }
+
+bool proc_uart(uint8_t uart_index) {
+    bool res = false;
+    if(true == huart[uart_index].rx_int) {
+        huart[uart_index].rx_int = false;
+        UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_byte, 1);
+        res = true;
+    }
+    return res;
+}
+
+bool proc_uart1(void) {
+    return proc_uart(1);
+}
+

@@ -36,7 +36,7 @@ void uart_string_reader_clear_str(uart_string_reader_t* rdr) {
 
 bool uart_string_reader_init(uart_string_reader_t* rdr) {
     (void)(rdr);
-    tune_read_char();
+    cli_tune_read_char();
     return true;
 }
 
@@ -48,7 +48,7 @@ void uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
 
 void uart_string_reader_error_callback(uart_string_reader_t* rdr) {
     rdr->error_count++;
-    tune_read_char();
+    cli_tune_read_char();
 }
 
 void uart_string_reader_proccess(uart_string_reader_t* rdr) {

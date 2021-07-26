@@ -1,9 +1,18 @@
 #ifndef UART_COMMON_H
 #define UART_COMMON_H
 
-//#include "device.h"
 #include <stdbool.h>
 #include <stdint.h>
+
+#ifdef DeviceFamily_CC26X2
+#include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
+#include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
+#include <ti/drivers/GPIO.h>
+#include <ti/drivers/Power.h>
+#include <ti/drivers/UART.h>
+#include <ti/drivers/power/PowerCC26X2.h>
+#include <ti/drivers/uart/UARTCC26XX.h>
+#endif
 
 #ifdef CUBEMX
 typedef UART_HandleTypeDef UartHandle_t;
@@ -19,6 +28,9 @@ typedef struct xUartHandle_t {
   uint32_t tx_cpl_cnt;
   bool init_done;
   uint32_t* base_address;
+#ifdef DeviceFamily_CC26X2
+  UART_Handle uart_h;
+#endif
 }UartHandle_t;
 #endif
 

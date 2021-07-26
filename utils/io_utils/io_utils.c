@@ -1,24 +1,23 @@
 #include "io_utils.h"
 
-//#include "debug_uart.h"
 #include "sys.h"
 #include "uart_drv.h"
 #include "writer_generic.h"
 
 void io_putstr(const char *str) {
-  if (huart_dbg.init_done) {
+  if (huart[0].init_done) {
     oputs(&dbg_o.s, str);
   }
 }
 
 void io_putchar(char ch) {
-  if (huart_dbg.init_done) {
+  if (huart[0].init_done) {
     (&dbg_o.s)->f_putch(&dbg_o.s, ch);
   }
 }
 
 void io_printf(const char *format, ...) {
-  if (huart_dbg.init_done) {
+  if (huart[0].init_done) {
     va_list vlist;
     va_start(vlist, format);
     ovprintf(&dbg_o.s, format, vlist);
@@ -27,7 +26,7 @@ void io_printf(const char *format, ...) {
 }
 
 bool is_printf_clean(void) {
-  if (huart_dbg.init_done) {
+  if (huart[0].init_done) {
     if (!writer_clean(&dbg_o)) {
       return false;
     }
@@ -36,7 +35,7 @@ bool is_printf_clean(void) {
 }
 
 void wait_for_printf(void) {
-  if (huart_dbg.init_done) {
+  if (huart[0].init_done) {
     while (!writer_half_clean(&dbg_o)) {
       int32_t j;
       for (j = 0; j < 100000; j++) {
@@ -48,7 +47,7 @@ void wait_for_printf(void) {
 
 bool flush_printf(void) {
   bool res = true;
-  if (huart_dbg.init_done) {
+  if (huart[0].init_done) {
     uint32_t cnt = 0;
     while ((isFromInterrupt() == false) && (false == writer_clean(&dbg_o))) {
       cnt++;
