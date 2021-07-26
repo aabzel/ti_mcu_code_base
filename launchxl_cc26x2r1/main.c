@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <ti/drivers/Board.h>
-/*mandatory space*/
+/*mandatory space NoRTOS.h needs stdint.h*/
 #include <NoRTOS.h>
 
 #include "common_functions.h"
