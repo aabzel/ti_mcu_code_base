@@ -8,6 +8,7 @@
 #endif
 #include "io_utils.h"
 #include "log.h"
+#include "task_config.h"
 #include "task_info.h"
 #include "uart_drv.h"
 

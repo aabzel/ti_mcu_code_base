@@ -14,9 +14,6 @@
 #include <ti/drivers/uart/UARTCC26XX.h>
 #endif
 
-#ifdef CUBEMX
-typedef UART_HandleTypeDef UartHandle_t;
-#else
 typedef struct xUartHandle_t {
   bool tx_int;
   bool rx_int;
@@ -32,7 +29,7 @@ typedef struct xUartHandle_t {
   UART_Handle uart_h;
 #endif
 }UartHandle_t;
-#endif
+
 
 typedef enum {
   UART_ERROR_PE,

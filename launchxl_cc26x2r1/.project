@@ -33,17 +33,17 @@
 		<link>
 			<name>com_utils</name>
 			<type>2</type>
-			<location>C:/projects/code_base/com_utils</location>
+			<locationURI>$%7BWORKSPACE_LOC%7D/com_utils</locationURI>
 		</link>
 		<link>
 			<name>common</name>
 			<type>2</type>
-			<location>C:/projects/code_base/common</location>
+			<locationURI>$%7BWORKSPACE_LOC%7D/common</locationURI>
 		</link>
 		<link>
 			<name>components</name>
 			<type>2</type>
-			<location>C:/projects/code_base/components</location>
+			<locationURI>$%7BWORKSPACE_LOC%7D/components</locationURI>
 		</link>
 		<link>
 			<name>protocols</name>
@@ -63,7 +63,7 @@
 		<link>
 			<name>utils</name>
 			<type>2</type>
-			<location>C:/projects/code_base/utils</location>
+			<locationURI>$%7BWORKSPACE_LOC%7D/utils</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
