@@ -15,13 +15,14 @@ static bool ubx_diag(void) {
     io_printf("rx pkt cnt: %u" CRLF, UbloxPorotocol.rx_pkt_cnt);
     io_printf("crc cnt   : %u" CRLF, UbloxPorotocol.crc_err_cnt);
     io_printf("rx state  : %u" CRLF, UbloxPorotocol.rx_state);
+    io_printf("ack cnt   : %u" CRLF, UbloxPorotocol.ack_cnt);
     uint8_t i = 0;
 
     table_col_t cols[] = {{7, "class"}, {8, "rx_cnt"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     for(i = 0; i < ARRAY_SIZE(tableRxClass); i++) {
         if(tableRxClass[i].class_val) {
-            io_printf(TSEP " 0x%04x " TSEP, tableRxClass[i].class_val);
+            io_printf(TSEP "  0x%02x " TSEP, tableRxClass[i].class_val);
             io_printf(" %u " TSEP, tableRxClass[i].cnt);
             io_printf(CRLF);
         }

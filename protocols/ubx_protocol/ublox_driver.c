@@ -33,11 +33,29 @@ static bool ubx_proc_cfg_frame(void) {
     return res;
 }
 
+static bool ubx_proc_ack_frame(void) {
+    bool res = false;
+    switch (UbloxPorotocol.fix_frame[UBX_INDEX_ID]){
+    case UBX_ACK_ACK:
+        UbloxPorotocol.ack_cnt++;
+        res = true;
+        break;
+    case UBX_ACK_NAK: break;
+    default: break;
+    }
+    return res;
+}
+
+
 bool ubx_proc_frame(void) {
     bool res = false;
     if(true == UbloxPorotocol.unproc_frame) {
-        ubx_update_stat(UbloxPorotocol.fix_frame[UBX_CLS_INDEX]);
-        switch(UbloxPorotocol.fix_frame[UBX_CLS_INDEX]) {
+        uint8_t in_class=UbloxPorotocol.fix_frame[UBX_INDEX_CLS];
+#ifdef HAS_UBX_DIAG
+        ubx_print_frame(UbloxPorotocol.fix_frame);
+#endif /*HAS_UBX_DIAG*/
+        ubx_update_stat(in_class);
+        switch(in_class) {
         case UBX_CLA_NAV:
             break;
         case UBX_CLA_RXM:
@@ -45,6 +63,7 @@ bool ubx_proc_frame(void) {
         case UBX_CLA_INF:
             break;
         case UBX_CLA_ACK:
+            res = ubx_proc_ack_frame();
             break;
         case UBX_CLA_CFG:
             res = ubx_proc_cfg_frame();

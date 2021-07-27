@@ -8,15 +8,21 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#define UBX_SYN_0 0xB5 /* u*/
-#define UBX_SYN_1 0x62 /* b*/
+#define UBX_SYN_0 0xB5 /* u */
+#define UBX_SYN_1 0x62 /* b */
 
-#define UBX_CLS_INDEX 2U
+#define UBX_INDEX_CLS 2U
+#define UBX_INDEX_ID 3U
+#define UBX_INDEX_LEN 4U
+#define UBX_INDEX_PAYLOAD 6U
 
 #define UBX_RX_FRAME_SIZE 100U
 #define UBX_LEN_SIZE 2
 #define UBX_CRC_SIZE 2
 #define UBX_HEADER_SIZE (UBX_LEN_SIZE + 4)
+
+#define UBX_ACK_ACK 0x01
+#define UBX_ACK_NAK 0x00
 
 /*UBX messages overview*/
 #define UBX_CLA_NAV 0x01
@@ -50,6 +56,7 @@ typedef struct xUbloxPorotocol_t {
     uint32_t load_len;
     uint16_t exp_len;
     uint16_t read_crc;
+    uint16_t ack_cnt;
     uint8_t rx_state;
     uint8_t rx_frame[UBX_RX_FRAME_SIZE];
     uint8_t fix_frame[UBX_RX_FRAME_SIZE];
@@ -66,9 +73,11 @@ extern StatClass_t tableRxClass[UBX_CLA_CNT];
 
 bool ubx_reset_rx(void);
 bool ublox_protocol_init(void);
-uint16_t ubx_calc_crc16(uint8_t* array, uint16_t len);
 bool ubx_proc_byte(uint8_t rx_byte);
+bool ubx_print_frame(uint8_t* frame);
 bool ubx_update_stat(uint8_t val_class);
+bool ubx_print_frame(uint8_t* frame);
+uint16_t ubx_calc_crc16(uint8_t* array, uint16_t len);
 
 #ifdef __cplusplus
 }

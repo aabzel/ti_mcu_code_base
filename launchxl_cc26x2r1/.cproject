@@ -82,6 +82,7 @@
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
 									<listOptionValue builtIn="false" value="HAS_CLI"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
+									<listOptionValue builtIn="false" value="HAS_UBX_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>

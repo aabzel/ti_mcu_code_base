@@ -23,7 +23,7 @@ void common_loop(uint64_t loop_start_time) {
   }
   MEASURE_TASK_INTERVAL(UART1, 1, proc_uart1);
 #ifdef HAS_UBLOX
-  MEASURE_TASK_INTERVAL(UBX, 10, ubx_proc_frame);
+  MEASURE_TASK_INTERVAL(UBX, 1, ubx_proc_frame);
 #endif /*HAS_UBLOX*/
 
 #ifdef HAS_CLI

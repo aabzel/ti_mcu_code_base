@@ -3,17 +3,18 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "io_utils.h"
-#include "convert.h"
-#include "diag_sys.h"
-#include "unit_test_check.h"
-#include "writer_generic.h"
-#include "data_utils_test.h"
-#include "bit_utils_test.h"
 #include "byte_utils_test.h"
+#include "bit_utils_test.h"
+#include "convert.h"
+#include "data_utils_test.h"
+#include "debug_info.h"
+#include "diag_sys.h"
+#include "io_utils.h"
 #include "float_utils_test.h"
 #include "test_string_utils.h"
 #include "test_ublox_proto.h"
+#include "unit_test_check.h"
+#include "writer_generic.h"
 
 /*Compile time assemble array */
 unit_test_info_t test_list[] = {{"type_transform", test_type_transformation},
