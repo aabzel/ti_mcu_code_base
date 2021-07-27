@@ -12,12 +12,20 @@
 #include "task_info.h"
 #include "uart_drv.h"
 
+#ifdef HAS_UBLOX
+#include "ubx_protocol.h"
+#include "ublox_driver.h"
+#endif /*HAS_UBLOX*/
+
 void common_loop(uint64_t loop_start_time) {
   if (0u == loop_start_time) {
     return;
   }
+  MEASURE_TASK_INTERVAL(UART1, 1, proc_uart1);
+#ifdef HAS_UBLOX
+  MEASURE_TASK_INTERVAL(UBX, 10, ubx_proc_frame);
+#endif /*HAS_UBLOX*/
 
-  MEASURE_TASK_INTERVAL(UART1, 10, proc_uart1);
 #ifdef HAS_CLI
   MEASURE_TASK_INTERVAL(CLI, 30, cli_process);
 #endif

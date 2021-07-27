@@ -3,6 +3,7 @@
 
 #define TASKS                                                                  \
   TASK(UART1)                                                                  \
-  TASK(CLI)
+  TASK(CLI)                                                                    \
+  TASK(UBX)
 
 #endif /* TASK_CONFIG_H */

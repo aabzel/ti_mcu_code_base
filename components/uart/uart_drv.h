@@ -15,6 +15,9 @@
 #define CONFIG_UART_0 0
 #define CONFIG_UART_1 1
 
+#define UART0_BAUD_RATE 38400U
+#define UART1_BAUD_RATE 38400U
+
 #define CONFIG_TI_DRIVERS_UART_COUNT 1
 
 extern const uint_least8_t CONFIG_UART_0_CONST;

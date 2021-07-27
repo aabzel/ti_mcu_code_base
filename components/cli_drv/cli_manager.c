@@ -169,15 +169,13 @@ void help_dump_key(const char* subName1, const char* subName2) {
         io_printf("Key2:%s" CRLF, subName2);
     }
     io_putstr(CRLF);
-    static const table_col_t cols[] = {
-        {10, "short"}, {20, "long command"}, {13, "Description"}
-    };
+    static const table_col_t cols[] = {{10, "short"}, {20, "long command"}, {13, "Description"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     while(cmd->handler) {
         if(is_print_cmd(cmd, subName1, subName2)) {
-            io_printf(TSEP" %8s "TSEP , cmd->short_name ? cmd->short_name : "");
-            io_printf(" %18s " TSEP , cmd->long_name ? cmd->long_name : "");
-            io_printf(" %s " , cmd->description ? cmd->description : "");
+            io_printf(TSEP " %8s " TSEP, cmd->short_name ? cmd->short_name : "");
+            io_printf(" %18s " TSEP, cmd->long_name ? cmd->long_name : "");
+            io_printf(" %s ", cmd->description ? cmd->description : "");
             io_printf(CRLF);
         }
         wait_in_loop_ms(4);

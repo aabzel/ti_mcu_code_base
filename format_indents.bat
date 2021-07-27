@@ -1,8 +1,16 @@
 @echo off
-set work_space_dir=C:\projects\code_base
+set work_space_dir=C:\1_job\0_NPP_IT_ELMA\code_base_workspase\ti_mcu_code_base
+rem set work_space_dir=C:\projects\code_base
 set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortUsingDeclarations: true , UseTab: Never,PointerAlignment: Left, BreakBeforeBraces: Attach, TabWidth: 4,ColumnLimit: 120 }"
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
+
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\ubx_protocol\ublox_command.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\ubx_protocol\ublox_command.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\ubx_protocol\ublox_driver.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\ubx_protocol\ublox_driver.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\ubx_protocol\ubx_protocol.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\ubx_protocol\ubx_protocol.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\cli_manager.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\gpio\gpio_drv.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\gpio\gpio_drv.c

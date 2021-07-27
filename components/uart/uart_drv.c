@@ -14,6 +14,9 @@
 #include <ti/drivers/uart/UARTCC26XX.h>
 #endif
 
+#ifdef HAS_UBLOX
+#include "ubx_protocol.h"
+#endif
 
 #ifdef HAS_CLI
 #include "uart_string_reader.h"
@@ -98,7 +101,7 @@ static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
 
 static bool init_uart0(void) {
     bool res = false;
-    memset(&huart[0],0x00,sizeof(huart[0]));
+    memset(&huart[0], 0x00, sizeof(huart[0]));
     const char echoPrompt[] = "UART0 115200 init ok\r\n";
     UART_Params uart0Params;
 
@@ -109,7 +112,7 @@ static bool init_uart0(void) {
 
     /* Create a UART with data processing off. */
     UART_Params_init(&uart0Params);
-    uart0Params.baudRate = 115200;
+    uart0Params.baudRate = UART0_BAUD_RATE;
     uart0Params.writeMode = UART_MODE_CALLBACK;
     uart0Params.writeDataMode = UART_DATA_BINARY;
     uart0Params.writeCallback = uart0WriteCallback;
@@ -137,11 +140,11 @@ static bool init_uart0(void) {
 
 static bool init_uart1(void) {
     bool res = false;
-    memset(&huart[1],0x00,sizeof(huart[1]));
-    huart[1].rx_cnt=0;
-    huart[1].tx_cnt=0;
-    huart[1].tx_cpl_cnt=0;
-    huart[1].tx_byte_cnt=0;
+    memset(&huart[1], 0x00, sizeof(huart[1]));
+    huart[1].rx_cnt = 0;
+    huart[1].tx_cnt = 0;
+    huart[1].tx_cpl_cnt = 0;
+    huart[1].tx_byte_cnt = 0;
     const char echoPrompt[] = "UART1 115200 init ok\r\n";
     UART_Params uart1Params;
 
@@ -152,7 +155,7 @@ static bool init_uart1(void) {
 
     /* Create a UART with data processing off. */
     UART_Params_init(&uart1Params);
-    uart1Params.baudRate = 115200;
+    uart1Params.baudRate = UART1_BAUD_RATE;
     uart1Params.writeMode = UART_MODE_CALLBACK;
     uart1Params.writeDataMode = UART_DATA_BINARY;
     uart1Params.writeCallback = uart1WriteCallback;
@@ -163,7 +166,7 @@ static bool init_uart1(void) {
 
     huart[1].uart_h = UART_open(CONFIG_UART_1, &uart1Params);
 
-    if(NULL == huart[1].uart_h ) {
+    if(NULL == huart[1].uart_h) {
         res = false;
     } else {
         res = true;
@@ -218,13 +221,15 @@ bool proc_uart(uint8_t uart_index) {
     bool res = false;
     if(true == huart[uart_index].rx_int) {
         huart[uart_index].rx_int = false;
+#ifdef HAS_UBLOX
+        if(1 == uart_index) {
+            ubx_proc_byte(huart[uart_index].rx_byte);
+        }
+#endif /*HAS_UBLOX*/
         UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_byte, 1);
         res = true;
     }
     return res;
 }
 
-bool proc_uart1(void) {
-    return proc_uart(1);
-}
-
+bool proc_uart1(void) { return proc_uart(1); }

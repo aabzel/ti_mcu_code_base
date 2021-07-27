@@ -120,8 +120,8 @@ bool uart_init_command(int32_t argc, char* argv[]) {
 
 /*TODO: calculate */
 bool uart_diag_command(int32_t argc, char* argv[]) {
-    static const table_col_t cols[] = {{5, "Num"},       {7, "manti"}, {7, "fract"}, {7, "overS"},
-                                       {10, "baudRate"}, {9, "rx"},    {9, "tx"},    {10, "name"}};
+    const table_col_t cols[] = {{5, "Num"},       {7, "manti"}, {7, "fract"}, {7, "overS"},
+                                {10, "baudRate"}, {9, "rx"},    {9, "tx"},    {10, "name"}};
     uint32_t baud_rate = 0;
     uint16_t mantissa = 0;
     uint16_t fraction = 0;

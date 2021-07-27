@@ -13,9 +13,9 @@ extern "C" {
 bool ubx_diag_command(int32_t argc, char* argv[]);
 bool ubx_send_command(int32_t argc, char* argv[]);
 
-#define UBLOX_COMMANDS \
-    SHELL_CMD("ubx_diag", "ubd", ubx_diag_command, "U-Blox EVAM8M010 diag"),\
-    SHELL_CMD("ubx_send", "ubs", ubx_send_command, "Send U-Blox packet"),
+#define UBLOX_COMMANDS                                                                                                 \
+    SHELL_CMD("ubx_diag", "ubd", ubx_diag_command, "U-Blox EVAM8M010 diag"),                                           \
+        SHELL_CMD("ubx_send", "ubs", ubx_send_command, "Send U-Blox packet"),
 
 #ifdef __cplusplus
 }
