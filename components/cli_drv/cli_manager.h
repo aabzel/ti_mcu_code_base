@@ -18,7 +18,7 @@ extern bool cli_init_done;
 #define SHELL_CMD(long_cmd, short_cmd, func, description)                                                              \
     { short_cmd, long_cmd, description, func }
 
-void cli_init(void);
+bool cli_init(void);
 bool cli_process(void);
 void process_shell_cmd(char* cmd_line);
 void help_dump_key(const char* subName1, const char* subName2);

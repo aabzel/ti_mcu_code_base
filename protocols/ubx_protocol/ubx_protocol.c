@@ -205,9 +205,9 @@ bool ubx_update_stat(uint8_t val_class) {
     return res;
 }
 
-static char *class2str(uint8_t class_id){
-    char *name = "undef";
-    switch(class_id){
+static char* class2str(uint8_t class_id) {
+    char* name = "undef";
+    switch(class_id) {
     case UBX_CLA_NAV:
         name = "NAV";
         break;
@@ -250,9 +250,9 @@ bool ubx_print_frame(uint8_t* frame) {
     io_printf(CRLF);
     io_printf("%s ", class2str(frame[UBX_INDEX_CLS]));
     io_printf("0x%02x ", frame[UBX_INDEX_ID]);
-    uint16_t *len;
-    len = (uint16_t*) &frame[UBX_INDEX_LEN];
-    print_mem( &frame[UBX_INDEX_PAYLOAD], *len, false);
+    uint16_t* len;
+    len = (uint16_t*)&frame[UBX_INDEX_LEN];
+    print_mem(&frame[UBX_INDEX_PAYLOAD], *len, false);
     io_printf(CRLF);
     return res;
 }

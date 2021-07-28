@@ -17,7 +17,6 @@ extern "C" {
 void print_sysinfo(void);
 void Error_Handler(void);
 
-
 #ifdef __cplusplus
 }
 #endif

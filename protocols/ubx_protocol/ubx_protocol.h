@@ -37,6 +37,9 @@ extern "C" {
 #define UBX_CLA_MGA 0x13
 #define UBX_CLA_SEC 0x27
 
+#define UBX_NAV_HPPOSLLH 0x14
+#define UBX_NAV_ATT 0x05
+
 #define UBX_CLA_CNT 15
 
 typedef enum eUbxProtState_t {

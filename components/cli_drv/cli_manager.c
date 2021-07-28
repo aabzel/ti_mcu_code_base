@@ -76,13 +76,16 @@ static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const su
     return res;
 }
 
-void cli_init(void) {
+bool cli_init(void) {
+    bool res = false;
     if(false == uart_string_reader_init(&cmd_reader)) {
         cli_init_done = false;
     } else {
         set_echo(true);
         cli_init_done = true;
+        res = true;
     }
+    return res;
 }
 
 bool cli_process(void) {

@@ -1,0 +1,104 @@
+UBX-CFG-VALGET 0x06 0x8b • Get configuration items (Poll request)
+• Configuration items (Polled)
+
+ubs 0x06 0x8b 0x0000000001002130
+ubs 0x01 0x05
+ubs 0x01 0x05
+-->
+NAV 0x05 0x7821a0110000000000000000ca3d61000000000000000000839b1e00e01dc400
+
+-->
+-->
+-->ubs 0x01 0x05
+-->
+NAV 0x05 0x0035a011 0000000000000000ca3d61000000000000000000839b1e00e01dc400
+
+-->
+ubs 0x01 0x05
+-->
+NAV 0x05 0xb840a011 00 000000 00000000ca3d61000000000000000000839b1e00e01dc400
+ubs 0x01 0x20
+ubs 0x01 0x21
+ubs 0x01 0x22
+ubs 0x01 0x23
+ubs 0x01 0x25
+ubs 0x01 0x26
+ubs 0x01 0x27
+
+UBX-NAV-PVT
+
+
+-->ubs 0x01 0x11
+-->
+NAV 0x11 0x208eb311 0000000000000000ffffffff0d000000
+
+ubs 0x02 0x14
+ubs 0x01 0x01
+
+широта и долгота
+3.15.12 UBX-NAV-POSLLH (0x01 0x02)
+ubs 0x01 0x02
+
+ubg 0x30210001
+
+0x30210001
+01002130
+ubg 0x10650001
+
+ud
+ubs 0x01 0x21
+
+0x1031001f
+
+3.15 UBX-NAV (0x01)
+
+ubs 0x13 0x40 0x10000080E507071C0E000000000000000000000000000000
+
+The receiver does not know the time so it
+cannot use the data (To resolve this a UBX-MGAINI-TIME_UTC message should be supplied first)
+
+
+0xb5 0x62 0x13 0x40 24
+
+55.6784279 37.6322398
+55.678426  37.63224
+
+UBX-NAV-PVT (0x01 0x07)
+ubs 0x01 0x07
+CRLF
+ 556784285 376322439
+55.678426 37.632243
+
+https://developers.google.com/maps/documentation/static-map/?hl=en
+
+Получить координаты 
+ubs 0x01 0x14
+1648.360:I [SYS] Send OK
+-->
+NAV 0x14 0x00000000585ef111bb396e1681da2f21c54a0300c71603001cd3fd0321250000bd370000
+
+
+55.6784251, 37.6322429
+55.68320983219396, 37.573459216379845
+
+0x10 0x14
+
+
+https://gps-coordinates.org/distance-between-coordinates.php
+https://www.nmea.org/content/STANDARDS/NMEA_0183_Standard
+https://docs.novatel.com/OEM7/Content/Logs/GPRMC.htm
+
+
+
+ubs 0x01 0x05
+NAV 0x05 0xd869b5120000000000000000ca3d610000000000000000009dad1e0006a0c500
+
+
+CFG-RATE-NAV_PRIO
+
+ubg 0x20210004
+
+0x 20 21 00 04
+
+ubs 0x06 0x8a 0x00040000040021200F
+ubs 0x06 0x8a 0x01040000040021201e

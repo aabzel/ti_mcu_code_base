@@ -28,6 +28,7 @@ typedef struct xUartHandle_t {
 #ifdef DeviceFamily_CC26X2
   UART_Handle uart_h;
 #endif
+  char name[8];
 }UartHandle_t;
 
 

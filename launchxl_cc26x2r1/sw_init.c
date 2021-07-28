@@ -10,6 +10,7 @@
 
 #ifdef HAS_UBLOX
 #include "ubx_protocol.h"
+#include "ublox_driver.h"
 #endif /*HAS_UBLOX*/
 
 bool sw_init(void) {
@@ -17,11 +18,12 @@ bool sw_init(void) {
   
 #ifdef HAS_CLI
   set_log_level(SYS, LOG_LEVEL_DEBUG);
-  cli_init();
+  res = cli_init() && res;
 #endif /*HAS_CLI*/
 
 #ifdef HAS_UBLOX
-  ublox_protocol_init();
+  res = ublox_protocol_init() && res;
+  res = ubx_driver_init() && res;
 #endif /*HAS_UBLOX*/
 
   return res;

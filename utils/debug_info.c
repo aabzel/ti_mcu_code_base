@@ -153,7 +153,6 @@ bool print_mem(uint8_t* addr, int32_t len, bool new_line) {
     return res;
 }
 
-
 bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint32_t end_addr) {
     bool res = false;
     uint32_t cnt = 0;
@@ -191,5 +190,3 @@ bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint
     }
     return res;
 }
-
-

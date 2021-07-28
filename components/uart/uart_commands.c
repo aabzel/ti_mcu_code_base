@@ -142,7 +142,7 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
         }
         io_printf(" %07u " TSEP, huart[uart_num].rx_cnt);
         io_printf(" %07u " TSEP, huart[uart_num].tx_cnt);
-        io_printf(" %7s " TSEP, "undef");
+        io_printf(" %7s  " TSEP, huart[uart_num].name);
         io_printf(CRLF);
     }
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
