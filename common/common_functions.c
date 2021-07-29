@@ -17,6 +17,10 @@
 #include "ublox_driver.h"
 #endif /*HAS_UBLOX*/
 
+#ifdef HAS_NMEA
+#include "nmea_protocol.h"
+#endif /*HAS_NMEA*/
+
 void common_loop(uint64_t loop_start_time) {
   if (0u == loop_start_time) {
     return;
@@ -25,6 +29,10 @@ void common_loop(uint64_t loop_start_time) {
 #ifdef HAS_UBLOX
   MEASURE_TASK_INTERVAL(UBX, 1, ubx_proc_frame);
 #endif /*HAS_UBLOX*/
+
+#ifdef HAS_NMEA
+  MEASURE_TASK_INTERVAL(NMEA, 1, nmea_proc_message);
+#endif /*HAS_NMEA*/
 
 #ifdef HAS_CLI
   MEASURE_TASK_INTERVAL(CLI, 30, cli_process);

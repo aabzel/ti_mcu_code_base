@@ -27,11 +27,17 @@ extern "C" {
 #define UBLOX_COMMANDS
 #endif
 
-  
+#ifdef HAS_NMEA
+#include "nmea_command.h"
+#else
+#define NMEA_COMMANDS
+#endif
+
 #define SHELL_COMMANDS                                                         \
   COMMON_COMMANDS                                                              \
   CORTEX_M4_COMMANDS                                                           \
   UBLOX_COMMANDS                                                               \
+  NMEA_COMMANDS                                                                \
   IWDT_COMMANDS                                                                \
   LOG_COMMANDS
 

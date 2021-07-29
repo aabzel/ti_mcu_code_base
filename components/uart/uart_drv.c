@@ -18,6 +18,10 @@
 #include "ubx_protocol.h"
 #endif
 
+#ifdef HAS_NMEA
+#include "nmea_protocol.h"
+#endif
+
 #ifdef HAS_CLI
 #include "uart_string_reader.h"
 #endif
@@ -201,9 +205,15 @@ void cli_tune_read_char(void) { UART_read(huart[0].uart_h, &huart[0].rx_byte, 1)
 
 bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;
+    uint32_t time_out=0;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
     while(init_tx_cnt == huart[uart_num].tx_cnt) {
+        time_out++;
+        if(20000000<time_out){
+            res = false;
+            break;
+        }
     }
     return res;
 }
@@ -226,11 +236,14 @@ bool proc_uart(uint8_t uart_index) {
     bool res = false;
     if(true == huart[uart_index].rx_int) {
         huart[uart_index].rx_int = false;
-#ifdef HAS_UBLOX
         if(1 == uart_index) {
+#ifdef HAS_NMEA
+            nmea_proc_byte(huart[uart_index].rx_byte);
+#endif /*HAS_NMEA*/
+#ifdef HAS_UBLOX
             ubx_proc_byte(huart[uart_index].rx_byte);
-        }
 #endif /*HAS_UBLOX*/
+        }
         UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_byte, 1);
         res = true;
     }

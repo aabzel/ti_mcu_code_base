@@ -30,9 +30,9 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
---stack_size=1024   /* C stack is also used for ISR stack */
+--stack_size=8000   /* C stack is also used for ISR stack */
 
---heap_size=16384
+--heap_size=14384
 
 /* Retain interrupt vector table variable                                    */
 --retain=g_pfnVectors

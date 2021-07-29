@@ -4,6 +4,7 @@
 #define TASKS                                                                  \
   TASK(UART1)                                                                  \
   TASK(CLI)                                                                    \
-  TASK(UBX)
+  TASK(UBX)                                                                    \
+  TASK(NMEA)
 
 #endif /* TASK_CONFIG_H */

@@ -5,7 +5,7 @@
 
 const char msg_gnrmc[] = "$GNRMC,072316.27,A,5551.84825,N,03725.60995,E,0.010,,290721,11.73,E,A,V*76";
 
-//tsr nmea+
+// tsr nmea+
 static bool test_nmea_proto_gnrmc(void) {
    rmc_t rmc= {0};
    EXPECT_TRUE( gnss_parse_rmc((char*)msg_gnrmc, &rmc));
@@ -20,13 +20,22 @@ static bool test_nmea_proto_gnrmc(void) {
    EXPECT_NEAR(11.73, rmc.mv, 0.00001);
    EXPECT_EQ('E',rmc.mv_ew);
    EXPECT_EQ('A',rmc.pos_mode);
-   EXPECT_EQ(0x76,rmc.checksum);
 
    return true;
 }
+
+static bool test_nmea_checksum(void){
+    uint8_t checksum = nmea_calc_checksum((char*)&msg_gnrmc[1], strlen(msg_gnrmc)-4);
+    EXPECT_EQ(0x76, checksum);
+    return true;
+}
+
   
 bool test_nmea_proto(void) {
+  EXPECT_TRUE(test_nmea_checksum());
   EXPECT_TRUE(test_nmea_proto_gnrmc());
+  EXPECT_TRUE(nmea_parse((char*) msg_gnrmc, &NmeaData));
+  EXPECT_TRUE(nmea_init());
   return true;
 }
 

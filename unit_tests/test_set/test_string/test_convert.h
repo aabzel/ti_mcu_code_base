@@ -56,21 +56,20 @@ bool test_convert_utoa_bin16(void);
 bool test_convert_assemble_uint32(void);
 
 #define CONVERT_TEST_SUIT                                                                                              \
-        {"strl2double",test_convert_try_strl2double}, {"str2int8", test_convert_try_str2int8}, \
-        {"str2uint8_invalid", test_convert_try_str2uint8_invalid},                \
-        {"is_dec_str", test_convert_is_dec_str}, {"is_hex_str", test_convert_is_hex_str},                              \
-        {"str2uint8", test_convert_try_str2uint8}, {"strl2uint16_hex", test_convert_try_strl2uint16_hex},              \
-        {"strl2uint8_hex", test_convert_try_strl2uint8_hex}, {"str2int16", test_convert_try_str2int16},                \
-        {"str2uint16", test_convert_try_str2uint16}, {"str2int32", test_convert_try_str2int32},                        \
-        {"str2uint32", test_convert_try_str2uint32}, {"str2luint32_hex", test_convert_try_str2luint32_hex},            \
-        {"str2luint32", test_convert_try_str2luint32}, {"str2lint32", test_convert_try_str2lint32},                    \
-        {"str2uint32_hex", test_convert_try_str2uint32_hex}, {"str2lint64", test_convert_try_str2lint64},              \
-        {"str2luint64", test_convert_try_str2luint64}, {"str2int64", test_convert_try_str2int64},                      \
-        {"str2uint64", test_convert_try_str2uint64}, {"str2float", test_convert_try_str2float},                        \
-        {"str2double", test_convert_try_str2double}, {"try_str2bool", test_convert_try_str2bool},                      \
-        {"Ltoa32", test_convert_Ltoa32}, {"Ltoa64", test_convert_Ltoa64}, {"ULtoa32", test_convert_ULtoa32},           \
-        {"ULtoa64", test_convert_ULtoa64}, {"Ltoa32_", test_convert_Ltoa32_}, {"Ltoa64_", test_convert_Ltoa64_},       \
-        {"ULtoa32_", test_convert_ULtoa32_}, {"ULtoa64_", test_convert_ULtoa64_},                                      \
+    {"strl2double", test_convert_try_strl2double}, {"str2int8", test_convert_try_str2int8},                            \
+        {"str2uint8_invalid", test_convert_try_str2uint8_invalid}, {"is_dec_str", test_convert_is_dec_str},            \
+        {"is_hex_str", test_convert_is_hex_str}, {"str2uint8", test_convert_try_str2uint8},                            \
+        {"strl2uint16_hex", test_convert_try_strl2uint16_hex}, {"strl2uint8_hex", test_convert_try_strl2uint8_hex},    \
+        {"str2int16", test_convert_try_str2int16}, {"str2uint16", test_convert_try_str2uint16},                        \
+        {"str2int32", test_convert_try_str2int32}, {"str2uint32", test_convert_try_str2uint32},                        \
+        {"str2luint32_hex", test_convert_try_str2luint32_hex}, {"str2luint32", test_convert_try_str2luint32},          \
+        {"str2lint32", test_convert_try_str2lint32}, {"str2uint32_hex", test_convert_try_str2uint32_hex},              \
+        {"str2lint64", test_convert_try_str2lint64}, {"str2luint64", test_convert_try_str2luint64},                    \
+        {"str2int64", test_convert_try_str2int64}, {"str2uint64", test_convert_try_str2uint64},                        \
+        {"str2float", test_convert_try_str2float}, {"str2double", test_convert_try_str2double},                        \
+        {"try_str2bool", test_convert_try_str2bool}, {"Ltoa32", test_convert_Ltoa32}, {"Ltoa64", test_convert_Ltoa64}, \
+        {"ULtoa32", test_convert_ULtoa32}, {"ULtoa64", test_convert_ULtoa64}, {"Ltoa32_", test_convert_Ltoa32_},       \
+        {"Ltoa64_", test_convert_Ltoa64_}, {"ULtoa32_", test_convert_ULtoa32_}, {"ULtoa64_", test_convert_ULtoa64_},   \
         {"ULtoa_hex64", test_convert_ULtoa_hex64}, {"ULtoa_hex32", test_convert_ULtoa_hex32},                          \
         {"str_sizeof", test_convert_str_sizeof}, {"dtoa", test_convert_dtoa},                                          \
         {"dtoa_trim_zero", test_convert_dtoa_trim_zero}, {"dtoa_nan", test_convert_dtoa_nan},                          \

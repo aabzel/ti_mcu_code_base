@@ -25,7 +25,7 @@
             io_printf("\n[e] %s:Line: %d in val %f big ", __FUNCTION__, __LINE__, val);                                \
             return false;                                                                                              \
         }                                                                                                              \
-        if(val < (base - error)) {                                                                                   \
+        if(val < (base - error)) {                                                                                     \
             LOG_ERROR(SYS, "Error");                                                                                   \
             io_printf("\n[e] %s:Line: %d in val %f small ", __FUNCTION__, __LINE__, val);                              \
             return false;                                                                                              \

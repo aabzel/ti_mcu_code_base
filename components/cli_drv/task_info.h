@@ -99,22 +99,14 @@ typedef enum {
 #define MEASURE_TASK(id, task_func)                                                                                    \
     TASK_CHECK_UNIQUE_ID(TASK_ID_##id)                                                                                 \
     _MEASURE_TASK(task_data[TASK_ID_##id], task_func)
+
 #define MEASURE_TASK_INTERVAL(id, interval_us, task_func)                                                              \
     TASK_CHECK_UNIQUE_ID(TASK_ID_##id)                                                                                 \
     _MEASURE_TASK_INTERVAL(task_data[TASK_ID_##id], interval_us, task_func)
+
 #define MEASURE_TASK_INTERVAL_OLD(id, interval_us, task_func)                                                          \
     TASK_CHECK_UNIQUE_ID(TASK_ID_##id)                                                                                 \
     _MEASURE_TASK_INTERVAL_OLD(task_data[TASK_ID_##id], interval_us, task_func)
-/* Core 0 task API */
-#define MEASURE_CORE0_TASK(id, task_func)                                                                              \
-    TASK_CHECK_UNIQUE_ID(TASK_CORE0_ID_##id)                                                                           \
-    _MEASURE_TASK(task_core0_data[TASK_CORE0_ID_##id], task_func)
-#define MEASURE_CORE0_TASK_INTERVAL(id, interval_us, task_func)                                                        \
-    TASK_CHECK_UNIQUE_ID(TASK_CORE0_ID_##id)                                                                           \
-    _MEASURE_TASK_INTERVAL(task_core0_data[TASK_CORE0_ID_##id], interval_us, task_func)
-#define MEASURE_CORE0_TASK_INTERVAL_OLD(id, interval_us, task_func)                                                    \
-    TASK_CHECK_UNIQUE_ID(TASK_CORE0_ID_##id)                                                                           \
-    _MEASURE_TASK_INTERVAL_OLD(task_core0_data[TASK_CORE0_ID_##id], interval_us, task_func)
 
 #ifdef TASKS
 bool diag_page_tasks(ostream_t* stream);
@@ -123,7 +115,7 @@ bool cmd_task_clear(int32_t argc, char* argv[]);
 
 #define TASK_COMMANDS                                                                                                  \
     SHELL_CMD("task_report", "ti", cmd_task_report, "Task execution time report"),                                     \
-        SHELL_CMD("task_clear", "tic", cmd_task_clear, "Clear task execution info"),
+    SHELL_CMD("task_clear", "tic", cmd_task_clear, "Clear task execution info"),
 #else
 #define TASK_COMMANDS
 #endif /*TASKS*/
