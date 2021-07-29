@@ -30,8 +30,15 @@ UartHandle_t huart[CONFIG_UART_COUNT] = {0};
 
 UARTCC26XX_Object uartCC26XXObjects[CONFIG_UART_COUNT];
 
-static unsigned char uartCC26XXRingBuffer0[64];
-static unsigned char uartCC26XXRingBuffer1[32];
+static unsigned char uartCC26XXRingBuffer0[32];
+static unsigned char uartCC26XXRingBuffer1[80];
+
+#define RX_ARR0_CNT 1U
+#define RX_ARR1_CNT 210U
+
+uint8_t rx_buff0[RX_ARR0_CNT];
+uint8_t rx_buff1[RX_ARR1_CNT];
+
 
 static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[CONFIG_UART_COUNT] = {
     {.baseAddr = UART0_BASE,
@@ -113,6 +120,7 @@ static bool init_uart0(void) {
     huart[0].tx_cnt = 0;
     huart[0].tx_cpl_cnt = 0;
     huart[0].tx_byte_cnt = 0;
+    huart[1].rx_buff=rx_buff0;
     strncpy(huart[0].name, "CLI", sizeof(huart[0].name));
     /* Call driver init functions */
     UART_init();
@@ -154,8 +162,9 @@ static bool init_uart1(void) {
     huart[1].tx_cnt = 0;
     huart[1].tx_cpl_cnt = 0;
     huart[1].tx_byte_cnt = 0;
+    huart[1].rx_buff=rx_buff1;
     strncpy(huart[1].name, "Ublox", sizeof(huart[1].name));
-    const char echoPrompt[] = "UART1 115200 init ok\r\n";
+    const char echoPrompt[] = "UART1 init ok\r\n";//
     UART_Params uart1Params;
 
     /* Call driver init functions */
@@ -183,7 +192,7 @@ static bool init_uart1(void) {
     }
 
     UART_write(huart[1].uart_h, echoPrompt, sizeof(echoPrompt));
-    UART_read(huart[1].uart_h, &huart[1].rx_buff[0], 1);
+    UART_read(huart[1].uart_h, huart[1].rx_buff, RX_ARR1_CNT);
     return res;
 }
 
@@ -240,7 +249,7 @@ bool proc_uart(uint8_t uart_index) {
         if(1 == uart_index) {
             uint16_t i;
             uint8_t rx_byte;
-            for (i=0; i<RX_ARR_CNT; i++) {
+            for (i=0; i<RX_ARR1_CNT; i++) {
                  rx_byte = huart[uart_index].rx_buff[i];
 #ifdef HAS_NMEA
                 nmea_proc_byte( rx_byte);
@@ -249,7 +258,7 @@ bool proc_uart(uint8_t uart_index) {
                 ubx_proc_byte( rx_byte);
 #endif /*HAS_UBLOX*/
             }
-            UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_buff[0], RX_ARR_CNT);
+            UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_buff[0], RX_ARR1_CNT);
         }else if(0 == uart_index){
             UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_byte, 1);
         }

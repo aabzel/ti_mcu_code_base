@@ -14,12 +14,12 @@
 #include <ti/drivers/uart/UARTCC26XX.h>
 #endif
 
-#define RX_ARR_CNT 240
+
 typedef struct xUartHandle_t {
   bool tx_int;
   bool rx_int;
   uint8_t rx_byte;
-  uint8_t rx_buff[RX_ARR_CNT];
+  uint8_t *rx_buff;
   uint8_t rx_byte_cnt;
   uint8_t tx_byte_cnt;
   uint32_t rx_cnt;

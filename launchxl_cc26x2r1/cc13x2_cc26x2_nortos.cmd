@@ -30,7 +30,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
---stack_size=2048   /* C stack is also used for ISR stack */
+--stack_size=4096   /* C stack is also used for ISR stack */
 
 --heap_size=14384
 
