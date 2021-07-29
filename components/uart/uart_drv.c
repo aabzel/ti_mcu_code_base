@@ -95,6 +95,7 @@ static void uart1ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
     huart[1].rx_byte = *(rxBuf);
+    //huart[1].rx_buff
 }
 
 static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
@@ -182,7 +183,7 @@ static bool init_uart1(void) {
     }
 
     UART_write(huart[1].uart_h, echoPrompt, sizeof(echoPrompt));
-    UART_read(huart[1].uart_h, &huart[1].rx_byte, 1);
+    UART_read(huart[1].uart_h, &huart[1].rx_buff[0], 1);
     return res;
 }
 
@@ -237,14 +238,21 @@ bool proc_uart(uint8_t uart_index) {
     if(true == huart[uart_index].rx_int) {
         huart[uart_index].rx_int = false;
         if(1 == uart_index) {
+            uint16_t i;
+            uint8_t rx_byte;
+            for (i=0; i<RX_ARR_CNT; i++) {
+                 rx_byte = huart[uart_index].rx_buff[i];
 #ifdef HAS_NMEA
-            nmea_proc_byte(huart[uart_index].rx_byte);
+                nmea_proc_byte( rx_byte);
 #endif /*HAS_NMEA*/
 #ifdef HAS_UBLOX
-            ubx_proc_byte(huart[uart_index].rx_byte);
+                ubx_proc_byte( rx_byte);
 #endif /*HAS_UBLOX*/
+            }
+            UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_buff[0], RX_ARR_CNT);
+        }else if(0 == uart_index){
+            UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_byte, 1);
         }
-        UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_byte, 1);
         res = true;
     }
     return res;

@@ -101,7 +101,6 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
 bool nmea_proc_byte(uint8_t rx_byte) {
     bool res = false;
     if((0 == NmeaProto.pos) && ('$' != rx_byte)) {
-        //memset(NmeaProto.message, 0x00, NMEA_MSG_SIZE);
         NmeaProto.pos = 0;
     }
     // static uint8_t prev_rx_byte = 0;
