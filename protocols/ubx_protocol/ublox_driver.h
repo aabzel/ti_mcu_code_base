@@ -34,7 +34,6 @@ typedef struct xkeyValItem_t {
     uint8_t type;
 } keyValItem_t;
 
-
 /*
 typedef struct xVariable_t{
  char name[];
@@ -44,7 +43,7 @@ typedef struct xVariable_t{
 **/
 
 /*Variables that matter for the application*/
-typedef struct xNavInfo_t{
+typedef struct xNavInfo_t {
     int32_t latitude;
     int32_t longitude;
     int32_t hmsl;
@@ -57,7 +56,7 @@ typedef struct xNavInfo_t{
     uint32_t acc_pitch;
     uint32_t acc_heading;
     /*velocity*/
-}xNavInfo_t;
+} xNavInfo_t;
 
 extern xNavInfo_t NavInfo;
 extern keyValItem_t keyValTable[UBX_KEY_CNT];

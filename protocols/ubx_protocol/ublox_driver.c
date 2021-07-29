@@ -11,8 +11,8 @@ keyValItem_t keyValTable[UBX_KEY_CNT] = {{0x30210001, 0x00, UBX_U2}};
 
 xNavInfo_t NavInfo;
 
-bool ubx_driver_init(void){
-    memset(&NavInfo,0x00,sizeof(NavInfo));
+bool ubx_driver_init(void) {
+    memset(&NavInfo, 0x00, sizeof(NavInfo));
     return true;
 }
 
@@ -75,7 +75,7 @@ static bool ubx_proc_cfg_frame(void) {
 
 static bool ubx_proc_nav_att_frame(uint8_t* frame) {
     bool res = false;
-    if(0x00 == frame[UBX_INDEX_PAYLOAD + 4]){
+    if(0x00 == frame[UBX_INDEX_PAYLOAD + 4]) {
         memcpy(&NavInfo.roll, &frame[UBX_INDEX_PAYLOAD + 8], 4);
         memcpy(&NavInfo.pitch, &frame[UBX_INDEX_PAYLOAD + 12], 4);
         memcpy(&NavInfo.heading, &frame[UBX_INDEX_PAYLOAD + 16], 4);
@@ -84,11 +84,9 @@ static bool ubx_proc_nav_att_frame(uint8_t* frame) {
         memcpy(&NavInfo.acc_pitch, &frame[UBX_INDEX_PAYLOAD + 24], 4);
         memcpy(&NavInfo.acc_heading, &frame[UBX_INDEX_PAYLOAD + 28], 4);
         res = true;
-
     }
     return res;
 }
-
 
 static bool ubx_proc_nav_hpposllh_frame(uint8_t* frame) {
     bool res = false;
@@ -103,9 +101,9 @@ static bool ubx_proc_nav_hpposllh_frame(uint8_t* frame) {
         memcpy(&NavInfo.v_acc, &frame[UBX_INDEX_PAYLOAD + 32], 4);
 #ifdef HAS_UBX_DIAG
         io_printf("itow: %u ms" CRLF, itow);
-        io_printf("hmsl: %u mm %u sm %u m" CRLF, NavInfo.hmsl, NavInfo.hmsl/10, NavInfo.hmsl/1000 );
-        io_printf(" %d %d "CRLF"%f %f" CRLF, NavInfo.latitude, NavInfo.longitude,
-                  1e-7*((double)NavInfo.latitude), 1e-7*((double)NavInfo.longitude));
+        io_printf("hmsl: %u mm %u sm %u m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 10, NavInfo.hmsl / 1000);
+        io_printf(" %d %d " CRLF "%f %f" CRLF, NavInfo.latitude, NavInfo.longitude, 1e-7 * ((double)NavInfo.latitude),
+                  1e-7 * ((double)NavInfo.longitude));
 #endif /*HAS_UBX_DIAG*/
     }
     return res;

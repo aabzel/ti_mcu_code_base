@@ -83,6 +83,8 @@ bool try_str2bool(const char bool_str[], bool *bool_value);
 bool try_str2float(const char float_str[], float_t *float_value);
 bool try_str2double(const char double_str[], double_t *double_value);
 
+bool try_strl2double(const char double_str[], int32_t u8l_hex_str_len, double_t *double_value);
+
 bool try_str2array(char *in_str_array, uint8_t *out_array, uint16_t array_size,
                    uint16_t *out_array_len);
 

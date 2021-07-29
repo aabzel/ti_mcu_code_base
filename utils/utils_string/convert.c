@@ -675,6 +675,15 @@ bool try_str2double(const char double_str[], double_t *double_value) {
   return double_success;
 }
 
+bool try_strl2double(const char double_str[], int32_t str_len, double_t *double_value){
+    bool double_success = false;
+    char tempStr[30]="";
+    memset(tempStr,0x00,sizeof(tempStr));
+    memcpy(tempStr,double_str,str_len);
+    double_success = try_str2double(tempStr,double_value);
+    return double_success;
+}
+
 const char *ltoa32_(int32_t s32_data, char s32_stringified[], uint8_t s32_base,
                     uint32_t *s32_len) {
   char s32_reverse_str[MAX_INT32_STR_LEN_10 + 1U];

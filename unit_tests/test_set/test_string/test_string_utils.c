@@ -14,6 +14,5 @@ static bool test_replaic_char(void) {
 bool test_string_utils(void) {
   EXPECT_TRUE(test_replaic_char());
 
-
   return true;
 }

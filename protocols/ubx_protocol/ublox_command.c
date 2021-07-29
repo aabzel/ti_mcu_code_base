@@ -12,7 +12,6 @@
 #include "ubx_protocol.h"
 #include "writer_generic.h"
 
-
 static bool ubx_diag(void) {
     io_printf("rx pkt cnt: %u" CRLF, UbloxPorotocol.rx_pkt_cnt);
     io_printf("crc cnt   : %u" CRLF, UbloxPorotocol.crc_err_cnt);
@@ -151,24 +150,24 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-static bool ubx_nav(void){
-    io_printf("%u " , NavInfo.latitude);
+static bool ubx_nav(void) {
+    io_printf("%u ", NavInfo.latitude);
     io_printf("%u" CRLF, NavInfo.longitude);
-    io_printf("hmsl: %u mm %u m" CRLF, NavInfo.hmsl, NavInfo.hmsl/1000);
-    io_printf("h_acc: %u %f mm" CRLF, NavInfo.h_acc, 0.1f*((double)NavInfo.h_acc));
-    io_printf("v_acc: %u %f mm" CRLF, NavInfo.v_acc, 0.1f*((double)NavInfo.v_acc));
-    io_printf("roll %d %f deg"CRLF, NavInfo.roll, 1e-5*((double)NavInfo.roll));
-    io_printf("pitch %d %f deg"CRLF, NavInfo.pitch, 1e-5*((double)NavInfo.pitch));
-    io_printf("heading %d %f deg"CRLF, NavInfo.heading, 1e-5*((double)NavInfo.heading));
+    io_printf("hmsl: %u mm %u m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 1000);
+    io_printf("h_acc: %u %f mm" CRLF, NavInfo.h_acc, 0.1f * ((double)NavInfo.h_acc));
+    io_printf("v_acc: %u %f mm" CRLF, NavInfo.v_acc, 0.1f * ((double)NavInfo.v_acc));
+    io_printf("roll %d %f deg" CRLF, NavInfo.roll, 1e-5 * ((double)NavInfo.roll));
+    io_printf("pitch %d %f deg" CRLF, NavInfo.pitch, 1e-5 * ((double)NavInfo.pitch));
+    io_printf("heading %d %f deg" CRLF, NavInfo.heading, 1e-5 * ((double)NavInfo.heading));
 
-    io_printf("acc_roll %d %f deg"CRLF, NavInfo.acc_roll, 1e-5*((double)NavInfo.acc_roll));
-    io_printf("acc_pitch %d %f deg"CRLF, NavInfo.acc_pitch, 1e-5*((double)NavInfo.acc_pitch));
-    io_printf("acc_heading %d %f deg"CRLF, NavInfo.acc_heading, 1e-5*((double)NavInfo.acc_heading));
+    io_printf("acc_roll %d %f deg" CRLF, NavInfo.acc_roll, 1e-5 * ((double)NavInfo.acc_roll));
+    io_printf("acc_pitch %d %f deg" CRLF, NavInfo.acc_pitch, 1e-5 * ((double)NavInfo.acc_pitch));
+    io_printf("acc_heading %d %f deg" CRLF, NavInfo.acc_heading, 1e-5 * ((double)NavInfo.acc_heading));
 
     return true;
 }
 
-bool ubx_nav_command(int32_t argc, char* argv[]){
+bool ubx_nav_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = ubx_nav();

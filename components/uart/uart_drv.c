@@ -108,7 +108,7 @@ static bool init_uart0(void) {
     huart[0].tx_cnt = 0;
     huart[0].tx_cpl_cnt = 0;
     huart[0].tx_byte_cnt = 0;
-    strncpy(huart[0].name,"CLI",sizeof(huart[0].name));
+    strncpy(huart[0].name, "CLI", sizeof(huart[0].name));
     /* Call driver init functions */
     UART_init();
 
@@ -149,7 +149,7 @@ static bool init_uart1(void) {
     huart[1].tx_cnt = 0;
     huart[1].tx_cpl_cnt = 0;
     huart[1].tx_byte_cnt = 0;
-    strncpy(huart[1].name,"Ublox",sizeof(huart[1].name));
+    strncpy(huart[1].name, "Ublox", sizeof(huart[1].name));
     const char echoPrompt[] = "UART1 115200 init ok\r\n";
     UART_Params uart1Params;
 
