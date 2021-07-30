@@ -7,11 +7,11 @@
 
 uint32_t HAL_GetTick(void) { return g_up_time_ms; }
 
-//void HAL_IncTick(void) { g_up_time_ms++; }
+// void HAL_IncTick(void) { g_up_time_ms++; }
 
 void delay_ms(uint32_t delay_in_ms) {
     uint32_t init_time_in_ms = g_up_time_ms;
-    while (g_up_time_ms < (init_time_in_ms + delay_in_ms)) {
+    while(g_up_time_ms < (init_time_in_ms + delay_in_ms)) {
     }
 }
 

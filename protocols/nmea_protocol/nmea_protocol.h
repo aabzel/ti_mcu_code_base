@@ -17,7 +17,6 @@ typedef struct xNmeaProtocol_t {
     char fix_message[NMEA_MSG_SIZE];
 } NmeaProtocol_t;
 
-
 /* Recommended minimum specific GPS/Transit data */
 typedef struct xRmc_t {
     uint32_t utc;       /* UTC hour in hhmmss format */

@@ -103,16 +103,16 @@ bool nmea_proc_byte(uint8_t rx_byte) {
     if((0 == NmeaProto.pos) && ('$' != rx_byte)) {
         NmeaProto.pos = 0;
     }
-    //static uint8_t prev_rx_byte = 0;
+    // static uint8_t prev_rx_byte = 0;
     if(('\n' == rx_byte) || ('\r' == rx_byte)) {
-        if (0<NmeaProto.pos) {
-         // memset(NmeaProto.fix_message, 0x00, NMEA_MSG_SIZE);
-          memcpy(NmeaProto.fix_message, NmeaProto.message, NmeaProto.pos);
-          memset(NmeaProto.message, 0x00, NMEA_MSG_SIZE);
-          NmeaProto.msg_cnt++;
-          NmeaProto.pos = 0;
-          NmeaProto.got_massege = true;
-          res = true;
+        if(0 < NmeaProto.pos) {
+            // memset(NmeaProto.fix_message, 0x00, NMEA_MSG_SIZE);
+            memcpy(NmeaProto.fix_message, NmeaProto.message, NmeaProto.pos);
+            memset(NmeaProto.message, 0x00, NMEA_MSG_SIZE);
+            NmeaProto.msg_cnt++;
+            NmeaProto.pos = 0;
+            NmeaProto.got_massege = true;
+            res = true;
         }
     } else {
         if(NmeaProto.pos < NMEA_MSG_SIZE) {
@@ -125,7 +125,7 @@ bool nmea_proc_byte(uint8_t rx_byte) {
         }
     }
 
-  //  prev_rx_byte = rx_byte;
+    //  prev_rx_byte = rx_byte;
     return res;
 }
 
@@ -133,7 +133,7 @@ bool nmea_proc_message(void) {
     bool res = false;
     if(NmeaProto.got_massege) {
         res = nmea_parse(NmeaProto.fix_message, &NmeaData);
-        if (true==res) {
+        if(true == res) {
             NmeaProto.proc_msg_cnt++;
         }
         memset(NmeaProto.fix_message, 0x00, NMEA_MSG_SIZE);

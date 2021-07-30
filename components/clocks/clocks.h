@@ -18,7 +18,6 @@ extern "C" {
 #define COUNTER_TO_US(counter) ((counter) / (COUNTER_FREQ))
 #define COUNTER_TO_MS(counter) ((counter) / ((COUNTER_FREQ)*1000))
 
-
 uint32_t get_time_ms32(void);
 uint64_t get_time_ms64(void);
 uint64_t get_time_us(void);

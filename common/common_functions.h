@@ -10,12 +10,12 @@
 #define TASK_UART
 #endif
 
-#define COMMON_TASKS                                                           \
-  TASK(LED)                                                                    \
-  TASK(WDT)                                                                    \
-  TASK_UART                                                                    \
-  TASK_DIAG                                                                    \
-  TASK_INTEGRITY
+#define COMMON_TASKS                                                                                                   \
+    TASK(LED)                                                                                                          \
+    TASK(WDT)                                                                                                          \
+    TASK_UART                                                                                                          \
+    TASK_DIAG                                                                                                          \
+    TASK_INTEGRITY
 
 void common_loop(uint64_t loop_start_time);
 void custom_loop(uint64_t loop_start_time);

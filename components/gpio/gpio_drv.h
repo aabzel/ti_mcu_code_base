@@ -51,5 +51,6 @@ char* get_gpio_pull_mode(char port, uint8_t pin);
 char* get_gpio_type(char port, uint8_t pin);
 uint8_t get_mcu_pin(char port, uint8_t pin);
 bool gpio_toggle(char port, uint8_t pin);
+bool proc_led(void);
 
 #endif /* INIT_GPIO_H  */

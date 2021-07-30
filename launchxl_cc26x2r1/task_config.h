@@ -3,6 +3,7 @@
 
 #define TASKS                                                                  \
   TASK(UART1)                                                                  \
+  TASK(LED)                                                                    \
   TASK(CLI)                                                                    \
   TASK(UBX)                                                                    \
   TASK(NMEA)

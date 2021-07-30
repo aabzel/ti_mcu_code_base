@@ -39,7 +39,6 @@ static unsigned char uartCC26XXRingBuffer1[80];
 uint8_t rx_buff0[RX_ARR0_CNT];
 uint8_t rx_buff1[RX_ARR1_CNT];
 
-
 static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[CONFIG_UART_COUNT] = {
     {.baseAddr = UART0_BASE,
      .intNum = INT_UART0_COMB,
@@ -102,7 +101,7 @@ static void uart1ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
     huart[1].rx_byte = *(rxBuf);
-    //huart[1].rx_buff
+    // huart[1].rx_buff
 }
 
 static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
@@ -120,7 +119,7 @@ static bool init_uart0(void) {
     huart[0].tx_cnt = 0;
     huart[0].tx_cpl_cnt = 0;
     huart[0].tx_byte_cnt = 0;
-    huart[1].rx_buff=rx_buff0;
+    huart[1].rx_buff = rx_buff0;
     strncpy(huart[0].name, "CLI", sizeof(huart[0].name));
     /* Call driver init functions */
     UART_init();
@@ -162,9 +161,9 @@ static bool init_uart1(void) {
     huart[1].tx_cnt = 0;
     huart[1].tx_cpl_cnt = 0;
     huart[1].tx_byte_cnt = 0;
-    huart[1].rx_buff=rx_buff1;
+    huart[1].rx_buff = rx_buff1;
     strncpy(huart[1].name, "Ublox", sizeof(huart[1].name));
-    const char echoPrompt[] = "UART1 init ok\r\n";//
+    const char echoPrompt[] = "UART1 init ok\r\n"; //
     UART_Params uart1Params;
 
     /* Call driver init functions */
@@ -215,12 +214,12 @@ void cli_tune_read_char(void) { UART_read(huart[0].uart_h, &huart[0].rx_byte, 1)
 
 bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;
-    uint32_t time_out=0;
+    uint32_t time_out = 0;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
     while(init_tx_cnt == huart[uart_num].tx_cnt) {
         time_out++;
-        if(20000000<time_out){
+        if(20000000 < time_out) {
             res = false;
             break;
         }
@@ -249,17 +248,17 @@ bool proc_uart(uint8_t uart_index) {
         if(1 == uart_index) {
             uint16_t i;
             uint8_t rx_byte;
-            for (i=0; i<RX_ARR1_CNT; i++) {
-                 rx_byte = huart[uart_index].rx_buff[i];
+            for(i = 0; i < RX_ARR1_CNT; i++) {
+                rx_byte = huart[uart_index].rx_buff[i];
 #ifdef HAS_NMEA
-                nmea_proc_byte( rx_byte);
+                nmea_proc_byte(rx_byte);
 #endif /*HAS_NMEA*/
 #ifdef HAS_UBLOX
-                ubx_proc_byte( rx_byte);
+                ubx_proc_byte(rx_byte);
 #endif /*HAS_UBLOX*/
             }
             UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_buff[0], RX_ARR1_CNT);
-        }else if(0 == uart_index){
+        } else if(0 == uart_index) {
             UART_read(huart[uart_index].uart_h, &huart[uart_index].rx_byte, 1);
         }
         res = true;
