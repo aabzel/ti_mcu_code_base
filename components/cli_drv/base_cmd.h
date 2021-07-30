@@ -51,7 +51,7 @@ bool dump_cmd_result_ex(bool res, const char* message);
 bool cmd_wd_test(int32_t argc, char* argv[]);
 bool cmd_wd_test_hw(int32_t argc, char* argv[]);
 bool cmd_sysinfo(int32_t argc, char* argv[]);
-void reboot(void);
+bool reboot(void);
 
 #define TEST_FIRMWARE_COMMANDS SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),
 

@@ -17,6 +17,10 @@
 #include "str_utils.h"
 #include "read_mem.h"
 
+#ifdef HAS_WDT
+#include "watchdog_drv.h"
+#endif /*HAS_WDT*/
+
 #ifdef HAS_TIM
 #include "tim.h"
 #endif /*HAS_TIM*/
@@ -24,13 +28,8 @@
 #include "terminal_codes.h"
 #include "version.h"
 
-#ifdef EMBEDDED_TEST
-#include "print_buffer.h"
-#endif
-
 bool show_shell_prompt = true;
 bool user_mode = true;
-
 
 bool cmd_help(int32_t argc, char* argv[]) {
     bool res = false;
@@ -208,9 +207,6 @@ bool dump_cmd_result(bool res) {
 }
 
 bool dump_cmd_result_ex(bool res, const char* message) {
-#ifdef EMBEDDED_TEST
-    STRNCPY(last_cmd_result_str, message);
-#endif
     if(user_mode) {
         if(res) {
             LOG_INFO(SYS, "Ok: %s", message);
@@ -228,9 +224,12 @@ bool dump_cmd_result_ex(bool res, const char* message) {
 }
 
 
-void reboot(void) {
+bool reboot(void) {
     LOG_INFO(SYS, "Reboot device");
-    // NVIC_SystemReset();
+#ifdef HAS_WDT
+    bool res = watchdog_set(10, 0);
+#endif
+    return res;
 }
 
 bool cmd_soft_reboot(int32_t argc, char* argv[]) {
@@ -238,7 +237,7 @@ bool cmd_soft_reboot(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        reboot();
+        res = reboot();
     } else {
         LOG_ERROR(SYS, "Usage: reboot");
     }

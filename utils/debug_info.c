@@ -13,6 +13,7 @@
 #include "version.h"
 #include "writer_generic.h"
 
+extern int main(void);
 static bool stack_dir(int32_t* main_local_addr) {
     bool res = false;
     int32_t fun_local;
@@ -43,14 +44,13 @@ bool is_little_endian(void) {
     bint.u32 = 0x01020304;
     return bint.u8[0] == 4;
 }
-
 void print_version_s(ostream_t* stream) {
     oprintf(stream, "Date     : %s " CRLF, __DATE__);
     oprintf(stream, "Time     : %s " CRLF, __TIME__);
     oprintf(stream, "TimeStamp: %s " CRLF, __TIMESTAMP__);
     oprintf(stream, "Cstd     : %u " CRLF, __STDC__);
     oprintf(stream, "STDC_VER : %u " CRLF, __STDC_VERSION__);
-    oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
+  //  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
     oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
     oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
     //  oprintf(stream, "IAR_SYSTEMS_ICC %u " CRLF, __IAR_SYSTEMS_ICC__);
@@ -88,7 +88,7 @@ bool is_arr_pat(uint8_t* arr, uint32_t size, uint8_t patt) {
     }
     return res;
 }
-extern void main(void);
+
 
 void print_sys_info(void) {
     io_printf("Firmware launched.." CRLF);
