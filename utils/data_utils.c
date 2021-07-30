@@ -104,3 +104,19 @@ float ms2Hz(uint16_t ms) {
   return hz;
 }
 
+uint8_t extract_digit(uint32_t in_num ,uint8_t digit_index){
+    uint8_t i=0;
+    uint8_t digit=0;
+    uint8_t out_digit=0;
+    uint32_t num=in_num;
+    while (0<num) {
+        digit = num%10;
+        if(digit_index==i){
+            out_digit = digit;
+            break;
+        }
+        num = num/10;
+        i++;
+    }
+    return out_digit;
+}

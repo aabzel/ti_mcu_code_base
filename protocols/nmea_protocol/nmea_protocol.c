@@ -1,5 +1,7 @@
 #include "nmea_protocol.h"
+
 #include "convert.h"
+#include "time_utils.h"
 
 NmeaProtocol_t NmeaProto;
 NmeaData_t NmeaData;
@@ -9,41 +11,95 @@ bool nmea_init(void) {
     memset(&NmeaProto, 0x00, sizeof(NmeaProto));
     return true;
 }
+/*$GNGGA,140213.00,5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42*/
+bool gnss_parse_gga(char *nmea_msg, gga_t *gga){
+    bool res = true;
+    char* ptr = strchr(nmea_msg, ',') + 1;
+    //140213.00,5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2uint32(ptr, 6, &gga->utc)&&res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2double(ptr, 10, &gga->lat)&&res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
+    gga->lat_dir = ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2double(ptr, 11, &gga->lon)&&res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //E,1,12,0.58,201.4,M,13.3,M,,*42
+    gga->lon_dir = ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //1,12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2uint16(ptr, 1, &gga->quality)&&res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2uint16(ptr, 2, &gga->nb_sat)&&res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //0.58,201.4,M,13.3,M,,*42
+    res = try_strl2double(ptr, 4, &gga->hdop)&&res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //201.4,M,13.3,M,,*42
+    res = try_strl2double(ptr, 5, &gga->height)&&res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //M,13.3,M,,*42
+    gga->height_unit= ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //13.3,M,,*42
+    res = try_strl2double(ptr, 4, &gga->geoid_separation)&&res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //M,,*42
+    gga->geoid_unit = ptr[0];
+
+    return res;
+}
+
 
 /*
 $GNRMC,072316.27,A,5551.85875,N,03755.65965,E,0.010,,290721,11.73,E,A,V*76
 */
 bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
-    bool res = false;
+    bool res = true;
     char* ptr = strchr(nmea_msg, ',') + 1;
-    res = try_strl2uint32(ptr, 6, &rmc->utc);
+    res = try_strl2uint32(ptr, 6, &rmc->utc)&&res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->data_valid = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 10, &rmc->lat);
+    res = try_strl2double(ptr, 10, &rmc->lat)&&res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->lat_dir = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 11, &rmc->lon);
+    res = try_strl2double(ptr, 11, &rmc->lon)&&res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->lon_dir = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 5, &rmc->speed_knots);
+    res = try_strl2double(ptr, 5, &rmc->speed_knots)&&res;
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_str2double(ptr, &rmc->true_course);
+   // res = try_str2double(ptr, &rmc->true_course)&&res;
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2uint32(ptr, 6, &rmc->date);
+    res = try_strl2uint32(ptr, 6, &rmc->date)&&res;
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 5, &rmc->mv);
+    res = try_strl2double(ptr, 5, &rmc->mv)&&res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->mv_ew = ptr[0];
@@ -53,6 +109,8 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
 
     ptr = strchr(ptr, ',') + 1;
     rmc->nav_status = ptr[0];
+    res = parse_time_from_val(rmc->utc,&rmc->time_date)&&res;
+    res = parse_date_from_val(rmc->date,&rmc->time_date)&&res;
 
     return res;
 }
@@ -80,6 +138,7 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
             res = false;
             NmeaProto.crc_ok_cnt++;
             if(!strncmp(nmea_msg + 3, "GGA", 3)) {
+                res = gnss_parse_gga(nmea_msg, &gps_ctx->gga);
             } else if(!strncmp(nmea_msg + 3, "RMC", 3)) {
                 res = gnss_parse_rmc(nmea_msg, &gps_ctx->rmc);
             } else if(!strncmp(nmea_msg + 3, "GLL", 3)) {

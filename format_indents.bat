@@ -4,6 +4,9 @@ set work_space_dir=%cd%
 set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortUsingDeclarations: true , UseTab: Never,PointerAlignment: Left, BreakBeforeBraces: Attach, TabWidth: 4,ColumnLimit: 120 }"
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\time_utils.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\time_utils.h
+
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\common\common_functions.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\common\common_functions.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\clocks\clocks.c

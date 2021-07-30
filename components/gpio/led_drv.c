@@ -13,6 +13,8 @@ bool led_init(void) {
     greenLed.period_ms = LED_PERIOD_MS;
     greenLed.duty = LED_DUTY;
     greenLed.phase_ms = LED_PHASE;
+    GPIO_write(CONFIG_GPIO_LED_0, 0);
+    GPIO_write(CONFIG_GPIO_LED_1, 0);
     return true;
 }
 

@@ -108,3 +108,8 @@ ubs 0x06 0x8a 0x01040000040021201e
 Velosity
 ubs 0x01 0x11
 ubs 0x01 0x12
+
+ubs 0x10 0x14
+
+
+https://github.com/antoine-peartree/nrf5X_GnssDriver/blob/master/src/gnss_parser.c

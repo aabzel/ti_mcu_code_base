@@ -11,6 +11,7 @@
 #include "diag_sys.h"
 #include "io_utils.h"
 #include "float_utils_test.h"
+#include "test_time_utils.h"
 #include "test_string_utils.h"
 #include "test_nmea_proto.h"
 #include "test_convert.h"
@@ -22,6 +23,7 @@
 unit_test_info_t test_list[] = {{"type_transform", test_type_transformation},
                                 DATA_UTILS_TEST_SUIT
                                 FLOAT_UTILS_TEST_SUIT
+                                TIME_UTILS_TEST_SUIT
                                 NMEA_PROTO_TEST_SUIT
                                 CONVERT_TEST_SUIT
                                 STRING_UTILS_TEST_SUIT

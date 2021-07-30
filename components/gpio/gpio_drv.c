@@ -124,6 +124,8 @@ void gpio_init(void) {
         GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);
         GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
     }
+    GPIO_write(CONFIG_GPIO_LED_0, 0);
+    GPIO_write(CONFIG_GPIO_LED_1, 0);
 }
 
 bool gpio_get_state(char port_pin_char, uint8_t port_pin_num, uint8_t* logic_level) {

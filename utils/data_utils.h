@@ -48,6 +48,7 @@ const char *get_spaces_str(uint32_t spaces_length);
 float ms2Hz(uint16_t ms);
 uint8_t uint16_to_uint8_limiter(uint16_t in_val);
 int8_t two_complement_to_decimal(uint8_t in_code, int significant_bits);
+uint8_t extract_digit(uint32_t in_num ,uint8_t digit_index);
 
 #ifdef __cplusplus
 }
