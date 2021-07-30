@@ -40,15 +40,21 @@
 #define UART_COMMANDS
 #endif
 
-#define COMMON_COMMANDS                                                        \
-  DEFAULT_COMMANDS                                                             \
-  CLOCK_COMMANDS                                                               \
-  GPIO_COMMANDS                                                                \
-  TASK_COMMANDS                                                                \
-  UART_COMMANDS                                                                \
-  UNIT_TEST_COMMANDS                                                           \
-  TIM_COMMANDS                                                                 \
-  SPI_COMMANDS
+#ifdef HAS_WDT
+#include "watchdog_commands.h"
+#else
+#define WDT_COMMANDS
+#endif
 
+#define COMMON_COMMANDS                                                                                                \
+    DEFAULT_COMMANDS                                                                                                   \
+    CLOCK_COMMANDS                                                                                                     \
+    GPIO_COMMANDS                                                                                                      \
+    WDT_COMMANDS                                                                                                       \
+    TASK_COMMANDS                                                                                                      \
+    UART_COMMANDS                                                                                                      \
+    UNIT_TEST_COMMANDS                                                                                                 \
+    TIM_COMMANDS                                                                                                       \
+    SPI_COMMANDS
 
 #endif /* COMMON_COMMANDS_H */

@@ -40,7 +40,7 @@ extern const PIN_Config BoardGpioInitTable[];
 #define CONFIG_PIN_3 0x00000007
 #define CONFIG_TI_DRIVERS_PIN_COUNT 4
 
-void gpio_init(void);
+bool gpio_init(void);
 
 /*GPIO API*/
 bool gpio_get_state(char port_pin_char, uint8_t port_pin_num, uint8_t* logic_level);

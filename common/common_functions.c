@@ -22,10 +22,17 @@
 #include "nmea_protocol.h"
 #endif /*HAS_NMEA*/
 
+#ifdef HAS_WDT
+#include "watchdog_drv.h"
+#endif
+
 void common_loop(uint64_t loop_start_time) {
     if(0u == loop_start_time) {
         return;
     }
+#ifdef HAS_WDT
+    MEASURE_TASK_INTERVAL(WDT, 1, proc_watchdog);
+#endif
     MEASURE_TASK_INTERVAL(LED, 1, proc_led);
     MEASURE_TASK_INTERVAL(UART1, 1, proc_uart1);
 #ifdef HAS_UBLOX

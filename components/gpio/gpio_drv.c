@@ -88,7 +88,7 @@ void gpioButtonFxn1(uint_least8_t index) {
     GPIO_toggle(CONFIG_GPIO_LED_0);
 }
 
-void gpio_init(void) {
+bool gpio_init(void) {
     /* ==== /ti/drivers/PIN initialization ==== */
     if(PIN_init(BoardGpioInitTable) != PIN_SUCCESS) {
         /* Error with PIN_init */
@@ -126,6 +126,7 @@ void gpio_init(void) {
     }
     GPIO_write(CONFIG_GPIO_LED_0, 0);
     GPIO_write(CONFIG_GPIO_LED_1, 0);
+    return true;
 }
 
 bool gpio_get_state(char port_pin_char, uint8_t port_pin_num, uint8_t* logic_level) {

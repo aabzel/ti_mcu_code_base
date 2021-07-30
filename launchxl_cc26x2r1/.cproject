@@ -59,6 +59,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/core_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/watchdog"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/clocks"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_diag"/>
@@ -81,6 +82,7 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE.890004560" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_SYMBOLS}"/>
+									<listOptionValue builtIn="false" value="HAS_WDT"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>

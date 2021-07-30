@@ -38,21 +38,21 @@ typedef struct xRmc_t {
 
 /* Global Positioning System Fix Data */
 typedef struct xGga_t {
-    uint32_t utc;   /* UTC hour in hhmmss format */
-    double lat;     /* Latitude (degrees) */
-    char lat_dir;   /* Latitude direction */
-    double lon;     /* Longitude (degrees) */
-    char lon_dir;   /* Longitude direction */
-    uint16_t quality; /*Quality indicator for position fix*/
-    uint16_t nb_sat;  /*Number of satellites used*/
-    double hdop;  /*Horizontal Dilution of Precision*/
-    double height; /*Altitude above mean sea level*/
-    char height_unit; /*Altitude units: M (meters, fixed field*/
+    uint32_t utc;            /* UTC hour in hhmmss format */
+    double lat;              /* Latitude (degrees) */
+    char lat_dir;            /* Latitude direction */
+    double lon;              /* Longitude (degrees) */
+    char lon_dir;            /* Longitude direction */
+    uint16_t quality;        /*Quality indicator for position fix*/
+    uint16_t nb_sat;         /*Number of satellites used*/
+    double hdop;             /*Horizontal Dilution of Precision*/
+    double height;           /*Altitude above mean sea level*/
+    char height_unit;        /*Altitude units: M (meters, fixed field*/
     double geoid_separation; /*difference between ellipsoid and mean sea level*/
-    char geoid_unit;/*Geoid separation units: M (meters, fixed field)*/
-    double diff_gps_age;/*Age of differential corrections (null when DGPS is notused)*/
-    uint32_t diffStation;/*ID of station providing differential corrections*/
-}gga_t;
+    char geoid_unit;         /*Geoid separation units: M (meters, fixed field)*/
+    double diff_gps_age;     /*Age of differential corrections (null when DGPS is notused)*/
+    uint32_t diffStation;    /*ID of station providing differential corrections*/
+} gga_t;
 
 /* GNSS context. Used to keep last GNSS infos from GNSS module msgs*/
 typedef struct xNmeaData_t {
@@ -68,7 +68,7 @@ bool nmea_init(void);
 bool nmea_proc_byte(uint8_t rx_byte);
 uint8_t nmea_calc_checksum(char* nmea_data, uint16_t len);
 bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc);
-bool gnss_parse_gga(char *nmea_msg, gga_t *gga);
+bool gnss_parse_gga(char* nmea_msg, gga_t* gga);
 bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx);
 bool nmea_proc_message(void);
 

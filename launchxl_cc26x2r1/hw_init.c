@@ -17,16 +17,24 @@
 #include "gpio_drv.h"
 #endif
 
+#ifdef HAS_WDT
+#include "watchdog_drv.h"
+#endif
+
 bool hw_init(void) {
   bool res = true;
   Board_init();
   NoRTOS_start();
   SysTickInit();
+#ifdef HAS_WDT
+  res = watchdog_init()&&res;
+#endif
+
 #ifdef HAS_GPIO
-  gpio_init();
+  res = gpio_init() && res;
 #endif
 #ifdef HAS_UART
-  init_uart();
+  res = init_uart()&&res;
 #endif
 
   return res;

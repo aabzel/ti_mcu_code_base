@@ -12,59 +12,58 @@ bool nmea_init(void) {
     return true;
 }
 /*$GNGGA,140213.00,5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42*/
-bool gnss_parse_gga(char *nmea_msg, gga_t *gga){
+bool gnss_parse_gga(char* nmea_msg, gga_t* gga) {
     bool res = true;
     char* ptr = strchr(nmea_msg, ',') + 1;
-    //140213.00,5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
-    res = try_strl2uint32(ptr, 6, &gga->utc)&&res;
+    // 140213.00,5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2uint32(ptr, 6, &gga->utc) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    //5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
-    res = try_strl2double(ptr, 10, &gga->lat)&&res;
+    // 5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2double(ptr, 10, &gga->lat) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    //N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
+    // N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
     gga->lat_dir = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    //03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
-    res = try_strl2double(ptr, 11, &gga->lon)&&res;
+    // 03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2double(ptr, 11, &gga->lon) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    //E,1,12,0.58,201.4,M,13.3,M,,*42
+    // E,1,12,0.58,201.4,M,13.3,M,,*42
     gga->lon_dir = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    //1,12,0.58,201.4,M,13.3,M,,*42
-    res = try_strl2uint16(ptr, 1, &gga->quality)&&res;
+    // 1,12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2uint16(ptr, 1, &gga->quality) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    //12,0.58,201.4,M,13.3,M,,*42
-    res = try_strl2uint16(ptr, 2, &gga->nb_sat)&&res;
+    // 12,0.58,201.4,M,13.3,M,,*42
+    res = try_strl2uint16(ptr, 2, &gga->nb_sat) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    //0.58,201.4,M,13.3,M,,*42
-    res = try_strl2double(ptr, 4, &gga->hdop)&&res;
+    // 0.58,201.4,M,13.3,M,,*42
+    res = try_strl2double(ptr, 4, &gga->hdop) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    //201.4,M,13.3,M,,*42
-    res = try_strl2double(ptr, 5, &gga->height)&&res;
+    // 201.4,M,13.3,M,,*42
+    res = try_strl2double(ptr, 5, &gga->height) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    //M,13.3,M,,*42
-    gga->height_unit= ptr[0];
+    // M,13.3,M,,*42
+    gga->height_unit = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    //13.3,M,,*42
-    res = try_strl2double(ptr, 4, &gga->geoid_separation)&&res;
+    // 13.3,M,,*42
+    res = try_strl2double(ptr, 4, &gga->geoid_separation) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    //M,,*42
+    // M,,*42
     gga->geoid_unit = ptr[0];
 
     return res;
 }
-
 
 /*
 $GNRMC,072316.27,A,5551.85875,N,03755.65965,E,0.010,,290721,11.73,E,A,V*76
@@ -72,34 +71,34 @@ $GNRMC,072316.27,A,5551.85875,N,03755.65965,E,0.010,,290721,11.73,E,A,V*76
 bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
     bool res = true;
     char* ptr = strchr(nmea_msg, ',') + 1;
-    res = try_strl2uint32(ptr, 6, &rmc->utc)&&res;
+    res = try_strl2uint32(ptr, 6, &rmc->utc) && res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->data_valid = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 10, &rmc->lat)&&res;
+    res = try_strl2double(ptr, 10, &rmc->lat) && res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->lat_dir = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 11, &rmc->lon)&&res;
+    res = try_strl2double(ptr, 11, &rmc->lon) && res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->lon_dir = ptr[0];
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 5, &rmc->speed_knots)&&res;
+    res = try_strl2double(ptr, 5, &rmc->speed_knots) && res;
 
     ptr = strchr(ptr, ',') + 1;
-   // res = try_str2double(ptr, &rmc->true_course)&&res;
+    // res = try_str2double(ptr, &rmc->true_course)&&res;
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2uint32(ptr, 6, &rmc->date)&&res;
+    res = try_strl2uint32(ptr, 6, &rmc->date) && res;
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 5, &rmc->mv)&&res;
+    res = try_strl2double(ptr, 5, &rmc->mv) && res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->mv_ew = ptr[0];
@@ -109,8 +108,8 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
 
     ptr = strchr(ptr, ',') + 1;
     rmc->nav_status = ptr[0];
-    res = parse_time_from_val(rmc->utc,&rmc->time_date)&&res;
-    res = parse_date_from_val(rmc->date,&rmc->time_date)&&res;
+    res = parse_time_from_val(rmc->utc, &rmc->time_date) && res;
+    res = parse_date_from_val(rmc->date, &rmc->time_date) && res;
 
     return res;
 }
