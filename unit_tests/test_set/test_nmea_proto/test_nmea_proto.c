@@ -25,7 +25,6 @@ static bool test_nmea_proto_gnrmc(void) {
 }
 
 const char msg_gnrgga[] = "$GNGGA,140212.00,5540.70555,N,03737.93437,E,1,12,0.58,201.3,M,13.3,M,,*45";
-
 static bool test_nmea_proto_gngga(void) {
    gga_t gga= {0};
    EXPECT_TRUE( gnss_parse_gga((char*)msg_gnrgga, &gga));
@@ -60,6 +59,34 @@ static bool test_nmea_proto_gngll(void) {
     return true;
 }
 
+const char msg_gnrgsa[] = "$GNGSA,A,3,78,85,68,84,69,,,,,,,,1.04,0.58,0.86,2*0B";
+static bool test_nmea_proto_gngsa(void) {
+    gsa_t gsa= {0};
+    EXPECT_TRUE( gnss_parse_gsa((char*)msg_gnrgsa, &gsa));
+    EXPECT_EQ('A',gsa.opMode);
+    EXPECT_EQ(3,gsa.navMode);
+    EXPECT_NEAR(1.04,gsa.PDOP,0.000001);
+    EXPECT_NEAR(0.58,gsa.HDOP,0.00001);
+    EXPECT_NEAR(0.86,gsa.VDOP,0.00001);
+    EXPECT_EQ(2,gsa.systemId);
+
+    return true;
+}
+
+const char msg_gnrvtg[] = "$GNVTG,,T,,M,0.017,N,0.032,K,A*3A";
+static bool test_nmea_proto_gnvtg(void) {
+    vtg_t vtg= {0};
+    EXPECT_TRUE( gnss_parse_vtg((char*)msg_gnrvtg, &vtg));
+    EXPECT_EQ('T',vtg.cogtUnit);
+    EXPECT_EQ('M',vtg.cogmUnit);
+    EXPECT_NEAR(0.017,vtg.sogn,0.000001);
+    EXPECT_EQ('N',vtg.sognUnit);
+    EXPECT_NEAR(0.032,vtg.sogk,0.00001);
+    EXPECT_EQ('K',vtg.sogkUnit);
+    EXPECT_EQ('A',vtg.posMode);
+    return true;
+}
+
 static bool test_nmea_checksum(void){
     uint8_t checksum = nmea_calc_checksum((char*)&msg_gnrmc[1], strlen(msg_gnrmc)-4);
     EXPECT_EQ(0x76, checksum);
@@ -69,11 +96,14 @@ static bool test_nmea_checksum(void){
 bool test_nmea_proto(void) {
   EXPECT_TRUE(test_nmea_checksum());
   EXPECT_TRUE(test_nmea_proto_gnrmc());
+  EXPECT_TRUE(test_nmea_proto_gnvtg());
   EXPECT_TRUE(test_nmea_proto_gngga());
   EXPECT_TRUE(test_nmea_proto_gngll());
+  EXPECT_TRUE(test_nmea_proto_gngsa());
   EXPECT_TRUE(nmea_parse((char*) msg_gnrmc, &NmeaData));
   EXPECT_TRUE(nmea_parse((char*) msg_gnrgga, &NmeaData));
   EXPECT_TRUE(nmea_parse((char*) msg_gnrgll, &NmeaData));
+  EXPECT_TRUE(nmea_parse((char*) msg_gnrgsa, &NmeaData));
   EXPECT_TRUE(nmea_init());
   return true;
 }

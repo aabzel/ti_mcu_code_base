@@ -9,6 +9,10 @@
 #include "clocks.h"
 #include "sys_tick.h"
 
+#ifdef HAS_SPI
+#include "spi_drv.h"
+#endif
+
 #ifdef HAS_UART
 #include "uart_drv.h"
 #endif
@@ -33,8 +37,13 @@ bool hw_init(void) {
 #ifdef HAS_GPIO
   res = gpio_init() && res;
 #endif
+
 #ifdef HAS_UART
-  res = init_uart()&&res;
+  res = uart_init()&&res;
+#endif
+
+#ifdef HAS_SPI
+  res = spi_init()&&res;
 #endif
 
   return res;

@@ -49,7 +49,7 @@
 #define COMMON_COMMANDS                                                                                                \
     DEFAULT_COMMANDS                                                                                                   \
     CLOCK_COMMANDS                                                                                                     \
-    GPIO_COMMANDS                                                                                                      \
+    GPIO_COMMANDS                      \
     WDT_COMMANDS                                                                                                       \
     TASK_COMMANDS                                                                                                      \
     UART_COMMANDS                                                                                                      \

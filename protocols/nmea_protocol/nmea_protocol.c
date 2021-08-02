@@ -3,6 +3,7 @@
 #include "convert.h"
 #include "time_utils.h"
 
+
 NmeaProtocol_t NmeaProto;
 NmeaData_t NmeaData;
 
@@ -65,9 +66,121 @@ bool gnss_parse_gga(char* nmea_msg, gga_t* gga) {
     return res;
 }
 
+//$GLGSV,3,3,10, 85,46,314,38,
+//               86,04,339,,3*7A
+bool gnss_parse_gsv(char* nmea_msg, gsv_t* gsv) {
+    bool res = true;
+    char* ptr = strchr(nmea_msg, ',') + 1;
+    res = try_strl2uint8(ptr, 1, &gsv->numMsg) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    res = try_strl2uint8(ptr, 1, &gsv->msgNum) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    res = try_strl2uint16(ptr, 2, &gsv->numSV) && res;
+    uint8_t i = 0;
+    for(i = 0; i < (gsv->msgNum-1); i++){
+        if(i<NUM_OF_PARSED_SAT){
+          ptr = strchr(ptr, ',') + 1;
+          res = try_strl2uint16(ptr, 2, &gsv->sat[i].svid) && res;
+
+          ptr = strchr(ptr, ',') + 1;
+          res = try_strl2uint8(ptr, 2, &gsv->sat[i].elv) && res;
+
+          ptr = strchr(ptr, ',') + 1;
+          res = try_strl2uint16(ptr, 2, &gsv->sat[i].az) && res;
+
+          ptr = strchr(ptr, ',') + 1;
+          res = try_strl2uint8(ptr, 2, &gsv->sat[i].cno) && res;
+        }
+    }
+    ptr = strchr(ptr, ',') + 1;
+    res = try_strl2uint8(ptr, 1, &gsv->signalId) && res;
+
+    return res;
+
+}
+
+//$GNVTG,,T,,M,0.019,N,0.036,K,A*30
+bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg){
+    bool res = true;
+    char* ptr = strchr(nmea_msg, ',') + 1;
+    //,T,,M,0.019,N,0.036,K,A*30  //Course over ground
+
+    ptr = strchr(ptr, ',') + 1;
+    //T,,M,0.019,N,0.036,K,A*30  Course over ground units
+    vtg->cogtUnit = ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //,M,0.019,N,0.036,K,A*30  Course over ground
+
+    ptr = strchr(ptr, ',') + 1;
+    //M,0.019,N,0.036,K,A*30   Course over ground units
+    vtg->cogmUnit= ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //0.019,N,0.036,K,A*30  Speed over ground
+    res = try_strl2double(ptr, 5, &vtg->sogn) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //N,0.036,K,A*30  Speed over ground  Speed over ground units
+    vtg->sognUnit= ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //0.036,K,A*30  Speed over ground
+    res = try_strl2double(ptr, 5, &vtg->sogk) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //K,A*30     Speed over ground units
+    vtg->sogkUnit = ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //A*30
+    vtg->posMode= ptr[0];
+    return res;
+}
+
+
+/* GNSS DOP and active satellites */
+//$GNGSA,A,3,78,85,68,84,69,,,,,,,,1.04,0.58,0.86,2*0B
+bool gnss_parse_gsa(char* nmea_msg, gsa_t* gsa) {
+    bool res = true;
+
+    char* ptr = strchr(nmea_msg, ',') + 1;
+    //A,3,78,85,68,84,69,,,,,,,,1.04,0.58,0.86,2*0B
+    gsa->opMode = ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //3,78,85,68,84,69,,,,,,,,1.04,0.58,0.86,2*0B
+    res = try_strl2uint8(ptr, 1, &gsa->navMode) && res;
+
+    uint8_t i=0;
+    for (i=0; i<12; i++) {
+        ptr = strchr(ptr, ',') + 1;
+    }
+
+    ptr = strchr(ptr, ',') + 1;
+    //1.04,0.58,0.86,2*0B
+    res = try_strl2double(ptr, 4, &gsa->PDOP) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //0.58,0.86,2*0B
+    res = try_strl2double(ptr, 4, &gsa->HDOP) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //0.86,2*0B
+    res = try_strl2double(ptr, 4, &gsa->VDOP) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //2*0B
+    res = try_strl2uint8(ptr, 1, &gsa->systemId) && res;
+    return res;
+}
+
 //Latitude and longitude, with time of position fix and status
 //$GNGLL,5540.70588,N,03737.93396,E,140121.00,A,A*70
 bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
+
     bool res = true;
     char* ptr = strchr(nmea_msg, ',') + 1;
 
@@ -150,12 +263,12 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
 }
 
 uint8_t nmea_calc_checksum(char* nmea_data, uint16_t len) {
-    uint8_t crc = 0;
-    uint16_t i;
+    uint8_t crc8 = 0;
+    uint16_t i = 0;
     for(i = 0; i < len; i++) {
-        crc ^= nmea_data[i];
+        crc8 ^= nmea_data[i];
     }
-    return crc;
+    return crc8;
 }
 
 bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
@@ -178,8 +291,11 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
             } else if(!strncmp(nmea_msg + 3, "GLL", 3)) {
                 res = gnss_parse_gll(nmea_msg, &gps_ctx->gll);
             } else if(!strncmp(nmea_msg + 3, "GSV", 3)) {
+                res = gnss_parse_gsv(nmea_msg, &gps_ctx->gsv);
             } else if(!strncmp(nmea_msg + 3, "VTG", 3)) {
+                res = gnss_parse_vtg(nmea_msg, &gps_ctx->vtg);
             } else if(!strncmp(nmea_msg + 3, "GSA", 3)) {
+                res = gnss_parse_gsa(nmea_msg, &gps_ctx->gsa);
             } else if(!strncmp(nmea_msg + 3, "TXT", 3)) {
             } else {
                 res = false;
