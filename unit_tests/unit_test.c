@@ -75,7 +75,7 @@ static uint32_t unit_test_run_key(const char* key) {
     uint32_t count = 0U;
     for (index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
-        if (ui != NULL) {
+        if ((ui != NULL) && (NULL!=ui->name)) {
             if (NULL != str_case_str(ui->name, key)) {
                 count += unit_test_run(index);
             }

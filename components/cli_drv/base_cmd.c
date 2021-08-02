@@ -226,6 +226,7 @@ bool dump_cmd_result_ex(bool res, const char* message) {
 
 bool reboot(void) {
     LOG_INFO(SYS, "Reboot device");
+    bool res  = false;
 #ifdef HAS_WDT
     bool res = watchdog_set(10, 0);
 #endif

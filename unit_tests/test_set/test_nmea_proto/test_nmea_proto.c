@@ -45,18 +45,35 @@ static bool test_nmea_proto_gngga(void) {
    return true;
 }
 
+const char msg_gnrgll[] = "$GNGLL,5540.70584,N,03737.93404,E,140125.00,A,A*74";
+static bool test_nmea_proto_gngll(void) {
+    gll_t gll= {0};
+    EXPECT_TRUE( gnss_parse_gll((char*)msg_gnrgll, &gll));
+    EXPECT_EQ(140125,gll.time);
+    EXPECT_NEAR(5540.70584,gll.lat,0.000001);
+    EXPECT_EQ('N',gll.lat_dir);
+    EXPECT_NEAR(03737.93404,gll.lon,0.00001);
+    EXPECT_EQ('E',gll.lon_dir);
+    EXPECT_EQ('A',gll.status);
+    EXPECT_EQ('A',gll.pos_mode);
+
+    return true;
+}
+
 static bool test_nmea_checksum(void){
     uint8_t checksum = nmea_calc_checksum((char*)&msg_gnrmc[1], strlen(msg_gnrmc)-4);
     EXPECT_EQ(0x76, checksum);
     return true;
 }
-  
+
 bool test_nmea_proto(void) {
   EXPECT_TRUE(test_nmea_checksum());
   EXPECT_TRUE(test_nmea_proto_gnrmc());
   EXPECT_TRUE(test_nmea_proto_gngga());
+  EXPECT_TRUE(test_nmea_proto_gngll());
   EXPECT_TRUE(nmea_parse((char*) msg_gnrmc, &NmeaData));
   EXPECT_TRUE(nmea_parse((char*) msg_gnrgga, &NmeaData));
+  EXPECT_TRUE(nmea_parse((char*) msg_gnrgll, &NmeaData));
   EXPECT_TRUE(nmea_init());
   return true;
 }

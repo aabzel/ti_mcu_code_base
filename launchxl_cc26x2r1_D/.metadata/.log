@@ -1,0 +1,39 @@
+!SESSION 2021-07-21 18:11:51.345 -----------------------------------------------
+eclipse.buildId=4.14.0.I20191210-0610
+java.version=1.8.0_144
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ru_RU
+Framework arguments:  -application com.ti.ccstudio.apps.projectBuild -ccs.projects launchxl_cc26x2r1_v2 -ccs.buildType full
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data . -application com.ti.ccstudio.apps.projectBuild -ccs.projects launchxl_cc26x2r1_v2 -ccs.buildType full
+
+!ENTRY com.ti.common.core 1 0 2021-07-21 18:11:52.340
+!MESSAGE path=ccs_base/DebugServer
+
+!ENTRY com.ti.common.core 1 0 2021-07-21 18:11:52.342
+!MESSAGE debugServerDir=C:/ti/ccs1040/ccs/ccs_base/DebugServer
+!SESSION 2021-07-21 18:12:31.228 -----------------------------------------------
+eclipse.buildId=4.14.0.I20191210-0610
+java.version=1.8.0_144
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ru_RU
+Framework arguments:  -application com.ti.ccstudio.apps.projectBuild -ccs.projects launchxl_cc26x2r1_v2 -ccs.buildType full -ccs.autoImport
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data . -application com.ti.ccstudio.apps.projectBuild -ccs.projects launchxl_cc26x2r1_v2 -ccs.buildType full -ccs.autoImport
+
+!ENTRY com.ti.common.core 1 0 2021-07-21 18:12:32.237
+!MESSAGE path=ccs_base/DebugServer
+
+!ENTRY com.ti.common.core 1 0 2021-07-21 18:12:32.239
+!MESSAGE debugServerDir=C:/ti/ccs1040/ccs/ccs_base/DebugServer
+!SESSION 2021-07-21 18:31:24.161 -----------------------------------------------
+eclipse.buildId=4.14.0.I20191210-0610
+java.version=1.8.0_144
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ru_RU
+Framework arguments:  -application com.ti.ccstudio.apps.projectBuild -ccs.projects launchxl_cc26x2r1_v2 -ccs.buildType full -ccs.autoImport
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data . -application com.ti.ccstudio.apps.projectBuild -ccs.projects launchxl_cc26x2r1_v2 -ccs.buildType full -ccs.autoImport
+
+!ENTRY com.ti.common.core 1 0 2021-07-21 18:31:25.163
+!MESSAGE path=ccs_base/DebugServer
+
+!ENTRY com.ti.common.core 1 0 2021-07-21 18:31:25.165
+!MESSAGE debugServerDir=C:/ti/ccs1040/ccs/ccs_base/DebugServer

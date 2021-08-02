@@ -65,6 +65,41 @@ bool gnss_parse_gga(char* nmea_msg, gga_t* gga) {
     return res;
 }
 
+//Latitude and longitude, with time of position fix and status
+//$GNGLL,5540.70588,N,03737.93396,E,140121.00,A,A*70
+bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
+    bool res = true;
+    char* ptr = strchr(nmea_msg, ',') + 1;
+
+    //5540.70588,N,03737.93396,E,140121.00,A,A*70
+    res = try_strl2double(ptr, 10, &gll->lat) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //N,03737.93396,E,140121.00,A,A*70
+    gll->lat_dir = ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //03737.93396,E,140121.00,A,A*70
+    res = try_strl2double(ptr, 11, &gll->lon) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //E,140121.00,A,A*70
+    gll->lon_dir = ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //140121.00,A,A*70
+    res = try_strl2uint32(ptr, 6, &gll->time) && res;
+
+    ptr = strchr(ptr, ',') + 1;
+    //A,A*70
+    gll->status = ptr[0];
+
+    ptr = strchr(ptr, ',') + 1;
+    //A*70
+    gll->pos_mode= ptr[0];
+    return res;
+}
+
 /*
 $GNRMC,072316.27,A,5551.85875,N,03755.65965,E,0.010,,290721,11.73,E,A,V*76
 */
@@ -141,6 +176,7 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
             } else if(!strncmp(nmea_msg + 3, "RMC", 3)) {
                 res = gnss_parse_rmc(nmea_msg, &gps_ctx->rmc);
             } else if(!strncmp(nmea_msg + 3, "GLL", 3)) {
+                res = gnss_parse_gll(nmea_msg, &gps_ctx->gll);
             } else if(!strncmp(nmea_msg + 3, "GSV", 3)) {
             } else if(!strncmp(nmea_msg + 3, "VTG", 3)) {
             } else if(!strncmp(nmea_msg + 3, "GSA", 3)) {

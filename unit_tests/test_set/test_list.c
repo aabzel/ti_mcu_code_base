@@ -20,7 +20,7 @@
 #include "writer_generic.h"
 
 /*Compile time assemble array */
-unit_test_info_t test_list[] = {{"type_transform", test_type_transformation},
+const unit_test_info_t test_list[] = {{"type_transform", test_type_transformation},
                                 DATA_UTILS_TEST_SUIT
                                 FLOAT_UTILS_TEST_SUIT
                                 TIME_UTILS_TEST_SUIT

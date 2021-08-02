@@ -54,10 +54,23 @@ typedef struct xGga_t {
     uint32_t diffStation;    /*ID of station providing differential corrections*/
 } gga_t;
 
+
+/* Latitude and longitude, with time of position fix and status */
+typedef struct xGll_t {
+    double lat;              /* Latitude (degrees and minutes) */
+    char lat_dir;            /* North/South indicator */
+    double lon;              /* Longitude (degrees and minutes) */
+    char lon_dir;            /* Longitude direction East/West indicator */
+    uint32_t time;            /* UTC time.hhmmss.ss */
+    char status;         /*Data validity status*/
+    char pos_mode;        /*Positioning mode, see position fix flags description*/
+} gll_t;
+
 /* GNSS context. Used to keep last GNSS infos from GNSS module msgs*/
 typedef struct xNmeaData_t {
     uint8_t is_initialized;
     rmc_t rmc;
+    gll_t gll;
     gga_t gga;
 } NmeaData_t;
 
@@ -70,6 +83,7 @@ uint8_t nmea_calc_checksum(char* nmea_data, uint16_t len);
 bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc);
 bool gnss_parse_gga(char* nmea_msg, gga_t* gga);
 bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx);
+bool gnss_parse_gll(char* nmea_msg, gll_t* gll);
 bool nmea_proc_message(void);
 
 #endif /* NMEA_PARSER_H */

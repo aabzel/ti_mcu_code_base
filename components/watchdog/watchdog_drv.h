@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define WDT_TIMEOUT_MS 1000
+#define WDT_TIMEOUT_MS 10000
 #define CONFIG_WATCHDOG_0 0
 #define CONFIG_WATCHDOG_COUNT 1
 
