@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include <string.h>
 
+#include "bit_utils.h"
 #include "device_id.h"
 #include "debug_info.h"
 #include "diag_sys.h"
@@ -56,6 +57,51 @@ bool cmd_help(int32_t argc, char* argv[]) {
     return res;
 }
 
+//  bc 0xxxxxx s bit
+//  bc 0xxxxxx r bit
+bool cmd_low_level_control(int32_t argc, char* argv[]){
+    bool res = false;
+    if(3 == argc) {
+        uint8_t bit_num=0xFF;
+        uint32_t address_val = 0u;
+        char cmd='n';
+        res = try_str2uint32(argv[0], &address_val);
+        if(false == res) {
+            LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
+        } else {
+            io_printf("address: 0x%08x"CRLF, (unsigned int)address_val);
+        }
+
+        if (true==res) {
+            cmd=argv[1][0];
+            io_printf("cmd: %c"CRLF, cmd);
+        }
+        if (true==res) {
+            res = try_str2uint8(argv[2], &bit_num);
+            if(false == res) {
+                LOG_ERROR(SYS, "Invalid bit_num%s", argv[2]);
+            } else {
+                io_printf("bit: %u"CRLF,  bit_num);
+            }
+        }
+        if(res){
+           res = bit32_control_proc((uint32_t*)address_val, cmd, bit_num);
+           if(false==res){
+               LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
+           }else{
+               io_printf("bit_control_proc OK"CRLF);
+           }
+        }
+
+    } else {
+        LOG_ERROR(SYS, "Usage: bit_ctrl: address cmd bit");
+        LOG_INFO(SYS, "address 0xXXXXXXXX");
+        LOG_INFO(SYS, "cmd [s r t]");
+        LOG_INFO(SYS, "bit [0...31]");
+    }
+    return res;
+}
+
 /* variable address can be obtained from *.elf due to readelf tool*/
 bool cmd_read_memory(int32_t argc, char* argv[]) {
     bool res = false;
@@ -66,11 +112,11 @@ bool cmd_read_memory(int32_t argc, char* argv[]) {
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x\n\r", (unsigned int)address_val);
+            io_printf("address: 0x%08x"CRLF, (unsigned int)address_val);
         }
         if(true == res) {
             value = read_addr_32bit(address_val);
-            io_printf("value: 0x%08x 0b%s\n\r", (unsigned int)value, utoa_bin32(value));
+            io_printf("value: 0x%08x 0b%s"CRLF, (unsigned int)value, utoa_bin32(value));
         }
     }
     if(2 == argc) {
@@ -82,19 +128,19 @@ bool cmd_read_memory(int32_t argc, char* argv[]) {
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x \n\r", (unsigned int)address_val);
+            io_printf("address: 0x%08x "CRLF, (unsigned int)address_val);
         }
         res = try_str2uint32(argv[1], &num_of_byte);
         if(false == res) {
             LOG_ERROR(SYS, "Invalid amount of byte %s", argv[1]);
         } else {
-            io_printf("num_of_byte: %d \n\r", (unsigned int)num_of_byte);
+            io_printf("num_of_byte: %d "CRLF, (unsigned int)num_of_byte);
         }
         for(index = 0; index < num_of_byte; index++) {
             value_byte = read_addr_8bit(address_val + index);
             io_printf("%02x", (unsigned int)value_byte);
         }
-        io_printf("\n\r");
+        io_printf(CRLF);
     }
 
     if((0 == argc) || (2 < argc)) {

@@ -15,7 +15,9 @@ SPI_Params SPI0_Params;
 const uint_least8_t SPI_count = SPI_CNT;
 
 SPICC26X2DMA_Object spiCC26X2DMAObjects[SPI_CNT];
+
 UDMACC26XX_Object udmaObjects[1];
+
 const UDMACC26XX_HWAttrs udmaHWAttrs[1] = {
     {.baseAddr = UDMA0_BASE, .powerMngrId = PowerCC26XX_PERIPH_UDMA, .intNum = INT_DMA_ERR, .intPriority = ~0}};
 const UDMACC26XX_Config UDMACC26XX_config[1] = {

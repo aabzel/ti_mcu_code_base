@@ -5,6 +5,7 @@
 
 #include "byte_utils.h"
 #include "convert.h"
+#include "core_driver.h"
 #include "device_id.h"
 #include "io_utils.h"
 #include "oprintf.h"
@@ -44,6 +45,7 @@ bool is_little_endian(void) {
     bint.u32 = 0x01020304;
     return bint.u8[0] == 4;
 }
+
 void print_version_s(ostream_t* stream) {
     oprintf(stream, "Date     : %s " CRLF, __DATE__);
     oprintf(stream, "Time     : %s " CRLF, __TIME__);
@@ -53,6 +55,7 @@ void print_version_s(ostream_t* stream) {
     //  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
     oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
     oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
+    uint32_t cpi_id = cpu_get_id();
     //  oprintf(stream, "IAR_SYSTEMS_ICC %u " CRLF, __IAR_SYSTEMS_ICC__);
     // oprintf (stream, "ARM_BUILD %u ", ARM_BUILD);
     // oprintf(stream, "IAR VER  :%u " CRLF, __VER__);
@@ -68,7 +71,7 @@ void print_version_s(ostream_t* stream) {
 #ifdef HAS_DEBUG
     oputs(stream, " Debug" CRLF);
 #endif
-    // oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
+    oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
     oputs(stream, "by aabdev" CRLF);
     oputs(stream, CRLF);
 }

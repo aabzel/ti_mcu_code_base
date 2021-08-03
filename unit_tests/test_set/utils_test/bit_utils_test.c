@@ -37,10 +37,34 @@ static bool test_extract_subval_utils64(void) {
   EXPECT_EQ(0x000f, extract_subval_from_64bit(0x000F, 3, 0));
   return true;
 }
+
+static bool test_bit_ctl(void) {
+    uint32_t arr[64] = {0};
+    EXPECT_FALSE(bit32_control_proc(&arr[0],'s',44));
+
+    arr[0] = 0;
+    EXPECT_TRUE(bit32_control_proc(&arr[0],'s',0));
+    EXPECT_EQ(1,arr[0]);
+
+    arr[0] = 0;
+    EXPECT_TRUE(bit32_control_proc(&arr[0],'s',1));
+    EXPECT_EQ(2,arr[0]);
+
+    arr[0] = 0;
+    EXPECT_TRUE(bit32_control_proc((uint32_t *)&arr[0],'s',2));
+    EXPECT_EQ(4,arr[0]);
+
+    arr[0] = 0;
+    EXPECT_TRUE(bit32_control_proc((uint32_t *)&arr[0],'s',4));
+    EXPECT_EQ(16,arr[0]);
+    return true;
+}
+
 /*tsr bit_utils+*/
 bool test_bit_utils(void) {
   EXPECT_EQ(0x0001, generate_32bit_left_mask(1));
   EXPECT_EQ(0x0003, generate_32bit_left_mask(2));
+  EXPECT_TRUE( test_bit_ctl());
   EXPECT_EQ(0x000f, generate_32bit_left_mask(4));
   EXPECT_EQ(MASK_25BIT, generate_32bit_left_mask(25));
   EXPECT_TRUE(test_extract_subval_utils32());

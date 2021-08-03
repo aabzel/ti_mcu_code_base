@@ -73,7 +73,7 @@ bool spi_read_command(int32_t argc, char* argv[]) {
             if(false == res) {
                 LOG_ERROR(SPI, "Unable to read SPI");
             } else {
-                print_mem(array,array_len,false);
+                print_mem(array, array_len, false);
                 io_printf(CRLF);
             }
         }

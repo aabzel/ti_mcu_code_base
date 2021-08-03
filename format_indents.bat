@@ -4,11 +4,15 @@ set work_space_dir=%cd%
 set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortUsingDeclarations: true , UseTab: Never,PointerAlignment: Left, BreakBeforeBraces: Attach, TabWidth: 4,ColumnLimit: 120 }"
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
+
+
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\bit_utils.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\bit_utils.h
+
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\spi\spi_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\spi\spi_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\spi\spi_drv.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\spi\spi_drv.c
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\common_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\watchdog\watchdog_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\watchdog\watchdog_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\watchdog\watchdog_drv.h
@@ -21,6 +25,9 @@ set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\common\common_functions.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\clocks\clocks.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\clocks\clocks.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\base_cmd.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\base_cmd.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\common_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\shell_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\cli_manager.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\cli_manager.h
@@ -57,9 +64,6 @@ set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\core_drv\core_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\core_drv\core_commands.c
-
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\shell.h
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\cli_drv\shell.c
 
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\uart\uart_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\components\uart\uart_commands.c

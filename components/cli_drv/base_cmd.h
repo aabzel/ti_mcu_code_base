@@ -40,7 +40,6 @@ bool cmd_find_addr(int32_t argc, char* argv[]);
 bool cmd_help(int32_t argc, char* argv[]);
 bool cmd_launch_function(int32_t argc, char* argv[]);
 bool cmd_version(int32_t argc, char* argv[]);
-bool cmd_read_memory(int32_t argc, char* argv[]);
 bool cmd_repeat(int32_t argc, char* argv[]);
 bool cmd_ascii(int32_t argc, char* argv[]);
 bool cmd_try_stack(int32_t argc, char* argv[]);
@@ -53,7 +52,13 @@ bool cmd_wd_test_hw(int32_t argc, char* argv[]);
 bool cmd_sysinfo(int32_t argc, char* argv[]);
 bool reboot(void);
 
-#define TEST_FIRMWARE_COMMANDS SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),
+bool cmd_low_level_control(int32_t argc, char* argv[]);
+bool cmd_read_memory(int32_t argc, char* argv[]);
+
+#define TEST_FIRMWARE_COMMANDS                                            \
+   SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),   \
+   SHELL_CMD("bit_ctrl", "bc", cmd_low_level_control, "Set Clear bit in memory address"),
+
 
 #if defined(BOOTLOADER)
 #define DEFAULT_COMMANDS                                                                                               \

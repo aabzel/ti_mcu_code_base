@@ -7,8 +7,6 @@
 
 uint32_t HAL_GetTick(void) { return g_up_time_ms; }
 
-// void HAL_IncTick(void) { g_up_time_ms++; }
-
 void delay_ms(uint32_t delay_in_ms) {
     uint32_t init_time_in_ms = g_up_time_ms;
     while(g_up_time_ms < (init_time_in_ms + delay_in_ms)) {
@@ -26,9 +24,9 @@ uint64_t get_time_ms64(void) { return g_up_time_ms; }
 uint64_t get_time_us(void) { return g_up_time_ms * 1000; }
 
 uint32_t pause_ms(uint32_t delay_in_ms) {
-    uint32_t i=0, j=0, c=0;
+    uint32_t i = 0, j = 0, c = 0;
     for(i = 0; i < 1000; i++) {
-        for(j = 0; j < 10000; j++) {
+        for(j = 0; j < 5000; j++) {
             c = i + j;
         }
     }
