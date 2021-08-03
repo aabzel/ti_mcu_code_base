@@ -24,7 +24,7 @@ extern const uint_least8_t CONFIG_UART_0_CONST;
 
 extern UartHandle_t huart[CONFIG_UART_COUNT];
 
-bool init_uart(void);
+bool uart_init(void);
 
 void cli_tune_read_char(void);
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len);

@@ -195,7 +195,7 @@ static bool init_uart1(void) {
     return res;
 }
 
-bool init_uart(void) {
+bool uart_init(void) {
     bool res = true;
     res = init_uart1() && res;
     res = init_uart0() && res;
