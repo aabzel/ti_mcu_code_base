@@ -50,7 +50,7 @@ void print_version_s(ostream_t* stream) {
     oprintf(stream, "TimeStamp: %s " CRLF, __TIMESTAMP__);
     oprintf(stream, "Cstd     : %u " CRLF, __STDC__);
     oprintf(stream, "STDC_VER : %u " CRLF, __STDC_VERSION__);
-  //  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
+    //  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
     oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
     oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
     //  oprintf(stream, "IAR_SYSTEMS_ICC %u " CRLF, __IAR_SYSTEMS_ICC__);
@@ -88,7 +88,6 @@ bool is_arr_pat(uint8_t* arr, uint32_t size, uint8_t patt) {
     }
     return res;
 }
-
 
 void print_sys_info(void) {
     io_printf("Firmware launched.." CRLF);

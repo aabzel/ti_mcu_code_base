@@ -16,6 +16,12 @@
 #define TIM_COMMANDS
 #endif
 
+#ifdef HAS_RTC
+#include "rtc_commands.h"
+#else
+#define RTC_COMMANDS
+#endif
+
 #ifdef HAS_SPI
 #include "spi_commands.h"
 #else
@@ -40,6 +46,18 @@
 #define UART_COMMANDS
 #endif
 
+#ifdef HAS_ADC
+#include "adc_commands.h"
+#else
+#define ADC_COMMANDS
+#endif
+
+#ifdef HAS_I2C
+#include "i2c_commands.h"
+#else
+#define I2C_COMMANDS
+#endif
+
 #ifdef HAS_WDT
 #include "watchdog_commands.h"
 #else
@@ -47,14 +65,17 @@
 #endif
 
 #define COMMON_COMMANDS                                                                                                \
-    DEFAULT_COMMANDS                                                                                                   \
+    ADC_COMMANDS                                                                                                       \
     CLOCK_COMMANDS                                                                                                     \
-    GPIO_COMMANDS                      \
-    WDT_COMMANDS                                                                                                       \
+    DEFAULT_COMMANDS                                                                                                   \
+    I2C_COMMANDS                                                                                                       \
+    GPIO_COMMANDS                                                                                                      \
+    RTC_COMMANDS                                                                                                       \
+    SPI_COMMANDS                                                                                                       \
     TASK_COMMANDS                                                                                                      \
+    TIM_COMMANDS                                                                                                       \
     UART_COMMANDS                                                                                                      \
     UNIT_TEST_COMMANDS                                                                                                 \
-    TIM_COMMANDS                                                                                                       \
-    SPI_COMMANDS
+    WDT_COMMANDS
 
 #endif /* COMMON_COMMANDS_H */

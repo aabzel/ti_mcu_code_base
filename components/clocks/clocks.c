@@ -24,3 +24,13 @@ uint32_t get_time_ms32(void) { return g_up_time_ms; }
 uint64_t get_time_ms64(void) { return g_up_time_ms; }
 
 uint64_t get_time_us(void) { return g_up_time_ms * 1000; }
+
+uint32_t pause_ms(uint32_t delay_in_ms) {
+    uint32_t i=0, j=0, c=0;
+    for(i = 0; i < 1000; i++) {
+        for(j = 0; j < 10000; j++) {
+            c = i + j;
+        }
+    }
+    return c;
+}

@@ -59,6 +59,10 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/core_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/tim"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/i2c"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/adc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/rtc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/watchdog"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/clocks"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/spi"/>
@@ -83,6 +87,7 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE.890004560" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_SYMBOLS}"/>
+									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
@@ -164,7 +169,7 @@
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/launchxl_cc26x2r1_v2"/>
+			<resource resourceType="PROJECT" workspacePath="/launchxl_cc26x2r1_D"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>

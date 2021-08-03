@@ -33,6 +33,8 @@ uint64_t runtime_2_us(uint64_t rtc);
 void delay_ms(uint32_t delay_in_ms);
 void delay_us(uint32_t delay_in_us);
 
+uint32_t pause_ms(uint32_t delay_in_ms);
+
 uint32_t HAL_GetTick(void);
 bool SystemClock_Config(void);
 

@@ -9,6 +9,14 @@
 #include "clocks.h"
 #include "sys_tick.h"
 
+#ifdef HAS_RTC
+#include "rtc_drv.h"
+#endif
+
+#ifdef HAS_I2C
+#include "i2c_drv.h"
+#endif
+
 #ifdef HAS_SPI
 #include "spi_drv.h"
 #endif
@@ -34,6 +42,14 @@ bool hw_init(void) {
   res = watchdog_init()&&res;
 #endif
 
+#ifdef HAS_ADC
+  res = adc_init()&&res;
+#endif
+
+#ifdef HAS_RTC
+  res = rtc_init()&&res;
+#endif
+
 #ifdef HAS_GPIO
   res = gpio_init() && res;
 #endif
@@ -44,6 +60,10 @@ bool hw_init(void) {
 
 #ifdef HAS_SPI
   res = spi_init()&&res;
+#endif
+
+#ifdef HAS_I2C
+  res = i2c_init()&&res;
 #endif
 
   return res;

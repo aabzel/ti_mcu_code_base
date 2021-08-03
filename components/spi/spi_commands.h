@@ -10,12 +10,14 @@ extern "C" {
 
 #include "ostream.h"
 
-bool spi_send_command(int32_t argc, char* argv[]);
+bool spi_read_command(int32_t argc, char* argv[]);
+bool spi_write_command(int32_t argc, char* argv[]);
 bool spi_diag_command(int32_t argc, char* argv[]);
 
-#define SPI_COMMANDS                                                                  \
-        SHELL_CMD("spi_diag", "sd", spi_diag_command, "SPI diag"),                    \
-        SHELL_CMD("spi_send", "ss", spi_send_command, "SPI send hex str"),
+#define SPI_COMMANDS                                                                                                   \
+    SHELL_CMD("spi_diag", "sd", spi_diag_command, "SPI diag"),                                                         \
+        SHELL_CMD("spi_read", "sr", spi_read_command, "SPI read"),                                                     \
+        SHELL_CMD("spi_write", "sw", spi_write_command, "SPI write hex str"),
 
 #ifdef __cplusplus
 }

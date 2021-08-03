@@ -22,7 +22,7 @@
 #endif /*HAS_WDT*/
 
 #ifdef HAS_TIM
-#include "tim.h"
+#include "tim_drv.h"
 #endif /*HAS_TIM*/
 
 #include "terminal_codes.h"
@@ -264,7 +264,7 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
         uint32_t iter = 0U;
         replace_char(read_command, '_', ' ');
         for(iter = 0; iter < num; iter++) {
-            io_printf("execute command [%s]" CRLF, read_command);
+            io_printf("%03u: execute command [%s]" CRLF, iter, read_command);
             strncpy(temp_command,read_command,sizeof(temp_command));
             process_shell_cmd(temp_command);
             wait_in_loop_ms(period_ms);

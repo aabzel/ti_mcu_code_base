@@ -56,59 +56,54 @@ typedef struct xGga_t {
     uint32_t diffStation;    /*ID of station providing differential corrections*/
 } gga_t;
 
-
 /* Latitude and longitude, with time of position fix and status */
 typedef struct xGll_t {
-    double lat;              /* Latitude (degrees and minutes) */
-    char lat_dir;            /* North/South indicator */
-    double lon;              /* Longitude (degrees and minutes) */
-    char lon_dir;            /* Longitude direction East/West indicator */
-    uint32_t time;            /* UTC time.hhmmss.ss */
-    char status;         /*Data validity status*/
-    char pos_mode;        /*Positioning mode, see position fix flags description*/
+    double lat;    /* Latitude (degrees and minutes) */
+    char lat_dir;  /* North/South indicator */
+    double lon;    /* Longitude (degrees and minutes) */
+    char lon_dir;  /* Longitude direction East/West indicator */
+    uint32_t time; /* UTC time.hhmmss.ss */
+    char status;   /*Data validity status*/
+    char pos_mode; /*Positioning mode, see position fix flags description*/
 } gll_t;
 
 typedef struct xGsa_t {
-    char opMode;       /* Operation mode:*/
-    uint8_t navMode;   /* Navigation mode  */
-    double PDOP;       /* Position dilution of precision */
-    double HDOP;       /* Horizontal dilution of precision */
-    double VDOP;       /* Vertical dilution of precision */
-    uint8_t systemId;  /* NMEA-defined GNSS system ID*/
+    char opMode;      /* Operation mode:*/
+    uint8_t navMode;  /* Navigation mode  */
+    double PDOP;      /* Position dilution of precision */
+    double HDOP;      /* Horizontal dilution of precision */
+    double VDOP;      /* Vertical dilution of precision */
+    uint8_t systemId; /* NMEA-defined GNSS system ID*/
 } gsa_t;
 
-
 /*Course over ground and ground speed*/
-typedef struct xVtg_t{
-    double cogt;/*Course over ground (true)*/
-    double cogm;/*Course over ground (magnetic)*/
-    double sogn;/*Speed over ground*/
-    double sogk;/*Speed over ground*/
-    char cogtUnit;/*Course over ground units: T (degrees true, fixed field)*/
-    char cogmUnit;/*Course over ground units: M (degrees magnetic, fixed field)*/
-    char sognUnit;/*Speed over ground units: N (knots, fixed field)*/
-    char sogkUnit;/*Speed over ground units: K*/
+typedef struct xVtg_t {
+    double cogt;   /*Course over ground (true)*/
+    double cogm;   /*Course over ground (magnetic)*/
+    double sogn;   /*Speed over ground*/
+    double sogk;   /*Speed over ground*/
+    char cogtUnit; /*Course over ground units: T (degrees true, fixed field)*/
+    char cogmUnit; /*Course over ground units: M (degrees magnetic, fixed field)*/
+    char sognUnit; /*Speed over ground units: N (knots, fixed field)*/
+    char sogkUnit; /*Speed over ground units: K*/
     char posMode;  /*Mode indicator*/
-}vtg_t;
+} vtg_t;
 
-
-typedef struct xSatellite_t{
+typedef struct xSatellite_t {
     uint16_t svid; /*Satellite ID*/
-    uint8_t elv;/*Elevation (<= 90)*/
-    uint16_t az;/*Azimuth (range: 0-359)*/
-    uint8_t cno;/*Signal strength (C/N0, range: 0-99), null when not tracking*/
-}Satellite_t;
-
+    uint8_t elv;   /*Elevation (<= 90)*/
+    uint16_t az;   /*Azimuth (range: 0-359)*/
+    uint8_t cno;   /*Signal strength (C/N0, range: 0-99), null when not tracking*/
+} Satellite_t;
 
 /*GNSS satellites in view*/
 typedef struct xGsv_t {
-  uint8_t numMsg;/*Number of messages, total number of GSV messages being output (range: 1-9)*/
-  uint8_t msgNum;/*Number of this message*/
-  uint8_t signalId; /*NMEA-defined GNSS signal ID*/
-  Satellite_t sat[NUM_OF_PARSED_SAT];
-  uint16_t numSV;/*Number of known satellites in view regarding both the talker ID and the signalId*/
-}gsv_t;
-
+    uint8_t numMsg;   /*Number of messages, total number of GSV messages being output (range: 1-9)*/
+    uint8_t msgNum;   /*Number of this message*/
+    uint8_t signalId; /*NMEA-defined GNSS signal ID*/
+    Satellite_t sat[NUM_OF_PARSED_SAT];
+    uint16_t numSV; /*Number of known satellites in view regarding both the talker ID and the signalId*/
+} gsv_t;
 
 /* GNSS context. Used to keep last GNSS infos from GNSS module msgs*/
 typedef struct xNmeaData_t {
@@ -119,20 +114,20 @@ typedef struct xNmeaData_t {
     gga_t gga; /*Global positioning system fix data*/
     gsa_t gsa; /*GNSS DOP and active satellites*/
     gsv_t gsv; /*GNSS satellites in view*/
-    //rlm_t rlm; /*Return link message (RLM) */
-    //ths_t ths; /*True heading and status*/
-    //txt_t txt; /*Text transmission*/
-    //zda_t zda Time and date
-    //dtm_t dtm Datum reference
-    //grs_t grs GNSS range residuals
-    //gst_t GNSS pseudorange error statistics
-    //gqq_t Poll a standard message (Talker ID GQ)
-    //gns_t GNSS fix data
-    //glq_t Poll a standard message
-    //gaq_t Poll a standard message (Talker ID GA)
-    //gpq_t Poll a standard message (Talker ID GP)
-    //gbq_t Poll a standard message (Talker ID GB)
-    //gbs_t GNSS satellite fault detection
+    // rlm_t rlm; /*Return link message (RLM) */
+    // ths_t ths; /*True heading and status*/
+    // txt_t txt; /*Text transmission*/
+    // zda_t zda Time and date
+    // dtm_t dtm Datum reference
+    // grs_t grs GNSS range residuals
+    // gst_t GNSS pseudorange error statistics
+    // gqq_t Poll a standard message (Talker ID GQ)
+    // gns_t GNSS fix data
+    // glq_t Poll a standard message
+    // gaq_t Poll a standard message (Talker ID GA)
+    // gpq_t Poll a standard message (Talker ID GP)
+    // gbq_t Poll a standard message (Talker ID GB)
+    // gbs_t GNSS satellite fault detection
 } NmeaData_t;
 
 extern NmeaProtocol_t NmeaProto;

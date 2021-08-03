@@ -6,6 +6,7 @@
 /*mandatory space NoRTOS.h needs stdint.h*/
 #include <NoRTOS.h>
 
+#include "clocks.h"
 #include "common_functions.h"
 #include "gpio_drv.h"
 #include "hw_init.h"
@@ -16,10 +17,10 @@
 
 int main(void) {
     bool res = false;
+    pause_ms(2000);
+
     res = hw_init() && res;
-
     res = sw_init() && res;
-
     io_printf("init %s" CRLF, res ? "OF" : "Error");
 
     common_main_loop();

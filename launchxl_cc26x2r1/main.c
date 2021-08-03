@@ -15,7 +15,6 @@
 #include "sw_init.h"
 #include "uart_drv.h"
 
-
 int main(void) {
     bool res = false;
     res = hw_init() && res;
@@ -24,7 +23,7 @@ int main(void) {
 
     io_printf("init %s" CRLF, res ? "OF" : "Error");
     print_version();
-    print_sys_info() ;
+    print_sys_info();
 
     common_main_loop();
     /*Unreachable line*/
