@@ -8,6 +8,7 @@
 
 #include "clocks.h"
 #include "common_functions.h"
+#include "debug_info.h"
 #include "gpio_drv.h"
 #include "hw_init.h"
 #include "io_utils.h"
@@ -21,7 +22,10 @@ int main(void) {
 
     res = hw_init() && res;
     res = sw_init() && res;
+
     io_printf("init %s" CRLF, res ? "OF" : "Error");
+    print_version();
+    print_sys_info();
 
     common_main_loop();
     /*Unreachable line*/
