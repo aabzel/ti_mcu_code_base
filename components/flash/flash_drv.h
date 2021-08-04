@@ -4,8 +4,20 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include <ti/drivers/NVS.h>
+
 #define NOR_FLASH_BASE 0x00000000
 #define NOR_FLASH_SIZE (352 * 1024)
+#define NVS_SIZE 0x4000
+#define CONFIG_NVSINTERNAL 0
+#define CONFIG_TI_DRIVERS_NVS_COUNT 1
+#define CONFIG_NVS_COUNT 1
+#define NVS_BUFF_SIZE 64
+
+extern const uint_least8_t CONFIG_NVSINTERNAL_CONST;
+extern uint8_t nvs_buffer[NVS_BUFF_SIZE];
+extern NVS_Handle nvsHandle;
+extern NVS_Attrs regionAttrs;
 
 bool flash_init(void);
 bool flash_write(uint32_t* addr, uint8_t* array, uint16_t array_len);

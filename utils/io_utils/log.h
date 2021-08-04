@@ -28,6 +28,7 @@ typedef enum {
   I2C,
   UART,
   SPI,
+  NVS,
   DIAG,
   ALL_FACILITY
 } log_facility_t;

@@ -9,6 +9,10 @@
 #include "clocks.h"
 #include "sys_tick.h"
 
+#ifdef HAS_FLASH
+#include "flash_drv.h"
+#endif
+
 #ifdef HAS_RTC
 #include "rtc_drv.h"
 #endif
@@ -38,6 +42,11 @@ bool hw_init(void) {
   Board_init();
   NoRTOS_start();
   SysTickInit();
+
+#ifdef HAS_FLASH
+  res = flash_init()&&res;
+#endif
+
 #ifdef HAS_WDT
   res = watchdog_init()&&res;
 #endif
