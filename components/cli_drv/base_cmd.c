@@ -269,18 +269,6 @@ bool dump_cmd_result_ex(bool res, const char* message) {
     return res;
 }
 
-bool cmd_soft_reboot(int32_t argc, char* argv[]) {
-    (void)(argv);
-    bool res = false;
-    if(0 == argc) {
-        res = true;
-        res = reboot();
-    } else {
-        LOG_ERROR(SYS, "Usage: reboot");
-    }
-    return res;
-}
-
 #define MAX_RPT_CMD_LEN 50U
 bool cmd_repeat(int32_t argc, char* argv[]) {
     bool res = false;

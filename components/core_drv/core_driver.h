@@ -12,6 +12,7 @@ extern "C" {
 #define CPU_SCS_CPUID (CPU_SCS_BASE+0xD00)
 
 uint32_t cpu_get_id(void);
+bool reboot(void);
 
 #ifdef __cplusplus
 }

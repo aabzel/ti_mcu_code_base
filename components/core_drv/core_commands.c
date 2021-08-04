@@ -62,12 +62,15 @@ bool vector_table_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool reboot(void) {
-    LOG_INFO(SYS, "Reboot device");
+bool cmd_soft_reboot(int32_t argc, char* argv[]) {
+    (void)(argv);
     bool res = false;
-    SysCtrlSystemReset();
-#ifdef HAS_WDT
-    res = watchdog_set(10, 0);
-#endif
+    if(0 == argc) {
+        res = true;
+        LOG_INFO(SYS, "Reboot device");
+        res = reboot();
+    } else {
+        LOG_ERROR(SYS, "Usage: reboot");
+    }
     return res;
 }

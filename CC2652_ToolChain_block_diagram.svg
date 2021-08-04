@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.70911898"
-     inkscape:cx="384.98476"
-     inkscape:cy="1300.2049"
+     inkscape:zoom="1.0028457"
+     inkscape:cx="940.32414"
+     inkscape:cy="385.90185"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
@@ -141,14 +141,19 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:9.12028px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.228007"
-       x="117.30637"
-       y="85.890831"
+       x="70.946762"
+       y="70.219978"
        id="text262269"><tspan
          sodipodi:role="line"
          id="tspan262267"
          style="stroke-width:0.228007"
-         x="117.30637"
-         y="85.890831">Windows 10</tspan></text>
+         x="70.946762"
+         y="70.219978"></tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.228007"
+         x="70.946762"
+         y="81.620331"
+         id="tspan6485">Microsoft Windows 10.0</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.228007;stroke-opacity:1"
        id="rect265493"
@@ -443,5 +448,86 @@
        height="9.6077251"
        x="78.296791"
        y="401.76385" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.19145px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0797865"
+       x="21.054659"
+       y="50.039787"
+       id="text1522"><tspan
+         sodipodi:role="line"
+         id="tspan1520"
+         style="stroke-width:0.0797865"
+         x="21.054659"
+         y="50.039787">192.168.97.133</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.19145px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0797865"
+       x="21.5718"
+       y="53.381317"
+       id="text2648"><tspan
+         sodipodi:role="line"
+         id="tspan2646"
+         style="stroke-width:0.0797865"
+         x="21.5718"
+         y="53.381317">E0-BE-03-31-35-3D</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.9387px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0734677"
+       x="20.999376"
+       y="42.674835"
+       id="text5599"><tspan
+         sodipodi:role="line"
+         id="tspan5597"
+         style="stroke-width:0.0734677"
+         x="20.999376"
+         y="42.674835"></tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.0734677"
+         x="20.999376"
+         y="46.348213"
+         id="tspan5601">178.238.117.178</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.305352"
+       id="rect8022"
+       width="27.5702"
+       height="14.697712"
+       x="137.32669"
+       y="38.451077" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="140.478"
+       y="47.758793"
+       id="text9302"><tspan
+         sodipodi:role="line"
+         id="tspan9300"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="140.478"
+         y="47.758793">100BaseTX</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="251.4799"
+       y="117.15829"
+       id="text13942"><tspan
+         sodipodi:role="line"
+         id="tspan13940"
+         style="stroke-width:0.264583"
+         x="251.4799"
+         y="117.15829">1728×972, 24 бита</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.264999"
+       id="rect14284"
+       width="161.18593"
+       height="55.967335"
+       x="229.09296"
+       y="93.278893" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.264999"
+       id="rect14284-8"
+       width="161.18593"
+       height="55.967335"
+       x="227.56346"
+       y="15.812535" />
   </g>
 </svg>
