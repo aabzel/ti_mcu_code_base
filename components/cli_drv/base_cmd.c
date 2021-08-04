@@ -5,18 +5,18 @@
 #include <string.h>
 
 #include "bit_utils.h"
-#include "device_id.h"
-#include "debug_info.h"
-#include "diag_sys.h"
 #include "cli_manager.h"
 #include "clocks.h"
 #include "convert.h"
+#include "debug_info.h"
+#include "device_id.h"
+#include "diag_sys.h"
 #include "io_utils.h"
 #include "log.h"
 #include "none_blocking_pause.h"
 #include "oprintf.h"
-#include "str_utils.h"
 #include "read_mem.h"
+#include "str_utils.h"
 
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
@@ -59,38 +59,38 @@ bool cmd_help(int32_t argc, char* argv[]) {
 
 //  bc 0xxxxxx s bit
 //  bc 0xxxxxx r bit
-bool cmd_low_level_control(int32_t argc, char* argv[]){
+bool cmd_low_level_control(int32_t argc, char* argv[]) {
     bool res = false;
     if(3 == argc) {
-        uint8_t bit_num=0xFF;
+        uint8_t bit_num = 0xFF;
         uint32_t address_val = 0u;
-        char cmd='n';
+        char cmd = 'n';
         res = try_str2uint32(argv[0], &address_val);
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x"CRLF, (unsigned int)address_val);
+            io_printf("address: 0x%08x" CRLF, (unsigned int)address_val);
         }
 
-        if (true==res) {
-            cmd=argv[1][0];
-            io_printf("cmd: %c"CRLF, cmd);
+        if(true == res) {
+            cmd = argv[1][0];
+            io_printf("cmd: %c" CRLF, cmd);
         }
-        if (true==res) {
+        if(true == res) {
             res = try_str2uint8(argv[2], &bit_num);
             if(false == res) {
                 LOG_ERROR(SYS, "Invalid bit_num%s", argv[2]);
             } else {
-                io_printf("bit: %u"CRLF,  bit_num);
+                io_printf("bit: %u" CRLF, bit_num);
             }
         }
-        if(res){
-           res = bit32_control_proc((uint32_t*)address_val, cmd, bit_num);
-           if(false==res){
-               LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
-           }else{
-               io_printf("bit_control_proc OK"CRLF);
-           }
+        if(res) {
+            res = bit32_control_proc((uint32_t*)address_val, cmd, bit_num);
+            if(false == res) {
+                LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
+            } else {
+                io_printf("bit_control_proc OK" CRLF);
+            }
         }
 
     } else {
@@ -112,11 +112,11 @@ bool cmd_read_memory(int32_t argc, char* argv[]) {
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x"CRLF, (unsigned int)address_val);
+            io_printf("address: 0x%08x" CRLF, (unsigned int)address_val);
         }
         if(true == res) {
             value = read_addr_32bit(address_val);
-            io_printf("value: 0x%08x 0b%s"CRLF, (unsigned int)value, utoa_bin32(value));
+            io_printf("value: 0x%08x 0b%s" CRLF, (unsigned int)value, utoa_bin32(value));
         }
     }
     if(2 == argc) {
@@ -128,13 +128,13 @@ bool cmd_read_memory(int32_t argc, char* argv[]) {
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x "CRLF, (unsigned int)address_val);
+            io_printf("address: 0x%08x " CRLF, (unsigned int)address_val);
         }
         res = try_str2uint32(argv[1], &num_of_byte);
         if(false == res) {
             LOG_ERROR(SYS, "Invalid amount of byte %s", argv[1]);
         } else {
-            io_printf("num_of_byte: %d "CRLF, (unsigned int)num_of_byte);
+            io_printf("num_of_byte: %d " CRLF, (unsigned int)num_of_byte);
         }
         for(index = 0; index < num_of_byte; index++) {
             value_byte = read_addr_8bit(address_val + index);
@@ -269,16 +269,6 @@ bool dump_cmd_result_ex(bool res, const char* message) {
     return res;
 }
 
-
-bool reboot(void) {
-    LOG_INFO(SYS, "Reboot device");
-    bool res  = false;
-#ifdef HAS_WDT
-    res = watchdog_set(10, 0);
-#endif
-    return res;
-}
-
 bool cmd_soft_reboot(int32_t argc, char* argv[]) {
     (void)(argv);
     bool res = false;
@@ -311,7 +301,7 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
         replace_char(read_command, '_', ' ');
         for(iter = 0; iter < num; iter++) {
             io_printf("%03u: execute command [%s]" CRLF, iter, read_command);
-            strncpy(temp_command,read_command,sizeof(temp_command));
+            strncpy(temp_command, read_command, sizeof(temp_command));
             process_shell_cmd(temp_command);
             wait_in_loop_ms(period_ms);
         }

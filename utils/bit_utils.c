@@ -78,13 +78,13 @@ uint64_t extract_subval_from_64bit(uint64_t in_val, uint8_t max_bit, uint8_t min
     return outVal;
 }
 
-bool bit32_control_proc(uint32_t *p_reg, char cmd, uint8_t bit_num) {
+bool bit32_control_proc(uint32_t* p_reg, char cmd, uint8_t bit_num) {
     bool res = false;
     if(bit_num <= 31) {
         res = true;
-       // uint32_t volatile * const p_reg = (uint32_t *) address_val;
-        io_printf("%p %u " CRLF,p_reg, p_reg[0]);
-        //uint32_t* val = (uint32_t*)address_val;
+        // uint32_t volatile * const p_reg = (uint32_t *) address_val;
+        io_printf("%p %u " CRLF, p_reg, p_reg[0]);
+        // uint32_t* val = (uint32_t*)address_val;
         switch(cmd) {
         case 's':
             p_reg[0] = p_reg[0] | (1U << (bit_num));
@@ -99,7 +99,7 @@ bool bit32_control_proc(uint32_t *p_reg, char cmd, uint8_t bit_num) {
             res = false;
             break;
         }
-        io_printf("%p %u " CRLF,p_reg,p_reg[0]);
+        io_printf("%p %u " CRLF, p_reg, p_reg[0]);
     }
     return res;
 }

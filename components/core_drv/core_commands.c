@@ -2,6 +2,7 @@
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <sys_ctrl.h>
 
 #include "base_cmd.h"
 #include "convert.h"
@@ -23,15 +24,18 @@ extern int main(void);
 bool core_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
+        uint32_t clock;
         /* Obtain the number of the currently executing interrupt. */
         // io_printf("R0: 0x%08x" CRLF, R0);
         io_printf("main: 0x%08p" CRLF, main);
         io_printf("SysTickIntHandler: 0x%08p" CRLF, SysTickIntHandler);
+        clock = SysCtrlClockGet();
+        io_printf("clock: %u Hz" CRLF, clock);
         // io_printf("IntDefaultHandler: 0x%08p" CRLF, IntDefaultHandler);
 
         res = true;
     } else {
-        LOG_ERROR(SYS, "Usage: cd ");
+        LOG_ERROR(SYS, "Usage: cd");
     }
     return res;
 }
@@ -55,5 +59,15 @@ bool vector_table_command(int32_t argc, char* argv[]) {
     } else {
         LOG_ERROR(SYS, "Usage: cd ");
     }
+    return res;
+}
+
+bool reboot(void) {
+    LOG_INFO(SYS, "Reboot device");
+    bool res = false;
+    SysCtrlSystemReset();
+#ifdef HAS_WDT
+    res = watchdog_set(10, 0);
+#endif
     return res;
 }

@@ -15,7 +15,6 @@ extern "C" {
 #define SHELL_MAX_ARG_COUNT 12
 #define SHELL_MAX_CMD_LEN 40
 
-
 extern bool show_shell_prompt;
 extern bool user_mode;
 
@@ -43,7 +42,7 @@ bool cmd_version(int32_t argc, char* argv[]);
 bool cmd_repeat(int32_t argc, char* argv[]);
 bool cmd_ascii(int32_t argc, char* argv[]);
 bool cmd_try_stack(int32_t argc, char* argv[]);
-bool cmd_soft_reboot(int32_t argc, char* argv[]);
+
 void start_banner(void);
 bool dump_cmd_result(bool res);
 bool dump_cmd_result_ex(bool res, const char* message);
@@ -55,10 +54,9 @@ bool reboot(void);
 bool cmd_low_level_control(int32_t argc, char* argv[]);
 bool cmd_read_memory(int32_t argc, char* argv[]);
 
-#define TEST_FIRMWARE_COMMANDS                                            \
-   SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),   \
-   SHELL_CMD("bit_ctrl", "bc", cmd_low_level_control, "Set Clear bit in memory address"),
-
+#define TEST_FIRMWARE_COMMANDS                                                                                         \
+    SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),                                               \
+        SHELL_CMD("bit_ctrl", "bc", cmd_low_level_control, "Set Clear bit in memory address"),
 
 #if defined(BOOTLOADER)
 #define DEFAULT_COMMANDS                                                                                               \
@@ -82,7 +80,6 @@ bool cmd_read_memory(int32_t argc, char* argv[]);
         SHELL_CMD("ascii", "ascii", cmd_ascii, "Print ascii"),                                                         \
         SHELL_CMD("find_addr", "fadr", cmd_find_addr, "Find address by value"),                                        \
         SHELL_CMD("sysinfo", "si", cmd_sysinfo, "Print information about threads & OS"),                               \
-        SHELL_CMD("soft_reboot", "reboot", cmd_soft_reboot, "Reboot board"),                                           \
         SHELL_CMD("wd_test", "wd_test", cmd_wd_test, "Stop board (for watchdog test)"),                                \
         EXT_WDT_TEST TEST_DEFAULT_COMMANDS TEST_FIRMWARE_COMMANDS
 #endif

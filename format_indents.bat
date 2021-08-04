@@ -5,7 +5,6 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
 
-
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\bit_utils.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\bit_utils.h
 
