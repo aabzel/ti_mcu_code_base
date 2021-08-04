@@ -134,18 +134,37 @@ ADC_Handle   adcHandle=NULL;
 ADC_Params   adcParams;
 uint16_t adcValue0;
 
+const uint32_t AdcChannelLUT[11]={
+  ADC_COMPB_IN_DCOUPL,
+ ADC_COMPB_IN_VSS,
+  ADC_COMPB_IN_VDDS,
+  ADC_COMPB_IN_AUXIO7,
+ ADC_COMPB_IN_AUXIO6,
+ADC_COMPB_IN_AUXIO5,
+ADC_COMPB_IN_AUXIO4,
+ADC_COMPB_IN_AUXIO3,
+ADC_COMPB_IN_AUXIO2,
+ADC_COMPB_IN_AUXIO1,
+ ADC_COMPB_IN_AUXIO0,
+};
+
 bool adc_init(void) {
     bool res = false;
-    ADC_init();
+    AUXADCDisable();
+    AUXADCFlushFifo();
+    AUXADCSelectInput(ADC_COMPB_IN_VDDS );
+    AUXADCEnableAsync(AUXADC_REF_FIXED, AUXADC_TRIGGER_MANUAL);
+    AUXADCGenManualTrigger();
+    //ADC_init();
 
-    ADC_Params_init(&adcParams);
-    adcParams.isProtected = true;
+//    ADC_Params_init(&adcParams);
+  //  adcParams.isProtected = true;
   // adcHandle = ADC_open(0, &adcParams);
-    if (NULL == adcHandle) {
-        res = false;
-    }else{
-        res = true;
-    }
+  //  if (NULL == adcHandle) {
+  //      res = false;
+  //  }else{
+  //      res = true;
+  //  }
     return res;
 }
 

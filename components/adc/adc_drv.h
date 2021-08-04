@@ -35,6 +35,7 @@ typedef enum CC26X2R1_LAUNCHXL_ADCName {
     CC26X2R1_LAUNCHXL_ADCCOUNT
 } CC26X2R1_LAUNCHXL_ADCName;
 
+extern const uint32_t AdcChannelLUT[11];
 extern uint16_t adcValue0;
 //12-bit ADC
 bool adc_init(void);

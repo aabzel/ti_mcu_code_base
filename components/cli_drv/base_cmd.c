@@ -277,18 +277,24 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
         char temp_command[MAX_RPT_CMD_LEN] = "";
         res = true;
         uint32_t period_ms;
-        uint32_t num;
+        uint32_t num_of_try;
         strncpy(read_command, argv[0], sizeof(read_command));
         if(true == res) {
             res = try_str2uint32(argv[1], &period_ms);
+            if( false == res ) {
+                LOG_ERROR(SYS, "Unable to parse period_ms",argv[1]);
+            }
         }
         if(true == res) {
-            res = try_str2uint32(argv[2], &num);
+            res = try_str2uint32(argv[2], &num_of_try);
+            if ( false == res ) {
+                LOG_ERROR(SYS, "Unable to parse num_of_try",argv[2]);
+            }
         }
         uint32_t iter = 0U;
         replace_char(read_command, '_', ' ');
-        for(iter = 0; iter < num; iter++) {
-            io_printf("%03u: execute command [%s]" CRLF, iter, read_command);
+        for(iter = 0; iter < num_of_try; iter++) {
+            io_printf("%03u/%u: execute command [%s]" CRLF, iter, num_of_try, read_command);
             strncpy(temp_command, read_command, sizeof(temp_command));
             process_shell_cmd(temp_command);
             wait_in_loop_ms(period_ms);
