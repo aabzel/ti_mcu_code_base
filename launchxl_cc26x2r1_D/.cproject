@@ -60,6 +60,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/core_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/tim"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/flash"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/i2c"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/adc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/rtc"/>
@@ -90,6 +91,7 @@
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
+									<listOptionValue builtIn="false" value="HAS_FLASH"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>

@@ -219,7 +219,7 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
     while(init_tx_cnt == huart[uart_num].tx_cnt) {
         time_out++;
-        if(20000000 < time_out) {
+        if(10000000 < time_out) {
             res = false;
             break;
         }

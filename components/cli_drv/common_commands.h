@@ -40,6 +40,12 @@
 #define CLOCK_COMMANDS
 #endif
 
+#ifdef HAS_FLASH
+#include "flash_commands.h"
+#else
+#define FLASH_COMMANDS
+#endif
+
 #ifdef HAS_UART
 #include "uart_commands.h"
 #else
@@ -68,6 +74,7 @@
     ADC_COMMANDS                                                                                                       \
     CLOCK_COMMANDS                                                                                                     \
     DEFAULT_COMMANDS                                                                                                   \
+    FLASH_COMMANDS                                                                                                     \
     I2C_COMMANDS                                                                                                       \
     GPIO_COMMANDS                                                                                                      \
     RTC_COMMANDS                                                                                                       \
