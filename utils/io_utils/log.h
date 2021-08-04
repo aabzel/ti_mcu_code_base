@@ -27,6 +27,7 @@ typedef enum {
   SYS,
   I2C,
   UART,
+  ADC,
   SPI,
   NVS,
   DIAG,

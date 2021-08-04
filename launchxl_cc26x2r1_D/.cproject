@@ -90,6 +90,7 @@
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_SYMBOLS}"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
+									<listOptionValue builtIn="false" value="HAS_ADC"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>

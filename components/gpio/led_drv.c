@@ -32,5 +32,6 @@ bool proc_led(void) {
     uint32_t cut_tick = get_time_ms32();
     uint8_t val = pwm_calc_sample(cut_tick, greenLed.period_ms, greenLed.duty, greenLed.phase_ms);
     GPIO_write(CONFIG_GPIO_LED_1, val);
+    // if err turn red LED
     return true;
 }

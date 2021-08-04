@@ -36,14 +36,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.8974404"
-     inkscape:cx="469.57996"
-     inkscape:cy="412.66117"
+     inkscape:cx="398.43149"
+     inkscape:cy="232.94539"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:document-rotation="0">
@@ -84,7 +84,7 @@
        orientation="0,-1"
        id="guide309523" />
     <sodipodi:guide
-       position="67.639977,152.58983"
+       position="88.839097,151.03687"
        orientation="0,-1"
        id="guide313711" />
     <sodipodi:guide
@@ -119,6 +119,10 @@
        position="39.950201,65.624996"
        orientation="0,-1"
        id="guide1575" />
+    <sodipodi:guide
+       position="77.730332,74.122255"
+       orientation="1,0"
+       id="guide12342" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -365,11 +369,11 @@
        d="m 234.37818,111.18426 h 10.64437"
        id="path52387" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.402178;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.319119;stroke-opacity:1"
        id="rect52538"
-       width="72.850563"
-       height="46.937759"
-       x="122.15447"
+       width="93.186058"
+       height="23.103249"
+       x="101.81898"
        y="22.450201" />
     <text
        xml:space="preserve"
@@ -394,31 +398,32 @@
          x="178.51521"
          y="28.520908">20 pin</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.195865px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 147.83291,69.876236 V 100.14926"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Send)"
+       d="M 147.83291,45.55345 V 98.486842"
        id="path61444" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.25964px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.106491"
-       x="144.65892"
-       y="80.512367"
+       style="font-style:normal;font-weight:normal;font-size:1.72912px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.043228"
+       x="145.73492"
+       y="80.502083"
        id="text62856"><tspan
          sodipodi:role="line"
          id="tspan62854"
-         style="stroke-width:0.106491"
-         x="144.65892"
-         y="80.512367">8</tspan></text>
+         style="stroke-width:0.043228"
+         x="145.73492"
+         y="80.502083">8</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.61154px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.195865"
-       x="147.90491"
-       y="88.464012"
-       id="text63850"><tspan
+       x="-91.612701"
+       y="151.37389"
+       id="text63850"
+       transform="rotate(-90)"><tspan
          sodipodi:role="line"
          id="tspan63848"
          style="font-size:2.61154px;stroke-width:0.195865"
-         x="147.90491"
-         y="88.464012">Analog</tspan></text>
+         x="-91.612701"
+         y="151.37389">Analog</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.195865px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 149.10242,80.154416 -2.73433,1.855444"
@@ -785,8 +790,9 @@
          y="51.047459">JTAG</tspan></text>
     <path
        style="fill:none;stroke:#ff8a00;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 57.13389,51.740018 h 6.10113"
-       id="path107107" />
+       d="m 57.13389,51.740018 1.638978,0"
+       id="path107107"
+       sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#ffa300;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 59.34349,50.882563 1.2532,1.648953"
@@ -1006,20 +1012,21 @@
          x="176.1879"
          y="140.41315">SPI</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 168.37549,99.955418 V 69.218926"
+       style="fill:none;stroke:#000000;stroke-width:0.468298px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1336);marker-start:url(#Arrow1Lstart)"
+       d="M 168.37549,99.955418 V 45.55345"
        id="path198320" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="171.40956"
-       y="86.763786"
-       id="text199798"><tspan
+       x="69.574425"
+       y="-169.22437"
+       id="text199798"
+       transform="rotate(90)"><tspan
          sodipodi:role="line"
          id="tspan199796"
          style="font-size:3.52778px;stroke-width:0.264583"
-         x="171.40956"
-         y="86.763786">I2C</tspan></text>
+         x="69.574425"
+         y="-169.22437">I2C</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.264583"
        id="rect202750"
@@ -1577,8 +1584,9 @@
        sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 175.36107,138.18867 h 42.72658 V 72.370518 H 188.24701 V 69.38796"
-       id="path1410" />
+       d="m 175.36107,138.18867 h 42.72658 V 72.370518 h -29.84064 l 0,-26.817068"
+       id="path1410"
+       sodipodi:nodetypes="ccccc" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1589,8 +1597,8 @@
      id="layer5"
      inkscape:label="UARTS">
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.199681px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 125.66525,100.0516 V 69.38796"
+       style="fill:none;stroke:#000000;stroke-width:0.354891px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 125.66525,100.0516 V 45.55345"
        id="path55913" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.195865px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1621,12 +1629,7 @@
          y="125.18812">UART0</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 125.5185,72.175599 H 112.99622 L 77.718083,59.023836"
-       id="path309266"
-       sodipodi:nodetypes="ccc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 77.718083,59.023836 -15.417876,0.04293 -4.902454,-0.07135"
+       d="m 125.63795,59.023836 -63.337743,0.04293 -4.902454,-0.07135"
        id="path309268"
        sodipodi:nodetypes="ccc" />
     <path
@@ -1784,9 +1787,9 @@
        sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#ffa300;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 130.91126,159.71349 H 72.868098 L 79.76096,105.23207 V 52.02939 L 63.23502,51.740018"
+       d="M 130.91126,137.08915 H 77.730332 c 0,0 0,-85.05976 0,-85.05976 H 58.87745"
        id="path219025"
-       sodipodi:nodetypes="ccccc" />
+       sodipodi:nodetypes="cccc" />
     <path
        style="fill:none;stroke:#ffb800;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 131.92588,146.12308 -2.01983,1.16615"
@@ -2498,6 +2501,17 @@
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m -28.969123,94.99502 v 5.1245 l 11.190238,0"
        id="path20205" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.41111px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="161.47411"
+       y="123.54582"
+       id="text1892"><tspan
+         sodipodi:role="line"
+         id="tspan1890"
+         style="font-size:1.41111px;stroke-width:0.264583"
+         x="161.47411"
+         y="123.54582">12-bit ADC</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

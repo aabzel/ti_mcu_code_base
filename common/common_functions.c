@@ -13,6 +13,10 @@
 #include "task_info.h"
 #include "uart_drv.h"
 
+#ifdef HAS_ADC
+#include "adc_drv.h"
+#endif
+
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
@@ -30,6 +34,11 @@ void common_loop(uint64_t loop_start_time) {
     if(0u == loop_start_time) {
         return;
     }
+
+#ifdef HAS_ADC
+    MEASURE_TASK_INTERVAL(ADC, 100, adc_proc);
+#endif
+
 #ifdef HAS_WDT
     MEASURE_TASK_INTERVAL(WDT, 1, proc_watchdog);
 #endif
@@ -49,13 +58,13 @@ void common_loop(uint64_t loop_start_time) {
 }
 
 uint32_t g_iteration_cnt = 10;
+
 void common_main_loop(void) {
-    io_printf("Main Task started, time_ms=%u" CRLF, get_time_ms32());
+    io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
 
     for(;;) {
         g_iteration_cnt++;
         MAIN_LOOP_START;
-        // MEASURE_TASK_INTERVAL(LED, 10000, common_update_leds_state);
         common_loop(loop_start_time);
     }
 }
