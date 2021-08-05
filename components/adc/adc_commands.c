@@ -2,6 +2,7 @@
 
 #include <aux_adc.h>
 #include <inttypes.h>
+#include <stdio.h>
 
 #include "adc_drv.h"
 #include "convert.h"
@@ -47,6 +48,20 @@ bool adc_start_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+bool adc_init_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        res = adc_init();
+        if(false == res) {
+            LOG_ERROR(ADC, "ADC init error");
+        }
+    } else {
+        LOG_ERROR(ADC, "Usage: ait");
+    }
+    return res;
+}
+
 bool adc_wait_fifo_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
@@ -60,26 +75,18 @@ bool adc_wait_fifo_command(int32_t argc, char* argv[]) {
 }
 
 static char* adc_stat2str(uint32_t stat) {
-    char* name = "no";
-    switch(stat) {
-    case AUXADC_FIFO_EMPTY_M:
-        name = "EMPTY";
-        break;
-    case AUXADC_FIFO_ALMOST_FULL_M:
-        name = "ALMOST_FULL";
-        break;
-    case AUXADC_FIFO_FULL_M:
-        name = "FULL";
-        break;
-    case AUXADC_FIFO_UNDERFLOW_M:
-        name = "UNDERFLOW";
-        break;
-    case AUXADC_FIFO_OVERFLOW_M:
-        name = "OVERFLOW";
-        break;
-    default:
-        name = "undef";
-        break;
+    static char name[40] = "";
+    if(stat & AUXADC_FIFO_EMPTY_M) {
+        snprintf(name, sizeof(name), "%s empty", name);
+    }
+    if(stat & AUXADC_FIFO_FULL_M) {
+        snprintf(name, sizeof(name), "%s full", name);
+    }
+    if(stat & AUXADC_FIFO_UNDERFLOW_M) {
+        snprintf(name, sizeof(name), "%s underflow", name);
+    }
+    if(stat & AUXADC_FIFO_OVERFLOW_M) {
+        snprintf(name, sizeof(name), "%s overflow", name);
     }
 
     return name;
@@ -90,18 +97,19 @@ bool adc_diag_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         res = true;
         uint32_t stat;
-        int32_t gain ;
+        int32_t gain;
+        io_printf("ChipId: %u" CRLF, HapiGetChipId());
         stat = AUXADCGetFifoStatus();
         uint32_t vap = AUXADCPopFifo();
-        gain = AUXADCGetAdjustmentGain(  AUXADC_REF_FIXED);
+        gain = AUXADCGetAdjustmentGain(AUXADC_REF_FIXED);
         io_printf("fixed gain: %u" CRLF, gain);
-        gain = AUXADCGetAdjustmentGain(  AUXADC_REF_VDDS_REL);
+        gain = AUXADCGetAdjustmentGain(AUXADC_REF_VDDS_REL);
         io_printf("VDD gain: %u" CRLF, gain);
         io_printf("pop: 0x%08x %u" CRLF, vap, vap);
         io_printf("stat: 0x%08x %s" CRLF, stat, adc_stat2str(stat));
         io_printf("0: %u" CRLF, adcValue0);
     } else {
-        LOG_ERROR(ADC, "Usage: ain");
+        LOG_ERROR(ADC, "Usage: ad");
     }
     return res;
 }
@@ -133,28 +141,29 @@ bool adc_all_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        int32_t  microvolts;
-        uint32_t adc_value_pop=0,adc_value = 0, ch=0;
+        int32_t microvolts = 0;
+        uint32_t adc_value_pop = 0, i = 0;
         static const table_col_t cols[] = {
-            {7, "input"}, {10, "popValue"}, {10, "getValue"}, {11, "microvolts"} , {11, "volts"},
+            {7, "input"}, {5, "DIO"}, {5, "pin"}, {10, "popValue"}, {10, "getValue"}, {11, "microvolts"}, {11, "volts"},
         };
 
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
-        for(ch = 0; ch < ARRAY_SIZE(AdcChannelLUT); ch++) {
-            AUXADCSelectInput(AdcChannelLUT[ch]);
-            AUXADCEnableAsync(AUXADC_REF_FIXED, AUXADC_TRIGGER_MANUAL);
-            AUXADCGenManualTrigger();
-            //adc_value_pop = AUXADCPopFifo( );
-            adc_value = AUXADCReadFifo();
-            microvolts = AUXADCValueToMicrovolts(  AUXADC_FIXED_REF_VOLTAGE_NORMAL, adc_value);
-            io_printf(TSEP"   %2u  "TSEP , AdcChannelLUT[ch]);
-            io_printf(" %8u " TSEP , adc_value_pop);
-            io_printf(" %8u " TSEP , adc_value);
-            io_printf(" %9u "TSEP , microvolts);
-            io_printf(" %f " TSEP , 0.000001f*((float)microvolts));
-            io_printf(CRLF);
+        for(i = 0; i < ARRAY_SIZE(AdcItemsLUT); i++) {
+            if(0xFF != AdcItemsLUT[i].adc_channel) {
+                microvolts = AUXADCValueToMicrovolts(AUXADC_FIXED_REF_VOLTAGE_NORMAL, AdcCodes[i]);
+                io_printf(TSEP "   %2u  " TSEP, AdcItemsLUT[i].adc_channel);
+                io_printf("  %2u " TSEP, AdcItemsLUT[i].io_pin);
+                io_printf("  %2u " TSEP, AdcItemsLUT[i].pin);
+                io_printf(" %8u " TSEP, adc_value_pop);
+                io_printf(" %8u " TSEP, AdcCodes[i]);
+                io_printf(" %9u " TSEP, microvolts);
+                io_printf("  %7.3f  " TSEP, 0.000001f * ((float)microvolts));
+                io_printf(CRLF);
+            }
         }
         table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    } else {
+        LOG_ERROR(ADC, "Usage: ain");
     }
     return res;
 }

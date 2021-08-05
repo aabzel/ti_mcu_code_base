@@ -1,3 +1,4 @@
+/*data sheet page 1665*/
 #ifndef ADC_DRV_H
 #define ADC_DRV_H
 
@@ -15,6 +16,8 @@
 #define CC26X2R1_LAUNCHXL_DIO28_ANALOG          IOID_28
 #define CC26X2R1_LAUNCHXL_DIO29_ANALOG          IOID_29
 #define CC26X2R1_LAUNCHXL_DIO30_ANALOG          IOID_30
+
+#define ADC_ITEMS_CNT 12
 /*!
  *  @def    CC26X2R1_LAUNCHXL_ADCName
  *  @brief  Enum of ADCs
@@ -35,7 +38,16 @@ typedef enum CC26X2R1_LAUNCHXL_ADCName {
     CC26X2R1_LAUNCHXL_ADCCOUNT
 } CC26X2R1_LAUNCHXL_ADCName;
 
-extern const uint32_t AdcChannelLUT[11];
+
+typedef struct xADCItem_t{
+    uint8_t adc_channel;
+    uint8_t io_pin;
+    uint8_t pin;
+}ADCItem_t;
+
+extern uint32_t AdcCodes[ADC_ITEMS_CNT];
+extern const ADCItem_t AdcItemsLUT[ADC_ITEMS_CNT];
+
 extern uint16_t adcValue0;
 //12-bit ADC
 bool adc_init(void);
