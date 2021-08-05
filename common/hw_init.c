@@ -37,6 +37,10 @@
 #include "adc_drv.h"
 #endif
 
+#ifdef HAS_DAC
+#include "dac_drv.h"
+#endif
+
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
 #endif
@@ -53,6 +57,10 @@ bool hw_init(void) {
 
 #ifdef HAS_ADC
   res = adc_init()&&res;
+#endif
+
+#ifdef HAS_DAC
+  res = dac_init() && res;
 #endif
 
 #ifdef HAS_FLASH

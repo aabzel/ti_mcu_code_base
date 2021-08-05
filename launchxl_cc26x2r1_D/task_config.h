@@ -5,6 +5,7 @@
   TASK(UART1)                                                                  \
   TASK(LED)                                                                    \
   TASK(ADC)                                                                    \
+  TASK(DAC)                                                                    \
   TASK(WDT)                                                                    \
   TASK(CLI)                                                                    \
   TASK(UBX)                                                                    \

@@ -17,6 +17,10 @@
 #include "adc_drv.h"
 #endif
 
+#ifdef HAS_DAC
+#include "dac_drv.h"
+#endif
+
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
@@ -34,6 +38,10 @@ void common_loop(uint64_t loop_start_time) {
     if(0u == loop_start_time) {
         return;
     }
+
+#ifdef HAS_DAC
+    MEASURE_TASK_INTERVAL(DAC, 1, dac_proc);
+#endif
 
 #ifdef HAS_ADC
     MEASURE_TASK_INTERVAL(ADC, 100, adc_proc);

@@ -17,13 +17,13 @@
 #include "uart_drv.h"
 
 int main(void) {
-    bool res = false;
+    bool res = true;
     pause_ms(2000);
 
     res = hw_init() && res;
     res = sw_init() && res;
 
-    io_printf("init %s" CRLF, res ? "OF" : "Error");
+    io_printf(CRLF "init [%s]" CRLF, (true==res) ? "OK!" : "Error!");
     print_version();
     print_sys_info();
 

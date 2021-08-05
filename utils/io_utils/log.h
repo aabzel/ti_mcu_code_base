@@ -24,13 +24,14 @@ typedef enum {
 
 typedef enum {
   UNKNOWN_FACILITY,
-  SYS,
-  I2C,
-  UART,
   ADC,
-  SPI,
-  NVS,
+  DAC,
   DIAG,
+  I2C,
+  NVS,
+  SPI,
+  SYS,
+  UART,
   ALL_FACILITY
 } log_facility_t;
 

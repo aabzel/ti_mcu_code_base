@@ -3,6 +3,7 @@
 #include <aux_adc.h>
 #include <inttypes.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "adc_drv.h"
 #include "convert.h"
@@ -76,16 +77,17 @@ bool adc_wait_fifo_command(int32_t argc, char* argv[]) {
 
 static char* adc_stat2str(uint32_t stat) {
     static char name[40] = "";
-    if(stat & AUXADC_FIFO_EMPTY_M) {
+    memset(name, 0x00, sizeof(name));
+    if(AUXADC_FIFO_EMPTY_M == (stat & AUXADC_FIFO_EMPTY_M)) {
         snprintf(name, sizeof(name), "%s empty", name);
     }
-    if(stat & AUXADC_FIFO_FULL_M) {
+    if(AUXADC_FIFO_FULL_M == (stat & AUXADC_FIFO_FULL_M)) {
         snprintf(name, sizeof(name), "%s full", name);
     }
-    if(stat & AUXADC_FIFO_UNDERFLOW_M) {
+    if(AUXADC_FIFO_UNDERFLOW_M == (stat & AUXADC_FIFO_UNDERFLOW_M)) {
         snprintf(name, sizeof(name), "%s underflow", name);
     }
-    if(stat & AUXADC_FIFO_OVERFLOW_M) {
+    if(AUXADC_FIFO_OVERFLOW_M == (stat & AUXADC_FIFO_OVERFLOW_M)) {
         snprintf(name, sizeof(name), "%s overflow", name);
     }
 
@@ -100,14 +102,13 @@ bool adc_diag_command(int32_t argc, char* argv[]) {
         int32_t gain;
         io_printf("ChipId: %u" CRLF, HapiGetChipId());
         stat = AUXADCGetFifoStatus();
-        uint32_t vap = AUXADCPopFifo();
+        // uint32_t vap = AUXADCPopFifo();
         gain = AUXADCGetAdjustmentGain(AUXADC_REF_FIXED);
         io_printf("fixed gain: %u" CRLF, gain);
         gain = AUXADCGetAdjustmentGain(AUXADC_REF_VDDS_REL);
         io_printf("VDD gain: %u" CRLF, gain);
-        io_printf("pop: 0x%08x %u" CRLF, vap, vap);
+        // io_printf("pop: 0x%08x %u" CRLF, vap, vap);
         io_printf("stat: 0x%08x %s" CRLF, stat, adc_stat2str(stat));
-        io_printf("0: %u" CRLF, adcValue0);
     } else {
         LOG_ERROR(ADC, "Usage: ad");
     }
@@ -153,7 +154,7 @@ bool adc_all_command(int32_t argc, char* argv[]) {
                 microvolts = AUXADCValueToMicrovolts(AUXADC_FIXED_REF_VOLTAGE_NORMAL, AdcCodes[i]);
                 io_printf(TSEP "   %2u  " TSEP, AdcItemsLUT[i].adc_channel);
                 io_printf("  %2u " TSEP, AdcItemsLUT[i].io_pin);
-                io_printf("  %2u " TSEP, AdcItemsLUT[i].pin);
+                io_printf(" %3u " TSEP, AdcItemsLUT[i].pin);
                 io_printf(" %8u " TSEP, adc_value_pop);
                 io_printf(" %8u " TSEP, AdcCodes[i]);
                 io_printf(" %9u " TSEP, microvolts);

@@ -58,6 +58,12 @@
 #define ADC_COMMANDS
 #endif
 
+#ifdef HAS_DAC
+#include "dac_commands.h"
+#else
+#define DAC_COMMANDS
+#endif
+
 #ifdef HAS_I2C
 #include "i2c_commands.h"
 #else
@@ -77,6 +83,7 @@
     FLASH_COMMANDS                                                                                                     \
     I2C_COMMANDS                                                                                                       \
     GPIO_COMMANDS                                                                                                      \
+    DAC_COMMANDS                                                                                                       \
     RTC_COMMANDS                                                                                                       \
     SPI_COMMANDS                                                                                                       \
     TASK_COMMANDS                                                                                                      \
