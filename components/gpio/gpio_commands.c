@@ -89,14 +89,14 @@ bool gpio_set_command(int32_t argc, char* argv[]) {
 static bool diag_gpio(char* key_word1, char* key_word2) {
     bool res = false;
 
-    static const table_col_t cols[] = {{5, "No"},{5, "dio"},  {5, "aux"},  {5, "pin"},   {5, "dir"},   {7, "level"},
-                                       {6, "mode"}, {6, "pull"}, {13, "type"}, {8, "AltFun"}};
+    static const table_col_t cols[] = {{5, "No"},    {5, "dio"},  {5, "aux"},  {5, "pin"},   {5, "dir"},
+                                       {7, "level"}, {5, "irq"}, {6, "edge"}, {6, "pull"}, {13, "type"}, {10, "AltFun"}};
     uint16_t num = 0;
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     uint8_t logic_level = 0xFF;
 
     uint8_t io_pin = 0;
-    char temp_str[80];
+    char temp_str[120];
     for(io_pin = 0; io_pin <= ARRAY_SIZE(PinTable); io_pin++) {
         res = gpio_get_state(io_pin, &logic_level);
         if(true == res) {
@@ -106,14 +106,15 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
             snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, get_mcu_pin(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %2s  " TSEP, temp_str, get_pin_dir(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s  %s    " TSEP, temp_str, (1 == logic_level) ? "H" : "L");
-            snprintf(temp_str, sizeof(temp_str), "%s %3s  " TSEP, temp_str, get_gpio_mode(io_pin));
+            snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, (1==is_edge_irq_en(io_pin))?"Y" : "N");
+            snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_edge(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_pull_mode(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %11s " TSEP, temp_str, get_gpio_type(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s AF%02u   " TSEP, temp_str, get_gpio_alter_fun(io_pin));
+            snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, get_gpio_alter_fun(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
 
             if(is_contain(temp_str, key_word1, key_word2)) {
-                io_printf(TSEP" %3u ", num);
+                io_printf(TSEP " %3u ", num);
                 io_printf("%s", temp_str);
                 num++;
             }

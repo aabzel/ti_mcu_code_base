@@ -190,7 +190,7 @@ int __strcasecmp(const char* s1, const char* s2) {
 
 bool is_contain(char* temp_str, char* key_word1, char* key_word2) {
     bool res = false;
-    if (temp_str) {
+    if(temp_str) {
         if((0 == strcmp("", key_word1)) && (0 == strcmp("", key_word2))) {
             res = true;
         } else {

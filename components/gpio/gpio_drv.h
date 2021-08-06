@@ -8,6 +8,7 @@
 
 #define DIN31_0_REG_ADDR 0x400220C0
 #define DOE31_0_REG_ADDR 0x400220D0
+#define IOC_BASE 0x40081000
 
 #define DIO_CNT 31
 
@@ -59,14 +60,17 @@ bool gpio_init(void);
 /*GPIO API*/
 bool gpio_get_state(uint8_t io_pin, uint8_t* logic_level);
 bool gpio_set_state(uint8_t io_pin, uint8_t logic_level);
-char* get_gpio_mode(uint8_t io_pin);
-uint8_t get_gpio_alter_fun(uint8_t io_pin);
-char* get_gpio_pull_mode(uint8_t io_pin);
-char* get_gpio_type(uint8_t io_pin);
+const char* get_gpio_mode(uint8_t io_pin);
+const char* get_gpio_type(uint8_t io_pin);
+const char* get_pin_dir(uint8_t io_pin);
+const char* get_gpio_alter_fun(uint8_t dio_pin);
+const char* get_gpio_pull_mode(uint8_t dio_pin);
+bool is_edge_irq_en(uint8_t dio_pin);
 bool gpio_toggle(uint8_t io_pin);
 bool proc_led(void);
+const char* get_gpio_edge(uint8_t dio_pin);
 uint8_t get_mcu_pin(uint8_t io_pin);
 uint8_t get_aux_num(uint8_t io_pin);
-char* get_pin_dir(uint8_t io_pin);
+
 
 #endif /* INIT_GPIO_H  */
