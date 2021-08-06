@@ -2,8 +2,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #ifdef DeviceFamily_CC26X2
 #include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
@@ -115,7 +115,7 @@ static bool init_uart0(void) {
     bool res = false;
     memset(&huart[0], 0x00, sizeof(huart[0]));
     char echoPrompt[40] = "";
-    snprintf(echoPrompt,sizeof(echoPrompt),"UART0 %u\n\r" ,UART0_BAUD_RATE);
+    snprintf(echoPrompt, sizeof(echoPrompt), "UART0 %u\n\r", UART0_BAUD_RATE);
     UART_Params uart0Params;
     huart[0].rx_cnt = 0;
     huart[0].tx_cnt = 0;
@@ -166,7 +166,7 @@ static bool init_uart1(void) {
     huart[1].rx_buff = rx_buff1;
     strncpy(huart[1].name, "Ublox", sizeof(huart[1].name));
     char echoPrompt[40] = ""; //
-    snprintf(echoPrompt,sizeof(echoPrompt),"UART1 %u\n\r" ,UART1_BAUD_RATE);
+    snprintf(echoPrompt, sizeof(echoPrompt), "UART1 %u\n\r", UART1_BAUD_RATE);
     UART_Params uart1Params;
 
     /* Call driver init functions */

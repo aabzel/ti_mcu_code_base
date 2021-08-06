@@ -58,7 +58,7 @@ bool dac_diag_command(int32_t argc, char* argv[]) {
         io_printf("dac_val 0x%x %u" CRLF, dac_val, dac_val);
         uint32_t dac_ctl = HWREG(AUX_ANAIF_BASE + AUX_ANAIF_O_DACCTL);
         parse_dac_ctl_reg(dac_ctl);
-        uint8_t mux1_code= HWREGB(AUX_ADI4_BASE + ADI_4_AUX_O_MUX1);
+        uint8_t mux1_code = HWREGB(AUX_ADI4_BASE + ADI_4_AUX_O_MUX1);
         io_printf("MUX1 0x%x %u" CRLF, mux1_code, mux1_code);
     } else {
         LOG_ERROR(DAC, "Usage: dad");
@@ -150,4 +150,5 @@ bool dac_set_mux_command(int32_t argc, char* argv[]) {
         LOG_ERROR(DAC, "Usage: dsm dac_pin_id");
         LOG_INFO(DAC, "dac_pin_id");
     }
+    return res;
 }

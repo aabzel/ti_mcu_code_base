@@ -8,6 +8,10 @@
 #define LED_DUTY 50 /*percent*/
 #define LED_PHASE 0
 
+#define LED_RED_PERIOD_MS 500
+#define LED_RED_DUTY 50 /*percent*/
+#define LED_RED_PHASE 1
+
 typedef struct xLed_t {
     uint32_t period_ms;
     uint32_t phase_ms;
@@ -15,6 +19,7 @@ typedef struct xLed_t {
 } Led_t;
 
 extern Led_t greenLed;
+extern Led_t redLed;
 
 bool led_init(void);
 bool proc_led(void);

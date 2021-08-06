@@ -8,6 +8,7 @@
 
 typedef struct xADCItem_t{
     uint8_t adc_channel;
+    uint8_t aux_pin;
     uint8_t io_pin;
     uint8_t pin;
 }ADCItem_t;

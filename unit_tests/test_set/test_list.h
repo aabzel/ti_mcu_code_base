@@ -18,6 +18,7 @@ bool test_64bit_mult(void);
 bool test_utoa_bin8(void);
 bool test_float_to_uint16(void);
 bool test_type_transformation(void);
+bool test_array(void) ;
 
 #ifdef __cplusplus
 }

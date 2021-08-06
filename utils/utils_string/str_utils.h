@@ -10,16 +10,16 @@
 extern "C" {
 #endif
 
-#define STRNCPY(dst, src)                                                      \
-  do {                                                                         \
-    strncpy((dst), (src), sizeof(dst));                                        \
-    (dst)[sizeof(dst) - 1] = 0;                                                \
-  } while (0)
-#define STRNCAT(dst, src)                                                      \
-  do {                                                                         \
-    strncat((dst), (src), sizeof(dst) - strlen(dst) - 1);                      \
-    (dst)[sizeof(dst) - 1] = 0;                                                \
-  } while (0)
+#define STRNCPY(dst, src)                                                                                              \
+    do {                                                                                                               \
+        strncpy((dst), (src), sizeof(dst));                                                                            \
+        (dst)[sizeof(dst) - 1] = 0;                                                                                    \
+    } while(0)
+#define STRNCAT(dst, src)                                                                                              \
+    do {                                                                                                               \
+        strncat((dst), (src), sizeof(dst) - strlen(dst) - 1);                                                          \
+        (dst)[sizeof(dst) - 1] = 0;                                                                                    \
+    } while(0)
 #define BZERO_S(s) bzero(&(s), sizeof(s));
 
 #define STRINGIFY(x) #x
@@ -27,14 +27,15 @@ extern "C" {
 
 #define LOCATION __FILE__ ":" TOSTRING(__LINE__)
 
-void strrepl(char *str, char from, char to);
-void str_trim(char *str);
-bool wildcmp(const char *wild, const char *string);
-bool str2uppercase(char *const inOutStr);
-const char *str_case_str(const char *const text, const char *const pattern);
-char *rx_strtok_r(char *s, const char *delim, char **lasts);
-int replace_char(char *in_out_str, char orig, char rep);
+void strrepl(char* str, char from, char to);
+void str_trim(char* str);
+bool wildcmp(const char* wild, const char* string);
+bool str2uppercase(char* const inOutStr);
+const char* str_case_str(const char* const text, const char* const pattern);
+char* rx_strtok_r(char* s, const char* delim, char** lasts);
+int replace_char(char* in_out_str, char orig, char rep);
 int __strcasecmp(const char* s1, const char* s2);
+bool is_contain(char* temp_str, char* key_word1, char* key_word2);
 
 #ifdef __cplusplus
 }

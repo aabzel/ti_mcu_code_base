@@ -30,6 +30,7 @@ const unit_test_info_t test_list[] = {{"type_transform", test_type_transformatio
                                 UBLOX_PROTO_TEST_SUIT
                                 BYTE_UTILS_TEST_SUIT
                                 BIT_UTILS_TEST_SUIT
+                                {"array",test_array},
                                 {"64bit_mult", test_64bit_mult},
                                 {"flt_u16", test_float_to_uint16},
                                 {"utoa_bin8", test_utoa_bin8}};
@@ -53,6 +54,15 @@ bool test_float_to_uint16(void) {
     }
     return true;
 }
+
+bool test_array(void) {
+    uint8_t a=1;
+    uint8_t b[4]={1,2,3,4};
+    io_printf("a[b]: %u "CRLF,a[b]);
+    io_printf("b[a]: %u "CRLF,b[a]);
+    return true;
+}
+
 
 bool test_utoa_bin8(void) {
     EXPECT_STREQ((char*)"1010_1010", (char*)utoa_bin8(0xaa));

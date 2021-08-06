@@ -17,7 +17,7 @@ bool gpio_toggle_command(int32_t argc, char* argv[]);
 
 #define GPIO_COMMANDS                                                                                                  \
     SHELL_CMD("gpio_list", "gl", gpio_list_command, "GPIO list"),                                                      \
-    SHELL_CMD("gpio_toggle", "gt", gpio_toggle_command, "GPIO toggle"),                                                      \
+        SHELL_CMD("gpio_toggle", "gt", gpio_toggle_command, "GPIO toggle"),                                            \
         SHELL_CMD("gpio_get", "gg", gpio_get_command, "GPIO get"),                                                     \
         SHELL_CMD("gpio_set", "gs", gpio_set_command, "GPIO set"),
 

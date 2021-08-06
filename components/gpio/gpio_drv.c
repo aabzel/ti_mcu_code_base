@@ -2,10 +2,14 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/pin/PINCC26XX.h>
+
+#include "data_utils.h"
 
 const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST = CONFIG_GPIO_BUTTON_0;
 const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST = CONFIG_GPIO_BUTTON_1;
@@ -129,19 +133,19 @@ bool gpio_init(void) {
     return true;
 }
 
-bool gpio_get_state(char port_pin_char, uint8_t port_pin_num, uint8_t* logic_level) {
+bool gpio_get_state(uint8_t port_pin_num, uint8_t* logic_level) {
     uint_fast8_t value = GPIO_read((uint_least8_t)port_pin_num);
     *logic_level = (uint8_t)value;
     return true;
 }
 
-bool gpio_set_state(char port_pin_char, uint8_t port_pin_num, uint8_t logic_level) {
+bool gpio_set_state(uint8_t port_pin_num, uint8_t logic_level) {
     GPIO_write((uint_least8_t)port_pin_num, (unsigned int)logic_level);
     return true;
 }
 
 /**/
-char* get_gpio_mode(char port, uint8_t pin) {
+char* get_gpio_mode(uint8_t pin) {
     char* name = "_";
     GPIO_PinConfig pin_cfg = 0;
     if(pin < CONFIG_TI_DRIVERS_PIN_COUNT) {
@@ -150,15 +154,60 @@ char* get_gpio_mode(char port, uint8_t pin) {
     return name;
 }
 
-uint8_t get_gpio_alter_fun(char port, uint8_t pin) { return 0xFF; }
+uint8_t get_gpio_alter_fun(uint8_t pin) { return 0xFF; }
 
-char* get_gpio_pull_mode(char port, uint8_t pin) { return "_"; }
+char* get_gpio_pull_mode(uint8_t pin) { return "_"; }
 
-char* get_gpio_type(char port, uint8_t pin) { return "_"; }
+char* get_gpio_type(uint8_t pin) { return "_"; }
+// 13.3.2 Mapping AUXIOs to DIO Pins
+const Pin_t PinTable[DIO_CNT] = {
+    {0, 5, 18},   {1, 6, 17},   {2, 7, 16},   {3, 8, 15},   {4, 9, 14},   {5, 10, 13},  {6, 11, 12},  {7, 12, 11},
+    {8, 14, 10},  {9, 15, 9},   {10, 16, 8},  {11, 17, 7},  {12, 18, 6},  {13, 19, 5},  {14, 20, 4},  {15, 21, 3},
+    {16, 26, 2},  {17, 27, 1},  {18, 28, 31}, {19, 29, 30}, {20, 30, 29}, {21, 31, 28}, {22, 32, 27}, {23, 36, 26},
+    {24, 37, 25}, {25, 38, 24}, {26, 39, 23}, {27, 40, 22}, {28, 41, 21}, {29, 42, 20}, {30, 43, 19}};
 
-uint8_t get_mcu_pin(char port, uint8_t pin) { return 0xFF; }
+uint8_t get_mcu_pin(uint8_t io_pin) {
+    uint8_t mcu_pin = 0;
+    uint8_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
+        if(PinTable[i].dio == io_pin) {
+            mcu_pin = PinTable[i].mcu_pin;
+            break;
+        }
+    }
+    return mcu_pin;
+}
 
-bool gpio_toggle(char port, uint8_t pin) {
+#define DIN31_0_REG_ADDR 0x400220C0
+#define DOE31_0_REG_ADDR 0x400220D0
+
+char* get_pin_dir(uint8_t io_pin) {
+    static char dir[4] = "";
+    memset(dir, 0x00, sizeof(dir));
+    uint32_t* out_en_reg = (uint32_t*)DOE31_0_REG_ADDR;
+    uint32_t* in_en_reg = (uint32_t*)DIN31_0_REG_ADDR;
+    if((1 << io_pin) == ((1 << io_pin) & (*in_en_reg))) {
+        snprintf(dir, sizeof(dir), "%si", dir);
+    }
+    if((1 << io_pin) == ((1 << io_pin) & (*out_en_reg))) {
+        snprintf(dir, sizeof(dir), "%so", dir);
+    }
+    return dir;
+}
+
+uint8_t get_aux_num(uint8_t io_pin) {
+    uint8_t aux_pin = 0;
+    uint8_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
+        if(PinTable[i].dio == io_pin) {
+            aux_pin = PinTable[i].aux_pin;
+            break;
+        }
+    }
+    return aux_pin;
+}
+
+bool gpio_toggle(uint8_t pin) {
     GPIO_toggle((uint_least8_t)pin);
     return true;
 }

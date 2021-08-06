@@ -22,6 +22,10 @@
 #include "nmea_protocol.h"
 #endif
 
+#ifdef  HAS_HEALTH_MONITOR
+#include "health_monitor.h"
+#endif /*HAS_HEALTH_MONITOR*/
+
 bool sw_init(void) {
   bool res = true;
   
@@ -42,6 +46,10 @@ bool sw_init(void) {
   res = ublox_protocol_init() && res;
   res = ubx_driver_init() && res;
 #endif /*HAS_UBLOX*/
+
+#ifdef  HAS_HEALTH_MONITOR
+  res = health_monotor_init() && res;
+#endif /*HAS_HEALTH_MONITOR*/
 
   return res;
 }

@@ -59,6 +59,7 @@ bool flash_init(void) {
     if(NULL == nvsHandle) {
         res = false;
     } else {
+        res = true;
         NVS_getAttrs(nvsHandle, &regionAttrs);
     }
 

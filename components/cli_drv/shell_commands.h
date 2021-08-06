@@ -38,10 +38,17 @@ extern "C" {
 #define NMEA_COMMANDS
 #endif
 
+#ifdef HAS_HEALTH_MONITOR
+#include "health_monitor_command.h"
+#else
+#define HEALTH_MONITOR_COMMANDS
+#endif
+
 #define SHELL_COMMANDS                                                                                                 \
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
     UBLOX_COMMANDS                                                                                                     \
+    HEALTH_MONITOR_COMMANDS                                                                                            \
     LED_COMMANDS                                                                                                       \
     NMEA_COMMANDS                                                                                                      \
     IWDT_COMMANDS                                                                                                      \

@@ -6,6 +6,11 @@
 
 #include <ti/drivers/PIN.h>
 
+#define DIN31_0_REG_ADDR 0x400220C0
+#define DOE31_0_REG_ADDR 0x400220D0
+
+#define DIO_CNT 31
+
 #define CONFIG_GPIO_COUNT 4
 /* DIO13, LaunchPad Button BTN-1 (Left) */
 extern const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST;
@@ -13,6 +18,7 @@ extern const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST;
 /* DIO14, LaunchPad Button BTN-2 (Right) */
 extern const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST;
 #define CONFIG_GPIO_BUTTON_1 1
+
 /* DIO6, LaunchPad LED Red */
 extern const uint_least8_t CONFIG_GPIO_LED_0_CONST;
 #define CONFIG_GPIO_LED_0 2
@@ -40,17 +46,27 @@ extern const PIN_Config BoardGpioInitTable[];
 #define CONFIG_PIN_3 0x00000007
 #define CONFIG_TI_DRIVERS_PIN_COUNT 4
 
+typedef struct xPin_t {
+    uint8_t dio;
+    uint8_t mcu_pin;
+    uint8_t aux_pin;
+} Pin_t;
+
+extern const Pin_t PinTable[DIO_CNT];
+
 bool gpio_init(void);
 
 /*GPIO API*/
-bool gpio_get_state(char port_pin_char, uint8_t port_pin_num, uint8_t* logic_level);
-bool gpio_set_state(char port_pin_char, uint8_t port_pin_num, uint8_t logic_level);
-char* get_gpio_mode(char port, uint8_t pin);
-uint8_t get_gpio_alter_fun(char port, uint8_t pin);
-char* get_gpio_pull_mode(char port, uint8_t pin);
-char* get_gpio_type(char port, uint8_t pin);
-uint8_t get_mcu_pin(char port, uint8_t pin);
-bool gpio_toggle(char port, uint8_t pin);
+bool gpio_get_state(uint8_t io_pin, uint8_t* logic_level);
+bool gpio_set_state(uint8_t io_pin, uint8_t logic_level);
+char* get_gpio_mode(uint8_t io_pin);
+uint8_t get_gpio_alter_fun(uint8_t io_pin);
+char* get_gpio_pull_mode(uint8_t io_pin);
+char* get_gpio_type(uint8_t io_pin);
+bool gpio_toggle(uint8_t io_pin);
 bool proc_led(void);
+uint8_t get_mcu_pin(uint8_t io_pin);
+uint8_t get_aux_num(uint8_t io_pin);
+char* get_pin_dir(uint8_t io_pin);
 
 #endif /* INIT_GPIO_H  */

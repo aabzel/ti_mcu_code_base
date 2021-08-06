@@ -1,4 +1,11 @@
 #include "health_monitor.h"
 
-uint32_t error_cnt = 0;
-uint32_t crc_error_cnt = 0;
+#include <stdbool.h>
+#include <string.h>
+
+HealthMon_t HealthMon;
+
+bool health_monotor_init(void){
+    memset(&HealthMon,0x00,sizeof(HealthMon));
+    return true;
+}
