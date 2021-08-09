@@ -89,8 +89,8 @@ bool gpio_set_command(int32_t argc, char* argv[]) {
 static bool diag_gpio(char* key_word1, char* key_word2) {
     bool res = false;
 
-    static const table_col_t cols[] = {{5, "No"},    {5, "dio"},  {5, "aux"},  {5, "pin"},   {5, "dir"},
-                                       {7, "level"}, {5, "irq"}, {6, "edge"}, {6, "pull"}, {13, "type"}, {10, "AltFun"}};
+    static const table_col_t cols[] = {{5, "No"},  {5, "dio"},  {5, "aux"},  {5, "pin"},   {5, "dir"},    {7, "level"},
+                                       {5, "irq"}, {6, "edge"}, {6, "pull"}, {13, "type"}, {10, "AltFun"}};
     uint16_t num = 0;
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     uint8_t logic_level = 0xFF;
@@ -106,7 +106,7 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
             snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, get_mcu_pin(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %2s  " TSEP, temp_str, get_pin_dir(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s  %s    " TSEP, temp_str, (1 == logic_level) ? "H" : "L");
-            snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, (1==is_edge_irq_en(io_pin))?"Y" : "N");
+            snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, (1 == is_edge_irq_en(io_pin)) ? "Y" : "N");
             snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_edge(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_pull_mode(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %11s " TSEP, temp_str, get_gpio_type(io_pin));

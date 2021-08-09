@@ -360,11 +360,10 @@ static const char* iomode2str(uint8_t code) {
     return name;
 }
 
-
-bool is_edge_irq_en(uint8_t dio_pin){
+bool is_edge_irq_en(uint8_t dio_pin) {
     bool res = false;
-    uint32_t* p_iocfg =(uint32_t*) (IOC_BASE + 4 * dio_pin);
-    if((1<<18)==((1<<18)&(*p_iocfg ))) {
+    uint32_t* p_iocfg = (uint32_t*)(IOC_BASE + 4 * dio_pin);
+    if((1 << 18) == ((1 << 18) & (*p_iocfg))) {
         res = true;
     }
     return res;
@@ -378,7 +377,7 @@ const char* get_gpio_type(uint8_t dio_pin) {
     return iomode_name;
 }
 
-static const char *edge2str(uint8_t edge_code){
+static const char* edge2str(uint8_t edge_code) {
     const char* edge_name = "no";
     switch(edge_code) {
     case 0:

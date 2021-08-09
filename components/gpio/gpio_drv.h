@@ -72,5 +72,4 @@ const char* get_gpio_edge(uint8_t dio_pin);
 uint8_t get_mcu_pin(uint8_t io_pin);
 uint8_t get_aux_num(uint8_t io_pin);
 
-
 #endif /* INIT_GPIO_H  */
