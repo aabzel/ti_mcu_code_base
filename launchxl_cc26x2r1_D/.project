@@ -31,6 +31,11 @@
 			<locationURI>COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR/source/ti/boards/CC26X2R1_LAUNCHXL/Board.html</locationURI>
 		</link>
 		<link>
+			<name>Drivers</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/Drivers</locationURI>
+		</link>
+		<link>
 			<name>com_utils</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/com_utils</locationURI>

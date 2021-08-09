@@ -14,12 +14,6 @@ extern "C" {
 #define LED_COMMANDS
 #endif
 
-#ifdef HAS_IWDT
-#include "iwdt_commands.h"
-#else
-#define IWDT_COMMANDS
-#endif
-
 #ifdef HAS_CORTEX_M4
 #include "core_commands.h"
 #else
@@ -44,14 +38,20 @@ extern "C" {
 #define HEALTH_MONITOR_COMMANDS
 #endif
 
+#ifdef HAS_BMP180
+#include "bmp180_commands.h"
+#else
+#define BMP180_COMMANDS
+#endif
+
 #define SHELL_COMMANDS                                                                                                 \
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
     UBLOX_COMMANDS                                                                                                     \
+    BMP180_COMMANDS                                                                                                    \
     HEALTH_MONITOR_COMMANDS                                                                                            \
     LED_COMMANDS                                                                                                       \
     NMEA_COMMANDS                                                                                                      \
-    IWDT_COMMANDS                                                                                                      \
     LOG_COMMANDS
 
 #ifdef __cplusplus

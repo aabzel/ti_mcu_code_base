@@ -102,6 +102,37 @@ bool cmd_low_level_control(int32_t argc, char* argv[]) {
     return res;
 }
 
+bool cmd_write_memory(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(2 == argc) {
+        res = true;
+        uint32_t address_val = 0u;
+        uint32_t address = 0u;
+        res = try_str2uint32(argv[0], &address);
+        if(false == res) {
+            LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
+        } else {
+            io_printf("address: 0x%08x" CRLF, (unsigned int)address_val);
+        }
+
+        res = try_str2uint32(argv[1], &address_val);
+        if(false == res) {
+            LOG_ERROR(SYS, "Invalid value %s", argv[1]);
+        } else {
+            io_printf("val: 0x%08x" CRLF, (unsigned int)address_val);
+        }
+
+        if(true == res) {
+            res = write_addr_32bit(address, address_val);
+        }
+    } else {
+        LOG_ERROR(SYS, "Usage: wm: address address_val");
+        LOG_INFO(SYS, "Usage: address 0xXXXXXXXX");
+        LOG_INFO(SYS, "Usage: address_val 0xXXXXXXXX");
+    }
+    return res;
+}
+
 /* variable address can be obtained from *.elf due to readelf tool*/
 bool cmd_read_memory(int32_t argc, char* argv[]) {
     bool res = false;

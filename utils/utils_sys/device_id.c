@@ -11,6 +11,6 @@
 
 uint64_t get_device_serial(void) {
   uint32_t value;
-  value = read_addr_32bit((uint32_t*)CPU_SCS_CPUID);
+  value = read_addr_32bit(CPU_SCS_CPUID);
   return (uint64_t) value;
 }

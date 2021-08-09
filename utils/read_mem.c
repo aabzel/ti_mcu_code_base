@@ -1,8 +1,9 @@
 #include "read_mem.h"
 
+#include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
-//#include "rx_io.h"
 
 uint8_t read_addr_8bit(uint32_t addr_val) {
   uint8_t val = 0u;
@@ -25,4 +26,15 @@ uint32_t read_addr_32bit(uint32_t addr_val) {
   }
 
   return val;
+}
+
+bool write_addr_32bit(uint32_t in_addr, uint32_t addr_val){
+    bool res = false;
+    if(0u != addr_val) {
+      res = true;
+      volatile uint32_t *addr = NULL;
+      addr = (volatile uint32_t *)in_addr;
+      (*addr ) = addr_val;
+    }
+    return res;
 }

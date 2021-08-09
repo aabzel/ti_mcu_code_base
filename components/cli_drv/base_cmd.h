@@ -53,9 +53,11 @@ bool reboot(void);
 
 bool cmd_low_level_control(int32_t argc, char* argv[]);
 bool cmd_read_memory(int32_t argc, char* argv[]);
+bool cmd_write_memory(int32_t argc, char* argv[]);
 
 #define TEST_FIRMWARE_COMMANDS                                                                                         \
-    SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),                                               \
+    SHELL_CMD("write_mem", "wm", cmd_write_memory, "Write memory address"),                                            \
+        SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),                                           \
         SHELL_CMD("bit_ctrl", "bc", cmd_low_level_control, "Set Clear bit in memory address"),
 
 #if defined(BOOTLOADER)
