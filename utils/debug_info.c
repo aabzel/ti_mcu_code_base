@@ -81,17 +81,6 @@ bool print_version(void) {
     return true;
 }
 
-bool is_arr_pat(uint8_t* arr, uint32_t size, uint8_t patt) {
-    bool res = true;
-    uint32_t i;
-    for(i = 0; i < size; i++) {
-        if(patt != arr[i]) {
-            res = false;
-        }
-    }
-    return res;
-}
-
 void print_sys_info(void) {
     io_printf("Firmware launched.." CRLF);
     io_printf("Boot top of stack: 0x%x " CRLF, *((uint32_t*)(0x00000000)));

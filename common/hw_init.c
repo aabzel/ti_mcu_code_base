@@ -25,6 +25,10 @@
 #include "spi_drv.h"
 #endif
 
+#ifdef HAS_TIM
+#include "tim_drv.h"
+#endif
+
 #ifdef HAS_UART
 #include "uart_drv.h"
 #endif
@@ -53,6 +57,10 @@ bool hw_init(void) {
 
 #ifdef HAS_WDT
   res = watchdog_init()&&res;
+#endif
+
+#ifdef HAS_TIM
+  res = tim_init()&&res;
 #endif
 
 #ifdef HAS_ADC

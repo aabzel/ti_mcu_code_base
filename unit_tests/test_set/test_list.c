@@ -15,6 +15,7 @@
 #include "test_string_utils.h"
 #include "test_nmea_proto.h"
 #include "test_convert.h"
+#include "test_system.h"
 #include "test_ublox_proto.h"
 #include "unit_test_check.h"
 #include "writer_generic.h"
@@ -24,6 +25,7 @@ const unit_test_info_t test_list[] = {{"type_transform", test_type_transformatio
                                 DATA_UTILS_TEST_SUIT
                                 FLOAT_UTILS_TEST_SUIT
                                 TIME_UTILS_TEST_SUIT
+                                SYSTEM_TEST_SUIT
                                 NMEA_PROTO_TEST_SUIT
                                 CONVERT_TEST_SUIT
                                 STRING_UTILS_TEST_SUIT

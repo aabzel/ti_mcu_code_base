@@ -1,4 +1,5 @@
 #include <math.h>
+#include <string.h>
 
 #include "data_utils.h"
 
@@ -119,4 +120,29 @@ uint8_t extract_digit(uint32_t in_num ,uint8_t digit_index){
         i++;
     }
     return out_digit;
+}
+
+bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt) {
+    bool res = true;
+    uint32_t i=0;
+    for ( i = 0; i < size; i++) {
+        if (patt != arr[i]) {
+            res = false;
+        }
+    }
+    return res;
+}
+
+
+bool try_alloc_on_stack(int n, uint8_t pat) {
+    // uint8_t array[n];
+    bool res = false;
+    uint8_t array [n];
+    if (array) {
+        memset(array, pat, n);
+        if (is_arr_pat(array, n, pat)) {
+            res = true;
+        }
+    }
+    return res;
 }

@@ -8,6 +8,7 @@
 #include "cli_manager.h"
 #include "clocks.h"
 #include "convert.h"
+#include "data_utils.h"
 #include "debug_info.h"
 #include "device_id.h"
 #include "diag_sys.h"
@@ -345,7 +346,10 @@ bool cmd_try_stack(int32_t argc, char* argv[]) {
             res = try_str2uint32(argv[0], &size);
         }
         if(true == res) {
-            // res = try_alloc_on_stack (size, 0x5A);
+            res = try_alloc_on_stack(size, 0x5A);
+            if(false == res) {
+                LOG_ERROR(SYS, "data error");
+            }
         }
 
     } else {

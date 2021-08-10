@@ -12,8 +12,7 @@ extern "C" {
 
 bool tim_diag_command(int32_t argc, char* argv[]);
 
-#define TIM_COMMANDS                                                                  \
-        SHELL_CMD("tim_diag", "td", tim_diag_command, "TIM diag"),                    
+#define TIM_COMMANDS SHELL_CMD("tim_diag", "td", tim_diag_command, "TIM diag"),
 
 #ifdef __cplusplus
 }

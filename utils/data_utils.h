@@ -2,6 +2,7 @@
 #define SRC_DATA_UTILS_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,6 +50,8 @@ float ms2Hz(uint16_t ms);
 uint8_t uint16_to_uint8_limiter(uint16_t in_val);
 int8_t two_complement_to_decimal(uint8_t in_code, int significant_bits);
 uint8_t extract_digit(uint32_t in_num ,uint8_t digit_index);
+bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt);
+bool try_alloc_on_stack(int n, uint8_t pat) ;
 
 #ifdef __cplusplus
 }

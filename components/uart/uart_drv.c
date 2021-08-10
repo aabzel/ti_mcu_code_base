@@ -133,11 +133,11 @@ static bool init_uart0(void) {
     uart0Params.baudRate = UART0_BAUD_RATE;
     uart0Params.writeMode = UART_MODE_CALLBACK;
     uart0Params.writeDataMode = UART_DATA_BINARY;
-    uart0Params.writeCallback = uart0WriteCallback;
+    uart0Params.writeCallback = (UART_Callback)uart0WriteCallback;
 
     uart0Params.readMode = UART_MODE_CALLBACK;
     uart0Params.readDataMode = UART_DATA_BINARY;
-    uart0Params.readCallback = uart0ReadCallback;
+    uart0Params.readCallback = (UART_Callback)uart0ReadCallback;
 
     huart[0].uart_h = UART_open(CONFIG_UART_0, &uart0Params);
 
@@ -179,11 +179,11 @@ static bool init_uart1(void) {
     uart1Params.baudRate = UART1_BAUD_RATE;
     uart1Params.writeMode = UART_MODE_CALLBACK;
     uart1Params.writeDataMode = UART_DATA_BINARY;
-    uart1Params.writeCallback = uart1WriteCallback;
+    uart1Params.writeCallback = (UART_Callback)uart1WriteCallback;
 
     uart1Params.readMode = UART_MODE_CALLBACK;
     uart1Params.readDataMode = UART_DATA_BINARY;
-    uart1Params.readCallback = uart1ReadCallback;
+    uart1Params.readCallback = (UART_Callback)uart1ReadCallback;
 
     huart[1].uart_h = UART_open(CONFIG_UART_1, &uart1Params);
 
@@ -222,7 +222,7 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
     while(init_tx_cnt == huart[uart_num].tx_cnt) {
         time_out++;
-        if(10000000 < time_out) {
+        if(1000000 < time_out) {
             res = false;
             break;
         }

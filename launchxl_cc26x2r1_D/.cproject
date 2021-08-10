@@ -4,8 +4,8 @@
 		<cconfiguration id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.2039576451">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.2039576451" moduleId="org.eclipse.cdt.core.settings" name="Debug">
 				<macros>
-					<stringMacro name="CC2652R1F_DRIVER_INC" type="VALUE_PATH_DIR" value="c:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/inc/"/>
-					<stringMacro name="CC2652R1F_DRIVER_LIB" type="VALUE_PATH_ANY" value="C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x1_cc26x1/driverlib"/>
+					<stringMacro name="CC2652R1F_DRIVER_INC" type="VALUE_PATH_DIR" value="C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/inc"/>
+					<stringMacro name="CC2652R1F_DRIVER_LIB" type="VALUE_PATH_ANY" value="C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/driverlib"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
