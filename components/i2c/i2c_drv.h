@@ -4,7 +4,7 @@
 #ifndef I2C_DRV_H
 #define I2C_DRV_H
 
-#include <hw_ints.h>
+//#include <hw_ints.h>
 #include <hw_memmap.h>
 #include <ioc.h>
 #include <stdbool.h>
