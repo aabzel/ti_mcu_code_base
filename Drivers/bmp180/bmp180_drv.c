@@ -5,9 +5,7 @@
 #include <string.h>
 #include <i2c.h>
 
-#ifdef DeviceFamily_CC26X2
 
-#endif
 #include "i2c_drv.h"
 
 bool bmp180_read_reg(uint8_t reg_addr, uint8_t *reg_val){

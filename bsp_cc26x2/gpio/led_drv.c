@@ -39,11 +39,11 @@ static uint8_t pwm_calc_sample(uint32_t cut_tick_ms, uint32_t period_ms, uint32_
 
 bool proc_led(void) {
     uint32_t cut_tick = get_time_ms32();
-    uint8_t red_led_val = 0;
     uint8_t val = pwm_calc_sample(cut_tick, greenLed.period_ms, greenLed.duty, greenLed.phase_ms);
     GPIO_write(CONFIG_GPIO_LED_1, val);
 
 #ifdef HAS_HEALTH_MONITOR
+    uint8_t red_led_val = 0;
     if(HealthMon.init_error) {
         red_led_val = pwm_calc_sample(cut_tick, redLed.period_ms, redLed.duty, redLed.phase_ms);
     }
