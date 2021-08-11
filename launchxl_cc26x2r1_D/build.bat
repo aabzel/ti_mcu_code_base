@@ -1,6 +1,7 @@
 echo off
 
 rem set  ide_tool=C:\ti\ccs1040\ccs\eclipse\jre\bin\java.exe startup.jar
+sign_firmware.bat %cd% 
 set  ide_tool_path=%1
 rem set  ide_tool=C:\ti\ccs1040\ccs\eclipse\eclipsec -noSplash
 set  ide_tool=%ide_tool_path% -noSplash

@@ -51,6 +51,11 @@
 			<locationURI>$%7BWORKSPACE_LOC%7D/common</locationURI>
 		</link>
 		<link>
+			<name>main.c</name>
+			<type>1</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/main.c</locationURI>
+		</link>
+		<link>
 			<name>protocols</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/protocols</locationURI>
@@ -73,8 +78,12 @@
 	</linkedResources>
 	<variableList>
 		<variable>
+			<name>CC2652R1F_DRIVER_INC</name>
+			<value>file:/C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/inc</value>
+		</variable>
+		<variable>
 			<name>CC2652R1F_DRIVER_LIB</name>
-			<value>file:/c:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x1_cc26x1/driverlib</value>
+			<value>file:/C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/driverlib</value>
 		</variable>
 	</variableList>
 </projectDescription>

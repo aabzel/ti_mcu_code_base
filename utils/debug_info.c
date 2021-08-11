@@ -56,6 +56,9 @@ void print_version_s(ostream_t* stream) {
     oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
     oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
     uint32_t cpi_id = cpu_get_id();
+    oprintf(stream, "branch   : %s " CRLF, GIT_BRANCH);
+    oprintf(stream, "last commit: %s" CRLF, GIT_LAST_COMMIT_HASH);
+
     //  oprintf(stream, "IAR_SYSTEMS_ICC %u " CRLF, __IAR_SYSTEMS_ICC__);
     // oprintf (stream, "ARM_BUILD %u ", ARM_BUILD);
     // oprintf(stream, "IAR VER  :%u " CRLF, __VER__);

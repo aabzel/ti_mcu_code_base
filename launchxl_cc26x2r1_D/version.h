@@ -1,10 +1,9 @@
-#ifndef VERSION_H_
-#define VERSION_H_
+#ifndef VERSION_H
+#define VERSION_H
 
-#include "version_build.h"
+#include "auto_version.h"
 
-#define VERSION_GENERATION 1
-
+#define VERSION_GENERATION 2
 #define BOARD_NAME "LAUNCHXL-CC26X2R1"
 
-#endif
+#endif /*VERSION_H*/
