@@ -36,6 +36,11 @@
 			<locationURI>$%7BWORKSPACE_LOC%7D/Drivers</locationURI>
 		</link>
 		<link>
+			<name>bsp_cc26x2</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/bsp_cc26x2</locationURI>
+		</link>
+		<link>
 			<name>com_utils</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/com_utils</locationURI>
@@ -44,11 +49,6 @@
 			<name>common</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/common</locationURI>
-		</link>
-		<link>
-			<name>components</name>
-			<type>2</type>
-			<locationURI>$%7BWORKSPACE_LOC%7D/components</locationURI>
 		</link>
 		<link>
 			<name>protocols</name>

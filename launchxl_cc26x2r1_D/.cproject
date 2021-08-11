@@ -61,23 +61,24 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bmp180"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/core_drv"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/tim"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/flash"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/i2c"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/adc"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/dac"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/rtc"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/watchdog"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/clocks"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/spi"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/core_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/tim"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/i2c"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/adc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/dac"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rtc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/watchdog"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/clocks"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/spi"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_diag"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_sys"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/gpio"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/cli_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/gpio"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/uart"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/uart"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/power"/>
@@ -166,7 +167,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="components/watchdog|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
