@@ -1,0 +1,41 @@
+Bluetooth Low Energy (BLE)
+Какой профиль Bluetooth выбрать?
+
+Generic Access Profile (GAP)
+Запускать BLE примеры. Посмотреть что работает что нет.
+
+
+В классическом варианте Bluetooth соединение между двумя точками поддерживается, даже если нет подлежащих передаче данных, что приводит к повышенному расходу энергии от автономного источника питания.
+
+
+Пример Simple peripheral выглядть относительно просто. 
+Можно взять его за основу оставить 1 хараетеристику и гонять по ней протокол CLI.
+
+https://e2e.ti.com/support/wireless-connectivity/bluetooth-group/bluetooth/f/bluetooth-forum/807679/ccs-cc1352p-cc1352p1-doesn-t-work-simple_peripheral-example-simplelink-cc13x2-cc26x2-sdk
+
+https://github.com/program1986/blelearn/blob/c1908d2c124d49f74626a5b5e3acaf9897c04b30/5.14_advance_peripheral_uarttrans/src/app/peripheral_uarttrans.c
+
+https://github.com/6HJS/CC2640R2F_BLE5/tree/22eb41a3fd871dd4572186af388d1dc9476125a8/examples/rtos/CC2640R2_LAUNCHIOT/ble5stack/5.14_advance_peripheral_uarttrans
+
+BLE Broadcaster
+ID Addr: 0x806FB031FBDF
+Advertising
+RP Addr: 0x770B2BEE6F67
+
+Key words:
+СС26xx BLE SPP
+СС26xx BLE Serial Port Profile
+spp_ble_server.c
+SPPBLEServer_init
+SPPBLEServer_taskFxn
+UUID: F000C0E0-0451-4000-B000-00000000-0000
+
+
+СС26x2 bluetooth serial profile
+SPP (Serial Port Profile)
+ПОсмотреть на GIT HUB
+
+
+
+SPPBLEServer and the SPPBLEClient
+
