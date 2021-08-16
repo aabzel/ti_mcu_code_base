@@ -249,13 +249,19 @@ bool proc_uart(uint8_t uart_index) {
     if(true == huart[uart_index].rx_int) {
         huart[uart_index].rx_int = false;
         if(1 == uart_index) {
-            uint16_t i;
-            uint8_t rx_byte;
-            for(i = 0; i < RX_ARR1_CNT; i++) {
-                rx_byte = huart[uart_index].rx_buff[i];
+            uint16_t byte_no;
+#if defined(HAS_NMEA) || defined(HAS_UBLOX)
+            uint8_t rx_byte = 0;
+#endif /*defined(HAS_NMEA) ||defined(HAS_UBLOX) */
+            for(byte_no = 0; byte_no < RX_ARR1_CNT; byte_no++) {
+#if defined(HAS_NMEA) || defined(HAS_UBLOX)
+                rx_byte = huart[uart_index].rx_buff[byte_no];
+#endif /*defined(HAS_NMEA) ||defined(HAS_UBLOX) */
+
 #ifdef HAS_NMEA
                 nmea_proc_byte(rx_byte);
 #endif /*HAS_NMEA*/
+
 #ifdef HAS_UBLOX
                 ubx_proc_byte(rx_byte);
 #endif /*HAS_UBLOX*/

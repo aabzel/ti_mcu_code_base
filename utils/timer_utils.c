@@ -1,7 +1,6 @@
 #include "timer_utils.h"
 
 #include "clocks.h"
-//#include "watchdog.h"
 
 void delay_us(uint32_t delay_in_us) {
   uint64_t stop = get_time_us() + delay_in_us;

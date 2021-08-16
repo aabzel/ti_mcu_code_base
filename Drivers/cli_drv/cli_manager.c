@@ -114,6 +114,13 @@ bool cli_process(void) {
     return res;
 }
 
+
+void *cliThread(void *arg0){
+    while (1) {
+       // cli_process();
+    }
+}
+
 void process_shell_cmd(char* cmd_line) {
 #ifdef HAS_CLI_DEBUG
     io_printf("proc command [%s]" CRLF, cmd_line);

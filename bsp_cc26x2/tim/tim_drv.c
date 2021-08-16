@@ -17,14 +17,10 @@ https://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/tirtos/2_20_
 #include "float_utils.h"
 
 Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT] = {
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 1},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 2},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 10},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 1000},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 500},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100}};
+    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 1},    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 2},
+    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 10},   {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100},
+    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 1000}, {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 500},
+    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100},  {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100}};
 
 GPTimerCC26XX_Handle hTimer;
 uint32_t TimInstLUT[2] = {TIMER_A, TIMER_B};
@@ -112,62 +108,62 @@ const GPTimerCC26XX_Config GPTimerCC26XX_config[BOARD_GPTIMERPARTSCOUNT] = {
 
 void timerCallback0(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[0].hTimer ==handle ){
+    if(TimerItem[0].hTimer == handle) {
         TimerItem[0].tim_it_cnt++;
     }
-    if(TimerItem[1].hTimer ==handle ){
+    if(TimerItem[1].hTimer == handle) {
         TimerItem[1].tim_it_cnt++;
     }
 }
 
 void timerCallback1(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[0].hTimer ==handle ){
+    if(TimerItem[0].hTimer == handle) {
         TimerItem[0].tim_it_cnt++;
     }
-    if(TimerItem[1].hTimer ==handle ){
+    if(TimerItem[1].hTimer == handle) {
         TimerItem[1].tim_it_cnt++;
     }
 }
 
 void timerCallback2(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[2].hTimer ==handle ){
+    if(TimerItem[2].hTimer == handle) {
         TimerItem[2].tim_it_cnt++;
     }
 }
 
 void timerCallback3(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[3].hTimer ==handle ){
+    if(TimerItem[3].hTimer == handle) {
         TimerItem[3].tim_it_cnt++;
     }
 }
 
 void timerCallback4(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[4].hTimer ==handle ){
+    if(TimerItem[4].hTimer == handle) {
         TimerItem[4].tim_it_cnt++;
     }
 }
 
 void timerCallback5(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[5].hTimer ==handle ){
+    if(TimerItem[5].hTimer == handle) {
         TimerItem[5].tim_it_cnt++;
     }
 }
 
 void timerCallback6(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[6].hTimer ==handle ){
+    if(TimerItem[6].hTimer == handle) {
         TimerItem[6].tim_it_cnt++;
     }
 }
 
 void timerCallback7(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[7].hTimer ==handle ){
+    if(TimerItem[7].hTimer == handle) {
         TimerItem[7].tim_it_cnt++;
     }
 }
@@ -193,7 +189,7 @@ bool tim_calc_registers(uint32_t pesiod_ms, uint32_t cpu_clock, uint32_t* out_pr
     float des_period = (((float)pesiod_ms) / ((float)1000.0f));
     for(prescaler = 0; prescaler <= 0xFF; prescaler++) {
         load = (uint32_t)(des_period / ((float)cpu_period * ((float)(prescaler + 1U))));
-        if(0xFFFF<load){
+        if(0xFFFF < load) {
             continue;
         }
         calc_period = tim_calc_real_period_s(cpu_clock, prescaler, load);
@@ -211,9 +207,9 @@ bool tim_calc_registers(uint32_t pesiod_ms, uint32_t cpu_clock, uint32_t* out_pr
         }
     }
 
-    if(false==res){
+    if(false == res) {
         *out_prescaler = 0xFF;
-        *out_load = 0xFFFF-1;
+        *out_load = 0xFFFF - 1;
         res = true;
     }
 
@@ -235,21 +231,20 @@ static bool tim_init_item(uint32_t index) {
         res = true;
     }
 
-
     uint32_t prescaler = 0;
     GPTimerCC26XX_Value load_val = 0; // 47999
     if(res) {
         prescaler = 0;
         res = tim_calc_registers(TimerItem[index].pesiod_ms, SYS_FREQ, &prescaler, &load_val);
-        if (res) {
-          GPTimerCC26XX_setLoadValue(TimerItem[index].hTimer, load_val);
-          TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index%2],   prescaler);
-          TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index%2],   prescaler);
-          GPTimerCC26XX_registerInterrupt(TimerItem[index].hTimer, timerCallback[index], GPT_INT_TIMEOUT);
-          GPTimerCC26XX_start(TimerItem[index].hTimer);
-          TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index%2],   prescaler);
-          TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index%2],   prescaler);
-        }else{
+        if(res) {
+            GPTimerCC26XX_setLoadValue(TimerItem[index].hTimer, load_val);
+            TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
+            TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
+            GPTimerCC26XX_registerInterrupt(TimerItem[index].hTimer, timerCallback[index], GPT_INT_TIMEOUT);
+            GPTimerCC26XX_start(TimerItem[index].hTimer);
+            TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
+            TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
+        } else {
             res = false;
         }
     }

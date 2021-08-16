@@ -3,8 +3,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <ti/drivers/Board.h>
+
+#ifdef NORTOS
 /*mandatory space NoRTOS uses stdint*/
 #include <NoRTOS.h>
+#endif /*NORTOS*/
 
 #include "clocks.h"
 #include "sys_tick.h"
@@ -45,14 +48,24 @@
 #include "dac_drv.h"
 #endif
 
+#ifdef HAS_RF
+#include "rf_drv.h"
+#endif
+
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
+#endif
+
+#ifdef HAS_BLE
+#include "ble_drv.h"
 #endif
 
 bool hw_init(void) {
   bool res = true;
   Board_init();
+#ifdef NORTOS
   NoRTOS_start();
+#endif /*NORTOS*/
   SysTickInit();
 
 #ifdef HAS_WDT
@@ -79,6 +92,7 @@ bool hw_init(void) {
   res = rtc_init()&&res;
 #endif
 
+
 #ifdef HAS_GPIO
   res = gpio_init() && res;
 #endif
@@ -93,6 +107,14 @@ bool hw_init(void) {
 
 #ifdef HAS_I2C
   res = i2c_init()&&res;
+#endif
+
+#ifdef HAS_RF
+  res = rf_init()&&res;
+#endif
+
+  #ifdef HAS_BLE
+  res = ble_init()&&res;
 #endif
 
   return res;

@@ -2,6 +2,7 @@
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <systick.h>
 
 #include "clocks.h"
 #include "convert.h"
@@ -14,7 +15,6 @@
 #include "base_cmd.h"
 #include "str_utils.h"
 #include "sys_tick.h"
-#include "systick.h"
 
 bool systick_set_command(int32_t argc, char* argv[]){
     bool res = false;

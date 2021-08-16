@@ -45,60 +45,85 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DIAG_WRAP.1525630177" name="Wrap diagnostic messages (--diag_wrap)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DIAG_WRAP" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DIAG_WRAP.off" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.LITTLE_ENDIAN.163793799" name="Little endian code [See 'General' page to edit] (--little_endian, -me)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.LITTLE_ENDIAN" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.INCLUDE_PATH.1260601469" name="Add dir to #include search path (--include_path, -I)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.INCLUDE_PATH" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="${PROJECT_ROOT}"/>
 									<listOptionValue builtIn="false" value="${CC2652R1F_DRIVER_INC}"/>
 									<listOptionValue builtIn="false" value="${CC2652R1F_DRIVER_LIB}"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INCLUDE_PATH}"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INCLUDE_PATH}"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/hal/src/target"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/hal/src/target/_common/cc26xx"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/profiles/dev_info"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/icall/inc"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/common/nv"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/rf"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/common/cc26xx"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/inc"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/controller/cc26xx/inc"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/osal/src/inc"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/devices/cc13x2_cc26x2"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/hal/src/target/_common"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/hal/src/inc"/>
+									<listOptionValue builtIn="false" value="${PROJECT_ROOT}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/syscofig"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bmp180"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/adc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/roles/cc26xx"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/spp_ble_server"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/serial_port"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/core_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/dac"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/gpio"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rf"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/i2c"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/tim"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rtc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/clocks"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/spi"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/uart"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/watchdog"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests\test_set"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_ublox_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_nmea_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests\test_set\test_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests\test_set\utils_test"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/syscofig"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bmp180"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/core_drv"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/tim"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/i2c"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/adc"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/dac"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rtc"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/watchdog"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/clocks"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/spi"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_diag"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_sys"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/gpio"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/cli_drv"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/uart"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INCLUDE_PATH}"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INCLUDE_PATH}"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/power"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/devices/cc13x2_cc26x2/driverlib/"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/icall/src/inc"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/power"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/devices/cc13x2_cc26x2/driverlib"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos/startup"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos/posix"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos/startup"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${CG_TOOL_ROOT}/include"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE.890004560" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DeviceFamily_CC26X2"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_SYMBOLS}"/>
+									<listOptionValue builtIn="false" value="NORTOS"/>
+									<listOptionValue builtIn="false" value="ICALL_JT"/>
 									<listOptionValue builtIn="false" value="HAS_ADC"/>
+									<listOptionValue builtIn="false" value="HAS_CLI"/>
+									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
+									<listOptionValue builtIn="false" value="HAS_DAC"/>
+									<listOptionValue builtIn="false" value="HAS_GPIO"/>
+									<listOptionValue builtIn="false" value="CC26X2"/>
+									<listOptionValue builtIn="false" value="CC26XX"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_SYMBOLS}"/>
 									<listOptionValue builtIn="false" value="HAS_BMP180"/>
 									<listOptionValue builtIn="false" value="HAS_I2C"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
-									<listOptionValue builtIn="false" value="HAS_DAC"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
@@ -106,13 +131,12 @@
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
-									<listOptionValue builtIn="false" value="HAS_CLI"/>
-									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_UBX_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
-									<listOptionValue builtIn="false" value="HAS_GPIO"/>
+									<listOptionValue builtIn="false" value="HAS_RF"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
+									<listOptionValue builtIn="false" value="USE_ICALL"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_SYMBOLS}"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.954922929" name="Target processor version (--silicon_version, -mv)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.7M4" valueType="enumerated"/>
@@ -144,6 +168,9 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.linkerID.LIBRARY.1284709324" name="Include library file or command file as input (--library, -l)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.linkerID.LIBRARY" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos/lib/ccs/m4f/nortos_cc26x2.a"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/rf/lib/ccs/m4f/rf_multiMode_cc26x2.a"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/libraries/cc26x2r1/StackWrapper.a"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/libraries/cc26x2r1/OneLib.a"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/lib/ccs/m4f/drivers_cc26x2.a"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_LIBRARIES}"/>
 									<listOptionValue builtIn="false" value="ti_utils_build_linker.cmd.genlibs"/>
@@ -170,8 +197,16 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.2039576451.258711001" name="spp_ble_server.h" rcbsApplicability="disable" resourcePath="bsp_cc26x2/bluetooth/spp_ble_server/spp_ble_server.h" toolsToInvoke="">
+						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.1208050172" name="Resource Custom Build Step">
+							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.1199409244" name="Resource Custom Build Step Input Type">
+								<additionalInput kind="additionalinputdependency" paths=""/>
+							</inputType>
+							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.1953610468" name="Resource Custom Build Step Output Type"/>
+						</tool>
+					</fileInfo>
 					<sourceEntries>
-						<entry excluding="cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

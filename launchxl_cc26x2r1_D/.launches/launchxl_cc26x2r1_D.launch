@@ -4,7 +4,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROGRAM.CC2652R1F.ccxml.Texas Instruments XDS110 USB Debug Probe/Cortex_M4_0" value="${build_artifact:launchxl_cc26x2r1_D}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.CC2652R1F.ccxml.Texas Instruments XDS110 USB Debug Probe/Cortex_M4_0" value="launchxl_cc26x2r1_D"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:launchxl_cc26x2r1_D}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.CC2652R1F.ccxml.Texas Instruments XDS110 USB Debug Probe/Cortex_M4_0" value="C:\projects\code_base\launchxl_cc26x2r1_D\Debug\launchxl_cc26x2r1_D.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.CC2652R1F.ccxml.Texas Instruments XDS110 USB Debug Probe/Cortex_M4_0" value="C:\projects\code_base\launchxl_cc26x2r1_D\Debug\launchxl_cc26x2r1_D_PATTERN.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/launchxl_cc26x2r1_D"/>
 </listAttribute>

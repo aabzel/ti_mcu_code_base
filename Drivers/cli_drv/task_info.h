@@ -1,7 +1,7 @@
 #ifndef SRC_TASK_INFO_H
 #define SRC_TASK_INFO_H
 
-#ifdef HAS_CLI
+
 
 #include <stdint.h>
 
@@ -120,6 +120,6 @@ bool cmd_task_clear(int32_t argc, char* argv[]);
 #define TASK_COMMANDS
 #endif /*TASKS*/
 
-#endif /*HAS_CLI*/
+
 
 #endif /* SRC_TASK_INFO_H */

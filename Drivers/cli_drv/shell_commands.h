@@ -44,10 +44,18 @@ extern "C" {
 #define BMP180_COMMANDS
 #endif
 
+
+#ifdef HAS_RF
+#include "rf_commands.h"
+#else
+#define RF_COMMANDS
+#endif
+
 #define SHELL_COMMANDS                                                                                                 \
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
     UBLOX_COMMANDS                                                                                                     \
+    RF_COMMANDS                                     \
     BMP180_COMMANDS                                                                                                    \
     HEALTH_MONITOR_COMMANDS                                                                                            \
     LED_COMMANDS                                                                                                       \

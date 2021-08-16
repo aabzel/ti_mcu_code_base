@@ -17,12 +17,18 @@ https://github.com/program1986/blelearn/blob/c1908d2c124d49f74626a5b5e3acaf9897c
 
 https://github.com/6HJS/CC2640R2F_BLE5/tree/22eb41a3fd871dd4572186af388d1dc9476125a8/examples/rtos/CC2640R2_LAUNCHIOT/ble5stack/5.14_advance_peripheral_uarttrans
 
+https://e2e.ti.com/support/wireless-connectivity/bluetooth-group/bluetooth/f/bluetooth-forum/858075/cc2640r2f-serial-port-profile-via-cc2640-cc2650-chip
+
 BLE Broadcaster
 ID Addr: 0x806FB031FBDF
 Advertising
 RP Addr: 0x770B2BEE6F67
 
+
+https://github.com/ti-simplelink/ble_examples/tree/ble_examples-2.2
+
 Key words:
+serial port profile (spp) over bluetooth CC26xx
 СС26xx BLE SPP
 СС26xx BLE Serial Port Profile
 spp_ble_server.c
@@ -30,6 +36,7 @@ SPPBLEServer_init
 SPPBLEServer_taskFxn
 UUID: F000C0E0-0451-4000-B000-00000000-0000
 
+https://github.com/rlatrifork/ble_examples_test/tree/227a8139a48d5780aacdd8173e2b582a90431a07/examples/rtos/CC2640R2_LAUNCHXL/ble5apps/spp_ble_server
 
 СС26x2 bluetooth serial profile
 SPP (Serial Port Profile)
@@ -39,3 +46,50 @@ SPP (Serial Port Profile)
 
 SPPBLEServer and the SPPBLEClient
 
+
+Подключить к проекту следующие заголовочные файлы:
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/icall/inc
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/icall/src/inc
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/hal/src/inc
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/hal/src/target
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/hal/src/target/_common
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/hal/src/target/_common/cc26xx
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/devices/cc13x2_cc26x2
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/osal/src/inc
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/controller/cc26xx/inc
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/inc
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/common/cc26xx
+C:/projects/code_base/bsp_cc26x2/bluetooth/serial_port
+${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/serial_port
+${WORKSPACE_LOC}/bsp_cc26x2/bluetooth
+${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/spp_ble_server
+
+${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/roles/cc26xx
+
+
+
+C:\projects\code_base\bsp_cc26x2\bluetooth\spp_ble_server
+C:\projects\code_base\bsp_cc26x2\bluetooth
+source/ti/ble5stack/osal/src/inc/osal.h
+
+C:/ti/simplelink_cc13x2_26x2_sdk_3_30_00_03/source/ti/ble5stack/hal/src/target
+C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/ble5stack/hal/src/target
+
+C:/ti/simplelink_cc13x2_26x2_sdk_3_30_00_03/source/ti/ble5stack/profiles
+C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/ble5stack/profiles
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/ble5stack/libraries
+C:/ti/simplelink_cc13x2_26x2_sdk_3_30_00_03/source/ti/ble5stack/libraries
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/libraries/cc26x2r1/OneLib.a
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/libraries/cc26x2r1/StackWrapper.a
+source/ti/ble5stack/libraries/cc26x2r1/StackWrapper.a
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/libraries/cc26x2r1/ble_r2.symbols
+
+Прописать следующие макро определения
+CC26XX
+SECURITY
+
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/boards/CC26X2R1_LAUNCHXL
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/common/cc26xx
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/profiles/dev_info
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/common/nv

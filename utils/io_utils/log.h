@@ -31,6 +31,7 @@ typedef enum {
   TIM,
   NVS,
   SPI,
+  RF,
   SYS,
   UART,
   ALL_FACILITY

@@ -37,7 +37,7 @@ bool tim_diag_command(int32_t argc, char* argv[]) {
                 io_printf(" %6u " TSEP, prescaler);
                 io_printf("  %u " TSEP, load);
                 io_printf(" %6u " TSEP, match);
-                io_printf(" %6u " TSEP, TimerItem[tim_base_id*2+i].tim_it_cnt);
+                io_printf(" %6u " TSEP, TimerItem[tim_base_id * 2 + i].tim_it_cnt);
                 io_printf(" %6.1f " TSEP, calc_period * 1000.0f);
 
                 io_printf(CRLF);

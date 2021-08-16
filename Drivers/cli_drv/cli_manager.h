@@ -22,5 +22,5 @@ bool cli_init(void);
 bool cli_process(void);
 void process_shell_cmd(char* cmd_line);
 void help_dump_key(const char* subName1, const char* subName2);
-
+void *cliThread(void *arg0);
 #endif /*CLI_DRIVER_H*/

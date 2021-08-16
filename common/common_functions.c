@@ -3,10 +3,15 @@
 #include <inttypes.h>
 
 #include "clocks.h"
+
+#ifdef HAS_LED
 #include "led_drv.h"
+#endif /*HAS_LED*/
+
 #ifdef HAS_CLI
 #include "cli_manager.h"
-#endif
+#endif /*HAS_CLI*/
+
 #include "io_utils.h"
 #include "log.h"
 #include "task_config.h"
@@ -50,7 +55,11 @@ void common_loop(uint64_t loop_start_time) {
 #ifdef HAS_WDT
     MEASURE_TASK_INTERVAL(WDT, 1, proc_watchdog);
 #endif
+
+#ifdef HAS_LED
     MEASURE_TASK_INTERVAL(LED, 1, proc_led);
+#endif /*HAS_LED*/
+
     MEASURE_TASK_INTERVAL(UART1, 1, proc_uart1);
 #ifdef HAS_UBLOX
     MEASURE_TASK_INTERVAL(UBX, 1, ubx_proc_frame);
