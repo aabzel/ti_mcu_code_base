@@ -68,11 +68,9 @@ void rx_callback(RF_Handle h, RF_CmdHandle ch, RF_EventMask e) {
     }
 }
 
-bool rf_read(uint8_t *out_array, uint16_t size_arr, uint16_t *out_arr_len){
+bool rf_read(uint8_t* out_array, uint16_t size_arr, uint16_t* out_arr_len) {
     bool res = false;
-    if ( (NULL!=out_array)&&
-            (NULL!=out_arr_len) &&
-            (rf_rx_len<=size_arr) ) {
+    if((NULL != out_array) && (NULL != out_arr_len) && (rf_rx_len <= size_arr)) {
         memcpy(out_array, rf_rx_packet, rf_rx_len);
         *out_arr_len = rf_rx_len;
         res = true;
@@ -80,115 +78,119 @@ bool rf_read(uint8_t *out_array, uint16_t size_arr, uint16_t *out_arr_len){
     return res;
 }
 
+bool rf_tune_reception(void) {
+    bool res = false;
+    rf_rx_len = 0;
+    memset(rf_rx_packet, 0x00, sizeof(rf_rx_packet));
+    res = true;
+
+    /* Modify CMD_PROP_RX command for application needs */
+    /* Set the Data Entity queue for received data */
+    RF_cmdPropRx.pQueue = &dataQueue;
+    /* Discard ignored packets from Rx queue */
+    RF_cmdPropRx.rxConf.bAutoFlushIgnored = 1;
+    /* Discard packets with CRC error from Rx queue */
+    RF_cmdPropRx.rxConf.bAutoFlushCrcErr = 1;
+    /* Implement packet length filtering to avoid PROP_ERROR_RXBUF */
+    RF_cmdPropRx.maxPktLen = PAYLOAD_LENGTH;
+    RF_cmdPropRx.pktConf.bRepeatOk = 0;
+    RF_cmdPropRx.pktConf.bRepeatNok = 0;
+
+    /* Enter RX mode and stay forever in RX */
+    RF_EventMask terminationReason;
+    /*program will hang on here*/
+    terminationReason =
+        RF_runCmd(rfHandle, (RF_Op*)&RF_cmdPropRx, RF_PriorityNormal, &rx_callback, RF_EventRxEntryDone);
+    switch(terminationReason) {
+    case RF_EventLastCmdDone:
+        res = true;
+        // A stand-alone radio operation command or the last radio
+        // operation command in a chain finished.
+        break;
+    case RF_EventCmdCancelled:
+        // Command cancelled before it was started; it can be caused
+        // by RF_cancelCmd() or RF_flushCmd().
+        break;
+    case RF_EventCmdAborted:
+        // Abrupt command termination caused by RF_cancelCmd() or
+        // RF_flushCmd().
+        break;
+    case RF_EventCmdStopped:
+        // Graceful command termination caused by RF_cancelCmd() or
+        // RF_flushCmd().
+        break;
+    default:
+        // Uncaught error event
+        res = false;
+    }
+
+    uint32_t cmdStatus = ((volatile RF_Op*)&RF_cmdPropRx)->status;
+    switch(cmdStatus) {
+    case PROP_DONE_OK:
+        res = true;
+        // Packet received with CRC OK
+        break;
+    case PROP_DONE_RXERR:
+        // Packet received with CRC error
+        break;
+    case PROP_DONE_RXTIMEOUT:
+        // Observed end trigger while in sync search
+        break;
+    case PROP_DONE_BREAK:
+        // Observed end trigger while receiving packet when the command is
+        // configured with endType set to 1
+        break;
+    case PROP_DONE_ENDED:
+        // Received packet after having observed the end trigger; if the
+        // command is configured with endType set to 0, the end trigger
+        // will not terminate an ongoing reception
+        break;
+    case PROP_DONE_STOPPED:
+        // received CMD_STOP after command started and, if sync found,
+        // packet is received
+        break;
+    case PROP_DONE_ABORT:
+        // Received CMD_ABORT after command started
+        break;
+    case PROP_ERROR_RXBUF:
+        // No RX buffer large enough for the received data available at
+        // the start of a packet
+        break;
+    case PROP_ERROR_RXFULL:
+        // Out of RX buffer space during reception in a partial read
+        break;
+    case PROP_ERROR_PAR:
+        // Observed illegal parameter
+        break;
+    case PROP_ERROR_NO_SETUP:
+        // Command sent without setting up the radio in a supported
+        // mode using CMD_PROP_RADIO_SETUP or CMD_RADIO_SETUP
+        break;
+    case PROP_ERROR_NO_FS:
+        // Command sent without the synthesizer being programmed
+        break;
+    case PROP_ERROR_RXOVF:
+        // RX overflow observed during operation
+        break;
+    default:
+        // Uncaught error event - these could come from the
+        // pool of states defined in rf_mailbox.h
+        res = false;
+    }
+
+    return res;
+}
+
 bool rf_rx_init(void) {
     bool res = false;
     rf_rx_cnt = 0;
-    rf_rx_len = 0;
-    memset(rf_rx_packet, 0x00, sizeof(rf_rx_packet));
-    uint8_t ret = RFQueue_defineQueue(&dataQueue,
-                                      rxDataEntryBuffer,
-                                      sizeof(rxDataEntryBuffer),
-                                      NUM_DATA_ENTRIES,
+    uint8_t ret = RFQueue_defineQueue(&dataQueue, rxDataEntryBuffer, sizeof(rxDataEntryBuffer), NUM_DATA_ENTRIES,
                                       PAYLOAD_LENGTH + NUM_APPENDED_BYTES);
     if(ret) {
         /* Failed to allocate space for all data entries */
         res = false;
     } else {
-        res = true;
-
-        /* Modify CMD_PROP_RX command for application needs */
-        /* Set the Data Entity queue for received data */
-        RF_cmdPropRx.pQueue = &dataQueue;
-        /* Discard ignored packets from Rx queue */
-        RF_cmdPropRx.rxConf.bAutoFlushIgnored = 1;
-        /* Discard packets with CRC error from Rx queue */
-        RF_cmdPropRx.rxConf.bAutoFlushCrcErr = 1;
-        /* Implement packet length filtering to avoid PROP_ERROR_RXBUF */
-        RF_cmdPropRx.maxPktLen = PAYLOAD_LENGTH;
-        RF_cmdPropRx.pktConf.bRepeatOk = 0;
-        RF_cmdPropRx.pktConf.bRepeatNok = 0;
-
-        /* Enter RX mode and stay forever in RX */
-        RF_EventMask terminationReason;
-        /*program will hang on here*/
-        terminationReason = RF_runCmd(rfHandle, (RF_Op*)&RF_cmdPropRx,
-                                      RF_PriorityNormal, &rx_callback, RF_EventRxEntryDone);
-        switch(terminationReason) {
-        case RF_EventLastCmdDone:
-            res = true;
-            // A stand-alone radio operation command or the last radio
-            // operation command in a chain finished.
-            break;
-        case RF_EventCmdCancelled:
-            // Command cancelled before it was started; it can be caused
-            // by RF_cancelCmd() or RF_flushCmd().
-            break;
-        case RF_EventCmdAborted:
-            // Abrupt command termination caused by RF_cancelCmd() or
-            // RF_flushCmd().
-            break;
-        case RF_EventCmdStopped:
-            // Graceful command termination caused by RF_cancelCmd() or
-            // RF_flushCmd().
-            break;
-        default:
-            // Uncaught error event
-            res = false;
-        }
-
-        uint32_t cmdStatus = ((volatile RF_Op*)&RF_cmdPropRx)->status;
-        switch(cmdStatus) {
-        case PROP_DONE_OK:
-            res = true;
-            // Packet received with CRC OK
-            break;
-        case PROP_DONE_RXERR:
-            // Packet received with CRC error
-            break;
-        case PROP_DONE_RXTIMEOUT:
-            // Observed end trigger while in sync search
-            break;
-        case PROP_DONE_BREAK:
-            // Observed end trigger while receiving packet when the command is
-            // configured with endType set to 1
-            break;
-        case PROP_DONE_ENDED:
-            // Received packet after having observed the end trigger; if the
-            // command is configured with endType set to 0, the end trigger
-            // will not terminate an ongoing reception
-            break;
-        case PROP_DONE_STOPPED:
-            // received CMD_STOP after command started and, if sync found,
-            // packet is received
-            break;
-        case PROP_DONE_ABORT:
-            // Received CMD_ABORT after command started
-            break;
-        case PROP_ERROR_RXBUF:
-            // No RX buffer large enough for the received data available at
-            // the start of a packet
-            break;
-        case PROP_ERROR_RXFULL:
-            // Out of RX buffer space during reception in a partial read
-            break;
-        case PROP_ERROR_PAR:
-            // Observed illegal parameter
-            break;
-        case PROP_ERROR_NO_SETUP:
-            // Command sent without setting up the radio in a supported
-            // mode using CMD_PROP_RADIO_SETUP or CMD_RADIO_SETUP
-            break;
-        case PROP_ERROR_NO_FS:
-            // Command sent without the synthesizer being programmed
-            break;
-        case PROP_ERROR_RXOVF:
-            // RX overflow observed during operation
-            break;
-        default:
-            // Uncaught error event - these could come from the
-            // pool of states defined in rf_mailbox.h
-            res = false;
-        }
+        res = rf_tune_reception();
     }
     return res;
 }
@@ -202,10 +204,10 @@ bool rf_init(void) {
 
     rfHandle = RF_open(&rfObject, &RF_prop, (RF_RadioSetup*)&RF_cmdPropRadioDivSetup, &rfParams);
     if(rfHandle) {
-       res = true;
-       /* Set the frequency */
-       RF_postCmd(rfHandle, (RF_Op*)&RF_cmdFs, RF_PriorityNormal, NULL, 0);
-      // res = rf_rx_init() && res;
+        res = true;
+        /* Set the frequency */
+        RF_postCmd(rfHandle, (RF_Op*)&RF_cmdFs, RF_PriorityNormal, NULL, 0);
+        // res = rf_rx_init() && res;
     } else {
         res = false;
     }

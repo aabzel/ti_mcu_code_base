@@ -18,7 +18,7 @@ bool rf_diag_command(int32_t argc, char* argv[]);
 #define RF_COMMANDS                                                                                                    \
     SHELL_CMD("rf_diag", "rfd", rf_diag_command, "RF diag"),                                                           \
         SHELL_CMD("rf_write", "rfw", rf_write_command, "RF write hex str"),                                            \
-        SHELL_CMD("rf_read", "rfr", rf_read_command, "RF read hex str"),                                            \
+        SHELL_CMD("rf_read", "rfr", rf_read_command, "RF read hex str"),                                               \
         SHELL_CMD("rf_init", "rfi", rf_init_command, "RF init"),
 
 #ifdef __cplusplus

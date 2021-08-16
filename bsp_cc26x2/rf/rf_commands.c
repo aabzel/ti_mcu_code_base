@@ -42,21 +42,21 @@ bool rf_write_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool rf_read_command(int32_t argc, char* argv[]){
+bool rf_read_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        uint8_t array[PAYLOAD_LENGTH+10];
+        uint8_t array[PAYLOAD_LENGTH + 5];
         uint16_t array_len = 0;
 
-        res = rf_rx_init();
+        res = rf_tune_reception();
 
         if(true == res) {
-            res = rf_read(array,sizeof(array), &array_len);
+            res = rf_read(array, sizeof(array), &array_len);
             if(false == res) {
                 LOG_ERROR(RF, "Unable to read RF");
             } else {
-                print_mem(array,array_len,true);
+                print_mem(array, array_len, true);
             }
         }
     } else {
