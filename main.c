@@ -28,7 +28,7 @@ static bool sys_init(void) {
 
 int main(void) {
     bool res = true;
-    pause_ms(2000);
+    pause_ms(20);
 
     res = sys_init() && res;
 

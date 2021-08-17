@@ -110,7 +110,7 @@ bool hw_init(void) {
 #endif
 
 #ifdef HAS_RF
-  res = rf_init()&&res;
+  res = rf_init() &&res;
 #endif
 
   #ifdef HAS_BLE

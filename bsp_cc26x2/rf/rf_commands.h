@@ -14,11 +14,13 @@ bool rf_init_command(int32_t argc, char* argv[]);
 bool rf_write_command(int32_t argc, char* argv[]);
 bool rf_read_command(int32_t argc, char* argv[]);
 bool rf_diag_command(int32_t argc, char* argv[]);
+bool rf_read_blocking_command(int32_t argc, char* argv[]);
 
 #define RF_COMMANDS                                                                                                    \
     SHELL_CMD("rf_diag", "rfd", rf_diag_command, "RF diag"),                                                           \
         SHELL_CMD("rf_write", "rfw", rf_write_command, "RF write hex str"),                                            \
         SHELL_CMD("rf_read", "rfr", rf_read_command, "RF read hex str"),                                               \
+        SHELL_CMD("rf_blocking_read", "rfrb", rf_read_blocking_command, "RF blocking read hex str"),                   \
         SHELL_CMD("rf_init", "rfi", rf_init_command, "RF init"),
 
 #ifdef __cplusplus

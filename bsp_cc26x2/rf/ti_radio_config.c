@@ -135,7 +135,7 @@ rfc_CMD_PROP_RADIO_DIV_SETUP_t RF_cmdPropRadioDivSetup =
     .config.bNoFsPowerUp = 0x0,
     .txPower = 0x7217,
     .pRegOverride = pOverrides,
-    .centerFreq = 0x0988,
+    .centerFreq = 0x0988,//2440 MHz
     .intFreq = 0x0800,
     .loDivider = 0x00
 };

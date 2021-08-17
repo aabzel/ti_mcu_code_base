@@ -68,12 +68,17 @@ rfc_dataEntryGeneral_t* RFQueue_getDataEntry() {
 //*****************************************************************************
 uint8_t RFQueue_nextEntry(void){
   /* Set status to pending */
-  readEntry->status = DATA_ENTRY_PENDING;
+  uint8_t ret = 9 ;
+  if (readEntry) {
 
-  /* Move read entry pointer to next entry */
-  readEntry = (rfc_dataEntryGeneral_t*)readEntry->pNextEntry;
+    readEntry->status = DATA_ENTRY_PENDING;
 
-  return (readEntry->status);
+    /* Move read entry pointer to next entry */
+    readEntry = (rfc_dataEntryGeneral_t*)readEntry->pNextEntry;
+
+    return (readEntry->status);
+  }
+  return ret;
 }
 
 //*****************************************************************************

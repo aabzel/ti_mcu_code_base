@@ -26,6 +26,10 @@
 #include "dac_drv.h"
 #endif
 
+#ifdef HAS_RF
+#include "rf_drv.h"
+#endif /*HAS_RF*/
+
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
@@ -61,6 +65,7 @@ void common_loop(uint64_t loop_start_time) {
 #endif /*HAS_LED*/
 
     MEASURE_TASK_INTERVAL(UART1, 1, proc_uart1);
+
 #ifdef HAS_UBLOX
     MEASURE_TASK_INTERVAL(UBX, 1, ubx_proc_frame);
 #endif /*HAS_UBLOX*/
@@ -71,7 +76,11 @@ void common_loop(uint64_t loop_start_time) {
 
 #ifdef HAS_CLI
     MEASURE_TASK_INTERVAL(CLI, 30, cli_process);
-#endif
+#endif /*HAS_CLI*/
+
+#ifdef HAS_RF
+    MEASURE_TASK_INTERVAL(RF, 30, rf_process);
+#endif /*HAS_RF*/
 }
 
 uint32_t g_iteration_cnt = 10;

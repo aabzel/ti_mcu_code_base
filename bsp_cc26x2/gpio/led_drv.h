@@ -8,7 +8,7 @@
 #define LED_DUTY 50 /*percent*/
 #define LED_PHASE 0
 
-#define LED_RED_PERIOD_MS 500
+#define LED_RED_PERIOD_MS 250
 #define LED_RED_DUTY 50 /*percent*/
 #define LED_RED_PHASE 1
 

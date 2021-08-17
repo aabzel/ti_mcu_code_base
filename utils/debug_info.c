@@ -140,9 +140,9 @@ bool print_mem(uint8_t* addr, int32_t len, bool new_line) {
 
             res = true;
         }
-        if(true == new_line) {
-            io_printf(CRLF);
-        }
+    }
+    if(true == new_line) {
+        io_printf(CRLF);
     }
     return res;
 }

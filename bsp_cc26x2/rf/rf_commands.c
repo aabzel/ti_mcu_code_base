@@ -1,6 +1,7 @@
 #include "rf_commands.h"
 
 #include <inttypes.h>
+#include <string.h>
 
 #include "convert.h"
 #include "data_utils.h"
@@ -42,22 +43,27 @@ bool rf_write_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+bool rf_read_blocking_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        res = rf_tune_blocking_reception();
+        if(res) {
+            LOG_INFO(RF, "OK");
+        }
+    } else {
+        LOG_ERROR(RF, "Usage: rfrb");
+    }
+    return res;
+}
+
 bool rf_read_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        uint8_t array[PAYLOAD_LENGTH + 5];
-        uint16_t array_len = 0;
-
         res = rf_tune_reception();
-
-        if(true == res) {
-            res = rf_read(array, sizeof(array), &array_len);
-            if(false == res) {
-                LOG_ERROR(RF, "Unable to read RF");
-            } else {
-                print_mem(array, array_len, true);
-            }
+        if(res) {
+            LOG_INFO(RF, "OK");
         }
     } else {
         LOG_ERROR(RF, "Usage: rfr");
@@ -67,6 +73,7 @@ bool rf_read_command(int32_t argc, char* argv[]) {
 
 bool rf_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
+    io_printf("crc err %u" CRLF, rf_rx_crc_err_cnt);
     io_printf("rx cnt %u" CRLF, rf_rx_cnt);
     io_printf("ID: %u" CRLF, rfParams.nID);
     io_printf("InactivityTimeout %u us" CRLF, rfParams.nInactivityTimeout);
