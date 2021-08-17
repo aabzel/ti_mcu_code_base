@@ -23,49 +23,49 @@ bool cli_init_done = false;
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
 
 /*logic AND for keyWords */
-static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const subName1, const char* const subName2) {
+static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const sub_name1, const char* const sub_name2) {
     bool res = false;
     if(NULL != cmd) {
-        if((NULL == subName1) && (NULL == subName2)) {
+        if((NULL == sub_name1) && (NULL == sub_name2)) {
             res = true;
-        } else if((NULL != subName1) && (NULL == subName2)) {
+        } else if((NULL != sub_name1) && (NULL == sub_name2)) {
             /*one subname done*/
             res = false;
             if(NULL != cmd->short_name) {
-                if(NULL != str_case_str(cmd->short_name, subName1)) {
+                if(NULL != str_case_str(cmd->short_name, sub_name1)) {
                     res = true;
                 }
             }
             if(NULL != cmd->long_name) {
-                if(NULL != str_case_str(cmd->long_name, subName1)) {
+                if(NULL != str_case_str(cmd->long_name, sub_name1)) {
                     res = true;
                 }
             }
             if(NULL != cmd->description) {
-                if(NULL != str_case_str(cmd->description, subName1)) {
+                if(NULL != str_case_str(cmd->description, sub_name1)) {
                     res = true;
                 }
             }
-        } else if((NULL != subName1) && (NULL != subName2)) {
+        } else if((NULL != sub_name1) && (NULL != sub_name2)) {
             /*two subnames done*/
             res = false;
             if(NULL != cmd->short_name) {
-                if(NULL != str_case_str(cmd->short_name, subName1)) {
-                    if(NULL != str_case_str(cmd->short_name, subName2)) {
+                if(NULL != str_case_str(cmd->short_name, sub_name1)) {
+                    if(NULL != str_case_str(cmd->short_name, sub_name2)) {
                         res = true;
                     }
                 }
             }
             if(NULL != cmd->long_name) {
-                if(NULL != str_case_str(cmd->long_name, subName1)) {
-                    if(NULL != str_case_str(cmd->long_name, subName2)) {
+                if(NULL != str_case_str(cmd->long_name, sub_name1)) {
+                    if(NULL != str_case_str(cmd->long_name, sub_name2)) {
                         res = true;
                     }
                 }
             }
             if(NULL != cmd->description) {
-                if(NULL != str_case_str(cmd->description, subName1)) {
-                    if(NULL != str_case_str(cmd->description, subName2)) {
+                if(NULL != str_case_str(cmd->description, sub_name1)) {
+                    if(NULL != str_case_str(cmd->description, sub_name2)) {
                         res = true;
                     }
                 }
@@ -169,27 +169,30 @@ void process_shell_cmd(char* cmd_line) {
     shell_prompt();
 }
 
-void help_dump_key(const char* subName1, const char* subName2) {
+void help_dump_key(const char* sub_name1, const char* sub_name2) {
+    uint16_t num=1;
     const shell_cmd_info_t* cmd = shell_commands;
     io_printf("Available commands:");
-    if(subName1) {
-        io_printf("Key1:%s" CRLF, subName1);
+    if(sub_name1) {
+        io_printf("Key1:%s" CRLF, sub_name1);
     }
-    if(subName2) {
-        io_printf("Key2:%s" CRLF, subName2);
+    if(sub_name2) {
+        io_printf("Key2:%s" CRLF, sub_name2);
     }
     io_putstr(CRLF);
-    static const table_col_t cols[] = {{10, "short"}, {20, "long command"}, {13, "Description"}};
+    static const table_col_t cols[] = {{5, "num"}, {10, "short"}, {20, "long command"}, {13, "Description"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     while(cmd->handler) {
-        if(is_print_cmd(cmd, subName1, subName2)) {
-            io_printf(TSEP " %8s " TSEP, cmd->short_name ? cmd->short_name : "");
+        if(is_print_cmd(cmd, sub_name1, sub_name2)) {
+            io_printf( TSEP );
+            io_printf(" %3u " TSEP, num);
+            io_printf(" %8s " TSEP, cmd->short_name ? cmd->short_name : "");
             io_printf(" %18s " TSEP, cmd->long_name ? cmd->long_name : "");
             io_printf(" %s ", cmd->description ? cmd->description : "");
             io_printf(CRLF);
         }
         wait_in_loop_ms(4);
-
+        num++;
         cmd++;
     }
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
