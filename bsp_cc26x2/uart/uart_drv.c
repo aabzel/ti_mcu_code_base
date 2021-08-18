@@ -114,8 +114,8 @@ static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
 static bool init_uart0(void) {
     bool res = false;
     memset(&huart[0], 0x00, sizeof(huart[0]));
-    char echoPrompt[40] = "";
-    snprintf(echoPrompt, sizeof(echoPrompt), "UART0 %u\n\r", UART0_BAUD_RATE);
+    char connectionHint[40] = "";
+    snprintf(connectionHint, sizeof(connectionHint), "UART0 %u\n\r", UART0_BAUD_RATE);
     UART_Params uart0Params;
     huart[0].rx_cnt = 0;
     huart[0].tx_cnt = 0;
@@ -149,7 +149,7 @@ static bool init_uart0(void) {
 
     /* Turn on user LED to indicate successful initialization */
 
-    UART_write(huart[0].uart_h, echoPrompt, sizeof(echoPrompt));
+    UART_write(huart[0].uart_h, connectionHint, sizeof(connectionHint));
     UART_read(huart[0].uart_h, &huart[0].rx_byte, 1);
     huart[0].init_done = true;
     huart[0].base_address = (uint32_t*)DEBUG_UART;
@@ -165,8 +165,8 @@ static bool init_uart1(void) {
     huart[1].tx_byte_cnt = 0;
     huart[1].rx_buff = rx_buff1;
     strncpy(huart[1].name, "Ublox", sizeof(huart[1].name));
-    char echoPrompt[40] = ""; //
-    snprintf(echoPrompt, sizeof(echoPrompt), "UART1 %u\n\r", UART1_BAUD_RATE);
+    char connectionHint[40] = ""; //
+    snprintf(connectionHint, sizeof(connectionHint), "UART1 %u\n\r", UART1_BAUD_RATE);
     UART_Params uart1Params;
 
     /* Call driver init functions */
@@ -193,7 +193,7 @@ static bool init_uart1(void) {
         res = true;
     }
 
-    UART_write(huart[1].uart_h, echoPrompt, sizeof(echoPrompt));
+    UART_write(huart[1].uart_h, connectionHint, sizeof(connectionHint));
     UART_read(huart[1].uart_h, huart[1].rx_buff, RX_ARR1_CNT);
     return res;
 }

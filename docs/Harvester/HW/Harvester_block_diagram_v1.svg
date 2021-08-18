@@ -1219,9 +1219,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="75.233606"
-     inkscape:cy="396.34904"
+     inkscape:zoom="15.839192"
+     inkscape:cx="272.78155"
+     inkscape:cy="404.05506"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
@@ -4571,20 +4571,20 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="73.231842"
+       x="73.966835"
        y="107.14167"
        id="text2650"><tspan
          sodipodi:role="line"
          id="tspan2648"
-         x="73.231842"
+         x="73.966835"
          y="107.14167"
          style="font-size:0.705556px;stroke-width:0.264583">RF_N</tspan></text>
     <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.256;stroke-miterlimit:4;stroke-dasharray:0.256, 0.25600000000000001;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.231507;stroke-miterlimit:4;stroke-dasharray:0.231507, 0.231507;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2652"
-       width="20.379301"
+       width="16.66622"
        height="10.958051"
-       x="56.46069"
+       x="60.173771"
        y="100.22607" />
     <text
        xml:space="preserve"

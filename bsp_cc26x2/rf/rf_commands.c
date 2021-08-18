@@ -73,10 +73,10 @@ bool rf_read_command(int32_t argc, char* argv[]) {
 
 bool rf_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint32_t now=RF_getCurrentTime();
+    uint32_t now = RF_getCurrentTime();
     int8_t rssi = RF_getRssi(rfHandle);
     RF_InfoVal info_val;
-    RF_Stat stat=RF_getInfo(rfHandle , RF_GET_RADIO_STATE  , &info_val);
+    RF_Stat stat = RF_getInfo(rfHandle, RF_GET_RADIO_STATE, &info_val);
 
     io_printf("state: %u" CRLF, info_val.bRadioState);
     io_printf("rssi: %d" CRLF, rssi);

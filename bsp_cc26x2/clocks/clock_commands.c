@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <systick.h>
+#include <osc.h>
 
 #include "clocks.h"
 #include "convert.h"
@@ -42,6 +43,8 @@ bool clock_diag_command(int32_t argc, char* argv[]){
     bool res = false;
      if (0 == argc) {
          res = true;
+         uint32_t millivolt= OSCHF_DebugGetCrystalAmplitude(  );
+         io_printf("CrystalAmpl: %u mV" CRLF, millivolt);
          io_printf("up_time_ms %u" CRLF, g_up_time_ms);
          io_printf("SysTickPeriod %u" CRLF, SysTickPeriodGet());
          io_printf("SysTickValue %u" CRLF, SysTickValueGet());

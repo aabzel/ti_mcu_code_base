@@ -24,9 +24,12 @@ extern int main(void);
 bool core_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
-        uint32_t clock;
+        uint32_t clock = 0;
         /* Obtain the number of the currently executing interrupt. */
         // io_printf("R0: 0x%08x" CRLF, R0);
+        uint64_t ble_mac = 0;
+        ble_mac = get_ble_mac();
+        io_printf("MAC: 0x%"PRIx64 CRLF, ble_mac);
         io_printf("main: 0x%08p" CRLF, main);
         io_printf("SysTickIntHandler: 0x%08p" CRLF, SysTickIntHandler);
         clock = SysCtrlClockGet();

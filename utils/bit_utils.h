@@ -69,6 +69,8 @@ extern "C" {
 #define MASK_25BIT (uint32_t)0x01FFFFFFU
 #define MASK_30BIT (uint32_t)0x3FFFFFFFU
 
+#define MASK_48BIT ((uint64_t)0x0000FFFFFFFFFFFFU)
+
 #define MASK_50BIT ((uint64_t)0x0003FFFFFFFFFFFF)
 
 #define SET_BIT_NUM(VAL, BIT) ((VAL) |= (1U << (BIT)))

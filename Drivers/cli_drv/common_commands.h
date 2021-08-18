@@ -4,6 +4,12 @@
 #include "log.h"
 #include "task_info.h"
 
+#ifdef HAS_BOOT_DIAG
+#include "boot_commands.h"
+#else
+#define BOOT_COMMANDS
+#endif
+
 #ifdef HAS_GPIO
 #include "gpio_commands.h"
 #else
@@ -78,7 +84,8 @@
 
 #define COMMON_COMMANDS                                                                                                \
     ADC_COMMANDS                                                                                                       \
-    CLOCK_COMMANDS                                                                                                     \
+    CLOCK_COMMANDS \
+    BOOT_COMMANDS\
     DEFAULT_COMMANDS                                                                                                   \
     FLASH_COMMANDS                                                                                                     \
     I2C_COMMANDS                                                                                                       \

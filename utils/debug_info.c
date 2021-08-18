@@ -6,10 +6,12 @@
 #include "byte_utils.h"
 #include "convert.h"
 #include "core_driver.h"
+#include "data_utils.h"
 #include "device_id.h"
 #include "io_utils.h"
 #include "oprintf.h"
 #include "sys.h"
+#include "table_utils.h"
 #include "uart_drv.h"
 #include "version.h"
 #include "writer_generic.h"
@@ -91,6 +93,7 @@ void print_sys_info(void) {
     io_printf("Boot reset handler: 0x%x " CRLF, *((uint32_t*)(0x00000004)));
     io_printf("App  reset handler: 0x%x " CRLF, *((uint32_t*)(APP_START_ADDRESS + 4)));
     io_printf("addr of main() 0x08%p" CRLF, main);
+    explore_stack_dir();
 }
 
 /*platform spesific data type calculator */
@@ -183,4 +186,75 @@ bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint
         }
     }
     return res;
+}
+
+bool print_offset(uint16_t offset) {
+    bool res = false;
+    if(0 < offset) {
+        res = true;
+        uint16_t i = 0;
+        for(i = 0; i < offset; i++) {
+            io_printf(" ");
+        }
+    }
+    return res;
+}
+
+bool print_bit_hint(uint16_t offset, uint32_t bitness) {
+    int32_t bit = 0;
+    uint8_t cnt = 0;
+    bool res = false;
+    if(bitness) {
+        res = true;
+        print_offset(offset);
+        for(bit = bitness - 1; 0 <= bit; bit--) {
+            io_printf("%u", bit / 10);
+            cnt++;
+            if(4 == cnt) {
+                cnt = 0;
+                io_printf(" ");
+            }
+        }
+        cnt = 0;
+        io_printf(CRLF);
+        print_offset(offset);
+        for(bit = bitness - 1; 0 <= bit; bit--) {
+            io_printf("%u", bit % 10);
+            cnt++;
+            if(4 == cnt) {
+                cnt = 0;
+                io_printf(" ");
+            }
+        }
+        io_printf(CRLF);
+    }
+    return res;
+}
+
+
+bool print_bit_representation(uint32_t val){
+    bool res = true;
+    int32_t bit_index = 0;
+    table_col_t cols[32] ;
+    for(bit_index = 31; 0 <= bit_index; bit_index--){
+        cols[bit_index].width = 2;
+        cols[bit_index].name="";
+    }
+    io_printf("value: %u"CRLF"value: 0x%x "CRLF, val, val);
+    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    io_printf(TSEP);
+    for(bit_index = 31; 0 <= bit_index; bit_index--) {
+        io_printf("%2u"TSEP, bit_index);
+    }
+    io_printf(CRLF);
+    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    io_printf(TSEP);
+
+    for(bit_index = 31; 0 <= bit_index; bit_index--) {
+        io_printf("%2u"TSEP,(1<<bit_index)==(val&(1<<bit_index)) );
+    }
+    io_printf(CRLF);
+    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    io_printf(CRLF);
+    return res ;
 }

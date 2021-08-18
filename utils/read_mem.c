@@ -4,7 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-
 uint8_t read_addr_8bit(uint32_t addr_val) {
   uint8_t val = 0u;
   if (0u != addr_val) {

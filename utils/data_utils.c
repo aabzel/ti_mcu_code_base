@@ -122,7 +122,7 @@ uint8_t extract_digit(uint32_t in_num ,uint8_t digit_index){
     return out_digit;
 }
 
-bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt) {
+bool is_arr_pat(uint8_t *arr, uint32_t size, uint8_t patt) {
     bool res = true;
     uint32_t i=0;
     for ( i = 0; i < size; i++) {

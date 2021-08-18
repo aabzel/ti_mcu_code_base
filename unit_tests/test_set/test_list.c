@@ -1,5 +1,6 @@
 #include "test_list.h"
 
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -82,18 +83,10 @@ bool test_64bit_mult(void) {
     EXPECT_EQ((uint64_t)0x00000002cb417800, temp10x3);
     // exp        3410065408 cb417800 2 3410065408 14646119404580896770
     //  temp10x3: 48         cb417800 2 3410065408 14646119404580896770!
-    io_printf("\n exp: %u  " CRLF, 0x00000002CB417800);
-    io_printf("\n exp: %19x  " CRLF, 0x00000002CB417800);
-    io_printf("\n exp: %d  " CRLF, 0x00000002CB417800);
-    io_printf("\n exp: %lu " CRLF, 0x00000002CB417800);
-    io_printf("\n exp: %llu" CRLF, 0x00000002CB417800);
+    io_printf("\n exp: %"PRIu64"" CRLF, 0x00000002CB417800);
     print_mem((uint8_t*)&exp, 8U, false);
     print_mem((uint8_t*)&temp10x3, 8U, false);
-    io_printf("\n temp10x3: %u " CRLF, temp10x3);
-    io_printf("\n temp10x3: %x " CRLF, temp10x3);
-    io_printf("\n temp10x3: %d " CRLF, temp10x3);
-    io_printf("\n temp10x3: %lu" CRLF, temp10x3);
-    io_printf("\n temp10x3: %llu" CRLF, temp10x3);
+    io_printf("\n temp10x3: %"PRIu64"" CRLF, temp10x3);
     return true;
 }
 

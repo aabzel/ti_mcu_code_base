@@ -54,6 +54,8 @@ bool print_vector_table(uint32_t vectors_table_base);
 void print_sys_info(void);
 bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint32_t end_addr);
 bool print_mem(uint8_t* addr, int32_t len, bool new_line);
+bool print_bit_hint(uint16_t offset, uint32_t bitness);
+bool print_bit_representation(uint32_t val);
 
 #ifdef __cplusplus
 }

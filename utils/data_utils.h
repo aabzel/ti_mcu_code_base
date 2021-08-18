@@ -22,13 +22,15 @@ extern "C" {
   }
 
 typedef union uAllType_t{
-    uint32_t u32;
-    uint16_t u16;
-    uint8_t u8;
-    int32_t s32;
-    int16_t s16;
-    int8_t s8;
-    float f32;
+    uint64_t u64;
+    int64_t  s64;
+    uint32_t u32[2];
+    int32_t s32[2];
+    float f32[2];
+    uint16_t u16[4];
+    int16_t s16[4];
+    uint8_t u8[8];
+    int8_t s8[8];
 } AllTypeUnion_t;
   
 uint8_t rx_max8u(uint8_t max8u_x1, uint8_t max8u_x2);

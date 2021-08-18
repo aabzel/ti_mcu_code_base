@@ -64,13 +64,13 @@ bool cmd_low_level_control(int32_t argc, char* argv[]) {
     bool res = false;
     if(3 == argc) {
         uint8_t bit_num = 0xFF;
-        uint32_t address_val = 0u;
+        uint32_t address = 0u;
         char cmd = 'n';
-        res = try_str2uint32(argv[0], &address_val);
+        res = try_str2uint32(argv[0], &address);
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x" CRLF, (unsigned int)address_val);
+            io_printf("address: 0x%08x" CRLF, (unsigned int)address);
         }
 
         if(true == res) {
@@ -86,7 +86,7 @@ bool cmd_low_level_control(int32_t argc, char* argv[]) {
             }
         }
         if(res) {
-            res = bit32_control_proc((uint32_t*)address_val, cmd, bit_num);
+            res = bit32_control_proc((uint32_t*)address, cmd, bit_num);
             if(false == res) {
                 LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
             } else {
@@ -107,29 +107,29 @@ bool cmd_write_memory(int32_t argc, char* argv[]) {
     bool res = false;
     if(2 == argc) {
         res = true;
-        uint32_t address_val = 0u;
         uint32_t address = 0u;
+        uint32_t value = 0u;
         res = try_str2uint32(argv[0], &address);
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x" CRLF, (unsigned int)address_val);
+            io_printf("address: 0x%08x" CRLF, (unsigned int)address);
         }
 
-        res = try_str2uint32(argv[1], &address_val);
+        res = try_str2uint32(argv[1], &value);
         if(false == res) {
             LOG_ERROR(SYS, "Invalid value %s", argv[1]);
         } else {
-            io_printf("val: 0x%08x" CRLF, (unsigned int)address_val);
+            io_printf("val: 0x%08x" CRLF, (unsigned int)value);
         }
 
         if(true == res) {
-            res = write_addr_32bit(address, address_val);
+            res = write_addr_32bit(address, value);
         }
     } else {
-        LOG_ERROR(SYS, "Usage: wm: address address_val");
+        LOG_ERROR(SYS, "Usage: wm: address value");
         LOG_INFO(SYS, "Usage: address 0xXXXXXXXX");
-        LOG_INFO(SYS, "Usage: address_val 0xXXXXXXXX");
+        LOG_INFO(SYS, "Usage: value 0xXXXXXXXX");
     }
     return res;
 }
@@ -138,29 +138,33 @@ bool cmd_write_memory(int32_t argc, char* argv[]) {
 bool cmd_read_memory(int32_t argc, char* argv[]) {
     bool res = false;
     if(1 == argc) {
-        uint32_t address_val = 0u;
+        uint32_t address = 0u;
         uint32_t value = 0u;
-        res = try_str2uint32(argv[0], &address_val);
+        res = try_str2uint32(argv[0], &address);
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x" CRLF, (unsigned int)address_val);
+            io_printf("address: 0x%08x" CRLF, (unsigned int)address);
         }
         if(true == res) {
-            value = read_addr_32bit(address_val);
-            io_printf("value: 0x%08x 0b%s" CRLF, (unsigned int)value, utoa_bin32(value));
+            value = read_addr_32bit(address);
+            io_printf("value: 0x%08x" CRLF, (unsigned int)value);
+            print_bit_hint(9,32);
+            io_printf("value: 0b%s" CRLF, utoa_bin32(value));
+            print_bit_representation(value);
+
         }
     }
     if(2 == argc) {
-        uint32_t address_val = 0u;
+        uint32_t address = 0u;
         uint32_t num_of_byte = 0u;
         uint8_t value_byte = 0u;
         uint32_t index = 0u;
-        res = try_str2uint32(argv[0], &address_val);
+        res = try_str2uint32(argv[0], &address);
         if(false == res) {
             LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            io_printf("address: 0x%08x " CRLF, (unsigned int)address_val);
+            io_printf("address: 0x%08x " CRLF, (unsigned int)address);
         }
         res = try_str2uint32(argv[1], &num_of_byte);
         if(false == res) {
@@ -169,7 +173,7 @@ bool cmd_read_memory(int32_t argc, char* argv[]) {
             io_printf("num_of_byte: %d " CRLF, (unsigned int)num_of_byte);
         }
         for(index = 0; index < num_of_byte; index++) {
-            value_byte = read_addr_8bit(address_val + index);
+            value_byte = read_addr_8bit(address + index);
             io_printf("%02x", (unsigned int)value_byte);
         }
         io_printf(CRLF);

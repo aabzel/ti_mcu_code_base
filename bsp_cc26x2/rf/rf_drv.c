@@ -18,8 +18,8 @@
 #include <ti/drivers/pin/PINCC26XX.h>
 #include <ti/drivers/rf/RF.h>
 
-#include "debug_info.h"
 #include "RFQueue.h"
+#include "debug_info.h"
 #include "ti_radio_config.h"
 #include "timer_utils.h"
 /*
