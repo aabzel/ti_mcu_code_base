@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="297mm"
    height="210mm"
    viewBox="0 0 297 210"
    version="1.1"
    id="svg5"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="LAUNCHXL-CC26X2R1_block_diagram.svg">
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="LAUNCHXL-CC26X2R1_block_diagram.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <metadata
      id="metadata308">
     <rdf:RDF>
@@ -35,15 +35,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="10.733543"
-     inkscape:cx="553.50763"
-     inkscape:cy="174.41463"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
-     inkscape:window-x="2552"
-     inkscape:window-y="-8"
+     inkscape:zoom="1.8974403"
+     inkscape:cx="773.41038"
+     inkscape:cy="275.10748"
+     inkscape:window-width="1920"
+     inkscape:window-height="1000"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer9"
+     inkscape:current-layer="layer1"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:document-rotation="0">
@@ -673,14 +673,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.54643px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.115982"
-       x="118.96128"
-       y="57.255119"
+       x="118.56688"
+       y="54.494305"
        id="text23785"><tspan
          sodipodi:role="line"
          id="tspan23783"
          style="font-size:1.54643px;stroke-width:0.115982"
-         x="118.96128"
-         y="57.255119">U5</tspan></text>
+         x="118.56688"
+         y="54.494305">U5</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.773212px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.115982"
@@ -730,21 +730,21 @@
        width="3.891403"
        height="1.8165642"
        x="131.1344"
-       y="53.362331" />
+       y="52.833164" />
     <rect
        style="fill:#ffaaaa;stroke:#000000;stroke-width:0.140406"
        id="rect48959"
        width="3.8067012"
        height="1.4884853"
        x="131.15532"
-       y="55.632175" />
+       y="55.103008" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.116;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1464)"
-       d="m 129.32354,54.229719 h 1.73781"
+       d="m 129.32354,53.700552 h 1.73781"
        id="path48994" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.116;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1464)"
-       d="m 129.28265,56.212857 h 1.84004"
+       d="m 129.28265,55.68369 h 1.84004"
        id="path48996" />
     <text
        xml:space="preserve"
@@ -1997,6 +1997,28 @@
          style="font-size:1.76389px;fill:#ffc200;fill-opacity:1;stroke-width:0.264583"
          x="145.68227"
          y="74.758469">5V0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833333px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="119.55318"
+       y="67.960434"
+       id="text6179"><tspan
+         sodipodi:role="line"
+         id="tspan6177"
+         style="stroke-width:0.264583;font-size:1.05833333px"
+         x="119.55318"
+         y="67.960434">MSP432E401Y</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="121.69774"
+       y="66.493752"
+       id="text13353"><tspan
+         sodipodi:role="line"
+         id="tspan13351"
+         style="font-size:1.05833px;stroke-width:0.264583"
+         x="121.69774"
+         y="66.493752">or</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2039,6 +2061,17 @@
        height="8.5231552"
        x="164.73404"
        y="42.103283" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.79202px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.134401"
+       x="116.2091"
+       y="50.643723"
+       id="text4439"><tspan
+         sodipodi:role="line"
+         id="tspan4437"
+         style="font-size:1.79202px;stroke-width:0.134401"
+         x="116.2091"
+         y="50.643723">XDS110 Debugger</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2564,25 +2597,25 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.773212px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.115982"
-       x="131.49068"
-       y="56.478642"
+       x="131.4044"
+       y="56.109699"
        id="text50586"><tspan
          sodipodi:role="line"
          id="tspan50584"
          style="font-size:0.773212px;stroke-width:0.115982"
-         x="131.49068"
-         y="56.478642">CR4 LED</tspan></text>
+         x="131.4044"
+         y="56.109699">CR4 LED</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.773212px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.115982"
-       x="131.63379"
-       y="54.434162"
+       x="131.31334"
+       y="53.781746"
        id="text51778"><tspan
          sodipodi:role="line"
          id="tspan51776"
          style="font-size:0.773212px;stroke-width:0.115982"
-         x="131.63379"
-         y="54.434162">CR5 LED</tspan></text>
+         x="131.31334"
+         y="53.781746">CR5 LED</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.433233px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0324924"
@@ -3652,6 +3685,17 @@
          style="stroke-width:0.102653"
          x="255.0314"
          y="49.022396">5V</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="125.14875"
+       y="54.156357"
+       id="text3097"><tspan
+         sodipodi:role="line"
+         id="tspan3095"
+         style="font-size:1.05833px;stroke-width:0.264583"
+         x="125.14875"
+         y="54.156357">128 pin</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

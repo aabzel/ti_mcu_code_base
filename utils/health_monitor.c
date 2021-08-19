@@ -5,7 +5,7 @@
 
 HealthMon_t HealthMon;
 
-bool health_monotor_init(void){
-    memset(&HealthMon,0x00,sizeof(HealthMon));
+bool health_monotor_init(void) {
+    memset(&HealthMon, 0x00, sizeof(HealthMon));
     return true;
 }

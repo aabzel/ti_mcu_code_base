@@ -8,11 +8,11 @@
 extern "C" {
 #endif
 
-typedef struct xHealthMon_t{
-  bool init_error ;
-  uint32_t error_cnt ;
-  uint32_t crc_error_cnt ;
-}HealthMon_t;
+typedef struct xHealthMon_t {
+    bool init_error;
+    uint32_t error_cnt;
+    uint32_t crc_error_cnt;
+} HealthMon_t;
 
 extern HealthMon_t HealthMon;
 

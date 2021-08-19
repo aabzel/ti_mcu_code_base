@@ -1,0 +1,85 @@
+/*
+ test is based on https://crccalc.com/
+ */
+
+#include "test_crc.h"
+
+#include "crc32.h"
+#include "crc8_autosar.h"
+#include "crc8_sae_j1850.h"
+#include "data_utils.h"
+#include "unit_test_check.h"
+
+#define TEST_PAYLOAD (const uint8_t*)"12345678"
+
+#define CRC32_RES0 ((uint32_t)0x00000000UL)
+#define CRC32_RES4 ((uint32_t)0x9BE3E0A3UL)
+#define CRC32_RES5 ((uint32_t)0xCBF53A1CUL)
+#define CRC32_RES6 ((uint32_t)0x0972D361UL)
+#define CRC32_RES7 ((uint32_t)0x5003699FUL)
+#define CRC32_RES8 ((uint32_t)0x9AE0DAAFUL)
+
+static const Crc8TestCase_t cases_crc8_auto[] = {
+    {4, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x12},
+    {3, {0xF2, 0x01, 0x83, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0xC2},
+    {4, {0x0F, 0xAA, 0x00, 0x55, 0x00, 0x00, 0x00, 0x00, 0x00}, 0xC6},
+    {4, {0x00, 0xFF, 0x55, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x77},
+    {9, {0x33, 0x22, 0x55, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF}, 0x11},
+    {3, {0x92, 0x6B, 0x55, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x33},
+    {4, {0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x6C},
+};
+static const Crc8TestCase_t cases_crc8_j1850[] = {
+    {4, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x59},
+    {3, {0xF2, 0x01, 0x83, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x37},
+    {4, {0x0F, 0xAA, 0x00, 0x55, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x79},
+    {4, {0x00, 0xFF, 0x55, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00}, 0xB8},
+    {9, {0x33, 0x22, 0x55, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF}, 0xCB},
+    {3, {0x92, 0x6B, 0x55, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x8C},
+    {4, {0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x74},
+};
+
+static bool test_calc_crc32(void) {
+    EXPECT_EQ(CRC32_RES0, crc32(TEST_PAYLOAD, 0));
+    EXPECT_EQ(CRC32_RES4, crc32(TEST_PAYLOAD, 4));
+    EXPECT_EQ(CRC32_RES5, crc32(TEST_PAYLOAD, 5));
+    EXPECT_EQ(CRC32_RES6, crc32(TEST_PAYLOAD, 6));
+    EXPECT_EQ(CRC32_RES7, crc32(TEST_PAYLOAD, 7));
+    EXPECT_EQ(CRC32_RES8, crc32(TEST_PAYLOAD, 8));
+    return true;
+}
+
+static bool test_crc8_autosar(void) {
+    uint32_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(cases_crc8_auto); i++) {
+        uint8_t crc8 = crc8_autosar_calc(cases_crc8_auto[i].buf, cases_crc8_auto[i].len);
+        EXPECT_EQ(crc8, cases_crc8_auto[i].crc8);
+    }
+    return true;
+}
+
+static bool test_crc8_sae_j1850(void) {
+    uint32_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(cases_crc8_j1850); i++) {
+        uint8_t crc8 = crc8_sae_j1850_calc(cases_crc8_j1850[i].buf, cases_crc8_j1850[i].len);
+        EXPECT_EQ(crc8, cases_crc8_j1850[i].crc8);
+    }
+    return true;
+}
+
+bool test_crc8(void) {
+    EXPECT_TRUE(test_crc8_autosar());
+    EXPECT_TRUE(test_crc8_sae_j1850());
+    return true;
+}
+
+bool test_crc16(void) {
+    uint16_t crc16 = 0;
+    crc16 = calc_crc16_ccitt_false(TEST_PAYLOAD, 8);
+    EXPECT_EQ(0xA12B, crc16);
+    return true;
+}
+
+bool test_crc32(void) {
+    EXPECT_TRUE(test_calc_crc32());
+    return true;
+}

@@ -49,7 +49,7 @@ bool explore_stack_dir(void);
 bool is_little_endian(void);
 bool print_16bit_types(void* val);
 bool print_version(void);
-void print_version_s(ostream_t* stream);
+bool print_version_s(ostream_t* stream);
 bool print_vector_table(uint32_t vectors_table_base);
 void print_sys_info(void);
 bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint32_t end_addr);

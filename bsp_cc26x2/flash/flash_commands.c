@@ -3,6 +3,7 @@
 #include <inttypes.h>
 
 #include "convert.h"
+#include "crc32.h"
 #include "data_utils.h"
 #include "debug_info.h"
 #include "diag_page_nums.h"
@@ -119,6 +120,13 @@ bool flash_write_command(int32_t argc, char* argv[]) {
 bool flash_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
+        uint32_t all_flash_crc = 0;
+        all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
+        io_printf("FlashCRC32: 0x%08x" CRLF, all_flash_crc);
+
+        io_printf("Flash Base: 0x%08x" CRLF, NOR_FLASH_BASE);
+        io_printf("Flash size: %u byte %u kByte" CRLF, NOR_FLASH_SIZE, NOR_FLASH_SIZE / 1024);
+
         /* Display the NVS region attributes */
         io_printf("Base Address: 0x%08x" CRLF, regionAttrs.regionBase);
         io_printf("Sector Size : 0x%08x" CRLF, regionAttrs.sectorSize);

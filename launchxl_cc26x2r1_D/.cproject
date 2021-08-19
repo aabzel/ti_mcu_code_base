@@ -92,10 +92,12 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests\test_set"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_ublox_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_nmea_proto"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests\test_set\test_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests\test_set\utils_test"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_diag"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_sys"/>
@@ -112,6 +114,7 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE.890004560" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DeviceFamily_CC26X2"/>
+									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 									<listOptionValue builtIn="false" value="ICALL_JT"/>
@@ -208,7 +211,12 @@
 						</tool>
 					</fileInfo>
 					<fileInfo id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.2039576451.541934365" name="boot_commands.c" rcbsApplicability="disable" resourcePath="bsp_cc26x2/boot_drv/boot_commands.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905.1581695341">
-						<tool id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905.1581695341" name="Arm Compiler" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905"/>
+						<tool id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905.1581695341" name="Arm Compiler" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905">
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.464510540" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.482640513" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS.1343644165" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM2_SRCS.1095488397" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM2_SRCS"/>
+						</tool>
 						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.1359329028" name="Resource Custom Build Step">
 							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.183667545" name="Resource Custom Build Step Input Type">
 								<additionalInput kind="additionalinputdependency" paths=""/>

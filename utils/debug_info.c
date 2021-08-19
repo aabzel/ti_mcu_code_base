@@ -6,8 +6,10 @@
 #include "byte_utils.h"
 #include "convert.h"
 #include "core_driver.h"
+#include "crc32.h"
 #include "data_utils.h"
 #include "device_id.h"
+#include "flash_drv.h"
 #include "io_utils.h"
 #include "oprintf.h"
 #include "sys.h"
@@ -48,42 +50,63 @@ bool is_little_endian(void) {
     return bint.u8[0] == 4;
 }
 
-void print_version_s(ostream_t* stream) {
-    oprintf(stream, "Date     : %s " CRLF, __DATE__);
-    oprintf(stream, "Time     : %s " CRLF, __TIME__);
-    oprintf(stream, "TimeStamp: %s " CRLF, __TIMESTAMP__);
-    oprintf(stream, "Cstd     : %u " CRLF, __STDC__);
-    oprintf(stream, "STDC_VER : %u " CRLF, __STDC_VERSION__);
-    //  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
-    oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
-    oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
-    uint32_t cpi_id = cpu_get_id();
-    oprintf(stream, "branch   : %s " CRLF, GIT_BRANCH);
-    oprintf(stream, "last commit: %s" CRLF, GIT_LAST_COMMIT_HASH);
+bool print_version_s(ostream_t* stream) {
+    bool res = false;
+    if(stream) {
+        res = false;
+        uint32_t all_flash_crc = 0;
+        oprintf(stream, "Date     : %s " CRLF, __DATE__);
+        oprintf(stream, "Time     : %s " CRLF, __TIME__);
+        oprintf(stream, "TimeStamp: %s " CRLF, __TIMESTAMP__);
+        oprintf(stream, "Cstd     : %u " CRLF, __STDC__);
+        oprintf(stream, "STDC_VER : %u " CRLF, __STDC_VERSION__);
+        //  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
+        oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
+        oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
+        uint32_t cpi_id = cpu_get_id();
+        oprintf(stream, "branch   : %s " CRLF, GIT_BRANCH);
+        oprintf(stream, "last commit: %s" CRLF, GIT_LAST_COMMIT_HASH);
 
-    //  oprintf(stream, "IAR_SYSTEMS_ICC %u " CRLF, __IAR_SYSTEMS_ICC__);
-    // oprintf (stream, "ARM_BUILD %u ", ARM_BUILD);
-    // oprintf(stream, "IAR VER  :%u " CRLF, __VER__);
+        all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
+        oprintf(stream, "FlashCRC32: 0x%08x" CRLF, all_flash_crc);
+        oprintf(stream, "main(): 0x%08p" CRLF, main);
+        // oprintf (stream, "ARM_BUILD %u ", ARM_BUILD);
+        // oprintf(stream, "IAR VER  :%u " CRLF, __VER__);
 
 #ifdef __GNUC__
-    oputs(stream, " GCC" CRLF);
+        oputs(stream, "GCC" CRLF);
+#endif
+
+#ifdef HAS_BOOT
+        oputs(stream, "Bootloader ");
+#endif
+
+#ifdef HAS_GENERIC
+        oputs(stream, "Generic ");
 #endif
 
 #ifdef HAS_RELEASE
-    oputs(stream, " Release" CRLF);
+        oputs(stream, "Release" CRLF);
 #endif
 
 #ifdef HAS_DEBUG
-    oputs(stream, " Debug" CRLF);
-#endif
-    oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
-    oputs(stream, "by aabdev" CRLF);
-    oputs(stream, CRLF);
+        oputs(stream, "Debug" CRLF);
+#endif /*HAS_DEBUG*/
+        oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
+
+        uint64_t ble_mac = get_ble_mac();
+        oprintf(stream, "MAC: 0x%" PRIx64 CRLF, ble_mac);
+
+        oputs(stream, "by aabdev" CRLF);
+        oputs(stream, CRLF);
+    }
+    return res;
 }
 
 bool print_version(void) {
-    print_version_s(DBG_STREAM);
-    return true;
+    bool res = false;
+    res = print_version_s(DBG_STREAM);
+    return res;
 }
 
 void print_sys_info(void) {
@@ -231,30 +254,29 @@ bool print_bit_hint(uint16_t offset, uint32_t bitness) {
     return res;
 }
 
-
-bool print_bit_representation(uint32_t val){
+bool print_bit_representation(uint32_t val) {
     bool res = true;
     int32_t bit_index = 0;
-    table_col_t cols[32] ;
-    for(bit_index = 31; 0 <= bit_index; bit_index--){
+    table_col_t cols[32];
+    for(bit_index = 31; 0 <= bit_index; bit_index--) {
         cols[bit_index].width = 2;
-        cols[bit_index].name="";
+        cols[bit_index].name = "";
     }
-    io_printf("value: %u"CRLF"value: 0x%x "CRLF, val, val);
+    io_printf("value: %u" CRLF "value: 0x%x " CRLF, val, val);
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
     io_printf(TSEP);
     for(bit_index = 31; 0 <= bit_index; bit_index--) {
-        io_printf("%2u"TSEP, bit_index);
+        io_printf("%2u" TSEP, bit_index);
     }
     io_printf(CRLF);
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
     io_printf(TSEP);
 
     for(bit_index = 31; 0 <= bit_index; bit_index--) {
-        io_printf("%2u"TSEP,(1<<bit_index)==(val&(1<<bit_index)) );
+        io_printf("%2u" TSEP, (1 << bit_index) == (val & (1 << bit_index)));
     }
     io_printf(CRLF);
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
     io_printf(CRLF);
-    return res ;
+    return res;
 }

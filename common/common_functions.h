@@ -17,6 +17,7 @@
     TASK_DIAG                                                                                                          \
     TASK_INTEGRITY
 
+bool sys_init(void);
 void common_loop(uint64_t loop_start_time);
 void custom_loop(uint64_t loop_start_time);
 void common_init(void);

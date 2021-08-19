@@ -261,7 +261,7 @@ bool cmd_version(int32_t argc, char* argv[]) {
         return false;
     }
     if(!user_mode) {
-        io_printf("!VI ");
+        io_printf("!VI");
     }
     print_version();
     return dump_cmd_result(true);

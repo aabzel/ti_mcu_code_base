@@ -12,8 +12,10 @@
 #include "cli_manager.h"
 #endif /*HAS_CLI*/
 
+#include "hw_init.h"
 #include "io_utils.h"
 #include "log.h"
+#include "sw_init.h"
 #include "task_config.h"
 #include "task_info.h"
 #include "uart_drv.h"
@@ -42,6 +44,13 @@
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
 #endif
+
+bool sys_init(void) {
+    bool res = true;
+    res = hw_init() && res;
+    res = sw_init() && res;
+    return res;
+}
 
 void common_loop(uint64_t loop_start_time) {
     if(0u == loop_start_time) {
