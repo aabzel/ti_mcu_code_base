@@ -4,6 +4,9 @@
 #define TASKS                                                                  \
   TASK(UART1)                                                                  \
   TASK(LED)                                                                    \
+  TASK(ADC)                                                                    \
+  TASK(DAC)                                                                    \
+  TASK(RF)                                                                     \
   TASK(WDT)                                                                    \
   TASK(CLI)                                                                    \
   TASK(UBX)                                                                    \
