@@ -1,3 +1,8 @@
+/*
+ see page 79   1.3.2.2 Flash Memory
+ see page 631 8.5 FLASH
+ flash.h
+ */
 #ifndef FLASH_DRV_H
 #define FLASH_DRV_H
 
@@ -22,6 +27,13 @@ extern NVS_Attrs regionAttrs;
 bool flash_init(void);
 bool flash_write(uint32_t* addr, uint8_t* array, uint16_t array_len);
 bool flash_read(uint32_t* addr, uint8_t* rx_array, uint16_t array_len);
+
+/*
+ * API
+ erase 8kbyte flash block
+ programm 64bit (8 byte) qword
+ is block read only
+ * */
 
 bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare, uint32_t* busy);
 

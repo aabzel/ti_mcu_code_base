@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <sys_ctrl.h>
+#include <Temperature.h>
 
 #include "base_cmd.h"
 #include "convert.h"
@@ -25,6 +26,7 @@ bool core_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         uint32_t clock = 0;
+        // is cache enabled
         /* Obtain the number of the currently executing interrupt. */
         // io_printf("R0: 0x%08x" CRLF, R0);
         uint64_t ble_mac = 0;
@@ -35,6 +37,7 @@ bool core_diag_command(int32_t argc, char* argv[]) {
         clock = SysCtrlClockGet();
         io_printf("clock: %u Hz" CRLF, clock);
         // io_printf("IntDefaultHandler: 0x%08p" CRLF, IntDefaultHandler);
+        print_sys_info();
 
         res = true;
     } else {

@@ -4,6 +4,7 @@
 
 #include "test_crc.h"
 
+#include "crc16_ccitt.h"
 #include "crc32.h"
 #include "crc8_autosar.h"
 #include "crc8_sae_j1850.h"

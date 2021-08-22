@@ -4,6 +4,8 @@
 #include <sys_ctrl.h>
 #include <hw_fcfg1.h>
 #include <hw_memmap.h>
+#include <Temperature.h>
+#include <TemperatureCC26X2.h>
 
 #include "bit_utils.h"
 #include "data_utils.h"
@@ -11,6 +13,11 @@
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
 #endif
+
+const TemperatureCC26X2_Config TemperatureCC26X2_config = {
+  //  .intPriority = 0xE0,
+      .intPriority = (7<<5),
+};
 
 uint32_t cpu_get_id(void){
     uint32_t value;

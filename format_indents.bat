@@ -4,6 +4,8 @@ set work_space_dir=%cd%
 set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortUsingDeclarations: true , UseTab: Never,PointerAlignment: Left, BreakBeforeBraces: Attach, TabWidth: 4,ColumnLimit: 120 }"
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\read_mem.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\read_mem.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\boot_drv\boot_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\boot_drv\boot_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\boot_drv\boot_driver.h

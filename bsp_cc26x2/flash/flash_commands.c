@@ -121,6 +121,9 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         uint32_t all_flash_crc = 0;
+        //FlashSizeGet
+        //FlashPowerModeGet
+        //FlashProtectionGet
         all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
         io_printf("FlashCRC32: 0x%08x" CRLF, all_flash_crc);
 

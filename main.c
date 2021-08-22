@@ -28,7 +28,7 @@
 
 int main(void) {
     bool res = true;
-    pause_ms(20);
+    //pause_ms(20);
 
     res = sys_init() && res;
 
@@ -36,7 +36,7 @@ int main(void) {
 #ifdef HAS_HEALTH_MONITOR
     HealthMon.init_error = !res;
 #endif /*HAS_HEALTH_MONITOR*/
-
+    io_printf("Firmware launched!" CRLF);
     print_version();
     print_sys_info();
 

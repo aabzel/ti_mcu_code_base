@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <ti/drivers/Board.h>
+#include <Temperature.h>
+#include <TemperatureCC26X2.h>
 
 #ifdef NORTOS
 /*mandatory space NoRTOS uses stdint*/
@@ -66,6 +68,8 @@ bool hw_init(void) {
 #ifdef NORTOS
   NoRTOS_start();
 #endif /*NORTOS*/
+
+  Temperature_init();
   SysTickInit();
 
 #ifdef HAS_WDT

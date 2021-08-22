@@ -70,8 +70,7 @@ bool print_version_s(ostream_t* stream) {
         all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
         oprintf(stream, "FlashCRC32: 0x%08x" CRLF, all_flash_crc);
         oprintf(stream, "main(): 0x%08p" CRLF, main);
-        // oprintf (stream, "ARM_BUILD %u ", ARM_BUILD);
-        // oprintf(stream, "IAR VER  :%u " CRLF, __VER__);
+        oprintf (stream, "TI compiler ver %u "CRLF, __TI_COMPILER_VERSION__);
 
 #ifdef __GNUC__
         oputs(stream, "GCC" CRLF);
@@ -110,9 +109,9 @@ bool print_version(void) {
 }
 
 void print_sys_info(void) {
-    io_printf("Firmware launched.." CRLF);
+    uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
     io_printf("Boot top of stack: 0x%x " CRLF, *((uint32_t*)(0x00000000)));
-    io_printf("App  top of stack: 0x%x " CRLF, *((uint32_t*)(APP_START_ADDRESS)));
+    io_printf("App  top of stack: 0x%x " CRLF, top_stack_val);
     io_printf("Boot reset handler: 0x%x " CRLF, *((uint32_t*)(0x00000004)));
     io_printf("App  reset handler: 0x%x " CRLF, *((uint32_t*)(APP_START_ADDRESS + 4)));
     io_printf("addr of main() 0x08%p" CRLF, main);

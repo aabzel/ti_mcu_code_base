@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <systick.h>
 #include <osc.h>
+#include <ccfgread.h>
+#include <Temperature.h>
 
 #include "clocks.h"
 #include "convert.h"
@@ -39,11 +41,30 @@ bool systick_set_command(int32_t argc, char* argv[]){
     return res;
 }
 
+static char *xoscfreq2str(uint32_t code){
+    char *name = "undef";
+    switch(code){
+    case CCFGREAD_XOSC_FREQ_24M:name = "24M"; break;
+    case CCFGREAD_XOSC_FREQ_48M:name = "48M"; break;
+    case CCFGREAD_XOSC_FREQ_HPOSC:name = "HPOSC"; break;
+    case CCFGREAD_XOSC_FREQ_TCXO: name = "TCXO";break;
+    default:
+        name = "unspec";
+        break;
+    }
+    return name;
+}
+
 bool clock_diag_command(int32_t argc, char* argv[]){
     bool res = false;
      if (0 == argc) {
          res = true;
+         //PRCM_BASE +PRCM_O_OSCIMSC
+         int16_t temp_c=Temperature_getTemperature();
          uint32_t millivolt= OSCHF_DebugGetCrystalAmplitude(  );
+         uint32_t code = CCFGRead_XOSC_FREQ();
+         io_printf("XOSC_FREQ %s" CRLF, xoscfreq2str(code));
+         io_printf("T: %u C" CRLF, temp_c);
          io_printf("CrystalAmpl: %u mV" CRLF, millivolt);
          io_printf("up_time_ms %u" CRLF, g_up_time_ms);
          io_printf("SysTickPeriod %u" CRLF, SysTickPeriodGet());

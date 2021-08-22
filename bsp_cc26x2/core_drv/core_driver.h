@@ -7,9 +7,13 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <Temperature.h>
+#include <TemperatureCC26X2.h>
 
 #define CPU_SCS_BASE 0xE000E000
 #define CPU_SCS_CPUID (CPU_SCS_BASE+0xD00)
+
+extern const TemperatureCC26X2_Config TemperatureCC26X2_config;
 
 uint32_t cpu_get_id(void);
 bool reboot(void);

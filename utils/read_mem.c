@@ -4,36 +4,58 @@
 #include <stddef.h>
 #include <stdint.h>
 
-uint8_t read_addr_8bit(uint32_t addr_val) {
-  uint8_t val = 0u;
-  if (0u != addr_val) {
-    volatile uint8_t *addr = NULL;
+uint8_t read_addr_8bit(uint32_t address) {
+    uint8_t value = 0u;
+
+    volatile uint8_t* p_addr = NULL;
     /*MISRA 2012 Rule 11.4: integer should not be converted to pointer */
-    addr = (volatile uint8_t *)addr_val;
-    val = *addr;
-  }
-  return val;
+    p_addr = (volatile uint8_t*)address;
+    value = *p_addr;
+
+    return value;
 }
 
-uint32_t read_addr_32bit(uint32_t addr_val) {
-  uint32_t val = 0u;
-  if (0u != addr_val) {
-    volatile uint32_t *addr = NULL;
-    /*MISRA 2012 Rule 11.4: integer should not be converted to pointer */
-    addr = (volatile uint32_t *)addr_val;
-    val = *addr;
-  }
+uint16_t read_addr_16bit(uint32_t address) {
+    uint16_t value = 0u;
 
-  return val;
+    volatile uint16_t* p_addr = NULL;
+    /*MISRA 2012 Rule 11.4: integer should not be converted to pointer */
+    p_addr = (volatile uint16_t*)address;
+    value = *p_addr;
+
+    return value;
 }
 
-bool write_addr_32bit(uint32_t in_addr, uint32_t addr_val){
+uint32_t read_addr_32bit(uint32_t address) {
+    uint32_t value = 0u;
+    volatile uint32_t* addr = NULL;
+    /*MISRA 2012 Rule 11.4: integer should not be converted to pointer */
+    addr = (volatile uint32_t*)address;
+    value = *addr;
+
+    return value;
+}
+
+/*
+ Works with RAM REG
+ Will not work with ROM Flath
+ * */
+bool write_addr_32bit(uint32_t address, uint32_t value) {
     bool res = false;
-    if(0u != addr_val) {
-      res = true;
-      volatile uint32_t *addr = NULL;
-      addr = (volatile uint32_t *)in_addr;
-      (*addr ) = addr_val;
-    }
+    res = true;
+    volatile uint32_t* addr = NULL;
+    addr = (volatile uint32_t*)address;
+    (*addr) = value;
+
     return res;
+}
+
+uint64_t read_addr_64bit(uint32_t address) {
+    uint64_t value = 0u;
+    volatile uint64_t* addr = NULL;
+    /*MISRA 2012 Rule 11.4: integer should not be converted to pointer */
+    addr = (volatile uint64_t*)address;
+    value = *addr;
+
+    return value;
 }
