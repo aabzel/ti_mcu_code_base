@@ -805,21 +805,6 @@
          id="path1774" />
     </marker>
     <marker
-       style="overflow:visible"
-       id="marker1572"
-       refX="0.0"
-       refY="0.0"
-       orient="auto"
-       inkscape:stockid="Arrow1Mstart"
-       inkscape:isstock="true"
-       inkscape:collect="always">
-      <path
-         transform="scale(0.4) translate(10,0)"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         id="path1570" />
-    </marker>
-    <marker
        style="overflow:visible;"
        id="marker1378"
        refX="0.0"
@@ -1219,11 +1204,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="198.55811"
-     inkscape:cy="368.95821"
+     inkscape:zoom="16"
+     inkscape:cx="246.53125"
+     inkscape:cy="309.5625"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1370,6 +1355,26 @@
        position="166.10802,10.884202"
        orientation="0,-1"
        id="guide11861" />
+    <sodipodi:guide
+       position="77.201639,121.4827"
+       orientation="0,-1"
+       id="guide68548" />
+    <sodipodi:guide
+       position="40.66197,132.98145"
+       orientation="1,0"
+       id="guide68751" />
+    <sodipodi:guide
+       position="60.866072,132.14555"
+       orientation="0,-1"
+       id="guide100488" />
+    <sodipodi:guide
+       position="55.475187,132.17862"
+       orientation="1,0"
+       id="guide100528" />
+    <sodipodi:guide
+       position="69.176037,122.86345"
+       orientation="1,0"
+       id="guide101050" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -1683,19 +1688,19 @@
          y="129.1095"
          style="font-size:0.905687px;stroke-width:0.135853">BATT_ADC</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.135853px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 59.873319,92.185743 H 78.358966"
+       style="fill:none;stroke:#000000;stroke-width:0.0860995px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker2120)"
+       d="M 131.88502,109.50178 H 124.46"
        id="path1137" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.81137px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.135853"
-       x="61.474453"
-       y="91.21537"
+       x="125.86312"
+       y="109.26184"
        id="text1141"><tspan
          sodipodi:role="line"
          id="tspan1139"
-         x="61.474453"
-         y="91.21537"
+         x="125.86312"
+         y="109.26184"
          style="font-size:1.81137px;stroke-width:0.135853">VDDS</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.25891px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker3417);marker-end:url(#marker3149)"
@@ -1773,10 +1778,10 @@
        d="M 49.550765,62.0469 V 54.006497"
        id="path1275-8" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1572);marker-end:url(#marker1368)"
-       d="m 44.958577,75.698993 -0.128185,7.693289 h 35.825757 v 2.135906"
+       style="fill:none;stroke:#004e0e;stroke-width:0.136;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1368)"
+       d="m 40.659098,75.675369 0.0029,12.841931 37.419216,-0.04799"
        id="path1384"
-       sodipodi:nodetypes="cccc" />
+       sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1378)"
        d="m 79.101458,85.523692 v -0.99886 H 43.634272 l 0.101678,-8.825839"
@@ -1845,12 +1850,12 @@
        id="path1588"
        sodipodi:nodetypes="cccc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.135853px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1984)"
-       d="m 240.16966,99.575674 5.75906,-0.06674 -0.22338,-13.177802 h -90.66403 l 0.11093,18.547028 V 77.821372 h -99.677055 4.618158 -4.618158 l 0.368391,-2.122379"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1984);stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 240.16966,99.575674 5.75906,-0.06674 -0.22338,-13.177802 h -90.66403 l 0.11093,18.547028 1.91823,-27.023715 -90.383567,5e-6 m -2.542127,-5e-6 -8.669591,-0.03307 2e-6,-2.122379"
        id="path1590"
        sodipodi:nodetypes="cccccccccc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.135853px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1974)"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1974);stroke-miterlimit:4;stroke-dasharray:none"
        d="M 62.585473,77.821372 V 51.22048 h -4.204986"
        id="path1592"
        sodipodi:nodetypes="ccc" />
@@ -1891,8 +1896,8 @@
        id="path1644"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.135853px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 155.15224,104.87817 H 124.44835"
+       style="fill:none;stroke:#ff3900;stroke-width:0.107;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker2107)"
+       d="M 155.12567,109.39617 H 136.09474"
        id="path1646"
        sodipodi:nodetypes="cc" />
     <rect
@@ -2078,15 +2083,15 @@
          style="font-size:0.682038px;stroke-width:0.255765">SS0_LoRa</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="57.98275"
-       y="83.15966"
+       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#007c06;fill-opacity:1;stroke:none;stroke-width:0.255765;stroke-opacity:1"
+       x="49.572781"
+       y="88.215096"
        id="text1762"><tspan
          sodipodi:role="line"
          id="tspan1760"
-         x="57.98275"
-         y="83.15966"
-         style="font-size:0.682038px;stroke-width:0.255765">LoRa_BUSY</tspan></text>
+         x="49.572781"
+         y="88.215096"
+         style="font-size:0.682038px;fill:#007c06;fill-opacity:1;stroke:none;stroke-width:0.255765;stroke-opacity:1">LoRa_BUSY</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.576223px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.144056"
@@ -2557,6 +2562,95 @@
        d="m 78.243154,107.87666 h -5.378799 v 1.97111 h -1.33635 c -0.19932,-0.69134 -0.346602,-1.5518 -1.23612,0 -0.259848,-0.77952 -0.558288,-1.32749 -1.169305,0 -0.447418,-1.65086 -0.769319,-0.28933 -1.135896,0 -0.560897,-0.98448 -1.053629,-1.15097 -1.436573,0 l -3.54132,0 c 0,0 0.06682,-1.58971 0.06682,-7.11605 h 5.278572"
        id="path2110"
        sodipodi:nodetypes="ccccccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="55.071232"
+       y="88.280365"
+       id="text70245"><tspan
+         sodipodi:role="line"
+         id="tspan70243"
+         style="font-size:0.705556px;stroke-width:0.264583"
+         x="55.071232"
+         y="88.280365">0V-Idle</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.136;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect86205"
+       width="4.2049851"
+       height="2.4450336"
+       x="131.91455"
+       y="108.28045" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="132.76498"
+       y="109.82778"
+       id="text86825"><tspan
+         sodipodi:role="line"
+         id="tspan86823"
+         style="font-size:1.05833px;stroke-width:0.264583"
+         x="132.76498"
+         y="109.82778">FB1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="125.39359"
+       y="72.35881"
+       id="text90808"><tspan
+         sodipodi:role="line"
+         id="tspan90806"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="125.39359"
+         y="72.35881">VCC_MCU</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker2120)"
+       d="M 82.493301,77.863093 V 75.666107"
+       id="path92495" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="240.25111"
+       y="85.989586"
+       id="text93115"><tspan
+         sodipodi:role="line"
+         id="tspan93113"
+         style="font-size:1.05833px;stroke-width:0.264583"
+         x="240.25111"
+         y="85.989586">VCC_MCU</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.972678px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.145901"
+       x="137.7086"
+       y="109.08615"
+       id="text94402"><tspan
+         sodipodi:role="line"
+         id="tspan94400"
+         style="font-size:0.972678px;stroke-width:0.145901"
+         x="137.7086"
+         y="109.08615">VCC_MCU</tspan></text>
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 69.183519,77.821371 -0.0075,15.763179 -40.865621,0"
+       id="path97461"
+       sodipodi:nodetypes="ccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="64.424034"
+       y="78.309914"
+       id="text97883"><tspan
+         sodipodi:role="line"
+         id="tspan97881"
+         style="font-size:1.05833px;stroke-width:0.264583"
+         x="64.424034"
+         y="78.309914">FB3</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.107;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect99859"
+       width="2.5548828"
+       height="1.6867187"
+       x="64.175987"
+       y="77.053146" />
   </g>
   <g
      inkscape:groupmode="layer"
