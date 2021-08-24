@@ -1,0 +1,40 @@
+i2d
+i2r 0 0xEF 2
+
+
+Slave mode is disabled
+Master mode is enabled
+Normal operation
+
+The I2C bus is idle
+The I2C controller is  idle
+won arbitration
+The transmitted data was  acknowledged
+The transmitted address was  acknowledged
+
+The controller is idle
+i2c_it_cnt 0
+
+
+
+i2cc 0xEF
+i2cc 0xEE
+
+status reg 
+rm 0x40002804
+
+rm 0x40002800
+wm 0x40002804 0
+
+wm 0x40002804
+
+data reg
+rm 0x40002808
+
+
+
+https://e2e.ti.com/support/wireless-connectivity/sub-1-ghz-group/sub-1-ghz/f/sub-1-ghz-forum/772507/cc1310-i2c-stuck-on-bus-busy-mstat-busbsy-with-sda-high
+
+start notepad++ ./simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/driverlib/i2c.h
+start notepad++ ./simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/driverlib/i2c_doc.h
+start notepad++ ./simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/inc/hw_i2c.h

@@ -1,9 +1,9 @@
 #include "core_commands.h"
 
+#include <Temperature.h>
 #include <inttypes.h>
 #include <stdio.h>
 #include <sys_ctrl.h>
-#include <Temperature.h>
 
 #include "base_cmd.h"
 #include "convert.h"

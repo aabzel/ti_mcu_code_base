@@ -790,21 +790,6 @@
          id="path1972" />
     </marker>
     <marker
-       style="overflow:visible"
-       id="marker1776"
-       refX="0.0"
-       refY="0.0"
-       orient="auto"
-       inkscape:stockid="Arrow1Mstart"
-       inkscape:isstock="true"
-       inkscape:collect="always">
-      <path
-         transform="scale(0.4) translate(10,0)"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         id="path1774" />
-    </marker>
-    <marker
        style="overflow:visible;"
        id="marker1378"
        refX="0.0"
@@ -1204,11 +1189,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16"
-     inkscape:cx="246.53125"
-     inkscape:cy="309.5625"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="466.5137"
+     inkscape:cy="422.4963"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer3"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1220,161 +1205,33 @@
      inkscape:guide-bbox="true"
      inkscape:pagecheckerboard="0">
     <sodipodi:guide
-       position="-148.26116,91.031993"
-       orientation="1,0"
-       id="guide1685" />
+       position="0,0"
+       orientation="210.0,0"
+       id="guide33727" />
     <sodipodi:guide
-       position="385.9372,159.21879"
-       orientation="1,0"
-       id="guide1869" />
+       position="148.5,0"
+       orientation="210.0,0"
+       id="guide33729" />
     <sodipodi:guide
-       position="-116.60453,30.669601"
-       orientation="1,0"
-       id="guide1871" />
+       position="297,0"
+       orientation="210.0,0"
+       id="guide33731" />
     <sodipodi:guide
-       position="1.1339286,251.95535"
-       orientation="0,-1"
-       id="guide2252" />
+       position="0,0"
+       orientation="0,297.0"
+       id="guide33733" />
     <sodipodi:guide
-       position="1.0690781,-100.56719"
-       orientation="0,-1"
-       id="guide2265" />
+       position="0,70"
+       orientation="0,297.0"
+       id="guide33735" />
     <sodipodi:guide
-       position="73.941594,151.2247"
-       orientation="0,-1"
-       id="guide1998" />
+       position="0,140"
+       orientation="0,297.0"
+       id="guide33737" />
     <sodipodi:guide
-       position="149.47048,174.58679"
-       orientation="0,-1"
-       id="guide2262" />
-    <sodipodi:guide
-       position="68.413692,191.47916"
-       orientation="0,-1"
-       id="guide2270" />
-    <sodipodi:guide
-       position="0.13363476,143.26614"
-       orientation="1,0"
-       id="guide2280" />
-    <sodipodi:guide
-       position="140.1387,64.76915"
-       orientation="0,-1"
-       id="guide2300" />
-    <sodipodi:guide
-       position="96.818386,143.26614"
-       orientation="1,0"
-       id="guide2302" />
-    <sodipodi:guide
-       position="68.387592,149.02914"
-       orientation="0,-1"
-       id="guide1970" />
-    <sodipodi:guide
-       position="15.567894,104.0958"
-       orientation="1,0"
-       id="guide2184" />
-    <sodipodi:guide
-       position="88.635416,110.78125"
-       orientation="1,0"
-       id="guide2186" />
-    <sodipodi:guide
-       position="42.111656,149.02914"
-       orientation="1,0"
-       id="guide2946" />
-    <sodipodi:guide
-       position="44.16629,140.22595"
-       orientation="0,-1"
-       id="guide2948" />
-    <sodipodi:guide
-       position="153.81361,141.71264"
-       orientation="0,-1"
-       id="guide2950" />
-    <sodipodi:guide
-       position="225.6423,87.523739"
-       orientation="0,-1"
-       id="guide3518" />
-    <sodipodi:guide
-       position="205.56367,158.16642"
-       orientation="0,-1"
-       id="guide1509" />
-    <sodipodi:guide
-       position="94.446372,149.99799"
-       orientation="1,0"
-       id="guide1535" />
-    <sodipodi:guide
-       position="151.27455,141.71264"
-       orientation="1,0"
-       id="guide1537" />
-    <sodipodi:guide
-       position="118.30655,158.16667"
-       orientation="1,0"
-       id="guide2357" />
-    <sodipodi:guide
-       position="217.49058,170.51093"
-       orientation="0,-1"
-       id="guide2359" />
-    <sodipodi:guide
-       position="268.59024,93.368653"
-       orientation="1,0"
-       id="guide4279" />
-    <sodipodi:guide
-       position="222.30144,163.62873"
-       orientation="1,0"
-       id="guide4293" />
-    <sodipodi:guide
-       position="175.19196,114.75"
-       orientation="0,-1"
-       id="guide4319" />
-    <sodipodi:guide
-       position="173.88317,121.0394"
-       orientation="1,0"
-       id="guide6292" />
-    <sodipodi:guide
-       position="233.59357,106.56669"
-       orientation="0,-1"
-       id="guide6294" />
-    <sodipodi:guide
-       position="288.58483,109.45833"
-       orientation="1,0"
-       id="guide12973" />
-    <sodipodi:guide
-       position="217.46625,116.41545"
-       orientation="0,-1"
-       id="guide14345" />
-    <sodipodi:guide
-       position="93.927083,154.86272"
-       orientation="0,-1"
-       id="guide5795" />
-    <sodipodi:guide
-       position="45.404391,78.464285"
-       orientation="1,0"
-       id="guide6442" />
-    <sodipodi:guide
-       position="80.130954,116.41545"
-       orientation="1,0"
-       id="guide7160" />
-    <sodipodi:guide
-       position="166.10802,10.884202"
-       orientation="0,-1"
-       id="guide11861" />
-    <sodipodi:guide
-       position="77.201639,121.4827"
-       orientation="0,-1"
-       id="guide68548" />
-    <sodipodi:guide
-       position="40.66197,132.98145"
-       orientation="1,0"
-       id="guide68751" />
-    <sodipodi:guide
-       position="60.866072,132.14555"
-       orientation="0,-1"
-       id="guide100488" />
-    <sodipodi:guide
-       position="55.475187,132.17862"
-       orientation="1,0"
-       id="guide100528" />
-    <sodipodi:guide
-       position="69.176037,122.86345"
-       orientation="1,0"
-       id="guide101050" />
+       position="0,210"
+       orientation="0,297.0"
+       id="guide33739" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -1754,10 +1611,10 @@
        d="m 35.294548,64.975148 h 4.76881"
        id="path1202-9" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1776);marker-end:url(#marker1358)"
-       d="m 46.801989,75.698993 -0.03684,6.673137 h 35.379707 v 3.224949"
+       style="fill:none;stroke:#000000;stroke-width:0.136;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker4481)"
+       d="M 42.111656,75.698993 V 90.650804 L 78.028905,90.414612"
        id="path1267"
-       sodipodi:nodetypes="cccc" />
+       sodipodi:nodetypes="ccc" />
     <rect
        style="opacity:0.998;fill:#f2f2f2;stroke:#000000;stroke-width:0.298841"
        id="rect1269"
@@ -1779,14 +1636,14 @@
        id="path1275-8" />
     <path
        style="fill:none;stroke:#004e0e;stroke-width:0.136;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1368)"
-       d="m 40.659098,75.675369 0.0029,12.841931 37.419216,-0.04799"
+       d="M 43.655138,75.675369 43.631751,88.5173 78.081214,88.46931"
        id="path1384"
        sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1378)"
-       d="m 79.101458,85.523692 v -0.99886 H 43.634272 l 0.101678,-8.825839"
+       d="m 78.259559,91.727746 -37.597589,0.04677 0,-16.075525"
        id="path1386"
-       sodipodi:nodetypes="cccc" />
+       sodipodi:nodetypes="ccc" />
     <rect
        style="opacity:0.998;fill:#e6e6e6;stroke:#000000;stroke-width:0.127702;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect1388"
@@ -1845,13 +1702,13 @@
        id="path1586"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6456)"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6456)"
        d="M 155.15224,104.87817 V 161.5242 H 44.320496 l -0.08397,-3.56956"
        id="path1588"
        sodipodi:nodetypes="cccc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1984);stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 240.16966,99.575674 5.75906,-0.06674 -0.22338,-13.177802 h -90.66403 l 0.11093,18.547028 1.91823,-27.023715 -90.383567,5e-6 m -2.542127,-5e-6 -8.669591,-0.03307 2e-6,-2.122379"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1984)"
+       d="m 240.16966,99.575674 5.75906,-0.06674 -0.22338,-13.177802 -90.5531,0.04134 0,18.505687 0,-27.023715 -88.465337,5e-6 m -2.542127,-5e-6 -8.669591,-0.03307 2e-6,-2.122379"
        id="path1590"
        sodipodi:nodetypes="cccccccccc" />
     <path
@@ -1891,7 +1748,7 @@
        id="path1640"
        sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2107)"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2107)"
        d="M 155.15224,77.821372 V 69.197863 H 124.13782"
        id="path1644"
        sodipodi:nodetypes="ccc" />
@@ -2073,35 +1930,35 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="56.214809"
-       y="84.344986"
+       x="49.054523"
+       y="91.455658"
        id="text1562"><tspan
          sodipodi:role="line"
          id="tspan1560"
-         x="56.214809"
-         y="84.344986"
+         x="49.054523"
+         y="91.455658"
          style="font-size:0.682038px;stroke-width:0.255765">SS0_LoRa</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#007c06;fill-opacity:1;stroke:none;stroke-width:0.255765;stroke-opacity:1"
-       x="49.572781"
-       y="88.215096"
+       x="48.977467"
+       y="88.231628"
        id="text1762"><tspan
          sodipodi:role="line"
          id="tspan1760"
-         x="49.572781"
-         y="88.215096"
+         x="48.977467"
+         y="88.231628"
          style="font-size:0.682038px;fill:#007c06;fill-opacity:1;stroke:none;stroke-width:0.255765;stroke-opacity:1">LoRa_BUSY</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.576223px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.144056"
-       x="59.996349"
-       y="82.088226"
+       x="49.086739"
+       y="90.296738"
        id="text1766"><tspan
          sodipodi:role="line"
          id="tspan1764"
-         x="59.996349"
-         y="82.088226"
+         x="49.086739"
+         y="90.296738"
          style="font-size:0.576223px;stroke-width:0.144056">LoRa_NRESET</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -2146,19 +2003,19 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="55.366043"
-       y="86.080353"
+       x="49.089039"
+       y="86.920586"
        id="text2635"><tspan
          sodipodi:role="line"
          id="tspan2633"
-         x="55.366043"
-         y="86.080353"
+         x="49.089039"
+         y="86.920586"
          style="font-size:0.682038px;stroke-width:0.255765">LoRa_INT</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1378-0)"
-       d="M 78.04322,86.331139 H 70.050193 41.82746 l 0.15102,-10.632146"
+       d="M 78.04322,87.182767 45.17167,87.20671 45.12391,75.698993"
        id="path1386-7"
-       sodipodi:nodetypes="cccc" />
+       sodipodi:nodetypes="ccc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
@@ -2565,14 +2422,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="55.071232"
-       y="88.280365"
+       x="57.750137"
+       y="88.313438"
        id="text70245"><tspan
          sodipodi:role="line"
          id="tspan70243"
          style="font-size:0.705556px;stroke-width:0.264583"
-         x="55.071232"
-         y="88.280365">0V-Idle</tspan></text>
+         x="57.750137"
+         y="88.313438">0V-Idle</tspan></text>
     <rect
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.136;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect86205"
@@ -2651,6 +2508,28 @@
        height="1.6867187"
        x="64.175987"
        y="77.053146" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.55913px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0389782"
+       x="58.183514"
+       y="77.262642"
+       id="text8254"><tspan
+         sodipodi:role="line"
+         id="tspan8252"
+         style="fill:#ff0000;fill-opacity:1;stroke-width:0.0389782"
+         x="58.183514"
+         y="77.262642">3.3V</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="61.18969"
+       y="90.328751"
+       id="text41430"><tspan
+         sodipodi:role="line"
+         id="tspan41428"
+         style="font-size:0.705556px;stroke-width:0.264583"
+         x="61.18969"
+         y="90.328751">active low</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2699,6 +2578,50 @@
          x="65.713676"
          y="80.682327"
          style="font-size:1.02305px;stroke-width:0.255765;stroke:none;stroke-opacity:1;fill:#0600ff;fill-opacity:1">16 MHz</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.453067px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.113267"
+       x="55.458324"
+       y="90.259972"
+       id="text13860"><tspan
+         sodipodi:role="line"
+         id="tspan13858"
+         style="font-size:0.453067px;stroke-width:0.113267"
+         x="55.458324"
+         y="90.259972">DIO_27</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.453067px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.113267"
+       x="55.437656"
+       y="88.091187"
+       id="text13860-1"><tspan
+         sodipodi:role="line"
+         id="tspan13858-7"
+         style="font-size:0.453067px;stroke-width:0.113267"
+         x="55.437656"
+         y="88.091187">DIO_29</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.453067px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.113267"
+       x="55.396252"
+       y="86.997711"
+       id="text13860-1-0"><tspan
+         sodipodi:role="line"
+         id="tspan13858-7-2"
+         style="font-size:0.453067px;stroke-width:0.113267"
+         x="55.396252"
+         y="86.997711">DIO_28</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.453067px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.113267"
+       x="55.446484"
+       y="91.58918"
+       id="text13860-1-0-5"><tspan
+         sodipodi:role="line"
+         id="tspan13858-7-2-7"
+         style="font-size:0.453067px;stroke-width:0.113267"
+         x="55.446484"
+         y="91.58918">DIO_0</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -3608,15 +3531,15 @@
          style="stroke-width:0.0902356">RTC</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.2305px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="79.77948"
-       y="105.84264"
+       style="font-style:normal;font-weight:normal;font-size:6.74644px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.168663"
+       x="80.11972"
+       y="103.26362"
        id="text2355"><tspan
          sodipodi:role="line"
          id="tspan2353"
-         x="79.77948"
-         y="105.84264"
-         style="stroke-width:0.255765">MCU</tspan></text>
+         x="80.11972"
+         y="103.26362"
+         style="stroke-width:0.168663">MCU</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.81137px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.135853"
@@ -4523,13 +4446,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.22144px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.555362"
-       x="97.61235"
-       y="108.87769"
+       x="80.282143"
+       y="108.67925"
        id="text5870"><tspan
          sodipodi:role="line"
          id="tspan5868"
-         x="97.61235"
-         y="108.87769"
+         x="80.282143"
+         y="108.67925"
          style="font-size:2.22144px;stroke-width:0.555362">Arm Cortex-M4F</tspan></text>
     <text
        xml:space="preserve"
@@ -4555,15 +4478,15 @@
          style="stroke-width:0.0746646">8bit DAC</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.36407px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="80.82991"
-       y="108.17194"
+       style="font-style:normal;font-weight:normal;font-size:2.26797px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.425247"
+       x="80.249985"
+       y="105.90798"
        id="text5882"><tspan
          sodipodi:role="line"
          id="tspan5880"
-         x="80.82991"
-         y="108.17194"
-         style="font-size:1.36407px;stroke-width:0.255765">CPU clock: 48MHz</tspan></text>
+         x="80.249985"
+         y="105.90798"
+         style="font-size:2.26797px;stroke-width:0.425247">CPU clock: 48MHz</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.01816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0504537"

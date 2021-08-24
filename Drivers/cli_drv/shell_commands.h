@@ -51,12 +51,19 @@ extern "C" {
 #define RF_COMMANDS
 #endif
 
+#ifdef HAS_SX1262
+#include "sx1262_commands.h"
+#else
+#define SX1262_COMMANDS
+#endif
+
 #define SHELL_COMMANDS                                                                                                 \
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
     UBLOX_COMMANDS                                                                                                     \
-    RF_COMMANDS                                     \
+    RF_COMMANDS                                                                                                        \
     BMP180_COMMANDS                                                                                                    \
+    SX1262_COMMANDS                                                                                                    \
     HEALTH_MONITOR_COMMANDS                                                                                            \
     LED_COMMANDS                                                                                                       \
     NMEA_COMMANDS                                                                                                      \

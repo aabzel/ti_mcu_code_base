@@ -145,14 +145,14 @@ static bool init_uart0(void) {
         res = false;
     } else {
         res = true;
+        UART_write(huart[0].uart_h, connectionHint, sizeof(connectionHint));
+        UART_read(huart[0].uart_h, &huart[0].rx_byte, 1);
+        huart[0].init_done = true;
+        huart[0].base_address = (uint32_t*)DEBUG_UART;
     }
 
     /* Turn on user LED to indicate successful initialization */
 
-    UART_write(huart[0].uart_h, connectionHint, sizeof(connectionHint));
-    UART_read(huart[0].uart_h, &huart[0].rx_byte, 1);
-    huart[0].init_done = true;
-    huart[0].base_address = (uint32_t*)DEBUG_UART;
     return res;
 }
 
@@ -191,10 +191,9 @@ static bool init_uart1(void) {
         res = false;
     } else {
         res = true;
+        UART_write(huart[1].uart_h, connectionHint, sizeof(connectionHint));
+        UART_read(huart[1].uart_h, huart[1].rx_buff, RX_ARR1_CNT);
     }
-
-    UART_write(huart[1].uart_h, connectionHint, sizeof(connectionHint));
-    UART_read(huart[1].uart_h, huart[1].rx_buff, RX_ARR1_CNT);
     return res;
 }
 

@@ -3,14 +3,16 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-
-#ifdef DeviceFamily_CC26X2
 #include <ti/drivers/SPI.h>
 #include <ti/drivers/spi/SPICC26X2DMA.h>
-#endif
+
+#include "gpio_drv.h"
 
 SPI_Handle spi0Handle = NULL;
 SPI_Params SPI0_Params;
+
+SPI_Handle spi1Handle = NULL;
+SPI_Params SPI1_Params;
 
 const uint_least8_t SPI_count = SPI_CNT;
 
@@ -37,10 +39,10 @@ const SPICC26X2DMA_HWAttrs spiCC26X2DMAHWAttrs[SPI_CNT] = {{.baseAddr = SSI0_BAS
                                                             .defaultTxBufValue = 0xFF,
                                                             .rxChannelBitMask = 1 << UDMA_CHAN_SSI0_RX,
                                                             .txChannelBitMask = 1 << UDMA_CHAN_SSI0_TX,
-                                                            .mosiPin = CC26X2R1_LAUNCHXL_SPI0_MOSI,
-                                                            .misoPin = CC26X2R1_LAUNCHXL_SPI0_MISO,
-                                                            .clkPin = CC26X2R1_LAUNCHXL_SPI0_CLK,
-                                                            .csnPin = CC26X2R1_LAUNCHXL_SPI0_CSN,
+                                                            .mosiPin = BOARD_SPI0_MOSI,
+                                                            .misoPin = BOARD_SPI0_MISO,
+                                                            .clkPin = BOARD_SPI0_CLK,
+                                                            .csnPin = BOARD_SPI0_CSN,
                                                             .minDmaTransferSize = 10},
                                                            {.baseAddr = SSI1_BASE,
                                                             .intNum = INT_SSI1_COMB,
@@ -50,10 +52,10 @@ const SPICC26X2DMA_HWAttrs spiCC26X2DMAHWAttrs[SPI_CNT] = {{.baseAddr = SSI0_BAS
                                                             .defaultTxBufValue = 0xFF,
                                                             .rxChannelBitMask = 1 << UDMA_CHAN_SSI1_RX,
                                                             .txChannelBitMask = 1 << UDMA_CHAN_SSI1_TX,
-                                                            .mosiPin = CC26X2R1_LAUNCHXL_SPI1_MOSI,
-                                                            .misoPin = CC26X2R1_LAUNCHXL_SPI1_MISO,
-                                                            .clkPin = CC26X2R1_LAUNCHXL_SPI1_CLK,
-                                                            .csnPin = CC26X2R1_LAUNCHXL_SPI1_CSN,
+                                                            .mosiPin = BOARD_SPI1_MOSI,
+                                                            .misoPin = BOARD_SPI1_MISO,
+                                                            .clkPin = BOARD_SPI1_CLK,
+                                                            .csnPin = BOARD_SPI1_CSN,
                                                             .minDmaTransferSize = 10}};
 
 const SPI_Config SPI_config[SPI_CNT] = {
@@ -66,14 +68,15 @@ const SPI_Config SPI_config[SPI_CNT] = {
 };
 
 #ifdef HAS_SPI_INT
-uint32_t spi_tx_cnt = 0;
-static void SPI0_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { spi_tx_cnt++; }
+uint32_t spi0_tx_cnt = 0;
+static void SPI0_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { spi0_tx_cnt++; }
+uint32_t spi1_tx_cnt = 0;
+static void SPI1_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { spi1_tx_cnt++; }
 #endif
 
 static bool spi0_init(void) {
     bool res = false;
     SPI_init();
-    uint8_t tx_buff[4] = {0x55, 0xaa, 0x55, 0xaa};
     SPI_Params_init(&SPI0_Params);
 
     SPI0_Params.bitRate = SPI0_BIT_RATE_HZ;
@@ -91,14 +94,52 @@ static bool spi0_init(void) {
     spi0Handle = SPI_open(SPI0_INX, &SPI0_Params);
     if(spi0Handle) {
         res = true;
+#ifdef INIT_SPI_SEND
+        uint8_t tx_buff[4] = {0x55, 0xaa, 0x55, 0xaa};
+        res = spi_write(SPI0_INX, tx_buff, 4) && res;
+#endif
     }
-    res = spi_write(SPI0_INX, tx_buff, 4) && res;
     return res;
 }
 
+#ifdef HAS_SPI1
+static bool spi1_init(void) {
+    bool res = false;
+    SPI_init();
+    SPI_Params_init(&SPI1_Params);
+
+    SPI1_Params.bitRate = SPI1_BIT_RATE_HZ;
+    SPI1_Params.dataSize = 8; //(bits)
+    SPI1_Params.frameFormat = SPI_POL0_PHA0;
+    SPI1_Params.mode = SPI_MASTER;
+    SPI1_Params.transferMode = SPI_MODE_BLOCKING;
+    SPI1_Params.transferCallbackFxn = NULL;
+#ifdef HAS_SPI_INT
+    SPI1_Params.transferCallbackFxn = SPI1_CallBack;
+    SPI1_Params.transferMode = SPI_MODE_CALLBACK;
+#endif
+    SPI1_Params.transferTimeout = SPI_WAIT_FOREVER;
+
+    spi1Handle = SPI_open(SPI1_INX, &SPI1_Params);
+    if(spi1Handle) {
+        res = true;
+#ifdef INIT_SPI_SEND
+        uint8_t tx_buff[4] = {0x55, 0xaa, 0x55, 0xaa};
+        res = spi_write(SPI1_INX, tx_buff, 4) && res;
+#endif
+    }
+    return res;
+}
+#endif /*HAS_SPI1*/
+
 bool spi_init(void) {
     bool res = true;
+#ifdef HAS_SPI0
     res = spi0_init() && res;
+#endif /*HAS_SPI1*/
+#ifdef HAS_SPI1
+    res = spi1_init() && res;
+#endif /*HAS_SPI1*/
     return res;
 }
 
@@ -116,7 +157,8 @@ bool spi_write(uint8_t spi_num, uint8_t* tx_array, uint16_t array_len) {
         res = SPI_transfer(spi0Handle, &masterTransaction);
         break;
     case 1:
-        res = false;
+        res = SPI_transfer(spi1Handle, &masterTransaction);
+
         break;
     default:
         res = false;
@@ -139,7 +181,7 @@ bool spi_read(uint8_t spi_num, uint8_t* rx_array, uint16_t array_len) {
         res = SPI_transfer(spi0Handle, &masterTransaction);
         break;
     case SPI1_INX:
-        res = false;
+        res = SPI_transfer(spi1Handle, &masterTransaction);
         break;
     default:
         res = false;

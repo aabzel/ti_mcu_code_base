@@ -28,7 +28,9 @@
 
 int main(void) {
     bool res = true;
-    //pause_ms(20);
+#ifdef HAS_START_PAUSE
+    pause_ms(20);
+#endif
 
     res = sys_init() && res;
 

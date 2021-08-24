@@ -62,6 +62,11 @@
 #include "ble_drv.h"
 #endif
 
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
+#endif /*HAS_SX1262*/
+
+
 bool hw_init(void) {
   bool res = true;
   Board_init();
@@ -78,48 +83,52 @@ bool hw_init(void) {
 
 #ifdef HAS_TIM
   res = tim_init()&&res;
-#endif
-
-#ifdef HAS_ADC
-  res = adc_init()&&res;
-#endif
-
-#ifdef HAS_DAC
-  res = dac_init() && res;
-#endif
-
-#ifdef HAS_FLASH
-  res = flash_init()&&res;
-#endif
-
-#ifdef HAS_RTC
-  res = rtc_init()&&res;
-#endif
-
+#endif /*HAS_TIM*/
 
 #ifdef HAS_GPIO
   res = gpio_init() && res;
-#endif
+#endif /*HAS_GPIO*/
+
+#ifdef HAS_ADC
+  res = adc_init()&&res;
+#endif /*HAS_ADC*/
+
+#ifdef HAS_DAC
+  res = dac_init() && res;
+#endif /*HAS_DAC*/
+
+#ifdef HAS_FLASH
+  res = flash_init()&&res;
+#endif /*HAS_FLASH*/
+
+#ifdef HAS_RTC
+  res = rtc_init()&&res;
+#endif /*HAS_RTC*/
+
+
 
 #ifdef HAS_UART
   res = uart_init()&&res;
-#endif
+#endif /*HAS_UART*/
 
 #ifdef HAS_SPI
   res = spi_init()&&res;
-#endif
+#endif /*HAS_SPI*/
 
 #ifdef HAS_I2C
   res = i2c_init()&&res;
-#endif
+#endif /*HAS_I2C*/
 
 #ifdef HAS_RF
   res = rf_init() &&res;
-#endif
+#endif /*HAS_RF*/
 
-  #ifdef HAS_BLE
+#ifdef HAS_BLE
   res = ble_init()&&res;
-#endif
+#endif /*HAS_BLE*/
 
+#ifdef HAS_SX1262
+  res = sx1262_init() && res;
+#endif /*HAS_SX1262*/
   return res;
 }
