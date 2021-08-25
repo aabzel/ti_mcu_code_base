@@ -15,7 +15,11 @@ void delay_ms(uint32_t delay_in_ms) {
 
 uint32_t getRunTimeCounterValue32(void) { return (uint32_t)g_up_time_ms; }
 
-uint64_t getRunTimeCounterValue64(void) { return g_up_time_ms * 1000; }
+uint64_t getRunTimeCounterValue64(void) {
+    uint64_t up_time_us = 0;
+    up_time_us = ((uint64_t)g_up_time_ms) * ((uint64_t)1000U);
+    return up_time_us;
+}
 
 uint32_t get_time_ms32(void) { return g_up_time_ms; }
 

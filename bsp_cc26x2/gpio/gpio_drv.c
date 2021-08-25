@@ -88,8 +88,6 @@ void gpioButtonFxn0(uint_least8_t index) {
     GPIO_toggle(CONFIG_GPIO_LED_1);
 }
 
-
-
 #if 0
 bool gpio_init_layout(const Pin_t* inPinTable, uint8_t size) {
     bool res = false;
@@ -165,13 +163,13 @@ bool gpio_init(void) {
 }
 
 bool gpio_get_state(uint8_t dioNumber, uint8_t* logic_level) {
-    uint32_t value = GPIO_readDio( (uint32_t) dioNumber);
-    (*logic_level) = (uint8_t) value;
+    uint32_t value = GPIO_readDio((uint32_t)dioNumber);
+    (*logic_level) = (uint8_t)value;
     return true;
 }
 
 bool gpio_set_state(uint8_t dioNumber, uint8_t logic_level) {
-    GPIO_writeDio(   dioNumber,   logic_level );
+    GPIO_writeDio(dioNumber, logic_level);
 #if 0
     GPIO_write((uint_least8_t)port_pin_num, (unsigned int)logic_level);
 #endif
@@ -212,7 +210,7 @@ uint8_t get_aux_num(uint8_t io_pin) {
 }
 
 bool gpio_toggle(uint8_t dioNumber) {
-    GPIO_toggleDio( (uint32_t) dioNumber );
+    GPIO_toggleDio((uint32_t)dioNumber);
 #if 0
     GPIO_toggle((uint_least8_t)pin);
 #endif

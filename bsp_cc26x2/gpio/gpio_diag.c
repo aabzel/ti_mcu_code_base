@@ -10,7 +10,6 @@
 #include "bit_utils.h"
 #include "gpio_drv.h"
 
-
 const char* get_gpio_mode(uint8_t pin) {
     char* name = "_";
     GPIO_PinConfig pin_cfg = 0;
@@ -265,12 +264,12 @@ const char* get_gpio_edge(uint8_t dio_pin) {
 }
 
 const char* get_pin_dir(uint8_t dioNumber) {
-    uint32_t out_en = GPIO_getOutputEnableDio( (uint32_t )dioNumber );
+    uint32_t out_en = GPIO_getOutputEnableDio((uint32_t)dioNumber);
     static char dir[4] = "";
     memset(dir, 0x00, sizeof(dir));
     if(GPIO_OUTPUT_ENABLE == out_en) {
         snprintf(dir, sizeof(dir), "%so", dir);
-    }else{
+    } else {
         snprintf(dir, sizeof(dir), "%si", dir);
     }
     return dir;

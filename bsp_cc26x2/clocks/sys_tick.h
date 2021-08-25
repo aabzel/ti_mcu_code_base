@@ -11,6 +11,7 @@ extern "C" {
 #define HAS_SYS_TIC_INT
 
 volatile extern uint32_t g_up_time_ms;
+
 void SysTickIntHandler(void);
 bool SysTickInit(void);
 

@@ -21,7 +21,7 @@ extern "C" {
     enum { ASSERT_CONCAT(assert_line_, __LINE__) = 1 / (!!(e)) };              \
   }
 
-typedef union uAllType_t{
+typedef union uAllTypeUnion_t{
     uint64_t u64;
     int64_t  s64;
     uint32_t u32[2];
@@ -32,6 +32,23 @@ typedef union uAllType_t{
     uint8_t u8[8];
     int8_t s8[8];
 } AllTypeUnion_t;
+
+typedef union uType32Union_t{
+    uint32_t u32;
+    int32_t s32;
+    float f32;
+    uint16_t u16[2];
+    int16_t s16[2];
+    uint8_t u8[4];
+    int8_t s8[4];
+} Type32Union_t;
+
+typedef union uType16Union_t{
+    uint16_t u16;
+    int16_t s16;
+    uint8_t u8[2];
+    int8_t s8[2];
+} Type16Union_t;
   
 uint8_t rx_max8u(uint8_t max8u_x1, uint8_t max8u_x2);
 uint8_t rx_min8u(uint8_t min8u_x1, uint8_t min8u_x2);

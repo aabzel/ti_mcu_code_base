@@ -1,40 +1,66 @@
-i2d
-i2r 0 0xEF 2
+
+read reg 
+0x08E7
+expect 0x38 or 0x18
+0x7ffeef5c334c
+
+Чтение регистра вручную
+gs 11 0
+gl LoRaCS
+sw 0 0x1D08E7
+sr 0 2
+gs 11 1
+gl LoRaCS
+
+sxr 0x06B9
+sxr 0x06B8
+sxr 0x06BC
 
 
-Slave mode is disabled
-Master mode is enabled
-Normal operation
-
-The I2C bus is idle
-The I2C controller is  idle
-won arbitration
-The transmitted data was  acknowledged
-The transmitted address was  acknowledged
-
-The controller is idle
-i2c_it_cnt 0
+Написать диагностику SPI
+LoRa
 
 
+Почему С язык не имете типа unit24_t?
+Why C language does not have 3 byte unit24_t type (3==sizeof(unit24_t))?
 
-i2cc 0xEF
-i2cc 0xEE
+Why do you pointer has 48 bit val (7:36) not a 64 bit val ?
 
-status reg 
-rm 0x40002804
+0x10
 
-rm 0x40002800
-wm 0x40002804 0
-
-wm 0x40002804
-
-data reg
-rm 0x40002808
+gs 11 0
+gl LoRaCS
+sw 0 0x17
+sr 0 19
+0xa2000002000000699883
+0xa2 00 00 02000000699883222d3b90ad4baea943
+gs 11 1
+gl LoRaCS
 
 
 
-https://e2e.ti.com/support/wireless-connectivity/sub-1-ghz-group/sub-1-ghz/f/sub-1-ghz-forum/772507/cc1310-i2c-stuck-on-bus-busy-mstat-busbsy-with-sda-high
+gs 11 0
+sw 0 0x14
+sr 0 19
+0x00 00 aa 00 00 
+  6b c8 8c e6 0b 033a00000000000000
+gs 11 1
 
-start notepad++ ./simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/driverlib/i2c.h
-start notepad++ ./simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/driverlib/i2c_doc.h
-start notepad++ ./simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/inc/hw_i2c.h
+
+
+
+gs 11 0
+sw 0 0x13
+sr 0 8
+0x00 00 aa 00 00 
+  6b c8 8c e6 0b 033a00000000000000
+gs 11 1
+
+
+
+
+sxo 0x13 xx 5
+sxo 0x11 xx 6
+0xa20000000000590.774
+
+

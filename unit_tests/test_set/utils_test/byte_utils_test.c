@@ -13,6 +13,15 @@ static bool test_reverse_byte_order32(void) {
   EXPECT_EQ(0x44332211, reverse_byte_order_uint32(0x11223344));
   return true;
 }
+
+
+static bool test_reverse_byte_order24(void) {
+  EXPECT_EQ(0x00443322, reverse_byte_order_uint24(0x00223344));
+  EXPECT_EQ(0x00112233, reverse_byte_order_uint24(0x00332211));
+  return true;
+}
+
+
 static bool test_reverse_byte_order16(void) {
   EXPECT_EQ(0x2211, reverse_byte_order_uint16(0x1122));
   return true;
@@ -21,6 +30,7 @@ static bool test_reverse_byte_order16(void) {
 bool test_byte_utils(void) {
   EXPECT_TRUE(test_reverse_byte_order64());
   EXPECT_TRUE(test_reverse_byte_order32());
+  EXPECT_TRUE(test_reverse_byte_order24());
   EXPECT_TRUE(test_reverse_byte_order16());
   return true;
 }

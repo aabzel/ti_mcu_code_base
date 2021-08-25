@@ -28,6 +28,7 @@ typedef enum {
   DAC,
   DIAG,
   I2C,
+  LORA,
   TIM,
   NVS,
   SPI,

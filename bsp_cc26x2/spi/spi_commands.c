@@ -16,7 +16,7 @@ bool spi_write_command(int32_t argc, char* argv[]) {
     if(2 == argc) {
         res = true;
         uint8_t spi_num = 0;
-        uint8_t array[256];
+        uint8_t tx_array[256];
         uint16_t array_len = 0;
         res = try_str2uint8(argv[0], &spi_num);
         if(false == res) {
@@ -24,14 +24,14 @@ bool spi_write_command(int32_t argc, char* argv[]) {
         }
 
         if(true == res) {
-            res = try_str2array(argv[1], array, sizeof(array), &array_len);
+            res = try_str2array(argv[1], tx_array, sizeof(tx_array), &array_len);
             if(false == res) {
-                LOG_ERROR(SPI, "Unable to extract array %s", argv[1]);
+                LOG_ERROR(SPI, "Unable to extract tx array %s", argv[1]);
             }
         }
 
         if(true == res) {
-            res = spi_write(spi_num, array, array_len);
+            res = spi_write(spi_num, tx_array, array_len);
             if(false == res) {
                 LOG_ERROR(SPI, "Unable to send SPI");
             } else {

@@ -4,6 +4,8 @@ set work_space_dir=%cd%
 set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortUsingDeclarations: true , UseTab: Never,PointerAlignment: Left, BreakBeforeBraces: Attach, TabWidth: 4,ColumnLimit: 120 }"
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_drv.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_drv.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_commands.c
 

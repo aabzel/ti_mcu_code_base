@@ -2,9 +2,9 @@
 #define INIT_GPIO_H
 
 #include <gpio.h>
+#include <hw_memmap.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <hw_memmap.h>
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
 

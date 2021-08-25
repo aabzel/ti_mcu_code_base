@@ -1,7 +1,7 @@
 #include "gpio_commands.h"
 
-#include <inttypes.h>
 #include <gpio.h>
+#include <inttypes.h>
 #include <stdio.h>
 
 #include "base_cmd.h"
@@ -91,9 +91,9 @@ bool gpio_set_command(int32_t argc, char* argv[]) {
 static bool diag_gpio(char* key_word1, char* key_word2) {
     bool res = false;
 
-    static const table_col_t cols[] = {{5, "No"},   {5, "dio"},   {5, "aux"},     {5, "pin"},
-                                       {5, "dir"},  {7, "level"}, {5, "irq"},     {6, "edge"},
-                                       {6, "pull"}, {13, "type"},{4, "ev"}, {10, "AltFun"}, {12, "name"}};
+    static const table_col_t cols[] = {{5, "No"},    {5, "dio"},     {5, "aux"},  {5, "pin"},  {5, "dir"},
+                                       {7, "level"}, {5, "irq"},     {6, "edge"}, {6, "pull"}, {13, "type"},
+                                       {4, "ev"},    {10, "AltFun"}, {12, "name"}};
     uint16_t num = 0;
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     uint8_t logic_level = 0xFF;
@@ -113,7 +113,7 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
             snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_edge(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_pull_mode(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %11s " TSEP, temp_str, get_gpio_type(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s %1u  " TSEP, temp_str, GPIO_getEventDio(   io_pin ));
+            snprintf(temp_str, sizeof(temp_str), "%s %1u  " TSEP, temp_str, GPIO_getEventDio(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, get_gpio_alter_fun(io_pin));
             snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, PinTable[io_pin].name);
             snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);

@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+#include "data_utils.h"
+
 uint64_t reverse_byte_order_uint64(const uint64_t in4byteVal) {
   uint64_t out_val = in4byteVal;
   out_val = (out_val & 0x00000000FFFFFFFF) << 32 |
@@ -20,6 +22,19 @@ uint32_t reverse_byte_order_uint32(const uint32_t in4byteVal) {
   retval = (retval << 8) | ((in4byteVal >> 16) & 0xFF);
   retval = (retval << 8) | ((in4byteVal >> 24) & 0xFF);
   return retval;
+}
+
+uint32_t reverse_byte_order_uint24(const uint32_t in3byteVal) {
+  Type32Union_t u32val_in,u32val_out;
+
+  u32val_in.u32=in3byteVal;
+
+  u32val_out.u8[0]=u32val_in.u8[2];
+  u32val_out.u8[1]=u32val_in.u8[1];
+  u32val_out.u8[2]=u32val_in.u8[0];
+  u32val_out.u8[3]=0x00;
+
+  return u32val_out.u32;
 }
 
 uint16_t reverse_byte_order_uint16(const uint16_t in2byteVal) {
