@@ -30,7 +30,7 @@ typedef enum eUbxType_t {
 
 typedef struct xkeyValItem_t {
     uint32_t key_id;
-    AllTypeUnion_t u_value;
+    Type64Union_t u_value;
     uint8_t type;
 } keyValItem_t;
 

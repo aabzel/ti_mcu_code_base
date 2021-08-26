@@ -57,6 +57,17 @@ uint32_t insert_subval_in_32bit(uint32_t orig_val, uint32_t sub_val, uint8_t max
     return out_val;
 }
 
+uint8_t generate_8bit_left_mask(uint8_t bit_len) {
+    uint8_t mask = 0x00000000U;
+    if(bit_len <= 8) {
+        uint8_t i = 0U;
+        for(i = 0U; i < bit_len; i++) {
+            mask |= (1 << i);
+        }
+    }
+    return mask;
+}
+
 uint64_t generate_64bit_left_mask(uint8_t bit_len) {
     uint64_t mask = 0x00000000U;
     if(bit_len <= 64) {
@@ -102,4 +113,14 @@ bool bit32_control_proc(uint32_t* p_reg, char cmd, uint8_t bit_num) {
         io_printf("%p %u " CRLF, p_reg, p_reg[0]);
     }
     return res;
+}
+
+uint8_t extract_subval_from_8bit(uint8_t in_val, uint8_t max_bit, uint8_t min_bit) {
+    uint64_t outVal = 0;
+    if((min_bit <= max_bit) && (max_bit <= 7) && (min_bit <= 7)) {
+        uint64_t mask = generate_8bit_left_mask(max_bit - min_bit + 1);
+        outVal = (in_val >> min_bit);
+        outVal = outVal & mask;
+    }
+    return outVal;
 }

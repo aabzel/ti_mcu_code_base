@@ -10,6 +10,7 @@ extern "C" {
 
 bool wait_in_loop_ms(uint64_t wait_pause_ms);
 bool wait_us(uint64_t wait_pause_us);
+bool wait_ms(uint64_t wait_pause_ms);
 
 #ifdef __cplusplus
 }

@@ -35,9 +35,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.8974403"
-     inkscape:cx="773.41038"
-     inkscape:cy="275.10748"
+     inkscape:zoom="0.67084645"
+     inkscape:cx="453.90417"
+     inkscape:cy="342.85044"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
@@ -50,103 +50,35 @@
     <sodipodi:guide
        position="0,0"
        orientation="210.0,0"
-       id="guide35315" />
+       id="guide2294" />
     <sodipodi:guide
-       position="186.25645,92.862542"
+       position="148.5,0"
        orientation="210.0,0"
-       id="guide35317" />
+       id="guide2296" />
     <sodipodi:guide
        position="297,0"
        orientation="210.0,0"
-       id="guide35319" />
+       id="guide2298" />
     <sodipodi:guide
        position="0,0"
        orientation="0,297.0"
-       id="guide35321" />
+       id="guide2300" />
     <sodipodi:guide
-       position="187.84634,45.819306"
+       position="0,70"
        orientation="0,297.0"
-       id="guide35323" />
+       id="guide2302" />
     <sodipodi:guide
-       position="148.5,134.33516"
+       position="0,140"
        orientation="0,297.0"
-       id="guide35325" />
+       id="guide2304" />
     <sodipodi:guide
        position="0,210"
        orientation="0,297.0"
-       id="guide35327" />
+       id="guide2306" />
     <sodipodi:guide
-       position="271.07571,104.3725"
-       orientation="0,-1"
-       id="guide35841" />
-    <sodipodi:guide
-       position="172.38547,123.09262"
+       position="249.32274,79.900384"
        orientation="1,0"
-       id="guide35843" />
-    <sodipodi:guide
-       position="181.65838,103.36155"
-       orientation="1,0"
-       id="guide36342" />
-    <sodipodi:guide
-       position="119.30667,76.445549"
-       orientation="0,-1"
-       id="guide64434" />
-    <sodipodi:guide
-       position="121.05683,157.22405"
-       orientation="0,-1"
-       id="guide127852" />
-    <sodipodi:guide
-       position="255.12894,102.36517"
-       orientation="0,-1"
-       id="guide165486" />
-    <sodipodi:guide
-       position="180.28988,167.86891"
-       orientation="0,-1"
-       id="guide179313" />
-    <sodipodi:guide
-       position="293.02295,107.02367"
-       orientation="1,0"
-       id="guide191553" />
-    <sodipodi:guide
-       position="145.52541,121.68077"
-       orientation="1,0"
-       id="guide202436" />
-    <sodipodi:guide
-       position="49.484566,141.72559"
-       orientation="1,0"
-       id="guide203567" />
-    <sodipodi:guide
-       position="249.26221,87.883212"
-       orientation="1,0"
-       id="guide1545" />
-    <sodipodi:guide
-       position="170.39842,83.17728"
-       orientation="1,0"
-       id="guide1785" />
-    <sodipodi:guide
-       position="166.77292,86.24501"
-       orientation="1,0"
-       id="guide1787" />
-    <sodipodi:guide
-       position="169.29715,89.395098"
-       orientation="0,-1"
-       id="guide1789" />
-    <sodipodi:guide
-       position="170.39842,85.586568"
-       orientation="0,-1"
-       id="guide1791" />
-    <sodipodi:guide
-       position="173.50101,88.092619"
-       orientation="1,0"
-       id="guide2006" />
-    <sodipodi:guide
-       position="102.46679,159.77484"
-       orientation="1,0"
-       id="guide2056" />
-    <sodipodi:guide
-       position="104.23308,157.22405"
-       orientation="1,0"
-       id="guide2058" />
+       id="guide2985" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -444,14 +376,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.87509px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.146878"
-       x="268.86963"
-       y="161.04575"
+       x="239.58676"
+       y="158.2569"
        id="text5417"><tspan
          sodipodi:role="line"
          id="tspan5415"
          style="stroke-width:0.146878"
-         x="268.86963"
-         y="161.04575">$39.99 </tspan></text>
+         x="239.58676"
+         y="158.2569">$39.99 </tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.6467px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.266168"
@@ -2366,12 +2298,12 @@
        id="path167064"
        sodipodi:nodetypes="ccccc" />
     <rect
-       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.20193"
+       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.205695"
        id="rect174811"
-       width="23.837162"
+       width="24.734348"
        height="15.458726"
-       x="225.42505"
-       y="135.27446" />
+       x="224.58839"
+       y="134.71669" />
     <rect
        style="display:inline;fill:#ffff00;stroke:#000000;stroke-width:0.0894093;stroke-opacity:1"
        id="rect24545"
@@ -2424,6 +2356,14 @@
        style="fill:none;stroke:#000000;stroke-width:0.101803px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 25.005232,80.872955 h 3.24156"
        id="path20941" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 115.06685,101.16417 -1.92271,1.92271"
+       id="path3681" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 99.512611,102.59388 -1.540634,1.54063"
+       id="path3683" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2871,7 +2811,7 @@
          x="102.68655"
          y="100.29444">U37</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.315687px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.315687px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Send)"
        d="m 108.0723,102.04998 10.14891,0.0989"
        id="path4385"
        sodipodi:nodetypes="cc" />
@@ -2928,7 +2868,7 @@
          x="90.839928"
          y="104.53112">INA118UB</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.198409px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.198409px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Send)"
        d="m 96.456522,103.25027 h 5.833448"
        id="path20084" />
     <path
@@ -3522,7 +3462,7 @@
        d="m 43.875166,92.22361 v 10.89392 h 5.609399"
        id="path209839" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#ff0000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 60.169326,52.77595 28.097612,0 -0.48237,40.902173 26.264762,0.126856 -0.002,3.786201 4.04331,0.05031"
        id="path209874"
        sodipodi:nodetypes="cccccc" />

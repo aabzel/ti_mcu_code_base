@@ -77,10 +77,12 @@ extern "C" {
 #define RESET_BIT_NUM(VAL, BIT) ((VAL) &= ~(1U << (BIT)))
 #define CHECK_BIT_NUM(VAL, BIT) ((1U << (BIT)) == ((VAL) & (1U << (BIT))))
 
+uint8_t generate_8bit_left_mask(uint8_t bit_len);
 uint32_t generate_32bit_custom_mask(uint8_t max_bit, uint8_t min_bit);
 
 uint32_t generate_32bit_left_mask(uint8_t bitlen);
 uint32_t extract_subval_from_32bit(uint32_t inVal, uint8_t maxBit, uint8_t minBit);
+uint8_t extract_subval_from_8bit(uint8_t inVal, uint8_t maxBit, uint8_t minBit);
 
 uint64_t generate_64bit_left_mask(uint8_t bitlen);
 uint64_t extract_subval_from_64bit(uint64_t inVal, uint8_t maxBit, uint8_t minBit);

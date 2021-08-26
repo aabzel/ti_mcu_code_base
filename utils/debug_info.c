@@ -159,7 +159,7 @@ bool print_mem(uint8_t* addr, int32_t len, bool new_line) {
         uint32_t pos;
         for(pos = 0; pos < len; pos++) {
             if(0 == (pos % 16)) {
-                // io_printf(CRLF);
+                io_printf(CRLF);
             }
             io_printf("%02x", *(addr + pos));
 

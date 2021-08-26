@@ -30,7 +30,7 @@ int main(void) {
     bool res = true;
 #ifdef HAS_START_PAUSE
     pause_ms(20);
-#endif
+#endif /*HAS_START_PAUSE*/
 
     res = sys_init() && res;
 

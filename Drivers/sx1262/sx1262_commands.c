@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+#include "bit_utils.h"
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
@@ -14,31 +15,109 @@
 #include "sx1262_drv.h"
 #include "table_utils.h"
 
+static const char* cmd_stat2str(uint8_t cmd_stat) {
+    const char* name = "undef";
+    switch(cmd_stat) {
+    case 0:
+        name = "Rsvd";
+        break;
+    case 2:
+        name = "DataAvailToHost";
+        break;
+    case 3:
+        name = "timeout";
+        break;
+    case 4:
+        name = "processingError";
+        break;
+    case 5:
+        name = "FailureExecute";
+        break;
+    case 6:
+        name = "TxDone";
+        break;
+    default:
+        name = "error";
+        break;
+    }
+    return name;
+}
+
+static const char* chip_mode2str(uint8_t chip_mode) {
+    const char* name = "undef";
+    switch(chip_mode) {
+    case 0:
+        name = "unUsed";
+        break;
+    case 2:
+        name = "STBY_RC";
+        break;
+    case 3:
+        name = "STBY_XOSC";
+        break;
+    case 4:
+        name = "FS";
+        break;
+    case 5:
+        name = "RX";
+        break;
+    case 6:
+        name = "TX";
+        break;
+    default:
+        name = "error";
+        break;
+    }
+    return name;
+}
+
+static bool parse_dev_stat(uint8_t dev_stat) {
+    uint8_t code = 0;
+    io_printf("status: 0x%02x 0b%s" CRLF, dev_stat, utoa_bin8(dev_stat));
+    code = extract_subval_from_8bit(dev_stat, 3, 1);
+    io_printf("cmd_stat: [%u] %s" CRLF,code ,cmd_stat2str(code));
+
+    code = extract_subval_from_8bit(dev_stat, 6, 4);
+    io_printf("chip_mode: [%u] %s" CRLF,code ,chip_mode2str(code));
+    return true;
+}
+
 bool sx1262_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        uint_fast8_t ret;
-
+        uint8_t dev_stat = 0;
+        res = sx1262_get_status(&dev_stat);
+        if(res) {
+            parse_dev_stat(dev_stat);
+        }
         // buffer content
+        // syncword
+        RadioPacketTypes_t packet_type = PACKET_TYPE_UNDEF;
+        res = sx1262_get_packet_type(&packet_type);
+        if(res) {
+            io_printf("packet type: %u" CRLF, packet_type);
+        }
+        uint64_t sync_word = 0;
+        res = sx1262_get_sync_word(&sync_word);
+        io_printf("sync_word: 0x%" PRIx64 "" CRLF, sync_word);
+
+        uint32_t rand_num = 0;
+        res = sx1262_get_rand(&rand_num);
+        io_printf("rand_num: 0x%" PRIx32 "" CRLF, rand_num);
+
         io_printf("mode: %u" CRLF, sx1262_chip_mode);
-        ret = GPIO_read(CONFIG_GPIO_LORA_CS);
-        if(0 == ret) {
-            io_printf("sx1262 selected" CRLF);
-        }
+        uint32_t value = GPIO_readDio(SX1262_SS_DIO_NO);
+        io_printf("sx1262 %s selected" CRLF, (0 == value) ? "" : "not");
 
-        ret = GPIO_read(CONFIG_GPIO_LORA_RST);
-        if(0 == ret) {
-            io_printf("sx1262 under reset" CRLF);
-        }
+        value = GPIO_readDio(SX1262_RST_DIO_NO);
+        io_printf("sx1262 reset %s" CRLF, (0 == value) ? "active" : "passive");
 
-        ret = GPIO_read(CONFIG_GPIO_LORA_INT);
-        io_printf("INT: %u" CRLF, ret);
+        value = GPIO_readDio(SX1262_INT_DIO_NO);
+        io_printf("INT: %u" CRLF, value);
 
-        ret = GPIO_read(CONFIG_GPIO_LORA_BSY);
-        if(1 == ret) {
-            io_printf("sx1262 busy" CRLF);
-        }
+        value = GPIO_readDio(SX1262_BUSY_DIO_NO);
+        io_printf("sx1262 %s" CRLF, (1 == value) ? "busy" : "idle");
     } else {
         LOG_ERROR(LORA, "Usage: sxd");
     }
@@ -109,6 +188,7 @@ bool sx1262_send_opcode_command(int32_t argc, char* argv[]) {
                 tx_array_len = 0;
                 /*some opCode does not demand txdata*/
             }
+            io_printf("Read %u bytes" CRLF, tx_array_len);
         }
 
         if(true == res) {
@@ -221,7 +301,7 @@ bool sx1262_tx_command(int32_t argc, char* argv[]) {
         }
 
         if(true == res) {
-            res = SX126x_start_tx(offset, tx_array, tx_array_len, timeout_s);
+            res = sx1262_start_tx(offset, tx_array, tx_array_len, timeout_s);
             if(res) {
                 LOG_INFO(LORA, "TX OK");
             } else {
@@ -259,6 +339,47 @@ bool sx1262_rx_command(int32_t argc, char* argv[]) {
     } else {
         LOG_ERROR(LORA, "Usage: sxrx timeout_s");
         res = false;
+    }
+    return res;
+}
+
+bool sx1262_read_fifo_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        uint8_t tx_array[1];
+        uint8_t rx_array[RX_SIZE + 3];
+        tx_array[0] = 0x00;
+        res = sx1262_send_opcode(OPCODE_READ_BUFFER, tx_array, 1, rx_array, sizeof(rx_array));
+        if(res) {
+            print_mem(rx_array, sizeof(rx_array), true);
+            LOG_INFO(LORA, "OK");
+        } else {
+            LOG_ERROR(LORA, "Error");
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxf");
+    }
+    return res;
+}
+
+bool sx1262_clear_fifo_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        uint8_t tx_array[TX_SIZE + 1];
+        memset(tx_array, 0x00, sizeof(tx_array));
+        uint8_t rx_array[RX_SIZE + 1];
+        memset(rx_array, 0x00, sizeof(rx_array));
+        res = sx1262_send_opcode(OPCODE_WRITE_BUFFER, tx_array, sizeof(tx_array), rx_array, sizeof(rx_array));
+        if(res) {
+            print_mem(rx_array, sizeof(rx_array), true);
+            LOG_INFO(LORA, "clear fifo OK");
+        } else {
+            LOG_ERROR(LORA, "Error");
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxfc");
     }
     return res;
 }

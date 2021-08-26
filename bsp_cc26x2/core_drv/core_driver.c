@@ -27,7 +27,7 @@ uint32_t cpu_get_id(void){
 }
 
 uint64_t get_ble_mac(void){
-    AllTypeUnion_t uValue ;
+    Type64Union_t uValue ;
     uValue.u64=0;
     uValue.u32[0]=read_addr_32bit(FCFG1_BASE + FCFG1_O_MAC_BLE_0);
     uValue.u32[1]=read_addr_32bit(FCFG1_BASE + FCFG1_O_MAC_BLE_1);

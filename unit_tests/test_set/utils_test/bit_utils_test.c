@@ -22,6 +22,12 @@ static bool test_insert_subval_utils32(void) {
   return true;
 }
 
+static bool test_extract_subval_utils8(void) {
+  EXPECT_EQ(0x07, extract_subval_from_8bit(0x0E, 3, 1));
+  EXPECT_EQ(0x06, extract_subval_from_8bit(0xEF, 6, 4));
+  return true;
+}
+
 static bool test_extract_subval_utils32(void) {
   EXPECT_EQ(0x0034, extract_subval_from_32bit(0x5344, 11, 4));
   EXPECT_EQ(0x000f, extract_subval_from_32bit(0xF000, 15, 12));
@@ -62,22 +68,31 @@ static bool test_bit_ctl(void) {
 
 /*tsr bit_utils+*/
 bool test_bit_utils(void) {
-  EXPECT_EQ(0x0001, generate_32bit_left_mask(1));
-  EXPECT_EQ(0x0003, generate_32bit_left_mask(2));
+  EXPECT_TRUE(test_extract_subval_utils8());
   EXPECT_TRUE( test_bit_ctl());
-  EXPECT_EQ(0x000f, generate_32bit_left_mask(4));
-  EXPECT_EQ(MASK_25BIT, generate_32bit_left_mask(25));
   EXPECT_TRUE(test_extract_subval_utils32());
-
-  EXPECT_EQ(0x0001, generate_64bit_left_mask(1));
-  EXPECT_EQ(0x0003, generate_64bit_left_mask(2));
-  EXPECT_EQ(0x000f, generate_64bit_left_mask(4));
-  EXPECT_EQ(MASK_25BIT, generate_64bit_left_mask(25));
-  EXPECT_EQ(MASK_30BIT, generate_64bit_left_mask(30));
   EXPECT_TRUE(test_extract_subval_utils64());
-
-
-  EXPECT_TRUE(test_generate_custom_mask());
   EXPECT_TRUE(test_insert_subval_utils32());
   return true;
 }
+
+bool test_bit_mask(void) {
+  EXPECT_EQ(MASK_1BIT, generate_8bit_left_mask(1));
+  EXPECT_EQ(MASK_3BIT, generate_8bit_left_mask(3));
+  EXPECT_EQ(MASK_8BIT, generate_8bit_left_mask(8));
+
+  EXPECT_EQ(MASK_1BIT, generate_32bit_left_mask(1));
+  EXPECT_EQ(MASK_2BIT, generate_32bit_left_mask(2));
+  EXPECT_EQ(MASK_4BIT, generate_32bit_left_mask(4));
+  EXPECT_EQ(MASK_25BIT, generate_32bit_left_mask(25));
+
+  EXPECT_EQ(MASK_1BIT, generate_64bit_left_mask(1));
+  EXPECT_EQ(MASK_2BIT, generate_64bit_left_mask(2));
+  EXPECT_EQ(MASK_4BIT, generate_64bit_left_mask(4));
+  EXPECT_EQ(MASK_25BIT, generate_64bit_left_mask(25));
+  EXPECT_EQ(MASK_30BIT, generate_64bit_left_mask(30));
+
+  EXPECT_TRUE(test_generate_custom_mask());
+  return true;
+}
+

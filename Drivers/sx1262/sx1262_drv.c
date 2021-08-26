@@ -34,7 +34,7 @@ speed up to 16 MHz
         }                                                                                                              \
     } while(0);
 
-ChipMode_t sx1262_chip_mode;
+ChipMode_t sx1262_chip_mode = CHIPMODE_UNDEF;
 
 const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
                                              {0x06B9, "WhiteningInitValLSB"},
@@ -42,14 +42,14 @@ const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
                                              {0x06BD, "CRCLSBInitVal1"},
                                              {0x06BE, "CRCMSBpolynomVal0"},
                                              {0x06BF, "CRCLSBpolynomVal1"},
-                                             {0x06C0, "SyncWord0"},
-                                             {0x06C1, "SyncWord1"},
-                                             {0x06C2, "SyncWord2"},
-                                             {0x06C3, "SyncWord3"},
-                                             {0x06C4, "SyncWord4"},
-                                             {0x06C5, "SyncWord5"},
-                                             {0x06C6, "SyncWord6"},
-                                             {0x06C7, "SyncWord7"},
+                                             {SYNC_WORD_0, "SyncWord0"},
+                                             {SYNC_WORD_1, "SyncWord1"},
+                                             {SYNC_WORD_2, "SyncWord2"},
+                                             {SYNC_WORD_3, "SyncWord3"},
+                                             {SYNC_WORD_4, "SyncWord4"},
+                                             {SYNC_WORD_5, "SyncWord5"},
+                                             {SYNC_WORD_6, "SyncWord6"},
+                                             {SYNC_WORD_7, "SyncWord7"},
                                              {0x06CD, "NodeAddr"},
                                              {0x06CE, "BroadcastAddr"},
                                              {0x0740, "LoRaSyncWordMSB"},
@@ -181,27 +181,134 @@ bool sx1262_start_rx(uint32_t timeout_s) {
     return res;
 }
 
+bool sx1262_set_base_addr(uint8_t tx_addr, uint8_t rx_addr) {
+    bool res = false;
+    uint8_t tx_array[2];
+    tx_array[0] = TX_BASE_ADDRESS;
+    tx_array[1] = RX_BASE_ADDRESS;
+    res = sx1262_send_opcode(OPCODE_SET_BUFFER_BASE_ADDR, tx_array, 2, NULL, 0);
+    return res;
+}
+
+bool sx1262_reset(void) {
+    bool res = true;
+    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
+    wait_ms(50);
+    GPIO_writeDio(SX1262_RST_DIO_NO, 0);
+    wait_ms(50);
+    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
+    return res;
+}
+
 bool sx1262_init(void) {
     bool res = true;
     res = sx1262_init_gpio() && res;
+
+    res = sx1262_reset() && res;
     res = sx1262_set_rffrequency(868) && res;
+    res = sx1262_set_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
+
     sx1262_chip_mode = CHIPMODE_NONE;
     res = sx1262_start_rx(60) && res;
     return res;
 }
 
-bool SX126x_start_tx(uint8_t offset, uint8_t* tx_buf, uint8_t pkt_len, uint32_t timeout_s) {
-    bool res = true;
-    uint8_t buff[pkt_len + 1];
+bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint8_t payload_len) {
+    bool res;
+    uint8_t buff[payload_len + 1];
     buff[0] = offset;
-    memcpy(&buff[1], tx_buf, pkt_len);
-    res = sx1262_send_opcode(OPCODE_WRITE_BUFFER, buff, pkt_len + 1, NULL, 0) && res;
+    memcpy(&buff[1], payload, payload_len);
+    res = sx1262_send_opcode(OPCODE_WRITE_BUFFER, buff, payload_len + 1, NULL, 0);
+    return res;
+}
 
+bool sx1262_set_payload(uint8_t* payload, uint8_t size) {
+    bool res;
+    res = sx1262_write_buffer(0x00, payload, size);
+    return res;
+}
+
+bool sx1262_set_tx(uint32_t timeout_s) {
+    bool res = true;
+    uint8_t buff[3];
     /*from senior byte to junior byte*/
     buff[0] = MASK_8BIT & (timeout_s >> 16);
     buff[1] = MASK_8BIT & (timeout_s >> 8);
     buff[2] = MASK_8BIT & (timeout_s);
     res = sx1262_send_opcode(OPCODE_SET_TX, buff, 3, NULL, 0) && res;
-    sx1262_chip_mode = CHIPMODE_TX;
+    return res;
+}
+
+bool sx1262_start_tx(uint8_t offset, uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
+    bool res = true;
+    if((NULL != tx_buf) && (0 < tx_buf_len)) {
+        res = sx1262_write_buffer(offset, tx_buf, tx_buf_len) && res;
+        res = sx1262_set_tx(timeout_s) && res;
+        sx1262_chip_mode = CHIPMODE_TX;
+    } else {
+        res = false;
+    }
+    return res;
+}
+
+bool sx1262_get_sync_word(uint64_t* sync_word) {
+    bool res = true;
+    if(sync_word) {
+        res = true;
+        Type64Union_t var64bit;
+        res = sx1262_read_reg(SYNC_WORD_0, &var64bit.u8[0]) && res;
+        res = sx1262_read_reg(SYNC_WORD_1, &var64bit.u8[1]) && res;
+        res = sx1262_read_reg(SYNC_WORD_2, &var64bit.u8[2]) && res;
+        res = sx1262_read_reg(SYNC_WORD_3, &var64bit.u8[3]) && res;
+        res = sx1262_read_reg(SYNC_WORD_4, &var64bit.u8[4]) && res;
+        res = sx1262_read_reg(SYNC_WORD_5, &var64bit.u8[5]) && res;
+        res = sx1262_read_reg(SYNC_WORD_6, &var64bit.u8[6]) && res;
+        res = sx1262_read_reg(SYNC_WORD_7, &var64bit.u8[7]) && res;
+        *sync_word = var64bit.u64;
+    } else {
+        res = false;
+    }
+    return res;
+}
+
+bool sx1262_get_rand(uint32_t* rand_num) {
+    bool res = true;
+    if(rand_num) {
+        res = true;
+        Type32Union_t var32bit;
+        res = sx1262_read_reg(RAND_NUM_GEN_0, &var32bit.u8[0]) && res;
+        res = sx1262_read_reg(RAND_NUM_GEN_1, &var32bit.u8[1]) && res;
+        res = sx1262_read_reg(RAND_NUM_GEN_2, &var32bit.u8[2]) && res;
+        res = sx1262_read_reg(RAND_NUM_GEN_3, &var32bit.u8[3]) && res;
+        *rand_num = var32bit.u32;
+    } else {
+        res = false;
+    }
+    return res;
+}
+
+bool sx1262_get_packet_type(RadioPacketTypes_t* packet_type) {
+    bool res = false;
+    uint8_t rx_array[3];
+    memset(rx_array, 0x00, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, 3);
+    if(res) {
+        *packet_type = (RadioPacketTypes_t)rx_array[2];
+    } else {
+        *packet_type = PACKET_TYPE_NONE;
+    }
+    return res;
+}
+
+bool sx1262_get_status(uint8_t* out_status) {
+    bool res = false;
+    if(out_status) {
+        uint8_t rx_array[2];
+        memset(rx_array, 0xFF, sizeof(rx_array));
+        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
+        *out_status = rx_array[1];
+    } else {
+        *out_status = 0xFF;
+    }
     return res;
 }
