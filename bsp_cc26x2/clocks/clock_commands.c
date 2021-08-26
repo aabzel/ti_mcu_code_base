@@ -66,7 +66,7 @@ bool clock_diag_command(int32_t argc, char* argv[]){
          io_printf("XOSC_FREQ %s" CRLF, xoscfreq2str(code));
          io_printf("T: %u C" CRLF, temp_c);
          io_printf("CrystalAmpl: %u mV" CRLF, millivolt);
-         io_printf("up_time_ms %u" CRLF, g_up_time_ms);
+         io_printf("up_time_ms %u ms %u s %u m" CRLF, g_up_time_ms, MS_2_S(g_up_time_ms), MS_2_MIN(g_up_time_ms));
          io_printf("SysTickPeriod %u" CRLF, SysTickPeriodGet());
          io_printf("SysTickValue %u" CRLF, SysTickValueGet());
 

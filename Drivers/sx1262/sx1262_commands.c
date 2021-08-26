@@ -102,7 +102,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         uint64_t sync_word = 0;
         res = sx1262_get_sync_word(&sync_word);
         io_printf("sync_word: 0x%" PRIx64 "" CRLF, sync_word);
-        io_printf("busy_cnt: 0x%u" CRLF, busy_cnt);
+        io_printf("busyCnt: %u" CRLF, busy_cnt);
 
         uint32_t rand_num = 0;
         res = sx1262_get_rand(&rand_num);

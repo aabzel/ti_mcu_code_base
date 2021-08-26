@@ -73,3 +73,48 @@ sxo 0x0E 0x00112233445566778899 0
 d200000000000000
 0007001700277f00
 
+
+make loraChat
+
+
+https://github.com/dudmuck/lora_codec2/tree/master/sx126x
+https://github.com/dudmuck/lora_codec2/blob/master/sx126x/sx126x.c
+void SX126x_set_tx_dbm(bool is1262, int8_t dbm);
+void SX126x_setStandby(stby_t);
+void DIO1_IRQHandler(void)
+void SX126x_ReadBuffer(uint8_t size, uint8_t offset)
+
+
+https://github.com/clodpi/LoRaMAC-SX1262/tree/master/src/radio/sx126x
+https://github.com/clodpi/LoRaMAC-SX1262/blob/master/src/radio/sx126x/sx126x.h
+void SX126xCalibrate( CalibrationParams_t calibParam );
+void SX126xSetLongPreamble( uint8_t enable );
+void SX126xSetDioIrqParams( uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask );
+int8_t SX126xGetRssiInst( void );
+void SX126xGetRxBufferStatus( uint8_t *payloadLength, uint8_t *rxStartBuffer );
+RadioError_t SX126xGetDeviceErrors( void );
+
+https://github.com/adwaitnd/sx1262-tx/blob/master/SX126xLib/sx126x.cpp
+GetRxBufferStatus( size, &offset );
+void SX126x::SetRxDutyCycle( uint32_t rxTime, uint32_t sleepTime )
+void SX126x::ClearIrqStatus( uint16_t irq )
+
+https://github.com/akshaymishra/ChariotLRWAN/blob/master/DSPWorks-CharIoT/CharIoT2/BSP/Components/sx126x/sx126x.h
+https://github.com/akshaymishra/ChariotLRWAN/blob/master/DSPWorks-CharIoT/CharIoT2/BSP/SX1262DVK1DAS/sx1262dvk1das.c
+void SX126xAntSwOn( void )
+void SX126xSetTxContinuousWave( void );
+void SX126xSetTxInfinitePreamble( void );
+void SX126xSetTxParams( int8_t power, RadioRampTimes_t rampTime );
+
+
+https://github.com/ETHZ-TEC/flora-lib/blob/master/radio/semtech/sx1262-board.c
+void SX126xWaitOnBusy( void )
+
+
+https://github.com/ARMmbed/mbed-semtech-lora-rf-drivers/blob/master/SX126X/SX126X_LoRaRadio.cpp
+
+
+
+
+
+
