@@ -32,9 +32,9 @@ int main(void) {
     pause_ms(20);
 #endif /*HAS_START_PAUSE*/
 
-    res = sys_init() && res;
+    res = try_init(sys_init(),"SYS") && res;
 
-    io_printf(CRLF "init [%s]" CRLF, (true == res) ? "OK!" : "Error!");
+    LOG_INFO(SYS, "init [%s]" CRLF, (true == res) ? "OK!" : "Error!");
 #ifdef HAS_HEALTH_MONITOR
     HealthMon.init_error = !res;
 #endif /*HAS_HEALTH_MONITOR*/

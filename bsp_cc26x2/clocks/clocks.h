@@ -35,7 +35,7 @@ void delay_us(uint32_t delay_in_us);
 
 uint32_t pause_ms(uint32_t delay_in_ms);
 
-uint32_t HAL_GetTick(void);
+uint32_t clock_get_tick_ms(void);
 bool SystemClock_Config(void);
 
 #ifdef __cplusplus

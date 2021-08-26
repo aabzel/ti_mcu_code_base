@@ -11,7 +11,7 @@
 #ifdef HAS_CLI
 #include "cli_manager.h"
 #endif /*HAS_CLI*/
-
+#include "health_monitor.h"
 #include "hw_init.h"
 #include "io_utils.h"
 #include "log.h"
@@ -47,8 +47,8 @@
 
 bool sys_init(void) {
     bool res = true;
-    res = hw_init() && res;
-    res = sw_init() && res;
+    res = try_init(hw_init(),"HW") && res;
+    res = try_init(sw_init(),"SW") && res;
     return res;
 }
 

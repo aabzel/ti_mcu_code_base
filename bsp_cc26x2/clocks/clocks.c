@@ -5,7 +5,7 @@
 
 #include "sys_tick.h"
 
-uint32_t HAL_GetTick(void) { return g_up_time_ms; }
+uint32_t clock_get_tick_ms(void) { return g_up_time_ms; }
 
 void delay_ms(uint32_t delay_in_ms) {
     uint32_t init_time_in_ms = g_up_time_ms;

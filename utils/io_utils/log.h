@@ -23,19 +23,19 @@ typedef enum {
 } log_level_t;
 
 typedef enum {
-  UNKNOWN_FACILITY,
-  ADC,
-  DAC,
-  DIAG,
-  I2C,
-  LORA,
-  TIM,
-  NVS,
-  SPI,
-  RF,
-  SYS,
-  UART,
-  ALL_FACILITY
+  UNKNOWN_FACILITY=0,
+  ADC=1,
+  DAC=2,
+  DIAG=3,
+  I2C=4,
+  LORA=5,
+  NVS=6,
+  TIM=7,
+  SPI=8,
+  RF=9,
+  SYS=10,
+  UART=11,
+  ALL_FACILITY=12
 } log_facility_t;
 
 extern log_level_t log_levels[ALL_FACILITY];

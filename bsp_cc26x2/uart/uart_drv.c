@@ -87,15 +87,15 @@ const uint_least8_t CONFIG_UART_0_CONST = CONFIG_UART_0;
 const uint_least8_t UART_count = CONFIG_UART_COUNT;
 
 static void uart0ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
-    huart[0].rx_cnt++;
-    huart[0].rx_int = true;
-    huart[0].rx_byte = *(rxBuf);
+    huart[CONFIG_UART_0].rx_cnt++;
+    huart[CONFIG_UART_0].rx_int = true;
+    huart[CONFIG_UART_0].rx_byte = *(rxBuf);
 }
 
 static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
-    huart[0].tx_cnt++;
-    huart[0].tx_int = true;
-    huart[0].tx_cpl_cnt++;
+    huart[CONFIG_UART_0].tx_cnt++;
+    huart[CONFIG_UART_0].tx_int = true;
+    huart[CONFIG_UART_0].tx_cpl_cnt++;
 }
 
 static void uart1ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
@@ -113,16 +113,16 @@ static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
 
 static bool init_uart0(void) {
     bool res = false;
-    memset(&huart[0], 0x00, sizeof(huart[0]));
+    memset(&huart[CONFIG_UART_0], 0x00, sizeof(huart[CONFIG_UART_0]));
     char connectionHint[40] = "";
     snprintf(connectionHint, sizeof(connectionHint), "UART0 %u\n\r", UART0_BAUD_RATE);
     UART_Params uart0Params;
-    huart[0].rx_cnt = 0;
-    huart[0].tx_cnt = 0;
-    huart[0].tx_cpl_cnt = 0;
-    huart[0].tx_byte_cnt = 0;
-    huart[1].rx_buff = rx_buff0;
-    strncpy(huart[0].name, "CLI", sizeof(huart[0].name));
+    huart[CONFIG_UART_0].rx_cnt = 0;
+    huart[CONFIG_UART_0].tx_cnt = 0;
+    huart[CONFIG_UART_0].tx_cpl_cnt = 0;
+    huart[CONFIG_UART_0].tx_byte_cnt = 0;
+    huart[CONFIG_UART_0].rx_buff = rx_buff0;
+    strncpy(huart[CONFIG_UART_0].name, "CLI", sizeof(huart[CONFIG_UART_0].name));
     /* Call driver init functions */
     UART_init();
 
@@ -139,19 +139,17 @@ static bool init_uart0(void) {
     uart0Params.readDataMode = UART_DATA_BINARY;
     uart0Params.readCallback = (UART_Callback)uart0ReadCallback;
 
-    huart[0].uart_h = UART_open(CONFIG_UART_0, &uart0Params);
+    huart[CONFIG_UART_0].uart_h = UART_open(CONFIG_UART_0, &uart0Params);
 
-    if(NULL == huart[0].uart_h) {
+    if(NULL == huart[CONFIG_UART_0].uart_h) {
         res = false;
     } else {
         res = true;
-        UART_write(huart[0].uart_h, connectionHint, sizeof(connectionHint));
-        UART_read(huart[0].uart_h, &huart[0].rx_byte, 1);
-        huart[0].init_done = true;
-        huart[0].base_address = (uint32_t*)DEBUG_UART;
+        UART_write(huart[CONFIG_UART_0].uart_h, connectionHint, sizeof(connectionHint));
+        UART_read(huart[CONFIG_UART_0].uart_h, &huart[CONFIG_UART_0].rx_byte, 1);
+        huart[CONFIG_UART_0].init_done = true;
+        huart[CONFIG_UART_0].base_address = (uint32_t*)DEBUG_UART;
     }
-
-    /* Turn on user LED to indicate successful initialization */
 
     return res;
 }
@@ -205,14 +203,14 @@ bool uart_init(void) {
 }
 
 int cli_putchar_uart(int ch) {
-    uint32_t init_tx_cnt = huart[0].tx_cnt;
-    UART_write(huart[0].uart_h, &ch, 1);
-    while(init_tx_cnt == huart[0].tx_cnt) {
+    uint32_t init_tx_cnt = huart[CONFIG_UART_0].tx_cnt;
+    UART_write(huart[CONFIG_UART_0].uart_h, &ch, 1);
+    while(init_tx_cnt == huart[CONFIG_UART_0].tx_cnt) {
     }
     return ch;
 }
 
-void cli_tune_read_char(void) { UART_read(huart[0].uart_h, &huart[0].rx_byte, 1); }
+void cli_tune_read_char(void) { UART_read(huart[CONFIG_UART_0].uart_h, &huart[CONFIG_UART_0].rx_byte, 1); }
 
 bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;

@@ -30,25 +30,25 @@ bool sw_init(void) {
   bool res = true;
   
 #ifdef HAS_LED
-  led_init();
+  res = try_init(led_init(),"LED") && res;
 #endif /*HAS_LED*/
 
 #ifdef HAS_CLI
   set_log_level(SYS, LOG_LEVEL_DEBUG);
-  res = cli_init() && res;
+  res = try_init(cli_init(),"CLI") && res;
 #endif /*HAS_CLI*/
 
 #ifdef HAS_NMEA
-  res = nmea_init() && res;
+  res = try_init(nmea_init(),"NMEA") && res;
 #endif
 
 #ifdef HAS_UBLOX
-  res = ublox_protocol_init() && res;
-  res = ubx_driver_init() && res;
+  res = try_init(ublox_protocol_init(),"UBXProto") && res;
+  res = try_init(ubx_driver_init(),"UBXdrv") && res;
 #endif /*HAS_UBLOX*/
 
 #ifdef  HAS_HEALTH_MONITOR
-  res = health_monotor_init() && res;
+  res = try_init(health_monotor_init(),"HM") && res;
 #endif /*HAS_HEALTH_MONITOR*/
 
   return res;

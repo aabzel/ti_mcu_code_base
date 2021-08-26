@@ -25,7 +25,7 @@ bool log_facility_name = true;
 bool log_zero_time = false;
 #endif
 
-static char log_level_name(log_level_t level) {
+char log_level_name(log_level_t level) {
   char result = 'U';
   switch (level) {
   case LOG_LEVEL_UNKNOWN:
@@ -127,7 +127,7 @@ static bool is_log_enabled(log_level_t level, log_facility_t facility) {
 }
 
 const char *facility2str(log_facility_t facility) {
-  const char *facility_str = "?";
+  const char *facility_str = "x";
   switch (facility) {
   case UNKNOWN_FACILITY:
     facility_str = "?";
@@ -138,19 +138,20 @@ const char *facility2str(log_facility_t facility) {
   case UART:
     facility_str = "UART";
     break;
-
   case SPI:
     facility_str = "SPI";
     break;
-
   case DIAG:
     facility_str = "DIAG";
+    break;
+  case LORA:
+    facility_str = "LoRa";
     break;
   case ALL_FACILITY:
     facility_str = "*";
     break;
   default:
-    facility_str = "?";
+    facility_str = "??";
     break;
   }
   return facility_str;
@@ -162,12 +163,8 @@ bool log_write_begin(log_level_t level, log_facility_t facility) {
   bool res = false;
 
   if (is_log_enabled(level, facility)) {
-    uint64_t now = HAL_GetTick();
-#ifdef EMBEDDED_TEST
-    if (log_zero_time) {
-      now = 0;
-    }
-#endif
+    uint64_t now = clock_get_tick_ms();
+
     if (log_colored) {
       io_putstr(log_level_color(level));
     }
@@ -199,7 +196,7 @@ void log_write_(log_level_t level, log_facility_t facility, const char *format,
   if (log_write_begin(level, facility)) {
     va_list va;
     va_start(va, format);
-    io_printf(format, va);
+    io_vprintf(format, va);
     va_end(va);
     log_write_end();
   }
@@ -209,7 +206,7 @@ void LOG_PARN(log_facility_t facility, const char *format, ...) {
   if (log_write_begin(LOG_LEVEL_PARANOID, facility)) {
     va_list va;
     va_start(va, format);
-    io_printf(format, va);
+    io_vprintf(format, va);
     va_end(va);
     log_write_end();
   }
@@ -219,7 +216,7 @@ void LOG_DEBUG(log_facility_t facility, const char *format, ...) {
   if (log_write_begin(LOG_LEVEL_DEBUG, facility)) {
     va_list va;
     va_start(va, format);
-    io_printf(format, va);
+    io_vprintf(format, va);
     va_end(va);
     log_write_end();
   }
@@ -229,7 +226,7 @@ void LOG_NOTICE(log_facility_t facility, const char *format, ...) {
   if (log_write_begin(LOG_LEVEL_NOTICE, facility)) {
     va_list va;
     va_start(va, format);
-    io_printf(format, va);
+    io_vprintf(format, va);
     va_end(va);
     log_write_end();
   }
@@ -239,7 +236,7 @@ void LOG_INFO(log_facility_t facility, const char *format, ...) {
   if (log_write_begin(LOG_LEVEL_INFO, facility)) {
     va_list va;
     va_start(va, format);
-    io_printf(format, va);
+    io_vprintf(format, va);
     va_end(va);
     log_write_end();
   }
@@ -249,7 +246,7 @@ void LOG_WARNING(log_facility_t facility, const char *format, ...) {
   if (log_write_begin(LOG_LEVEL_WARNING, facility)) {
     va_list va;
     va_start(va, format);
-    io_printf(format, va);
+    io_vprintf(format, va);
     va_end(va);
     log_write_end();
   }
@@ -259,7 +256,7 @@ void LOG_ERROR(log_facility_t facility, const char *format, ...) {
   if (log_write_begin(LOG_LEVEL_ERROR, facility)) {
     va_list va;
     va_start(va, format);
-    io_printf(format, va);
+    io_vprintf(format, va);
     va_end(va);
     log_write_end();
   }
@@ -269,7 +266,7 @@ void LOG_CRITICAL(log_facility_t facility, const char *format, ...) {
   if (log_write_begin(LOG_LEVEL_CRITICAL, facility)) {
     va_list va;
     va_start(va, format);
-    io_printf(format, va);
+    io_vprintf(format, va);
     va_end(va);
     log_write_end();
   }

@@ -1,8 +1,12 @@
 #include "io_utils.h"
 
+#include <stdio.h>
+
 #include "sys.h"
 #include "uart_drv.h"
 #include "writer_generic.h"
+
+print_callback_t print_callback_f;
 
 void io_putstr(const char *str) {
   if (huart[0].init_done) {
@@ -25,6 +29,12 @@ void io_printf(const char *format, ...) {
   }
 }
 
+void io_vprintf(const char *format, va_list vlist) {
+    //vprintf(format, vlist);
+    ovprintf(&dbg_o.s, format, vlist);
+}
+
+
 bool is_printf_clean(void) {
   if (huart[0].init_done) {
     if (!writer_clean(&dbg_o)) {
@@ -40,7 +50,6 @@ void wait_for_printf(void) {
       int32_t j;
       for (j = 0; j < 100000; j++) {
       }
-      // wdt_reset_all();
     }
   }
 }

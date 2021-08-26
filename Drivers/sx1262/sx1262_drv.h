@@ -94,6 +94,7 @@ typedef struct xSx1262Reg_t {
     char* reg_name;
 } xSx1262Reg_t;
 
+extern uint32_t busy_cnt;
 extern ChipMode_t sx1262_chip_mode;
 extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 

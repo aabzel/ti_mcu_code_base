@@ -11,6 +11,7 @@
 #include <NoRTOS.h>
 #endif /*NORTOS*/
 
+#include "health_monitor.h"
 #include "clocks.h"
 #include "sys_tick.h"
 
@@ -81,54 +82,53 @@ bool hw_init(void) {
   res = watchdog_init()&&res;
 #endif
 
-#ifdef HAS_TIM
-  res = tim_init()&&res;
-#endif /*HAS_TIM*/
-
 #ifdef HAS_GPIO
   res = gpio_init() && res;
 #endif /*HAS_GPIO*/
 
+#ifdef HAS_RTC
+  res = (rtc_init(),"RTC") && res;
+#endif /*HAS_RTC*/
+
+#ifdef HAS_UART
+  res = try_init(uart_init(),"UART") && res;
+#endif /*HAS_UART*/
+
+#ifdef HAS_TIM
+  res = try_init(tim_init(),"TIM") && res;
+#endif /*HAS_TIM*/
+
+#ifdef HAS_FLASH
+  res = try_init(flash_init(),"Flash") && res;
+#endif /*HAS_FLASH*/
+
 #ifdef HAS_ADC
-  res = adc_init()&&res;
+  res = try_init(adc_init(),"ADC") && res;
 #endif /*HAS_ADC*/
 
 #ifdef HAS_DAC
-  res = dac_init() && res;
+  res = try_init(dac_init(),"DAC") && res;
 #endif /*HAS_DAC*/
 
-#ifdef HAS_FLASH
-  res = flash_init()&&res;
-#endif /*HAS_FLASH*/
-
-#ifdef HAS_RTC
-  res = rtc_init()&&res;
-#endif /*HAS_RTC*/
-
-
-
-#ifdef HAS_UART
-  res = uart_init()&&res;
-#endif /*HAS_UART*/
-
 #ifdef HAS_SPI
-  res = spi_init()&&res;
+  res = try_init(spi_init(),"SPI") && res;
 #endif /*HAS_SPI*/
 
 #ifdef HAS_I2C
-  res = i2c_init()&&res;
+  res = try_init(i2c_init(),"I2C") && res;
 #endif /*HAS_I2C*/
 
 #ifdef HAS_RF
-  res = rf_init() &&res;
+  res = try_init(rf_init(),"RF") && res;
 #endif /*HAS_RF*/
 
 #ifdef HAS_BLE
-  res = ble_init()&&res;
+  res = try_init(ble_init(),"BLE") && res;
 #endif /*HAS_BLE*/
 
 #ifdef HAS_SX1262
-  res = sx1262_init() && res;
+  //res = sx1262_init() && res;
+  res = try_init(sx1262_init(),"sx1262") && res;
 #endif /*HAS_SX1262*/
   return res;
 }

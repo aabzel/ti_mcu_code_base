@@ -12,8 +12,8 @@
 
 #define DEBUG_UART 0x40001000
 
-#define CONFIG_UART_0 0
-#define CONFIG_UART_1 1
+#define CONFIG_UART_0 0 /* CLI   */
+#define CONFIG_UART_1 1 /* UBlox */
 
 #define UART0_BAUD_RATE 38400U
 #define UART1_BAUD_RATE 38400U

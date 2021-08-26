@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+#include <stdarg.h>
 #include <stdbool.h>
 
 #define CRLF "\r\n"
@@ -15,6 +16,9 @@ extern "C" {
 
 #define io_stdout_stream_get get_console_stream
 
+typedef void (*print_callback_t)(const char* str);
+
+
 void io_putchar(char ch);
 void io_putstr(const char *str);
 bool flush_printf(void);
@@ -22,6 +26,7 @@ void wait_for_printf(void);
 bool is_printf_clean(void);
 void io_putstrln(const char *str);
 void io_printf(const char *format, ...);
+void io_vprintf (const char *format, va_list vlist);
 
 #ifdef __cplusplus
 }

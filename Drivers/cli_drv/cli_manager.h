@@ -9,8 +9,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "uart_drv.h"
+
 #define CLI_MANAGER_NAME "CLI"
 #define CLI_PERIOD_MS 300U
+#define CLI_UART CONFIG_UART_0
 
 extern uint32_t cli_task_cnt;
 extern bool cli_init_done;

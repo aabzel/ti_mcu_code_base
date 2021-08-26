@@ -30,10 +30,12 @@ speed up to 16 MHz
             wait_us(2);                                                                                                \
             GPIO_writeDio(SX1262_SS_DIO_NO, 1);                                                                        \
         } else {                                                                                                       \
+            busy_cnt++;                                                                                                \
             res = false;                                                                                               \
         }                                                                                                              \
     } while(0);
 
+uint32_t busy_cnt = 0 ;
 ChipMode_t sx1262_chip_mode = CHIPMODE_UNDEF;
 
 const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
@@ -202,12 +204,15 @@ bool sx1262_reset(void) {
 
 bool sx1262_init(void) {
     bool res = true;
+    busy_cnt = 0;
     res = sx1262_init_gpio() && res;
-
+    wait_ms(50);
     res = sx1262_reset() && res;
+    wait_ms(50);
     res = sx1262_set_rffrequency(868) && res;
+    wait_ms(50);
     res = sx1262_set_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-
+    wait_ms(50);
     sx1262_chip_mode = CHIPMODE_NONE;
     res = sx1262_start_rx(60) && res;
     return res;
