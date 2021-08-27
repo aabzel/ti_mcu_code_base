@@ -17,6 +17,7 @@
 #include "test_nmea_proto.h"
 #include "test_convert.h"
 #include "test_crc.h"
+#include "test_sx1262.h"
 #include "test_system.h"
 #include "test_ublox_proto.h"
 #include "unit_test_check.h"
@@ -30,6 +31,7 @@ const unit_test_info_t test_list[] = {{"type_transform", test_type_transformatio
                                 SYSTEM_TEST_SUIT
                                 NMEA_PROTO_TEST_SUIT
                                 CRC_TEST_SUIT
+                                TEST_SUIT_SX1262
                                 CONVERT_TEST_SUIT
                                 STRING_UTILS_TEST_SUIT
                                 UBLOX_PROTO_TEST_SUIT

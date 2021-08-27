@@ -32,7 +32,7 @@ int main(void) {
     pause_ms(20);
 #endif /*HAS_START_PAUSE*/
 
-    res = try_init(sys_init(),"SYS") && res;
+    res = try_init(sys_init(), "SYS") && res;
 
     LOG_INFO(SYS, "init [%s]" CRLF, (true == res) ? "OK!" : "Error!");
 #ifdef HAS_HEALTH_MONITOR

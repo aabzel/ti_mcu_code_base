@@ -23,16 +23,35 @@ uint64_t getRunTimeCounterValue64(void) {
 
 uint32_t get_time_ms32(void) { return g_up_time_ms; }
 
-uint64_t get_time_ms64(void) { return g_up_time_ms; }
+uint64_t get_time_ms64(void) { return (uint64_t)g_up_time_ms; }
 
 uint64_t get_time_us(void) { return g_up_time_ms * 1000; }
 
-uint32_t pause_ms(uint32_t delay_in_ms) {
-    uint32_t i = 0, j = 0, c = 0;
-    for(i = 0; i < 1000; i++) {
-        for(j = 0; j < 5000; j++) {
-            c = i + j;
-        }
+#if 0
+/*calibrated*/
+static uint64_t pause_1s(void) {
+    uint64_t in = 0, cnt = 0;
+    for(in = 0; in < 1319406; in++) {
+        cnt++;
     }
-    return c;
+    return cnt;
+}
+#endif
+
+/*calibrated*/
+static uint64_t pause_1ms(void) {
+    uint64_t in = 0, cnt = 0;
+    for(in = 0; in < 1397; in++) {
+        cnt++;
+    }
+    return cnt;
+}
+
+uint64_t sw_pause_ms(uint32_t delay_in_ms) {
+    uint64_t cnt = 0;
+    uint32_t t = 0;
+    for(t = 0; t < delay_in_ms; t++) {
+        cnt += pause_1ms();
+    }
+    return cnt;
 }

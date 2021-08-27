@@ -18,8 +18,8 @@ extern "C" {
 #define COUNTER_TO_US(counter) ((counter) / (COUNTER_FREQ))
 #define COUNTER_TO_MS(counter) ((counter) / ((COUNTER_FREQ)*1000))
 
-#define MS_2_S(ms) (ms/1000)
-#define MS_2_MIN(ms) (ms/(1000*60))
+#define MS_2_S(ms) (ms / 1000)
+#define MS_2_MIN(ms) (ms / (1000 * 60))
 
 uint32_t get_time_ms32(void);
 uint64_t get_time_ms64(void);
@@ -36,8 +36,7 @@ uint64_t runtime_2_us(uint64_t rtc);
 void delay_ms(uint32_t delay_in_ms);
 void delay_us(uint32_t delay_in_us);
 
-uint32_t pause_ms(uint32_t delay_in_ms);
-
+uint64_t sw_pause_ms(uint32_t delay_in_ms);
 uint32_t clock_get_tick_ms(void);
 bool SystemClock_Config(void);
 

@@ -1217,9 +1217,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="175.1875"
-     inkscape:cy="129.8125"
+     inkscape:zoom="1"
+     inkscape:cx="506.5"
+     inkscape:cy="435"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
@@ -4759,6 +4759,28 @@
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 49.581929,23.836236 H 42.928645"
        id="path5682" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.41111px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="30.691666"
+       y="73.124214"
+       id="text6799"><tspan
+         sodipodi:role="line"
+         id="tspan6797"
+         style="font-size:1.41111px;stroke-width:0.264583"
+         x="30.691666"
+         y="73.124214" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="51.82526"
+       y="69.254684"
+       id="text9421"><tspan
+         sodipodi:role="line"
+         id="tspan9419"
+         style="font-size:1.05833px;stroke-width:0.264583"
+         x="51.82526"
+         y="69.254684">PLL</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

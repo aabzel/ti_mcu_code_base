@@ -12,11 +12,11 @@ bool health_monotor_init(void) {
     return true;
 }
 
-bool try_init(bool status, char* message){
-    if(false==status){
-        LOG_ERROR(SYS, "init %s error",message);
-    }else{
-        LOG_INFO(SYS, "init %s OK",message);
+bool try_init(bool status, char* message) {
+    if(false == status) {
+        LOG_ERROR(SYS, "init %s error", message);
+    } else {
+        LOG_INFO(SYS, "init %s OK", message);
     }
     return status;
 }

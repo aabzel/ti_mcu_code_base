@@ -42,3 +42,24 @@ uint16_t reverse_byte_order_uint16(const uint16_t in2byteVal) {
   swapped = (in2byteVal >> 8) | (in2byteVal << 8);
   return swapped;
 }
+
+uint16_t copy_and_rev16(const uint8_t *const array){
+    uint16_t value16b=0;
+    memcpy(&value16b,array,2);
+    value16b = reverse_byte_order_uint16(value16b);
+    return value16b;
+}
+
+uint32_t copy_and_rev32(const uint8_t *const array){
+    uint32_t value32b=0;
+    memcpy(&value32b,array,4);
+    value32b = reverse_byte_order_uint32(value32b);
+    return value32b;
+}
+
+uint64_t copy_and_rev64(const uint8_t *const array){
+    uint64_t value64b=0;
+    memcpy(&value64b,array,8);
+    value64b = reverse_byte_order_uint64(value64b);
+    return value64b;
+}

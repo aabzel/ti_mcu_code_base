@@ -8,8 +8,11 @@ extern "C" {
 #include <stdbool.h>
 
 bool test_byte_utils(void);
+bool test_copy_rev(void);
 
-#define BYTE_UTILS_TEST_SUIT {"byte_utils", test_byte_utils},
+#define BYTE_UTILS_TEST_SUIT \
+                             {"byte_utils", test_byte_utils}, \
+                             {"copy_rev", test_copy_rev},
 
 #ifdef __cplusplus
 }

@@ -20,6 +20,10 @@
 #include "task_info.h"
 #include "uart_drv.h"
 
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
+#endif /*HAS_SX1262*/
+
 #ifdef HAS_ADC
 #include "adc_drv.h"
 #endif
@@ -47,8 +51,8 @@
 
 bool sys_init(void) {
     bool res = true;
-    res = try_init(hw_init(),"HW") && res;
-    res = try_init(sw_init(),"SW") && res;
+    res = try_init(hw_init(), "HW") && res;
+    res = try_init(sw_init(), "SW") && res;
     return res;
 }
 
@@ -90,6 +94,10 @@ void common_loop(uint64_t loop_start_time) {
 #ifdef HAS_RF
     MEASURE_TASK_INTERVAL(RF, 30, rf_process);
 #endif /*HAS_RF*/
+
+#ifdef HAS_SX1262
+    MEASURE_TASK_INTERVAL(LORA, 100, sx1262_process);
+#endif /*HAS_SX1262*/
 }
 
 uint32_t g_iteration_cnt = 10;

@@ -35,9 +35,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.67084645"
-     inkscape:cx="453.90417"
-     inkscape:cy="342.85044"
+     inkscape:zoom="10.733543"
+     inkscape:cx="516.18556"
+     inkscape:cy="254.34285"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
@@ -52,7 +52,7 @@
        orientation="210.0,0"
        id="guide2294" />
     <sodipodi:guide
-       position="148.5,0"
+       position="146.91984,147.1987"
        orientation="210.0,0"
        id="guide2296" />
     <sodipodi:guide
@@ -79,9 +79,27 @@
        position="249.32274,79.900384"
        orientation="1,0"
        id="guide2985" />
+    <sodipodi:guide
+       position="139.3551,145.19421"
+       orientation="1,0"
+       id="guide15920" />
   </sodipodi:namedview>
   <defs
      id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.4) translate(10,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path11466" />
+    </marker>
     <marker
        style="overflow:visible"
        id="marker2199"
@@ -486,7 +504,7 @@
          x="197.71068"
          y="48.409924">J1</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.616373;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Send)"
+       style="fill:none;stroke:#000000;stroke-width:0.616373;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Send);marker-start:url(#Arrow1Mstart)"
        d="M 214.79559,59.456001 V 86.273498"
        id="path61444" />
     <text
@@ -750,11 +768,11 @@
        d="m 257.60829,120.66659 h 4.29378"
        id="path48996-7" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.136262"
+       style="fill:none;stroke:#000000;stroke-width:0.130556"
        id="rect81876"
-       width="8.240345"
+       width="7.564744"
        height="5.0132885"
-       x="138.60733"
+       x="139.3551"
        y="67.764183" />
     <text
        xml:space="preserve"
@@ -768,23 +786,23 @@
          x="139.61476"
          y="69.242607">U8</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.152695"
+       style="fill:none;stroke:#000000;stroke-width:0.146069"
        id="rect81876-1"
-       width="8.2665806"
+       width="7.5647345"
        height="6.2754421"
-       x="138.94397"
+       x="139.3551"
        y="55.151054" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.32273px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
-       x="139.96451"
-       y="59.743553"
+       x="139.6687"
+       y="56.563686"
        id="text83354-6"><tspan
          sodipodi:role="line"
          id="tspan83352-9"
          style="font-size:1.32273px;stroke-width:0.198409"
-         x="139.96451"
-         y="59.743553">U10</tspan></text>
+         x="139.6687"
+         y="56.563686">U10</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.198409px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 129.37066,69.437083 h 9.34821"
@@ -838,23 +856,23 @@
          x="151.90407"
          y="58.140411">22 pin</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.138957"
+       style="fill:none;stroke:#000000;stroke-width:0.133049"
        id="rect81876-8"
-       width="8.2514563"
+       width="7.5647469"
        height="5.2065797"
-       x="138.60178"
+       x="139.3551"
        y="61.936501" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.32273px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
-       x="139.61476"
-       y="64.439308"
+       x="139.71336"
+       y="63.404003"
        id="text83354-0"><tspan
          sodipodi:role="line"
          id="tspan83352-5"
          style="font-size:1.32273px;stroke-width:0.198409"
-         x="139.61476"
-         y="64.439308">U9</tspan></text>
+         x="139.71336"
+         y="63.404003">U9</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.198409px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 129.43249,64.293096 h 9.15035"
@@ -2010,7 +2028,7 @@
      id="layer5"
      inkscape:label="UARTS">
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.177522px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.178;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker2069);marker-start:url(#marker2199)"
        d="M 198.17227,86.716784 V 59.456001"
        id="path55913" />
     <path
@@ -3169,7 +3187,7 @@
          x="64.00399"
          y="92.08416">ET_VDD</tspan></text>
     <path
-       style="fill:none;stroke:#fd00ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1464)"
+       style="fill:none;stroke:#fd00ff;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1454);stroke-miterlimit:4;stroke-dasharray:none"
        d="m 148.5,151.32969 h -4.49103 v -16.001 -55.916335 l -11.39913,-1.153081 0.16855,-19.79801 6.1758,0.0047"
        id="path109926"
        sodipodi:nodetypes="ccccccc" />

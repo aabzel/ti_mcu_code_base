@@ -127,7 +127,6 @@ bool hw_init(void) {
 #endif /*HAS_BLE*/
 
 #ifdef HAS_SX1262
-  //res = sx1262_init() && res;
   res = try_init(sx1262_init(),"sx1262") && res;
 #endif /*HAS_SX1262*/
   return res;

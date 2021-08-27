@@ -65,6 +65,32 @@
         }                                                                                                              \
     } while(0);
 
+#define EXPECT_EQ_VARS(var1, var2, val)                                                                                \
+    do {                                                                                                               \
+        /*int val1 = vala; */                                                                                          \
+        /*int val2 = val2; */                                                                                          \
+        if(!((var1 == val) || (var2 == val))) {                                                                        \
+            LOG_ERROR(SYS, "Error");                                                                                   \
+            io_printf("\n[e] %s():Line:%d in var1:%u var2:%u val:%u ", __FUNCTION__, __LINE__, var1, var2, val);       \
+            return false;                                                                                              \
+        } else {                                                                                                       \
+            /*printf ("\n OK!\n");  */                                                                                 \
+        }                                                                                                              \
+    } while(0);
+
+#define EXPECT_NE(val1, val2)                                                                                          \
+    do {                                                                                                               \
+        /*int val1 = vala; */                                                                                          \
+        /*int val2 = val2; */                                                                                          \
+        if(val1 == val2) {                                                                                             \
+            LOG_ERROR(SYS, "Error");                                                                                   \
+            io_printf("\n[e] %s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                \
+            return false;                                                                                              \
+        } else {                                                                                                       \
+            /*printf ("\n OK!\n");  */                                                                                 \
+        }                                                                                                              \
+    } while(0);
+
 #define EXPECT_STREQ(strL, strR)                                                                                       \
     do {                                                                                                               \
         if(0 != strcmp(strL, strR)) {                                                                                  \

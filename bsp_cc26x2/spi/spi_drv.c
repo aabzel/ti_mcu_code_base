@@ -73,7 +73,7 @@ static void SPI0_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { 
 uint32_t spi1_tx_cnt = 0;
 static void SPI1_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { spi1_tx_cnt++; }
 #endif
-
+#ifdef HAS_SPI0
 static bool spi0_init(void) {
     bool res = false;
     SPI_init();
@@ -101,6 +101,7 @@ static bool spi0_init(void) {
     }
     return res;
 }
+#endif /*HAS_SPI0*/
 
 #ifdef HAS_SPI1
 static bool spi1_init(void) {

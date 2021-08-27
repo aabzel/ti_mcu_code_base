@@ -12,6 +12,10 @@ uint32_t reverse_byte_order_uint32(const uint32_t in4byteVal);
 uint32_t reverse_byte_order_uint24(const uint32_t in3byteVal);
 uint16_t reverse_byte_order_uint16(const uint16_t in2byteVal);
 
+uint16_t copy_and_rev16(const uint8_t *const array);
+uint32_t copy_and_rev32(const uint8_t *const array);
+uint64_t copy_and_rev64(const uint8_t *const array);
+
 #ifdef __cplusplus
 }
 #endif
