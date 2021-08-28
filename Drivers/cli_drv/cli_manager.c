@@ -190,9 +190,9 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
             io_printf(" %18s " TSEP, cmd->long_name ? cmd->long_name : "");
             io_printf(" %s ", cmd->description ? cmd->description : "");
             io_printf(CRLF);
+            wait_in_loop_ms(4);
             num++;
         }
-        wait_in_loop_ms(4);
         cmd++;
     }
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));

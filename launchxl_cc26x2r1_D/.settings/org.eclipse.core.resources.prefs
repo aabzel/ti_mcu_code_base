@@ -118,3 +118,4 @@ encoding//Debug/utils/utils_string/subdir_rules.mk=UTF-8
 encoding//Debug/utils/utils_string/subdir_vars.mk=UTF-8
 encoding//Debug/utils/utils_sys/subdir_rules.mk=UTF-8
 encoding//Debug/utils/utils_sys/subdir_vars.mk=UTF-8
+encoding//Drivers/sx1262/sx1262_drv.h=UTF-8

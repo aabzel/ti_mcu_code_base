@@ -8,8 +8,9 @@ extern "C" {
 #include <stdbool.h>
 
 bool test_sx1262(void);
+bool test_sx1262_sync_word(void);
 
-#define TEST_SUIT_SX1262 {"sx1262", test_sx1262},
+#define TEST_SUIT_SX1262 {"sx1262", test_sx1262}, {"sx1262_sync_word", test_sx1262_sync_word},
 
 #ifdef __cplusplus
 }

@@ -1,4 +1,10 @@
-/*
+ * SX1262 22 dBm power output
+ * sub-GHz band (e.g. 868 or 915 MHz)
+ * https://www.hackster.io/131385/fun-with-lora-2c2bb4
+ * https://github.com/ThisIsIoT/IoT-Keystone
+ * https://github.com/LYH1885/SX1262-RF-Module/tree/master/HARDWARE/SX1262
+ * https://github.com/LYH1885/SX1262-RF-Module/blob/master/HARDWARE/SX1262/sx1262.c
+ *  https://github.com/LYH1885/SX1262-RF-Module/blob/master/HARDWARE/SX1262/sx1262.h
  * */
 
 #ifndef SX1262_DRV_H
@@ -7,21 +13,27 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "bit_utils.h"
 #include "board_layout.h"
+#include "gfsk_defs.h"
+#include "lora_defs.h"
 
 #define PACK_SIZE_BYTES 16
 
 #define RX_SIZE 256
 #define TX_SIZE 256
 
+#define FREQ_MHZ 868.0f
 #define XTAL_FREQ_HZ 32000000U
 #define SX1262_SPI_NUM 0
 #define SX1262_REG_CNT 26U
 #define OPCODE_SIZE 1
-#define MHZ_TO_FRF 1048576 // = ()( ((float)(1<<25) ) / ((float)XTAL_FREQ_HZ))*10000000.0f)
+#define MHZ_TO_FRF 1048576 /* ((float)XTAL_FREQ_HZ))*10000000.0f)*/
 
 #define TX_BASE_ADDRESS 0x00
-#define RX_BASE_ADDRESS 0x80 // 128
+#define RX_BASE_ADDRESS (0x00 + (TX_SIZE / 2)) // 128
+
+#define SYNC_WORD 0x1122334455667788
 
 /*Operational Modes Commands*/
 #define OPCODE_RESET_STATS 0x00
@@ -48,7 +60,7 @@
 #define OPCODE_CALIBRATE 0x89
 #define OPCODE_SET_PACKET_TYPE 0x8A
 #define OPCODE_SET_MODULATION_PARAMS 0x8b
-#define OPCODE_SET_PACKET_PARAMS 0x8c
+#define OPCODE_SET_PACKET_PARAMS 0x8C
 #define OPCODE_SET_TX_PARAMS 0x8e
 #define OPCODE_SET_BUFFER_BASE_ADDR 0x8F
 #define OPCODE_SET_FALLBACK_MODE 0x93
@@ -84,12 +96,34 @@
 #define IRQ_BIT_RXDONE 1           /* Packet received All */
 #define IRQ_BIT_PREAMBLEDETECTED 2 /* Preamble detected All   */
 #define IRQ_BIT_SYNCWORDVALID 3    /* Valid sync word detected FSK   */
-#define IRQ_BIT_HEADERVALID 4      /* Valid LoRa header received LoRa®   */
-#define IRQ_BIT_HEADERERR 5        /* LoRa header CRC error LoRa®  */
+#define IRQ_BIT_HEADERVALID 4      /* Valid LoRa header received LoRaÂ®   */
+#define IRQ_BIT_HEADERERR 5        /* LoRa header CRC error LoRaÂ®  */
 #define IRQ_BIT_CRCERR 6           /* Wrong CRC received All  */
-#define IRQ_BIT_CADDONE 7          /* Channel activity detection finished LoRa® */
-#define IRQ_BIT_CADDETECTED 8      /* Channel activity detected LoRa®   */
+#define IRQ_BIT_CADDONE 7          /* Channel activity detection finished LoRaÂ® */
+#define IRQ_BIT_CADDETECTED 8      /* Channel activity detected LoRaÂ®   */
 #define IRQ_BIT_TIMEOUT 9          /* Rx or Tx timeout All */
+
+#define IQR_ALL_INT MASK_10BIT
+
+/*!
+ * Represents the interruption masks available for the radio
+ *
+ * Note that not all these interruptions are available for all packet types
+ */
+typedef enum eRadioIrqMasks_t {
+    IRQ_MASK_RADIO_NONE = 0x0000,
+    IRQ_MASK_TX_DONE = 0x0001,
+    IRQ_MASK_RX_DONE = 0x0002,
+    IRQ_MASK_PREAMBLE_DETECTED = 0x0004,
+    IRQ_MASK_SYNCWORD_VALID = 0x0008,
+    IRQ_MASK_HEADER_VALID = 0x0010,
+    IRQ_MASK_HEADER_ERROR = 0x0020,
+    IRQ_MASK_CRC_ERROR = 0x0040,
+    IRQ_MASK_CAD_DONE = 0x0080,
+    IRQ_MASK_CAD_ACTIVITY_DETECTED = 0x0100,
+    IRQ_MASK_RX_TX_TIMEOUT = 0x0200,
+    IRQ_MASK_RADIO_ALL = 0xFFFF
+} RadioIrqMasks_t;
 
 /*Status Bytes Definition*/
 #define COM_STAT_DATA_AVAIL 0x2 /*Data is available to host*/
@@ -99,14 +133,41 @@
 #define COM_STAT_COM_TX_DONE 0x6 /*Command TX done5 */
 
 /* OpError Bits */
-#define  OP_ERR_BIT_RC64K_CALIB_ERR 0/*RC64k calibration failed */
-#define  OP_ERR_BIT_RC13M_CALIB_ERR 1/*RC13M calibration failed */
-#define  OP_ERR_BIT_PLL_CALIB_ERR   2/*PLL calibration failed   */
-#define  OP_ERR_BIT_ADC_CALIB_ERR   3/*ADC calibration failed   */
-#define  OP_ERR_BIT_IMG_CALIB_ERR   4/*IMG calibration failed   */
-#define  OP_ERR_BIT_XOSC_START_ERR  5/*XOSC failed to start     */
-#define  OP_ERR_BIT_PLL_LOCK_ERR    6/*PLL failed to lock       */
-#define  OP_ERR_BIT_PA_RAMP_ERR     8/*PA ramping failed        */
+#define OP_ERR_BIT_RC64K_CALIB_ERR 0 /*RC64k calibration failed */
+#define OP_ERR_BIT_RC13M_CALIB_ERR 1 /*RC13M calibration failed */
+#define OP_ERR_BIT_PLL_CALIB_ERR 2 /*PLL calibration failed   */
+#define OP_ERR_BIT_ADC_CALIB_ERR 3 /*ADC calibration failed   */
+#define OP_ERR_BIT_IMG_CALIB_ERR 4 /*IMG calibration failed   */
+#define OP_ERR_BIT_XOSC_START_ERR 5 /*XOSC failed to start     */
+#define OP_ERR_BIT_PLL_LOCK_ERR 6 /*PLL failed to lock       */
+#define OP_ERR_BIT_PA_RAMP_ERR 8 /*PA ramping failed        */
+
+// Table 13-41: RampTime Definition
+// RampTime Value RampTime (Î¼s)
+#define SET_RAMP_10U 0x00 /*10  */
+#define SET_RAMP_20U 0x01 /*20  */
+#define SET_RAMP_40U 0x02 /*40  */
+#define SET_RAMP_80U 0x03 /*80  */
+#define SET_RAMP_200U 0x04 /*200 */
+#define SET_RAMP_800U 0x05 /*800 */
+#define SET_RAMP_1700U 0x06 /*1700*/
+#define SET_RAMP_3400U 0x07 /*3400*/
+
+#define DEV_SEL_SX1262 0
+#define DEV_SEL_SX1261 1
+
+#define CHP_MODE_STBY_RC 0x2
+#define CHP_MODE_STBY_XOSC 0x3
+#define CHP_MODE_FS 0x4
+#define CHP_MODE_RX 0x5
+#define CHP_MODE_TX 0x6
+
+/*StdbyConfig Value Description*/
+#define STDBY_RC 0 /*Device running on RC13M, set STDBY_RC mode       */
+#define STDBY_XOSC 1 /*Device running on XTAL 32MHz, set STDBY_XOSC mode*/
+
+#define REG_MODE_ONLY_LDO 0x00 /*used for all modes*/
+#define REG_MODE_DC_DC_LDO 0x01 /*used for STBY_XOSC,FS, RX and TX modes*/
 
 typedef enum eChipMode_t { CHIPMODE_NONE = 0, CHIPMODE_RX = 1, CHIPMODE_TX = 2, CHIPMODE_UNDEF = 3 } ChipMode_t;
 
@@ -116,7 +177,6 @@ typedef enum eRadioPacketTypes_t {
     PACKET_TYPE_NONE = 0x0F,
     PACKET_TYPE_UNDEF = 0xFF
 } RadioPacketTypes_t;
-
 
 typedef struct xPaketStat_t {
     uint16_t nb_pkt_received;
@@ -130,11 +190,46 @@ typedef struct xSx1262Reg_t {
     char* reg_name;
 } xSx1262Reg_t;
 
+typedef struct xModulationParams_t {
+    uint8_t band_width;                 //(BW_L)
+    uint8_t spreading_factor;           //(SF)
+    uint8_t coding_rate;                //(CR)
+    uint8_t low_data_rate_optimization; //(LDRO)
+} ModulationParams_t;
+
+typedef union uPacketParamProto_t {
+    GfskPacketParam_t gfsk;
+    LoRaPacketParam_t lora;
+} PacketParamProto_t;
+
+typedef struct sPacketParam_t {
+    RadioPacketTypes_t packet_type;
+    PacketParamProto_t proto;
+} PacketParam_t;
+
+typedef struct xSx1262IrqCnt_t {
+    uint16_t total;
+    uint16_t tx_done;
+    uint16_t rx_done;
+    uint16_t preamble_detected;
+    uint16_t syncword_valid;
+    uint16_t header_valid;
+    uint16_t header_err;
+    uint16_t crc_err;
+    uint16_t cad_done;
+    uint16_t cad_detected;
+    uint16_t timeout;
+} Sx1262IrqCnt_t;
+
 typedef struct xSx1262_t {
+    uint64_t set_sync_word;
+    uint64_t get_sync_word;
     uint32_t busy_cnt;
+    uint32_t rand_num;
     uint16_t op_error;
     uint16_t irq_stat;
     uint8_t status;
+    uint8_t dev_status;
     uint8_t com_stat;
     uint8_t chip_mode;
     uint8_t rx_payload_length;
@@ -144,17 +239,26 @@ typedef struct xSx1262_t {
     uint8_t rssi_avg;
     uint8_t rssi_pkt;
     uint8_t snr_pkt;
+    uint8_t wire_int;
+    uint8_t wire_rst;
+    uint8_t wire_nss;
+    uint8_t wire_busy;
     uint8_t signal_rssi_pkt;
     int8_t rssi_inst;
     PaketStat_t gfsk;
     PaketStat_t lora;
+    Sx1262IrqCnt_t irq_cnt;
     ChipMode_t tx_mode;
+    ModulationParams_t mod_params;
+    PacketParam_t packet_param;
+    RadioPacketTypes_t packet_type;
 } Sx1262_t;
 
 extern Sx1262_t Sx1262Instance;
 
 extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 
+bool sx1262_is_connected(void);
 bool sx1262_init(void);
 bool sx1262_get_irq_status(uint16_t* irq_stat);
 bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, uint8_t* RssiPkt, uint8_t* SnrPkt,
@@ -171,21 +275,35 @@ bool sx1262_get_dev_err(uint16_t* op_error);
 bool sx1262_process(void);
 bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val);
 bool sx1262_reset(void);
+bool sx1262_reset_stats(void);
+
 // void sx1262_set_TxParams( int8_t power, RadioRampTimes_t rampTime );
-// void sx1262_set_ModulationParams( ModulationParams_t *modParams );
+bool sx1262_set_modulation_params(ModulationParams_t* modParams);
 bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
                         uint16_t rx_array_len);
-bool sx1262_set_base_addr(uint8_t tx_addr, uint8_t rx_addr);
+bool sx1262_set_buffer_base_addr(uint8_t tx_addr, uint8_t rx_addr);
 void sx1262_set_crc_polynomial(uint16_t polynomial);
 bool sx1262_set_crc_seed(uint16_t seed);
+bool sx1262_clear_dev_error(void);
+bool sx1262_clear_fifo(void);
+bool sx1262_clear_irq(uint16_t clear_irq_param);
+bool sx1262_conf_rx(void);
 bool sx1262_set_dio_irq_params(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask);
+bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_sel, uint8_t pa_lut);
 bool sx1262_set_packet_type(RadioPacketTypes_t packet_type);
-bool sx1262_set_rffrequency(float rf_frequency_mhz);
+bool sx1262_set_packet_params(PacketParam_t* packParam);
+bool sx1262_set_payload(uint8_t* payload, uint8_t size);
+bool sx1262_set_rf_frequency(float rf_frequency_mhz);
+bool sx1262_set_regulator_mode(uint8_t reg_mode_param);
 bool sx1262_set_sync_word(uint64_t sync_word);
+bool sx1262_set_sleep(uint8_t sleep_config);
+bool sx1262_set_standby(uint8_t stdby_config);
+bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time);
 void sx1262_set_whitening_seed(uint16_t seed);
-bool sx1262_start_tx(uint8_t offset, uint8_t* tx_buf, uint8_t pktLen, uint32_t timeout_s);
+bool sx1262_start_tx(uint8_t* tx_buf, uint8_t pktLen, uint32_t timeout_s);
 bool sx1262_start_rx(uint32_t timeout_s);
 bool sx1262_wait_on_busy(uint32_t time_out_ms);
 bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val);
+bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint8_t payload_len);
 
 #endif /* SX1262_DRV_H  */

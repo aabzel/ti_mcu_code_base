@@ -7,8 +7,8 @@
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
-#include "io_utils.h"
 #include "gpio_drv.h"
+#include "io_utils.h"
 #include "log.h"
 #include "spi_drv.h"
 #include "str_utils.h"
@@ -16,65 +16,103 @@
 #include "sx1262_drv.h"
 #include "table_utils.h"
 
+bool sx1262_int_diag_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        res = print_int_diag(&Sx1262Instance.irq_cnt);
+        if(false == res) {
+            LOG_INFO(LORA, "lack IRQ");
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxid");
+    }
+    return res;
+}
+
+bool sx1262_sleep_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(1 == argc) {
+        res = true;
+        uint8_t sleep_config=0;
+        res = try_str2uint8(argv[0], &sleep_config);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract offset %s", argv[0]);
+        }
+        if(res){
+          res =  sx1262_set_sleep( sleep_config) ;
+          if(res) {
+              LOG_INFO(LORA, "set sleep OK");
+          }
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxs");
+    }
+    return res;
+}
 
 bool sx1262_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        io_printf("poll chip mode: [%u] %s" CRLF, Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
-        io_printf("poll cmd stat: [%u] %s" CRLF, Sx1262Instance.com_stat, cmd_stat2str(Sx1262Instance.com_stat));
-        parse_op_error(Sx1262Instance.op_error);
-        parse_irq_stat(Sx1262Instance.irq_stat);
-        io_printf("status: %u" CRLF, Sx1262Instance.status);
-        io_printf("rx len: %u byte" CRLF, Sx1262Instance.rx_payload_length);
-        io_printf("rx start addr: %u" CRLF, Sx1262Instance.rx_start_buffer_pointer);
-        io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
+        LOG_INFO(LORA,"chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
+        io_printf("packet type: %u" CRLF, Sx1262Instance.packet_type);
+        io_printf("RssiInst: %d dBm" CRLF, Sx1262Instance.rssi_inst);
+        io_printf("RssiPkt: %u" CRLF, Sx1262Instance.rssi_pkt);
         io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
         io_printf("RssiAvg: %u" CRLF, Sx1262Instance.rssi_avg);
-        io_printf("RssiPkt: %u" CRLF, Sx1262Instance.rssi_pkt);
+        io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
+        io_printf("rx len: %u byte" CRLF, Sx1262Instance.rx_payload_length);
+        io_printf("status: %u" CRLF, Sx1262Instance.status);
+        LOG_INFO(LORA,"cmd stat: [%u] %s" , Sx1262Instance.com_stat, cmd_stat2str(Sx1262Instance.com_stat));
+        printf_pack_stat(&Sx1262Instance.lora, "LoRA");
+        parse_op_error(Sx1262Instance.op_error);
+        parse_irq_stat(Sx1262Instance.irq_stat);
+        io_printf("rx start addr: %u" CRLF, Sx1262Instance.rx_start_buffer_pointer);
         io_printf("SnrPkt: %u" CRLF, Sx1262Instance.snr_pkt);
         io_printf("SignalRssiPkt: %u" CRLF, Sx1262Instance.signal_rssi_pkt);
-        io_printf("RssiInst: %d dBm" CRLF, Sx1262Instance.rssi_inst);
-
-        printf_pack_stat(&Sx1262Instance.gfsk, "GFSK");
-        printf_pack_stat(&Sx1262Instance.lora, "LoRA");
-
-        uint16_t irq_stat = 0;
-        res = sx1262_get_irq_status(&irq_stat);
-        if(res) {
-            parse_irq_stat(irq_stat);
-        }
+        io_printf("read sync_word: 0x%" PRIx64 "" CRLF, Sx1262Instance.get_sync_word);
+        io_printf("set sync_word: 0x%" PRIx64 "" CRLF, Sx1262Instance.set_sync_word);
 
         // buffer content
-        // syncword
-        RadioPacketTypes_t packet_type = PACKET_TYPE_UNDEF;
-        res = sx1262_get_packet_type(&packet_type);
-        if(res) {
-            io_printf("packet type: %u" CRLF, packet_type);
-        }
+        io_printf("rand_num: 0x%" PRIx32 "" CRLF, Sx1262Instance.rand_num);
 
-        uint64_t sync_word = 0;
-        res = sx1262_get_sync_word(&sync_word);
-        io_printf("sync_word: 0x%" PRIx64 "" CRLF, sync_word);
+        io_printf("sx1262 %s selected" CRLF, (0 == Sx1262Instance.wire_nss) ? "" : "not");
+        io_printf("sx1262 reset %s" CRLF, (0 == Sx1262Instance.wire_rst) ? "active" : "passive");
+        io_printf("INT: %u" CRLF, Sx1262Instance.wire_int);
+        io_printf("sx1262 %s" CRLF, (1 == Sx1262Instance.wire_busy) ? "busy" : "idle");
         io_printf("busyCnt: %u" CRLF, Sx1262Instance.busy_cnt);
-
-        uint32_t rand_num = 0;
-        res = sx1262_get_rand(&rand_num);
-        io_printf("rand_num: 0x%" PRIx32 "" CRLF, rand_num);
-
-        uint32_t value = GPIO_readDio(SX1262_SS_DIO_NO);
-        io_printf("sx1262 %s selected" CRLF, (0 == value) ? "" : "not");
-
-        value = GPIO_readDio(SX1262_RST_DIO_NO);
-        io_printf("sx1262 reset %s" CRLF, (0 == value) ? "active" : "passive");
-
-        value = GPIO_readDio(SX1262_INT_DIO_NO);
-        io_printf("INT: %u" CRLF, value);
-
-        value = GPIO_readDio(SX1262_BUSY_DIO_NO);
-        io_printf("sx1262 %s" CRLF, (1 == value) ? "busy" : "idle");
+        // printf_pack_stat(&Sx1262Instance.gfsk, "GFSK");
     } else {
         LOG_ERROR(LORA, "Usage: sxd");
+    }
+    return res;
+}
+
+bool sx1262_clear_err_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        res = sx1262_clear_dev_error();
+        if(res) {
+            LOG_INFO(LORA, "OK");
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxce");
+    }
+    return res;
+}
+
+bool sx1262_reset_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        res = sx1262_reset();
+        if(res) {
+            LOG_INFO(LORA, "reset OK");
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxr");
     }
     return res;
 }
@@ -113,7 +151,30 @@ bool sx1262_read_reg_command(int32_t argc, char* argv[]) {
             }
         }
     } else {
-        LOG_ERROR(LORA, "Usage: sxi");
+        LOG_ERROR(LORA, "Usage: sxrr");
+    }
+    return res;
+}
+
+bool sx1262_set_freq_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(1 == argc) {
+        res = true;
+        float rf_frequency_mhz = 0;
+        if(true == res) {
+            res = try_str2float(argv[0], &rf_frequency_mhz);
+            if(false == res) {
+                LOG_ERROR(LORA, "Unable to extract rf_frequency_mhz %s", argv[0]);
+            }
+        }
+        if(true == res) {
+            res = sx1262_set_rf_frequency(rf_frequency_mhz);
+            if(res) {
+                LOG_INFO(LORA, "OK");
+            }
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxsf rf_frequency_mhz");
     }
     return res;
 }
@@ -228,73 +289,67 @@ bool sx1262_reg_map_command(int32_t argc, char* argv[]) {
 
 bool sx1262_tx_command(int32_t argc, char* argv[]) {
     bool res = false;
-    if(3 == argc) {
-        res = true;
-        uint8_t offset = 0;
-        uint32_t timeout_s = 0;
-        uint8_t tx_array[TX_SIZE];
-        memset(tx_array, 0x00, sizeof(tx_array));
-        uint16_t tx_array_len = 0;
-        if(true == res) {
-            res = try_str2uint8(argv[0], &offset);
-            if(false == res) {
-                LOG_ERROR(LORA, "Unable to extract offset %s", argv[0]);
-            }
+    uint8_t tx_array[TX_SIZE];
+    memset(tx_array, 0x00, sizeof(tx_array));
+    uint16_t tx_array_len = 0;
+    uint32_t timeout_s = 0;
+    if(1 <= argc) {
+        res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract hex array %s", argv[0]);
         }
-        if(true == res) {
-            res = try_str2array(argv[1], tx_array, sizeof(tx_array), &tx_array_len);
-            if(false == res) {
-                res = true;
-                tx_array_len = 0;
-                /*some opCode does not demand txdata*/
-            }
-        }
-        if(true == res) {
-            res = try_str2uint32(argv[2], &timeout_s);
-            if(false == res) {
-                LOG_ERROR(LORA, "Unable to extract offset %s", argv[2]);
-            }
-        }
+    }
 
-        if(true == res) {
-            res = sx1262_start_tx(offset, tx_array, tx_array_len, timeout_s);
-            if(res) {
-                LOG_INFO(LORA, "TX OK");
-            } else {
-                LOG_ERROR(LORA, "tx error");
-            }
+    if(2 <= argc) {
+        res = true;
+        res = try_str2uint32(argv[1], &timeout_s);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract offset %s", argv[1]);
         }
-    } else {
-        LOG_ERROR(LORA, "Usage: sxtx offset data_hex timeout_s");
+    }
+
+    if((3 < argc) || (0 == argc)) {
+        LOG_ERROR(LORA, "Usage: sxt offset data_hex timeout_s");
         res = false;
+    }
+    if(true == res) {
+        res = sx1262_start_tx(tx_array, tx_array_len, timeout_s);
+        if(res) {
+            LOG_INFO(LORA, "TX OK");
+        } else {
+            LOG_ERROR(LORA, "tx error");
+        }
     }
     return res;
 }
 
+/*
+sxrx 10000
+*/
 bool sx1262_rx_command(int32_t argc, char* argv[]) {
     bool res = false;
+    uint32_t timeout_s = 0;
     if(1 == argc) {
         res = true;
-        uint32_t timeout_s = 0;
-
-        if(true == res) {
-            res = try_str2uint32(argv[0], &timeout_s);
-            if(false == res) {
-                LOG_ERROR(LORA, "Unable to extract offset %s", argv[0]);
-            }
+        res = try_str2uint32(argv[0], &timeout_s);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract offset %s", argv[0]);
         }
-
-        if(true == res) {
-            res = sx1262_start_rx(timeout_s);
-            if(true == res) {
-                LOG_INFO(LORA, "RX OK");
-            } else {
-                LOG_ERROR(LORA, "rx error");
-            }
-        }
+    } else if(0 == argc) {
+        res = true;
+        timeout_s = 0;
     } else {
-        LOG_ERROR(LORA, "Usage: sxrx timeout_s");
+        LOG_ERROR(LORA, "Usage: sxr timeout_s");
         res = false;
+    }
+
+    if(res) {
+        res = sx1262_start_rx(MASK_24BIT & timeout_s);
+        if(true == res) {
+            LOG_INFO(LORA, "RX OK");
+        } else {
+            LOG_ERROR(LORA, "rx error");
+        }
     }
     return res;
 }
@@ -323,13 +378,8 @@ bool sx1262_clear_fifo_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        uint8_t tx_array[TX_SIZE + 1];
-        memset(tx_array, 0x00, sizeof(tx_array));
-        uint8_t rx_array[RX_SIZE + 1];
-        memset(rx_array, 0x00, sizeof(rx_array));
-        res = sx1262_send_opcode(OPCODE_WRITE_BUFFER, tx_array, sizeof(tx_array), rx_array, sizeof(rx_array));
+        res = sx1262_clear_fifo();
         if(res) {
-            print_mem(rx_array, sizeof(rx_array), true);
             LOG_INFO(LORA, "clear fifo OK");
         } else {
             LOG_ERROR(LORA, "Error");

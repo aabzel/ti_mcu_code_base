@@ -90,6 +90,9 @@ uint64_t extract_subval_from_64bit(uint64_t inVal, uint8_t maxBit, uint8_t minBi
 uint32_t insert_subval_in_32bit(uint32_t orig_val, uint32_t sub_val, uint8_t max_bit, uint8_t min_bit);
 
 bool bit32_control_proc(uint32_t* address_val, char cmd, uint8_t bit);
+uint8_t count_set_bits(uint32_t const inVal32bit);
+bool is_power_of_two(uint32_t const val);
+bool is_parity_odd(uint32_t const inVal);
 
 #ifdef __cplusplus
 }

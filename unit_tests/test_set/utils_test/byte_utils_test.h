@@ -7,11 +7,11 @@ extern "C" {
 
 #include <stdbool.h>
 
-bool test_byte_utils(void);
 bool test_copy_rev(void);
+bool test_byte_reverse(void);
 
 #define BYTE_UTILS_TEST_SUIT \
-                             {"byte_utils", test_byte_utils}, \
+                             {"byte_reverse", test_byte_reverse}, \
                              {"copy_rev", test_copy_rev},
 
 #ifdef __cplusplus

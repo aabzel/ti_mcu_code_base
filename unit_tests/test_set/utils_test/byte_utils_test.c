@@ -27,7 +27,7 @@ static bool test_reverse_byte_order16(void) {
   return true;
 }
 
-bool test_byte_utils(void) {
+bool test_byte_reverse(void){
   EXPECT_TRUE(test_reverse_byte_order64());
   EXPECT_TRUE(test_reverse_byte_order32());
   EXPECT_TRUE(test_reverse_byte_order24());

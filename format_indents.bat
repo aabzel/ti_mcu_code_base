@@ -4,8 +4,12 @@ set work_space_dir=%cd%
 set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortUsingDeclarations: true , UseTab: Never,PointerAlignment: Left, BreakBeforeBraces: Attach, TabWidth: 4,ColumnLimit: 120 }"
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_drv.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_diag.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_diag.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\lora_defs.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\gfsk_defs.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_drv.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_drv.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_commands.c
 
@@ -77,9 +81,11 @@ set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_crc\test_crc.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_string\test_convert.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_string\test_convert.c
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\unit_test_check.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_string\text_convert.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_string\text_convert.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_sx1262\test_sx1262.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_sx1262\test_sx1262.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\unit_test_check.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\nmea_protocol\nmea_protocol.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\nmea_protocol\nmea_protocol.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\ubx_protocol\ublox_command.h
