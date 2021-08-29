@@ -117,25 +117,33 @@ static bool sx1262_init_gpio(void) {
 
     return res;
 }
+/*
+  WriteRegister
 
-static bool sx1262_write_reg_proc(uint16_t reg_addr, uint8_t reg_val) {
+  The command WriteRegister(...) allows writing a block of bytes in a data memory
+  space starting at a specific address. The address is auto incremented after each
+  data byte so that data is stored in contiguous memory locations. The SPI data
+  transfer is described in the following table.
+*/
+#define WR_REG_PAYLOAD_SZ (3)
+bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val) {
     bool res = true;
-
-    uint8_t tx_array[4];
+#if 0
+    uint8_t rx_array[WR_REG_PAYLOAD_SZ];
+    memset(rx_array, 0x00, sizeof(rx_array));
+#endif
+    uint8_t tx_array[WR_REG_PAYLOAD_SZ];
     memset(tx_array, 0x00, sizeof(tx_array));
-
-    tx_array[0] = OPCODE_WRITE_REGISTER;
     uint16_t reg_addr_be = reverse_byte_order_uint16(reg_addr);
-    memcpy(&tx_array[1], &reg_addr_be, sizeof(reg_addr_be));
-    tx_array[3] = reg_val;
-    res = spi_write(SX1262_SPI_NUM, tx_array, sizeof(tx_array)) && res;
-
+    memcpy(&tx_array[0], &reg_addr_be, sizeof(reg_addr_be));
+    tx_array[2] = reg_val;
+    res = sx1262_send_opcode(OPCODE_WRITE_REGISTER, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
 
 bool sx1262_is_connected(void) {
     bool res = false;
-    RadioPacketTypes_t packet_type = PACKET_TYPE_UNDEF;
+    RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
     res = sx1262_get_packet_type(&packet_type);
     if((PACKET_TYPE_GFSK == packet_type) || (PACKET_TYPE_LORA == packet_type)) {
         res = true;
@@ -146,11 +154,6 @@ bool sx1262_is_connected(void) {
     return res;
 }
 
-bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val) {
-    bool res = false;
-    SX1262_CHIP_SELECT(sx1262_write_reg_proc(reg_addr, reg_val));
-    return res;
-}
 
 #define READ_REG_HEADER_SZ 3
 static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
@@ -158,7 +161,7 @@ static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
     if(NULL != reg_val) {
         res = true;
         *reg_val = 0xFF;
-        uint8_t tx_array[4]={0};
+        uint8_t tx_array[4] = {0};
         memset(tx_array, 0x00, sizeof(tx_array));
         Type16Union_t temp_reg_val;
         temp_reg_val.u16 = 0;
@@ -190,7 +193,7 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
     tempTxArray[0] = op_code;
     uint16_t temp_tx_arr_len = tx_array_len + OPCODE_SIZE;
 
-    if((NULL != tx_array) && (0 == tx_array_len)) {
+    if((NULL != tx_array) && (0 < tx_array_len)) {
         memcpy(&tempTxArray[1], tx_array, temp_tx_arr_len);
     }
 
@@ -224,10 +227,17 @@ bool sx1262_set_regulator_mode(uint8_t reg_mode_param) {
     return res;
 }
 
-bool sx1262_set_rf_frequency(float rf_frequency_mhz) {
+/*
+   SetRfFrequency
+   The command SetRfFrequency(...) is used to set the frequency of the RF frequency mode.
+*/
+bool sx1262_set_rf_frequency(uint32_t rf_frequency_hz, uint32_t freq_xtal_hz) {
     bool res = false;
-    uint32_t frf_code = ((uint32_t)rf_frequency_mhz) * MHZ_TO_FRF;
-    uint8_t tx_array[4];
+    double freq_step = ((double)((double)freq_xtal_hz / (double)FREQ_DIV));
+    LOG_INFO(LORA, "freq_step: %f", freq_step);
+    uint32_t frf_code = (uint32_t)(((double)rf_frequency_hz) / freq_step);
+    LOG_INFO(LORA, "rf_freq:%u freq_xtal_hz: %u frf_code: %u", rf_frequency_hz, freq_xtal_hz, frf_code);
+    uint8_t tx_array[4] = {0};
     Type32Union_t u32val;
     u32val.u32 = frf_code;
     u32val.u32 = reverse_byte_order_uint32(u32val.u32);
@@ -241,6 +251,8 @@ bool sx1262_set_rf_frequency(float rf_frequency_mhz) {
  * */
 bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
+    // SX126xHal_WriteReg( REG_RX_GAIN, (uint8_t *)0x96 ); // max LNA gain, increase current by ~2mA for around ~3dB in
+    // sensivity
     uint8_t tx_array[3];
     /*from senior byte to junior byte*/
     tx_array[0] = MASK_8BIT & (timeout_s >> 16);
@@ -315,16 +327,39 @@ bool sx1262_reset_stats(void) {
 }
 
 /*
+  SetStandby
+  cli: sxo 0x80 0x01 0
+  The command SetStandby(...) is used to set the device in a configuration mode which is at an
+  intermediate level of consumption. In this mode, the chip is placed in halt mode waiting for
+  instructions via SPI. This mode is dedicated to chip configuration using high level commands such as
+  SetPacketType(...).
+
+  By default, after battery insertion or reset operation (pin NRESET goes low), the chip will enter in STDBY_RC mode
+  running with a 13 MHz RC clock.
+*/
+bool sx1262_set_standby(StandbyMode_t stdby_config) {
+    bool res = true;
+    uint8_t tx_array[1];
+    tx_array[0] = (uint8_t) stdby_config;
+    res = sx1262_send_opcode(OPCODE_SET_STANDBY, tx_array, sizeof(tx_array), NULL, 0);
+    return res;
+}
+
+
+/*
   SetPacketType
   The command SetPacketType(...) sets the SX1261 radio in LoRa® or in FSK mode.
   The command SetPacketType(...) must be the first of the radio configuration sequence.
   The parameter for this command is PacketType.
 */
-bool sx1262_set_packet_type(RadioPacketTypes_t packet_type) {
+bool sx1262_set_packet_type(RadioPacketType_t packet_type) {
     bool res = false;
-    uint8_t tx_array[1];
-    tx_array[0] = packet_type;
-    res = sx1262_send_opcode(OPCODE_SET_PACKET_TYPE, tx_array, sizeof(tx_array), NULL, 0);
+    res = sx1262_set_standby(STDBY_RC);
+    if (res) {
+      uint8_t tx_array[1];
+      tx_array[0] = packet_type;
+      res = sx1262_send_opcode(OPCODE_SET_PACKET_TYPE, tx_array, sizeof(tx_array), NULL, 0);
+    }
     return res;
 }
 /*
@@ -389,24 +424,6 @@ bool sx1262_reset(void) {
     wait_ms(50);
     GPIO_writeDio(SX1262_RST_DIO_NO, 1);
     wait_ms(20);
-    return res;
-}
-
-/*
-  SetStandby ox
-  The command SetStandby(...) is used to set the device in a configuration mode which is at an
-  intermediate level of consumption. In this mode, the chip is placed in halt mode waiting for
-  instructions via SPI. This mode is dedicated to chip configuration using high level commands such as
-  SetPacketType(...).
-
-  By default, after battery insertion or reset operation (pin NRESET goes low), the chip will enter in STDBY_RC mode
-  running with a 13 MHz RC clock.
-*/
-bool sx1262_set_standby(uint8_t stdby_config) {
-    bool res = true;
-    uint8_t tx_array[1];
-    tx_array[0] = stdby_config;
-    res = sx1262_send_opcode(OPCODE_SET_STANDBY, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
 
@@ -496,11 +513,11 @@ bool sx1262_conf_tx(void) {
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
     char payload[128];
+    res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
 #if 1
     res = sx1262_set_standby(STDBY_XOSC); // STDBY_RC STDBY_XOSC
 #endif
-    res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
-    res = sx1262_set_rf_frequency(FREQ_MHZ) && res;
+    res = sx1262_set_rf_frequency(FREQ_MHZ, XTAL_FREQ_HZ) && res;
     res = sx1262_set_pa_config(0x03, 0x05, DEV_SEL_SX1262, 0x01) && res;
     res = sx1262_set_tx_params(22, SET_RAMP_10U) && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
@@ -529,11 +546,11 @@ bool sx1262_conf_rx(void) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
+    res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
 #if 1
     res = sx1262_set_standby(STDBY_XOSC);
 #endif
-    res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
-    res = sx1262_set_rf_frequency(FREQ_MHZ) && res;
+    res = sx1262_set_rf_frequency(FREQ_MHZ, XTAL_FREQ_HZ) && res;
 
     Sx1262Instance.mod_params.band_width = LORA_BW_41;
     Sx1262Instance.mod_params.coding_rate = LORA_CR_4_5;
@@ -558,6 +575,14 @@ bool sx1262_conf_rx(void) {
     return res;
 }
 
+bool sx1262_wakeup(void) {
+    uint8_t status;
+    bool res = true;
+    res = sx1262_get_status(&status) && res;
+    res = sx1262_set_standby(STDBY_RC) && res;
+    return res;
+}
+
 bool sx1262_init(void) {
     bool res = true;
     memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
@@ -568,9 +593,9 @@ bool sx1262_init(void) {
     res = sx1262_reset() && res;
 
     res = sx1262_is_connected() && res;
-    res = sx1262_set_standby(STDBY_RC);
-    res = sx1262_set_regulator_mode(REG_MODE_DC_DC_LDO)&& res;
+    res = sx1262_wakeup() && res;
     res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
+    res = sx1262_set_regulator_mode(REG_MODE_DC_DC_LDO) && res;
 
     res = sx1262_clear_fifo() && res;
 
@@ -658,15 +683,19 @@ bool sx1262_get_dev_err(uint16_t* op_error) {
     GET_4_BYTE_OPCODE(OPCODE_GET_DEVICE_ERRORS, op_error);
     return res;
 }
+/*
+  GetPacketType
+  The command GetPacketType() returns the current operating packet type of the radio.
+*/
 
-bool sx1262_get_packet_type(RadioPacketTypes_t* packet_type) {
+bool sx1262_get_packet_type(RadioPacketType_t* packet_type) {
     bool res = false;
     uint8_t rx_array[3];
     memset(rx_array, 0x00, sizeof(rx_array));
-    res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, 3);
+    res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
         Sx1262Instance.status = rx_array[1];
-        *packet_type = (RadioPacketTypes_t)rx_array[2];
+        *packet_type = (RadioPacketType_t)rx_array[2];
     } else {
         *packet_type = PACKET_TYPE_NONE;
     }
@@ -876,7 +905,7 @@ bool sx1262_process(void) {
     if(res) {
         Sx1262Instance.rx_payload_length = tempSx1262Instance.rx_payload_length;
         if(0 < tempSx1262Instance.rx_payload_length) {
-            LOG_INFO(LORA, "0<payload_length");
+            //LOG_INFO(LORA, "0<payload_length");
         }
         Sx1262Instance.rx_start_buffer_pointer = tempSx1262Instance.rx_start_buffer_pointer;
     }

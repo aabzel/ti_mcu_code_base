@@ -39,6 +39,22 @@ const char* cmd_stat2str(uint8_t cmd_stat) {
     return name;
 }
 
+const char* pack_type2str(RadioPacketType_t packet_type) {
+    const char* name = "def";
+    switch(packet_type) {
+    case PACKET_TYPE_GFSK:
+        name = "gfsk";
+        break;
+    case PACKET_TYPE_LORA:
+        name = "LoRa";
+        break;
+    default:
+        name = "undef";
+        break;
+    }
+    return name;
+}
+
 const char* chip_mode2str(uint8_t chip_mode) {
     const char* name = "undef";
     switch(chip_mode) {
@@ -66,7 +82,7 @@ const char* chip_mode2str(uint8_t chip_mode) {
     }
     return name;
 }
-//sx126x_convert_freq_in_hz_to_pll_step
+// sx126x_convert_freq_in_hz_to_pll_step
 bool parse_dev_stat(uint8_t dev_stat) {
     uint8_t code = 0;
     io_printf("status: 0x%02x 0b%s" CRLF, dev_stat, utoa_bin8(dev_stat));

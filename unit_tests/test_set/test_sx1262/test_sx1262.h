@@ -9,8 +9,12 @@ extern "C" {
 
 bool test_sx1262(void);
 bool test_sx1262_sync_word(void);
+bool test_sx1262_packet_type(void);
 
-#define TEST_SUIT_SX1262 {"sx1262", test_sx1262}, {"sx1262_sync_word", test_sx1262_sync_word},
+#define TEST_SUIT_SX1262   \
+    {"sx1262", test_sx1262}, \
+    {"sx1262_sync_word", test_sx1262_sync_word},\
+    {"sx1262_packet_type", test_sx1262_packet_type},
 
 #ifdef __cplusplus
 }

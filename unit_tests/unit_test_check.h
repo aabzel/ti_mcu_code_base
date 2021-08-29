@@ -57,8 +57,7 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if(val1 != val2) {                                                                                             \
-            LOG_ERROR(SYS, "Error");                                                                                   \
-            io_printf("\n[e] %s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                \
+            LOG_ERROR(SYS,"[e] %s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \

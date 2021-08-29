@@ -16,47 +16,12 @@
 #include "sx1262_drv.h"
 #include "table_utils.h"
 
-bool sx1262_int_diag_command(int32_t argc, char* argv[]) {
-    bool res = false;
-    if(0 == argc) {
-        res = true;
-        res = print_int_diag(&Sx1262Instance.irq_cnt);
-        if(false == res) {
-            LOG_INFO(LORA, "lack IRQ");
-        }
-    } else {
-        LOG_ERROR(LORA, "Usage: sxid");
-    }
-    return res;
-}
-
-bool sx1262_sleep_command(int32_t argc, char* argv[]){
-    bool res = false;
-    if(1 == argc) {
-        res = true;
-        uint8_t sleep_config=0;
-        res = try_str2uint8(argv[0], &sleep_config);
-        if(false == res) {
-            LOG_ERROR(LORA, "Unable to extract offset %s", argv[0]);
-        }
-        if(res){
-          res =  sx1262_set_sleep( sleep_config) ;
-          if(res) {
-              LOG_INFO(LORA, "set sleep OK");
-          }
-        }
-    } else {
-        LOG_ERROR(LORA, "Usage: sxs");
-    }
-    return res;
-}
-
 bool sx1262_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        LOG_INFO(LORA,"chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
-        io_printf("packet type: %u" CRLF, Sx1262Instance.packet_type);
+        LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
+        LOG_INFO(LORA, "packet type: %s" CRLF, pack_type2str(Sx1262Instance.packet_type));
         io_printf("RssiInst: %d dBm" CRLF, Sx1262Instance.rssi_inst);
         io_printf("RssiPkt: %u" CRLF, Sx1262Instance.rssi_pkt);
         io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
@@ -64,7 +29,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
         io_printf("rx len: %u byte" CRLF, Sx1262Instance.rx_payload_length);
         io_printf("status: %u" CRLF, Sx1262Instance.status);
-        LOG_INFO(LORA,"cmd stat: [%u] %s" , Sx1262Instance.com_stat, cmd_stat2str(Sx1262Instance.com_stat));
+        LOG_INFO(LORA, "cmd stat: [%u] %s", Sx1262Instance.com_stat, cmd_stat2str(Sx1262Instance.com_stat));
         printf_pack_stat(&Sx1262Instance.lora, "LoRA");
         parse_op_error(Sx1262Instance.op_error);
         parse_irq_stat(Sx1262Instance.irq_stat);
@@ -82,9 +47,45 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("INT: %u" CRLF, Sx1262Instance.wire_int);
         io_printf("sx1262 %s" CRLF, (1 == Sx1262Instance.wire_busy) ? "busy" : "idle");
         io_printf("busyCnt: %u" CRLF, Sx1262Instance.busy_cnt);
+        res = print_int_diag(&Sx1262Instance.irq_cnt);
         // printf_pack_stat(&Sx1262Instance.gfsk, "GFSK");
     } else {
         LOG_ERROR(LORA, "Usage: sxd");
+    }
+    return res;
+}
+
+bool sx1262_sleep_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(1 == argc) {
+        res = true;
+        uint8_t sleep_config = 0;
+        res = try_str2uint8(argv[0], &sleep_config);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract offset %s", argv[0]);
+        }
+        if(res) {
+            res = sx1262_set_sleep(sleep_config);
+            if(res) {
+                LOG_INFO(LORA, "set sleep OK");
+            }
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxs");
+    }
+    return res;
+}
+
+bool sx1262_int_diag_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        res = print_int_diag(&Sx1262Instance.irq_cnt);
+        if(false == res) {
+            LOG_INFO(LORA, "lack IRQ");
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxid");
     }
     return res;
 }
@@ -158,23 +159,84 @@ bool sx1262_read_reg_command(int32_t argc, char* argv[]) {
 
 bool sx1262_set_freq_command(int32_t argc, char* argv[]) {
     bool res = false;
-    if(1 == argc) {
+    uint32_t rf_frequency_hz = 0;
+    uint32_t freq_xtal_hz = XTAL_FREQ_HZ;
+    if(1 <= argc) {
         res = true;
-        float rf_frequency_mhz = 0;
+        res = try_str2uint32(argv[0], &rf_frequency_hz);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract rf_frequency_mhz %s", argv[0]);
+        }
+    }
+
+    if(2 <= argc) {
+        res = true;
+        res = try_str2uint32(argv[1], &freq_xtal_hz);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract freq_xtal_hz %s", argv[1]);
+        }
+    }
+
+    if(2 < argc) {
+        LOG_ERROR(LORA, "Usage: sxsf rf_frequency_mhz freq_xtal_hz");
+    }
+
+    if(true == res) {
+        res = sx1262_set_rf_frequency(rf_frequency_hz, freq_xtal_hz);
+        if(res) { LOG_INFO(LORA, "set freq OK"); }
+    }
+
+    return res;
+}
+
+bool sx1262_set_irq_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(4 == argc) {
+        res = true;
+        uint16_t irqMask = 0;
+        uint16_t dio1Mask = 0;
+        uint16_t dio2Mask = 0;
+        uint16_t dio3Mask = 0;
         if(true == res) {
-            res = try_str2float(argv[0], &rf_frequency_mhz);
+            res = try_str2uint16(argv[0], &irqMask);
             if(false == res) {
-                LOG_ERROR(LORA, "Unable to extract rf_frequency_mhz %s", argv[0]);
+                LOG_ERROR(LORA, "Unable to extract irqMask %s", argv[0]);
             }
         }
         if(true == res) {
-            res = sx1262_set_rf_frequency(rf_frequency_mhz);
+            res = try_str2uint16(argv[1], &dio1Mask);
+            if(false == res) {
+                LOG_ERROR(LORA, "Unable to extract irqMask %s", argv[1]);
+            }
+        }
+
+        if(true == res) {
+            res = try_str2uint16(argv[2], &dio2Mask);
+            if(false == res) {
+                LOG_ERROR(LORA, "Unable to extract irqMask %s", argv[2]);
+            }
+        }
+
+        if(true == res) {
+            res = try_str2uint16(argv[3], &dio3Mask);
+            if(false == res) {
+                LOG_ERROR(LORA, "Unable to extract irqMask %s", argv[3]);
+            }
+        }
+
+        if(true == res) {
+            res = sx1262_set_dio_irq_params(irqMask, dio1Mask, dio2Mask, dio3Mask);
             if(res) {
-                LOG_INFO(LORA, "OK");
+                LOG_INFO(LORA, "set IRQ OK");
+            } else {
+                LOG_ERROR(LORA, "set IRQ Error");
             }
         }
     } else {
-        LOG_ERROR(LORA, "Usage: sxsf rf_frequency_mhz");
+        LOG_ERROR(LORA, "Usage: sxir dio1Mask dio2Mask dio3Mask");
+        LOG_INFO(LORA, "dio1Mask");
+        LOG_INFO(LORA, "dio2Mask");
+        LOG_INFO(LORA, "dio3Mask");
     }
     return res;
 }
@@ -386,6 +448,128 @@ bool sx1262_clear_fifo_command(int32_t argc, char* argv[]) {
         }
     } else {
         LOG_ERROR(LORA, "Usage: sxfc");
+    }
+    return res;
+}
+
+bool sx1262_set_modulation_command(int32_t argc, char* argv[]){
+    bool res = false;
+    ModulationParams_t modParams={0};
+    modParams.band_width = LORA_BW_41;
+    modParams.coding_rate = LORA_CR_4_5;
+    modParams.spreading_factor = SF5;
+    if(0 == argc) {
+        res = true;
+        modParams.band_width = LORA_BW_41;
+        modParams.coding_rate = LORA_CR_4_5;
+        modParams.spreading_factor = SF5;
+    }
+
+    if(0<argc){
+        LOG_ERROR(LORA, "Usage: sxsmd band_width coding_rate spreading_factor");
+    }
+    if(res){
+        res= sx1262_set_modulation_params(&modParams);
+        if(res) {
+            LOG_INFO(LORA, "Set modulation OK");
+        } else {
+            LOG_ERROR(LORA, "Set modulation error");
+        }
+    }
+    return res;
+}
+
+bool sx1262_set_packet_param_command(int32_t argc, char* argv[]){
+    bool res = false;
+    PacketParam_t packetParam;
+    packetParam.packet_type = PACKET_TYPE_LORA;
+    packetParam.proto.lora.preamble_length = 8;
+    packetParam.proto.lora.header_type = LORA_VAR_LEN_PACT;
+    packetParam.proto.lora.payload_length = 255;
+    packetParam.proto.lora.crc_type = LORA_CRC_ON;
+    packetParam.proto.lora.invert_iq = STANDARD_IQ_SETUP;
+    if(0 == argc) {
+        res = true;
+        packetParam.packet_type = PACKET_TYPE_LORA;
+        packetParam.proto.lora.preamble_length = 8;
+        packetParam.proto.lora.header_type = LORA_VAR_LEN_PACT;
+        packetParam.proto.lora.payload_length = 255;
+        packetParam.proto.lora.crc_type = LORA_CRC_ON;
+        packetParam.proto.lora.invert_iq = STANDARD_IQ_SETUP;
+    }
+
+    if(0<argc){
+        LOG_ERROR(LORA, "Usage: sxpp preamble_length header_type payload_length crc_type invert_iq");
+    }
+    if(res){
+        res= sx1262_set_packet_params(&packetParam);
+        if(res) {
+            LOG_INFO(LORA, "Set packet param OK");
+        } else {
+            LOG_ERROR(LORA, "Set packet param error");
+        }
+    }
+    return res;
+}
+
+
+bool sx1262_write_reg_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint16_t reg_addr = 0;
+    uint8_t reg_val = 0;
+    if(2 == argc) {
+         res = true;
+         if(res) {
+             res = try_str2uint16(argv[0], &reg_addr);
+             if(false == res) {
+                 LOG_ERROR(LORA, "Unable to extract reg_addr %s", argv[0]);
+             }
+         }
+
+         if(res) {
+             res = try_str2uint8(argv[1], &reg_val);
+             if(false == res) {
+                 LOG_ERROR(LORA, "Unable to extract reg_val %s", argv[1]);
+             }
+         }
+
+    } else {
+        LOG_ERROR(LORA, "Usage: sxwr reg_addr reg_val");
+    }
+
+    if(res){
+        res = sx1262_write_reg(  reg_addr,   reg_val);
+        if(res) {
+            LOG_INFO(LORA, "write_reg OK");
+        } else {
+            LOG_ERROR(LORA, "write_regerror");
+        }
+    }
+    return res;
+}
+
+bool sx1262_set_sync_word_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint64_t sync_word=0;
+    if(1 == argc) {
+         res = true;
+         if(res) {
+             res = try_str2uint64(argv[0], &sync_word);
+             if(false == res) {
+                 LOG_ERROR(LORA, "Unable to extract sync_word %s", argv[0]);
+             }
+         }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxssw sync_word64bit");
+    }
+
+    if(res){
+        res = sx1262_set_sync_word( sync_word);
+        if(res) {
+            LOG_INFO(LORA, "set syncWord OK");
+        } else {
+            LOG_ERROR(LORA, "set syncWord error");
+        }
     }
     return res;
 }
