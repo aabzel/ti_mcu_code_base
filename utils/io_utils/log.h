@@ -50,7 +50,7 @@ extern bool log_zero_time;
 
 bool log_write_begin(log_level_t level, log_facility_t facility);
 void log_write_end(void);
-void set_log_level(log_facility_t facility, log_level_t level);
+bool set_log_level(log_facility_t facility, log_level_t level);
 log_level_t get_log_level(log_facility_t facility);
 const char *log_level_color(log_level_t level);
 const char *facility2str(log_facility_t facility);

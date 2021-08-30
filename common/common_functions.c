@@ -96,7 +96,7 @@ void common_loop(uint64_t loop_start_time) {
 #endif /*HAS_RF*/
 
 #ifdef HAS_SX1262
-    MEASURE_TASK_INTERVAL(LORA, 100, sx1262_process);
+    MEASURE_TASK_INTERVAL(LORA, 5, sx1262_process);
 #endif /*HAS_SX1262*/
 }
 

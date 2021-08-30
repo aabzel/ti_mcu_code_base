@@ -19,6 +19,7 @@ bool test_utoa_bin8(void);
 bool test_float_to_uint16(void);
 bool test_type_transformation(void);
 bool test_array(void) ;
+bool test_uspec_behavior(void);
 
 #ifdef __cplusplus
 }

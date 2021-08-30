@@ -105,9 +105,10 @@ static void report_log_leveles(void) {
 }
 
 bool cmd_log_level(int32_t argc, char *argv[]) {
+  bool res = true;
   log_facility_t facility;
   log_level_t level;
-  if (argc > 2) {
+  if (2<argc ) {
     LOG_ERROR(SYS, "Usage log_level [facility|*|ALL [log_level]]");
     return false;
   }
@@ -134,7 +135,11 @@ bool cmd_log_level(int32_t argc, char *argv[]) {
     LOG_ERROR(SYS, "Unknown log level name %s", argv[1]);
     return false;
   }
-  set_log_level(facility, level);
+
+  if(res){
+      set_log_level(facility, level);
+
+  }
   return true;
 }
 

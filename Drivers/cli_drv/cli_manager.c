@@ -121,7 +121,7 @@ void *cliThread(void *arg0){
     }
 }
 
-void process_shell_cmd(char* cmd_line) {
+bool process_shell_cmd(char* cmd_line) {
 #ifdef HAS_CLI_DEBUG
     io_printf("proc command [%s]" CRLF, cmd_line);
 #endif /*HAS_CLI_DEBUG*/
@@ -150,14 +150,14 @@ void process_shell_cmd(char* cmd_line) {
     }
     if(shell_argc == 0) {
         shell_prompt();
-        return;
+        return true;
     }
     while(cmd->handler) {
         if((cmd->long_name && __strcasecmp(cmd->long_name, shell_argv[0]) == 0) ||
            (cmd->short_name && __strcasecmp(cmd->short_name, shell_argv[0]) == 0)) {
             cmd->handler(shell_argc - 1, shell_argv + 1);
             shell_prompt();
-            return;
+            return true;
         }
         cmd++;
     }
@@ -167,6 +167,7 @@ void process_shell_cmd(char* cmd_line) {
         dump_cmd_result_ex(false, "Unknown command");
     }
     shell_prompt();
+    return false;
 }
 
 void help_dump_key(const char* sub_name1, const char* sub_name2) {

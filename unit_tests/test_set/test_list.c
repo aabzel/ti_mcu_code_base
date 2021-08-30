@@ -37,6 +37,7 @@ const unit_test_info_t test_list[] = {{"type_transform", test_type_transformatio
                                 UBLOX_PROTO_TEST_SUIT
                                 BYTE_UTILS_TEST_SUIT
                                 BIT_UTILS_TEST_SUIT
+                                {"uspec_behavior",test_uspec_behavior},
                                 {"array",test_array},
                                 {"64bit_mult", test_64bit_mult},
                                 {"flt_u16", test_float_to_uint16},
@@ -67,6 +68,11 @@ bool test_array(void) {
     uint8_t b[4]={1,2,3,4};
     io_printf("a[b]: %u "CRLF,a[b]);
     io_printf("b[a]: %u "CRLF,b[a]);
+    return true;
+}
+
+bool test_uspec_behavior(void){
+    EXPECT_EQ(11, sizeof("plane_text"));
     return true;
 }
 

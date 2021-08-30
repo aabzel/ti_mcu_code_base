@@ -11,7 +11,6 @@
 #include "writer_generic.h"
 
 static char log_level_name(log_level_t level);
-static void set_log_level_all(log_level_t level);
 static bool is_log_enabled(log_level_t level, log_facility_t facility);
 
 log_level_t log_levels[ALL_FACILITY];
@@ -21,9 +20,7 @@ bool log_flush = false;
 bool log_colored = true;
 
 bool log_facility_name = true;
-#ifdef EMBEDDED_TEST
-bool log_zero_time = false;
-#endif
+
 
 char log_level_name(log_level_t level) {
   char result = 'U';
@@ -95,20 +92,26 @@ const char *log_level_color(log_level_t level) {
   return result;
 }
 
-static void set_log_level_all(log_level_t level) {
-  uint32_t f;
+static bool set_log_level_all(log_level_t level) {
+  bool res = true;
+  uint32_t f = 0;
   for (f = 0; f < sizeof(log_levels) / sizeof(log_levels[0]); f++) {
     log_levels[f] = level;
   }
+  return res;
 }
 
-void set_log_level(log_facility_t facility, log_level_t level) {
+bool set_log_level(log_facility_t facility, log_level_t level) {
+  bool res = false;
   if (facility == ALL_FACILITY) {
-    set_log_level_all(level);
+      res = set_log_level_all(level);
   }
-  if (UNKNOWN_FACILITY < facility && facility < ALL_FACILITY) {
+  if ((UNKNOWN_FACILITY < facility) &&
+          (facility < ALL_FACILITY)) {
     log_levels[facility] = level;
+    res = true;
   }
+  return res;
 }
 
 log_level_t get_log_level(log_facility_t facility) {

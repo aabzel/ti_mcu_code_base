@@ -15,15 +15,18 @@ speed up to 16 MHz
 #include "byte_utils.h"
 #include "clocks.h"
 #include "data_utils.h"
+#include "debug_info.h"
 #include "gpio_drv.h"
 #include "log.h"
+#include "io_utils.h"
+#include "lora_handler.h"
 #include "none_blocking_pause.h"
 #include "spi_drv.h"
 
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(500);                                                                                \
+        res = sx1262_wait_on_busy(50);                                                                                \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             GPIO_writeDio(SX1262_SS_DIO_NO, 0);                                                                        \
@@ -84,6 +87,7 @@ const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
 bool sx1262_wait_on_busy(uint32_t time_out_ms) {
     uint32_t start_ms = 0U;
     uint32_t curr_ms = 0U;
+    uint32_t diff_ms = 0U;
     bool res = false;
     bool loop = true;
     uint32_t busy_value = 0;
@@ -96,7 +100,8 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
             break;
         }
         curr_ms = get_time_ms32();
-        if(time_out_ms < (curr_ms - start_ms)) {
+        diff_ms = curr_ms - start_ms;
+        if(time_out_ms < diff_ms ) {
             res = false;
             loop = false;
             break;
@@ -154,7 +159,6 @@ bool sx1262_is_connected(void) {
     return res;
 }
 
-
 #define READ_REG_HEADER_SZ 3
 static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
     bool res = false;
@@ -185,7 +189,7 @@ bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
     return res;
 }
 
-static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
+static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
     bool res = true;
 
@@ -198,8 +202,8 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
     }
 
     res = spi_write(SX1262_SPI_NUM, tempTxArray, temp_tx_arr_len) && res;
-    if((0 < rx_array_len) && (NULL != rx_array)) {
-        res = spi_read(SX1262_SPI_NUM, rx_array, rx_array_len) && res;
+    if((0 < rx_array_len) && (NULL != out_rx_array)) {
+        res = spi_read(SX1262_SPI_NUM, out_rx_array, rx_array_len) && res;
     }
 
     return res;
@@ -246,11 +250,47 @@ bool sx1262_set_rf_frequency(uint32_t rf_frequency_hz, uint32_t freq_xtal_hz) {
     return res;
 }
 /*
+  SetBufferBaseAddress
+
+  This command sets the base addresses in the data buffer in all modes of operations
+  for the packet handing operation in TX and RX mode. The usage and definition of those
+  parameters are described in the different packet type sections.
+*/
+bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
+    bool res = false;
+    uint8_t tx_array[2];
+    tx_array[0] = tx_base_addr;
+    tx_array[1] = rx_base_addr;
+    res = sx1262_send_opcode(OPCODE_SET_BUFFER_BASE_ADDR, tx_array, sizeof(tx_array), NULL, 0);
+    return res;
+}
+/*
+  GetRxBufferStatus
+
+  This command returns the length of the last received packet (PayloadLengthRx)
+  and the address of the first byte received (rx_start_buffer_pointer).
+  It is applicable to all modems. The address is an offset relative to the first byte of the data buffer.
+  */
+bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_start_buffer_pointer) {
+    bool res = false;
+    uint8_t rx_array[4];
+    memset(rx_array, 0xFF, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_GET_RX_BUFFER_STATUS, NULL, 0, rx_array, sizeof(rx_array));
+    if(res) {
+        Sx1262Instance.status = rx_array[1];
+        *out_payload_length_rx = rx_array[2];
+        *out_rx_start_buffer_pointer = rx_array[3];
+    }
+    return res;
+}
+/*
   SetRx
   The command SetRx() sets the device in receiver mode.
  * */
 bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
+    res = sx1262_clear_fifo() && res;
+    res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
     // SX126xHal_WriteReg( REG_RX_GAIN, (uint8_t *)0x96 ); // max LNA gain, increase current by ~2mA for around ~3dB in
     // sensivity
     uint8_t tx_array[3];
@@ -261,21 +301,6 @@ bool sx1262_start_rx(uint32_t timeout_s) {
 
     res = sx1262_send_opcode(OPCODE_SET_RX, tx_array, sizeof(tx_array), NULL, 0) && res;
 
-    return res;
-}
-/*
-  SetBufferBaseAddress
-
-  This command sets the base addresses in the data buffer in all modes of operations
-  for the packet handing operation in TX and RX mode. The usage and definition of those
-  parameters are described in the different packet type sections.
-*/
-bool sx1262_set_buffer_base_addr(uint8_t tx_addr, uint8_t rx_addr) {
-    bool res = false;
-    uint8_t tx_array[2];
-    tx_array[0] = tx_addr;
-    tx_array[1] = rx_addr;
-    res = sx1262_send_opcode(OPCODE_SET_BUFFER_BASE_ADDR, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
 /*
@@ -340,14 +365,14 @@ bool sx1262_reset_stats(void) {
 bool sx1262_set_standby(StandbyMode_t stdby_config) {
     bool res = true;
     uint8_t tx_array[1];
-    tx_array[0] = (uint8_t) stdby_config;
+    tx_array[0] = (uint8_t)stdby_config;
     res = sx1262_send_opcode(OPCODE_SET_STANDBY, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
 
-
 /*
   SetPacketType
+
   The command SetPacketType(...) sets the SX1261 radio in LoRa® or in FSK mode.
   The command SetPacketType(...) must be the first of the radio configuration sequence.
   The parameter for this command is PacketType.
@@ -355,10 +380,10 @@ bool sx1262_set_standby(StandbyMode_t stdby_config) {
 bool sx1262_set_packet_type(RadioPacketType_t packet_type) {
     bool res = false;
     res = sx1262_set_standby(STDBY_RC);
-    if (res) {
-      uint8_t tx_array[1];
-      tx_array[0] = packet_type;
-      res = sx1262_send_opcode(OPCODE_SET_PACKET_TYPE, tx_array, sizeof(tx_array), NULL, 0);
+    if(res) {
+        uint8_t tx_array[1];
+        tx_array[0] = packet_type;
+        res = sx1262_send_opcode(OPCODE_SET_PACKET_TYPE, tx_array, sizeof(tx_array), NULL, 0);
     }
     return res;
 }
@@ -492,19 +517,21 @@ bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_
     return res;
 }
 
-bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint8_t payload_len) {
+bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len) {
     bool res;
-    uint8_t tx_array[payload_len + 1];
-    memset(tx_array, 0x00, sizeof(tx_array));
-    tx_array[0] = offset;
-    memcpy(&tx_array[1], payload, payload_len);
-    res = sx1262_send_opcode(OPCODE_WRITE_BUFFER, tx_array, sizeof(tx_array), NULL, 0);
+    if((NULL != payload) && (payload_len <= FIFO_SIZE)) {
+        uint8_t tx_array[payload_len + 1];
+        memset(tx_array, 0x00, sizeof(tx_array));
+        tx_array[0] = offset;
+        memcpy(&tx_array[1], payload, payload_len);
+        res = sx1262_send_opcode(OPCODE_WRITE_BUFFER, tx_array, sizeof(tx_array), NULL, 0);
+    }
     return res;
 }
 
 bool sx1262_set_payload(uint8_t* payload, uint8_t size) {
     bool res = false;
-    res = sx1262_write_buffer(0x00, payload, size);
+    res = sx1262_write_buffer(TX_BASE_ADDRESS, payload, size);
     return res;
 }
 
@@ -521,7 +548,7 @@ bool sx1262_conf_tx(void) {
     res = sx1262_set_pa_config(0x03, 0x05, DEV_SEL_SX1262, 0x01) && res;
     res = sx1262_set_tx_params(22, SET_RAMP_10U) && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-    strncpy(payload, "test tx payload 2021", sizeof(payload));
+    strncpy(payload, "Test tx payload 2021", sizeof(payload));
     res = sx1262_set_payload((uint8_t*)payload, (uint16_t)strlen(payload)) && res;
 
     Sx1262Instance.mod_params.band_width = LORA_BW_41;
@@ -586,8 +613,6 @@ bool sx1262_wakeup(void) {
 bool sx1262_init(void) {
     bool res = true;
     memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
-    Sx1262Instance.tx_mode = CHIPMODE_UNDEF;
-    Sx1262Instance.chip_mode = CHIPMODE_NONE;
 
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
@@ -598,12 +623,13 @@ bool sx1262_init(void) {
     res = sx1262_set_regulator_mode(REG_MODE_DC_DC_LDO) && res;
 
     res = sx1262_clear_fifo() && res;
+    res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
 
     res = sx1262_clear_dev_error() && res;
 
     res = sx1262_conf_tx() && res;
     res = sx1262_conf_rx() && res;
-
+    res = sx1262_start_rx(0) && res;
     return res;
 }
 
@@ -621,6 +647,8 @@ bool sx1262_set_tx(uint32_t timeout_s) {
 bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
     bool res = true;
     if((NULL != tx_buf) && (0 < tx_buf_len)) {
+        res = sx1262_clear_fifo() && res;
+        res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
         // res = sx1262_write_buffer(offset, tx_buf, tx_buf_len) && res;
         res = sx1262_set_tx(timeout_s) && res;
@@ -712,19 +740,6 @@ bool sx1262_get_status(uint8_t* out_status) {
         *out_status = rx_array[1];
     } else {
         *out_status = 0xFF;
-    }
-    return res;
-}
-
-bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_start_buffer_pointer) {
-    bool res = false;
-    uint8_t rx_array[4];
-    memset(rx_array, 0xFF, sizeof(rx_array));
-    res = sx1262_send_opcode(OPCODE_GET_RX_BUFFER_STATUS, NULL, 0, rx_array, sizeof(rx_array));
-    if(res) {
-        Sx1262Instance.status = rx_array[1];
-        *out_payload_length_rx = rx_array[2];
-        *out_rx_start_buffer_pointer = rx_array[3];
     }
     return res;
 }
@@ -833,14 +848,57 @@ static bool sx1262_proc_irq_status(uint16_t irq_status) {
     return res;
 }
 
-static bool proc_chip_mode(uint8_t chip_mode) {
+/*
+  ReadBuffer
+  cli: sxrf offset len
+  This function allows reading (n-3) bytes of payload received starting at offset.
+  Note that the NOP must be sent after sending
+  the offset.
+ */
+bool sx1262_read_buffer(int16_t offset, uint8_t* out_payload, uint16_t payload_len) {
     bool res = false;
-    switch(chip_mode) {
+
+    if((out_payload) && (payload_len <= FIFO_SIZE) && (0 <= offset) && (offset <= (FIFO_SIZE - 1))) {
+        uint8_t rx_array[payload_len + 3];
+        memset(rx_array, 0xFF, sizeof(rx_array));
+
+        uint8_t tx_array[1];
+        tx_array[0] = (uint8_t)offset;
+        res = sx1262_send_opcode(OPCODE_READ_BUFFER, tx_array, sizeof(tx_array), rx_array, sizeof(rx_array));
+        if(res) {
+            memcpy(out_payload, &rx_array[3], payload_len);
+        }
+    }
+    return res;
+}
+
+bool sx1262_get_rx_payload(uint8_t* out_payload, uint8_t* out_size, uint16_t max_size) {
+    bool res = false;
+    uint8_t rx_payload_len = 0;
+    uint8_t rx_start_buffer_pointer = 0;
+    res = sx1262_get_rxbuff_status(&rx_payload_len, &rx_start_buffer_pointer);
+    if(rx_payload_len <= max_size) {
+        LOG_INFO(LORA, "rx_len %u start %u", rx_payload_len, rx_start_buffer_pointer);
+        res = sx1262_read_buffer(rx_start_buffer_pointer - 1, out_payload, (uint16_t)rx_payload_len);
+        *out_size = rx_payload_len;
+    } else {
+        *out_size = 0;
+    }
+    return res;
+}
+
+
+static bool sx1262_proc_chip_mode(ChipMode_t chip_mode){
+    bool res = false;
+    switch(chip_mode){
     case CHP_MODE_STBY_RC:
+      //  res = sx1262_start_rx(0) ;
         break;
     case CHP_MODE_STBY_XOSC:
+        res = sx1262_start_rx(0) ;
         break;
     case CHP_MODE_FS:
+       // res = sx1262_start_rx(0) ;
         break;
     case CHP_MODE_RX:
         res = true;
@@ -848,7 +906,9 @@ static bool proc_chip_mode(uint8_t chip_mode) {
     case CHP_MODE_TX:
         res = true;
         break;
+
     default:
+        res = false;
         break;
     }
     return res;
@@ -866,12 +926,21 @@ bool sx1262_process(void) {
     if(res) {
         res = true;
         Sx1262Instance.dev_status = tempSx1262Instance.dev_status;
+
         Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
+        uint8_t rx_payload[RX_SIZE] = {0};
+        uint8_t rx_size = 0;
         switch(Sx1262Instance.com_stat) {
-        case COM_STAT_DATA_AVAIL:
-            LOG_INFO(LORA, "Data available");
-            res = true;
-            break;
+        case COM_STAT_DATA_AVAIL: {
+            LOG_INFO(LORA, "Data available!");
+            res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
+            if(res) {
+                res = print_mem(rx_payload, rx_size, true);
+                io_printf(CRLF);
+                res = lora_proc_payload(rx_payload, rx_size);
+            }
+            //res = sx1262_start_rx(0);
+        } break;
         case COM_STAT_COM_TIMEOUT:
             LOG_WARNING(LORA, "time out");
             res = false;
@@ -887,27 +956,24 @@ bool sx1262_process(void) {
             break;
         case COM_STAT_COM_TX_DONE:
             LOG_INFO(LORA, "TX done");
-            res = true;
+            res = sx1262_start_rx(0);
             break;
         default:
             res = false;
             break;
         }
-        Sx1262Instance.chip_mode = extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
-        proc_chip_mode(Sx1262Instance.chip_mode);
+        Sx1262Instance.chip_mode =(ChipMode_t) extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
+        sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
 
         res = sx1262_reset_stats();
     }
 
-    tempSx1262Instance.rx_payload_length = 0;
-    tempSx1262Instance.rx_start_buffer_pointer = 0;
-    res = sx1262_get_rxbuff_status(&tempSx1262Instance.rx_payload_length, &tempSx1262Instance.rx_start_buffer_pointer);
+    tempSx1262Instance.rx_payload_len = 0;
+    tempSx1262Instance.rx_buffer_pointer = 0;
+    res = sx1262_get_rxbuff_status(&tempSx1262Instance.rx_payload_len, &tempSx1262Instance.rx_buffer_pointer);
     if(res) {
-        Sx1262Instance.rx_payload_length = tempSx1262Instance.rx_payload_length;
-        if(0 < tempSx1262Instance.rx_payload_length) {
-            //LOG_INFO(LORA, "0<payload_length");
-        }
-        Sx1262Instance.rx_start_buffer_pointer = tempSx1262Instance.rx_start_buffer_pointer;
+        Sx1262Instance.rx_payload_len = tempSx1262Instance.rx_payload_len;
+        Sx1262Instance.rx_buffer_pointer = tempSx1262Instance.rx_buffer_pointer;
     }
 
     tempSx1262Instance.rx_status = 0;
@@ -978,5 +1044,6 @@ bool sx1262_process(void) {
     if(res) {
         Sx1262Instance.rand_num = tempSx1262Instance.rand_num;
     }
+
     return res;
 }

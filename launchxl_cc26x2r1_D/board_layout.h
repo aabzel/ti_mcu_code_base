@@ -4,10 +4,7 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
 
-#define SX1262_SS_DIO_NO 11
-#define SX1262_RST_DIO_NO 27
-#define SX1262_BUSY_DIO_NO 29
-#define SX1262_INT_DIO_NO 28
+#include "sys_config.h"
 
 #define DIO_CNT 31
 

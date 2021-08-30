@@ -12,8 +12,11 @@
 #include "board_layout.h"
 #include "gfsk_defs.h"
 #include "lora_defs.h"
+#include "sx1262_config.h"
 
 #define PACK_SIZE_BYTES 16
+
+#define FIFO_SIZE 256
 
 #define RX_SIZE 256
 #define TX_SIZE 256
@@ -21,17 +24,10 @@
 #define RC_FREQ_HZ 13000000U
 #define XTAL_FREQ_HZ 32000000U
 
-#define FREQ_MHZ 868000000
 #define FREQ_DIV 33554432U // 0x02000000 ( double )pow( 2.0, 25.0 )
-#define SX1262_SPI_NUM 0
 #define SX1262_REG_CNT 26U
 #define OPCODE_SIZE 1
 #define MHZ_TO_FRF 1048576 /* ((float)XTAL_FREQ_HZ))*10000000.0f)*/
-
-#define TX_BASE_ADDRESS 0x00
-#define RX_BASE_ADDRESS (0x00 + (TX_SIZE / 2)) // 128
-
-#define SYNC_WORD 0x1122334455667788
 
 /*Operational Modes Commands*/
 #define OPCODE_RESET_STATS 0x00
@@ -154,25 +150,15 @@ typedef enum eRadioIrqMasks_t {
 #define DEV_SEL_SX1262 0
 #define DEV_SEL_SX1261 1
 
-
 /*StdbyConfig Value Description*/
-typedef enum eStandbyMode_t{
-    STDBY_RC =0,   /* Device running on RC13M, set STDBY_RC mode       */
-    STDBY_XOSC= 1, /* Device running on XTAL 32MHz, set STDBY_XOSC mode*/
-}StandbyMode_t;
-
-#define CHP_MODE_STBY_RC 0x2
-#define CHP_MODE_STBY_XOSC 0x3
-#define CHP_MODE_FS 0x4
-#define CHP_MODE_RX 0x5
-#define CHP_MODE_TX 0x6
+typedef enum eStandbyMode_t {
+    STDBY_RC = 0,   /* Device running on RC13M, set STDBY_RC mode       */
+    STDBY_XOSC = 1, /* Device running on XTAL 32MHz, set STDBY_XOSC mode*/
+} StandbyMode_t;
 
 
 #define REG_MODE_ONLY_LDO 0x00 /*used for all modes*/
 #define REG_MODE_DC_DC_LDO 0x01 /*used for STBY_XOSC,FS, RX and TX modes*/
-
-typedef enum eChipMode_t { CHIPMODE_NONE = 0, CHIPMODE_RX = 1, CHIPMODE_TX = 2, CHIPMODE_UNDEF = 3 } ChipMode_t;
-
 
 /*PacketType Definition*/
 typedef enum eRadioPacketTypes_t {
@@ -181,6 +167,15 @@ typedef enum eRadioPacketTypes_t {
     PACKET_TYPE_NONE = 0x0F,
     PACKET_TYPE_UNDEF = 0xFF
 } RadioPacketType_t;
+
+
+typedef enum eChipMode_t {
+   CHP_MODE_STBY_RC =0x2,
+   CHP_MODE_STBY_XOSC= 0x3,
+   CHP_MODE_FS= 0x4,
+   CHP_MODE_RX= 0x5,
+   CHP_MODE_TX= 0x6,
+} ChipMode_t;
 
 typedef struct xPaketStat_t {
     uint16_t nb_pkt_received;
@@ -235,9 +230,8 @@ typedef struct xSx1262_t {
     uint8_t status;
     uint8_t dev_status;
     uint8_t com_stat;
-    uint8_t chip_mode;
-    uint8_t rx_payload_length;
-    uint8_t rx_start_buffer_pointer;
+    uint8_t rx_payload_len;
+    uint8_t rx_buffer_pointer;
     uint8_t rx_status;
     uint8_t rssi_sync;
     uint8_t rssi_avg;
@@ -249,10 +243,10 @@ typedef struct xSx1262_t {
     uint8_t wire_busy;
     uint8_t signal_rssi_pkt;
     int8_t rssi_inst;
+    ChipMode_t chip_mode;
     PaketStat_t gfsk;
     PaketStat_t lora;
     Sx1262IrqCnt_t irq_cnt;
-    ChipMode_t tx_mode;
     ModulationParams_t mod_params;
     PacketParam_t packet_param;
     RadioPacketType_t packet_type;
@@ -264,11 +258,12 @@ extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 
 bool sx1262_get_dev_err(uint16_t* op_error);
 bool sx1262_get_irq_status(uint16_t* irq_stat);
-bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, uint8_t* RssiPkt, uint8_t* SnrPkt, uint8_t* SignalRssiPkt);
+bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, uint8_t* RssiPkt, uint8_t* SnrPkt,
+                              uint8_t* SignalRssiPkt);
 bool sx1262_get_packet_type(RadioPacketType_t* packet_type);
-bool sx1262_get_payload(uint8_t* payload, uint8_t* size, uint8_t max_size);
 bool sx1262_get_rand(uint32_t* rand_num);
 bool sx1262_get_rssi_inst(int8_t* rssi_inst);
+bool sx1262_get_rx_payload(uint8_t* payload, uint8_t* size, uint16_t max_size);
 bool sx1262_get_rxbuff_status(uint8_t* PayloadLengthRx, uint8_t* RxStartBufferPointer);
 bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora);
 bool sx1262_get_status(uint8_t* out_status);
@@ -280,13 +275,13 @@ bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val);
 bool sx1262_reset(void);
 bool sx1262_reset_stats(void);
 
-
 // void sx1262_set_TxParams( int8_t power, RadioRampTimes_t rampTime );
 bool sx1262_clear_dev_error(void);
 bool sx1262_clear_fifo(void);
 bool sx1262_clear_irq(uint16_t clear_irq_param);
 bool sx1262_conf_rx(void);
-bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array, uint16_t rx_array_len);
+bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
+                        uint16_t rx_array_len);
 bool sx1262_set_buffer_base_addr(uint8_t tx_addr, uint8_t rx_addr);
 bool sx1262_set_crc_polynomial(uint16_t polynomial);
 bool sx1262_set_crc_seed(uint16_t seed);
@@ -307,8 +302,8 @@ bool sx1262_start_rx(uint32_t timeout_s);
 bool sx1262_start_tx(uint8_t* tx_buf, uint8_t pktLen, uint32_t timeout_s);
 bool sx1262_wait_on_busy(uint32_t time_out_ms);
 bool sx1262_wakeup(void);
-bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint8_t payload_len);
+bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len);
+bool sx1262_read_buffer(int16_t offset, uint8_t* payload, uint16_t payload_len);
 bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val);
-
 
 #endif /* SX1262_DRV_H  */

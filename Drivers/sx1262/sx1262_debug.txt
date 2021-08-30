@@ -68,9 +68,9 @@ https://github.com/LYH1885/SX1262-RF-Module/tree/master/HARDWARE/SX1262
 https://github.com/LYH1885/SX1262-RF-Module/blob/master/HARDWARE/SX1262/sx1262.c
 https://github.com/LYH1885/SX1262-RF-Module/blob/master/HARDWARE/SX1262/sx1262.h
 https://github.com/Forest-Rain/lora-radio-driver/blob/master/lora-radio/sx126x/sx126x.c
-sxo 0x13 xx 5
-sxo 0x11 xx 6
-0xa20000000000590.774
+https://www.kickstarter.com/projects/amin-mehdi-mansouri/axon-wifi-messaging-platform-made-for-iot?ref=discovery_category&term=lora
+https://www.kickstarter.com/projects/688158475/marvin-the-lora-development-board?ref=discovery_category&term=lora
+
 
 
 

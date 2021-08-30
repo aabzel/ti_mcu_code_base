@@ -16,7 +16,7 @@ static char cmd_reader_string[UART_RX_ARRAY_SIZE];
 
 uart_string_reader_t cmd_reader = {
     .string_size = sizeof(cmd_reader_string),
-    .callback = (process_shell_cmd),
+    .callback = (handle_string_f) (process_shell_cmd),
     .string = cmd_reader_string,
     .fifo = {{(sizeof(cmd_reader_data)), 0, 0, 0, 0}, cmd_reader_data},
     .string_len = 0,

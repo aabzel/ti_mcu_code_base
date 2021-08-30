@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #define CRLF "\r\n"
 
@@ -18,15 +19,15 @@ extern "C" {
 
 typedef void (*print_callback_t)(const char* str);
 
-
+bool flush_printf(void);
+bool is_printf_clean(void);
+bool print_indent(uint16_t indent);
+void io_printf(const char *format, ...);
 void io_putchar(char ch);
 void io_putstr(const char *str);
-bool flush_printf(void);
-void wait_for_printf(void);
-bool is_printf_clean(void);
 void io_putstrln(const char *str);
-void io_printf(const char *format, ...);
 void io_vprintf (const char *format, va_list vlist);
+void wait_for_printf(void);
 
 #ifdef __cplusplus
 }

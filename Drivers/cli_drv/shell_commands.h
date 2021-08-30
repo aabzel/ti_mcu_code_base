@@ -44,6 +44,11 @@ extern "C" {
 #define BMP180_COMMANDS
 #endif
 
+#ifdef HAS_LORA
+#include "lora_commands.h"
+#else
+#define LORA_COMMANDS
+#endif
 
 #ifdef HAS_RF
 #include "rf_commands.h"
@@ -58,16 +63,17 @@ extern "C" {
 #endif
 
 #define SHELL_COMMANDS                                                                                                 \
+    BMP180_COMMANDS                                                                                                    \
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
-    UBLOX_COMMANDS                                                                                                     \
-    RF_COMMANDS                                                                                                        \
-    BMP180_COMMANDS                                                                                                    \
-    SX1262_COMMANDS                                                                                                    \
-    HEALTH_MONITOR_COMMANDS                                                                                            \
     LED_COMMANDS                                                                                                       \
+    LORA_COMMANDS                                                                                                      \
+    LOG_COMMANDS \
+    HEALTH_MONITOR_COMMANDS                                                                                            \
     NMEA_COMMANDS                                                                                                      \
-    LOG_COMMANDS
+    RF_COMMANDS                                                                                                        \
+    SX1262_COMMANDS                                                                                                    \
+    UBLOX_COMMANDS
 
 #ifdef __cplusplus
 } /* extern "C" */

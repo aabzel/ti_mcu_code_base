@@ -3,6 +3,7 @@
 
 #include <ti/drivers/UART.h>
 
+#include "sys_config.h"
 #include "uart_common.h"
 
 #define CONFIG_UART_COUNT 2
@@ -15,8 +16,8 @@
 #define CONFIG_UART_0 0 /* CLI   */
 #define CONFIG_UART_1 1 /* UBlox */
 
-#define UART0_BAUD_RATE 38400U
-#define UART1_BAUD_RATE 38400U
+#define UART0_BAUD_RATE CLI_UART_BAUD_RATE /*CLI   */
+#define UART1_BAUD_RATE 38400U             /*UBlox*/
 
 #define CONFIG_TI_DRIVERS_UART_COUNT 1
 

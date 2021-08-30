@@ -43,18 +43,18 @@ bool wait_ms(uint64_t wait_pause_ms) {
   return res;
 }
 
-
 /*none blocking wait for self test and poling*/
 bool wait_us(uint64_t wait_pause_us) {
   uint64_t start_us = 0U;
   uint64_t curr_us = 0U;
+  uint64_t diff_us = 0U;
   bool res = false;
   start_us = get_time_us();
   bool loop = true;
   while (loop) {
-
     curr_us = get_time_us();
-    if (wait_pause_us < (curr_us - start_us)) {
+    diff_us = curr_us - start_us;
+    if (wait_pause_us < diff_us) {
       res = true;
       loop = false;
       break;

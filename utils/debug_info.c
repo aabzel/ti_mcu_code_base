@@ -152,19 +152,50 @@ bool print_vector_table(uint32_t vectors_table_base) {
     return true;
 }
 
-bool print_mem(uint8_t* addr, int32_t len, bool new_line) {
+bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
+    uint16_t i = 0;
+    bool res = false;
+    res = print_indent(indent);
+    io_printf("\"");
+    for(i = 0; i < size; i++) {
+        if(0x00 != buff[i]) {
+            io_printf("%c", buff[i]);
+        } else {
+            io_printf(".");
+        }
+    }
+    io_printf("\"");
+    return res;
+}
+
+bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
     io_printf("0x");
     bool res = false;
+    char asciiLine[16];
+    uint8_t char_pos = 0;
+    memset(asciiLine, 0x00, sizeof(asciiLine));
     if(0 < len) {
         uint32_t pos;
+        res = true;
         for(pos = 0; pos < len; pos++) {
+            if (char_pos<16) {
+                asciiLine[char_pos] = *(addr + pos);
+            }
             if(0 == (pos % 16)) {
+                if(pos) {
+                    print_ascii_line(asciiLine, sizeof(asciiLine), 4);
+                    memset(asciiLine, 0x00, sizeof(asciiLine));
+                    char_pos = 0;
+                }
                 io_printf(CRLF);
+                char_pos = 0;
             }
             io_printf("%02x", *(addr + pos));
-
-            res = true;
+            char_pos++;
         }
+    }
+    if(len<16){
+        print_ascii_line(asciiLine, sizeof(asciiLine), 4);
     }
     if(true == new_line) {
         io_printf(CRLF);

@@ -2,14 +2,15 @@
 #define TASK_CONFIG_H
 
 #define TASKS                                                                  \
-  TASK(UART1)                                                                  \
-  TASK(LED)                                                                    \
   TASK(ADC)                                                                    \
-  TASK(DAC)                                                                    \
-  TASK(RF)                                                                     \
-  TASK(WDT)                                                                    \
   TASK(CLI)                                                                    \
+  TASK(DAC)                                                                    \
+  TASK(LED)                                                                    \
+  TASK(LORA)                                                                   \
+  TASK(NMEA)                                                                   \
+  TASK(RF)                                                                     \
+  TASK(UART1)                                                                  \
   TASK(UBX)                                                                    \
-  TASK(NMEA)
+  TASK(WDT)
 
 #endif /* TASK_CONFIG_H */

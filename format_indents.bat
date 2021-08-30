@@ -4,6 +4,11 @@ set work_space_dir=%cd%
 set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortUsingDeclarations: true , UseTab: Never,PointerAlignment: Left, BreakBeforeBraces: Attach, TabWidth: 4,ColumnLimit: 120 }"
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
+
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\lora_handler.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\lora_handler.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\lora_commands.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\lora_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_diag.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\sx1262_diag.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\sx1262\lora_defs.h
