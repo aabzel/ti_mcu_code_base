@@ -156,7 +156,6 @@ typedef enum eStandbyMode_t {
     STDBY_XOSC = 1, /* Device running on XTAL 32MHz, set STDBY_XOSC mode*/
 } StandbyMode_t;
 
-
 #define REG_MODE_ONLY_LDO 0x00 /*used for all modes*/
 #define REG_MODE_DC_DC_LDO 0x01 /*used for STBY_XOSC,FS, RX and TX modes*/
 
@@ -168,13 +167,12 @@ typedef enum eRadioPacketTypes_t {
     PACKET_TYPE_UNDEF = 0xFF
 } RadioPacketType_t;
 
-
 typedef enum eChipMode_t {
-   CHP_MODE_STBY_RC =0x2,
-   CHP_MODE_STBY_XOSC= 0x3,
-   CHP_MODE_FS= 0x4,
-   CHP_MODE_RX= 0x5,
-   CHP_MODE_TX= 0x6,
+    CHP_MODE_STBY_RC = 0x2,
+    CHP_MODE_STBY_XOSC = 0x3,
+    CHP_MODE_FS = 0x4,
+    CHP_MODE_RX = 0x5,
+    CHP_MODE_TX = 0x6,
 } ChipMode_t;
 
 typedef struct xPaketStat_t {

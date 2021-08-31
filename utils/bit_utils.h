@@ -74,8 +74,145 @@ extern "C" {
 #define MASK_50BIT ((uint64_t)0x0003FFFFFFFFFFFF)
 
 #define SET_BIT_NUM(VAL, BIT) ((VAL) |= (1U << (BIT)))
+#define GET_BIT_NUM(VAL, BIT) (0x01 & (VAL >> BIT))
 #define RESET_BIT_NUM(VAL, BIT) ((VAL) &= ~(1U << (BIT)))
 #define CHECK_BIT_NUM(VAL, BIT) ((1U << (BIT)) == ((VAL) & (1U << (BIT))))
+
+
+typedef struct xBitField8_t{
+    uint8_t bit0: 1;
+    uint8_t bit1: 1;
+    uint8_t bit2: 1;
+    uint8_t bit3: 1;
+    uint8_t bit4: 1;
+    uint8_t bit5: 1;
+    uint8_t bit6: 1;
+    uint8_t bit7: 1;
+}BitField8_t;
+
+typedef struct xBitField16_t{
+    uint8_t bit0: 1;
+    uint8_t bit1: 1;
+    uint8_t bit2: 1;
+    uint8_t bit3: 1;
+    uint8_t bit4: 1;
+    uint8_t bit5: 1;
+    uint8_t bit6: 1;
+    uint8_t bit7: 1;
+    uint8_t bit8: 1;
+    uint8_t bit9: 1;
+    uint8_t bit10: 1;
+    uint8_t bit11: 1;
+    uint8_t bit12: 1;
+    uint8_t bit13: 1;
+    uint8_t bit14: 1;
+    uint8_t bit15: 1;
+}BitField16_t;
+
+
+typedef struct xBitField32_t{
+    uint8_t bit0: 1;
+    uint8_t bit1: 1;
+    uint8_t bit2: 1;
+    uint8_t bit3: 1;
+    uint8_t bit4: 1;
+    uint8_t bit5: 1;
+    uint8_t bit6: 1;
+    uint8_t bit7: 1;
+    uint8_t bit8: 1;
+    uint8_t bit9: 1;
+    uint8_t bit10: 1;
+    uint8_t bit11: 1;
+    uint8_t bit12: 1;
+    uint8_t bit13: 1;
+    uint8_t bit14: 1;
+    uint8_t bit15: 1;
+    uint8_t bit16: 1;
+    uint8_t bit17: 1;
+    uint8_t bit18: 1;
+    uint8_t bit19: 1;
+    uint8_t bit20: 1;
+    uint8_t bit21: 1;
+    uint8_t bit22: 1;
+    uint8_t bit23: 1;
+    uint8_t bit24: 1;
+    uint8_t bit25: 1;
+    uint8_t bit26: 1;
+    uint8_t bit27: 1;
+    uint8_t bit28: 1;
+    uint8_t bit29: 1;
+    uint8_t bit30: 1;
+    uint8_t bit31: 1;
+}BitField32_t;
+
+
+typedef struct xBitField64_t{
+    uint8_t bit0: 1;
+    uint8_t bit1: 1;
+    uint8_t bit2: 1;
+    uint8_t bit3: 1;
+    uint8_t bit4: 1;
+    uint8_t bit5: 1;
+    uint8_t bit6: 1;
+    uint8_t bit7: 1;
+    uint8_t bit8: 1;
+    uint8_t bit9: 1;
+    uint8_t bit10: 1;
+    uint8_t bit11: 1;
+    uint8_t bit12: 1;
+    uint8_t bit13: 1;
+    uint8_t bit14: 1;
+    uint8_t bit15: 1;
+    uint8_t bit16: 1;
+    uint8_t bit17: 1;
+    uint8_t bit18: 1;
+    uint8_t bit19: 1;
+    uint8_t bit20: 1;
+    uint8_t bit21: 1;
+    uint8_t bit22: 1;
+    uint8_t bit23: 1;
+    uint8_t bit24: 1;
+    uint8_t bit25: 1;
+    uint8_t bit26: 1;
+    uint8_t bit27: 1;
+    uint8_t bit28: 1;
+    uint8_t bit29: 1;
+    uint8_t bit30: 1;
+    uint8_t bit31: 1;
+    uint8_t bit32: 1;
+    uint8_t bit33: 1;
+    uint8_t bit34: 1;
+    uint8_t bit35: 1;
+    uint8_t bit36: 1;
+    uint8_t bit37: 1;
+    uint8_t bit38: 1;
+    uint8_t bit39: 1;
+    uint8_t bit40: 1;
+    uint8_t bit41: 1;
+    uint8_t bit42: 1;
+    uint8_t bit43: 1;
+    uint8_t bit44: 1;
+    uint8_t bit45: 1;
+    uint8_t bit46: 1;
+    uint8_t bit47: 1;
+    uint8_t bit48: 1;
+    uint8_t bit49: 1;
+    uint8_t bit50: 1;
+    uint8_t bit51: 1;
+    uint8_t bit52: 1;
+    uint8_t bit53: 1;
+    uint8_t bit54: 1;
+    uint8_t bit55: 1;
+    uint8_t bit56: 1;
+    uint8_t bit57: 1;
+    uint8_t bit58: 1;
+    uint8_t bit59: 1;
+    uint8_t bit60: 1;
+    uint8_t bit61: 1;
+    uint8_t bit62: 1;
+    uint8_t bit63: 1;
+}BitField64_t;
+
 
 uint8_t generate_8bit_left_mask(uint8_t bit_len);
 uint32_t generate_32bit_custom_mask(uint8_t max_bit, uint8_t min_bit);
@@ -93,6 +230,8 @@ bool bit32_control_proc(uint32_t* address_val, char cmd, uint8_t bit);
 uint8_t count_set_bits(uint32_t const inVal32bit);
 bool is_power_of_two(uint32_t const val);
 bool is_parity_odd(uint32_t const inVal);
+
+uint8_t get_bit_from_32bit(uint32_t in_val, uint8_t bit_num);
 
 #ifdef __cplusplus
 }

@@ -76,6 +76,14 @@ bool test_bit_utils(void) {
   return true;
 }
 
+bool test_bit_type_size(void) {
+  EXPECT_EQ(1, sizeof(BitField8_t));
+  EXPECT_EQ(2, sizeof(BitField16_t));
+  EXPECT_EQ(4, sizeof(BitField32_t));
+  EXPECT_EQ(8, sizeof(BitField64_t));
+  return true;
+}
+
 bool test_bit_mask(void) {
   EXPECT_EQ(MASK_1BIT, generate_8bit_left_mask(1));
   EXPECT_EQ(MASK_3BIT, generate_8bit_left_mask(3));

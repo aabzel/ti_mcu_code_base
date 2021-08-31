@@ -384,7 +384,7 @@ bool sx1262_tx_command(int32_t argc, char* argv[]) {
     }
     if(true == res) {
         LOG_INFO(LORA, "LoRa tx");
-        print_mem(tx_array, tx_array_len,true);
+        print_mem(tx_array, tx_array_len, true);
         res = sx1262_start_tx(tx_array, tx_array_len, timeout_s);
         if(res) {
             LOG_INFO(LORA, "TX OK");

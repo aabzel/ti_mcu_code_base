@@ -189,3 +189,11 @@ bool is_power_of_two(uint32_t const val) {
     }
     return outRetPt;
 }
+
+uint8_t get_bit_from_32bit(uint32_t in_val, uint8_t bit_num) {
+    uint8_t bit = 0xFF;
+    if(bit_num < 32) {
+        bit = MASK_1BIT & (in_val >> bit_num);
+    }
+    return bit;
+}

@@ -8,6 +8,8 @@
 extern "C" {
 #endif
 
+#include "bit_utils.h"
+
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 /* Compile time assert */
@@ -31,6 +33,7 @@ typedef union uType64Union_t{
     int16_t s16[4];
     uint8_t u8[8];
     int8_t s8[8];
+    BitField64_t bits64;
 } Type64Union_t;
 
 typedef union uType32Union_t{
@@ -41,6 +44,7 @@ typedef union uType32Union_t{
     int16_t s16[2];
     uint8_t u8[4];
     int8_t s8[4];
+    BitField32_t bits32;
 } Type32Union_t;
 
 typedef union uType16Union_t{
@@ -48,7 +52,14 @@ typedef union uType16Union_t{
     int16_t s16;
     uint8_t u8[2];
     int8_t s8[2];
+    BitField16_t bits16;
 } Type16Union_t;
+
+typedef union uType8Union_t{
+    uint8_t u8;
+    int8_t s8;
+    BitField8_t bits8;
+} Type8Union_t;
   
 uint8_t rx_max8u(uint8_t max8u_x1, uint8_t max8u_x2);
 uint8_t rx_min8u(uint8_t min8u_x1, uint8_t min8u_x2);

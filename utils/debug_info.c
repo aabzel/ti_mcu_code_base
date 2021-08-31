@@ -178,7 +178,7 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
         uint32_t pos;
         res = true;
         for(pos = 0; pos < len; pos++) {
-            if (char_pos<16) {
+            if(char_pos < 16) {
                 asciiLine[char_pos] = *(addr + pos);
             }
             if(0 == (pos % 16)) {
@@ -194,7 +194,7 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
             char_pos++;
         }
     }
-    if(len<16){
+    if(len < 16) {
         print_ascii_line(asciiLine, sizeof(asciiLine), 4);
     }
     if(true == new_line) {

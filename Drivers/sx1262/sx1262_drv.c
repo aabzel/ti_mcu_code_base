@@ -17,8 +17,8 @@ speed up to 16 MHz
 #include "data_utils.h"
 #include "debug_info.h"
 #include "gpio_drv.h"
-#include "log.h"
 #include "io_utils.h"
+#include "log.h"
 #include "lora_handler.h"
 #include "none_blocking_pause.h"
 #include "spi_drv.h"
@@ -26,7 +26,7 @@ speed up to 16 MHz
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(50);                                                                                \
+        res = sx1262_wait_on_busy(50);                                                                                 \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             GPIO_writeDio(SX1262_SS_DIO_NO, 0);                                                                        \
@@ -101,7 +101,7 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
         }
         curr_ms = get_time_ms32();
         diff_ms = curr_ms - start_ms;
-        if(time_out_ms < diff_ms ) {
+        if(time_out_ms < diff_ms) {
             res = false;
             loop = false;
             break;
@@ -172,8 +172,8 @@ static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
         tx_array[0] = OPCODE_READ_REGISTER;
         uint16_t reg_addr_nbo = reverse_byte_order_uint16(reg_addr);
         memcpy(&tx_array[1], &reg_addr_nbo, sizeof(reg_addr_nbo));
-        res = spi_write(SX1262_SPI_NUM, tx_array, READ_REG_HEADER_SZ) && res;
-        res = spi_read(SX1262_SPI_NUM, (uint8_t*)&temp_reg_val.u16, sizeof(temp_reg_val.u16)) && res;
+        res = spi_write((SpiName_t)SX1262_SPI_NUM, tx_array, READ_REG_HEADER_SZ) && res;
+        res = spi_read((SpiName_t)SX1262_SPI_NUM, (uint8_t*)&temp_reg_val.u16, sizeof(temp_reg_val.u16)) && res;
         temp_reg_val.u16 = reverse_byte_order_uint16(temp_reg_val.u16);
         *reg_val = temp_reg_val.u8[0];
     } else {
@@ -201,9 +201,9 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
         memcpy(&tempTxArray[1], tx_array, temp_tx_arr_len);
     }
 
-    res = spi_write(SX1262_SPI_NUM, tempTxArray, temp_tx_arr_len) && res;
+    res = spi_write((SpiName_t)SX1262_SPI_NUM, tempTxArray, temp_tx_arr_len) && res;
     if((0 < rx_array_len) && (NULL != out_rx_array)) {
-        res = spi_read(SX1262_SPI_NUM, out_rx_array, rx_array_len) && res;
+        res = spi_read((SpiName_t)SX1262_SPI_NUM, out_rx_array, rx_array_len) && res;
     }
 
     return res;
@@ -647,7 +647,7 @@ bool sx1262_set_tx(uint32_t timeout_s) {
 bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
     bool res = true;
     if((NULL != tx_buf) && (0 < tx_buf_len)) {
-        res = sx1262_clear_fifo() && res;
+        // res = sx1262_clear_fifo() && res;
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
         // res = sx1262_write_buffer(offset, tx_buf, tx_buf_len) && res;
@@ -887,18 +887,17 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint8_t* out_size, uint16_t max
     return res;
 }
 
-
-static bool sx1262_proc_chip_mode(ChipMode_t chip_mode){
+static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     bool res = false;
-    switch(chip_mode){
+    switch(chip_mode) {
     case CHP_MODE_STBY_RC:
-      //  res = sx1262_start_rx(0) ;
+        //  res = sx1262_start_rx(0) ;
         break;
     case CHP_MODE_STBY_XOSC:
-        res = sx1262_start_rx(0) ;
+        res = sx1262_start_rx(0);
         break;
     case CHP_MODE_FS:
-       // res = sx1262_start_rx(0) ;
+        // res = sx1262_start_rx(0) ;
         break;
     case CHP_MODE_RX:
         res = true;
@@ -939,7 +938,7 @@ bool sx1262_process(void) {
                 io_printf(CRLF);
                 res = lora_proc_payload(rx_payload, rx_size);
             }
-            //res = sx1262_start_rx(0);
+            // res = sx1262_start_rx(0);
         } break;
         case COM_STAT_COM_TIMEOUT:
             LOG_WARNING(LORA, "time out");
@@ -962,7 +961,7 @@ bool sx1262_process(void) {
             res = false;
             break;
         }
-        Sx1262Instance.chip_mode =(ChipMode_t) extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
+        Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
         sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
 
         res = sx1262_reset_stats();

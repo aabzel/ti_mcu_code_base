@@ -4,6 +4,7 @@
 #include <float.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <math.h>
 
 static const char symbols[] = "FEDCBA9876543210123456789ABCDEF";
 
@@ -874,7 +875,7 @@ static void dtoa_normal(double_t double_data, int32_t double_precision, char dou
 
 void dtoa_(double_t double_data_, int32_t double_precision_, char out_double_stringified_[]) {
     dtoa_normal(double_data_, double_precision_, out_double_stringified_);
-#if 0
+#ifndef DeviceFamily_CC26X2
     switch (__fpclassifyd (double_data_)) {
     case FP_NORMAL:
     case FP_ZERO:
@@ -891,7 +892,7 @@ void dtoa_(double_t double_data_, int32_t double_precision_, char out_double_str
         (void)strcpy (out_double_stringified_, "???");
         break;
     }
-#endif
+#endif /*DeviceFamily_CC26X2*/
 }
 
 static void ftoa_normal(float_t float_data, int32_t float_precision, char float_stringified[]) {
@@ -1647,13 +1648,15 @@ const char* bool2test_status(bool val) {
     return name;
 }
 
+
+/*Mind byte order of you CPU core*/
 uint32_t assemble_uint32(uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4) {
     uint32_t v32 = 0;
     uint8_t v8[4] = {0x00, 0x00, 0x00, 0x00};
-    v8[0] = byte1;
-    v8[1] = byte2;
-    v8[2] = byte3;
-    v8[3] = byte4;
+    v8[0] = byte4;
+    v8[1] = byte3;
+    v8[2] = byte2;
+    v8[3] = byte1;
     (void)memcpy((uint8_t*)&v32, (uint8_t*)&v8[0], 4);
 
     return v32;

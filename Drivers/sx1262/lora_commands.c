@@ -18,16 +18,16 @@ bool lora_sent_command(int32_t argc, char* argv[]) {
         res = true;
         uint8_t a = 0;
         snprintf((char*)tx_array, sizeof(tx_array), "%s%s", tx_array, argv[0]);
-        LOG_INFO(LORA, "arg: [%s]",(char*)tx_array);
-        for (a=1; a<argc; a++) {
+        LOG_INFO(LORA, "arg: [%s]", (char*)tx_array);
+        for(a = 1; a < argc; a++) {
             snprintf((char*)tx_array, sizeof(tx_array), "%s %s", tx_array, argv[a]);
         }
-       // snprintf((char*)tx_array, sizeof(tx_array), "%s%s", tx_array, CRLF);
-        LOG_INFO(LORA, "arg: [%s]",(char*)tx_array);
-        tx_array_len = strlen((char*)tx_array)+1;
+        // snprintf((char*)tx_array, sizeof(tx_array), "%s%s", tx_array, CRLF);
+        LOG_INFO(LORA, "arg: [%s]", (char*)tx_array);
+        tx_array_len = strlen((char*)tx_array) + 1;
     }
 
-    if (0 == argc) {
+    if(0 == argc) {
         LOG_ERROR(LORA, "Usage: lc cmd arg1 arg2 [argN]");
         LOG_INFO(LORA, "cli_cmd command for remote target");
         res = false;
