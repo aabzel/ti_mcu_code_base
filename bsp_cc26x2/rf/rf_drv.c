@@ -18,7 +18,9 @@
 #include <ti/drivers/pin/PINCC26XX.h>
 #include <ti/drivers/rf/RF.h>
 
+#include "cli_manager.h"
 #include "RFQueue.h"
+#include "log.h"
 #include "debug_info.h"
 #include "ti_radio_config.h"
 #include "timer_utils.h"
@@ -433,11 +435,31 @@ bool rf_write(uint8_t* array, uint16_t arr_len) {
     return res;
 }
 
+static bool rf_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
+    bool res = false;
+    char* substr = NULL;
+    uint16_t offset = strlen(CMD_PREFIX);
+    substr = strstr((const char*)rx_payload, (const char*)CMD_PREFIX);
+    if(NULL != substr) {
+        char* cli_cmd = substr + strlen(CMD_PREFIX);
+        LOG_DEBUG(RF, "cmd [%s]", cli_cmd);
+        res = process_shell_cmd(cli_cmd);
+    }
+
+    substr = strstr((char*)rx_payload, PING_PREFIX);
+    if(NULL != substr) {
+        uint8_t tx_buf[PAYLOAD_LENGTH];
+        strncpy((char*)tx_buf, "rf_reply", sizeof(tx_buf));
+        res = rf_write(tx_buf, strlen((char*)tx_buf)+1);
+    }
+    return res;
+}
+
 bool rf_process(void) {
     bool res = false;
     if((false == rf_proc_rx) && (0 < rf_rx_len)) {
         print_mem(rf_rx_packet, rf_rx_len, true);
-        res = true;
+        res = rf_proc_payload(rf_rx_packet, rf_rx_len);
         rf_proc_rx = true;
     }
     return res;

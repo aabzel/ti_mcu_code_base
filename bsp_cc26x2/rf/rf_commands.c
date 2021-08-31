@@ -17,18 +17,21 @@ bool rf_write_command(int32_t argc, char* argv[]) {
     if(1 == argc) {
         res = true;
 
-        uint8_t array[256];
-        uint16_t array_len = 0;
+        uint8_t tx_array[256];
+        uint16_t tx_array_len = 0;
 
         if(true == res) {
-            res = try_str2array(argv[0], array, sizeof(array), &array_len);
+            res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);
             if(false == res) {
-                LOG_ERROR(RF, "Unable to extract array %s", argv[0]);
+                LOG_NOTICE(RF, "Unable to extract hex array %s", argv[0]);
+                strncpy((char*)tx_array, argv[0], sizeof(tx_array));
+                tx_array_len = (uint16_t)strlen((char*)tx_array) + 1U;
+                res = true;
             }
         }
 
         if(true == res) {
-            res = rf_write(array, array_len);
+            res = rf_write(tx_array, tx_array_len);
             if(false == res) {
                 LOG_ERROR(RF, "Unable to send RF");
             } else {

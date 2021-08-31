@@ -12,12 +12,11 @@
 
 bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
     bool res = false;
-    // int ret = 1;
     char* substr = NULL;
-    uint16_t offset = strlen(LORA_CMD_PREFIX);
-    substr = strstr((const char*)rx_payload, (const char*)LORA_CMD_PREFIX);
+    uint16_t offset = strlen(CMD_PREFIX);
+    substr = strstr((const char*)rx_payload, (const char*)CMD_PREFIX);
     if(NULL != substr) {
-        char* cli_cmd = substr + strlen(LORA_CMD_PREFIX);
+        char* cli_cmd = substr + strlen(CMD_PREFIX);
         LOG_DEBUG(LORA, "cmd [%s]", cli_cmd);
         res = process_shell_cmd(cli_cmd);
     }
@@ -25,9 +24,8 @@ bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
     substr = strstr((char*)rx_payload, PING_PREFIX);
     if(NULL != substr) {
         uint8_t tx_buf[TX_SIZE];
-        strncpy((char*)tx_buf, "reply", sizeof(tx_buf));
-        // wait_in_loop_ms(100) ;
-        res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf), 0);
+        strncpy((char*)tx_buf, "lora_reply", sizeof(tx_buf));
+        res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf)+1, 0);
     }
     return res;
 }

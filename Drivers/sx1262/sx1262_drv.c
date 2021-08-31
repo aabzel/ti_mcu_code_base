@@ -26,7 +26,7 @@ speed up to 16 MHz
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(50);                                                                                 \
+        res = sx1262_wait_on_busy(0);                                                                                 \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             GPIO_writeDio(SX1262_SS_DIO_NO, 0);                                                                        \
@@ -289,7 +289,7 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
  * */
 bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
-    res = sx1262_clear_fifo() && res;
+    //res = sx1262_clear_fifo() && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
     // SX126xHal_WriteReg( REG_RX_GAIN, (uint8_t *)0x96 ); // max LNA gain, increase current by ~2mA for around ~3dB in
     // sensivity
@@ -889,12 +889,32 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint8_t* out_size, uint16_t max
 
 static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     bool res = false;
+    static ChipMode_t prev_chip_mode=CHP_MODE_UNDEF;
+    static uint32_t chip_mode_rc = 0;
+    static uint32_t chip_mode_xosc = 0;
+
     switch(chip_mode) {
-    case CHP_MODE_STBY_RC:
-        //  res = sx1262_start_rx(0) ;
-        break;
+    case CHP_MODE_STBY_RC:{
+        if(prev_chip_mode==chip_mode){
+            chip_mode_rc++;
+        } else {
+            chip_mode_rc=0;
+        }
+        if(100<chip_mode_rc){
+            chip_mode_rc=0;
+            res = sx1262_start_rx(0) ;
+        }
+    } break;
     case CHP_MODE_STBY_XOSC:
-        res = sx1262_start_rx(0);
+        if(prev_chip_mode==chip_mode){
+            chip_mode_xosc++;
+        } else {
+            chip_mode_xosc=0;
+        }
+        if(100<chip_mode_xosc){
+            chip_mode_xosc=0;
+            res = sx1262_start_rx(0) ;
+        }
         break;
     case CHP_MODE_FS:
         // res = sx1262_start_rx(0) ;
@@ -910,6 +930,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
         res = false;
         break;
     }
+    prev_chip_mode = chip_mode;
     return res;
 }
 

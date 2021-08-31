@@ -22,7 +22,6 @@ static bool test_reverse_byte_order24(void) {
   return true;
 }
 
-
 static bool test_reverse_byte_order16(void) {
   EXPECT_EQ(0x2211, reverse_byte_order_uint16(0x1122));
   return true;

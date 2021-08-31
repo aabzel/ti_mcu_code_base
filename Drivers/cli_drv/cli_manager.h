@@ -15,6 +15,9 @@
 #define CLI_PERIOD_MS 300U
 #define CLI_UART CONFIG_UART_0
 
+#define CMD_PREFIX "cmd "
+#define PING_PREFIX "ping"
+
 extern uint32_t cli_task_cnt;
 extern bool cli_init_done;
 

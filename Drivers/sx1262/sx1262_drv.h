@@ -168,11 +168,12 @@ typedef enum eRadioPacketTypes_t {
 } RadioPacketType_t;
 
 typedef enum eChipMode_t {
+    CHP_MODE_UNDEF = 0x0,
     CHP_MODE_STBY_RC = 0x2,
     CHP_MODE_STBY_XOSC = 0x3,
     CHP_MODE_FS = 0x4,
     CHP_MODE_RX = 0x5,
-    CHP_MODE_TX = 0x6,
+    CHP_MODE_TX = 0x6
 } ChipMode_t;
 
 typedef struct xPaketStat_t {

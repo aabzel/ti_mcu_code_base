@@ -27,6 +27,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         LOG_INFO(LORA, "rx_buffer_pointer: %u 0x%x", Sx1262Instance.rx_buffer_pointer,
                  Sx1262Instance.rx_buffer_pointer);
         LOG_INFO(LORA, "rx_payload_len: %u byte", Sx1262Instance.rx_payload_len);
+        LOG_INFO(LORA, "busyCnt: %u", Sx1262Instance.busy_cnt);
         io_printf("RssiInst: %d dBm" CRLF, Sx1262Instance.rssi_inst);
         io_printf("RssiPkt: %u" CRLF, Sx1262Instance.rssi_pkt);
         io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
@@ -49,8 +50,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("sx1262 reset %s" CRLF, (0 == Sx1262Instance.wire_rst) ? "active" : "passive");
         io_printf("INT: %u" CRLF, Sx1262Instance.wire_int);
         io_printf("sx1262 %s" CRLF, (1 == Sx1262Instance.wire_busy) ? "busy" : "idle");
-        io_printf("busyCnt: %u" CRLF, Sx1262Instance.busy_cnt);
-        res = print_int_diag(&Sx1262Instance.irq_cnt);
+      //  res = print_int_diag(&Sx1262Instance.irq_cnt);
         // printf_pack_stat(&Sx1262Instance.gfsk, "GFSK");
     } else {
         LOG_ERROR(LORA, "Usage: sxd");
