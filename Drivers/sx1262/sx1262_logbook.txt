@@ -82,4 +82,25 @@ sxo 0x0E 0x00112233445566778899 0
 
 d200000000000000
 0007001700277f00
+LAUNCHXL-CC26X2R1
+rpt sxt_0x55aa 2000 200
+rpt sxt_0x55aa55aa 2000 200
+
+
+
+
+rpt sxt_ping 2000 400
+
+
+
+Debug with SDR
+https://4ham.ru/obzor-rtl-sdr/
+https://radio23.ru/scaners/sdr/-rtl-sdr-100khz-1-7-ghz
+https://www.rtl-sdr.com/big-list-rtl-sdr-supported-software/
+
+
+
+
+
+
 

@@ -118,9 +118,6 @@ bool hw_init(void) {
   res = try_init(i2c_init(),"I2C") && res;
 #endif /*HAS_I2C*/
 
-#ifdef HAS_RF
-  res = try_init(rf_init(),"RF") && res;
-#endif /*HAS_RF*/
 
 #ifdef HAS_BLE
   res = try_init(ble_init(),"BLE") && res;
@@ -129,5 +126,10 @@ bool hw_init(void) {
 #ifdef HAS_SX1262
   res = try_init(sx1262_init(),"sx1262") && res;
 #endif /*HAS_SX1262*/
+
+#ifdef HAS_RF
+  res = try_init(rf_init(),"RF") && res;
+#endif /*HAS_RF*/
+
   return res;
 }

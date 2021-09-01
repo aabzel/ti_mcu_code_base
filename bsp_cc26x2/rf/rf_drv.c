@@ -368,7 +368,9 @@ bool rf_write(uint8_t* array, uint16_t arr_len) {
         RF_cmdPropTx.pPkt = rf_tx_packet;
         RF_cmdPropTx.startTrigger.triggerType = TRIG_NOW;
 
-        RF_EventMask terminationReason = RF_runCmd(rfHandle, (RF_Op*)&RF_cmdPropTx, RF_PriorityNormal, NULL, 0);
+        RF_EventMask terminationReason = RF_runCmd(rfHandle, (RF_Op*)&RF_cmdPropTx,
+                                                   RF_PriorityNormal, NULL, 0);
+
         switch(terminationReason) {
         case RF_EventLastCmdDone:
             res = true;

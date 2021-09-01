@@ -889,42 +889,64 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint8_t* out_size, uint16_t max
 
 static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     bool res = false;
-    static ChipMode_t prev_chip_mode=CHP_MODE_UNDEF;
+    static ChipMode_t prev_chip_mode = CHP_MODE_UNDEF;
     static uint32_t chip_mode_rc = 0;
     static uint32_t chip_mode_xosc = 0;
+    static uint32_t chip_mode_fs = 0;
+    static uint32_t chip_mode_tx = 0;
 
     switch(chip_mode) {
     case CHP_MODE_STBY_RC:{
-        if(prev_chip_mode==chip_mode){
+        if(prev_chip_mode==chip_mode) {
             chip_mode_rc++;
+            res = false;
         } else {
             chip_mode_rc=0;
         }
         if(100<chip_mode_rc){
             chip_mode_rc=0;
-            res = sx1262_start_rx(0) ;
+            res = sx1262_init() ;
         }
     } break;
-    case CHP_MODE_STBY_XOSC:
+    case CHP_MODE_STBY_XOSC:{
         if(prev_chip_mode==chip_mode){
             chip_mode_xosc++;
+            res = false;
         } else {
             chip_mode_xosc=0;
         }
         if(100<chip_mode_xosc){
             chip_mode_xosc=0;
-            res = sx1262_start_rx(0) ;
+            res = sx1262_init() ;
         }
-        break;
-    case CHP_MODE_FS:
-        // res = sx1262_start_rx(0) ;
-        break;
+    } break;
+    case CHP_MODE_FS:{
+        if(prev_chip_mode==chip_mode){
+            chip_mode_fs++;
+            res = false;
+        } else {
+            chip_mode_fs=0;
+        }
+        if(100<chip_mode_fs){
+            chip_mode_fs=0;
+            res = sx1262_init() ;
+        }
+    } break;
     case CHP_MODE_RX:
         res = true;
         break;
-    case CHP_MODE_TX:
-        res = true;
-        break;
+    case CHP_MODE_TX:{
+        if(prev_chip_mode==chip_mode){
+            chip_mode_tx++;
+            res = false;
+        } else {
+            chip_mode_tx=0;
+        }
+        if(100<chip_mode_tx){
+            chip_mode_tx=0;
+            res = sx1262_init() ;
+        }
+    } break;
 
     default:
         res = false;
@@ -942,6 +964,13 @@ bool sx1262_process(void) {
     Sx1262_t tempSx1262Instance;
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
     tempSx1262Instance.dev_status = 0;
+
+
+    if (BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
+        Sx1262Instance.busy_cnt=0;
+        res = sx1262_init();
+    }
+
     res = sx1262_get_status(&tempSx1262Instance.dev_status);
     if(res) {
         res = true;
@@ -983,7 +1012,8 @@ bool sx1262_process(void) {
             break;
         }
         Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
-        sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
+
+        res=sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
 
         res = sx1262_reset_stats();
     }

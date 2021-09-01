@@ -12,6 +12,7 @@ extern "C" {
 #define RX_BASE_ADDRESS (0x00 + (FIFO_SIZE / 2)) // 128
 #define TX_BASE_ADDRESS 0x00
 
+#define BUSY_CNT_LIMIT 1000
 
 #ifdef __cplusplus
 }
