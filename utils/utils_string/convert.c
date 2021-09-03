@@ -3,8 +3,8 @@
 #include <ctype.h>
 #include <float.h>
 #include <limits.h>
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 
 static const char symbols[] = "FEDCBA9876543210123456789ABCDEF";
 
@@ -876,20 +876,20 @@ static void dtoa_normal(double_t double_data, int32_t double_precision, char dou
 void dtoa_(double_t double_data_, int32_t double_precision_, char out_double_stringified_[]) {
     dtoa_normal(double_data_, double_precision_, out_double_stringified_);
 #ifndef DeviceFamily_CC26X2
-    switch (__fpclassifyd (double_data_)) {
+    switch(__fpclassifyd(double_data_)) {
     case FP_NORMAL:
     case FP_ZERO:
     case FP_SUBNORMAL:
-        dtoa_normal (double_data_, double_precision_, out_double_stringified_);
+        dtoa_normal(double_data_, double_precision_, out_double_stringified_);
         break;
     case FP_INFINITE:
-        (void)strcpy (out_double_stringified_, "INF");
+        (void)strcpy(out_double_stringified_, "INF");
         break;
     case FP_NAN:
-        (void)strcpy (out_double_stringified_, "NAN");
+        (void)strcpy(out_double_stringified_, "NAN");
         break;
     default:
-        (void)strcpy (out_double_stringified_, "???");
+        (void)strcpy(out_double_stringified_, "???");
         break;
     }
 #endif /*DeviceFamily_CC26X2*/
@@ -1647,7 +1647,6 @@ const char* bool2test_status(bool val) {
     }
     return name;
 }
-
 
 /*Mind byte order of you CPU core*/
 uint32_t assemble_uint32(uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4) {

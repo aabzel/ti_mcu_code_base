@@ -50,7 +50,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("sx1262 reset %s" CRLF, (0 == Sx1262Instance.wire_rst) ? "active" : "passive");
         io_printf("INT: %u" CRLF, Sx1262Instance.wire_int);
         io_printf("sx1262 %s" CRLF, (1 == Sx1262Instance.wire_busy) ? "busy" : "idle");
-      //  res = print_int_diag(&Sx1262Instance.irq_cnt);
+        //  res = print_int_diag(&Sx1262Instance.irq_cnt);
         // printf_pack_stat(&Sx1262Instance.gfsk, "GFSK");
     } else {
         LOG_ERROR(LORA, "Usage: sxd");

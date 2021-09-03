@@ -635,9 +635,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="751.62339"
-     inkscape:cy="582.17036"
+     inkscape:zoom="15.839192"
+     inkscape:cx="121.02428"
+     inkscape:cy="657.45476"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -1531,13 +1531,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.62628px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0906573"
-       x="24.188187"
-       y="176.444"
+       x="25.15704"
+       y="176.16002"
        id="text5368"><tspan
          sodipodi:role="line"
          id="tspan5366"
-         x="24.188187"
-         y="176.444"
+         x="25.15704"
+         y="176.16002"
          style="stroke-width:0.0906573">RF</tspan></text>
     <text
        xml:space="preserve"
@@ -1550,6 +1550,17 @@
          x="21.531681"
          y="120.17167"
          style="stroke-width:0.0906574" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.982573px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0245644"
+       x="120.77917"
+       y="89.826141"
+       id="text2070-8"><tspan
+         sodipodi:role="line"
+         id="tspan2068-1"
+         x="120.77917"
+         y="89.826141"
+         style="stroke-width:0.0245644">12W</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2250,13 +2261,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.40939px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.110235"
-       x="57.560173"
-       y="163.36656"
+       x="57.426537"
+       y="158.1548"
        id="text3062"><tspan
          sodipodi:role="line"
          id="tspan3060"
-         x="57.560173"
-         y="163.36656"
+         x="57.426537"
+         y="158.1548"
          style="stroke-width:0.110235">UART</tspan></text>
     <text
        xml:space="preserve"

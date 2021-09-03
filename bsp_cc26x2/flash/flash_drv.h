@@ -11,9 +11,14 @@
 
 #include <ti/drivers/NVS.h>
 
+#define K_BYTES 1024
 #define NOR_FLASH_BASE 0x00000000
-#define NOR_FLASH_SIZE (352 * 1024)
-#define NVS_SIZE 0x4000
+
+#define NOR_FLASH_SIZE (352 * K_BYTES)
+#define NVS_SIZE (32 * K_BYTES)
+
+#define NVS_FLASH_START 0x00010000
+
 #define CONFIG_NVSINTERNAL 0
 #define CONFIG_TI_DRIVERS_NVS_COUNT 1
 #define CONFIG_NVS_COUNT 1
@@ -25,9 +30,9 @@ extern NVS_Handle nvsHandle;
 extern NVS_Attrs regionAttrs;
 
 bool flash_init(void);
-bool flash_write(uint32_t* addr, uint8_t* array, uint16_t array_len);
-bool flash_read(uint32_t* addr, uint8_t* rx_array, uint16_t array_len);
-
+bool flash_write(uint32_t addr, uint8_t* array, uint32_t array_len);
+bool flash_read(uint32_t* addr, uint8_t* rx_array, uint32_t array_len);
+bool flash_erase(uint32_t addr, uint32_t array_len);
 /*
  * API
  erase 8kbyte flash block

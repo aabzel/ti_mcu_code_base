@@ -62,13 +62,21 @@ extern "C" {
 #define SX1262_COMMANDS
 #endif
 
+
+#ifdef HAS_FLASH_FS
+#include "flash_fs_commands.h"
+#else
+#define FLASH_FS_COMMANDS
+#endif
+
 #define SHELL_COMMANDS                                                                                                 \
     BMP180_COMMANDS                                                                                                    \
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
+    FLASH_FS_COMMANDS                                                                                                  \
     LED_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
-    LOG_COMMANDS \
+    LOG_COMMANDS                                                                              \
     HEALTH_MONITOR_COMMANDS                                                                                            \
     NMEA_COMMANDS                                                                                                      \
     RF_COMMANDS                                                                                                        \

@@ -133,11 +133,11 @@ bool is_arr_pat(uint8_t *arr, uint32_t size, uint8_t patt) {
     return res;
 }
 
-
-bool try_alloc_on_stack(int n, uint8_t pat) {
+bool try_alloc_on_stack(int n, uint8_t pat, uint16_t *real_size) {
     // uint8_t array[n];
     bool res = false;
     uint8_t array [n];
+    *real_size= sizeof(array) ;
     if (array) {
         memset(array, pat, n);
         if (is_arr_pat(array, n, pat)) {

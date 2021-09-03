@@ -13,6 +13,7 @@
 #include "io_utils.h"
 #include "float_utils_test.h"
 #include "test_time_utils.h"
+#include "test_flash_fs.h"
 #include "test_string_utils.h"
 #include "test_nmea_proto.h"
 #include "test_convert.h"
@@ -31,6 +32,7 @@ const unit_test_info_t test_list[] = {{"type_transform", test_type_transformatio
                                 SYSTEM_TEST_SUIT
                                 NMEA_PROTO_TEST_SUIT
                                 CRC_TEST_SUIT
+                                TEST_SUIT_FLASH_FS
                                 TEST_SUIT_SX1262
                                 CONVERT_TEST_SUIT
                                 STRING_UTILS_TEST_SUIT
@@ -64,10 +66,15 @@ bool test_float_to_uint16(void) {
 }
 
 bool test_array(void) {
-    uint8_t a=1;
+    uint8_t a=3;
     uint8_t b[4]={1,2,3,4};
     io_printf("a[b]: %u "CRLF,a[b]);
     io_printf("b[a]: %u "CRLF,b[a]);
+    EXPECT_EQ(a[b], b[a]);
+
+    a=0xff;
+    a++;
+    EXPECT_EQ(0x00, a);
     return true;
 }
 

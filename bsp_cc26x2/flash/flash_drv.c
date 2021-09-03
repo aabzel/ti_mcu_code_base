@@ -12,6 +12,7 @@
 uint8_t nvs_buffer[NVS_BUFF_SIZE];
 NVS_Handle nvsHandle;
 NVS_Attrs regionAttrs;
+static NVS_Params nvsParams;
 
 NVSCC26XX_Object nvsCC26XXObjects[1];
 
@@ -31,7 +32,7 @@ NVSCC26XX_Object nvsCC26XXObjects[1];
  * regions.
  */
 
-static char flashBuf0[NVS_SIZE] __attribute__((retain, noinit, location(0x00010000)));
+static char flashBuf0[NVS_SIZE] __attribute__((retain, noinit, location(NVS_FLASH_START)));
 
 static const NVSCC26XX_HWAttrs nvsCC26XXHWAttrs[1] = {
     /* CONFIG_NVSINTERNAL */
@@ -52,7 +53,6 @@ const uint_least8_t NVS_count = CONFIG_NVS_COUNT;
 
 bool flash_init(void) {
     bool res = true;
-    NVS_Params nvsParams;
     NVS_init();
     NVS_Params_init(&nvsParams);
     nvsHandle = NVS_open(CONFIG_NVSINTERNAL, &nvsParams);
@@ -66,9 +66,20 @@ bool flash_init(void) {
     return res;
 }
 
-bool flash_write(uint32_t* addr, uint8_t* array, uint16_t array_len) { return false; }
+bool flash_write(uint32_t addr, uint8_t* array, uint32_t array_len) {
+    bool res = false;
+    int_fast16_t ret;
+    if((NVS_FLASH_START <= addr) && (addr < (NVS_FLASH_START + NVS_SIZE))) {
+        size_t offset = addr - NVS_FLASH_START;
+        ret = NVS_write(nvsHandle, offset, (void*)array, (size_t)array_len, NVS_WRITE_POST_VERIFY);
+        if(NVS_STATUS_SUCCESS == ret) {
+            res = true;
+        }
+    }
+    return res;
+}
 
-bool flash_read(uint32_t* addr, uint8_t* rx_array, uint16_t array_len) { return false; }
+bool flash_read(uint32_t* addr, uint8_t* rx_array, uint32_t array_len) { return false; }
 
 bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare, uint32_t* busy) {
     bool res = false;
@@ -87,6 +98,19 @@ bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare,
             }
         }
         *usage_pec = (float)(((float)(100U * (*busy))) / ((float)size));
+    }
+    return res;
+}
+
+bool flash_erase(uint32_t addr, uint32_t array_len) {
+    bool res = false;
+    if((NVS_FLASH_START <= addr) && addr < (NVS_FLASH_START + NVS_SIZE)) {
+        int_fast16_t ret;
+        size_t offset = addr - NVS_FLASH_START;
+        ret = NVS_erase(nvsHandle, offset, (size_t)array_len);
+        if(NVS_STATUS_SUCCESS == ret) {
+            res = true;
+        }
     }
     return res;
 }

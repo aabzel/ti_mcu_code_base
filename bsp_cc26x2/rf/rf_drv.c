@@ -18,10 +18,10 @@
 #include <ti/drivers/pin/PINCC26XX.h>
 #include <ti/drivers/rf/RF.h>
 
-#include "cli_manager.h"
 #include "RFQueue.h"
-#include "log.h"
+#include "cli_manager.h"
 #include "debug_info.h"
+#include "log.h"
 #include "ti_radio_config.h"
 #include "timer_utils.h"
 /*
@@ -368,8 +368,7 @@ bool rf_write(uint8_t* array, uint16_t arr_len) {
         RF_cmdPropTx.pPkt = rf_tx_packet;
         RF_cmdPropTx.startTrigger.triggerType = TRIG_NOW;
 
-        RF_EventMask terminationReason = RF_runCmd(rfHandle, (RF_Op*)&RF_cmdPropTx,
-                                                   RF_PriorityNormal, NULL, 0);
+        RF_EventMask terminationReason = RF_runCmd(rfHandle, (RF_Op*)&RF_cmdPropTx, RF_PriorityNormal, NULL, 0);
 
         switch(terminationReason) {
         case RF_EventLastCmdDone:
@@ -452,7 +451,7 @@ static bool rf_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
     if(NULL != substr) {
         uint8_t tx_buf[PAYLOAD_LENGTH];
         strncpy((char*)tx_buf, "rf_reply", sizeof(tx_buf));
-        res = rf_write(tx_buf, strlen((char*)tx_buf)+1);
+        res = rf_write(tx_buf, strlen((char*)tx_buf) + 1);
     }
     return res;
 }

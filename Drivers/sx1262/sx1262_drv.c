@@ -26,7 +26,7 @@ speed up to 16 MHz
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(0);                                                                                 \
+        res = sx1262_wait_on_busy(0);                                                                                  \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             GPIO_writeDio(SX1262_SS_DIO_NO, 0);                                                                        \
@@ -289,7 +289,7 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
  * */
 bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
-    //res = sx1262_clear_fifo() && res;
+    // res = sx1262_clear_fifo() && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
     // SX126xHal_WriteReg( REG_RX_GAIN, (uint8_t *)0x96 ); // max LNA gain, increase current by ~2mA for around ~3dB in
     // sensivity
@@ -896,55 +896,55 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     static uint32_t chip_mode_tx = 0;
 
     switch(chip_mode) {
-    case CHP_MODE_STBY_RC:{
-        if(prev_chip_mode==chip_mode) {
+    case CHP_MODE_STBY_RC: {
+        if(prev_chip_mode == chip_mode) {
             chip_mode_rc++;
             res = false;
         } else {
-            chip_mode_rc=0;
+            chip_mode_rc = 0;
         }
-        if(100<chip_mode_rc){
-            chip_mode_rc=0;
-            res = sx1262_init() ;
+        if(100 < chip_mode_rc) {
+            chip_mode_rc = 0;
+            res = sx1262_init();
         }
     } break;
-    case CHP_MODE_STBY_XOSC:{
-        if(prev_chip_mode==chip_mode){
+    case CHP_MODE_STBY_XOSC: {
+        if(prev_chip_mode == chip_mode) {
             chip_mode_xosc++;
             res = false;
         } else {
-            chip_mode_xosc=0;
+            chip_mode_xosc = 0;
         }
-        if(100<chip_mode_xosc){
-            chip_mode_xosc=0;
-            res = sx1262_init() ;
+        if(100 < chip_mode_xosc) {
+            chip_mode_xosc = 0;
+            res = sx1262_init();
         }
     } break;
-    case CHP_MODE_FS:{
-        if(prev_chip_mode==chip_mode){
+    case CHP_MODE_FS: {
+        if(prev_chip_mode == chip_mode) {
             chip_mode_fs++;
             res = false;
         } else {
-            chip_mode_fs=0;
+            chip_mode_fs = 0;
         }
-        if(100<chip_mode_fs){
-            chip_mode_fs=0;
-            res = sx1262_init() ;
+        if(100 < chip_mode_fs) {
+            chip_mode_fs = 0;
+            res = sx1262_init();
         }
     } break;
     case CHP_MODE_RX:
         res = true;
         break;
-    case CHP_MODE_TX:{
-        if(prev_chip_mode==chip_mode){
+    case CHP_MODE_TX: {
+        if(prev_chip_mode == chip_mode) {
             chip_mode_tx++;
             res = false;
         } else {
-            chip_mode_tx=0;
+            chip_mode_tx = 0;
         }
-        if(100<chip_mode_tx){
-            chip_mode_tx=0;
-            res = sx1262_init() ;
+        if(100 < chip_mode_tx) {
+            chip_mode_tx = 0;
+            res = sx1262_init();
         }
     } break;
 
@@ -965,9 +965,8 @@ bool sx1262_process(void) {
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
     tempSx1262Instance.dev_status = 0;
 
-
-    if (BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
-        Sx1262Instance.busy_cnt=0;
+    if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
+        Sx1262Instance.busy_cnt = 0;
         res = sx1262_init();
     }
 
@@ -1013,7 +1012,7 @@ bool sx1262_process(void) {
         }
         Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
 
-        res=sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
+        res = sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
 
         res = sx1262_reset_stats();
     }

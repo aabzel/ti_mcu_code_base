@@ -36,6 +36,8 @@ bool flash_erase_command(int32_t argc, char* argv[]) {
             if(NVS_STATUS_SUCCESS != ret) {
                 LOG_ERROR(NVS, "NVS_erase error");
                 io_printf("ret: %u" CRLF, ret);
+            } else {
+                LOG_INFO(NVS, "NVS_erase OK");
             }
         }
     } else {
@@ -134,6 +136,7 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
         io_printf("Base Address: 0x%08x" CRLF, regionAttrs.regionBase);
         io_printf("Sector Size : 0x%08x" CRLF, regionAttrs.sectorSize);
         io_printf("Region Size : 0x%08x" CRLF, regionAttrs.regionSize);
+
     } else {
         LOG_ERROR(NVS, "Usage: fd");
     }

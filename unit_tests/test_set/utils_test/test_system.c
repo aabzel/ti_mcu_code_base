@@ -45,8 +45,10 @@ static bool test_heap_set(void) {
 }
 
 bool test_system(void) {
+    uint16_t real_size=0;
     EXPECT_TRUE(test_malloc_zero());
     EXPECT_TRUE(test_heap_set());
-    EXPECT_TRUE( try_alloc_on_stack(10, 0x55));
+    EXPECT_TRUE( try_alloc_on_stack(10, 0x55,&real_size));
+    EXPECT_EQ( 10,real_size);
     return true;
 }

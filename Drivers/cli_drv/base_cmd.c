@@ -346,13 +346,17 @@ bool cmd_try_stack(int32_t argc, char* argv[]) {
     if(1 == argc) {
         res = true;
         uint32_t size = 0;
+        uint16_t real_size= 0;
         if(true == res) {
             res = try_str2uint32(argv[0], &size);
         }
+
         if(true == res) {
-            res = try_alloc_on_stack(size, 0x5A);
+            res = try_alloc_on_stack(size, 0x5A,&real_size);
             if(false == res) {
                 LOG_ERROR(SYS, "data error");
+            } else {
+                LOG_INFO(SYS, "real_size %u", real_size);
             }
         }
 

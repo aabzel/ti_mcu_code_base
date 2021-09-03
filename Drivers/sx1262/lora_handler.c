@@ -25,7 +25,7 @@ bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
     if(NULL != substr) {
         uint8_t tx_buf[TX_SIZE];
         strncpy((char*)tx_buf, "lora_reply", sizeof(tx_buf));
-        res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf)+1, 0);
+        res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf) + 1, 0);
     }
     return res;
 }

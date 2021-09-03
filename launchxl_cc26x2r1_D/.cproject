@@ -78,6 +78,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bmp180"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/adc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth"/>
@@ -103,6 +104,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_ublox_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_nmea_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_crc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_flash_fs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/utils_test"/>
@@ -118,13 +120,14 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE.890004560" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEFINE" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DeviceFamily_CC26X2"/>
+									<listOptionValue builtIn="false" value="HAS_ADC"/>
+									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
 									<listOptionValue builtIn="false" value="HAS_LORA"/>
+									<listOptionValue builtIn="false" value="HAS_CLI"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 									<listOptionValue builtIn="false" value="ICALL_JT"/>
-									<listOptionValue builtIn="false" value="HAS_ADC"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
-									<listOptionValue builtIn="false" value="HAS_CLI"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_DAC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
