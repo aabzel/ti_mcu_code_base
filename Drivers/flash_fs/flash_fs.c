@@ -9,12 +9,11 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "crc8_autosar.h"
+#include "data_utils.h"
 #include "flash_drv.h"
 #include "flash_fs_ll.h"
 #include "memory_layout.h"
-
-/* status for a passive page */
-static const uint8_t mm_PageStatePassive[QWORD_LEN] = {0x00, 0x00, 0x00, 0x00};
 
 /* status for a active page */
 static const uint8_t mm_PageStateActive[QWORD_LEN] = {0x00, 0x00, 0xA5, 0x5A};
@@ -24,9 +23,6 @@ static const uint8_t mm_PageStateReady[QWORD_LEN] = {0x00, 0x00, 0xFF, 0xFF};
 
 /* status for a clear page */
 static const uint8_t mm_PageStateClear[QWORD_LEN] = {0xFF, 0xFF, 0xFF, 0xFF};
-
-/* removed id */
-static const uint8_t mm_EraseMask[QWORD_LEN] = {0x00, 0x00, 0x00, 0x00};
 
 /**
  *     @brief    locate currently active page
@@ -55,52 +51,66 @@ int mmiGetActivePage(uint32_t* mm_page_start, uint32_t* mm_page_len) {
     }
 }
 
+static uint32_t calcRemSize(uint32_t offset) {
+    uint32_t rem_size = 0;
+    uint32_t mm_page_start = 0;
+    uint32_t cur_len = 0;
+    uint32_t mm_page_len = 0;
+    int ret = mmiGetActivePage(&mm_page_start, &mm_page_len);
+    if(MM_RET_CODE_OK == ret) {
+        if(mm_page_start < offset) {
+            cur_len = offset - mm_page_start;
+            rem_size = mm_page_len - cur_len;
+        } else {
+            rem_size = 0;
+        }
+    }
+    return rem_size;
+}
+
 /**
  *    @brief    finds next valid file item
  *
- *    @param    offset - pointer to store active offset
+ *    @param    offset - pointer to store active offset in flash
  *    @param    maxOffset - maximum offset that could be in specified storage
  *    @param    len - pointer to store complete
  *    @retval   MM_RET code
  */
-static int mmiGetNext(uint32_t* offset, uint32_t maxOffset, int* completeLen) {
-    mmItem* item = NULL;
-
+static int mmiGetNext(uint32_t* offset, uint32_t maxOffset, uint32_t* completeLen) {
+    mmItem_t* item = NULL;
+    uint32_t rem_size = 0;
+    uint32_t cur_offset = *offset;
     do {
-        /* valid item could not be less that 12 bytes */
-        if((maxOffset - MIN_SIZE_OF_ITEM) < (*offset)) {
+        /* valid item could not be less that 5 bytes */
+        if((maxOffset - ITEM_HEADER_SZ) < cur_offset) {
             return MM_RET_CODE_NO_MEMORY;
         }
 
         /* reference item */
-        item = (mmItem*)(*offset);
+        item = (mmItem_t*)cur_offset;
 
         /* if all header have 'ff's - this is a spare place */
-        if(item->length == 0xFFFF && item->nLength == 0xFFFF && item->id == 0xFFFF && item->nId == 0xFFFF) {
+        if((0xFFFF == item->length) && (0xFFFF == item->id) && (0xFF == item->crc8)) {
             /* empty space found */
             return MM_RET_NOT_FOUND;
         }
-
-        /* if length doesn't match to it's inversion, it is corrupted field and we should goto next one */
-        if(item->length != (item->nLength ^ 0xFFFF)) {
-            *offset += QWORD_LEN;
+        rem_size = calcRemSize((uint32_t)cur_offset);
+        /*is data with that length can be fitted in flash page?*/
+        if(item->length < rem_size) {
+            uint8_t calc_crc8 = crc8_autosar_calc((void*)(cur_offset + ITEM_HEADER_SZ), item->length);
+            if(calc_crc8 != item->crc8) {
+                cur_offset++;
+                continue;
+            } else {
+                /*spot data file valid item */
+                *offset = cur_offset;
+                *completeLen = item->length + sizeof(mmItem_t);
+            }
+        } else {
+            cur_offset++;
             continue;
         }
 
-        /* fields are aligned to 4 bytes and have 8 bytes header */
-        *completeLen = item->length + sizeof(mmItem);
-        if((item->length & 0x03) != 0) {
-            *completeLen += QWORD_LEN;
-            *completeLen &= 0xFFFC;
-        }
-
-        /* if id field doesn't match to it's inversion - this is invalid field and we should skip it */
-        if(item->id != (item->nId ^ 0xFFFF)) {
-            *offset += *completeLen;
-            continue;
-        }
-
-        /* if all checks was passed, we have found valid item */
         return MM_RET_CODE_OK;
 
     } while(1);
@@ -111,15 +121,19 @@ static int mmiGetNext(uint32_t* offset, uint32_t maxOffset, int* completeLen) {
  *
  *     @param    mm_page_start - start address of the page
  *     @param    mm_page_len - number of bytes within page
- *     @param    id - id that should be found, MM_INVALID_FIELD if we try to find empty space
+ *     @param    file_id - id that should be found, MM_INVALID_FIELD if we try to find empty space
  *     @param    item - pointer to item that was located
  *     @param    empty - poitner to first empty item
  *     @param    remSpace - pointer where remaining space will be placed
  *     @retval    MM_RET code
  */
-static int mmiFindField(uint16_t file_id, mmItem** item, mmItem** empty, int* remSpace) {
-    int ret = -1, completeLen = 0, itemOffset = 0;
-    uint32_t mm_page_start = 0, mm_page_len = 0, offset = 0;
+static int mmiFindField(uint16_t file_id, mmItem_t** item, mmItem_t** empty, uint32_t* remSpace) {
+    int ret = -1;
+    uint32_t completeLen = 0;
+    uint32_t prev_item_offset = 0xFFFFFFFF;
+    uint32_t mm_page_start = 0;
+    uint32_t offset = 0;
+    uint32_t mm_page_len = 0;
     bool res = false;
     /* select active page */
     ret = mmiGetActivePage(&mm_page_start, &mm_page_len);
@@ -128,25 +142,26 @@ static int mmiFindField(uint16_t file_id, mmItem** item, mmItem** empty, int* re
     }
 
     /* we should store previous variable and active one */
-    itemOffset = -1;
+    prev_item_offset = 0xFFFFFFFF;
     offset = mm_page_start + QWORD_LEN;
     /* look through whole storage looking for specified item */
     while(MM_RET_CODE_OK == mmiGetNext(&offset, mm_page_start + mm_page_len, &completeLen)) {
         /* reference item */
-        *item = (mmItem*)offset;
+        *item = (mmItem_t*)offset;
 
         /* if field's file_id match to search one, proceed it */
         if((*item)->id == file_id) {
             /* if something similar was already found, we should invalidate it first */
-            if(itemOffset != -1) {
-                /* to invalidate item just clear its id */
-                res = mmiFlashWrite(itemOffset + QWORD_LEN, (uint8_t*)mm_EraseMask, QWORD_LEN);
+            if(0xFFFFFFFF != prev_item_offset) {
+                /* to invalidate prev item just clear its id */
+                res = mmiFlashZero(prev_item_offset, sizeof(mmItem_t));
+                // TODO: invalidate data also
                 if(false == res) {
                     return MM_RET_FATAL_ERROR;
                 }
             }
             /* store found offset */
-            itemOffset = offset;
+            prev_item_offset = offset;
         }
 
         /* shift offset and try again */
@@ -157,10 +172,10 @@ static int mmiFindField(uint16_t file_id, mmItem** item, mmItem** empty, int* re
     *remSpace = mm_page_len - (offset - mm_page_start);
 
     /* put pointer to first empty item */
-    *empty = (mmItem*)offset;
+    *empty = (mmItem_t*)offset;
     /* put pointer to located item */
-    if(itemOffset != -1) {
-        *item = (mmItem*)itemOffset;
+    if(0xFFFFFFFF != prev_item_offset) {
+        *item = (mmItem_t*)prev_item_offset;
         return MM_RET_CODE_OK;
     } else {
         *item = NULL;
@@ -177,14 +192,14 @@ static int mmiFindField(uint16_t file_id, mmItem** item, mmItem** empty, int* re
  *    @note    user must keep in mind that not all available memory could be used, memory manager use 8 bytes for
  *            every write attempt
  */
-int mm_getRemainingSpace(void) {
-    mmItem *item = NULL, *empty = NULL;
-    int remSpace = 0;
+uint32_t mm_getRemainingSpace(void) {
+    mmItem_t *item = NULL, *empty = NULL;
+    uint32_t remSpace = 0;
 
     /* get all info from private API */
     if(mmiFindField(MM_INVALID_FIELD, &item, &empty, &remSpace) != MM_RET_NOT_FOUND) {
         /* this is not a normal case - we have error or invalid field present, no memory available */
-        return -1;
+        return 0xFFFFFFFF;
     }
 
     /* return remaining free space */
@@ -197,7 +212,8 @@ int mm_getRemainingSpace(void) {
  *     @retval    MM_RET code
  */
 int mm_turnThePage(void) {
-    int ret = -1, completeLen = 0;
+    int ret = -1;
+    uint32_t completeLen = 0;
     uint32_t mmPageActiveStart = 0, mmPageActiveLen = 0, mmPagePassiveStart = 0, offsetActive = 0, offsetPassive = 0;
     bool res = false;
     /* select active page */
@@ -249,12 +265,12 @@ int mm_turnThePage(void) {
         return MM_RET_FATAL_ERROR;
     }
     /* indicate active page as passive */
-    res = mmiFlashWrite(mmPageActiveStart, (uint8_t*)mm_PageStatePassive, sizeof(mm_PageStatePassive));
+    res = mmiFlashZero(mmPageActiveStart, 4);
     if(false == res) {
         return MM_RET_FATAL_ERROR;
     }
     /* invalidate active page */
-    res = mmiFlashWrite(offsetPassive, (uint8_t*)mm_PageStatePassive, sizeof(mm_PageStatePassive));
+    res = mmiFlashZero(offsetPassive, 4);
     if(false == res) {
         return MM_RET_FATAL_ERROR;
     }
@@ -271,8 +287,9 @@ int mm_turnThePage(void) {
  */
 
 int mm_maintain(void) {
-    mmItem *prevItem = NULL, *empty = NULL;
-    int ret, remSpace = 0;
+    mmItem_t *prevItem = NULL, *empty = NULL;
+    int ret = 0;
+    uint32_t remSpace = 0;
     uint16_t data_id = 0; /*any number*/
     /* try to find previous file of the same variable */
     ret = mmiFindField(data_id, &prevItem, &empty, &remSpace);
@@ -311,13 +328,14 @@ int mm_maintain(void) {
  *     @retval MM_RET code
  */
 int mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
-    mmItem *prevItem = NULL, *empty = NULL;
-    mmItem newHeader = {0, 0, 0, 0};
-    uint8_t tBuf[QWORD_LEN];
-    int ret, remSpace, completeLen, tmp;
+    mmItem_t *prevItem = NULL, *empty = NULL;
+    mmItem_t newHeader = {0, 0, 0};
+    int ret = 0;
+    uint32_t remSpace = 0;
+    uint32_t completeLen = 0;
 
     /* check input parameters */
-    if(data_id == MM_INVALID_FIELD || new_file == NULL || new_file_len == 0) {
+    if((MM_INVALID_FIELD == data_id) || (NULL == new_file) || (0 == new_file_len)) {
         return MM_RET_BAD_PARAM;
     }
 
@@ -326,10 +344,10 @@ int mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
     if(ret != MM_RET_CODE_OK && ret != MM_RET_NOT_FOUND) {
         return ret;
     }
-    if(ret == MM_RET_CODE_OK) {
+    if(MM_RET_CODE_OK == ret) {
         /* file was found - ensure that new file is not same to the previous one */
         if(prevItem->length == new_file_len) {
-            if(memcmp(new_file, (uint8_t*)prevItem + sizeof(mmItem), new_file_len) == 0) {
+            if(0 == memcmp(new_file, (uint8_t*)prevItem + sizeof(mmItem_t), new_file_len)) {
                 /* file is the same, we should not change anything */
                 return MM_RET_CODE_OK;
             }
@@ -338,12 +356,6 @@ int mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
 
     /* calculate complete length of the new item */
     completeLen = new_file_len;
-    if((new_file_len & 0x03) != 0) {
-        completeLen += QWORD_LEN;
-        completeLen &= 0xFFFC;
-    }
-    completeLen += 8;
-
     /* ensure that we have enough space within selected page to fit new file
      * variable item stores pointer to first empty item */
     if(remSpace < completeLen) {
@@ -374,33 +386,21 @@ int mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
 
     /* prepare header */
     newHeader.length = new_file_len;
-    newHeader.nLength = new_file_len ^ 0xFFFF;
     newHeader.id = data_id;
-    newHeader.nId = data_id ^ 0xFFFF;
-
+    newHeader.crc8 = crc8_autosar_calc(new_file, new_file_len);
     /* write Header*/
-    if(mmiFlashWrite((uint32_t)empty, (uint8_t*)&newHeader, sizeof(newHeader)) != true) {
+    if(mmiFlashWrite((uint32_t)empty, (uint8_t*)&newHeader, sizeof(newHeader)) == false) {
         return MM_RET_FATAL_ERROR;
     }
 
-    /* then write full data blocks */
-    for(tmp = 0; tmp < (new_file_len - 3); tmp += QWORD_LEN) {
-        if(mmiFlashWrite((uint32_t)empty + sizeof(mmItem) + tmp, (uint8_t*)(new_file + tmp), QWORD_LEN) != true) {
-            return MM_RET_FATAL_ERROR;
-        }
-    }
-
-    /* after that write last block (if present) */
-    if(tmp < new_file_len) {
-        memcpy(tBuf, new_file + tmp, (new_file_len - tmp));
-        if(mmiFlashWrite((uint32_t)empty + sizeof(mmItem) + tmp, (uint8_t*)tBuf, QWORD_LEN) != true) {
-            return MM_RET_FATAL_ERROR;
-        }
+    /*  write full data blocks */
+    if(false == mmiFlashWrite((uint32_t)empty + sizeof(mmItem_t), (uint8_t*)new_file, new_file_len)) {
+        return MM_RET_FATAL_ERROR;
     }
 
     /* invalidate previous identifier (if present) */
     if(prevItem != NULL) {
-        if(mmiFlashWrite((uint32_t)prevItem + QWORD_LEN, (uint8_t*)mm_EraseMask, QWORD_LEN) != true) {
+        if(false == mmiFlashZero((uint32_t)prevItem, sizeof(mmItem_t))) {
             return MM_RET_FATAL_ERROR;
         }
     }
@@ -417,8 +417,9 @@ int mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
  *    @retval    MM_RET code
  */
 int mm_getAddress(uint16_t data_id, uint8_t** file_address, uint16_t* fileLen) {
-    mmItem *item, *empty;
-    int ret, remSpace;
+    mmItem_t *item, *empty;
+    int ret;
+    uint32_t remSpace;
 
     /* ensure that input parameters are valid */
     if(data_id == MM_INVALID_FIELD || file_address == NULL || fileLen == NULL) {
@@ -432,7 +433,7 @@ int mm_getAddress(uint16_t data_id, uint8_t** file_address, uint16_t* fileLen) {
     }
 
     /* return parameters */
-    *file_address = (uint8_t*)item + sizeof(mmItem);
+    *file_address = (uint8_t*)item + sizeof(mmItem_t);
     *fileLen = item->length;
     return MM_RET_CODE_OK;
 }
@@ -447,11 +448,12 @@ int mm_getAddress(uint16_t data_id, uint8_t** file_address, uint16_t* fileLen) {
  *    @retval MM_RET code
  */
 int mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* fileLen) {
-    mmItem *item, *empty;
-    int ret, remSpace;
+    mmItem_t *item, *empty;
+    int ret = 0;
+    uint32_t remSpace = 0;
 
     /* ensure that input parameters are valid */
-    if(data_id == MM_INVALID_FIELD || file == NULL || fileLen == NULL || maxValueLen == 0) {
+    if((MM_INVALID_FIELD == data_id) || (NULL == file) || (NULL == fileLen) || (0 == maxValueLen)) {
         return MM_RET_BAD_PARAM;
     }
 
@@ -467,7 +469,7 @@ int mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* file
     }
 
     /* copy data */
-    memcpy(file, (uint8_t*)item + sizeof(mmItem), item->length);
+    memcpy(file, (uint8_t*)item + sizeof(mmItem_t), item->length);
 
     /* return parameters */
     *fileLen = item->length;
@@ -484,8 +486,9 @@ int mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* file
  *     @retval    MM_RET code
  */
 int mm_invalidate(uint16_t data_id) {
-    mmItem *item = NULL, *empty = NULL;
-    int ret = 0, remSpace = 0;
+    mmItem_t *item = NULL, *empty = NULL;
+    int ret = 0;
+    uint32_t remSpace = 0;
     bool res = false;
     /* find field */
     ret = mmiFindField(data_id, &item, &empty, &remSpace);
@@ -494,14 +497,14 @@ int mm_invalidate(uint16_t data_id) {
     }
 
     /* invalidate field */
-    res = mmiFlashWrite((uint32_t)item + QWORD_LEN, (uint8_t*)mm_EraseMask, QWORD_LEN);
+    res = mmiFlashZero((uint32_t)item, sizeof(mmItem_t));
+    /*TODO invalidate data if crc match*/
     if(false == res) {
         return MM_RET_FATAL_ERROR;
     }
 
     return MM_RET_CODE_OK;
 }
-
 /**
  *    @brief    flash memory is not mapped yet, remap it
  *
@@ -510,7 +513,7 @@ int mm_invalidate(uint16_t data_id) {
 int mmiFlashFormat(void) {
     bool res = false;
     /* invalidate second page as passive */
-    res = mmiFlashWrite(MEMORY_MANAGER2_OFFSET, (uint8_t*)mm_PageStatePassive, sizeof(mm_PageStatePassive));
+    res = mmiFlashZero(MEMORY_MANAGER2_OFFSET, 4);
     if(false == res) {
         return MM_RET_FATAL_ERROR;
     }

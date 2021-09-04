@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 #define QWORD_LEN 4
-#define MIN_SIZE_OF_ITEM (sizeof(mmItem) + QWORD_LEN)
+#define ITEM_HEADER_SZ (sizeof(mmItem_t))
 #define MM_INVALID_FIELD 0xFFFF
 
 /* memory manager */
@@ -30,24 +30,21 @@ enum memManRetCodes {
     MM_RET_CNT
 };
 
-typedef struct xMMitem {
+struct xMMitem_t {
     uint16_t length;
-    uint16_t nLength;
     uint16_t id;
-    uint16_t nId;
-#ifdef HAS_MM_CRC32
-    uint32_t crc32;
-#endif /*HAS_MM_CRC32*/
-} mmItem;
+    uint8_t crc8; /*only for payload*/
+} __attribute__((packed));
+typedef struct xMMitem_t mmItem_t;
 
+int mm_invalidate(uint16_t data_id);
 int mm_maintain(void);
 int mmiGetActivePage(uint32_t* mm_page_start, uint32_t* mm_page_len);
-int mm_getRemainingSpace(void);
-int mm_turnThePage(void);
-int mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len);
+uint32_t mm_getRemainingSpace(void);
 int mm_getAddress(uint16_t data_id, uint8_t** value_address, uint16_t* value_len);
 int mm_get(uint16_t data_id, uint8_t* value, uint16_t max_value_len, uint16_t* value_len);
-int mm_invalidate(uint16_t data_id);
+int mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len);
+int mm_turnThePage(void);
 int mmiFlashFormat(void);
 
 #endif /* MEMORY_MANAGER_NOR_FLASH_H */

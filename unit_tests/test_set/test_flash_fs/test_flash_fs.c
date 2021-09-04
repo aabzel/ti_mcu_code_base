@@ -13,9 +13,8 @@
 tsr flash_fs+
 */
 
-
 bool test_flash_fs_1(void) {
-    EXPECT_EQ(8, sizeof(mmItem));
+    EXPECT_EQ(5, sizeof(mmItem_t));
     int ret = -1;
     uint16_t data_id = 0x1234;
     uint16_t write_value = (uint16_t)0xaabb;

@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 297 210"
    version="1.1"
    id="svg251068"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="firmware_arch.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="firmware_arch.svg">
+  <metadata
+     id="metadata44">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
   <sodipodi:namedview
      id="namedview251070"
      pagecolor="#ffffff"
@@ -23,66 +36,59 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.418238"
-     inkscape:cx="397.324"
-     inkscape:cy="974.80113"
+     inkscape:zoom="1.0028457"
+     inkscape:cx="421.55982"
+     inkscape:cy="501.91285"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="-11"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer3"
      showguides="true"
-     inkscape:guide-bbox="true">
+     inkscape:guide-bbox="true"
+     inkscape:document-rotation="0">
     <sodipodi:guide
-       position="30.968592,63.149821"
-       orientation="0,-1"
-       id="guide5093" />
+       position="148.5,0"
+       orientation="210.0,0"
+       id="guide1005" />
     <sodipodi:guide
-       position="83.018209,74.996248"
-       orientation="0,-1"
-       id="guide5095" />
+       position="0,70"
+       orientation="0,297.0"
+       id="guide1007" />
     <sodipodi:guide
-       position="1.2532046,63.83799"
-       orientation="1,0"
-       id="guide5177" />
-    <sodipodi:guide
-       position="100.36808,77.981168"
-       orientation="0,-1"
-       id="guide21038" />
-    <sodipodi:guide
-       position="110.41392,81.646689"
-       orientation="1,0"
-       id="guide21042" />
+       position="0,140"
+       orientation="0,297.0"
+       id="guide1009" />
   </sodipodi:namedview>
   <defs
      id="defs251065">
     <marker
-       style="overflow:visible;"
+       style="overflow:visible"
        id="marker359531"
-       refX="0.0"
-       refY="0.0"
+       refX="0"
+       refY="0"
        orient="auto"
        inkscape:stockid="Arrow1Lend"
        inkscape:isstock="true">
       <path
-         transform="scale(0.8) rotate(180) translate(12.5,0)"
-         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt;"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
          id="path359529" />
     </marker>
     <marker
-       style="overflow:visible;"
+       style="overflow:visible"
        id="Arrow1Lend"
-       refX="0.0"
-       refY="0.0"
+       refX="0"
+       refY="0"
        orient="auto"
        inkscape:stockid="Arrow1Lend"
        inkscape:isstock="true">
       <path
-         transform="scale(0.8) rotate(180) translate(12.5,0)"
-         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt;"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
          id="path298981" />
     </marker>
   </defs>
@@ -95,123 +101,168 @@
      id="layer3"
      inkscape:label="components">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.115316;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4767"
        width="105.52787"
        height="10.511209"
-       x="1.2499003"
-       y="208.51091" />
+       x="122.9083"
+       y="103.6513" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.0908482;stroke-opacity:1"
-       id="rect5087"
-       width="28.584671"
-       height="11.864322"
-       x="31.827795"
-       y="221.98586" />
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.1105;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5089"
        width="43.033615"
        height="11.868876"
-       x="63.601856"
-       y="221.98131" />
+       x="185.26025"
+       y="117.12174" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.123504;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091"
        width="28.356781"
        height="11.846428"
-       x="1.2532046"
-       y="222.00375" />
+       x="122.91161"
+       y="117.14419" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.125291;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0"
        width="29.204008"
        height="11.837888"
-       x="110.41392"
-       y="222.01703" />
+       x="90.196518"
+       y="117.15632" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.117069;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0-6"
-       width="28.723824"
+       width="29.069262"
        height="10.507919"
-       x="110.49159"
-       y="208.51091" />
+       x="90.2742"
+       y="103.65016" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:6.31014px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.157754"
-       x="115.57364"
-       y="229.53586"
+       x="95.356178"
+       y="124.67515"
        id="text3859-1"><tspan
          sodipodi:role="line"
          id="tspan3857-0"
          style="stroke-width:0.157754"
-         x="115.57364"
-         y="229.53586">UART</tspan></text>
+         x="95.356178"
+         y="124.67515">UART</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:6.4382px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.160955"
-       x="119.07006"
-       y="215.9505"
+       x="98.852554"
+       y="111.08979"
        id="text20802"><tspan
          sodipodi:role="line"
          id="tspan20800"
          style="stroke-width:0.160955"
-         x="119.07006"
-         y="215.9505">CLI</tspan></text>
+         x="98.852554"
+         y="111.08979">CLI</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="78.727379"
-       y="256.23709"
+       x="20.894073"
+       y="126.6361"
        id="text21398"><tspan
          sodipodi:role="line"
          id="tspan21396"
          style="stroke-width:0.264583"
-         x="78.727379"
-         y="256.23709">ADC</tspan></text>
+         x="20.894073"
+         y="126.6361">ADC</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="77.701324"
-       y="274.51974"
+       x="82.189537"
+       y="144.31828"
        id="text22326"><tspan
          sodipodi:role="line"
          id="tspan22324"
          style="stroke-width:0.264583"
-         x="77.701324"
-         y="274.51974">GPIO</tspan></text>
+         x="82.189537"
+         y="144.31828">GPIO</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="119.11714"
-       y="253.06563"
+       x="58.625061"
+       y="126.68276"
        id="text24604"><tspan
          sodipodi:role="line"
          id="tspan24602"
          style="stroke-width:0.264583"
-         x="119.11714"
-         y="253.06563">DAC</tspan></text>
+         x="58.625061"
+         y="126.68276">DAC</tspan></text>
     <rect
-       style="fill:none;stroke:#fd00ff;stroke-width:0.264999"
-       id="rect26154"
-       width="72.477699"
-       height="16.137247"
-       x="75.276062"
-       y="262.76663" />
-    <rect
-       style="fill:none;stroke:#fd00ff;stroke-width:0.264999"
+       style="fill:none;stroke:#030003;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect26156"
-       width="32.087936"
-       height="14.364949"
-       x="73.876877"
-       y="243.73773" />
+       width="32.121964"
+       height="11.6089"
+       x="18.358536"
+       y="117.143" />
     <rect
-       style="fill:none;stroke:#fd00ff;stroke-width:0.264999"
+       style="fill:none;stroke:#030003;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect26158"
-       width="38.36591"
-       height="14.458228"
-       x="110.41392"
-       y="243.73773" />
+       width="29.068615"
+       height="11.71576"
+       x="54.89706"
+       y="117.12769" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5091-0-1"
+       width="30.694883"
+       height="11.837888"
+       x="233.14536"
+       y="117.14419" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:6.31013px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.157754"
+       x="234.5257"
+       y="124.98949"
+       id="text3859-1-9"><tspan
+         sodipodi:role="line"
+         id="tspan3857-0-4"
+         style="stroke-width:0.157754"
+         x="234.5257"
+         y="124.98949">NVS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:6.48538px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.162135"
+       x="233.8501"
+       y="111.04581"
+       id="text69"><tspan
+         sodipodi:role="line"
+         id="tspan67"
+         x="233.8501"
+         y="111.04581"
+         style="stroke-width:0.162135">Flash FS</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5091-0-1-7"
+       width="30.693352"
+       height="10.503966"
+       x="233.14536"
+       y="103.65369" />
+    <path
+       style="fill:none;stroke:#030003;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 181.74527,142.85497 v -4.41919 l 0.32561,-21.30949 h -28.58467 l -0.18656,16.99347 H 18.507212 v 15.59286 H 181.89384 l -0.14857,-6.85765"
+       id="path98"
+       sodipodi:nodetypes="ccccccccc" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#030003;stroke-width:0.499999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect945"
+       width="242.71167"
+       height="15.829952"
+       x="18.50721"
+       y="156.30843" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="90.142181"
+       y="166.5979"
+       id="text949"><tspan
+         sodipodi:role="line"
+         id="tspan947"
+         x="90.142181"
+         y="166.5979"
+         style="stroke-width:0.264583">Registers </tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -220,46 +271,35 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="35.986706"
-       y="217.77969"
+       x="157.64513"
+       y="112.92013"
        id="text1395"><tspan
          sodipodi:role="line"
          id="tspan1393"
          style="stroke-width:0.264583"
-         x="35.986706"
-         y="217.77969">LoRa</tspan></text>
+         x="157.64513"
+         y="112.92013">LoRa</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="32.512753"
-       y="231.51627"
-       id="text2125"><tspan
-         sodipodi:role="line"
-         id="tspan2123"
-         style="stroke-width:0.264583"
-         x="32.512753"
-         y="231.51627">GPIO</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="64.373703"
-       y="230.80399"
+       x="186.03212"
+       y="125.94442"
        id="text2821"><tspan
          sodipodi:role="line"
          id="tspan2819"
          style="stroke-width:0.264583"
-         x="64.373703"
-         y="230.80399">SysTick</tspan></text>
+         x="186.03212"
+         y="125.94442">SysTick</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="4.1136446"
-       y="231.70087"
+       x="125.77205"
+       y="126.8413"
        id="text3859"><tspan
          sodipodi:role="line"
          id="tspan3857"
          style="stroke-width:0.264583"
-         x="4.1136446"
-         y="231.70087">SPI</tspan></text>
+         x="125.77205"
+         y="126.8413">SPI</tspan></text>
   </g>
 </svg>

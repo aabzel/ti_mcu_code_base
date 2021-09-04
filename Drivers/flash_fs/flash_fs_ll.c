@@ -6,8 +6,8 @@
  */
 #include "flash_fs_ll.h"
 
-#include <string.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "flash_fs.h"
 #include "flash_drv.h"
@@ -23,19 +23,16 @@
  *     @retval    MM_RET code
  */
 bool mmiFlashWrite(uint32_t address_des, uint8_t* address_src, uint32_t len) {
-    bool res = false;
-    /* ensure that data is 4 bytes aligned */
-    if ((len & 3) != 0) {
-        res= false;
-    } else {
-        res= true;
-    }
-    if (res) {
-        res= flash_write(address_des,(uint8_t*) address_src, len);
-    }
-
+    bool res = true;
+    res= flash_write(address_des,(uint8_t*) address_src, len);
     return res;
 }
 
-
+bool mmiFlashZero(uint32_t address, uint32_t len){
+    bool res = false;
+    uint8_t zeroArray[len];
+    memset(zeroArray,00,len);
+    res= flash_write(address,(uint8_t*) zeroArray, len);
+    return res;
+}
 
