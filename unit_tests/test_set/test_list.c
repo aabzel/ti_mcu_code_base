@@ -39,6 +39,7 @@ const unit_test_info_t test_list[] = {{"type_transform", test_type_transformatio
                                 UBLOX_PROTO_TEST_SUIT
                                 BYTE_UTILS_TEST_SUIT
                                 BIT_UTILS_TEST_SUIT
+                                {"utils",test_utils},
                                 {"uspec_behavior",test_uspec_behavior},
                                 {"array",test_array},
                                 {"64bit_mult", test_64bit_mult},
@@ -87,6 +88,14 @@ bool test_uspec_behavior(void){
 bool test_utoa_bin8(void) {
     EXPECT_STREQ((char*)"1010_1010", (char*)utoa_bin8(0xaa));
     EXPECT_STREQ((char*)"0101_0101", (char*)utoa_bin8(0x55));
+    return true;
+}
+
+bool test_utils(void){
+    uint8_t i=0;
+
+   // ++i=i++;
+   // i++=++i;
     return true;
 }
 

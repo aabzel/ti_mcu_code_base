@@ -1,10 +1,9 @@
-  TASK(ADC)                                                                    \
-  TASK(CLI)                                                                    \
-  TASK(DAC)                                                                    \
-  TASK(LED)  \
-  TASK(LORA)                                                                      \
-  TASK(NMEA)
-  TASK(RF)                                                                     \
-  TASK(UART1)                                                                  \
-  TASK(UBX)                                                                    \
-  TASK(WDT)                                                                    \
+bool mm_flash_format(void);
+bool mm_get(uint16_t data_id, uint8_t* value, uint16_t max_value_len, uint16_t* value_len);
+bool mm_get_active_page(uint32_t* mm_page_start, uint32_t* mm_page_len);
+bool mm_get_address(uint16_t data_id, uint8_t** value_address, uint16_t* value_len);
+bool mm_invalidate(uint16_t data_id);
+bool mm_maintain(void);
+bool mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len);
+bool mm_turn_page(void);
+uint32_t mm_get_remaining_space(void);

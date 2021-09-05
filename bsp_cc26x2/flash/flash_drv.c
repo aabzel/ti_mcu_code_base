@@ -66,7 +66,6 @@ bool flash_init(void) {
     return res;
 }
 
-
 bool flash_read(uint32_t* addr, uint8_t* rx_array, uint32_t array_len) { return false; }
 
 bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare, uint32_t* busy) {
@@ -100,7 +99,7 @@ bool flash_write(uint32_t flas_addr, uint8_t* array, uint32_t array_len) {
         if(NVS_STATUS_SUCCESS == ret) {
             res = true;
         }
-        NVS_lock(nvsHandle,0);
+        NVS_lock(nvsHandle, 0);
     }
     return res;
 }
@@ -115,8 +114,7 @@ bool flash_erase(uint32_t addr, uint32_t array_len) {
         if(NVS_STATUS_SUCCESS == ret) {
             res = true;
         }
-        NVS_lock(nvsHandle,0);
+        NVS_lock(nvsHandle, 0);
     }
     return res;
 }
-

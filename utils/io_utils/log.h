@@ -28,14 +28,15 @@ typedef enum {
   DAC=2,
   DIAG=3,
   I2C=4,
-  LORA=5,
-  NVS=6,
-  TIM=7,
-  SPI=8,
-  RF=9,
-  SYS=10,
-  UART=11,
-  ALL_FACILITY=12
+  FLASH_FS=5,
+  LORA=6,
+  NVS=7,
+  TIM=8,
+  SPI=9,
+  RF=10,
+  SYS=11,
+  UART=12,
+  ALL_FACILITY=13
 } log_facility_t;
 
 extern log_level_t log_levels[ALL_FACILITY];

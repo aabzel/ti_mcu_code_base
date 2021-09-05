@@ -15,15 +15,12 @@ tsr flash_fs+
 
 bool test_flash_fs_1(void) {
     EXPECT_EQ(5, sizeof(mmItem_t));
-    int ret = -1;
     uint16_t data_id = 0x1234;
     uint16_t write_value = (uint16_t)0xaabb;
     uint16_t read_value = 0;
     uint16_t read_value_len = 0;
-    ret = mm_set(data_id, (unsigned char*)&write_value, sizeof(write_value));
-    EXPECT_EQ(MM_RET_CODE_OK, ret);
-    ret = mm_get(data_id, (unsigned char*)&read_value, sizeof(read_value), &read_value_len);
-    EXPECT_EQ(MM_RET_CODE_OK, ret);
+    EXPECT_TRUE( mm_set(data_id, (unsigned char*)&write_value, sizeof(write_value)));
+    EXPECT_TRUE( mm_get(data_id, (unsigned char*)&read_value, sizeof(read_value), &read_value_len));
     EXPECT_EQ(2, read_value_len);
     EXPECT_EQ(write_value, read_value);
     return true;

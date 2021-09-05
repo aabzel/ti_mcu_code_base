@@ -22,13 +22,13 @@
  *     @param    number of bytes that should be written (must be 4 bytes aligned)
  *     @retval    MM_RET code
  */
-bool mmiFlashWrite(uint32_t address_des, uint8_t* address_src, uint32_t len) {
+bool mm_flash_write(uint32_t address_des, uint8_t* address_src, uint32_t len) {
     bool res = true;
     res= flash_write(address_des,(uint8_t*) address_src, len);
     return res;
 }
 
-bool mmiFlashZero(uint32_t address, uint32_t len){
+bool mm_flash_zero(uint32_t address, uint32_t len){
     bool res = false;
     uint8_t zeroArray[len];
     memset(zeroArray,00,len);

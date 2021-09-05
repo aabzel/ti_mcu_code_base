@@ -156,7 +156,7 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     uint16_t i = 0;
     bool res = false;
     res = print_indent(indent);
-    io_printf("\"");
+    io_printf("|");
     for(i = 0; i < size; i++) {
         if(0x00 != buff[i]) {
             io_printf("%c", buff[i]);
@@ -164,7 +164,17 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
             io_printf(".");
         }
     }
-    io_printf("\"");
+    io_printf("|");
+    return res;
+}
+
+bool print_bin(uint8_t* buff, uint16_t size, uint16_t indent) {
+    uint16_t i = 0;
+    bool res = false;
+    res = print_indent(indent);
+    for(i = 0; i < size; i++) {
+        io_printf("%02x", buff[i]);
+    }
     return res;
 }
 

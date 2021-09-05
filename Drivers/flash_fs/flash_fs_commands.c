@@ -19,16 +19,17 @@
 
 bool cmd_flash_fs_diag(int32_t argc, char* argv[]) {
     bool res = false;
-    if (0 == argc) {
+    if(0 == argc) {
         res = true;
         unsigned int mmPageStart;
         unsigned int mmPageLen;
         int remaining_space = 0;
-        int ret = mmiGetActivePage(&mmPageStart, &mmPageLen);
-        io_printf("ret %u" CRLF, ret);
-        io_printf("mmPageStart %08x" CRLF, mmPageStart);
-        io_printf("mmPageLen %u Byte %u kByte" CRLF, mmPageLen, mmPageLen / 1024);
-        remaining_space = mm_getRemainingSpace();
+        res = mm_get_active_page(&mmPageStart, &mmPageLen);
+        if(res) {
+            io_printf("mmPageStart %08x" CRLF, mmPageStart);
+            io_printf("mmPageLen %u Byte %u kByte" CRLF, mmPageLen, mmPageLen / 1024);
+        }
+        remaining_space = mm_get_remaining_space();
         io_printf("remaining_space %u Byte %u kByte" CRLF, remaining_space, remaining_space / 1024);
     } else {
         LOG_ERROR(SYS, "Usage: ffd ");
@@ -39,44 +40,40 @@ bool cmd_flash_fs_diag(int32_t argc, char* argv[]) {
 bool cmd_flash_fs_get(int32_t argc, char* argv[]) {
     bool res = false;
     unsigned char array[100];
-    if (1 == argc) {
+    uint16_t file_id = 0;
+    uint16_t file_len = 0;
+    if(1 == argc) {
         res = true;
-        uint16_t file_id = 0;
-        if (true == res) {
+        if(true == res) {
             res = try_str2uint16(argv[0], &file_id);
-            if (false == res) {
+            if(false == res) {
                 LOG_ERROR(SYS, "Unable to extract sector_num %s", argv[0]);
             }
         }
-        if (true == res) {
-            uint16_t file_len = 0;
-            int ret = mm_get(file_id, array, sizeof(array), &file_len);
-            if (MM_RET_CODE_OK != ret) {
+        if(true == res) {
+            res = mm_get(file_id, array, sizeof(array), &file_len);
+            if(false == res) {
                 LOG_ERROR(SYS, "mm_get error");
-                io_printf("ret %u" CRLF, ret);
-                res = false;
             } else {
                 print_mem((uint8_t*)array, (uint16_t)file_len, false);
                 io_printf(CRLF);
             }
         }
-    } else if (0 == argc) {
-        uint32_t file_id = 0;
+    } else if(0 == argc) {
         static const table_col_t cols[] = {{7, "id"}, {12, "addr"}, {5, "data"}};
-        uint16_t file_len = 0;
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
 
-        for (file_id = 0; file_id <= 0xFFFF; file_id++) {
+        for(file_id = 0; file_id < 0xFFFF; file_id++) {
             file_len = 0;
             uint32_t* file_Address = NULL;
-            int ret = mm_get((uint16_t)file_id, array, sizeof(array), &file_len);
-            if (MM_RET_CODE_OK == ret) {
-
-                ret = mm_getAddress(file_id, (uint8_t**)&file_Address, &file_len);
+            res = mm_get((uint16_t)file_id, array, sizeof(array), &file_len);
+            if(true == res) {
+                res = mm_get_address(file_id, (uint8_t**)&file_Address, &file_len);
             }
-            if (MM_RET_CODE_OK == ret) {
+            if((true == res) && ( 0<file_len)) {
                 io_printf("| %5u | 0x%08p | ", file_id, file_Address);
-                print_mem((uint8_t*)array, (uint16_t)file_len, false);
+                print_bin(array, file_len, 0);
+                print_ascii_line((char*)array, file_len, 1);
                 io_printf(CRLF);
                 res = true;
             }
@@ -90,23 +87,21 @@ bool cmd_flash_fs_get(int32_t argc, char* argv[]) {
 
 bool cmd_flash_fs_get_addr(int32_t argc, char* argv[]) {
     bool res = false;
-    if (1 == argc) {
+    if(1 == argc) {
         res = true;
         uint16_t file_id = 0;
-        if (true == res) {
+        if(true == res) {
             res = try_str2uint16(argv[0], &file_id);
-            if (false == res) {
+            if(false == res) {
                 LOG_ERROR(SYS, "Unable to extract sector_num %s", argv[0]);
             }
         }
-        if (true == res) {
+        if(true == res) {
             uint16_t file_len = 0;
             uint32_t* file_Address = NULL;
-            int ret = mm_getAddress(file_id, (uint8_t**)&file_Address, &file_len);
-            if (MM_RET_CODE_OK != ret) {
+            res = mm_get_address(file_id, (uint8_t**)&file_Address, &file_len);
+            if(false == res) {
                 LOG_ERROR(SYS, "mm_get error");
-                io_printf("ret %u" CRLF, ret);
-                res = false;
             } else {
                 io_printf("Addr: %p Len: %u" CRLF, file_Address, file_len);
             }
@@ -119,48 +114,59 @@ bool cmd_flash_fs_get_addr(int32_t argc, char* argv[]) {
 
 bool cmd_flash_fs_set(int32_t argc, char* argv[]) {
     bool res = false;
-    if (2 == argc) {
+    if(2 == argc) {
         uint32_t write_len = 0;
         res = true;
+        bool is_text = false;
         Type32Union_t union_data;
+        uint8_t text[80] = "";
         uint16_t file_id = 0;
-        if (true == res) {
+        if(true == res) {
             res = try_str2uint16(argv[0], &file_id);
-            if (false == res) {
+            if(false == res) {
                 LOG_ERROR(SYS, "Unable to extract file_id %s", argv[0]);
             }
         }
 
-        if (0 == write_len) {
+        if(0 == write_len) {
             res = try_str2uint8(argv[1], &union_data.u8[0]);
-            if (true == res) {
+            if(true == res) {
                 write_len = 1;
             }
         }
 
-        if (0 == write_len) {
+        if(0 == write_len) {
             res = try_str2uint16(argv[1], &union_data.u16[0]);
-            if (true == res) {
+            if(true == res) {
                 write_len = 2;
             }
         }
 
-        if (0 == write_len) {
+        if(0 == write_len) {
             res = try_str2uint32(argv[1], &union_data.u32);
-            if (true == res) {
+            if(true == res) {
                 write_len = 4;
             }
         }
+        if(0 == write_len) {
+            strncpy((char*)text, argv[1], sizeof(text));
+            write_len = strlen((char*)text) + 1;
+            is_text = true;
+        }
 
-        if (0 < write_len) {
-            int ret = mm_set(file_id, (unsigned char*)&union_data, write_len);
-            if (MM_RET_CODE_OK != ret) {
+        if(0 < write_len) {
+            if(is_text) {
+                res = mm_set(file_id, (uint8_t*)&text, write_len);
+            } else {
+                res = mm_set(file_id, (uint8_t*)&union_data, write_len);
+            }
+            if(false == res) {
                 LOG_ERROR(SYS, "mm_set error");
-                io_printf("ret %u" CRLF, ret);
-                res = false;
             } else {
                 LOG_INFO(SYS, "mm_set OK");
             }
+        } else {
+            LOG_ERROR(SYS, "mm_set len error");
         }
     } else {
         LOG_ERROR(SYS, "Usage: ffs id val");
@@ -170,36 +176,29 @@ bool cmd_flash_fs_set(int32_t argc, char* argv[]) {
 
 bool cmd_flash_fs_format(int32_t argc, char* argv[]) {
     bool res = false;
-    if (0 == argc) {
+    if(0 == argc) {
         res = true;
-        int ret;
-        ret = mmiFlashFormat();
-        if (ret != MM_RET_CODE_OK) {
-            res = false;
-            LOG_ERROR(SYS,"mmi flash format error %d" , ret);
+        res = mm_flash_format();
+        if(false == res) {
+            LOG_ERROR(SYS, "mmi flash format error");
         } else {
-            LOG_INFO(SYS,"mmi flash format OK" );
-            res = true;
+            LOG_INFO(SYS, "mmi flash format OK");
         }
     } else {
-        LOG_ERROR(SYS, "Usage: fff ");
+        LOG_ERROR(SYS, "Usage: fff");
     }
     return res;
 }
 
 bool cmd_flash_fs_toggle_page(int32_t argc, char* argv[]) {
     bool res = false;
-    if (0 == argc) {
+    if(0 == argc) {
         res = true;
-        int ret;
-        ret = mm_turnThePage();
-        if (ret != MM_RET_CODE_OK) {
-            res = false;
-            LOG_ERROR(SYS, "Toggle page error");
-            io_printf("Unable to turn page %d" CRLF, ret);
+        res = mm_turn_page();
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to turn page %d" CRLF);
         } else {
-            LOG_INFO(SYS, "Toggle page OF");
-            res = true;
+            LOG_INFO(SYS, "Toggle page OK");
         }
     } else {
         LOG_ERROR(SYS, "Usage: fft");
@@ -210,20 +209,19 @@ bool cmd_flash_fs_toggle_page(int32_t argc, char* argv[]) {
 bool cmd_flash_fs_inval(int32_t argc, char* argv[]) {
     bool res = false;
 
-    if (1 == argc) {
+    if(1 == argc) {
         res = true;
         uint16_t file_id = 0;
-        if (true == res) {
+        if(true == res) {
             res = try_str2uint16(argv[0], &file_id);
-            if (false == res) {
+            if(false == res) {
                 LOG_ERROR(SYS, "Unable to extract sector_num %s", argv[0]);
             }
         }
-        if (true == res) {
-            int ret = mm_invalidate(file_id);
-            if (MM_RET_CODE_OK != ret) {
+        if(true == res) {
+            res = mm_invalidate(file_id);
+            if(false == res) {
                 LOG_ERROR(SYS, "invalidate error");
-                io_printf("ret %u" CRLF, ret);
                 res = false;
             } else {
                 io_printf("id %u invalidate OK" CRLF, file_id);

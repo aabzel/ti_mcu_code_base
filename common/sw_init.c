@@ -26,6 +26,10 @@
 #include "health_monitor.h"
 #endif /*HAS_HEALTH_MONITOR*/
 
+#ifdef  HAS_FLASH_FS
+#include "flash_fs.h"
+#endif /*HAS_FLASH_FS*/
+
 bool sw_init(void) {
   bool res = true;
   
@@ -55,6 +59,10 @@ bool sw_init(void) {
 #ifdef  HAS_HEALTH_MONITOR
   res = try_init(health_monotor_init(),"HM") && res;
 #endif /*HAS_HEALTH_MONITOR*/
+
+#ifdef  HAS_FLASH_FS
+  res = try_init(flash_fs_init(),"Flash_FS") && res;
+#endif /*HAS_FLASH_FS*/
 
   return res;
 }
