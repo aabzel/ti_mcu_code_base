@@ -55,6 +55,10 @@
 #include "rf_drv.h"
 #endif
 
+#ifdef HAS_RNG
+#include "rng_drv.h"
+#endif
+
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
 #endif
@@ -118,6 +122,9 @@ bool hw_init(void) {
   res = try_init(i2c_init(),"I2C") && res;
 #endif /*HAS_I2C*/
 
+#ifdef HAS_RNG
+  res = try_init( rng_init(),"RNG") && res;
+#endif /*HAS_RNG*/
 
 #ifdef HAS_BLE
   res = try_init(ble_init(),"BLE") && res;

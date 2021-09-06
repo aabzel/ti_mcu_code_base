@@ -36,8 +36,7 @@
     do {                                                                                                               \
         bool val = val_in;                                                                                             \
         if(true != ((bool)val)) {                                                                                      \
-            LOG_ERROR(SYS, "Error");                                                                                   \
-            io_printf("\n[e] %s:Line: %d in val %d ", __FUNCTION__, __LINE__, (int)val);                               \
+            LOG_ERROR(SYS, "\n[e] %s:Line: %d in val %d ", __FUNCTION__, __LINE__, (int)val);                          \
             return false;                                                                                              \
         }                                                                                                              \
     } while(0);
@@ -57,8 +56,8 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if(val1 != val2) {                                                                                             \
-            LOG_ERROR(SYS, "[e] %s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);             \
-            LOG_ERROR(SYS, "[e] %s():Line: %d in val1: 0x%x val2: 0x%x ", __FUNCTION__, __LINE__, val1, val2);         \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                 \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: 0x%x val2: 0x%x ", __FUNCTION__, __LINE__, val1, val2);             \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \
@@ -129,6 +128,19 @@
         } else if((exp_v + precision) < val) {                                                                         \
             LOG_ERROR(SYS, "val too big");                                                                             \
             io_printf("\n%s():Line: %d in val: %u exp_v: %u ", __FUNCTION__, __LINE__, val, exp_v);                    \
+            return false;                                                                                              \
+        } else {                                                                                                       \
+            /*printf ("\n OK!\n");  */                                                                                 \
+        }                                                                                                              \
+    } while(0);
+
+#define EXPECT_GR(val1, val2)                                                                                          \
+    do {                                                                                                               \
+        /*int val1 = vala; */                                                                                          \
+        /*int val2 = val2; */                                                                                          \
+        if(val2 <= val1) {                                                                                             \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                 \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: 0x%x val2: 0x%x ", __FUNCTION__, __LINE__, val1, val2);             \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \

@@ -26,11 +26,15 @@
 
 #ifdef HAS_ADC
 #include "adc_drv.h"
-#endif
+#endif /*HAS_ADC*/
 
 #ifdef HAS_DAC
 #include "dac_drv.h"
-#endif
+#endif /*HAS_DAC*/
+
+#ifdef HAS_FLASH_FS
+#include "flash_fs.h"
+#endif /*HAS_FLASH_FS*/
 
 #ifdef HAS_RF
 #include "rf_drv.h"
@@ -98,6 +102,10 @@ void common_loop(uint64_t loop_start_time) {
 #ifdef HAS_SX1262
     MEASURE_TASK_INTERVAL(LORA, 5, sx1262_process);
 #endif /*HAS_SX1262*/
+
+#ifdef HAS_FLASH_FS
+    MEASURE_TASK_INTERVAL(FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc);
+#endif /*HAS_FLASH_FS*/
 }
 
 uint32_t g_iteration_cnt = 10;

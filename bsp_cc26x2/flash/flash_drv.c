@@ -118,3 +118,9 @@ bool flash_erase(uint32_t addr, uint32_t array_len) {
     }
     return res;
 }
+
+bool is_errased(uint32_t addr, uint32_t size) {
+    bool res = false;
+    res = is_arr_pat((uint8_t*)addr, size, 0xff);
+    return res;
+}

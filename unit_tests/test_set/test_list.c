@@ -39,7 +39,7 @@ const unit_test_info_t test_list[] = {{"type_transform", test_type_transformatio
                                 UBLOX_PROTO_TEST_SUIT
                                 BYTE_UTILS_TEST_SUIT
                                 BIT_UTILS_TEST_SUIT
-                                {"utils",test_utils},
+                                {"array_init",test_array_init},
                                 {"uspec_behavior",test_uspec_behavior},
                                 {"array",test_array},
                                 {"64bit_mult", test_64bit_mult},
@@ -90,12 +90,15 @@ bool test_utoa_bin8(void) {
     EXPECT_STREQ((char*)"0101_0101", (char*)utoa_bin8(0x55));
     return true;
 }
-
-bool test_utils(void){
-    uint8_t i=0;
-
-   // ++i=i++;
-   // i++=++i;
+//tsr array_init
+bool test_array_init(void){
+    uint8_t arr[4]={42,2};
+    EXPECT_EQ(42, arr[0]);
+    EXPECT_EQ(2, arr[1]);
+    EXPECT_EQ(0, arr[2]);
+    EXPECT_EQ(0, arr[3]);
+    // ++i=i++; build error
+    // i++=++i; build error
     return true;
 }
 

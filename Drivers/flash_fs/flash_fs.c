@@ -13,9 +13,12 @@
 #include "data_utils.h"
 #include "flash_drv.h"
 #include "flash_fs_ll.h"
+#include "io_utils.h"
 #include "log.h"
 #include "memory_layout.h"
 #include "param_ids.h"
+
+FlashFs_t FlashFs;
 
 /* status for a active page */
 static const uint8_t mm_PageStateActive[QWORD_LEN] = {0x00, 0x00, 0xA5, 0x5A};
@@ -78,32 +81,25 @@ static uint32_t calc_rem_size(uint32_t offset) {
  *    @param    offset - pointer to store active offset in flash
  *    @param    maxOffset - maximum offset that could be in specified storage
  *    @param    len - pointer to store complete
-
  */
 static bool mm_get_next(uint32_t* offset, uint32_t maxOffset, uint32_t* completeLen) {
+    bool res = false;
     mmItem_t* item = NULL;
     uint32_t rem_size = 0;
     uint32_t cur_offset = *offset;
-    do {
-        /* valid item could not be less that 5 bytes */
-        if((maxOffset - ITEM_HEADER_SZ) < cur_offset) {
-            return false;
-        }
-
+    /* valid item could not be less that MIN_FILE_LEN bytes */
+    for(cur_offset = *offset; cur_offset < (maxOffset - MIN_FILE_LEN); cur_offset++) {
         /* reference item */
         item = (mmItem_t*)cur_offset;
-
-        /* if all header have 'ff's - this is a spare place */
-        if((0xFFFF == item->length) && (0xFFFF == item->id) && (0xFF == item->crc8)) {
-            /* empty space found */
-            return false;
+        if(item->id != (MASK_16BIT ^ item->nid)) {
+            continue;
         }
+        /*spot id!*/
         rem_size = calc_rem_size((uint32_t)cur_offset);
         /*is data with that length can be fitted in flash page?*/
         if(item->length < rem_size) {
             uint8_t calc_crc8 = crc8_autosar_calc((void*)(cur_offset + ITEM_HEADER_SZ), item->length);
             if(calc_crc8 != item->crc8) {
-                cur_offset++;
                 continue;
             } else {
                 /*spot data file valid item */
@@ -111,13 +107,54 @@ static bool mm_get_next(uint32_t* offset, uint32_t maxOffset, uint32_t* complete
                 *completeLen = item->length + sizeof(mmItem_t);
             }
         } else {
-            cur_offset++;
             continue;
         }
+        res = true;
+        break;
+    }
+    return res;
+}
 
-        return true;
+/**
+ *    @brief    count files in Flash File system
+ *
+ */
+uint32_t mm_cnt_files(uint32_t start_page_addr, uint32_t page_len, uint32_t* spare_cnt) {
+    mmItem_t* item = NULL;
+    uint32_t rem_size = 0;
+    bool res = false;
+    uint32_t cur_offset = start_page_addr;
+    uint32_t file_cnt = 0;
+    uint8_t* byte_p = NULL;
+    *spare_cnt = 0;
+    for(cur_offset = start_page_addr; cur_offset <= (start_page_addr + page_len - MIN_FILE_LEN); cur_offset++) {
+        /* reference item */
+        byte_p = (uint8_t*)cur_offset;
+        if(0xFF == *byte_p) {
+            (*spare_cnt)++;
+        }
+        item = (mmItem_t*)cur_offset;
 
-    } while(1);
+        if(item->id == (MASK_16BIT ^ item->nid)) {
+            res = true;
+        } else {
+            res = false;
+        }
+
+        if(res) {
+            rem_size = start_page_addr + page_len - cur_offset;
+            /*is data with that length can be fitted in flash page?*/
+            if((item->length < rem_size) && (0 < item->length)) {
+                uint8_t calc_crc8 = crc8_autosar_calc((void*)(cur_offset + ITEM_HEADER_SZ), item->length);
+                if(calc_crc8 == item->crc8) {
+                    /*spot data file valid item */
+                    file_cnt++;
+                }
+            }
+        }
+    }
+
+    return file_cnt;
 }
 
 /**
@@ -135,6 +172,7 @@ static bool mm_find_field(uint16_t file_id, mmItem_t** item, mmItem_t** empty, u
     bool res = -1;
     uint32_t completeLen = 0;
     uint32_t prev_item_offset = 0xFFFFFFFF;
+    mmItem_t* prevItem = NULL;
     uint32_t mm_page_start = 0;
     uint32_t offset = 0;
     uint32_t mm_page_len = 0;
@@ -153,12 +191,12 @@ static bool mm_find_field(uint16_t file_id, mmItem_t** item, mmItem_t** empty, u
         *item = (mmItem_t*)offset;
 
         /* if field's file_id match to search one, proceed it */
-        if((*item)->id == file_id) {
+        if(((*item)->id == file_id) && ((*item)->id == (MASK_16BIT ^ (*item)->nid))) {
             /* if something similar was already found, we should invalidate it first */
             if(0xFFFFFFFF != prev_item_offset) {
                 /* to invalidate prev item just clear its id */
-                res = mm_flash_zero(prev_item_offset, sizeof(mmItem_t));
-                // TODO: invalidate data also
+                prevItem = (mmItem_t*)prev_item_offset;
+                res = mm_flash_zero(prev_item_offset, sizeof(mmItem_t) + prevItem->length);
                 if(false == res) {
                     return false;
                 }
@@ -210,6 +248,26 @@ uint32_t mm_get_remaining_space(void) {
 }
 
 /**
+ *    @brief    flash memory is not mapped yet, remap it
+ */
+bool mm_flash_format(void) {
+    bool res = false;
+    /* invalidate second page as passive */
+    res = mm_flash_zero(MEMORY_MANAGER2_OFFSET, QWORD_LEN);
+    if(res) {
+        /* erase first page */
+        res = flash_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH);
+    }
+
+    if(res) {
+        /* indicate first page as active */
+        res = mm_flash_write(MEMORY_MANAGER1_OFFSET, (uint8_t*)mm_PageStateActive, sizeof(mm_PageStateActive));
+    }
+
+    return res;
+}
+
+/**
  *     @brief    switch used memory manager page and copy all valid data to the next one
  *
  *     @retval
@@ -217,7 +275,9 @@ uint32_t mm_get_remaining_space(void) {
 bool mm_turn_page(void) {
     bool res = false;
     uint32_t completeLen = 0;
-    uint32_t mmPageActiveStart = 0, mmPageActiveLen = 0, mmPagePassiveStart = 0, offsetActive = 0, offsetPassive = 0;
+    uint32_t mmPageActiveStart = 0, mmPageActiveLen = 0;
+    uint32_t mmPagePassiveStart = 0;
+    uint32_t offsetActive = 0, offsetPassive = 0;
     /* select active page */
     res = mm_get_active_page(&mmPageActiveStart, &mmPageActiveLen);
     if(false == res) {
@@ -228,15 +288,15 @@ bool mm_turn_page(void) {
     if(MEMORY_MANAGER1_OFFSET == mmPageActiveStart) {
         /* clear page # 2 */
         res = flash_erase(MEMORY_MANAGER2_OFFSET, MEMORY_MANAGER2_LENGTH);
-        if(res) {
-            res = true;
+        if(false == res) {
+            return false;
         }
         mmPagePassiveStart = MEMORY_MANAGER2_OFFSET;
     } else if(MEMORY_MANAGER2_OFFSET == mmPageActiveStart) {
         /* clear page # 1 */
         res = flash_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH);
-        if(res) {
-            res = true;
+        if(false == res) {
+            return false;
         }
         mmPagePassiveStart = MEMORY_MANAGER1_OFFSET;
     } else {
@@ -250,7 +310,7 @@ bool mm_turn_page(void) {
     offsetActive = mmPageActiveStart + QWORD_LEN;
     offsetPassive = mmPagePassiveStart + QWORD_LEN;
     /* look through whole storage looking for specified item */
-    while(mm_get_next(&offsetActive, mmPageActiveStart + mmPageActiveLen, &completeLen) == true) {
+    while(true == mm_get_next(&offsetActive, mmPageActiveStart + mmPageActiveLen, &completeLen)) {
         /* copy all valid items to the passive page */
         res = mm_flash_write(offsetPassive, (uint8_t*)offsetActive, completeLen);
         if(false == res) {
@@ -271,12 +331,6 @@ bool mm_turn_page(void) {
     if(false == res) {
         return false;
     }
-    /* invalidate active page */
-    res = mm_flash_zero(offsetPassive, QWORD_LEN);
-    if(false == res) {
-        return false;
-    }
-
     return true;
 }
 
@@ -290,17 +344,33 @@ bool mm_turn_page(void) {
 
 bool mm_maintain(void) {
     mmItem_t *prevItem = NULL, *empty = NULL;
-    bool res = 0;
+    bool res = false;
     uint32_t rem_space = 0;
     /* try to find previous file of the same variable */
     res = mm_find_field(MM_INVALID_ID, &prevItem, &empty, &rem_space);
     if(false == res) {
         res = true;
-        if(rem_space < (ITEM_HEADER_SZ + 1)) {
+        if(rem_space < MIN_FILE_LEN) {
             /* we have not enough space to fit minimal payload file, turn the page */
+            LOG_INFO(FLASH_FS, "Toggle NVS pages");
             res = mm_turn_page(); /*Long procedure*/
         }
     }
+    return res;
+}
+
+bool flash_fs_proc(void) {
+    bool res = false;
+    res = mm_maintain();
+    uint32_t spare_cnt = 0;
+    spare_cnt = 0;
+    FlashFs.page1.files_cnt = mm_cnt_files(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH, &spare_cnt);
+    FlashFs.page1.usage_pre_cent = 100 - ((100U * spare_cnt) / MEMORY_MANAGER1_LENGTH);
+
+    spare_cnt = 0;
+    FlashFs.page2.files_cnt = mm_cnt_files(MEMORY_MANAGER2_OFFSET, MEMORY_MANAGER2_LENGTH, &spare_cnt);
+    FlashFs.page2.usage_pre_cent = 100 - ((100U * spare_cnt) / MEMORY_MANAGER2_LENGTH);
+
     return res;
 }
 
@@ -372,6 +442,7 @@ bool mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
 
     /* prepare header */
     newHeader.id = data_id;
+    newHeader.nid = MASK_16BIT ^ data_id;
     newHeader.length = new_file_len;
     newHeader.crc8 = crc8_autosar_calc(new_file, new_file_len);
     /* write Header*/
@@ -486,29 +557,21 @@ bool mm_invalidate(uint16_t data_id) {
 
     if(res) {
         /* invalidate field */
-        res = mm_flash_zero((uint32_t)item, sizeof(mmItem_t));
+        res = mm_flash_zero((uint32_t)item, sizeof(mmItem_t) + item->length);
         /*TODO invalidate data if crc match*/
     }
 
     return res;
 }
+
 /**
  *    @brief    flash memory is not mapped yet, remap it
  */
-bool mm_flash_format(void) {
-    bool res = false;
+bool mm_flash_erase(void) {
+    bool res = true;
     /* invalidate second page as passive */
-    res = mm_flash_zero(MEMORY_MANAGER2_OFFSET, QWORD_LEN);
-    if(res) {
-        /* erase first page */
-        res = flash_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH);
-    }
-
-    if(res) {
-        /* indicate first page as active */
-        res = mm_flash_write(MEMORY_MANAGER1_OFFSET, (uint8_t*)mm_PageStateActive, sizeof(mm_PageStateActive));
-    }
-
+    res = flash_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH) && res;
+    res = flash_erase(MEMORY_MANAGER2_OFFSET, MEMORY_MANAGER2_LENGTH) && res;
     return res;
 }
 

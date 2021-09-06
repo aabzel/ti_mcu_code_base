@@ -33,6 +33,7 @@ bool flash_init(void);
 bool flash_write(uint32_t addr, uint8_t* array, uint32_t array_len);
 bool flash_read(uint32_t* addr, uint8_t* rx_array, uint32_t array_len);
 bool flash_erase(uint32_t addr, uint32_t array_len);
+bool is_errased(uint32_t addr, uint32_t size);
 /*
  * API
  erase 8kbyte flash block

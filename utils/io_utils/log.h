@@ -34,9 +34,10 @@ typedef enum {
   TIM=8,
   SPI=9,
   RF=10,
-  SYS=11,
-  UART=12,
-  ALL_FACILITY=13
+  RNG = 11,
+  SYS=12,
+  UART=13,
+  ALL_FACILITY=14
 } log_facility_t;
 
 extern log_level_t log_levels[ALL_FACILITY];

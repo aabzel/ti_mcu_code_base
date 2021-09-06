@@ -197,3 +197,5 @@ uint8_t get_bit_from_32bit(uint32_t in_val, uint8_t bit_num) {
     }
     return bit;
 }
+
+uint16_t invert_bits16(uint16_t val) { return MASK_16BIT ^ val; }

@@ -69,6 +69,12 @@ extern "C" {
 #define FLASH_FS_COMMANDS
 #endif
 
+#ifdef HAS_RNG
+#include "rng_commands.h"
+#else
+#define TRNG_COMMANDS
+#endif
+
 #define SHELL_COMMANDS                                                                                                 \
     BMP180_COMMANDS                                                                                                    \
     COMMON_COMMANDS                                                                                                    \
@@ -81,6 +87,7 @@ extern "C" {
     NMEA_COMMANDS                                                                                                      \
     RF_COMMANDS                                                                                                        \
     SX1262_COMMANDS                                                                                                    \
+    TRNG_COMMANDS                                                              \
     UBLOX_COMMANDS
 
 #ifdef __cplusplus

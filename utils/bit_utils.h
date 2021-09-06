@@ -228,6 +228,7 @@ bool is_power_of_two(uint32_t const val);
 bool is_parity_odd(uint32_t const inVal);
 
 uint8_t get_bit_from_32bit(uint32_t in_val, uint8_t bit_num);
+uint16_t invert_bits16(uint16_t val);
 
 #ifdef __cplusplus
 }
