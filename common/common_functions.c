@@ -70,7 +70,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif
 
 #ifdef HAS_ADC
-    MEASURE_TASK_INTERVAL(ADC, 10000, adc_proc);
+    MEASURE_TASK_INTERVAL(ADC, 100000, adc_proc);
 #endif
 
 #ifdef HAS_WDT
@@ -102,7 +102,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_RF*/
 
 #ifdef HAS_SX1262
-    MEASURE_TASK_INTERVAL(LORA, 3000, sx1262_process);
+    MEASURE_TASK_INTERVAL(LORA, 100000, sx1262_process);
 #endif /*HAS_SX1262*/
 
 #ifdef HAS_FLASH_FS

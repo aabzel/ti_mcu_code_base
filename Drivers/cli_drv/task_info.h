@@ -8,6 +8,8 @@
 #include "data_utils.h"
 #include "task_config.h"
 
+/*some cooperative RTOS implementation*/
+
 typedef struct task_data_tag {
     bool init;
     const char* const name;
@@ -44,6 +46,7 @@ typedef enum {
         (void)loop_start_time_us;
 
 
+
 #define _TASK_START(TASK_ITEM)                                                                                         \
     {                                                                                                                  \
         TASK_ITEM.start_count++;                                                                                       \
@@ -55,8 +58,8 @@ typedef enum {
         }                                                                                                              \
         TASK_ITEM.start_time_prev = start;                                                                             \
         if(TASK_ITEM.init) {                                                                                           \
-            TASK_ITEM.start_period_max = rx_max64u (TASK_ITEM.start_period_max, period);                               \
-            TASK_ITEM.start_period_min = rx_min64u (TASK_ITEM.start_period_min, period);                               \
+            TASK_ITEM.start_period_max = rx_max64u(TASK_ITEM.start_period_max, period);                               \
+            TASK_ITEM.start_period_min = rx_min64u(TASK_ITEM.start_period_min, period);                               \
         }                                                                                                              \
         TASK_ITEM.init = true;
 
@@ -72,13 +75,6 @@ typedef enum {
         TASK_ITEM.run_time_max = rx_max64u(TASK_ITEM.run_time_max, delta);                                             \
     }
 
-#define _MEASURE_TASK(TASK_ITEM, task_func)                                                                            \
-    {                                                                                                                  \
-        _TASK_START(TASK_ITEM)                                                                                         \
-        task_func();                                                                                                   \
-        _TASK_STOP(TASK_ITEM)                                                                                          \
-    }
-
 #define _MEASURE_TASK_INTERVAL(TASK_ITEM, interval_us, task_func)                                                      \
     do {                                                                                                               \
         if(TASK_ITEM.start_time_next < loop_start_time_us) {                                                           \
@@ -88,6 +84,14 @@ typedef enum {
             _TASK_STOP(TASK_ITEM)                                                                                      \
         }                                                                                                              \
     } while(0);
+
+#define _MEASURE_TASK(TASK_ITEM, task_func)                                                                            \
+    do{                                                                                                                \
+        _TASK_START(TASK_ITEM)                                                                                         \
+        task_func();                                                                                                   \
+        _TASK_STOP(TASK_ITEM)                                                                                          \
+    }while(0);
+
 
 #define _MEASURE_TASK_INTERVAL_OLD(TASK_ITEM, interval_us, task_func)                                                  \
     {                                                                                                                  \

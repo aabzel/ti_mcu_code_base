@@ -8,6 +8,7 @@
 #include "diag_page_nums.h"
 #include "diag_report.h"
 #include "sys.h"
+#include "sys_tick.h"
 #include "table_utils.h"
 #include "writer_generic.h"
 
@@ -50,6 +51,7 @@ bool diag_page_tasks(ostream_t* stream) {
         return false;
     }
 
+    oprintf(stream, "up_time  %u ms"  CRLF, g_up_time_ms);
     oprintf(stream, "iteration cnt %u"  CRLF, iteration_cnt);
     oprintf(stream, "total_time %llu us"  CRLF, total_time_us);
     oprintf(stream, "total_time %llu ms"  CRLF, total_time_ms);

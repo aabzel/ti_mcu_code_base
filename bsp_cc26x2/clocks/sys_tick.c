@@ -9,8 +9,8 @@
 volatile uint32_t g_up_time_ms = 0;
 
 #ifdef HAS_SYS_TIC_INT
+/*overflow after 49 days*/
 void SysTickIntHandler(void){
-    /*overflow after 49 days*/
     g_up_time_ms++;
 }
 #endif /*HAS_SYS_TIC_INT*/
