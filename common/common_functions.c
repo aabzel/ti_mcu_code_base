@@ -60,49 +60,49 @@ bool sys_init(void) {
     return res;
 }
 
-void common_loop(uint64_t loop_start_time) {
-    if(0u == loop_start_time) {
+void common_loop(uint64_t loop_start_time_us) {
+    if(0u == loop_start_time_us) {
         return;
     }
 
 #ifdef HAS_DAC
-    MEASURE_TASK_INTERVAL(DAC, 1, dac_proc);
+    MEASURE_TASK_INTERVAL(DAC, 100000, dac_proc);
 #endif
 
 #ifdef HAS_ADC
-    MEASURE_TASK_INTERVAL(ADC, 100, adc_proc);
+    MEASURE_TASK_INTERVAL(ADC, 10000, adc_proc);
 #endif
 
 #ifdef HAS_WDT
-    MEASURE_TASK_INTERVAL(WDT, 1, proc_watchdog);
+    MEASURE_TASK_INTERVAL(WDT, 1000, proc_watchdog);
 #endif
 
 #ifdef HAS_LED
-    MEASURE_TASK_INTERVAL(LED, 1, proc_led);
+    MEASURE_TASK_INTERVAL(LED, 5000, proc_led);
 #endif /*HAS_LED*/
 
 #ifdef HAS_UART1
-    MEASURE_TASK_INTERVAL(UART1, 1, proc_uart1);
+    MEASURE_TASK_INTERVAL(UART1, 2000, proc_uart1);
 #endif /*HAS_UART1*/
 
 #ifdef HAS_UBLOX
-    MEASURE_TASK_INTERVAL(UBX, 1, ubx_proc_frame);
+    MEASURE_TASK_INTERVAL(UBX, 10000, ubx_proc_frame);
 #endif /*HAS_UBLOX*/
 
 #ifdef HAS_NMEA
-    MEASURE_TASK_INTERVAL(NMEA, 1, nmea_proc_message);
+    MEASURE_TASK_INTERVAL(NMEA, 500000, nmea_proc_message);
 #endif /*HAS_NMEA*/
 
 #ifdef HAS_CLI
-    MEASURE_TASK_INTERVAL(CLI, 30, cli_process);
+    MEASURE_TASK_INTERVAL(CLI, 3000, cli_process);
 #endif /*HAS_CLI*/
 
 #ifdef HAS_RF
-    MEASURE_TASK_INTERVAL(RF, 30, rf_process);
+    MEASURE_TASK_INTERVAL(RF, 3000, rf_process);
 #endif /*HAS_RF*/
 
 #ifdef HAS_SX1262
-    MEASURE_TASK_INTERVAL(LORA, 5, sx1262_process);
+    MEASURE_TASK_INTERVAL(LORA, 3000, sx1262_process);
 #endif /*HAS_SX1262*/
 
 #ifdef HAS_FLASH_FS
@@ -110,14 +110,14 @@ void common_loop(uint64_t loop_start_time) {
 #endif /*HAS_FLASH_FS*/
 }
 
-uint32_t g_iteration_cnt = 10;
+
 
 void common_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
 
     for(;;) {
-        g_iteration_cnt++;
+
         MAIN_LOOP_START;
-        common_loop(loop_start_time);
+        common_loop(loop_start_time_us);
     }
 }

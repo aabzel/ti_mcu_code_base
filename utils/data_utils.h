@@ -61,28 +61,30 @@ typedef union uType8Union_t{
     BitField8_t bits8;
 } Type8Union_t;
   
-uint8_t rx_max8u(uint8_t max8u_x1, uint8_t max8u_x2);
-uint8_t rx_min8u(uint8_t min8u_x1, uint8_t min8u_x2);
-uint16_t rx_max16u(uint16_t max16u_x1, uint16_t max16u_x2);
-uint16_t rx_min16u(uint16_t min16u_x1, uint16_t min16u_x2);
-uint32_t rx_max32u(uint32_t max32u_x1, uint32_t max32u_x2);
-uint32_t rx_min32u(uint32_t min32u_x1, uint32_t min32u_x2);
-int8_t rx_max8(int8_t max8_x1, int8_t max8_x2);
-int8_t rx_min8(int8_t min8_x1, int8_t min8_x2);
+bool hex2ascii(uint8_t *in_hex, uint32_t hex_len, uint8_t *out_ascii, uint32_t ascii_len);
+bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt);
+bool try_alloc_on_stack(int n, uint8_t pat, uint16_t *real_size) ;
+const char *get_spaces_str(uint32_t spaces_length);
+float ms2Hz(uint16_t ms);
 int16_t rx_max16(int16_t max16_x1, int16_t max16_x2);
 int16_t rx_min16(int16_t min16_x1, int16_t min16_x2);
 int32_t rx_max32(int32_t max32_x1, int32_t max32_x2);
 int32_t rx_min32(int32_t min32_x1, int32_t min32_x2);
-uint32_t swap32(uint32_t u32_num);
-uint16_t swap16(uint16_t u16_num);
-const char *get_spaces_str(uint32_t spaces_length);
-float ms2Hz(uint16_t ms);
-uint8_t uint16_to_uint8_limiter(uint16_t in_val);
+int8_t rx_max8(int8_t max8_x1, int8_t max8_x2);
+int8_t rx_min8(int8_t min8_x1, int8_t min8_x2);
 int8_t two_complement_to_decimal(uint8_t in_code, int significant_bits);
+uint16_t rx_max16u(uint16_t max16u_x1, uint16_t max16u_x2);
+uint16_t rx_min16u(uint16_t min16u_x1, uint16_t min16u_x2);
+uint16_t swap16(uint16_t u16_num);
+uint32_t rx_max32u(uint32_t max32u_x1, uint32_t max32u_x2);
+uint32_t rx_min32u(uint32_t min32u_x1, uint32_t min32u_x2);
+uint32_t swap32(uint32_t u32_num);
+uint64_t rx_max64u(uint64_t max64u_x1, uint64_t max64u_x2);
+uint64_t rx_min64u(uint64_t min64u_x1, uint64_t min64u_x2);
 uint8_t extract_digit(uint32_t in_num ,uint8_t digit_index);
-bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt);
-bool try_alloc_on_stack(int n, uint8_t pat, uint16_t *real_size) ;
-bool hex2ascii(uint8_t *in_hex, uint32_t hex_len, uint8_t *out_ascii, uint32_t ascii_len);
+uint8_t rx_max8u(uint8_t max8u_x1, uint8_t max8u_x2);
+uint8_t rx_min8u(uint8_t min8u_x1, uint8_t min8u_x2);
+uint8_t uint16_to_uint8_limiter(uint16_t in_val);
 
 #ifdef __cplusplus
 }

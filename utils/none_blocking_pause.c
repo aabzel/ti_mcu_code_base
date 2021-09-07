@@ -5,7 +5,7 @@
 #include "task_info.h"
 #include "timer_utils.h"
 
-/*none blocking wait for self test and poling*/
+/*none blocking wait for self test and polling*/
 bool wait_in_loop_ms(uint64_t wait_pause_ms) {
   uint64_t start_ms = 0U;
   uint64_t curr_ms = 0U;
@@ -14,7 +14,7 @@ bool wait_in_loop_ms(uint64_t wait_pause_ms) {
   bool loop = true;
   while (loop) {
     MAIN_LOOP_START;
-    common_loop(loop_start_time);
+    common_loop(loop_start_time_us);
 
     curr_ms = get_time_ms64();
     if (wait_pause_ms < (curr_ms - start_ms)) {

@@ -260,7 +260,7 @@ static bool flash_fs_scan(uint32_t start_page_addr, uint32_t page_len, char* key
     uint32_t cur_offset = start_page_addr;
     uint32_t file_cnt = 0;
     char temp_str[120];
-    LOG_INFO(FLASH_FS, "Page 0x%08x...0x%08x",start_page_addr,start_page_addr+page_len);
+    LOG_INFO(FLASH_FS, "Page 0x%08x...0x%08x", start_page_addr, start_page_addr + page_len);
     uint8_t* payload = NULL;
     static const table_col_t cols[] = {{5, "num"}, {7, "id"}, {7, "len"}, {6, "crc"}, {12, "addr"}, {5, "data"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));

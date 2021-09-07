@@ -131,28 +131,28 @@ bool is_errased(uint32_t addr, uint32_t size) {
     return res;
 }
 
-bool is_addr_protected(uint32_t flash_addr){
+bool is_addr_protected(uint32_t flash_addr) {
     bool res = false;
-    if(flash_addr<NOR_FLASH_SIZE){
+    if(flash_addr < NOR_FLASH_SIZE) {
         res = true;
         uint32_t reg_val = 0;
-        uint8_t flash_sector = flash_addr/FLASH_SECTOR_SIZE;
-        if (flash_sector<=31) {
-            reg_val = HWREG (CCFG_BASE+CCFG_O_CCFG_PROT_31_0);
-        }else if((32<=flash_sector) &&  (flash_sector<=63)){
-            reg_val = HWREG (CCFG_BASE+CCFG_O_CCFG_PROT_63_32);
+        uint8_t flash_sector = flash_addr / FLASH_SECTOR_SIZE;
+        if(flash_sector <= 31) {
+            reg_val = HWREG(CCFG_BASE + CCFG_O_CCFG_PROT_31_0);
+        } else if((32 <= flash_sector) && (flash_sector <= 63)) {
+            reg_val = HWREG(CCFG_BASE + CCFG_O_CCFG_PROT_63_32);
             flash_sector -= 32;
-        }else if((64<=flash_sector) &&  (flash_sector<=95)){
-            reg_val = HWREG (CCFG_BASE+CCFG_O_CCFG_PROT_95_64);
+        } else if((64 <= flash_sector) && (flash_sector <= 95)) {
+            reg_val = HWREG(CCFG_BASE + CCFG_O_CCFG_PROT_95_64);
             flash_sector -= 64;
-        }else if((96<=flash_sector) &&  (flash_sector<=127)){
-            reg_val = HWREG (CCFG_BASE+CCFG_O_CCFG_PROT_127_96);
+        } else if((96 <= flash_sector) && (flash_sector <= 127)) {
+            reg_val = HWREG(CCFG_BASE + CCFG_O_CCFG_PROT_127_96);
             flash_sector -= 96;
         } else {
             res = false;
         }
-        if(res){
-            res = IS_BIT_RESET(reg_val,flash_sector);
+        if(res) {
+            res = IS_BIT_RESET(reg_val, flash_sector);
         }
     }
 

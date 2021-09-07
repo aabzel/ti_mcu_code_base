@@ -14,21 +14,21 @@
 #include "str_utils.h"
 #include "table_utils.h"
 
-static bool diag_flash_prot(char* key_word1, char* key_word2){
+static bool diag_flash_prot(char* key_word1, char* key_word2) {
     bool res = false;
-    uint32_t flash_addr = NOR_FLASH_BASE,num=0;
+    uint32_t flash_addr = NOR_FLASH_BASE, num = 0;
     char line_str[120];
-    static const table_col_t cols[] = {{5, "num"},  {10, "start"},    {10, "end"},     {8, "status"}};
+    static const table_col_t cols[] = {{5, "num"}, {10, "start"}, {10, "end"}, {8, "status"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
-    for(flash_addr=0; flash_addr<NOR_FLASH_SIZE; flash_addr+=FLASH_SECTOR_SIZE) {
+    for(flash_addr = 0; flash_addr < NOR_FLASH_SIZE; flash_addr += FLASH_SECTOR_SIZE) {
         strcpy(line_str, TSEP);
-        snprintf(line_str, sizeof(line_str), "%s 0x%08x" TSEP, line_str, flash_addr );
-        snprintf(line_str, sizeof(line_str), "%s 0x%08x" TSEP, line_str, flash_addr+FLASH_SECTOR_SIZE );
+        snprintf(line_str, sizeof(line_str), "%s 0x%08x" TSEP, line_str, flash_addr);
+        snprintf(line_str, sizeof(line_str), "%s 0x%08x" TSEP, line_str, flash_addr + FLASH_SECTOR_SIZE);
         res = is_addr_protected(flash_addr);
-        if(res){
-            snprintf(line_str, sizeof(line_str), "%s protected" TSEP, line_str );
-        }else{
-            snprintf(line_str, sizeof(line_str), "%s WrEnable" TSEP, line_str );
+        if(res) {
+            snprintf(line_str, sizeof(line_str), "%s protected" TSEP, line_str);
+        } else {
+            snprintf(line_str, sizeof(line_str), "%s WrEnable" TSEP, line_str);
         }
         snprintf(line_str, sizeof(line_str), "%s" CRLF, line_str);
         if(is_contain(line_str, key_word1, key_word2)) {
@@ -40,7 +40,6 @@ static bool diag_flash_prot(char* key_word1, char* key_word2){
 
     return res;
 }
-
 
 bool flash_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -60,11 +59,11 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
         res = true;
     }
 
-    if (2 < argc) {
+    if(2 < argc) {
         LOG_ERROR(NVS, "Usage: fd key1 key2");
     }
 
-    if (res) {
+    if(res) {
         uint32_t all_flash_crc = 0;
         // FlashSizeGet
         // FlashPowerModeGet
@@ -72,9 +71,9 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
         all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
         io_printf("FlashCRC32: 0x%08x" CRLF, all_flash_crc);
 
-        io_printf("Flash Base: 0x%08x" CRLF, NOR_FLASH_BASE );
+        io_printf("Flash Base: 0x%08x" CRLF, NOR_FLASH_BASE);
         io_printf("Flash size: %u byte %u kByte" CRLF, NOR_FLASH_SIZE, NOR_FLASH_SIZE / 1024);
-        io_printf("Flash End: 0x%08x" CRLF, NOR_FLASH_END-1);
+        io_printf("Flash End: 0x%08x" CRLF, NOR_FLASH_END - 1);
 
         /* Display the NVS region attributes */
         io_printf("Base Address: 0x%08x" CRLF, regionAttrs.regionBase);
