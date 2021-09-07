@@ -40,58 +40,58 @@ typedef enum {
     uint64_t loop_start_time = getRunTimeCounterValue64();                                                             \
     (void)loop_start_time;
 
-#define _TASK_START(data)                                                                                              \
+#define _TASK_START(TASK_ITEM)                                                                                              \
     {                                                                                                                  \
-        data.start_count++;                                                                                            \
-        uint32_t stop, delta, period, start = getRunTimeCounterValue32();                                              \
-        if (start > data.start_time_prev) {                                                                            \
-            period = start - data.start_time_prev;                                                                     \
+        TASK_ITEM.start_count++;                                                                                            \
+        uint32_t stop=0, delta=0, period=0, start = getRunTimeCounterValue32();                                              \
+        if (TASK_ITEM.start_time_prev < start) {                                                                            \
+            period = start - TASK_ITEM.start_time_prev;                                                                     \
         } else {                                                                                                       \
-            period = (0x100000000U + start) - data.start_time_prev;                                                    \
+            period = (0x100000000U + start) - TASK_ITEM.start_time_prev;                                                    \
         }                                                                                                              \
-        data.start_time_prev = start;                                                                                  \
-        if ((data.start_period_max < period) && data.init) {                                                           \
-            data.start_period_max = period;                                                                            \
+        TASK_ITEM.start_time_prev = start;                                                                                  \
+        if ((TASK_ITEM.start_period_max < period) && TASK_ITEM.init) {                                                           \
+            TASK_ITEM.start_period_max = period;                                                                            \
         }                                                                                                              \
-        data.init = true;
+        TASK_ITEM.init = true;
 
-#define _TASK_STOP(data)                                                                                               \
+#define _TASK_STOP(TASK_ITEM)                                                                                               \
     stop = getRunTimeCounterValue32();                                                                                 \
-    if (stop > start) {                                                                                                \
+    if ( start < stop ) {                                                                                                \
         delta = stop - start;                                                                                          \
     } else {                                                                                                           \
         delta = (0x100000000U + stop) - start;                                                                         \
     }                                                                                                                  \
-    data.run_time_total += delta;                                                                                      \
-    if (data.run_time_max < delta) {                                                                                   \
-        data.run_time_max = delta;                                                                                     \
+    TASK_ITEM.run_time_total += delta;                                                                                      \
+    if (TASK_ITEM.run_time_max < delta) {                                                                                   \
+        TASK_ITEM.run_time_max = delta;                                                                                     \
     }                                                                                                                  \
     }
 
-#define _MEASURE_TASK(data, task_func)                                                                                 \
+#define _MEASURE_TASK(TASK_ITEM, task_func)                                                                                 \
     {                                                                                                                  \
-        _TASK_START(data)                                                                                              \
+        _TASK_START(TASK_ITEM)                                                                                              \
         task_func();                                                                                                   \
-        _TASK_STOP(data)                                                                                               \
+        _TASK_STOP(TASK_ITEM)                                                                                               \
     }
 
-#define _MEASURE_TASK_INTERVAL(data, interval_us, task_func)                                                           \
-    {                                                                                                                  \
-        if (loop_start_time > data.start_time_next) {                                                                  \
-            data.start_time_next = loop_start_time + US_TO_COUNTER(interval_us);                                       \
-            _TASK_START(data)                                                                                          \
+#define _MEASURE_TASK_INTERVAL(TASK_ITEM, interval_us, task_func)                                                      \
+    do{                                                                                                                \
+        if ( TASK_ITEM.start_time_next < loop_start_time) {                                                                 \
+            TASK_ITEM.start_time_next = loop_start_time + US_TO_COUNTER(interval_us);                                  \
+            _TASK_START(TASK_ITEM)                                                                                     \
             task_func();                                                                                               \
-            _TASK_STOP(data)                                                                                           \
+            _TASK_STOP(TASK_ITEM)                                                                                      \
         }                                                                                                              \
-    }
+    }while(0);
 
-#define _MEASURE_TASK_INTERVAL_OLD(data, interval_us, task_func)                                                       \
+#define _MEASURE_TASK_INTERVAL_OLD(TASK_ITEM, interval_us, task_func)                                                       \
     {                                                                                                                  \
-        if (loop_start_time > data.start_time_next) {                                                                  \
-            data.start_time_next += US_TO_COUNTER(interval_us);                                                        \
-            _TASK_START(data)                                                                                          \
+        if (loop_start_time > TASK_ITEM.start_time_next) {                                                                  \
+            TASK_ITEM.start_time_next += US_TO_COUNTER(interval_us);                                                        \
+            _TASK_START(TASK_ITEM)                                                                                          \
             task_func();                                                                                               \
-            _TASK_STOP(data)                                                                                           \
+            _TASK_STOP(TASK_ITEM)                                                                                           \
         }                                                                                                              \
     }
 

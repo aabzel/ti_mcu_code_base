@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "task_info.h"
 
 #ifdef HAS_LED
 #include "led_drv.h"
@@ -62,7 +63,12 @@ bool sw_init(void) {
 
 #ifdef  HAS_FLASH_FS
   res = try_init(flash_fs_init(),"Flash_FS") && res;
+
 #endif /*HAS_FLASH_FS*/
+
+#ifdef TASKS
+  res = try_init(cmd_task_clear(0, NULL),"Tasks")&& res;
+#endif /*TASKS*/
 
   return res;
 }

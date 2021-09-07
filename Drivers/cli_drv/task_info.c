@@ -25,7 +25,8 @@ task_data_t task_data[] = {
 bool diag_page_tasks(ostream_t* stream) {
     stream = &dbg_o.s;
     static const table_col_t cols[] = {
-        {22, "Task name"}, {8, "Calls/s"}, {6, "CPU[%]"}, {12, "Rmax[us]"}, {12, "Tavg[us]"}, {12, "Tmax[us]"},
+        {22, "Task name"}, {8, "Calls/s"}, {6, "CPU[%]"},
+        {12, "Rmax[us]"}, {12, "Tavg[us]"}, {12, "Tmax[us]"}, {12, "RTtot[us]"}
     };
 
     uint64_t total_time;
@@ -60,11 +61,15 @@ bool diag_page_tasks(ostream_t* stream) {
                 oprintf(stream,
                         TABLE_LEFT "%21s " TABLE_SEPARATOR "%8" PRIu32 TABLE_SEPARATOR "%4u.%u" TABLE_SEPARATOR
                                    "%12" PRIu32 TABLE_SEPARATOR "%12" PRIu32 TABLE_SEPARATOR
-                                   "%12" PRIu32 TABLE_RIGHT CRLF,
-                        data[core][id].name, (uint32_t)((data[core][id].start_count * 1000) / total_time_ms),
-                        cpu_e3 / 10, cpu_e3 % 10, (uint32_t)(COUNTER_TO_US(data[core][id].run_time_max)),
+                                   "%12" PRIu32 TABLE_RIGHT ,
+                        data[core][id].name,
+                        (uint32_t)((data[core][id].start_count * 1000) / total_time_ms),
+                        cpu_e3 / 10,
+                        cpu_e3 % 10,
+                        (uint32_t)(COUNTER_TO_US(data[core][id].run_time_max)),
                         (uint32_t)((total_time_ms * 1000) / data[core][id].start_count),
                         (uint32_t)(COUNTER_TO_US(data[core][id].start_period_max)));
+                oprintf(stream," %llu "TABLE_SEPARATOR CRLF, data[core][id].run_time_total);
             }
         }
         table_row_bottom(stream, cols, ARRAY_SIZE(cols));
@@ -94,11 +99,13 @@ bool cmd_task_clear(int32_t argc, char* argv[]) {
     total_time0 = getRunTimeCounterValue64();
     total_time_ms0 = get_time_ms64();
 
-    return dump_cmd_result(true);
+    return true;
 }
 
 bool cmd_task_report(int32_t argc, char* argv[]) {
     (void)(argc);
     (void)(argv);
-    return show_diag_report(DIAG_PAGE_TASKS);
+    bool res = false;
+    res = diag_page_tasks(DBG_STREAM);
+    return res;
 }

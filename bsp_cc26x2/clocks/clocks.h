@@ -8,7 +8,6 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-//#include "stm32f4xx_hal.h"
 #define SYS_FREQ 48000000
 
 #define COUNTER_FREQ (SYS_FREQ / 1000000U)
