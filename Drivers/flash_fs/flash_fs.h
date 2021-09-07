@@ -12,10 +12,12 @@
 #include <stdint.h>
 
 #include "timer_utils.h"
+#include "flash_drv.h"
 
 #define QWORD_LEN 4
 #define MM_INVALID_ID 0xFFFF
 #define FLASH_FS_PERIOD_US SEC_2_US(1)
+
 
 typedef struct xFlashFsPage_t {
     uint32_t files_cnt;

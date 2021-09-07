@@ -60,8 +60,8 @@ bool clock_diag_command(int32_t argc, char* argv[]){
      if (0 == argc) {
          res = true;
          //PRCM_BASE +PRCM_O_OSCIMSC
-         int16_t temp_c=Temperature_getTemperature();
-         uint32_t millivolt= OSCHF_DebugGetCrystalAmplitude(  );
+         int16_t temp_c = Temperature_getTemperature();
+         uint32_t millivolt = OSCHF_DebugGetCrystalAmplitude(  );
          uint32_t code = CCFGRead_XOSC_FREQ();
          io_printf("XOSC_FREQ %s" CRLF, xoscfreq2str(code));
          io_printf("T: %u C" CRLF, temp_c);

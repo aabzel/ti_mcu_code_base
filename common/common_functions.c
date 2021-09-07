@@ -16,7 +16,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "sw_init.h"
-#include "task_config.h"
+//#include "task_config.h"
 #include "task_info.h"
 #include "uart_drv.h"
 
@@ -81,7 +81,9 @@ void common_loop(uint64_t loop_start_time) {
     MEASURE_TASK_INTERVAL(LED, 1, proc_led);
 #endif /*HAS_LED*/
 
+#ifdef HAS_UART1
     MEASURE_TASK_INTERVAL(UART1, 1, proc_uart1);
+#endif /*HAS_UART1*/
 
 #ifdef HAS_UBLOX
     MEASURE_TASK_INTERVAL(UBX, 1, ubx_proc_frame);

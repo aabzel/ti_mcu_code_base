@@ -74,19 +74,19 @@ bool print_version_s(ostream_t* stream) {
 
 #ifdef __GNUC__
         oputs(stream, "GCC" CRLF);
-#endif
+#endif /**/
 
-#ifdef HAS_BOOT
+#ifdef HAS_BOOTLOADER
         oputs(stream, "Bootloader ");
-#endif
+#endif /*HAS_BOOTLOADER*/
 
 #ifdef HAS_GENERIC
         oputs(stream, "Generic ");
-#endif
+#endif /*HAS_GENERIC*/
 
 #ifdef HAS_RELEASE
         oputs(stream, "Release" CRLF);
-#endif
+#endif /*HAS_RELEASE*/
 
 #ifdef HAS_DEBUG
         oputs(stream, "Debug" CRLF);

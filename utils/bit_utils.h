@@ -74,7 +74,9 @@ extern "C" {
 #define MASK_50BIT ((uint64_t)0x0003FFFFFFFFFFFF)
 
 #define SET_BIT_NUM(VAL, BIT) ((VAL) |= (1U << (BIT)))
-#define GET_BIT_NUM(VAL, BIT) (0x01 & (VAL >> BIT))
+#define GET_BIT_NUM(VAL, BIT) (0x01 & ((VAL) >> (BIT)))
+#define IS_BIT_RESET(VAL, BIT) (0==((VAL)&(1<<(BIT))))
+
 #define RESET_BIT_NUM(VAL, BIT) ((VAL) &= ~(1U << (BIT)))
 #define CHECK_BIT_NUM(VAL, BIT) ((1U << (BIT)) == ((VAL) & (1U << (BIT))))
 

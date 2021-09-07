@@ -8,16 +8,18 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-
 #include <ti/drivers/NVS.h>
 
+#include "flash_drv.h"
+
 #define K_BYTES 1024
+/*Hardware related code start*/
 #define NOR_FLASH_BASE 0x00000000
-
 #define NOR_FLASH_SIZE (352 * K_BYTES)
-#define NVS_SIZE (32 * K_BYTES)
+#define NOR_FLASH_END (NOR_FLASH_BASE+NOR_FLASH_SIZE)
+#define FLASH_SECTOR_SIZE (8*K_BYTES)
+/*Hardware related code end*/
 
-#define NVS_FLASH_START 0x00010000
 
 #define CONFIG_NVSINTERNAL 0
 #define CONFIG_TI_DRIVERS_NVS_COUNT 1
@@ -34,6 +36,7 @@ bool flash_write(uint32_t addr, uint8_t* array, uint32_t array_len);
 bool flash_read(uint32_t* addr, uint8_t* rx_array, uint32_t array_len);
 bool flash_erase(uint32_t addr, uint32_t array_len);
 bool is_errased(uint32_t addr, uint32_t size);
+bool is_addr_protected(uint32_t flash_addr);
 /*
  * API
  erase 8kbyte flash block

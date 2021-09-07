@@ -84,6 +84,14 @@ bool test_bit_type_size(void) {
   return true;
 }
 
+bool test_bit_macro(void){
+    EXPECT_FALSE (IS_BIT_RESET(2,0));
+    EXPECT_TRUE(IS_BIT_RESET(2,1));
+    EXPECT_EQ(1,GET_BIT_NUM(2, 1));
+    EXPECT_EQ(0,GET_BIT_NUM(2, 0));
+    return true;
+}
+
 bool test_bit_mask(void) {
   EXPECT_EQ(MASK_1BIT, generate_8bit_left_mask(1));
   EXPECT_EQ(MASK_3BIT, generate_8bit_left_mask(3));

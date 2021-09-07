@@ -9,9 +9,6 @@
 
 #define IOC_BASE 0x40081000
 
-//#define DIN31_0_REG_ADDR 0x400220C0
-//#define DOE31_0_REG_ADDR 0x400220D0
-
 const char* get_gpio_mode(uint8_t io_pin);
 const char* get_gpio_type(uint8_t io_pin);
 const char* get_pin_dir(uint8_t io_pin);

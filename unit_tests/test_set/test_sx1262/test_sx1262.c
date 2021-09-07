@@ -33,6 +33,7 @@ static bool test_one_pack_type(RadioPacketType_t pack_type) {
     return true;
 }
 
+/*fails*/
 bool test_sx1262_packet_type(void) {
     EXPECT_EQ(1, sizeof(RadioPacketType_t));
     RadioPacketType_t orig_packet_type = PACKET_TYPE_UNDEF;
@@ -71,6 +72,7 @@ bool test_sx1262_fifo(void) {
     return true;
 }
 
+/*fails*/
 bool test_sx1262_rx_addr(void) {
     uint8_t read_rx_addr = 0;
     uint8_t set_rx_addr = 200;

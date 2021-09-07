@@ -11,7 +11,7 @@
 #include "log.h"
 #include "oprintf.h"
 #include "sys.h"
-#include "task_info.h"
+//#include "task_info.h"
 //#include "uart_commands.h"
 #include "uart_string_reader.h"
 #include "writer_generic.h"

@@ -13,7 +13,7 @@
 #define COMMON_TASKS                                                                                                   \
     TASK(LED)                                                                                                          \
     TASK(WDT)                                                                                                          \
-    TASK_UART                                                                                                          \
+    TASK(UART)                                                                                                          \
     TASK_DIAG                                                                                                          \
     TASK_INTEGRITY
 
