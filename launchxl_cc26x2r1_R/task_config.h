@@ -5,6 +5,7 @@
   TASK(ADC)                                                                    \
   TASK(CLI)                                                                    \
   TASK(DAC)                                                                    \
+  TASK(FLASH_FS)                                                               \
   TASK(LED)                                                                    \
   TASK(LORA)                                                                   \
   TASK(NMEA)                                                                   \

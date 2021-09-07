@@ -1,5 +1,3 @@
-
-
 #ifndef LORA_DEFS_H
 #define LORA_DEFS_H
 

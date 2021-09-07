@@ -581,7 +581,7 @@ bool sx1262_conf_rx(void) {
 
     Sx1262Instance.mod_params.band_width = LORA_BW_41;
     Sx1262Instance.mod_params.coding_rate = LORA_CR_4_5;
-    Sx1262Instance.mod_params.spreading_factor = SF5;
+    Sx1262Instance.mod_params.spreading_factor = SF12;
     res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
     Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
     Sx1262Instance.packet_param.proto.lora.preamble_length = 8;

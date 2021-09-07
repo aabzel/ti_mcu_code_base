@@ -260,6 +260,7 @@ static bool flash_fs_scan(uint32_t start_page_addr, uint32_t page_len, char* key
     uint32_t cur_offset = start_page_addr;
     uint32_t file_cnt = 0;
     char temp_str[120];
+    LOG_INFO(FLASH_FS, "Page 0x%08x...0x%08x",start_page_addr,start_page_addr+page_len);
     uint8_t* payload = NULL;
     static const table_col_t cols[] = {{5, "num"}, {7, "id"}, {7, "len"}, {6, "crc"}, {12, "addr"}, {5, "data"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
@@ -322,28 +323,21 @@ static bool flash_fs_scan(uint32_t start_page_addr, uint32_t page_len, char* key
 
 bool cmd_flash_fs_scan(int32_t argc, char* argv[]) {
     bool res = false;
-    uint32_t start_page_addr = MEMORY_MANAGER1_OFFSET;
-    uint32_t page_len = MEMORY_MANAGER1_LENGTH;
     char keyWord1[20] = "";
     char keyWord2[20] = "";
-    if(0 == argc) {
+
+    if(0 <= argc) {
+        strncpy(keyWord1, "", sizeof(keyWord1));
+        strncpy(keyWord2, "", sizeof(keyWord2));
         res = true;
     }
-
     if(1 <= argc) {
+        strncpy(keyWord1, argv[0], sizeof(keyWord1));
         res = true;
-        res = try_str2uint32(argv[0], &start_page_addr);
-        if(false == res) {
-            LOG_ERROR(FLASH_FS, "Unable to extract sector_num %s", argv[0]);
-        }
     }
-
     if(2 <= argc) {
+        strncpy(keyWord2, argv[1], sizeof(keyWord2));
         res = true;
-        res = try_str2uint32(argv[1], &page_len);
-        if(false == res) {
-            LOG_ERROR(FLASH_FS, "Unable to extract sector_num %s", argv[0]);
-        }
     }
 
     if(2 < argc) {
@@ -351,7 +345,11 @@ bool cmd_flash_fs_scan(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        res = flash_fs_scan(start_page_addr, page_len, keyWord1, keyWord2);
+        res = flash_fs_scan(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH, keyWord1, keyWord2);
+        if(false == res) {
+            LOG_ERROR(FLASH_FS, "scan error");
+        }
+        res = flash_fs_scan(MEMORY_MANAGER2_OFFSET, MEMORY_MANAGER2_LENGTH, keyWord1, keyWord2);
         if(false == res) {
             LOG_ERROR(FLASH_FS, "scan error");
         }

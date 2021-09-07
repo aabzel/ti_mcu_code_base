@@ -7,6 +7,7 @@
 #include <ti/drivers/NVS.h>
 #include <ti/drivers/nvs/NVSCC26XX.h>
 
+#include "data_utils.h"
 #include "none_blocking_pause.h"
 
 uint8_t nvs_buffer[NVS_BUFF_SIZE];
