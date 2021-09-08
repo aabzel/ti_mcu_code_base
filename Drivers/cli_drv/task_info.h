@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 
+#include "data_utils.h"
 #include "oprintf.h"
 #include "sys.h"
-#include "data_utils.h"
 #include "task_config.h"
 
 /*some cooperative RTOS implementation*/
@@ -24,7 +24,7 @@ typedef struct task_data_tag {
 } task_data_t;
 
 #ifdef TASKS
-extern uint32_t iteration_cnt ;
+extern uint32_t iteration_cnt;
 extern task_data_t task_data[];
 
 typedef enum {
@@ -41,14 +41,12 @@ typedef enum {
     (void)task_check_unique_id_##id;
 
 #define MAIN_LOOP_START                                                                                                \
-        iteration_cnt++;                                                                                               \
-        uint64_t loop_start_time_us = get_time_us();                                                                   \
-        (void)loop_start_time_us;
+    iteration_cnt++;                                                                                                   \
+    uint64_t loop_start_time_us = get_time_us();                                                                       \
+    (void)loop_start_time_us;
 
-
-
-#define _TASK_START(TASK_ITEM)                                                                                         \
-    {                                                                                                                  \
+#define TASK_FRAME(TASK_ITEM, task_func)                                                                               \
+    do {                                                                                                               \
         TASK_ITEM.start_count++;                                                                                       \
         uint64_t stop = 0, delta = 0, period = 0, start = get_time_us();                                               \
         if(TASK_ITEM.start_time_prev < start) {                                                                        \
@@ -58,48 +56,40 @@ typedef enum {
         }                                                                                                              \
         TASK_ITEM.start_time_prev = start;                                                                             \
         if(TASK_ITEM.init) {                                                                                           \
-            TASK_ITEM.start_period_max = rx_max64u(TASK_ITEM.start_period_max, period);                               \
-            TASK_ITEM.start_period_min = rx_min64u(TASK_ITEM.start_period_min, period);                               \
+            TASK_ITEM.start_period_max = rx_max64u(TASK_ITEM.start_period_max, period);                                \
+            TASK_ITEM.start_period_min = rx_min64u(TASK_ITEM.start_period_min, period);                                \
         }                                                                                                              \
-        TASK_ITEM.init = true;
-
-#define _TASK_STOP(TASK_ITEM)                                                                                          \
+        TASK_ITEM.init = true;                                                                                         \
+        task_func();                                                                                                   \
         stop = get_time_us();                                                                                          \
         if(start < stop) {                                                                                             \
             delta = stop - start;                                                                                      \
         } else {                                                                                                       \
-            delta = 0;/*(0x1000000U + stop) - start;*/                                                                 \
+            delta = 0; /*(0x1000000U + stop) - start;*/                                                                \
         }                                                                                                              \
         TASK_ITEM.run_time_total += delta;                                                                             \
         TASK_ITEM.run_time_min = rx_min64u(TASK_ITEM.run_time_min, delta);                                             \
         TASK_ITEM.run_time_max = rx_max64u(TASK_ITEM.run_time_max, delta);                                             \
-    }
+    } while(0);
 
 #define _MEASURE_TASK_INTERVAL(TASK_ITEM, interval_us, task_func)                                                      \
     do {                                                                                                               \
         if(TASK_ITEM.start_time_next < loop_start_time_us) {                                                           \
             TASK_ITEM.start_time_next = loop_start_time_us + interval_us;                                              \
-            _TASK_START(TASK_ITEM)                                                                                     \
-            task_func();                                                                                               \
-            _TASK_STOP(TASK_ITEM)                                                                                      \
+            TASK_FRAME(TASK_ITEM, task_func)                                                                           \
         }                                                                                                              \
     } while(0);
 
 #define _MEASURE_TASK(TASK_ITEM, task_func)                                                                            \
-    do{                                                                                                                \
-        _TASK_START(TASK_ITEM)                                                                                         \
-        task_func();                                                                                                   \
-        _TASK_STOP(TASK_ITEM)                                                                                          \
-    }while(0);
-
+    do {                                                                                                               \
+        TASK_FRAME(TASK_ITEM, task_func)                                                                               \
+    } while(0);
 
 #define _MEASURE_TASK_INTERVAL_OLD(TASK_ITEM, interval_us, task_func)                                                  \
     {                                                                                                                  \
         if(loop_start_time_us > TASK_ITEM.start_time_next) {                                                           \
             TASK_ITEM.start_time_next += US_TO_COUNTER(interval_us);                                                   \
-            _TASK_START(TASK_ITEM)                                                                                     \
-            task_func();                                                                                               \
-            _TASK_STOP(TASK_ITEM)                                                                                      \
+            TASK_FRAME(TASK_ITEM, task_func)                                                                           \
         }                                                                                                              \
     }
 

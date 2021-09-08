@@ -24,7 +24,7 @@ Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT] = {
     {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100},  {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100}};
 
 GPTimerCC26XX_Handle hTimer;
-uint32_t TimInstLUT[3] = {TIMER_A, TIMER_B,TIMER_BOTH};
+uint32_t TimInstLUT[3] = {TIMER_A, TIMER_B, TIMER_BOTH};
 uint32_t TimBaseLut[4] = {GPT0_BASE, GPT1_BASE, GPT2_BASE, GPT3_BASE};
 
 /*
@@ -180,7 +180,8 @@ float tim_calc_real_period_s(uint32_t cpu_clock, uint32_t prescaler, uint32_t la
     return calc_period;
 }
 
-bool tim_calc_registers(uint32_t pesiod_ms, uint32_t cpu_clock, uint32_t* out_prescaler, uint32_t* out_load, uint32_t max_val) {
+bool tim_calc_registers(uint32_t pesiod_ms, uint32_t cpu_clock, uint32_t* out_prescaler, uint32_t* out_load,
+                        uint32_t max_val) {
     bool res = false;
     uint32_t prescaler = 0;
     uint64_t load = 0;
@@ -237,7 +238,7 @@ static bool tim_init_item(uint32_t index) {
         uint32_t prescaler = CLOCK_FOR_US;
         GPTimerCC26XX_Value load_val = 0;
         prescaler = CLOCK_FOR_US;
-        res = tim_calc_registers(TimerItem[index].pesiod_ms, SYS_FREQ, &prescaler, &load_val,0xFFFFFFFF);
+        res = tim_calc_registers(TimerItem[index].pesiod_ms, SYS_FREQ, &prescaler, &load_val, 0xFFFFFFFF);
         if(res) {
             GPTimerCC26XX_setLoadValue(TimerItem[index].hTimer, load_val);
             TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
@@ -257,20 +258,25 @@ static bool tim_init_item(uint32_t index) {
 bool tim_init(void) {
     bool res = true;
     uint8_t tim_num;
-    for(tim_num = 0; tim_num < BOARD_GPTIMERPARTSCOUNT; tim_num+=2) {
+    for(tim_num = 0; tim_num < BOARD_GPTIMERPARTSCOUNT; tim_num += 2) {
         res = tim_init_item(tim_num) && res;
     }
     return res;
 }
 
-uint8_t tim_get_width(uint32_t tim_base){
-    uint32_t cfg_reg=0;
+uint8_t tim_get_width(uint32_t tim_base) {
+    uint32_t cfg_reg = 0;
     uint8_t width = 0;
-    cfg_reg=HWREG(tim_base + GPT_O_CFG) ;
-    switch(MASK_2BIT&cfg_reg){
-    case 0: width=32; break;
-    case 4: width=16; break;
-    default:break;
+    cfg_reg = HWREG(tim_base + GPT_O_CFG);
+    switch(MASK_2BIT & cfg_reg) {
+    case 0:
+        width = 32;
+        break;
+    case 4:
+        width = 16;
+        break;
+    default:
+        break;
     }
     return width;
 }

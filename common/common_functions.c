@@ -110,8 +110,6 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_FLASH_FS*/
 }
 
-
-
 void common_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
 

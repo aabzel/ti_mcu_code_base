@@ -14,21 +14,20 @@ void delay_ms(uint32_t delay_in_ms) {
     }
 }
 
-//uint32_t getRunTimeCounterValue32(void) { return (uint32_t)g_up_time_ms; }
-//overflow after 4294967 s 49 days
+// uint32_t getRunTimeCounterValue32(void) { return (uint32_t)g_up_time_ms; }
+// overflow after 4294967 s 49 days
 uint64_t get_time_us(void) {
-    uint64_t usec = (SYS_TICK_MAX_VAL-SysTickValueGet())/CLOCK_FOR_US;
-    return ((g_up_time_ms * 1000)+usec);
+    uint64_t usec = (SYS_TICK_MAX_VAL - SysTickValueGet()) / CLOCK_FOR_US;
+    return ((g_up_time_ms * 1000) + usec);
 }
 
-//uint64_t getRunTimeCounterValue64(void) {
+// uint64_t getRunTimeCounterValue64(void) {
 //    return get_time_us();
 //}
 
 uint32_t get_time_ms32(void) { return g_up_time_ms; }
 
 uint64_t get_time_ms64(void) { return (uint64_t)g_up_time_ms; }
-
 
 #if 0
 /*calibrated*/
