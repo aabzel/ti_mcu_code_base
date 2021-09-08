@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define FREQ_MHZ 868000000
+#define FREQ_MHZ 915000000
 #define SX1262_SPI_NUM 0
 #define SYNC_WORD 0x1122334455667788
 

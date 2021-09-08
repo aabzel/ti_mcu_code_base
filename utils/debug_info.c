@@ -68,7 +68,7 @@ bool print_version_s(ostream_t* stream) {
         oprintf(stream, "last commit: %s" CRLF, GIT_LAST_COMMIT_HASH);
 
         all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
-        oprintf(stream, "FlashCRC32: 0x%08x" CRLF, all_flash_crc);
+        oprintf(stream, "FlashCRC32: 0x%08X" CRLF, all_flash_crc);
         oprintf(stream, "main(): 0x%08p" CRLF, main);
         oprintf(stream, "TI compiler ver %u " CRLF, __TI_COMPILER_VERSION__);
 
@@ -94,7 +94,7 @@ bool print_version_s(ostream_t* stream) {
         oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
 
         uint64_t ble_mac = get_ble_mac();
-        oprintf(stream, "MAC: 0x%" PRIx64 CRLF, ble_mac);
+        oprintf(stream, "MAC: 0x%" PRIX64 CRLF, ble_mac);
 
         oputs(stream, "by aabdev" CRLF);
         oputs(stream, CRLF);

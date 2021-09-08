@@ -17,8 +17,8 @@ void delay_ms(uint32_t delay_in_ms) {
 // uint32_t getRunTimeCounterValue32(void) { return (uint32_t)g_up_time_ms; }
 // overflow after 4294967 s 49 days
 uint64_t get_time_us(void) {
-    uint64_t usec = (SYS_TICK_MAX_VAL - SysTickValueGet()) / CLOCK_FOR_US;
-    return ((((uint64_t)g_up_time_ms) * 1000U) + usec);
+    uint64_t usec = (((uint64_t)SYS_TICK_MAX_VAL) - ((uint64_t)SysTickValueGet())) / ((uint64_t)CLOCK_FOR_US);
+    return ((((uint64_t)g_up_time_ms) * 1000UL) + usec);
 }
 
 // uint64_t getRunTimeCounterValue64(void) {

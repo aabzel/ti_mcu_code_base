@@ -88,7 +88,7 @@ typedef enum {
 #define _MEASURE_TASK_INTERVAL_OLD(TASK_ITEM, interval_us, task_func)                                                  \
     {                                                                                                                  \
         if(loop_start_time_us > TASK_ITEM.start_time_next) {                                                           \
-            TASK_ITEM.start_time_next += US_TO_COUNTER(interval_us);                                                   \
+            TASK_ITEM.start_time_next += interval_us;                                                                  \
             TASK_FRAME(TASK_ITEM, task_func)                                                                           \
         }                                                                                                              \
     }

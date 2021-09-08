@@ -345,7 +345,7 @@ bool mm_turn_page(void) {
 bool mm_maintain(void) {
     mmItem_t *prevItem = NULL, *empty = NULL;
     bool res = false;
-    uint32_t rem_space = 0;
+    uint32_t rem_space = 100*MIN_FILE_LEN;
     /* try to find previous file of the same variable */
     res = mm_find_field(MM_INVALID_ID, &prevItem, &empty, &rem_space);
     if(false == res) {

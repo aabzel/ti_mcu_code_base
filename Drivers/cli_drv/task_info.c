@@ -30,6 +30,10 @@ static uint64_t calc_total_run_time(void) {
     for(id = 0; id < TASK_ID_COUNT; id++) {
         tot_run_time += task_data[id].run_time_total;
     }
+    if(0==tot_run_time){
+        cmd_task_clear(0, NULL) ;
+        tot_run_time=0xFFFFFFFFFFFFFFFF;
+    }
     return tot_run_time;
 }
 
