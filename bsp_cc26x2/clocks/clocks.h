@@ -32,7 +32,7 @@ uint64_t us2tick(uint64_t ms64);
 
 uint64_t get_runtime_counter(void);
 uint64_t runtime_2_us(uint64_t rtc);
-
+uint64_t pause_1us(void);
 void delay_ms(uint32_t delay_in_ms);
 void delay_us(uint32_t delay_in_us);
 

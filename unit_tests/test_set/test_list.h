@@ -21,6 +21,7 @@ bool test_float_to_uint16(void);
 bool test_type_transformation(void);
 bool test_array(void) ;
 bool test_uspec_behavior(void);
+bool test_clock_us(void);
 
 #ifdef __cplusplus
 }
