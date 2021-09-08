@@ -15,29 +15,31 @@ bool tim_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        const table_col_t cols[] = {{5, "GPT"},  {5, "tim"},   {8, "Val"}, {8, "PSC"},
-                                    {8, "load"}, {8, "match"}, {8, "It"},  {8, "period_ms"}};
-        uint8_t i = 0, tim_base_id = 0;
+        const table_col_t cols[] = {{5, "GPT"},{5, "width"},  {5, "tim"},   {8, "Val"}, {8, "PSC"},
+                                    {8, "load"}, {14, "match"}, {8, "It"},  {8, "period_ms"}};
+        uint8_t part = 0, tim_base_id = 0, width=0;
         uint32_t val, load, match;
         uint32_t prescaler;
         float calc_period = 0.0f;
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
         for(tim_base_id = 0; tim_base_id < ARRAY_SIZE(TimBaseLut); tim_base_id++) {
 
-            for(i = 0; i < ARRAY_SIZE(TimInstLUT); i++) {
-                val = TimerValueGet(TimBaseLut[tim_base_id], TimInstLUT[i]);
-                prescaler = TimerPrescaleGet(TimBaseLut[tim_base_id], TimInstLUT[i]);
-                load = TimerLoadGet(TimBaseLut[tim_base_id], TimInstLUT[i]);
-                match = TimerMatchGet(TimBaseLut[tim_base_id], TimInstLUT[i]);
+            for(part = 0; part < 2; part++) {
+                val = TimerValueGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
+                prescaler = TimerPrescaleGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
+                load = TimerLoadGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
+                match = TimerMatchGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
                 calc_period = tim_calc_real_period_s(SYS_FREQ, prescaler, load);
+                width=tim_get_width(TimBaseLut[tim_base_id]);
                 io_printf(TSEP);
                 io_printf("  %u  " TSEP, tim_base_id);
-                io_printf("  %s  " TSEP, (0 == i) ? "A" : "B");
+                io_printf("  %2u " TSEP, width);
+                io_printf("  %s  " TSEP, (0 == part) ? "A" : "B");
                 io_printf(" %6u " TSEP, val);
                 io_printf(" %6u " TSEP, prescaler);
-                io_printf("  %u " TSEP, load);
-                io_printf(" %6u " TSEP, match);
-                io_printf(" %6u " TSEP, TimerItem[tim_base_id * 2 + i].tim_it_cnt);
+                io_printf(" %6u " TSEP, load);
+                io_printf(" %12u " TSEP, match);
+                io_printf(" %6u " TSEP, TimerItem[tim_base_id * 2 + part].tim_it_cnt);
                 io_printf(" %6.1f " TSEP, calc_period * 1000.0f);
 
                 io_printf(CRLF);
@@ -49,5 +51,138 @@ bool tim_diag_command(int32_t argc, char* argv[]) {
         LOG_ERROR(TIM, "Usage: td");
     }
 
+    return res;
+}
+
+bool tim_set_prescaler_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint8_t tim_base_id = 0 ;
+    uint8_t tim_inst = 0 ;
+    uint8_t prescaler = 0 ;
+    if(3 == argc) {
+        res = true;
+        if(true == res) {
+            res = try_str2uint8(argv[0], &tim_base_id);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract tim_base_id %s", argv[0]);
+            }
+            if(ARRAY_SIZE(TimBaseLut)<=tim_base_id){
+                res = false;
+            }
+        }
+
+        if(true == res) {
+            res = try_str2uint8(argv[1], &tim_inst);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract tim_inst %s", argv[1]);
+            }
+            if (4 <= tim_inst) {
+                res = false;
+            }
+        }
+
+
+        if(true == res) {
+            res = try_str2uint8(argv[2], &prescaler);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract prescaler %s", argv[2]);
+            }
+        }
+    } else {
+        LOG_ERROR(TIM, "Usage: tsp base inst prescaler");
+    }
+
+    if (res) {
+        TimerPrescaleSet(TimBaseLut[tim_base_id], TimInstLUT[tim_inst], prescaler);
+        LOG_INFO(TIM, "OK");
+    }
+
+    return res;
+}
+
+bool tim_set_laod_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint8_t tim_base_id = 0 ;
+    uint8_t tim_inst = 0 ;
+    uint32_t load = 0 ;
+    if(3 == argc) {
+        res = true;
+        if(true == res) {
+            res = try_str2uint8(argv[0], &tim_base_id);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract tim_base_id %s", argv[0]);
+            }
+            if(ARRAY_SIZE(TimBaseLut)<=tim_base_id){
+                res = false;
+            }
+        }
+
+        if(true == res) {
+            res = try_str2uint8(argv[1], &tim_inst);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract tim_inst %s", argv[1]);
+            }
+            if (4 <= tim_inst) {
+                res = false;
+            }
+        }
+
+
+        if(true == res) {
+            res = try_str2uint32(argv[2], &load);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract load %s", argv[2]);
+            }
+        }
+    } else {
+        LOG_ERROR(TIM, "Usage: tsl base inst load");
+    }
+
+    if (res) {
+        TimerLoadSet(TimBaseLut[tim_base_id], TimInstLUT[tim_inst], load);
+        LOG_INFO(TIM, "OK");
+    }
+
+    return res;
+}
+
+
+
+bool tim_set_period_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint8_t tim_index=0;
+    uint32_t pesiod_ms=1000;
+    if(2==argc){
+        res = true;
+        if(true == res) {
+            res = try_str2uint8(argv[0], &tim_index);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract index %s", argv[0]);
+            }
+            if(ARRAY_SIZE(TimerItem)<=tim_index){
+                res = false;
+            }
+        }
+
+        if(true == res) {
+            res = try_str2uint32(argv[1], &pesiod_ms);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract pesiod_ms %s", argv[1]);
+            }
+        }
+    } else {
+        LOG_ERROR(TIM, "Usage: tspr tim_index pesiod_ms");
+        res = false;
+    }
+    if (res) {
+        uint32_t prescaler = 0;
+        uint32_t load = 0;
+        res= tim_calc_registers(pesiod_ms, SYS_FREQ, &prescaler, &load, 0xFFFFFFFF);
+        if(res){
+            LOG_INFO(SYS, "prescaler: %u load: %u", prescaler,load);
+            TimerPrescaleSet(gptimerCC26xxHWAttrs[tim_index].baseAddr, TimInstLUT[tim_index % 2], prescaler);
+            GPTimerCC26XX_setLoadValue(TimerItem[tim_index].hTimer, load);
+        }
+    }
     return res;
 }

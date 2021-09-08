@@ -13,6 +13,7 @@ https://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/tirtos/2_20_
 #include <ti/drivers/timer/GPTimerCC26XX.h>
 #endif
 
+#include "bit_utils.h"
 #include "clocks.h"
 #include "float_utils.h"
 
@@ -23,7 +24,7 @@ Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT] = {
     {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100},  {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100}};
 
 GPTimerCC26XX_Handle hTimer;
-uint32_t TimInstLUT[2] = {TIMER_A, TIMER_B};
+uint32_t TimInstLUT[3] = {TIMER_A, TIMER_B,TIMER_BOTH};
 uint32_t TimBaseLut[4] = {GPT0_BASE, GPT1_BASE, GPT2_BASE, GPT3_BASE};
 
 /*
@@ -179,17 +180,17 @@ float tim_calc_real_period_s(uint32_t cpu_clock, uint32_t prescaler, uint32_t la
     return calc_period;
 }
 
-bool tim_calc_registers(uint32_t pesiod_ms, uint32_t cpu_clock, uint32_t* out_prescaler, uint32_t* out_load) {
+bool tim_calc_registers(uint32_t pesiod_ms, uint32_t cpu_clock, uint32_t* out_prescaler, uint32_t* out_load, uint32_t max_val) {
     bool res = false;
     uint32_t prescaler = 0;
-    uint32_t load = 0;
+    uint64_t load = 0;
     bool loop = true;
     float cpu_period = 1.0f / cpu_clock;
     float calc_period = 0;
     float des_period = (((float)pesiod_ms) / ((float)1000.0f));
     for(prescaler = 0; prescaler <= 0xFF; prescaler++) {
         load = (uint32_t)(des_period / ((float)cpu_period * ((float)(prescaler + 1U))));
-        if(0xFFFF < load) {
+        if(max_val < load) {
             continue;
         }
         calc_period = tim_calc_real_period_s(cpu_clock, prescaler, load);
@@ -221,8 +222,9 @@ static bool tim_init_item(uint32_t index) {
     TimerItem[index].tim_it_cnt = 0;
     GPTimerCC26XX_Params params;
     GPTimerCC26XX_Params_init(&params);
-    params.width = GPT_CONFIG_16BIT;
+    params.width = GPT_CONFIG_32BIT;
     params.mode = GPT_MODE_PERIODIC_UP;
+    params.direction = GPTimerCC26XX_DIRECTION_UP;
     params.debugStallMode = GPTimerCC26XX_DEBUG_STALL_OFF;
     TimerItem[index].hTimer = GPTimerCC26XX_open(index, &params);
     if(NULL == TimerItem[index].hTimer) {
@@ -231,11 +233,11 @@ static bool tim_init_item(uint32_t index) {
         res = true;
     }
 
-    uint32_t prescaler = 0;
-    GPTimerCC26XX_Value load_val = 0; // 47999
     if(res) {
-        prescaler = 0;
-        res = tim_calc_registers(TimerItem[index].pesiod_ms, SYS_FREQ, &prescaler, &load_val);
+        uint32_t prescaler = CLOCK_FOR_US;
+        GPTimerCC26XX_Value load_val = 0;
+        prescaler = CLOCK_FOR_US;
+        res = tim_calc_registers(TimerItem[index].pesiod_ms, SYS_FREQ, &prescaler, &load_val,0xFFFFFFFF);
         if(res) {
             GPTimerCC26XX_setLoadValue(TimerItem[index].hTimer, load_val);
             TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
@@ -255,8 +257,20 @@ static bool tim_init_item(uint32_t index) {
 bool tim_init(void) {
     bool res = true;
     uint8_t tim_num;
-    for(tim_num = 0; tim_num < BOARD_GPTIMERPARTSCOUNT; tim_num++) {
+    for(tim_num = 0; tim_num < BOARD_GPTIMERPARTSCOUNT; tim_num+=2) {
         res = tim_init_item(tim_num) && res;
     }
     return res;
+}
+
+uint8_t tim_get_width(uint32_t tim_base){
+    uint32_t cfg_reg=0;
+    uint8_t width = 0;
+    cfg_reg=HWREG(tim_base + GPT_O_CFG) ;
+    switch(MASK_2BIT&cfg_reg){
+    case 0: width=32; break;
+    case 4: width=16; break;
+    default:break;
+    }
+    return width;
 }
