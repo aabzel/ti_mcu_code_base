@@ -6,12 +6,15 @@
 
 #include "param_types.h"
 
-#define PARAM_CNT 2
+#define PARAM_CNT 5
 
 typedef enum eId_t {
     PAR_ID_REBOOT_CNT = 1,
     PAR_ID_LORA_FREQ = 2,
-    PAR_ID_CNT,
+    PAR_ID_LORA_SF = 3,
+    PAR_ID_LORA_CR = 4,
+    PAR_ID_LORA_BW = 5,
+    PAR_ID_CNT
 } Id_t;
 
 typedef struct xParamItem_t {

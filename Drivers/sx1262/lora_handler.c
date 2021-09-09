@@ -1,10 +1,13 @@
 #include "lora_handler.h"
 
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "cli_manager.h"
+#include "core_driver.h"
 #include "log.h"
 #include "none_blocking_pause.h"
 #include "str_utils.h"
@@ -24,7 +27,8 @@ bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
     substr = strstr((char*)rx_payload, PING_PREFIX);
     if(NULL != substr) {
         uint8_t tx_buf[TX_SIZE];
-        strncpy((char*)tx_buf, "lora_reply", sizeof(tx_buf));
+        uint64_t ble_mac = get_ble_mac();
+        snprintf((char*)tx_buf, sizeof(tx_buf), "MAC:0x%" PRIx64, ble_mac);
         res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf) + 1, 0);
     }
     return res;

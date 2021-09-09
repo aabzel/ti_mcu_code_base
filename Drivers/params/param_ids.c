@@ -9,8 +9,11 @@
 #include "data_utils.h"
 #include "param_types.h"
 
-const ParamItem_t ParamArray[PARAM_CNT] = {{PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"}, /*num*/
-                                           {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"}};  /*Hz*/
+const ParamItem_t ParamArray[PARAM_CNT] = {{PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},
+                                           {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"},
+                                           {PAR_ID_LORA_CR, 1, UINT8, "CR"},
+                                           {PAR_ID_LORA_BW, 1, UINT8, "BW"},
+                                           {PAR_ID_LORA_SF, 1, UINT8, "SF"}};
 
 ParamType_t param_get_type(Id_t id) {
     ParamType_t ret_type = UNDEF;

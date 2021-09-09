@@ -302,7 +302,7 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
  * */
 bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
-    // res = sx1262_clear_fifo() && res;
+    res = sx1262_clear_fifo() && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
     // SX126xHal_WriteReg( REG_RX_GAIN, (uint8_t *)0x96 ); // max LNA gain, increase current by ~2mA for around ~3dB in
     // sensivity
@@ -552,12 +552,10 @@ bool sx1262_conf_tx(void) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
-    char payload[128];
+    // char payload[128];
     res = sx1262_set_pa_config(0x03, 0x05, DEV_SEL_SX1262, 0x01) && res;
     res = sx1262_set_tx_params(22, SET_RAMP_10U) && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-    strncpy(payload, "Test tx payload_2021", sizeof(payload));
-    res = sx1262_set_payload((uint8_t*)payload, (uint16_t)strlen(payload)) && res;
 
     return res;
 }
@@ -580,8 +578,8 @@ bool sx1262_wakeup(void) {
 
 bool sx1262_init(void) {
     bool res = true;
+    LOG_INFO(LORA, "Init SX1262");
     memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
-
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
@@ -618,9 +616,9 @@ bool sx1262_init(void) {
 #endif /*HAS_FLASH_FS*/
         res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
-        Sx1262Instance.mod_params.band_width = LORA_BW_41;
-        Sx1262Instance.mod_params.coding_rate = LORA_CR_4_5;
-        Sx1262Instance.mod_params.spreading_factor = SF5;
+        Sx1262Instance.mod_params.band_width = LORA_BW_500;
+        Sx1262Instance.mod_params.coding_rate = LORA_CR_4_8;
+        Sx1262Instance.mod_params.spreading_factor = SF12;
         res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
 
         Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
@@ -1002,7 +1000,6 @@ bool sx1262_process(void) {
                 io_printf(CRLF);
                 res = lora_proc_payload(rx_payload, rx_size);
             }
-            // res = sx1262_start_rx(0);
         } break;
         case COM_STAT_COM_TIMEOUT:
             LOG_WARNING(LORA, "time out");
