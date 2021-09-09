@@ -17,6 +17,7 @@
 #include "test_crc.h"
 #include "test_flash_fs.h"
 #include "test_nmea_proto.h"
+#include "test_params.h"
 #include "test_string_utils.h"
 #include "test_sx1262.h"
 #include "test_system.h"
@@ -28,9 +29,9 @@
 /*Compile time assemble array */
 const unit_test_info_t test_list[] = {
     {"type_transform", test_type_transformation},
-    DATA_UTILS_TEST_SUIT FLOAT_UTILS_TEST_SUIT TIME_UTILS_TEST_SUIT SYSTEM_TEST_SUIT NMEA_PROTO_TEST_SUIT CRC_TEST_SUIT
-        TEST_SUIT_FLASH_FS TEST_SUIT_SX1262 CONVERT_TEST_SUIT STRING_UTILS_TEST_SUIT UBLOX_PROTO_TEST_SUIT
-            BYTE_UTILS_TEST_SUIT BIT_UTILS_TEST_SUIT{"array_init", test_array_init},
+    TEST_SUIT_PARAMS DATA_UTILS_TEST_SUIT FLOAT_UTILS_TEST_SUIT TIME_UTILS_TEST_SUIT SYSTEM_TEST_SUIT
+        NMEA_PROTO_TEST_SUIT CRC_TEST_SUIT TEST_SUIT_FLASH_FS TEST_SUIT_SX1262 CONVERT_TEST_SUIT STRING_UTILS_TEST_SUIT
+            UBLOX_PROTO_TEST_SUIT BYTE_UTILS_TEST_SUIT BIT_UTILS_TEST_SUIT{"array_init", test_array_init},
     {"clock_us", test_clock_us},
     {"uspec_behavior", test_uspec_behavior},
     {"array", test_array},
@@ -145,8 +146,14 @@ typedef struct xSomeType_t {
 } SomeType_t;
 
 bool test_types(void) {
+    EXPECT_EQ(1, sizeof(char));
+    EXPECT_EQ(4, sizeof(float));
+    EXPECT_EQ(4, sizeof(size_t));
+    EXPECT_EQ(4, sizeof(unsigned));
+    EXPECT_EQ(1, sizeof(uint8_t));
+    EXPECT_EQ(8, sizeof(uint64_t));
     EXPECT_EQ(4, sizeof(int));
     EXPECT_EQ(2, sizeof(short int));
-    EXPECT_EQ(4, sizeof(SomeType_t));
+    EXPECT_EQ(3, sizeof(SomeType_t));
     return true;
 }

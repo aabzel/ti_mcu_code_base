@@ -69,6 +69,12 @@ extern "C" {
 #define FLASH_FS_COMMANDS
 #endif
 
+#ifdef HAS_PARAM
+#include "param_commands.h"
+#else
+#define PARAM_COMMANDS
+#endif
+
 #ifdef HAS_RNG
 #include "rng_commands.h"
 #else
@@ -83,6 +89,7 @@ extern "C" {
     LED_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
     LOG_COMMANDS                                                                              \
+    PARAM_COMMANDS \
     HEALTH_MONITOR_COMMANDS                                                                                            \
     NMEA_COMMANDS                                                                                                      \
     RF_COMMANDS                                                                                                        \

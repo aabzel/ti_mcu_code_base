@@ -23,6 +23,14 @@ speed up to 16 MHz
 #include "none_blocking_pause.h"
 #include "spi_drv.h"
 
+#ifdef HAS_FLASH_FS
+#include "flash_fs.h"
+#endif
+
+#ifdef HAS_PARAM
+#include "param_ids.h"
+#endif
+
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
@@ -145,17 +153,22 @@ bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val) {
     res = sx1262_send_opcode(OPCODE_WRITE_REGISTER, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
-
+#define CONNECTION_SYNC_WORD 0x0012345678abcdef
 bool sx1262_is_connected(void) {
     bool res = false;
-    RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
-    res = sx1262_get_packet_type(&packet_type);
-    if((PACKET_TYPE_GFSK == packet_type) || (PACKET_TYPE_LORA == packet_type)) {
+    uint64_t read_sync_word = 0;
+    uint64_t orig_sync_word = 0;
+
+    res = sx1262_get_sync_word(&orig_sync_word);
+
+    res = sx1262_set_sync_word(CONNECTION_SYNC_WORD) && res;
+    res = sx1262_get_sync_word(&read_sync_word) && res;
+    if((CONNECTION_SYNC_WORD == read_sync_word) && (true == res)) {
         res = true;
+        res = sx1262_set_sync_word(orig_sync_word);
     } else {
         res = false;
     }
-
     return res;
 }
 
@@ -540,32 +553,12 @@ bool sx1262_conf_tx(void) {
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
     char payload[128];
-    res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
-#if 1
-    res = sx1262_set_standby(STDBY_XOSC); // STDBY_RC STDBY_XOSC
-#endif
-    res = sx1262_set_rf_frequency(FREQ_MHZ, XTAL_FREQ_HZ) && res;
     res = sx1262_set_pa_config(0x03, 0x05, DEV_SEL_SX1262, 0x01) && res;
     res = sx1262_set_tx_params(22, SET_RAMP_10U) && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-    strncpy(payload, "Test tx payload 2021", sizeof(payload));
+    strncpy(payload, "Test tx payload_2021", sizeof(payload));
     res = sx1262_set_payload((uint8_t*)payload, (uint16_t)strlen(payload)) && res;
 
-    Sx1262Instance.mod_params.band_width = LORA_BW_41;
-    Sx1262Instance.mod_params.coding_rate = LORA_CR_4_5;
-    Sx1262Instance.mod_params.spreading_factor = SF5;
-    res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
-    Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
-    Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
-    Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
-    Sx1262Instance.packet_param.proto.lora.payload_length = 255;
-    Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
-    Sx1262Instance.packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
-    res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
-    res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
-
-    Sx1262Instance.set_sync_word = SYNC_WORD;
-    res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
     return res;
 }
 
@@ -573,31 +566,6 @@ bool sx1262_conf_rx(void) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
-    res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
-#if 1
-    res = sx1262_set_standby(STDBY_XOSC);
-#endif
-    res = sx1262_set_rf_frequency(FREQ_MHZ, XTAL_FREQ_HZ) && res;
-
-    Sx1262Instance.mod_params.band_width = LORA_BW_41;
-    Sx1262Instance.mod_params.coding_rate = LORA_CR_4_5;
-    Sx1262Instance.mod_params.spreading_factor = SF12;
-    res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
-    Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
-    Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
-    Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
-    Sx1262Instance.packet_param.proto.lora.payload_length = 255;
-    Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
-    Sx1262Instance.packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
-    res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res; // error
-
-    res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
-
-#if 1
-    Sx1262Instance.set_sync_word = SYNC_WORD;
-
-    res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
-#endif
     // res = sx1262_start_rx(0) && res;
     return res;
 }
@@ -614,22 +582,67 @@ bool sx1262_init(void) {
     bool res = true;
     memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
 
+    res = set_log_level(LORA, LOG_LEVEL_NOTICE);
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
 
     res = sx1262_is_connected() && res;
-    res = sx1262_wakeup() && res;
-    res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
-    res = sx1262_set_regulator_mode(REG_MODE_DC_DC_LDO) && res;
+    if(true == res) {
+        res = sx1262_wakeup() && res;
 
-    res = sx1262_clear_fifo() && res;
-    res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
+        res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
+        res = sx1262_set_regulator_mode(REG_MODE_DC_DC_LDO) && res;
 
-    res = sx1262_clear_dev_error() && res;
+        res = sx1262_clear_fifo() && res;
+        res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
 
-    res = sx1262_conf_tx() && res;
-    res = sx1262_conf_rx() && res;
-    res = sx1262_start_rx(0) && res;
+        res = sx1262_clear_dev_error() && res;
+
+        res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
+
+        res = sx1262_set_standby(STDBY_XOSC);
+
+        Sx1262Instance.rf_frequency_hz = DFLT_FREQ_MHZ;
+#ifdef HAS_FLASH_FS
+        uint16_t file_len = 0;
+        res = mm_get(PAR_ID_LORA_FREQ, (uint8_t*)&Sx1262Instance.rf_frequency_hz,
+                     sizeof(Sx1262Instance.rf_frequency_hz), &file_len);
+        if((true == res) && (4 == file_len)) {
+            res = true;
+            LOG_INFO(LORA, "Set rf freq from params %u Hz", Sx1262Instance.rf_frequency_hz);
+        } else {
+            LOG_WARNING(LORA, "Set default freq %u Hz", DFLT_FREQ_MHZ);
+            Sx1262Instance.rf_frequency_hz = DFLT_FREQ_MHZ;
+            res = true;
+        }
+#endif /*HAS_FLASH_FS*/
+        res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
+
+        Sx1262Instance.mod_params.band_width = LORA_BW_41;
+        Sx1262Instance.mod_params.coding_rate = LORA_CR_4_5;
+        Sx1262Instance.mod_params.spreading_factor = SF5;
+        res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
+
+        Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
+        Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
+        Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
+        Sx1262Instance.packet_param.proto.lora.payload_length = 255;
+        Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
+        Sx1262Instance.packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
+        res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
+
+        res = sx1262_conf_tx() && res;
+        res = sx1262_conf_rx() && res;
+
+        res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
+
+        Sx1262Instance.set_sync_word = SYNC_WORD;
+        res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
+
+        res = sx1262_start_rx(0) && res;
+    } else {
+        LOG_ERROR(LORA, "SX1262 link error");
+    }
     return res;
 }
 
@@ -647,12 +660,11 @@ bool sx1262_set_tx(uint32_t timeout_s) {
 bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
     bool res = true;
     if((NULL != tx_buf) && (0 < tx_buf_len)) {
-        // res = sx1262_clear_fifo() && res;
+        /* res = sx1262_clear_fifo() && res;*/
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
         // res = sx1262_write_buffer(offset, tx_buf, tx_buf_len) && res;
         res = sx1262_set_tx(timeout_s) && res;
-        // Sx1262Instance.chip_mode = CHIPMODE_TX;
     } else {
         res = false;
     }
@@ -905,6 +917,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
         }
         if(100 < chip_mode_rc) {
             chip_mode_rc = 0;
+            LOG_WARNING(LORA, "Hang on in STBY_RC");
             res = sx1262_init();
         }
     } break;
@@ -917,6 +930,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
         }
         if(100 < chip_mode_xosc) {
             chip_mode_xosc = 0;
+            LOG_WARNING(LORA, "Hang on in STBY_XOSC");
             res = sx1262_init();
         }
     } break;
@@ -929,6 +943,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
         }
         if(100 < chip_mode_fs) {
             chip_mode_fs = 0;
+            LOG_WARNING(LORA, "Hang on in FS");
             res = sx1262_init();
         }
     } break;
@@ -942,8 +957,9 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
         } else {
             chip_mode_tx = 0;
         }
-        if(100 < chip_mode_tx) {
+        if(1000 < chip_mode_tx) {
             chip_mode_tx = 0;
+            LOG_WARNING(LORA, "Hang on in TX");
             res = sx1262_init();
         }
     } break;
@@ -963,7 +979,6 @@ bool sx1262_process(void) {
     bool res = false;
     Sx1262_t tempSx1262Instance;
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
-    tempSx1262Instance.dev_status = 0;
 
     if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
         Sx1262Instance.busy_cnt = 0;

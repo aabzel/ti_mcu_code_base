@@ -78,6 +78,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bmp180"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/adc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth"/>
@@ -108,6 +109,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_flash_fs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_nmea_proto"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_ublox_proto"/>
@@ -142,6 +144,7 @@
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
+									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_RF"/>
 									<listOptionValue builtIn="false" value="HAS_RNG"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>

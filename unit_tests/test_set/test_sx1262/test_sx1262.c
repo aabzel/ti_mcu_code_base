@@ -84,18 +84,17 @@ bool test_sx1262_rx_addr(void) {
     return true;
 }
 
-bool test_sx1262(void) {
-
-    EXPECT_EQ(2, sizeof(RadioIrqMasks_t));
-
-    EXPECT_TRUE(sx1262_is_connected());
-
+bool test_sx1262_rand(void) {
     uint32_t rand_num = 0;
     EXPECT_TRUE(sx1262_get_rand(&rand_num));
     EXPECT_NE(0, rand_num);
     EXPECT_NE(0xFFFFFFFF, rand_num);
+    return true;
+}
 
-    // try undef op code command
-
+bool test_sx1262(void) {
+    EXPECT_EQ(2, sizeof(RadioIrqMasks_t));
+    EXPECT_TRUE(sx1262_is_connected());
+    /* TODO: try undef op code command*/
     return true;
 }

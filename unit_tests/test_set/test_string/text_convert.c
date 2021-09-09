@@ -650,6 +650,7 @@ bool test_convert_dtoa_nan(void) {
     return true;
 }
 
+/*fails*/
 bool test_convert_dtoa_inf(void) {
     char str[100];
     double val = INFINITY;

@@ -39,9 +39,10 @@ bool cmd_flash_fs_diag(int32_t argc, char* argv[]) {
         res = true;
         uint32_t mm_page_start = 0;
         uint32_t mm_page_len = 0;
-        int remaining_space = 0;
+        uint32_t remaining_space = 0;
         res = mm_get_active_page(&mm_page_start, &mm_page_len);
         if(res) {
+            io_printf("page num: %u" CRLF, addr2page_num(mm_page_start));
             io_printf("mm_page_start 0x%08x" CRLF, mm_page_start);
             io_printf("mm_page_len %u Byte %u kByte" CRLF, mm_page_len, mm_page_len / 1024);
         }
@@ -151,6 +152,7 @@ bool cmd_flash_fs_set(int32_t argc, char* argv[]) {
         if(0 == write_len) {
             res = try_str2uint8(argv[1], &union_data.u8[0]);
             if(true == res) {
+                LOG_INFO(FLASH_FS, "Spot uint8");
                 write_len = 1;
             }
         }
@@ -158,6 +160,7 @@ bool cmd_flash_fs_set(int32_t argc, char* argv[]) {
         if(0 == write_len) {
             res = try_str2uint16(argv[1], &union_data.u16[0]);
             if(true == res) {
+                LOG_INFO(FLASH_FS, "Spot uint16");
                 write_len = 2;
             }
         }
@@ -165,12 +168,14 @@ bool cmd_flash_fs_set(int32_t argc, char* argv[]) {
         if(0 == write_len) {
             res = try_str2uint32(argv[1], &union_data.u32);
             if(true == res) {
+                LOG_INFO(FLASH_FS, "Spot uint32");
                 write_len = 4;
             }
         }
         if(0 == write_len) {
             strncpy((char*)text, argv[1], sizeof(text));
             write_len = strlen((char*)text) + 1;
+            LOG_INFO(FLASH_FS, "Spot text");
             is_text = true;
         }
 

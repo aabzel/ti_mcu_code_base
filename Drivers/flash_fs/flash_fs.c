@@ -587,3 +587,19 @@ bool flash_fs_init(void) {
     }
     return res;
 }
+
+uint8_t addr2page_num(uint32_t mm_page_start) {
+    uint8_t page_num = 0xFF;
+    switch(mm_page_start) {
+    case MEMORY_MANAGER1_OFFSET:
+        page_num = 1;
+        break;
+    case MEMORY_MANAGER2_OFFSET:
+        page_num = 2;
+        break;
+    default:
+        page_num = 0x55;
+        break;
+    }
+    return page_num;
+}

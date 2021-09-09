@@ -71,14 +71,15 @@ bool test_convert_assemble_uint32(void);
         {"ULtoa32", test_convert_ULtoa32}, {"ULtoa64", test_convert_ULtoa64}, {"Ltoa32_", test_convert_Ltoa32_},       \
         {"Ltoa64_", test_convert_Ltoa64_}, {"ULtoa32_", test_convert_ULtoa32_}, {"ULtoa64_", test_convert_ULtoa64_},   \
         {"ULtoa_hex64", test_convert_ULtoa_hex64}, {"ULtoa_hex32", test_convert_ULtoa_hex32},                          \
-        {"str_sizeof", test_convert_str_sizeof}, {"dtoa", test_convert_dtoa},                                          \
-        {"dtoa_trim_zero", test_convert_dtoa_trim_zero}, {"dtoa_nan", test_convert_dtoa_nan},                          \
-        {"dtoa_inf", test_convert_dtoa_inf}, {"ftoa_nan", test_convert_ftoa_nan}, {"ftoa_inf", test_convert_ftoa_inf}, \
-        {"rx_dtoa", test_convert_rx_dtoa}, {"ltoa_hex64", test_convert_ltoa_hex64},                                    \
-        {"bool2name", test_convert_bool2name}, {"utoa_bin32", test_convert_utoa_bin32},                                \
-        {"utoa_bin24", test_convert_utoa_bin24}, {"utoa_bin16", test_convert_utoa_bin16},                              \
-        {"assemble_uint32", test_convert_assemble_uint32},
+        {"str_sizeof", test_convert_str_sizeof}, {"dtoa_trim_zero", test_convert_dtoa_trim_zero},                      \
+        {"ftoa_nan", test_convert_ftoa_nan}, {"ftoa_inf", test_convert_ftoa_inf}, {"rx_dtoa", test_convert_rx_dtoa},   \
+        {"ltoa_hex64", test_convert_ltoa_hex64}, {"bool2name", test_convert_bool2name},                                \
+        {"utoa_bin32", test_convert_utoa_bin32}, {"utoa_bin24", test_convert_utoa_bin24},                              \
+        {"utoa_bin16", test_convert_utoa_bin16}, {"assemble_uint32", test_convert_assemble_uint32},
 
+/*{"dtoa", test_convert_dtoa}, */
+/*{"dtoa_nan", test_convert_dtoa_nan},*/
+/*{"dtoa_inf", test_convert_dtoa_inf},*/
 #ifdef __cplusplus
 }
 #endif

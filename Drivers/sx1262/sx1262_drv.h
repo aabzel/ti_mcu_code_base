@@ -222,6 +222,7 @@ typedef struct xSx1262IrqCnt_t {
 typedef struct xSx1262_t {
     uint64_t set_sync_word;
     uint64_t get_sync_word;
+    uint32_t rf_frequency_hz;
     uint32_t busy_cnt;
     uint32_t rand_num;
     uint16_t op_error;
