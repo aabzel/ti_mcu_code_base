@@ -30,9 +30,9 @@ static uint64_t calc_total_run_time(void) {
     for(id = 0; id < TASK_ID_COUNT; id++) {
         tot_run_time += task_data[id].run_time_total;
     }
-    if(0==tot_run_time){
-        cmd_task_clear(0, NULL) ;
-        tot_run_time=0xFFFFFFFFFFFFFFFF;
+    if(0 == tot_run_time) {
+        cmd_task_clear(0, NULL);
+        tot_run_time = 0xFFFFFFFFFFFFFFFF;
     }
     return tot_run_time;
 }
@@ -127,5 +127,55 @@ bool cmd_task_report(int32_t argc, char* argv[]) {
     (void)(argv);
     bool res = false;
     res = diag_page_tasks(DBG_STREAM);
+    return res;
+}
+
+static bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
+    bool res = false;
+    taskItem->start_count++;
+    uint64_t stop = 0, delta = 0, period = 0;
+    uint64_t start = get_time_us();
+    if(taskItem->start_time_prev < start) {
+        period = start - taskItem->start_time_prev;
+        res = true;
+    } else {
+        period = 0; /*(0x1000000U + start) - TASK_ITEM.start_time_prev; */
+        res = false;
+    }
+    taskItem->start_time_prev = start;
+    if(taskItem->init) {
+        taskItem->start_period_max = rx_max64u(taskItem->start_period_max, period);
+        taskItem->start_period_min = rx_min64u(taskItem->start_period_min, period);
+    }
+    taskItem->init = true;
+    res = task_func();
+    stop = get_time_us();
+    if(start < stop) {
+        delta = stop - start;
+        res = true;
+    } else {
+        delta = 0; /*(0x1000000U + stop) - start;*/
+        res = false;
+    }
+    taskItem->run_time_total += delta;
+    taskItem->run_time_min = rx_min64u(taskItem->run_time_min, delta);
+    taskItem->run_time_max = rx_max64u(taskItem->run_time_max, delta);
+    return res;
+}
+
+static bool _measure_task_interval(task_data_t* taskItem, uint64_t interval_us, bool (*task_func)(void),
+                                   uint64_t loop_start_time_us) {
+    bool res = false;
+    if(taskItem->start_time_next < loop_start_time_us) {
+        taskItem->start_time_next = loop_start_time_us + interval_us;
+        res = task_frame(taskItem, task_func);
+    }
+    return res;
+}
+
+bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_func)(void),
+                           uint64_t loop_start_time_us) {
+    bool res = false;
+    res = _measure_task_interval(&task_data[task_id], interval_us, task_func, loop_start_time_us);
     return res;
 }

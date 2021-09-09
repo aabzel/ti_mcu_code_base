@@ -34,6 +34,7 @@ const unit_test_info_t test_list[] = {
     {"clock_us", test_clock_us},
     {"uspec_behavior", test_uspec_behavior},
     {"array", test_array},
+    {"types", test_types},
     {"64bit_mult", test_64bit_mult},
     {"flt_u16", test_float_to_uint16},
     {"utoa_bin8", test_utoa_bin8}};
@@ -134,5 +135,18 @@ bool test_clock_us(void) {
         pause_1us();
         up_time_us_prev = up_time_us_cur;
     }
+    return true;
+}
+
+typedef struct xSomeType_t {
+    uint8_t a;
+    uint8_t b;
+    uint8_t c;
+} SomeType_t;
+
+bool test_types(void) {
+    EXPECT_EQ(4, sizeof(int));
+    EXPECT_EQ(2, sizeof(short int));
+    EXPECT_EQ(4, sizeof(SomeType_t));
     return true;
 }

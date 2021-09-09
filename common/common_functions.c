@@ -66,56 +66,56 @@ void common_loop(uint64_t loop_start_time_us) {
     }
 
 #ifdef HAS_DAC
-    MEASURE_TASK_INTERVAL(DAC, 100000, dac_proc);
+    measure_task_interval(TASK_ID_DAC, 100000, dac_proc, loop_start_time_us);
 #endif
 
 #ifdef HAS_ADC
-    MEASURE_TASK_INTERVAL(ADC, 100000, adc_proc);
+    measure_task_interval(TASK_ID_ADC, 100000, adc_proc, loop_start_time_us);
 #endif
 
 #ifdef HAS_WDT
-    MEASURE_TASK_INTERVAL(WDT, 1000, proc_watchdog);
+    measure_task_interval(TASK_ID_WDT, 1000, proc_watchdog, loop_start_time_us);
 #endif
 
 #ifdef HAS_LED
-    MEASURE_TASK_INTERVAL(LED, 5000, proc_led);
+    measure_task_interval(TASK_ID_LED, 5000, proc_led, loop_start_time_us);
 #endif /*HAS_LED*/
 
 #ifdef HAS_UART1
-    MEASURE_TASK_INTERVAL(UART1, 2000, proc_uart1);
+    measure_task_interval(TASK_ID_UART1, 2000, proc_uart1, loop_start_time_us);
 #endif /*HAS_UART1*/
 
 #ifdef HAS_UBLOX
-    MEASURE_TASK_INTERVAL(UBX, 10000, ubx_proc_frame);
+    measure_task_interval(TASK_ID_UBX, 10000, ubx_proc_frame, loop_start_time_us);
 #endif /*HAS_UBLOX*/
 
 #ifdef HAS_NMEA
-    MEASURE_TASK_INTERVAL(NMEA, 500000, nmea_proc_message);
+    measure_task_interval(TASK_ID_NMEA, 500000, nmea_proc_message, loop_start_time_us);
 #endif /*HAS_NMEA*/
 
 #ifdef HAS_CLI
-    MEASURE_TASK_INTERVAL(CLI, 3000, cli_process);
+    measure_task_interval(TASK_ID_CLI, 3000, cli_process, loop_start_time_us);
 #endif /*HAS_CLI*/
 
 #ifdef HAS_RF
-    MEASURE_TASK_INTERVAL(RF, 3000, rf_process);
+    measure_task_interval(TASK_ID_RF, 3000, rf_process, loop_start_time_us);
 #endif /*HAS_RF*/
 
 #ifdef HAS_SX1262
-    MEASURE_TASK_INTERVAL(LORA, 100000, sx1262_process);
+    measure_task_interval(TASK_ID_LORA, 100000, sx1262_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
 
 #ifdef HAS_FLASH_FS
-    MEASURE_TASK_INTERVAL(FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc);
+    measure_task_interval(TASK_ID_FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc, loop_start_time_us);
 #endif /*HAS_FLASH_FS*/
 }
 
 void common_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
-
+    uint64_t loop_start_time_us = 0;
     for(;;) {
-
-        MAIN_LOOP_START;
+        iteration_cnt++;
+        loop_start_time_us = get_time_us();
         common_loop(loop_start_time_us);
     }
 }

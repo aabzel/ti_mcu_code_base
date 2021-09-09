@@ -34,7 +34,7 @@ typedef enum {
   TIM=8,
   SPI=9,
   RF=10,
-  RNG = 11,
+  RNG=11,
   SYS=12,
   UART=13,
   ALL_FACILITY=14

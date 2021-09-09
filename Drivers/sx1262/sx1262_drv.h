@@ -120,30 +120,30 @@ typedef enum eRadioIrqMasks_t {
 } RadioIrqMasks_t;
 
 /*Status Bytes Definition*/
-#define COM_STAT_DATA_AVAIL 0x2   /*Data is available to host*/
-#define COM_STAT_COM_TIMEOUT 0x3  /*Command timeout2 */
+#define COM_STAT_DATA_AVAIL 0x2 /*Data is available to host*/
+#define COM_STAT_COM_TIMEOUT 0x3 /*Command timeout2 */
 #define COM_STAT_COM_PROC_ERR 0x4 /*Command processing error3*/
-#define COM_STAT_EXE_ERR 0x5      /*Failure to execute command4*/
-#define COM_STAT_COM_TX_DONE 0x6  /*Command TX done5 */
+#define COM_STAT_EXE_ERR 0x5 /*Failure to execute command4*/
+#define COM_STAT_COM_TX_DONE 0x6 /*Command TX done5 */
 
 /* OpError Bits */
 #define OP_ERR_BIT_RC64K_CALIB_ERR 0 /*RC64k calibration failed */
 #define OP_ERR_BIT_RC13M_CALIB_ERR 1 /*RC13M calibration failed */
-#define OP_ERR_BIT_PLL_CALIB_ERR 2   /*PLL calibration failed   */
-#define OP_ERR_BIT_ADC_CALIB_ERR 3   /*ADC calibration failed   */
-#define OP_ERR_BIT_IMG_CALIB_ERR 4   /*IMG calibration failed   */
-#define OP_ERR_BIT_XOSC_START_ERR 5  /*XOSC failed to start     */
-#define OP_ERR_BIT_PLL_LOCK_ERR 6    /*PLL failed to lock       */
-#define OP_ERR_BIT_PA_RAMP_ERR 8     /*PA ramping failed        */
+#define OP_ERR_BIT_PLL_CALIB_ERR 2 /*PLL calibration failed   */
+#define OP_ERR_BIT_ADC_CALIB_ERR 3 /*ADC calibration failed   */
+#define OP_ERR_BIT_IMG_CALIB_ERR 4 /*IMG calibration failed   */
+#define OP_ERR_BIT_XOSC_START_ERR 5 /*XOSC failed to start     */
+#define OP_ERR_BIT_PLL_LOCK_ERR 6 /*PLL failed to lock       */
+#define OP_ERR_BIT_PA_RAMP_ERR 8 /*PA ramping failed        */
 
 // Table 13-41: RampTime Definition
 // RampTime Value RampTime (μs)
-#define SET_RAMP_10U 0x00   /*10  */
-#define SET_RAMP_20U 0x01   /*20  */
-#define SET_RAMP_40U 0x02   /*40  */
-#define SET_RAMP_80U 0x03   /*80  */
-#define SET_RAMP_200U 0x04  /*200 */
-#define SET_RAMP_800U 0x05  /*800 */
+#define SET_RAMP_10U 0x00 /*10  */
+#define SET_RAMP_20U 0x01 /*20  */
+#define SET_RAMP_40U 0x02 /*40  */
+#define SET_RAMP_80U 0x03 /*80  */
+#define SET_RAMP_200U 0x04 /*200 */
+#define SET_RAMP_800U 0x05 /*800 */
 #define SET_RAMP_1700U 0x06 /*1700*/
 #define SET_RAMP_3400U 0x07 /*3400*/
 
@@ -156,7 +156,7 @@ typedef enum eStandbyMode_t {
     STDBY_XOSC = 1, /* Device running on XTAL 32MHz, set STDBY_XOSC mode*/
 } StandbyMode_t;
 
-#define REG_MODE_ONLY_LDO 0x00  /*used for all modes*/
+#define REG_MODE_ONLY_LDO 0x00 /*used for all modes*/
 #define REG_MODE_DC_DC_LDO 0x01 /*used for STBY_XOSC,FS, RX and TX modes*/
 
 /*PacketType Definition*/
