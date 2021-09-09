@@ -12,6 +12,7 @@
 #include "cli_manager.h"
 #endif /*HAS_CLI*/
 #include "health_monitor.h"
+#include "gpio_drv.h"
 #include "hw_init.h"
 #include "io_utils.h"
 #include "log.h"
@@ -19,6 +20,7 @@
 //#include "task_config.h"
 #include "task_info.h"
 #include "uart_drv.h"
+
 
 #ifdef HAS_SX1262
 #include "sx1262_drv.h"
@@ -114,6 +116,9 @@ void common_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
     uint64_t loop_start_time_us = 0;
     for(;;) {
+#ifdef HAS_DEBUG
+        gpio_toggle(15);
+#endif
         iteration_cnt++;
         loop_start_time_us = get_time_us();
         common_loop(loop_start_time_us);

@@ -30,6 +30,7 @@ GPIO_PinConfig gpioPinConfigs[CONFIG_GPIO_COUNT] = {
     GPIOCC26XX_DIO_27 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*LoRa Reset*/
     GPIOCC26XX_DIO_28 | GPIO_CFG_IN_NOPULL,                                          /*LoRa int*/
     GPIOCC26XX_DIO_29 | GPIO_CFG_IN_NOPULL,                                          /*LoRa Busy*/
+    GPIOCC26XX_DIO_15 | GPIO_CFG_OUT_STD,                                            /*loop*/
 
 };
 
@@ -134,6 +135,7 @@ bool gpio_init(void) {
         GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
         GPIO_setConfig(CONFIG_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
         GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+        GPIO_setConfig(CONFIG_GPIO_LOOP_SENSOR, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 
         /* Turn on user LED */
         GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
