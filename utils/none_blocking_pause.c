@@ -5,12 +5,13 @@
 #include "task_info.h"
 #include "timer_utils.h"
 
+/* 49 days max*/
 /*none blocking wait for self test and polling*/
-bool wait_in_loop_ms(uint64_t wait_pause_ms) {
-  uint64_t start_ms = 0U;
-  uint64_t curr_ms = 0U;
+bool wait_in_loop_ms(uint32_t wait_pause_ms) {
+  uint32_t start_ms = 0U;
+  uint32_t curr_ms = 0U;
   bool res = false;
-  start_ms = get_time_ms64();
+  start_ms = get_time_ms32();
   bool loop = true;
   uint64_t loop_start_time_us = 0;
   while (loop) {
@@ -18,7 +19,7 @@ bool wait_in_loop_ms(uint64_t wait_pause_ms) {
     loop_start_time_us = get_time_us();                                                                       \
     common_loop(loop_start_time_us);
 
-    curr_ms = get_time_ms64();
+    curr_ms = get_time_ms32();
     if (wait_pause_ms < (curr_ms - start_ms)) {
       res = true;
       loop = false;
@@ -28,15 +29,15 @@ bool wait_in_loop_ms(uint64_t wait_pause_ms) {
   return res;
 }
 
-bool wait_ms(uint64_t wait_pause_ms) {
-  uint64_t start_ms = 0U;
-  uint64_t curr_ms = 0U;
+bool wait_ms(uint32_t wait_pause_ms) {
+  uint32_t start_ms = 0U;
+  uint32_t curr_ms = 0U;
   bool res = false;
-  start_ms = get_time_ms64();
+  start_ms = get_time_ms32();
   bool loop = true;
-  uint64_t diff_ms = true;
+  uint32_t diff_ms = 0;
   while (loop) {
-    curr_ms = get_time_ms64();
+    curr_ms = get_time_ms32();
     diff_ms = curr_ms - start_ms;
     if (wait_pause_ms < diff_ms) {
       res = true;

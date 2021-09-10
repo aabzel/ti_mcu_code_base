@@ -33,6 +33,7 @@ const unit_test_info_t test_list[] = {
         NMEA_PROTO_TEST_SUIT CRC_TEST_SUIT TEST_SUIT_FLASH_FS TEST_SUIT_SX1262 CONVERT_TEST_SUIT STRING_UTILS_TEST_SUIT
             UBLOX_PROTO_TEST_SUIT BYTE_UTILS_TEST_SUIT BIT_UTILS_TEST_SUIT{"array_init", test_array_init},
     {"clock_us", test_clock_us},
+    {"clock_ms", test_clock_ms},
     {"uspec_behavior", test_uspec_behavior},
     {"array", test_array},
     {"types", test_types},
@@ -135,6 +136,21 @@ bool test_clock_us(void) {
         EXPECT_GR(up_time_us_prev, up_time_us_cur, i);
         pause_1us();
         up_time_us_prev = up_time_us_cur;
+    }
+    return true;
+}
+
+bool test_clock_ms(void) {
+    uint32_t i = 0;
+    uint32_t up_time_ms_cur = 0;
+    uint32_t up_time_ms_prev = 0;
+    up_time_ms_prev = get_time_ms32();
+    pause_1ms();
+    for(i = 0; i < 1000; i++) {
+        up_time_ms_cur = get_time_ms32();
+        EXPECT_GR(up_time_ms_prev, up_time_ms_cur, i);
+        pause_1ms();
+        up_time_ms_prev = up_time_ms_cur;
     }
     return true;
 }

@@ -23,6 +23,7 @@ bool test_type_transformation(void);
 bool test_array(void) ;
 bool test_uspec_behavior(void);
 bool test_clock_us(void);
+bool test_clock_ms(void);
 
 #ifdef __cplusplus
 }

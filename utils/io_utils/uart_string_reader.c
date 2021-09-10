@@ -9,8 +9,6 @@
 #include "timer_utils.h"
 #include "uart_drv.h"
 
-uint64_t uart_rx_last_data_time_stamp_us = 0U;
-
 static char cmd_reader_data[UART_RX_FIFO_ARRAY_SIZE];
 static char cmd_reader_string[UART_RX_ARRAY_SIZE];
 
@@ -57,8 +55,6 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
         const char* p = fifo_char_get_contiguous_block(&rdr->fifo, &size);
         if (0 == size) {
             break;
-        } else {
-            uart_rx_last_data_time_stamp_us = get_time_us();
         }
         for (i = 0; i < size; i++) {
             char c = p[i];

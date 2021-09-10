@@ -1,0 +1,27 @@
+Error initializing emulator:
+(Error -260 @ 0x0)
+An attempt to connect to the XDS110 failed.
+The cause may be one or more of: no XDS110 is connected, invalid
+firmware update, invalid XDS110 serial number, or faulty USB
+cable. The firmware and serial number may be updated using the
+xdsdfu utility found in the .../ccs_base/common/uscif/xds110
+directory of your installation. View the XDS110SupportReadMe.pdf
+file there for instructions.
+(Emulation package 9.4.0.00129)
+
+
+Поменять USB micro провод
+
+
+
+<<<< Device 0 >>>>
+
+VID: 0x0451    PID: 0xbef3
+Device Name:   XDS110 Embed with CMSIS-DAP
+Version:       3.0.0.16
+Manufacturer:  Texas Instruments
+Serial Num:    L1100F4C
+Mode:          Runtime
+Configuration: Standard
+
+Found 1 device.

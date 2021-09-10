@@ -38,9 +38,9 @@ speed up to 16 MHz
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             GPIO_writeDio(SX1262_SS_DIO_NO, 0);                                                                        \
-            wait_us(110);                                                                                              \
+            wait_ms(1);                                                                                            \
             res = CALL_BACK;                                                                                           \
-            wait_us(2);                                                                                                \
+            wait_ms(1);                                                                                                 \
             GPIO_writeDio(SX1262_SS_DIO_NO, 1);                                                                        \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \

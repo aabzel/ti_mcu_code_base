@@ -8,12 +8,6 @@ void delay_us(uint32_t delay_in_us) {
   }
 }
 
-void delay(uint32_t delay_in_ms) {
-  uint64_t stop = get_time_ms64() + delay_in_ms;
-  while (get_time_ms64() < stop) {
-  }
-}
-
 void delay_wd(uint32_t delay_in_ms) {
   uint64_t stop = get_time_ms64() + delay_in_ms;
   while (get_time_ms64() < stop) {

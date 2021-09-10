@@ -26,7 +26,6 @@ typedef struct {
     bool echo;
 } uart_string_reader_t;
 
-extern uint64_t uart_rx_last_data_time_stamp_us;
 extern uart_string_reader_t cmd_reader;
 
 uart_string_reader_t* get_uart_reader(void);

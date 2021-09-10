@@ -141,6 +141,9 @@ const char *facility2str(log_facility_t facility) {
   case UART:
     facility_str = "UART";
     break;
+  case TIM:
+    facility_str = "TIM";
+    break;
   case SPI:
     facility_str = "SPI";
     break;
@@ -166,7 +169,7 @@ bool log_write_begin(log_level_t level, log_facility_t facility) {
   bool res = false;
 
   if (is_log_enabled(level, facility)) {
-    uint64_t now = clock_get_tick_ms();
+    uint64_t now = get_time_ms64();
 
     if (log_colored) {
       io_putstr(log_level_color(level));

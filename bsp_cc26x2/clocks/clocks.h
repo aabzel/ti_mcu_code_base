@@ -18,6 +18,9 @@ extern "C" {
 #define COUNTER_TO_US(counter) ((counter) / (COUNTER_FREQ))
 #define COUNTER_TO_MS(counter) ((counter) / ((COUNTER_FREQ)*1000))
 
+#define HOUR_2_MS(HOUR) ((HOUR)*60U * 60U * 1000U)
+#define MIN_2_MS(MIN) ((MIN)*60U * 1000U)
+#define S_2_MS(S) ((S)*1000U)
 #define MS_2_S(ms) (ms / 1000)
 #define MS_2_MIN(ms) (ms / (1000 * 60))
 
@@ -29,9 +32,9 @@ uint64_t tick2us(uint64_t tick);
 uint64_t getRunTimeCounterValue64(void);
 uint32_t getRunTimeCounterValue32(void);
 uint64_t us2tick(uint64_t ms64);
-
 uint64_t get_runtime_counter(void);
 uint64_t runtime_2_us(uint64_t rtc);
+uint64_t pause_1ms(void);
 uint64_t pause_1us(void);
 void delay_ms(uint32_t delay_in_ms);
 void delay_us(uint32_t delay_in_us);

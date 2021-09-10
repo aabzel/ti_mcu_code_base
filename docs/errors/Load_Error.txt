@@ -1,0 +1,5 @@
+git add components/cli_drv/cli_manager.c components/cli_drv/cli_manager.h components/cli_drv/shell.c components/cli_drv/shell.h components/cli_drv/shell_commands.h components/cli_drv/task_info.c components/clocks/clock_commands.c components/core_drv/core_commands.c components/gpio/gpio_commands.c components/uart/uart_commands.c format_indents.bat utils/health_monitor_command.h utils/io_utils/io_utils.h utils/io_utils/uart_string_reader.c utils/utils_string/str_utils.c utils/utils_string/str_utils.h 
+
+
+
+

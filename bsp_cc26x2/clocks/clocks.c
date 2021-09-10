@@ -6,7 +6,6 @@
 
 #include "sys_tick.h"
 
-uint32_t clock_get_tick_ms(void) { return g_up_time_ms; }
 
 void delay_ms(uint32_t delay_in_ms) {
     uint32_t init_time_in_ms = g_up_time_ms;
@@ -16,20 +15,28 @@ void delay_ms(uint32_t delay_in_ms) {
 
 // uint32_t getRunTimeCounterValue32(void) { return (uint32_t)g_up_time_ms; }
 // overflow after 4294967 s 49 days
+uint64_t diff_us = 0;
 uint64_t get_time_us(void) {
+    uint64_t up_time_ms;
+    uint32_t usec;
+    uint32_t cnt;
+    uint32_t sys_tick_val;
     /*Sys tick counts down (Wrap to zero counter)*/
     static uint64_t prev_time_us = 0;
     static uint64_t cur_time_us = 0;
-    prev_time_us = cur_time_us;
-    uint64_t up_time_ms = g_up_time_ms;
-    uint64_t usec = (((uint64_t)SYS_TICK_PERIOD) - ((uint64_t)SysTickValueGet())) / ((uint64_t)CLOCK_FOR_US);
-    if(999 < usec) {
+    sys_tick_val = SysTickValueGet();
+    up_time_ms = g_up_time_ms;
+    cnt = SYS_TICK_PERIOD - sys_tick_val;
+    usec = cnt / CLOCK_FOR_US;
+    //if(1000 < usec) {
         /*Error*/
-        usec = 999;
-    }
-    cur_time_us = ((((uint64_t)up_time_ms) * ((uint64_t)1000UL)) + usec);
-    if(cur_time_us < prev_time_us) {
-        cur_time_us = prev_time_us + 1;
+    //    usec = 1000;
+    //}
+    prev_time_us = cur_time_us;
+    cur_time_us = ((((uint64_t)up_time_ms) * ((uint64_t)1000UL)) +((uint64_t) usec));
+    if(cur_time_us < prev_time_us) {/*Error*/
+        diff_us = prev_time_us - cur_time_us;
+      //  cur_time_us = prev_time_us + 1;
     }
     return cur_time_us;
 }
@@ -39,7 +46,6 @@ uint64_t get_time_us(void) {
 //}
 
 uint32_t get_time_ms32(void) { return g_up_time_ms; }
-
 uint64_t get_time_ms64(void) { return (uint64_t)g_up_time_ms; }
 
 #if 0
@@ -54,7 +60,7 @@ static uint64_t pause_1s(void) {
 #endif
 
 /*calibrated*/
-static uint64_t pause_1ms(void) {
+uint64_t pause_1ms(void) {
     uint64_t in = 0, cnt = 0;
     for(in = 0; in < 1397; in++) {
         cnt++;

@@ -24,6 +24,5 @@ void common_init(void);
 void common_update_leds_state(void);
 void common_main_loop(void);
 bool wait_with_common_loop(uint64_t const waitMs);
-bool wait_ms(uint64_t const waitMs);
 
 #endif /* COMMON_FUNCTIONS_H */

@@ -15,13 +15,18 @@ https://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/tirtos/2_20_
 
 #include "bit_utils.h"
 #include "clocks.h"
+#include "log.h"
 #include "float_utils.h"
 
 Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT] = {
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 1},    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 2},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 10},   {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 1000}, {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 500},
-    {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100},  {.hTimer = NULL, .tim_it_cnt = 0, .pesiod_ms = 100}};
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 3600000},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 2},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 60000U},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 100},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 1000},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 500},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 100},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 100}};
 
 GPTimerCC26XX_Handle hTimer;
 uint32_t TimInstLUT[3] = {TIMER_A, TIMER_B, TIMER_BOTH};
@@ -112,16 +117,10 @@ void timerCallback0(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interrupt
     if(TimerItem[0].hTimer == handle) {
         TimerItem[0].tim_it_cnt++;
     }
-    if(TimerItem[1].hTimer == handle) {
-        TimerItem[1].tim_it_cnt++;
-    }
 }
 
 void timerCallback1(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interruptMask) {
     // interrupt callback code goes here. Minimize processing in interrupt.
-    if(TimerItem[0].hTimer == handle) {
-        TimerItem[0].tim_it_cnt++;
-    }
     if(TimerItem[1].hTimer == handle) {
         TimerItem[1].tim_it_cnt++;
     }
@@ -174,51 +173,45 @@ void (*timerCallback[BOARD_GPTIMERPARTSCOUNT])(GPTimerCC26XX_Handle handle, GPTi
     timerCallback4, timerCallback5, timerCallback6, timerCallback7};
 
 float tim_calc_real_period_s(uint32_t cpu_clock, uint32_t prescaler, uint32_t laod) {
-    float calc_period = 0.0f;
-    float cpu_period = 1.0f / cpu_clock;
-    calc_period = cpu_period * ((float)((prescaler + 1U) * laod));
-    return calc_period;
+    float calc_period_s = 0.0f;
+    float cpu_period = 1.0f / ((float) cpu_clock);
+    calc_period_s = cpu_period * ((float)((prescaler + 1U) * ((float) laod) ));
+    return calc_period_s;
 }
 
-bool tim_calc_registers(uint32_t pesiod_ms, uint32_t cpu_clock, uint32_t* out_prescaler, uint32_t* out_load,
+bool tim_calc_registers(uint32_t period_ms, uint32_t cpu_clock, uint32_t prescaler, uint32_t* out_load,
                         uint32_t max_val) {
-    bool res = false;
-    uint32_t prescaler = 0;
+    bool res = true;
     uint64_t load = 0;
-    bool loop = true;
     float cpu_period = 1.0f / cpu_clock;
-    float calc_period = 0;
-    float des_period = (((float)pesiod_ms) / ((float)1000.0f));
-    for(prescaler = 0; prescaler <= 0xFF; prescaler++) {
-        load = (uint32_t)(des_period / ((float)cpu_period * ((float)(prescaler + 1U))));
-        if(max_val < load) {
-            continue;
+    float calc_period = 0.0f;
+    float des_period = (((float)period_ms) / ((float)1000.0f));
+
+    load = (uint32_t)(des_period / ((float)cpu_period * ((float)(prescaler + 1U))));
+    if(max_val < load) {
+        res = false;
+    } else {
+        res = true;
+    }
+    if(res) {
+        calc_period = tim_calc_real_period_s(cpu_clock, prescaler,(uint32_t) load);
+        if(false == is_float_equal_absolute(calc_period, des_period, cpu_period * 16)) {
+            LOG_WARNING(TIM,"Periods different des %7.4f  calc %7.4f s", des_period, calc_period);
+            res = false;
         }
-        calc_period = tim_calc_real_period_s(cpu_clock, prescaler, load);
-        if(true == is_float_equal_absolute(calc_period, des_period, cpu_period * 2)) {
-            *out_prescaler = prescaler;
-            *out_load = load;
-            res = true;
-            loop = false;
-        }
-        if(false == loop) {
-            break;
-        }
-        if(des_period < calc_period) {
-            loop = false;
-        }
+        res = true;
+        *out_load = (uint32_t)  load;
     }
 
     if(false == res) {
-        *out_prescaler = 0xFF;
         *out_load = 0xFFFF - 1;
-        res = true;
+        res = false;
     }
 
     return res;
 }
 
-static bool tim_init_item(uint32_t index) {
+static bool tim_init_item(uint32_t index, uint32_t period_ms, uint8_t cnt_period_us) {
     bool res = false;
     TimerItem[index].tim_it_cnt = 0;
     GPTimerCC26XX_Params params;
@@ -235,11 +228,11 @@ static bool tim_init_item(uint32_t index) {
     }
 
     if(res) {
-        uint32_t prescaler = CLOCK_FOR_US;
+        uint32_t prescaler = 0;
         GPTimerCC26XX_Value load_val = 0;
-        prescaler = CLOCK_FOR_US;
-        res = tim_calc_registers(TimerItem[index].pesiod_ms, SYS_FREQ, &prescaler, &load_val, 0xFFFFFFFF);
-        if(res) {
+        prescaler = cnt_period_us * CLOCK_FOR_US;
+        res = tim_calc_registers(period_ms, SYS_FREQ, prescaler, &load_val, 0xFFFFFFFF);
+        if (res) {
             GPTimerCC26XX_setLoadValue(TimerItem[index].hTimer, load_val);
             TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
             TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
@@ -248,6 +241,7 @@ static bool tim_init_item(uint32_t index) {
             TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
             TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
         } else {
+            LOG_ERROR(TIM,"Unable to set timer %u",index);
             res = false;
         }
     }
@@ -259,7 +253,7 @@ bool tim_init(void) {
     bool res = true;
     uint8_t tim_num;
     for(tim_num = 0; tim_num < BOARD_GPTIMERPARTSCOUNT; tim_num += 2) {
-        res = tim_init_item(tim_num) && res;
+        res = tim_init_item(tim_num, TimerItem[tim_num].period_ms, TimerItem[tim_num].cnt_period_us) && res;
     }
     return res;
 }
