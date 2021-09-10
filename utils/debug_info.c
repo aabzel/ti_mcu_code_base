@@ -151,20 +151,20 @@ bool print_vector_table(uint32_t vectors_table_base) {
     }
     return true;
 }
-
+#define ASCII_SEP "|"
 bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     uint16_t i = 0;
     bool res = false;
     res = print_indent(indent);
-    io_printf("|");
+    io_printf(ASCII_SEP);
     for(i = 0; i < size; i++) {
         if(0x00 != buff[i]) {
             io_printf("%c", buff[i]);
         } else {
-            io_printf(".");
+            io_printf(" ");
         }
     }
-    io_printf("|");
+    io_printf(ASCII_SEP);
     return res;
 }
 
@@ -179,17 +179,52 @@ bool print_bin(uint8_t* buff, uint16_t size, uint16_t indent) {
 }
 
 bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
+    bool res = false;
+    uint32_t pos = 0;
+    uint32_t print_len = 0;
+    uint32_t rem;
+    uint8_t hexLine[16 * 2 + 1];
+    memset(hexLine, 0x00, sizeof(hexLine));
+    if(16 < len) {
+        for(pos = 0; pos < len; pos += 16) {
+            res = true;
+            hex2ascii(&addr[pos], 16, hexLine, (uint32_t)sizeof(hexLine));
+            io_printf("%s", hexLine);
+            print_ascii_line((char*)&addr[pos], 16, 4);
+            print_len += 16;
+            io_printf(CRLF);
+        }
+    }
+    rem = len - print_len;
+    if(0 < rem) {
+        res = true;
+        pos = len / 16;
+        hex2ascii(&addr[pos], rem, hexLine, sizeof(hexLine));
+        io_printf("%s", hexLine);
+        print_ascii_line((char*)&addr[pos], rem, 16 - rem + 4);
+    }
+    if(true == new_line) {
+        io_printf(CRLF);
+    }
+    return res;
+}
+
+bool print_mem2(uint8_t* addr, uint32_t len, bool new_line) {
     io_printf("0x");
     bool res = false;
-    char asciiLine[16];
+    char asciiLine[18];
     uint8_t char_pos = 0;
     memset(asciiLine, 0x00, sizeof(asciiLine));
     if(0 < len) {
-        uint32_t pos;
         res = true;
+        uint32_t pos = 0;
         for(pos = 0; pos < len; pos++) {
             if(char_pos < 16) {
                 asciiLine[char_pos] = *(addr + pos);
+                char_pos++;
+                if(16 == char_pos) {
+                    //    char_pos = 0;
+                }
             }
             if(0 == (pos % 16)) {
                 if(pos) {
@@ -198,10 +233,8 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
                     char_pos = 0;
                 }
                 io_printf(CRLF);
-                char_pos = 0;
             }
             io_printf("%02x", *(addr + pos));
-            char_pos++;
         }
     }
     if(len < 16) {

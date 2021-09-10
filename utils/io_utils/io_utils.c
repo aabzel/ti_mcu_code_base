@@ -79,7 +79,7 @@ void io_putstrln(const char *str) {
 bool print_indent(uint16_t indent){
     bool res = false;
     uint16_t i = 0;
-    if (0 < indent) {
+    if ((0 < indent) && (indent < 80)) {
         res = true;
         for(i=0;i<indent;i++){
             io_printf(" ");

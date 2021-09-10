@@ -34,9 +34,11 @@ bool wait_ms(uint64_t wait_pause_ms) {
   bool res = false;
   start_ms = get_time_ms64();
   bool loop = true;
+  uint64_t diff_ms = true;
   while (loop) {
     curr_ms = get_time_ms64();
-    if (wait_pause_ms < (curr_ms - start_ms)) {
+    diff_ms = curr_ms - start_ms;
+    if (wait_pause_ms < diff_ms) {
       res = true;
       loop = false;
       break;

@@ -11,16 +11,16 @@
 #ifdef HAS_CLI
 #include "cli_manager.h"
 #endif /*HAS_CLI*/
-#include "health_monitor.h"
+
 #include "gpio_drv.h"
+#include "health_monitor.h"
 #include "hw_init.h"
 #include "io_utils.h"
 #include "log.h"
 #include "sw_init.h"
-//#include "task_config.h"
+#include "sys_config.h"
 #include "task_info.h"
 #include "uart_drv.h"
-
 
 #ifdef HAS_SX1262
 #include "sx1262_drv.h"
@@ -66,7 +66,6 @@ void common_loop(uint64_t loop_start_time_us) {
     if(0u == loop_start_time_us) {
         return;
     }
-
 #ifdef HAS_DAC
     measure_task_interval(TASK_ID_DAC, 100000, dac_proc, loop_start_time_us);
 #endif
@@ -86,7 +85,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_UART1
     measure_task_interval(TASK_ID_UART1, 2000, proc_uart1, loop_start_time_us);
 #endif /*HAS_UART1*/
-
+    // up fine^
 #ifdef HAS_UBLOX
     measure_task_interval(TASK_ID_UBX, 10000, ubx_proc_frame, loop_start_time_us);
 #endif /*HAS_UBLOX*/
@@ -106,6 +105,8 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_SX1262
     measure_task_interval(TASK_ID_LORA, 10000, sx1262_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
+#if 0 /*MISRA comment*/
+#endif /*MISRA comment*/
 
 #ifdef HAS_FLASH_FS
     measure_task_interval(TASK_ID_FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc, loop_start_time_us);
@@ -115,12 +116,15 @@ void common_loop(uint64_t loop_start_time_us) {
 void common_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
     uint64_t loop_start_time_us = 0;
+    uint64_t prev_loop_start_time_us = 0;
     for(;;) {
 #ifdef HAS_DEBUG
-        gpio_toggle(15);
-#endif
+        gpio_toggle(COM_LOOP_SENSOR_DIO_NO);
+#endif /*HAS_DEBUG*/
         iteration_cnt++;
+        prev_loop_start_time_us = loop_start_time_us;
         loop_start_time_us = get_time_us();
+        loop_duration_us = loop_start_time_us - prev_loop_start_time_us;
         common_loop(loop_start_time_us);
     }
 }

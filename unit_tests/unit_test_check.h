@@ -8,7 +8,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "unit_test_run.h"
-
+/*Macros for Polymorphism*/
 #define EXPECT_EQ_MEM(memL, memR, len)                                                                                 \
     do {                                                                                                               \
         if(0 != memcmp(memL, memR, len)) {                                                                             \
@@ -81,7 +81,7 @@
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
-        if(val1 == val2) {                                                                                             \
+        if((val1) == (val2)) {                                                                                         \
             LOG_ERROR(SYS, "Error");                                                                                   \
             io_printf("\n[e] %s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                \
             return false;                                                                                              \
@@ -104,11 +104,11 @@
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
-        if(val < left) {                                                                                               \
+        if((val) < (left)) {                                                                                           \
             LOG_ERROR(SYS, "Error");                                                                                   \
             io_printf("\n[e] %s():Line: %d in left: %u val: %u ", __FUNCTION__, __LINE__, left, val);                  \
             return false;                                                                                              \
-        } else if(right < val) {                                                                                       \
+        } else if((right) < (val)) {                                                                                   \
             LOG_ERROR(SYS, "Error");                                                                                   \
             io_printf("\n[e] %s():Line: %d in val: %u right: %u ", __FUNCTION__, __LINE__, val, right);                \
             return false;                                                                                              \
@@ -121,7 +121,7 @@
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
-        if(val < (exp_v - precision)) {                                                                                \
+        if((val) < (exp_v - precision)) {                                                                              \
             LOG_ERROR(SYS, "val too slow");                                                                            \
             io_printf("\n%s():Line: %d in val: %u exp_v: %u ", __FUNCTION__, __LINE__, val, exp_v);                    \
             return false;                                                                                              \
@@ -134,13 +134,14 @@
         }                                                                                                              \
     } while(0);
 
-#define EXPECT_GR(val1, val2)                                                                                          \
+#define EXPECT_GR(val1, val2, id)                                                                                      \
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
-        if(val2 <= val1) {                                                                                             \
-            LOG_ERROR(SYS, "%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                 \
-            LOG_ERROR(SYS, "%s():Line: %d in val1: 0x%x val2: 0x%x ", __FUNCTION__, __LINE__, val1, val2);             \
+        if((val2) < (val1)) {                                                                                          \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: %llu val2: %llu id: %u", __FUNCTION__, __LINE__, val1, val2, id);   \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: 0x%llx val2: 0x%llx id: %u", __FUNCTION__, __LINE__, val1, val2,    \
+                      id);                                                                                             \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \

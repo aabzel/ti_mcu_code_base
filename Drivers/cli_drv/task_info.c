@@ -15,6 +15,7 @@
 static uint64_t total_time0_us = 0;
 static uint64_t total_time_ms0 = 0;
 uint32_t iteration_cnt = 10;
+uint64_t loop_duration_us = 0;
 
 #ifdef TASKS
 task_data_t task_data[] = {
@@ -64,25 +65,26 @@ bool diag_page_tasks(ostream_t* stream) {
     }
 
     total_run_time_us = calc_total_run_time();
+    oprintf(stream, "loop duration %u us" CRLF, loop_duration_us);
     oprintf(stream, "total run time  %u us" CRLF, total_run_time_us);
     oprintf(stream, "up_time  %u ms" CRLF, g_up_time_ms);
     oprintf(stream, "iteration cnt %u" CRLF, iteration_cnt);
     oprintf(stream, "total_time %llu us" CRLF, total_time_us);
     oprintf(stream, "total_time %llu ms" CRLF, total_time_ms);
-    static const table_col_t cols[] = {{22, "Task name"}, {8, "Calls/s"},   {6, "CPU[%]"},
+    static const table_col_t cols[] = {{22, "Task name"}, {8, "Calls/s"},   {7, "CPU[%]"},
                                        {12, "Tavg[us]"},  {12, "Tmin[us]"}, {12, "Tmax[us]"},
                                        {12, "Rmin[us]"},  {12, "Rmax[us]"}, {12, "RTtot[us]"}};
-
+    float cpu_use = 0.0f;
     for(core = 0; core < ARRAY_SIZE(data) - 1U; core++) {
         table_header(stream, cols, ARRAY_SIZE(cols));
         for(id = 0; id < count[core]; id++) {
             if(0 != data[core][id].start_count) {
-                uint16_t cpu_e3 = data[core][id].run_time_total * 1000 / total_run_time_us;
+                cpu_use = (((float)data[core][id].run_time_total) * 100.0f) / ((float)total_run_time_us);
                 oprintf(stream,
-                        TABLE_LEFT "%21s " TABLE_SEPARATOR "%8" PRIu32 TABLE_SEPARATOR "%4u.%u" TABLE_SEPARATOR
+                        TABLE_LEFT "%21s " TABLE_SEPARATOR "%8" PRIu32 TABLE_SEPARATOR "%7.3f" TABLE_SEPARATOR
                                    "%12" PRIu32 TABLE_SEPARATOR,
-                        data[core][id].name, (uint32_t)((data[core][id].start_count * 1000) / total_time_ms),
-                        cpu_e3 / 10, cpu_e3 % 10, (uint32_t)((total_time_ms * 1000) / data[core][id].start_count));
+                        data[core][id].name, (uint32_t)((data[core][id].start_count * 1000) / total_time_ms), cpu_use,
+                        (uint32_t)((total_time_ms * 1000) / data[core][id].start_count));
                 oprintf(stream, " %10" PRIu64 " " TABLE_SEPARATOR, data[core][id].start_period_min);
                 oprintf(stream, " %10" PRIu64 " " TABLE_SEPARATOR, data[core][id].start_period_max);
                 oprintf(stream, " %10" PRIu64 " " TABLE_SEPARATOR, data[core][id].run_time_min);

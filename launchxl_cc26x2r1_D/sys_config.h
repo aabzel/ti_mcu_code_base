@@ -5,6 +5,7 @@
 #define SX1262_RST_DIO_NO 27
 #define SX1262_BUSY_DIO_NO 29
 #define SX1262_INT_DIO_NO 28
+#define COM_LOOP_SENSOR_DIO_NO 15
 
 #define CLI_UART_BAUD_RATE 56000 /* bit/s */
 

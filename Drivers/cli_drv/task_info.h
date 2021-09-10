@@ -25,6 +25,7 @@ typedef struct task_data_tag {
 
 #ifdef TASKS
 extern uint32_t iteration_cnt;
+extern uint64_t loop_duration_us;
 extern task_data_t task_data[];
 
 typedef enum {

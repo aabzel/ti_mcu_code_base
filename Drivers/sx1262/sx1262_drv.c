@@ -118,18 +118,6 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
     return res;
 }
 
-static bool sx1262_init_gpio(void) {
-    bool res = true;
-    GPIO_setConfig(CONFIG_GPIO_LORA_RST, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
-    GPIO_setConfig(CONFIG_GPIO_LORA_CS, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
-    GPIO_setConfig(CONFIG_GPIO_LORA_INT, GPIO_CFG_IN_NOPULL);
-    GPIO_setConfig(CONFIG_GPIO_LORA_BSY, GPIO_CFG_IN_NOPULL);
-
-    GPIO_writeDio(SX1262_SS_DIO_NO, 1);
-    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
-
-    return res;
-}
 /*
   WriteRegister
 
@@ -454,17 +442,6 @@ bool sx1262_clear_fifo(void) {
     return res;
 }
 
-bool sx1262_reset(void) {
-    bool res = true;
-    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
-    wait_ms(20);
-    GPIO_writeDio(SX1262_RST_DIO_NO, 0);
-    wait_ms(50);
-    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
-    wait_ms(20);
-    return res;
-}
-
 /*
 
   The command SetModulationParams(...) is used to configure the modulation parameters of the radio.
@@ -573,6 +550,29 @@ bool sx1262_wakeup(void) {
     bool res = true;
     res = sx1262_get_status(&status) && res;
     res = sx1262_set_standby(STDBY_RC) && res;
+    return res;
+}
+
+static bool sx1262_init_gpio(void) {
+    bool res = true;
+    GPIO_setConfig(CONFIG_GPIO_LORA_RST, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+    GPIO_setConfig(CONFIG_GPIO_LORA_CS, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+    GPIO_setConfig(CONFIG_GPIO_LORA_INT, GPIO_CFG_IN_NOPULL);
+    GPIO_setConfig(CONFIG_GPIO_LORA_BSY, GPIO_CFG_IN_NOPULL);
+
+    GPIO_writeDio(SX1262_SS_DIO_NO, 1);
+    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
+
+    return res;
+}
+bool sx1262_reset(void) {
+    bool res = true;
+    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
+    wait_ms(20);
+    GPIO_writeDio(SX1262_RST_DIO_NO, 0);
+    wait_ms(50);
+    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
+    wait_ms(20);
     return res;
 }
 

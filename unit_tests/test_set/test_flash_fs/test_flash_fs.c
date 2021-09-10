@@ -103,17 +103,17 @@ static uint32_t calc_exp_page(uint32_t page){
 
 bool test_flash_fs_toggle(void){
     uint32_t read_mm_page_start=0;
-    uint32_t read_mm_page_len=0;
+    uint32_t read_mm_page_len=1;
     uint32_t exp_mm_page_start=0;
 
     EXPECT_TRUE( mm_get_active_page(&read_mm_page_start, &read_mm_page_len));
-    EXPECT_GR(0,read_mm_page_len);
+    EXPECT_GR(MEMORY_MANAGER1_LENGTH/2,read_mm_page_len,0U);
     exp_mm_page_start = calc_exp_page(read_mm_page_start);
 
     EXPECT_TRUE( mm_turn_page());
 
     EXPECT_TRUE( mm_get_active_page(&read_mm_page_start, &read_mm_page_len));
-    EXPECT_GR(0,read_mm_page_len);
+    EXPECT_GR(MEMORY_MANAGER1_LENGTH/2,read_mm_page_len,1);
     EXPECT_EQ(exp_mm_page_start,read_mm_page_start);
     return true;
 }
