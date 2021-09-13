@@ -92,8 +92,15 @@ bool test_sx1262_rand(void) {
     return true;
 }
 
-bool test_sx1262(void) {
+bool test_sx1262_types(void) {
+    EXPECT_EQ(1, sizeof(LoRaCodingRate_t));
+    EXPECT_EQ(6, sizeof(LoRaPacketParam_t));
+    EXPECT_EQ(1, sizeof(BandWidth_t));
     EXPECT_EQ(2, sizeof(RadioIrqMasks_t));
+    return true;
+}
+
+bool test_sx1262(void) {
     EXPECT_TRUE(sx1262_is_connected());
     /* TODO: try undef op code command*/
     return true;

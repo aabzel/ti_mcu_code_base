@@ -189,9 +189,9 @@ typedef struct xSx1262Reg_t {
 } xSx1262Reg_t;
 
 typedef struct xModulationParams_t {
-    uint8_t band_width;                 //(BW_L)
-    uint8_t spreading_factor;           //(SF)
-    uint8_t coding_rate;                //(CR)
+    BandWidth_t band_width;
+    SpreadingFactor_t spreading_factor;
+    LoRaCodingRate_t coding_rate;
     uint8_t low_data_rate_optimization; //(LDRO)
 } ModulationParams_t;
 

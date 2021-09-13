@@ -6,7 +6,6 @@
 
 #include "sys_tick.h"
 
-
 void delay_ms(uint32_t delay_in_ms) {
     uint32_t init_time_in_ms = g_up_time_ms;
     while(g_up_time_ms < (init_time_in_ms + delay_in_ms)) {
@@ -28,15 +27,15 @@ uint64_t get_time_us(void) {
     up_time_ms = g_up_time_ms;
     cnt = SYS_TICK_PERIOD - sys_tick_val;
     usec = cnt / CLOCK_FOR_US;
-    //if(1000 < usec) {
-        /*Error*/
+    // if(1000 < usec) {
+    /*Error*/
     //    usec = 1000;
     //}
     prev_time_us = cur_time_us;
-    cur_time_us = ((((uint64_t)up_time_ms) * ((uint64_t)1000UL)) +((uint64_t) usec));
-    if(cur_time_us < prev_time_us) {/*Error*/
+    cur_time_us = ((((uint64_t)up_time_ms) * ((uint64_t)1000UL)) + ((uint64_t)usec));
+    if(cur_time_us < prev_time_us) { /*Error*/
         diff_us = prev_time_us - cur_time_us;
-      //  cur_time_us = prev_time_us + 1;
+        //  cur_time_us = prev_time_us + 1;
     }
     return cur_time_us;
 }

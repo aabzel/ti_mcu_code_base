@@ -491,10 +491,11 @@ bool sx1262_clear_fifo_command(int32_t argc, char* argv[]) {
 
 bool sx1262_set_modulation_command(int32_t argc, char* argv[]) {
     bool res = false;
-    ModulationParams_t modParams = {0};
+    ModulationParams_t modParams;
     modParams.band_width = LORA_BW_41;
     modParams.coding_rate = LORA_CR_4_5;
     modParams.spreading_factor = SF5;
+    modParams.low_data_rate_optimization = 0;
     if(0 == argc) {
         res = true;
         modParams.band_width = LORA_BW_41;

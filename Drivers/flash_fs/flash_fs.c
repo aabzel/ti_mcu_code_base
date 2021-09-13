@@ -116,7 +116,7 @@ static bool mm_get_next(uint32_t* offset, uint32_t maxOffset, uint32_t* complete
 }
 
 /**
- *    @brief    count files in Flash File system
+ * @brief count files in Flash File system
  *
  */
 uint32_t mm_cnt_files(uint32_t start_page_addr, uint32_t page_len, uint32_t* spare_cnt) {

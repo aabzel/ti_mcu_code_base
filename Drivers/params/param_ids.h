@@ -10,10 +10,12 @@
 
 typedef enum eId_t {
     PAR_ID_REBOOT_CNT = 1,
-    PAR_ID_LORA_FREQ = 2,
-    PAR_ID_LORA_SF = 3,
+    PAR_ID_LORA_FREQ = 2, /*Hz*/
+    PAR_ID_LORA_SF = 3,   /*Chips / Symbol*/
     PAR_ID_LORA_CR = 4,
-    PAR_ID_LORA_BW = 5,
+    PAR_ID_LORA_BW = 5, /*Hz*/
+    PAR_ID_TEST_START = 100,
+    PAR_ID_TEST_END = 200,
     PAR_ID_CNT
 } Id_t;
 

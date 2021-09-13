@@ -240,3 +240,72 @@ bool print_int_diag(Sx1262IrqCnt_t* irq_cnt) {
     }
     return res;
 }
+
+/*returns band_width in kHz multiplied by 100 in order to fit in 2 bytes*/
+uint16_t bandwidth2num(BandWidth_t bandwidth) {
+    uint16_t band_width = 0;
+    switch(bandwidth) {
+    case LORA_BW_7:
+        band_width = 781;
+        break;
+    case LORA_BW_10:
+        band_width = 1042;
+        break;
+    case LORA_BW_15:
+        band_width = 1563;
+        break;
+    case LORA_BW_20:
+        band_width = 2083;
+        break;
+    case LORA_BW_31:
+        band_width = 3125;
+        break;
+    case LORA_BW_41:
+        band_width = 4167;
+        break;
+    case LORA_BW_62:
+        band_width = 6250;
+        break;
+    case LORA_BW_125:
+        band_width = 12500;
+        break;
+    case LORA_BW_250:
+        band_width = 25000;
+        break;
+    case LORA_BW_500:
+        band_width = 50000;
+        break;
+
+    default:
+        band_width = 0;
+        break;
+    }
+    return band_width;
+}
+
+uint32_t spreading_factor2num(SpreadingFactor_t spreading_factor) {
+    uint32_t spreading_factors_num = ipow(2, spreading_factor);
+    return spreading_factors_num;
+}
+
+const char* coding_rate2str(LoRaCodingRate_t coding_rate) {
+    const char* name = "undef";
+    switch(coding_rate) {
+    case LORA_CR_4_5:
+        name = "4/5";
+        break;
+    case LORA_CR_4_6:
+        name = "4/6";
+        break;
+    case LORA_CR_4_7:
+        name = "4/7";
+        break;
+    case LORA_CR_4_8:
+        name = "4/8";
+        break;
+    default:
+        name = "error";
+        break;
+    }
+    return name;
+}

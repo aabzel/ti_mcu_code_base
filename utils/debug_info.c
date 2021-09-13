@@ -160,7 +160,11 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     for(i = 0; i < size; i++) {
         if(0x00 != buff[i]) {
             io_printf("%c", buff[i]);
-        } else {
+        } else if(0x0a != buff[i]) {
+            io_printf("[LF]");
+        } else if(0x0d != buff[i]) {
+            io_printf("[CR]");
+        }else{
             io_printf(" ");
         }
     }

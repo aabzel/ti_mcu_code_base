@@ -61,7 +61,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                 strncpy(valStr, "lack", sizeof(valStr));
             }
 
-            snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, valStr);
+            snprintf(temp_str, sizeof(temp_str), "%s %9s " TSEP, temp_str, valStr);
             snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
             if(is_contain(temp_str, keyWord1, keyWord2)) {
                 io_printf(TSEP " %3u ", num);

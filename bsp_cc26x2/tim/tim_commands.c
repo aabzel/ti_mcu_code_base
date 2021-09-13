@@ -15,11 +15,11 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        const table_col_t cols[] = {{5, "GPT"},  {5, "width"},  {5, "tim"}, {14, "Val"},      {8, "PSC"},
+        const table_col_t cols[] = {{5, "GPT"},   {5, "width"},  {5, "tim"}, {14, "Val"},     {8, "PSC"},
                                     {14, "load"}, {14, "match"}, {8, "It"},  {8, "period_ms"}};
         uint8_t part = 0, tim_base_id = 0, width = 0;
-        uint32_t val=0, load=0, match=0;
-        uint32_t prescaler=0;
+        uint32_t val = 0, load = 0, match = 0;
+        uint32_t prescaler = 0;
         float calc_period = 0.0f;
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
         for(tim_base_id = 0; tim_base_id < ARRAY_SIZE(TimBaseLut); tim_base_id++) {
@@ -54,22 +54,18 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-
 bool tim_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        const table_col_t cols[] = {{5, "num"},
-                                    {14, "Val"},
-                                    {14, "rVal"}
-        };
+        const table_col_t cols[] = {{5, "num"}, {14, "Val"}, {14, "rVal"}};
         uint8_t tim_num = 0;
-        uint32_t val=0, fRval=0;
+        uint32_t val = 0, fRval = 0;
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
         for(tim_num = 0; tim_num < ARRAY_SIZE(TimerItem); tim_num++) {
-            if(TimerItem[tim_num].hTimer){
+            if(TimerItem[tim_num].hTimer) {
                 fRval = GPTimerCC26XX_getFreeRunValue(TimerItem[tim_num].hTimer);
-                val = GPTimerCC26XX_getValue(TimerItem[tim_num].hTimer );
+                val = GPTimerCC26XX_getValue(TimerItem[tim_num].hTimer);
                 io_printf(TSEP);
                 io_printf("  %u  " TSEP, tim_num);
                 io_printf(" %12u " TSEP, val);
@@ -84,7 +80,6 @@ bool tim_diag_command(int32_t argc, char* argv[]) {
 
     return res;
 }
-
 
 bool tim_set_prescaler_command(int32_t argc, char* argv[]) {
     bool res = false;

@@ -31,6 +31,10 @@ speed up to 16 MHz
 #include "param_ids.h"
 #endif
 
+#ifdef HAS_SX1262_DEBUG
+#include "sx1262_diag.h"
+#endif
+
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
@@ -38,9 +42,9 @@ speed up to 16 MHz
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             GPIO_writeDio(SX1262_SS_DIO_NO, 0);                                                                        \
-            wait_ms(1);                                                                                            \
+            wait_ms(1);                                                                                                \
             res = CALL_BACK;                                                                                           \
-            wait_ms(1);                                                                                                 \
+            wait_ms(1);                                                                                                \
             GPIO_writeDio(SX1262_SS_DIO_NO, 1);                                                                        \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \
@@ -442,6 +446,101 @@ bool sx1262_clear_fifo(void) {
     return res;
 }
 
+static bool is_valid_spreading_factor(SpreadingFactor_t Spreading_factor) {
+    bool res = false;
+    switch(Spreading_factor) {
+    case SF5:
+        res = true;
+        break;
+    case SF6:
+        res = true;
+        break;
+    case SF7:
+        res = true;
+        break;
+    case SF8:
+        res = true;
+        break;
+    case SF9:
+        res = true;
+        break;
+    case SF10:
+        res = true;
+        break;
+    case SF11:
+        res = true;
+        break;
+    case SF12:
+        res = true;
+        break;
+    default:
+        res = false;
+        break;
+    }
+    return res;
+}
+
+static bool is_valid_coding_rate(LoRaCodingRate_t coding_rate) {
+    bool res = false;
+    switch(coding_rate) {
+    case LORA_CR_4_5:
+        res = true;
+        break;
+    case LORA_CR_4_6:
+        res = true;
+        break;
+    case LORA_CR_4_7:
+        res = true;
+        break;
+    case LORA_CR_4_8:
+        res = true;
+        break;
+    default:
+        res = false;
+        break;
+    }
+    return res;
+}
+
+static bool is_valid_bandwidth(BandWidth_t bandwidth) {
+    bool res = false;
+    switch(bandwidth) {
+    case LORA_BW_7:
+        res = true;
+        break;
+    case LORA_BW_10:
+        res = true;
+        break;
+    case LORA_BW_20:
+        res = true;
+        break;
+    case LORA_BW_41:
+        res = true;
+        break;
+    case LORA_BW_15:
+        res = true;
+        break;
+    case LORA_BW_31:
+        res = true;
+        break;
+    case LORA_BW_62:
+        res = true;
+        break;
+    case LORA_BW_125:
+        res = true;
+        break;
+    case LORA_BW_250:
+        res = true;
+        break;
+    case LORA_BW_500:
+        res = true;
+        break;
+    default:
+        res = false;
+        break;
+    }
+    return res;
+}
 /*
 
   The command SetModulationParams(...) is used to configure the modulation parameters of the radio.
@@ -450,13 +549,16 @@ bool sx1262_clear_fifo(void) {
 */
 bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
     bool res = false;
-    uint8_t tx_array[8];
-    memset(tx_array, 0xFF, sizeof(tx_array));
-    tx_array[0] = modParams->spreading_factor;
-    tx_array[1] = modParams->band_width;
-    tx_array[2] = modParams->coding_rate;
-    tx_array[3] = 0x00; // Low Data Rate Optimization (LDRO) LDRO LowDataRateOptimize 0:OFF; 1:ON;
-    res = sx1262_send_opcode(OPCODE_SET_MODULATION_PARAMS, tx_array, sizeof(tx_array), NULL, 0);
+    res = is_valid_bandwidth((BandWidth_t)modParams->band_width);
+    if(res) {
+        uint8_t tx_array[8];
+        memset(tx_array, 0xFF, sizeof(tx_array));
+        tx_array[0] = modParams->spreading_factor;
+        tx_array[1] = modParams->band_width;
+        tx_array[2] = modParams->coding_rate;
+        tx_array[3] = 0x00; // Low Data Rate Optimization (LDRO) LDRO LowDataRateOptimize 0:OFF; 1:ON;
+        res = sx1262_send_opcode(OPCODE_SET_MODULATION_PARAMS, tx_array, sizeof(tx_array), NULL, 0);
+    }
     return res;
 }
 
@@ -576,10 +678,87 @@ bool sx1262_reset(void) {
     return res;
 }
 
+bool sx1262_load_params(Sx1262_t* sx1262Instance) {
+    bool res = true;
+    sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
+    sx1262Instance->mod_params.band_width = DFLT_LORA_BW_500;
+    sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR_4_8;
+    sx1262Instance->mod_params.spreading_factor = DFLT_SF12;
+#ifdef HAS_FLASH_FS
+    uint16_t file_len = 0;
+    res = mm_get(PAR_ID_LORA_CR, (uint8_t*)&sx1262Instance->mod_params.coding_rate,
+                 sizeof(sx1262Instance->mod_params.coding_rate), &file_len);
+    if((true == res) && (1 == file_len)) {
+        if(true == is_valid_coding_rate(sx1262Instance->mod_params.coding_rate)) {
+            LOG_INFO(LORA, "Set coding_rate from params %s ", coding_rate2str(sx1262Instance->mod_params.coding_rate));
+        } else {
+            res = false;
+        }
+    } else {
+        res = false;
+    }
+    if(false == res) {
+        LOG_WARNING(LORA, "Set default coding_rate %s", coding_rate2str(DFLT_LORA_CR_4_8));
+        sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR_4_8;
+        res = true;
+    }
+
+    res = mm_get(PAR_ID_LORA_BW, (uint8_t*)&sx1262Instance->mod_params.band_width,
+                 sizeof(sx1262Instance->mod_params.band_width), &file_len);
+    if((true == res) && (1 == file_len)) {
+        if(true == is_valid_bandwidth(sx1262Instance->mod_params.band_width)) {
+            LOG_INFO(LORA, "Set bandwidth from params %7.3f kHz",
+                     ((float)bandwidth2num(sx1262Instance->mod_params.band_width)) / 100.0f);
+        } else {
+            res = false;
+        }
+    } else {
+        res = false;
+    }
+    if(false == res) {
+        LOG_WARNING(LORA, "Set bandwidth from params %7.3f kHz", ((float)bandwidth2num(DFLT_LORA_BW_500)) / 100.0f);
+        sx1262Instance->mod_params.band_width = DFLT_LORA_BW_500;
+        res = true;
+    }
+
+    res = mm_get(PAR_ID_LORA_SF, (uint8_t*)&sx1262Instance->mod_params.spreading_factor,
+                 sizeof(sx1262Instance->mod_params.spreading_factor), &file_len);
+    if((true == res) && (1 == file_len)) {
+        if(true == is_valid_spreading_factor(sx1262Instance->mod_params.spreading_factor)) {
+            LOG_INFO(LORA, "Set spreading_factor from params %u Chips/Symbol",
+                     spreading_factor2num(sx1262Instance->mod_params.spreading_factor));
+        } else {
+            res = false;
+        }
+    } else {
+        res = false;
+    }
+    if(false == res) {
+        LOG_WARNING(LORA, "Set default spreading_factor %u Chips/Symbol", spreading_factor2num(DFLT_SF12));
+        sx1262Instance->mod_params.spreading_factor = DFLT_SF12;
+        res = true;
+    }
+
+    res = mm_get(PAR_ID_LORA_FREQ, (uint8_t*)&sx1262Instance->rf_frequency_hz, sizeof(sx1262Instance->rf_frequency_hz),
+                 &file_len);
+    if((true == res) && (4 == file_len)) {
+        LOG_INFO(LORA, "Set rf freq from params %u Hz", sx1262Instance->rf_frequency_hz);
+    } else {
+        LOG_WARNING(LORA, "Set default freq %u Hz", DFLT_FREQ_MHZ);
+        sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
+        res = true;
+    }
+
+#endif /*HAS_FLASH_FS*/
+    return res;
+}
+
 bool sx1262_init(void) {
     bool res = true;
     LOG_INFO(LORA, "Init SX1262");
     memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
+    res = sx1262_load_params(&Sx1262Instance) && res;
+
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
@@ -600,20 +779,6 @@ bool sx1262_init(void) {
 
         res = sx1262_set_standby(STDBY_XOSC);
 
-        Sx1262Instance.rf_frequency_hz = DFLT_FREQ_MHZ;
-#ifdef HAS_FLASH_FS
-        uint16_t file_len = 0;
-        res = mm_get(PAR_ID_LORA_FREQ, (uint8_t*)&Sx1262Instance.rf_frequency_hz,
-                     sizeof(Sx1262Instance.rf_frequency_hz), &file_len);
-        if((true == res) && (4 == file_len)) {
-            res = true;
-            LOG_INFO(LORA, "Set rf freq from params %u Hz", Sx1262Instance.rf_frequency_hz);
-        } else {
-            LOG_WARNING(LORA, "Set default freq %u Hz", DFLT_FREQ_MHZ);
-            Sx1262Instance.rf_frequency_hz = DFLT_FREQ_MHZ;
-            res = true;
-        }
-#endif /*HAS_FLASH_FS*/
         res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
         Sx1262Instance.mod_params.band_width = LORA_BW_500;

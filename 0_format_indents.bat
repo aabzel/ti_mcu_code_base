@@ -6,12 +6,12 @@ set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\params\param_types.h
-
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\data_utils.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\data_utils.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\params\param_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\params\param_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\params\param_ids.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\params\param_ids.h
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_list.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\cli_drv\task_info.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\cli_drv\task_info.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\flash_fs\flash_fs.c
@@ -116,6 +116,9 @@ rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_sx1262\test_sx1262.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_sx1262\test_sx1262.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\unit_test_check.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_flash_fs\test_flash_fs.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_flash_fs\test_flash_fs.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set\test_list.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\bit_utils.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\bit_utils.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\crc\crc16_ccitt.c

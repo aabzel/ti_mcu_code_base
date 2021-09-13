@@ -15,8 +15,8 @@ https://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/tirtos/2_20_
 
 #include "bit_utils.h"
 #include "clocks.h"
-#include "log.h"
 #include "float_utils.h"
+#include "log.h"
 
 Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT] = {
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 3600000},
@@ -174,8 +174,8 @@ void (*timerCallback[BOARD_GPTIMERPARTSCOUNT])(GPTimerCC26XX_Handle handle, GPTi
 
 float tim_calc_real_period_s(uint32_t cpu_clock, uint32_t prescaler, uint32_t laod) {
     float calc_period_s = 0.0f;
-    float cpu_period = 1.0f / ((float) cpu_clock);
-    calc_period_s = cpu_period * ((float)((prescaler + 1U) * ((float) laod) ));
+    float cpu_period = 1.0f / ((float)cpu_clock);
+    calc_period_s = cpu_period * ((float)((prescaler + 1U) * ((float)laod)));
     return calc_period_s;
 }
 
@@ -194,13 +194,13 @@ bool tim_calc_registers(uint32_t period_ms, uint32_t cpu_clock, uint32_t prescal
         res = true;
     }
     if(res) {
-        calc_period = tim_calc_real_period_s(cpu_clock, prescaler,(uint32_t) load);
+        calc_period = tim_calc_real_period_s(cpu_clock, prescaler, (uint32_t)load);
         if(false == is_float_equal_absolute(calc_period, des_period, cpu_period * 16)) {
-            LOG_WARNING(TIM,"Periods different des %7.4f  calc %7.4f s", des_period, calc_period);
+            LOG_WARNING(TIM, "Periods different des %7.4f  calc %7.4f s", des_period, calc_period);
             res = false;
         }
         res = true;
-        *out_load = (uint32_t)  load;
+        *out_load = (uint32_t)load;
     }
 
     if(false == res) {
@@ -232,7 +232,7 @@ static bool tim_init_item(uint32_t index, uint32_t period_ms, uint8_t cnt_period
         GPTimerCC26XX_Value load_val = 0;
         prescaler = cnt_period_us * CLOCK_FOR_US;
         res = tim_calc_registers(period_ms, SYS_FREQ, prescaler, &load_val, 0xFFFFFFFF);
-        if (res) {
+        if(res) {
             GPTimerCC26XX_setLoadValue(TimerItem[index].hTimer, load_val);
             TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
             TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
@@ -241,7 +241,7 @@ static bool tim_init_item(uint32_t index, uint32_t period_ms, uint8_t cnt_period
             TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
             TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
         } else {
-            LOG_ERROR(TIM,"Unable to set timer %u",index);
+            LOG_ERROR(TIM, "Unable to set timer %u", index);
             res = false;
         }
     }
