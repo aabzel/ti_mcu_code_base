@@ -183,7 +183,7 @@ bool tim_calc_registers(uint32_t period_ms, uint32_t cpu_clock, uint32_t prescal
                         uint32_t max_val) {
     bool res = true;
     uint64_t load = 0;
-    float cpu_period = 1.0f / cpu_clock;
+    float cpu_period = 1.0f / ((float)cpu_clock);
     float calc_period = 0.0f;
     float des_period = (((float)period_ms) / ((float)1000.0f));
 
@@ -195,7 +195,7 @@ bool tim_calc_registers(uint32_t period_ms, uint32_t cpu_clock, uint32_t prescal
     }
     if(res) {
         calc_period = tim_calc_real_period_s(cpu_clock, prescaler, (uint32_t)load);
-        if(false == is_float_equal_absolute(calc_period, des_period, cpu_period * 16)) {
+        if(false == is_float_equal_absolute(calc_period, des_period, cpu_period * 32.0f)) {
             LOG_WARNING(TIM, "Periods different des %7.4f  calc %7.4f s", des_period, calc_period);
             res = false;
         }

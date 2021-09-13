@@ -36,6 +36,7 @@ bool flash_read(uint32_t* addr, uint8_t* rx_array, uint32_t array_len);
 bool flash_erase(uint32_t addr, uint32_t array_len);
 bool is_errased(uint32_t addr, uint32_t size);
 bool is_addr_protected(uint32_t flash_addr);
+bool is_flash_addr(uint32_t flash_addr);
 /*
  * API
  erase 8kbyte flash block

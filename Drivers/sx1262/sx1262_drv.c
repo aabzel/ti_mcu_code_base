@@ -690,7 +690,9 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.coding_rate), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_coding_rate(sx1262Instance->mod_params.coding_rate)) {
+#ifdef HAS_SX1262_DEBUG
             LOG_INFO(LORA, "Set coding_rate from params %s ", coding_rate2str(sx1262Instance->mod_params.coding_rate));
+#endif
         } else {
             res = false;
         }
@@ -698,7 +700,9 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
         res = false;
     }
     if(false == res) {
+#ifdef HAS_SX1262_DEBUG
         LOG_WARNING(LORA, "Set default coding_rate %s", coding_rate2str(DFLT_LORA_CR_4_8));
+#endif
         sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR_4_8;
         res = true;
     }
@@ -707,8 +711,10 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.band_width), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_bandwidth(sx1262Instance->mod_params.band_width)) {
+#ifdef HAS_SX1262_DEBUG
             LOG_INFO(LORA, "Set bandwidth from params %7.3f kHz",
                      ((float)bandwidth2num(sx1262Instance->mod_params.band_width)) / 100.0f);
+#endif
         } else {
             res = false;
         }
@@ -716,7 +722,9 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
         res = false;
     }
     if(false == res) {
+#ifdef HAS_SX1262_DEBUG
         LOG_WARNING(LORA, "Set bandwidth from params %7.3f kHz", ((float)bandwidth2num(DFLT_LORA_BW_500)) / 100.0f);
+#endif
         sx1262Instance->mod_params.band_width = DFLT_LORA_BW_500;
         res = true;
     }
@@ -725,8 +733,10 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.spreading_factor), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_spreading_factor(sx1262Instance->mod_params.spreading_factor)) {
+#ifdef HAS_SX1262_DEBUG
             LOG_INFO(LORA, "Set spreading_factor from params %u Chips/Symbol",
                      spreading_factor2num(sx1262Instance->mod_params.spreading_factor));
+#endif
         } else {
             res = false;
         }
@@ -734,7 +744,9 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
         res = false;
     }
     if(false == res) {
+#ifdef HAS_SX1262_DEBUG
         LOG_WARNING(LORA, "Set default spreading_factor %u Chips/Symbol", spreading_factor2num(DFLT_SF12));
+#endif
         sx1262Instance->mod_params.spreading_factor = DFLT_SF12;
         res = true;
     }
@@ -742,9 +754,13 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     res = mm_get(PAR_ID_LORA_FREQ, (uint8_t*)&sx1262Instance->rf_frequency_hz, sizeof(sx1262Instance->rf_frequency_hz),
                  &file_len);
     if((true == res) && (4 == file_len)) {
+#ifdef HAS_SX1262_DEBUG
         LOG_INFO(LORA, "Set rf freq from params %u Hz", sx1262Instance->rf_frequency_hz);
+#endif
     } else {
+#ifdef HAS_SX1262_DEBUG
         LOG_WARNING(LORA, "Set default freq %u Hz", DFLT_FREQ_MHZ);
+#endif
         sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
         res = true;
     }
@@ -781,9 +797,6 @@ bool sx1262_init(void) {
 
         res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
-        Sx1262Instance.mod_params.band_width = LORA_BW_500;
-        Sx1262Instance.mod_params.coding_rate = LORA_CR_4_8;
-        Sx1262Instance.mod_params.spreading_factor = SF12;
         res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
 
         Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;

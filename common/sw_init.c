@@ -31,6 +31,10 @@
 #include "flash_fs.h"
 #endif /*HAS_FLASH_FS*/
 
+#ifdef HAS_PARAM
+#include "param_ids.h"
+#endif /*HAS_PARAM*/
+
 bool sw_init(void) {
   bool res = true;
   
@@ -63,11 +67,14 @@ bool sw_init(void) {
 
 #ifdef  HAS_FLASH_FS
   res = try_init(flash_fs_init(),"Flash_FS") && res;
-
 #endif /*HAS_FLASH_FS*/
 
+#ifdef HAS_PARAM
+  res = try_init(param_init(),"param") && res;
+#endif /*HAS_PARAM*/
+
 #ifdef TASKS
-  res = try_init(cmd_task_clear(0, NULL),"Tasks")&& res;
+  res = try_init(task_init(),"task")&& res;
 #endif /*TASKS*/
 
   return res;

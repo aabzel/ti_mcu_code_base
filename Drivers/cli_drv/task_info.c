@@ -14,8 +14,13 @@
 
 static uint64_t total_time0_us = 0;
 static uint64_t total_time_ms0 = 0;
-uint32_t iteration_cnt = 10;
+
+#ifdef HAS_DEBUG
+uint32_t iteration_cnt = 0;
 uint64_t loop_duration_us = 0;
+uint64_t loop_duration_min_us = UINT64_MAX;
+uint64_t loop_duration_max_us = 0;
+#endif /*HAS_DEBUG*/
 
 #ifdef TASKS
 task_data_t task_data[] = {
@@ -33,7 +38,7 @@ static uint64_t calc_total_run_time(void) {
     }
     if(0 == tot_run_time) {
         cmd_task_clear(0, NULL);
-        tot_run_time = 0xFFFFFFFFFFFFFFFF;
+        tot_run_time = UINT64_MAX;
     }
     return tot_run_time;
 }
@@ -65,7 +70,10 @@ bool diag_page_tasks(ostream_t* stream) {
     }
 
     total_run_time_us = calc_total_run_time();
+
     oprintf(stream, "loop duration %u us" CRLF, loop_duration_us);
+    oprintf(stream, "max loop duration %u us" CRLF, loop_duration_max_us);
+    oprintf(stream, "min loop duration %u us" CRLF, loop_duration_min_us);
     oprintf(stream, "total run time  %u us" CRLF, total_run_time_us);
     oprintf(stream, "up_time  %u ms" CRLF, g_up_time_ms);
     oprintf(stream, "iteration cnt %u" CRLF, iteration_cnt);
@@ -102,27 +110,6 @@ bool diag_page_tasks(ostream_t* stream) {
     return true;
 }
 
-bool cmd_task_clear(int32_t argc, char* argv[]) {
-    (void)(argc);
-    (void)(argv);
-
-#ifdef TASKS
-    int32_t id = 0;
-    for(id = 0; id < TASK_ID_COUNT; id++) {
-        task_data[id].start_count = 0;
-        task_data[id].run_time_total = 0;
-        task_data[id].run_time_min = 0xFFFFFFFFFFFF;
-        task_data[id].run_time_max = 0;
-        task_data[id].start_period_min = 0xFFFFFFFFFFFF;
-        task_data[id].start_period_max = 0;
-    }
-#endif
-
-    total_time0_us = get_time_us();
-    total_time_ms0 = get_time_ms64();
-
-    return true;
-}
 
 bool cmd_task_report(int32_t argc, char* argv[]) {
     (void)(argc);
@@ -179,5 +166,35 @@ bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_f
                            uint64_t loop_start_time_us) {
     bool res = false;
     res = _measure_task_interval(&task_data[task_id], interval_us, task_func, loop_start_time_us);
+    return res;
+}
+
+
+bool task_init(void){
+
+    iteration_cnt = 0;
+    loop_duration_us = 0;
+    loop_duration_min_us = UINT64_MAX;
+    loop_duration_max_us = 0;
+    int32_t id = 0;
+    for(id = 0; id < TASK_ID_COUNT; id++) {
+        task_data[id].start_count = 0;
+        task_data[id].run_time_total = 0;
+        task_data[id].run_time_min = UINT64_MAX;
+        task_data[id].run_time_max = 0;
+        task_data[id].start_period_min = UINT64_MAX;
+        task_data[id].start_period_max = 0;
+    }
+    total_time0_us = get_time_us();
+    total_time_ms0 = get_time_ms64();
+
+    return true;
+}
+
+bool cmd_task_clear(int32_t argc, char* argv[]) {
+    (void)(argc);
+    (void)(argv);
+    bool res = false;
+    res=task_init();
     return res;
 }

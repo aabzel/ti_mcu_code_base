@@ -158,14 +158,16 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     res = print_indent(indent);
     io_printf(ASCII_SEP);
     for(i = 0; i < size; i++) {
-        if(0x00 != buff[i]) {
-            io_printf("%c", buff[i]);
-        } else if(0x0a != buff[i]) {
+        if(0x08 == buff[i]) {
+            io_printf("[BS]");
+        }else if(0x00 == buff[i]) {
+            io_printf(" ");
+        }else if(0x0A == buff[i]) {
             io_printf("[LF]");
-        } else if(0x0d != buff[i]) {
+        }else if(0x0D == buff[i]) {
             io_printf("[CR]");
         }else{
-            io_printf(" ");
+            io_printf("%c", buff[i]);
         }
     }
     io_printf(ASCII_SEP);
@@ -355,5 +357,37 @@ bool print_bit_representation(uint32_t val) {
     io_printf(CRLF);
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
     io_printf(CRLF);
+    return res;
+}
+
+
+static bool print_text_addresses(uint32_t cur_stack_val,uint32_t top_stack_val){
+    bool res = false;
+    bool out_res= false;
+    uint32_t cur_addr = 0;
+    uint32_t num = 1;
+    if(cur_stack_val<top_stack_val){
+        for(cur_addr=cur_stack_val; cur_addr<top_stack_val;cur_addr++){
+            uint32_t *ram_addr=(uint32_t *)cur_addr;
+            res = is_flash_addr((uint32_t)*ram_addr);
+            if (res) {
+                io_printf("%3u addr[0x%08x]=0x%08x"CRLF, num,cur_addr,(uint32_t)*ram_addr);
+                out_res = true;
+                num++;
+            }
+        }
+    }
+    return out_res;
+}
+
+bool parse_stack(void){
+    bool res = false;
+    uint32_t cur_stack_val =(uint32_t)&res;
+    uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
+    uint32_t cur_stack_size=top_stack_val-cur_stack_val;
+    io_printf("Stack 0x%08x...0x%08x %u byte %u kByte"CRLF,cur_stack_val, top_stack_val,
+              cur_stack_size,cur_stack_size/1024);
+    res = print_text_addresses(cur_stack_val,top_stack_val);
+
     return res;
 }

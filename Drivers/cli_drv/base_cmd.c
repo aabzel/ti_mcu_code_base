@@ -342,6 +342,9 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
 }
 
 bool cmd_try_stack(int32_t argc, char* argv[]) {
+#ifdef HAS_DEBUG
+    parse_stack();
+#endif
     bool res = false;
     if(1 == argc) {
         res = true;

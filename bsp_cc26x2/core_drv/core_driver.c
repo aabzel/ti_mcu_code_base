@@ -43,3 +43,4 @@ bool reboot(void) {
 #endif
     return res;
 }
+

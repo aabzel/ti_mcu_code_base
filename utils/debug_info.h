@@ -58,6 +58,7 @@ bool print_vector_table(uint32_t vectors_table_base);
 bool print_version(void);
 bool print_version_s(ostream_t* stream);
 void print_sys_info(void);
+bool parse_stack(void);
 
 #ifdef __cplusplus
 }

@@ -105,8 +105,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_SX1262
     measure_task_interval(TASK_ID_LORA, 10000, sx1262_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
-#if 0 /*MISRA comment*/
-#endif /*MISRA comment*/
+
 
 #ifdef HAS_FLASH_FS
     measure_task_interval(TASK_ID_FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc, loop_start_time_us);
@@ -119,12 +118,14 @@ void common_main_loop(void) {
     uint64_t prev_loop_start_time_us = 0;
     for(;;) {
 #ifdef HAS_DEBUG
-        gpio_toggle(COM_LOOP_SENSOR_DIO_NO);
-#endif /*HAS_DEBUG*/
         iteration_cnt++;
-        prev_loop_start_time_us = loop_start_time_us;
+        gpio_toggle(COM_LOOP_SENSOR_DIO_NO);
         loop_start_time_us = get_time_us();
         loop_duration_us = loop_start_time_us - prev_loop_start_time_us;
+        loop_duration_min_us = rx_min64u(loop_duration_min_us, loop_duration_us);
+        loop_duration_max_us = rx_max64u(loop_duration_max_us, loop_duration_us);
+#endif /*HAS_DEBUG*/
+        prev_loop_start_time_us = loop_start_time_us;
         common_loop(loop_start_time_us);
     }
 }

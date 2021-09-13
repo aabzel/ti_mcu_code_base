@@ -144,6 +144,9 @@ const char *facility2str(log_facility_t facility) {
   case TIM:
     facility_str = "TIM";
     break;
+  case PARAM:
+    facility_str = "PARAM";
+    break;
   case SPI:
     facility_str = "SPI";
     break;

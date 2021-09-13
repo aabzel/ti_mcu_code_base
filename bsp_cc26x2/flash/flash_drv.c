@@ -131,9 +131,17 @@ bool is_errased(uint32_t addr, uint32_t size) {
     return res;
 }
 
+bool is_flash_addr(uint32_t flash_addr){
+    bool res = false;
+    if (flash_addr<NOR_FLASH_END){
+        res = true;
+    }
+    return res;
+}
+
 bool is_addr_protected(uint32_t flash_addr) {
     bool res = false;
-    if(flash_addr < NOR_FLASH_SIZE) {
+    if(is_flash_addr(flash_addr)) {
         res = true;
         uint32_t reg_val = 0;
         uint8_t flash_sector = flash_addr / FLASH_SECTOR_SIZE;
@@ -158,3 +166,4 @@ bool is_addr_protected(uint32_t flash_addr) {
 
     return res;
 }
+
