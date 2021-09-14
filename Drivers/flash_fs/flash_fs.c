@@ -256,7 +256,7 @@ bool mm_flash_format(void) {
     res = mm_flash_zero(MEMORY_MANAGER2_OFFSET, QWORD_LEN);
     if(res) {
         /* erase first page */
-        res = flash_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH);
+        res = flash_nvs_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH);
     }
 
     if(res) {
@@ -287,14 +287,14 @@ bool mm_turn_page(void) {
     /* erase passive page and get pointer to it */
     if(MEMORY_MANAGER1_OFFSET == mmPageActiveStart) {
         /* clear page # 2 */
-        res = flash_erase(MEMORY_MANAGER2_OFFSET, MEMORY_MANAGER2_LENGTH);
+        res = flash_nvs_erase(MEMORY_MANAGER2_OFFSET, MEMORY_MANAGER2_LENGTH);
         if(false == res) {
             return false;
         }
         mmPagePassiveStart = MEMORY_MANAGER2_OFFSET;
     } else if(MEMORY_MANAGER2_OFFSET == mmPageActiveStart) {
         /* clear page # 1 */
-        res = flash_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH);
+        res = flash_nvs_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH);
         if(false == res) {
             return false;
         }
@@ -558,7 +558,6 @@ bool mm_invalidate(uint16_t data_id) {
     if(res) {
         /* invalidate field */
         res = mm_flash_zero((uint32_t)item, sizeof(mmItem_t) + item->length);
-        /*TODO invalidate data if crc match*/
     }
 
     return res;
@@ -570,20 +569,31 @@ bool mm_invalidate(uint16_t data_id) {
 bool mm_flash_erase(void) {
     bool res = true;
     /* invalidate second page as passive */
-    res = flash_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH) && res;
-    res = flash_erase(MEMORY_MANAGER2_OFFSET, MEMORY_MANAGER2_LENGTH) && res;
+    res = flash_nvs_erase(MEMORY_MANAGER1_OFFSET, MEMORY_MANAGER1_LENGTH) && res;
+    res = flash_nvs_erase(MEMORY_MANAGER2_OFFSET, MEMORY_MANAGER2_LENGTH) && res;
     return res;
 }
 
 bool flash_fs_init(void) {
     bool res = false;
+    uint32_t mm_page_start = 0;
+    uint32_t mm_page_len = 0;
+    res = mm_get_active_page(&mm_page_start, &mm_page_len);
+    if(false == res) {
+        LOG_WARNING(FLASH_FS, "format Flash FS");
+        res = mm_flash_format();
+    } else {
+        LOG_INFO(FLASH_FS, "start: 0x%08x len %u", mm_page_start, mm_page_len);
+    }
     uint16_t reboot_cnt = 0;
     uint16_t fileLen = 0;
     res = mm_get(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt), &fileLen);
     if(res) {
         reboot_cnt++;
-        LOG_INFO(SYS, "reboot cnt: %u", reboot_cnt);
+        LOG_INFO(FLASH_FS, "reboot cnt: %u", reboot_cnt);
         res = mm_set(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt));
+    } else {
+        LOG_WARNING(FLASH_FS, "lack of reboot counter");
     }
     return res;
 }

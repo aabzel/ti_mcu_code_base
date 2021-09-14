@@ -1,5 +1,6 @@
 #include "flash_drv.h"
 
+#include <flash.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
@@ -9,6 +10,7 @@
 #include <hw_types.h>
 #include <ti/drivers/NVS.h>
 #include <ti/drivers/nvs/NVSCC26XX.h>
+#include <vims.h>
 
 #include "bit_utils.h"
 #include "data_utils.h"
@@ -72,19 +74,33 @@ bool flash_init(void) {
     return res;
 }
 
-bool flash_read(uint32_t* addr, uint8_t* rx_array, uint32_t array_len) { return false; }
+bool flash_read(uint32_t in_flash_addr, uint8_t* rx_array, uint32_t array_len) {
+    bool res = false;
+    uint32_t i = 0;
+    uint8_t* p_flash_addr = (uint8_t*)in_flash_addr;
+    for(i = 0; i < array_len; i++) {
+        res = is_flash_addr((uint32_t)p_flash_addr);
+        if(res) {
+            rx_array[i] = *(p_flash_addr);
+            p_flash_addr++;
+        } else {
+            break;
+        }
+    }
+    return res;
+}
 
 bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare, uint32_t* busy) {
     bool res = false;
     if(usage_pec && spare && busy) {
         res = true;
-        *spare=0;
-        *busy=0;
+        *spare = 0;
+        *busy = 0;
         uint8_t* addr = base;
         uint32_t cnt = 0;
         for(addr = base, cnt = 0; addr < (base + size); addr++, cnt++) {
-            res=is_flash_addr((uint32_t) addr);
-            if(false==res){
+            res = is_flash_addr((uint32_t)addr);
+            if(false == res) {
                 break;
             }
             if(0xFF == (*addr)) {
@@ -93,7 +109,7 @@ bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare,
                 (*busy)++;
             }
             if(!(cnt % 1000)) {
-                //wait_in_loop_ms(5);
+                // wait_in_loop_ms(5);
             }
         }
         *usage_pec = (float)(((float)(100U * (*busy))) / ((float)size));
@@ -101,7 +117,51 @@ bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare,
     return res;
 }
 
-bool flash_write(uint32_t flas_addr, uint8_t* array, uint32_t array_len) {
+bool flash_wr(uint32_t flash_addr, uint8_t* wr_array, uint32_t array_len) {
+    bool res = false, loop = true;
+    uint32_t ret = 0, cnt = 0;
+    VIMSModeSet(VIMS_BASE, VIMS_MODE_OFF);
+    VIMSLineBufDisable(VIMS_BASE);
+    ret = FlashProgram(wr_array, flash_addr, array_len);
+    if(FAPI_STATUS_SUCCESS == ret) {
+        res = true;
+        uint8_t readMem[array_len];
+        while(loop) {
+            flash_read(flash_addr, readMem, sizeof(readMem));
+            ret = memcmp(readMem, wr_array, array_len);
+            if(0 == ret) {
+                loop = false;
+                res = true;
+            }
+            wait_ms(FLASH_WR_TIME_MS);
+            cnt++;
+            if(1000 < cnt) {
+                loop = false;
+                res = false;
+            }
+        }
+    }
+    VIMSLineBufEnable(VIMS_BASE);
+    VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
+    return res;
+}
+
+bool flash_erase_sector(uint32_t sector_address) {
+    bool res = false;
+    if((0 == (sector_address % FLASH_SECTOR_SIZE)) || (0 == sector_address)) {
+        VIMSModeSet(VIMS_BASE, VIMS_MODE_OFF);
+        VIMSLineBufDisable(VIMS_BASE);
+        uint32_t ret = FlashSectorErase(sector_address);
+        if(FAPI_STATUS_SUCCESS == ret) {
+            res = true;
+        }
+        VIMSLineBufEnable(VIMS_BASE);
+        VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
+    }
+    return res;
+}
+
+bool flash_nvs_write(uint32_t flas_addr, uint8_t* array, uint32_t array_len) {
     bool res = false;
     int_fast16_t ret;
     if((NVS_FLASH_START <= flas_addr) && (flas_addr < (NVS_FLASH_START + NVS_SIZE))) {
@@ -116,7 +176,7 @@ bool flash_write(uint32_t flas_addr, uint8_t* array, uint32_t array_len) {
     return res;
 }
 
-bool flash_erase(uint32_t addr, uint32_t array_len) {
+bool flash_nvs_erase(uint32_t addr, uint32_t array_len) {
     bool res = false;
     if((NVS_FLASH_START <= addr) && addr < (NVS_FLASH_START + NVS_SIZE)) {
         int_fast16_t ret;
@@ -180,11 +240,11 @@ bool is_flash_spare(uint32_t flash_addr, uint32_t size) {
     uint32_t spare_size = 0;
     uint32_t busy_size = 0;
     bool res = false;
-    float usage_pec=0.0f;
-    res = flash_scan((uint8_t*) flash_addr, size, &usage_pec, &spare_size, &busy_size);
-    if (size == spare_size) {
+    float usage_pec = 0.0f;
+    res = flash_scan((uint8_t*)flash_addr, size, &usage_pec, &spare_size, &busy_size);
+    if(size == spare_size) {
         res = true;
-    }else{
+    } else {
         res = false;
     }
 

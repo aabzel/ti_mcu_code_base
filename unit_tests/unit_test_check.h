@@ -11,9 +11,9 @@
 /*Macros for Polymorphism*/
 #define EXPECT_EQ_MEM(memL, memR, len)                                                                                 \
     do {                                                                                                               \
-        if(0 != memcmp(memL, memR, len)) {                                                                             \
-            LOG_ERROR(SYS, "Error");                                                                                   \
-            io_printf("\n[e] %s:Line: %d diffenent memory", __FUNCTION__, __LINE__);                                   \
+        int ret = memcmp(memL, memR, len);                                                                             \
+        if(0 != ret) {                                                                                                 \
+            LOG_ERROR(SYS, "%s:Line: %d different memory %d", __FUNCTION__, __LINE__, ret);                            \
             return false;                                                                                              \
         }                                                                                                              \
     } while(0);

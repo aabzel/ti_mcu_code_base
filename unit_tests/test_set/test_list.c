@@ -15,6 +15,7 @@
 #include "io_utils.h"
 #include "test_convert.h"
 #include "test_crc.h"
+#include "test_flash.h"
 #include "test_flash_fs.h"
 #include "test_nmea_proto.h"
 #include "test_params.h"
@@ -29,7 +30,7 @@
 /*Compile time assemble array */
 const unit_test_info_t test_list[] = {
     {"type_transform", test_type_transformation},
-    TEST_SUIT_PARAMS DATA_UTILS_TEST_SUIT FLOAT_UTILS_TEST_SUIT TIME_UTILS_TEST_SUIT SYSTEM_TEST_SUIT
+    TEST_SUIT_PARAMS DATA_UTILS_TEST_SUIT FLOAT_UTILS_TEST_SUIT TIME_UTILS_TEST_SUIT SYSTEM_TEST_SUIT TEST_SUIT_FLASH
         NMEA_PROTO_TEST_SUIT CRC_TEST_SUIT TEST_SUIT_FLASH_FS TEST_SUIT_SX1262 CONVERT_TEST_SUIT STRING_UTILS_TEST_SUIT
             UBLOX_PROTO_TEST_SUIT BYTE_UTILS_TEST_SUIT BIT_UTILS_TEST_SUIT{"array_init", test_array_init},
     {"clock_us", test_clock_us},

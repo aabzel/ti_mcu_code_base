@@ -50,7 +50,6 @@
 									<listOptionValue builtIn="false" value="${CG_TOOL_ROOT}/include"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos/posix"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos/startup"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/common/cc26xx"/>
@@ -111,6 +110,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_nmea_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_string"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_flash"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/test_ublox_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set/utils_test"/>

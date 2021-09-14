@@ -1217,11 +1217,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="299.99005"
-     inkscape:cy="387.84807"
+     inkscape:zoom="8"
+     inkscape:cx="364.9375"
+     inkscape:cy="472.375"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer3"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1235,35 +1235,31 @@
     <sodipodi:guide
        position="0,0"
        orientation="210.0,0"
-       id="guide33727" />
+       id="guide16136" />
+    <sodipodi:guide
+       position="148.5,0"
+       orientation="210.0,0"
+       id="guide16138" />
     <sodipodi:guide
        position="297,0"
        orientation="210.0,0"
-       id="guide33731" />
+       id="guide16140" />
     <sodipodi:guide
        position="0,0"
        orientation="0,297.0"
-       id="guide33733" />
+       id="guide16142" />
     <sodipodi:guide
        position="0,70"
        orientation="0,297.0"
-       id="guide33735" />
+       id="guide16144" />
     <sodipodi:guide
        position="0,140"
        orientation="0,297.0"
-       id="guide33737" />
+       id="guide16146" />
     <sodipodi:guide
        position="0,210"
        orientation="0,297.0"
-       id="guide33739" />
-    <sodipodi:guide
-       position="55.179466,120.7587"
-       orientation="1,0"
-       id="guide2671" />
-    <sodipodi:guide
-       position="48.35073,120.64177"
-       orientation="1,0"
-       id="guide2673" />
+       id="guide16148" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -2744,13 +2740,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.7289px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.318224"
-       x="54.088829"
-       y="31.260399"
+       x="58.08429"
+       y="32.096905"
        id="text3492"><tspan
          sodipodi:role="line"
          id="tspan3490"
-         x="54.088829"
-         y="31.260399"
+         x="58.08429"
+         y="32.096905"
          style="stroke-width:0.318224">Harvester Block Diagram Э1</tspan></text>
     <text
        xml:space="preserve"
@@ -4400,17 +4396,6 @@
          style="font-size:2.72815px;stroke-width:0.255765">-40 to 105</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.06917px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="79.683449"
-       y="115.40297"
-       id="text5846"><tspan
-         sodipodi:role="line"
-         id="tspan5844"
-         x="79.683449"
-         y="115.40297"
-         style="font-size:3.06917px;stroke-width:0.255765">Flash 352KB </tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.72815px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
        x="79.738472"
        y="112.25755"
@@ -4453,17 +4438,6 @@
          x="80.329742"
          y="131.23094"
          style="font-size:2.23143px;stroke-width:0.55786">12-bit ADC</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.79943px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.524895"
-       x="80.458412"
-       y="125.58784"
-       id="text5866"><tspan
-         sodipodi:role="line"
-         id="tspan5864"
-         x="80.458412"
-         y="125.58784"
-         style="font-size:2.79943px;stroke-width:0.524895">Bluetooth 5.1</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.22144px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.555362"
@@ -4766,6 +4740,39 @@
          style="font-size:1.05833px;stroke-width:0.264583"
          x="51.82526"
          y="69.254684">PLL</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.2311px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.307776"
+       x="80.788277"
+       y="121.93816"
+       id="text18160"><tspan
+         sodipodi:role="line"
+         id="tspan18158"
+         style="font-size:1.2311px;stroke-width:0.307776"
+         x="80.788277"
+         y="121.93816">cache RAM word size 8 byte</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.06917px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       x="79.683449"
+       y="115.40297"
+       id="text5846"><tspan
+         sodipodi:role="line"
+         id="tspan5844"
+         x="79.683449"
+         y="115.40297"
+         style="font-size:3.06917px;stroke-width:0.255765">Flash 352KB </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.79943px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.524895"
+       x="80.458412"
+       y="125.58784"
+       id="text5866"><tspan
+         sodipodi:role="line"
+         id="tspan5864"
+         x="80.458412"
+         y="125.58784"
+         style="font-size:2.79943px;stroke-width:0.524895">Bluetooth 5.1</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

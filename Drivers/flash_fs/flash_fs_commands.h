@@ -8,9 +8,9 @@
 extern "C" {
 #endif
 
+bool cmd_flash_fs_diag(int32_t argc, char* argv[]);
 bool cmd_flash_fs_toggle_page(int32_t argc, char* argv[]);
 bool cmd_flash_fs_inval(int32_t argc, char* argv[]);
-bool cmd_flash_fs_diag(int32_t argc, char* argv[]);
 bool cmd_flash_fs_get(int32_t argc, char* argv[]);
 bool cmd_flash_fs_get_addr(int32_t argc, char* argv[]);
 bool cmd_flash_fs_set(int32_t argc, char* argv[]);

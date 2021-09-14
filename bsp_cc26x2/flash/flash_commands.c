@@ -3,6 +3,7 @@
 #include <flash.h>
 #include <inttypes.h>
 #include <stdio.h>
+#include <vims.h>
 
 #include "convert.h"
 #include "crc16_ccitt.h"
@@ -21,12 +22,11 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
     uint32_t flash_addr = NOR_FLASH_BASE, num = 0;
     char line_str[120];
     uint32_t prot = 0;
-    uint32_t spare=0;
-    uint32_t busy=0;
-    float usage_pec=0.0f;
-    static const table_col_t cols[] = {{5, "num"}, {11, "Start"},
-                                       {11, "End"}, {7, "WrSta"},
-                                       {7, "WrSta"}, {7, "cont"}, {8, "Use"}};
+    uint32_t spare = 0;
+    uint32_t busy = 0;
+    float usage_pec = 0.0f;
+    static const table_col_t cols[] = {{5, "num"},   {11, "Start"}, {11, "End"}, {7, "WrSta"},
+                                       {7, "WrSta"}, {7, "cont"},   {8, "Use"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     for(flash_addr = 0; flash_addr < NOR_FLASH_SIZE; flash_addr += FLASH_SECTOR_SIZE) {
         strcpy(line_str, TSEP);
@@ -35,24 +35,47 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
         res = is_addr_protected(flash_addr);
         prot = FlashProtectionGet(flash_addr);
         if(res) {
-            snprintf(line_str, sizeof(line_str), "%s %5s " TSEP, line_str,"Prot");
+            snprintf(line_str, sizeof(line_str), "%s %5s " TSEP, line_str, "Prot");
         } else {
-            snprintf(line_str, sizeof(line_str), "%s %5s " TSEP, line_str,"WrEn");
+            snprintf(line_str, sizeof(line_str), "%s %5s " TSEP, line_str, "WrEn");
         }
-        snprintf(line_str, sizeof(line_str), "%s %6u" TSEP,line_str, prot);
-        flash_scan((uint8_t*) flash_addr, FLASH_SECTOR_SIZE, &usage_pec, &spare, &busy);
-        snprintf(line_str, sizeof(line_str), "%s %6s" TSEP,line_str, (FLASH_SECTOR_SIZE==spare)?"spare":"busy");
-        snprintf(line_str, sizeof(line_str), "%s %6.2f " TSEP,line_str, usage_pec);
+        snprintf(line_str, sizeof(line_str), "%s %6u" TSEP, line_str, prot);
+        flash_scan((uint8_t*)flash_addr, FLASH_SECTOR_SIZE, &usage_pec, &spare, &busy);
+        snprintf(line_str, sizeof(line_str), "%s %6s" TSEP, line_str, (FLASH_SECTOR_SIZE == spare) ? "spare" : "busy");
+        snprintf(line_str, sizeof(line_str), "%s %6.2f " TSEP, line_str, usage_pec);
         snprintf(line_str, sizeof(line_str), "%s", line_str);
         if(is_contain(line_str, key_word1, key_word2)) {
             io_printf(TSEP " %3u ", num);
-            io_printf("%s"CRLF, line_str);
+            io_printf("%s" CRLF, line_str);
             num++;
         }
     }
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
 
     return res;
+}
+
+//! - \ref VIMS_MODE_DISABLED (GPRAM enabled)
+//! - \ref VIMS_MODE_ENABLED  (CACHE mode)
+//! - \ref VIMS_MODE_OFF
+
+static const char* vims_mode2str(uint32_t mode) {
+    const char* name = "undef";
+    switch(mode) {
+    case VIMS_MODE_OFF:
+        name = "OFF";
+        break;
+    case VIMS_MODE_ENABLED:
+        name = "CACHE";
+        break;
+    case VIMS_MODE_DISABLED:
+        name = "GPRAM";
+        break;
+    default:
+        name = "undef";
+        break;
+    }
+    return name;
 }
 
 bool flash_diag_command(int32_t argc, char* argv[]) {
@@ -83,15 +106,19 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
         // FlashPowerModeGet
         // FlashProtectionGet
         all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
+        uint32_t mode = VIMSModeGet(VIMS_BASE);
+        uint32_t flash_sec_size = FlashSectorSizeGet();
+        uint32_t flash_size = FlashSizeGet();
+        io_printf("VIMSMode: %s" CRLF, vims_mode2str(mode));
         io_printf("FlashCRC32: 0x%08x" CRLF, all_flash_crc);
-        io_printf("FlashSectorSize: %u bytes" CRLF, FlashSectorSizeGet());
-        io_printf("FlashSize: %u bytes" CRLF, FlashSizeGet());
+        io_printf("FlashSectorSize: %u bytes %u kBytes" CRLF, flash_sec_size, flash_sec_size / K_BYTES);
+        io_printf("FlashSize: %u bytes %u kBytes" CRLF, flash_size, flash_size / K_BYTES);
         io_printf("FlashPowerMode: %u" CRLF, FlashPowerModeGet());
         io_printf("FlashFsm: %u" CRLF, FlashCheckFsmForReady());
         io_printf("FlashFsmError: %u" CRLF, FlashCheckFsmForError());
 
         io_printf("Flash Base: 0x%08x" CRLF, NOR_FLASH_BASE);
-        io_printf("Flash size: %u byte %u kByte" CRLF, NOR_FLASH_SIZE, NOR_FLASH_SIZE / 1024);
+        io_printf("Flash size: %u byte %u kByte" CRLF, NOR_FLASH_SIZE, NOR_FLASH_SIZE / K_BYTES);
         io_printf("Flash End: 0x%08x" CRLF, NOR_FLASH_END - 1);
 
         /* Display the NVS region attributes */
@@ -106,7 +133,6 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
 
 bool flash_erase_command(int32_t argc, char* argv[]) {
     uint32_t sector_address = 0;
-    uint32_t ret = 0;
     bool res = false;
     if(1 == argc) {
         res = true;
@@ -115,13 +141,11 @@ bool flash_erase_command(int32_t argc, char* argv[]) {
             LOG_ERROR(FLASH, "Unable to parse sector_address %s", argv[0]);
         }
         if(res) {
-            ret = FlashSectorErase(sector_address);
-            if(FAPI_STATUS_SUCCESS == ret) {
+            res = flash_erase_sector(sector_address);
+            if(res) {
                 LOG_INFO(FLASH, "FlashSectorErase OK");
-                res = true;
             } else {
-                LOG_ERROR(FLASH, "FlashSectorErase error %u", ret);
-                res = false;
+                LOG_ERROR(FLASH, "FlashSectorErase error");
             }
         }
     } else {
@@ -201,7 +225,6 @@ bool flash_read_command(int32_t argc, char* argv[]) {
 
 bool flash_write_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint32_t ret = 0;
     uint16_t crc16_read = 0;
     uint32_t flash_address = 0;
     uint32_t count = 0;
@@ -245,13 +268,11 @@ bool flash_write_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        ret = FlashProgram(DataBuffer, flash_address, count);
-        if(FAPI_STATUS_SUCCESS == ret) {
+        res = flash_wr(flash_address, DataBuffer, count);
+        if(res) {
             LOG_ERROR(FLASH, "FlashProgram ok");
-            res = true;
         } else {
-            LOG_ERROR(FLASH, "FlashProgram error %u", ret);
-            res = false;
+            LOG_ERROR(FLASH, "FlashProgram error");
         }
     }
     return res;

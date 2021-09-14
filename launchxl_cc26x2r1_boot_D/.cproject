@@ -218,6 +218,7 @@
 					</fileInfo>
 					<sourceEntries>
 						<entry excluding="unit_tests|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash_fs — копия"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -40,11 +40,15 @@ bool cmd_flash_fs_diag(int32_t argc, char* argv[]) {
         uint32_t mm_page_start = 0;
         uint32_t mm_page_len = 0;
         uint32_t remaining_space = 0;
+        io_printf("page1: 0x%08x" CRLF, MEMORY_MANAGER1_OFFSET);
+        io_printf("page2: 0x%08x" CRLF, MEMORY_MANAGER2_OFFSET);
         res = mm_get_active_page(&mm_page_start, &mm_page_len);
         if(res) {
             io_printf("page num: %u" CRLF, addr2page_num(mm_page_start));
             io_printf("mm_page_start 0x%08x" CRLF, mm_page_start);
             io_printf("mm_page_len %u Byte %u kByte" CRLF, mm_page_len, mm_page_len / 1024);
+        } else {
+            LOG_ERROR(FLASH_FS, "Get active page error");
         }
         remaining_space = mm_get_remaining_space();
         io_printf("remaining_space %u Byte %u kByte" CRLF, remaining_space, remaining_space / 1024);
@@ -259,6 +263,7 @@ bool cmd_flash_fs_inval(int32_t argc, char* argv[]) {
 
 static bool flash_fs_scan(uint32_t start_page_addr, uint32_t page_len, char* key_word1, char* key_word2) {
     bool res = false;
+    bool out_res = false;
     mmItem_t* item = NULL;
     uint32_t rem_size = 0;
     uint16_t num = 0;
@@ -323,7 +328,10 @@ static bool flash_fs_scan(uint32_t start_page_addr, uint32_t page_len, char* key
         }
     }
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
-    return res;
+    if(0 < file_cnt) {
+        out_res = true;
+    }
+    return out_res;
 }
 
 bool cmd_flash_fs_scan(int32_t argc, char* argv[]) {
