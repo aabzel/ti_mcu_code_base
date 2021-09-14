@@ -20,7 +20,7 @@ bool test_data_utils(void) {
 
   EXPECT_EQ( 1,ipow(2,0));
   EXPECT_EQ( 2,ipow(2,1));
-  EXPECT_EQ( 2,ipow(32,5));
+  EXPECT_EQ( 32,ipow(2,5));
   EXPECT_EQ( 4096,ipow(2,12));
 
   EXPECT_EQ(6, two_complement_to_decimal(0x06, 7));

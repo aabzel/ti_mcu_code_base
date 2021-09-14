@@ -106,7 +106,6 @@ void common_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_LORA, 10000, sx1262_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
 
-
 #ifdef HAS_FLASH_FS
     measure_task_interval(TASK_ID_FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc, loop_start_time_us);
 #endif /*HAS_FLASH_FS*/

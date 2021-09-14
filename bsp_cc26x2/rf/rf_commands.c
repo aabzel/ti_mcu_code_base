@@ -18,7 +18,7 @@ bool rf_write_command(int32_t argc, char* argv[]) {
         res = true;
 
         uint8_t tx_array[256];
-        uint16_t tx_array_len = 0;
+        uint32_t tx_array_len = 0;
 
         if(true == res) {
             res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);

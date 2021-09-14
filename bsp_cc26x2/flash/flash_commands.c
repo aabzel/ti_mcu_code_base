@@ -1,10 +1,11 @@
 #include "flash_commands.h"
 
+#include <flash.h>
 #include <inttypes.h>
 #include <stdio.h>
-#include <flash.h>
 
 #include "convert.h"
+#include "crc16_ccitt.h"
 #include "crc32.h"
 #include "data_utils.h"
 #include "debug_info.h"
@@ -19,28 +20,37 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
     bool res = false;
     uint32_t flash_addr = NOR_FLASH_BASE, num = 0;
     char line_str[120];
-    uint32_t prot=0;
-    static const table_col_t cols[] = {{5, "num"}, {10, "start"}, {10, "end"}, {8, "status"}, {8, "status"}};
+    uint32_t prot = 0;
+    uint32_t spare=0;
+    uint32_t busy=0;
+    float usage_pec=0.0f;
+    static const table_col_t cols[] = {{5, "num"}, {11, "Start"},
+                                       {11, "End"}, {7, "WrSta"},
+                                       {7, "WrSta"}, {7, "cont"}, {8, "Use"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     for(flash_addr = 0; flash_addr < NOR_FLASH_SIZE; flash_addr += FLASH_SECTOR_SIZE) {
         strcpy(line_str, TSEP);
         snprintf(line_str, sizeof(line_str), "%s 0x%08x" TSEP, line_str, flash_addr);
         snprintf(line_str, sizeof(line_str), "%s 0x%08x" TSEP, line_str, flash_addr + FLASH_SECTOR_SIZE);
         res = is_addr_protected(flash_addr);
-        prot= FlashProtectionGet( flash_addr);
+        prot = FlashProtectionGet(flash_addr);
         if(res) {
-            snprintf(line_str, sizeof(line_str), "%s protected" TSEP, line_str);
+            snprintf(line_str, sizeof(line_str), "%s %5s " TSEP, line_str,"Prot");
         } else {
-            snprintf(line_str, sizeof(line_str), "%s WrEnable" TSEP, line_str);
+            snprintf(line_str, sizeof(line_str), "%s %5s " TSEP, line_str,"WrEn");
         }
-        snprintf(line_str, sizeof(line_str), "%s" CRLF, line_str);
-        snprintf(line_str, sizeof(line_str), "%u" CRLF, prot);
+        snprintf(line_str, sizeof(line_str), "%s %6u" TSEP,line_str, prot);
+        flash_scan((uint8_t*) flash_addr, FLASH_SECTOR_SIZE, &usage_pec, &spare, &busy);
+        snprintf(line_str, sizeof(line_str), "%s %6s" TSEP,line_str, (FLASH_SECTOR_SIZE==spare)?"spare":"busy");
+        snprintf(line_str, sizeof(line_str), "%s %6.2f " TSEP,line_str, usage_pec);
+        snprintf(line_str, sizeof(line_str), "%s", line_str);
         if(is_contain(line_str, key_word1, key_word2)) {
             io_printf(TSEP " %3u ", num);
-            io_printf("%s", line_str);
+            io_printf("%s"CRLF, line_str);
             num++;
         }
     }
+    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
 
     return res;
 }
@@ -74,9 +84,11 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
         // FlashProtectionGet
         all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
         io_printf("FlashCRC32: 0x%08x" CRLF, all_flash_crc);
-        io_printf("FlashSectorSize: %u bytes" CRLF, FlashSectorSizeGet( ));
-        io_printf("FlashSize: %u bytes" CRLF, FlashSizeGet( ));
-        io_printf("FlashPowerMode: %u" CRLF, FlashPowerModeGet( ));
+        io_printf("FlashSectorSize: %u bytes" CRLF, FlashSectorSizeGet());
+        io_printf("FlashSize: %u bytes" CRLF, FlashSizeGet());
+        io_printf("FlashPowerMode: %u" CRLF, FlashPowerModeGet());
+        io_printf("FlashFsm: %u" CRLF, FlashCheckFsmForReady());
+        io_printf("FlashFsmError: %u" CRLF, FlashCheckFsmForError());
 
         io_printf("Flash Base: 0x%08x" CRLF, NOR_FLASH_BASE);
         io_printf("Flash size: %u byte %u kByte" CRLF, NOR_FLASH_SIZE, NOR_FLASH_SIZE / 1024);
@@ -92,8 +104,8 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool flash_erase_command(int32_t argc, char* argv[]){
-    uint32_t sector_address=0;
+bool flash_erase_command(int32_t argc, char* argv[]) {
+    uint32_t sector_address = 0;
     uint32_t ret = 0;
     bool res = false;
     if(1 == argc) {
@@ -102,13 +114,13 @@ bool flash_erase_command(int32_t argc, char* argv[]){
         if(false == res) {
             LOG_ERROR(FLASH, "Unable to parse sector_address %s", argv[0]);
         }
-        if (res) {
-            ret = FlashSectorErase(  sector_address);
-            if(FAPI_STATUS_SUCCESS==ret){
+        if(res) {
+            ret = FlashSectorErase(sector_address);
+            if(FAPI_STATUS_SUCCESS == ret) {
                 LOG_INFO(FLASH, "FlashSectorErase OK");
                 res = true;
-            }else{
-                LOG_ERROR(FLASH, "FlashSectorErase error %u",ret);
+            } else {
+                LOG_ERROR(FLASH, "FlashSectorErase error %u", ret);
                 res = false;
             }
         }
@@ -186,27 +198,27 @@ bool flash_read_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
-bool flash_write_command(int32_t argc, char* argv[]){
+
+bool flash_write_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint32_t ret;
-    uint16_t crc16;
-    uint32_t flash_address=0;
-    uint32_t count=0;
+    uint32_t ret = 0;
+    uint16_t crc16_read = 0;
+    uint32_t flash_address = 0;
+    uint32_t count = 0;
     uint8_t DataBuffer[256];
-    memset(DataBuffer,0xFF,sizeof(DataBuffer));
+    memset(DataBuffer, 0xFF, sizeof(DataBuffer));
     if(1 <= argc) {
         res = try_str2uint32(argv[0], &flash_address);
-        if (false == res) {
+        if(false == res) {
             LOG_ERROR(FLASH, "Unable to parse sector_address %s", argv[0]);
         } else {
-            res=is_flash_addr(flash_address);
-            if(false==res){
+            res = is_flash_addr(flash_address);
+            if(false == res) {
                 LOG_ERROR(FLASH, "not flash addr 0x%08x", flash_address);
             }
         }
-
     }
-    if (2<=argc) {
+    if(2 <= argc) {
         res = try_str2array(argv[1], DataBuffer, sizeof(DataBuffer), &count);
         if(false == res) {
             LOG_ERROR(FLASH, "Unable to extract hex_string %s", argv[1]);
@@ -214,30 +226,31 @@ bool flash_write_command(int32_t argc, char* argv[]){
     }
 
     if(3 <= argc) {
-        res = true;
-        res = try_str2uint16(argv[2], &crc16);
+        res = try_str2uint16(argv[2], &crc16_read);
         if(false == res) {
-            LOG_ERROR(FLASH, "Unable to parse crc16 %s", argv[2]);
+            LOG_ERROR(FLASH, "Unable to parse crc16_read %s", argv[2]);
         } else {
-            /*TODO check crc16*/
-            res = false;
+            res = crc16_check(DataBuffer, count, crc16_read);
+            if(false == res) {
+                LOG_ERROR(FLASH, "crc16 error");
+            }
         }
     }
 
-    if (3<argc) {
-        LOG_ERROR(FLASH, "Usage: fw sector_address hex_string crc16");
+    if(3 < argc) {
+        LOG_ERROR(FLASH, "Usage: fw sector_address hex_string crc16_read");
         LOG_INFO(FLASH, "sector_address");
         LOG_INFO(FLASH, "hex_string 0x[0...F]+");
-        LOG_INFO(FLASH, "crc16");
+        LOG_INFO(FLASH, "crc16_read");
     }
 
-    if (res) {
+    if(res) {
         ret = FlashProgram(DataBuffer, flash_address, count);
-        if(FAPI_STATUS_SUCCESS==ret){
+        if(FAPI_STATUS_SUCCESS == ret) {
             LOG_ERROR(FLASH, "FlashProgram ok");
             res = true;
-        }else{
-            LOG_ERROR(FLASH, "FlashProgram error %u",ret);
+        } else {
+            LOG_ERROR(FLASH, "FlashProgram error %u", ret);
             res = false;
         }
     }
@@ -250,7 +263,7 @@ bool flash_write_nvs_command(int32_t argc, char* argv[]) {
         res = true;
         uint32_t offset = 0;
         uint8_t array[256];
-        uint16_t array_len = 0;
+        uint32_t array_len = 0;
         if(res) {
             res = try_str2uint32(argv[0], &offset);
             if(false == res) {
@@ -294,7 +307,6 @@ bool flash_scan_command(int32_t argc, char* argv[]) {
             io_printf("spare: %u Bytes %u kBytes" CRLF, spare, spare / 1024);
             io_printf("busy : %u Bytes %u kBytes" CRLF, busy, busy / 1024);
         }
-
     } else {
         LOG_ERROR(NVS, "Usage: fs");
     }

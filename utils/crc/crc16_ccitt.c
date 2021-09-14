@@ -1,5 +1,6 @@
 #include "crc16_ccitt.h"
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #define INIT_VALUE (0xFFFFU)
@@ -30,12 +31,22 @@ static const uint16_t crc16LookUpTable[LOOK_UP_TABLE_SIZE] = {
     0x5c64U, 0x4c45U, 0x3ca2U, 0x2c83U, 0x1ce0U, 0x0cc1U, 0xef1fU, 0xff3eU, 0xcf5dU, 0xdf7cU, 0xaf9bU, 0xbfbaU, 0x8fd9U,
     0x9ff8U, 0x6e17U, 0x7e36U, 0x4e55U, 0x5e74U, 0x2e93U, 0x3eb2U, 0x0ed1U, 0x1ef0U};
 
-uint16_t calc_crc16_ccitt_false(const uint8_t* in_data, uint16_t const length) {
+uint16_t calc_crc16_ccitt_false(const uint8_t* in_data, uint32_t const length) {
     uint16_t crc16f = INIT_VALUE;
-    uint16_t byteInd = 0u;
+    uint32_t byteInd = 0u;
     for(byteInd = 0u; byteInd < length; byteInd++) {
         uint8_t tabInd = (uint8_t)(crc16f >> 8U) ^ in_data[byteInd];
         crc16f = ((uint16_t)(crc16f << 8U)) ^ crc16LookUpTable[tabInd];
     }
     return crc16f;
+}
+
+bool crc16_check(const uint8_t* in_data, uint32_t const length, uint32_t crc16_read) {
+    bool res = false;
+    uint16_t crc16_calc = 0x0000;
+    crc16_calc = calc_crc16_ccitt_false(in_data, length);
+    if(crc16_calc == crc16_read) {
+        res = true;
+    }
+    return res;
 }

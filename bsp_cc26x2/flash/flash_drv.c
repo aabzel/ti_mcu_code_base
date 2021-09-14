@@ -78,16 +78,22 @@ bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare,
     bool res = false;
     if(usage_pec && spare && busy) {
         res = true;
+        *spare=0;
+        *busy=0;
         uint8_t* addr = base;
         uint32_t cnt = 0;
         for(addr = base, cnt = 0; addr < (base + size); addr++, cnt++) {
+            res=is_flash_addr((uint32_t) addr);
+            if(false==res){
+                break;
+            }
             if(0xFF == (*addr)) {
                 (*spare)++;
             } else {
                 (*busy)++;
             }
             if(!(cnt % 1000)) {
-                wait_in_loop_ms(5);
+                //wait_in_loop_ms(5);
             }
         }
         *usage_pec = (float)(((float)(100U * (*busy))) / ((float)size));
@@ -131,9 +137,9 @@ bool is_errased(uint32_t addr, uint32_t size) {
     return res;
 }
 
-bool is_flash_addr(uint32_t flash_addr){
+bool is_flash_addr(uint32_t flash_addr) {
     bool res = false;
-    if (flash_addr<NOR_FLASH_END){
+    if(flash_addr < NOR_FLASH_END) {
         res = true;
     }
     return res;
@@ -167,3 +173,37 @@ bool is_addr_protected(uint32_t flash_addr) {
     return res;
 }
 
+/*
+ Is there a continuously free block of given size starting at the flash_addr
+ */
+bool is_flash_spare(uint32_t flash_addr, uint32_t size) {
+    uint32_t spare_size = 0;
+    uint32_t busy_size = 0;
+    bool res = false;
+    float usage_pec=0.0f;
+    res = flash_scan((uint8_t*) flash_addr, size, &usage_pec, &spare_size, &busy_size);
+    if (size == spare_size) {
+        res = true;
+    }else{
+        res = false;
+    }
+
+    return res;
+}
+
+/*
+ * find the first address of spare continuous block of given size
+ * returns the start address
+ * */
+bool flash_find_spare_region(uint32_t* out_addr, uint32_t size) {
+    uint32_t flash_addr = NOR_FLASH_BASE;
+    bool res = false;
+    for(flash_addr = NOR_FLASH_BASE; flash_addr < NOR_FLASH_END; flash_addr++) {
+        res = is_flash_spare(flash_addr, size);
+        if(res) {
+            *out_addr = flash_addr;
+            break;
+        }
+    }
+    return res;
+}

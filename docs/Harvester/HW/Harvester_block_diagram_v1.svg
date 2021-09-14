@@ -1217,11 +1217,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="506.5"
-     inkscape:cy="435"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="299.99005"
+     inkscape:cy="387.84807"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1236,10 +1236,6 @@
        position="0,0"
        orientation="210.0,0"
        id="guide33727" />
-    <sodipodi:guide
-       position="148.5,0"
-       orientation="210.0,0"
-       id="guide33729" />
     <sodipodi:guide
        position="297,0"
        orientation="210.0,0"
@@ -2076,7 +2072,7 @@
          style="font-size:1.02305px;stroke-width:0.255765">gyroscope</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.255765"
        x="44.678829"
        y="160.99184"
        id="text6316"><tspan
@@ -2084,7 +2080,7 @@
          id="tspan6314"
          x="44.678829"
          y="160.99184"
-         style="font-size:1.02305px;stroke-width:0.255765">VCC_GNSS</tspan></text>
+         style="font-size:1.02305px;stroke-width:0.255765;fill:#ff0000;fill-opacity:1">VCC_GNSS</tspan></text>
     <path
        style="fill:none;stroke:#00ff16;stroke-width:0.386667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6336)"
        d="m 124.44835,90.222752 h 107.96762 v 1.997546"
@@ -2092,7 +2088,7 @@
        sodipodi:nodetypes="ccc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.4102px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       style="font-style:normal;font-weight:normal;font-size:3.4102px;line-height:1.25;font-family:sans-serif;fill:#00ff1f;fill-opacity:1;stroke:none;stroke-width:0.255765"
        x="162.26353"
        y="93.602486"
        id="text6652"><tspan
@@ -2100,7 +2096,7 @@
          id="tspan6650"
          x="162.26353"
          y="93.602486"
-         style="font-size:3.4102px;stroke-width:0.255765">PWR_MUX_CTRL</tspan></text>
+         style="font-size:3.4102px;stroke-width:0.255765;fill:#00ff1f;fill-opacity:1">PWR_MUX_CTRL</tspan></text>
     <path
        style="fill:none;stroke:#00ff0b;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker7440)"
        d="m 124.44835,151.80951 h 33.6515 v 10.72199 c 0,0 26.99874,-0.25836 27.25709,0 0.25836,0.25835 0,-10.85116 0,-10.85116 h 8.78428"
@@ -2221,7 +2217,7 @@
        id="path9953" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.7051px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       style="font-style:normal;font-weight:normal;font-size:1.7051px;line-height:1.25;font-family:sans-serif;fill:#ff00e5;fill-opacity:1;stroke:none;stroke-width:0.255765"
        x="146.04063"
        y="143.8105"
        id="text10359"><tspan
@@ -2229,9 +2225,9 @@
          id="tspan10357"
          x="146.04063"
          y="143.8105"
-         style="font-size:1.7051px;stroke-width:0.255765">2</tspan></text>
+         style="font-size:1.7051px;stroke-width:0.255765;fill:#ff00e5;fill-opacity:1">2</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#ff00d2;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 146.61895,141.18442 -1.63091,1.63091"
        id="path10361" />
     <path
@@ -2486,13 +2482,13 @@
          y="109.82778">FB1</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="125.39359"
        y="72.35881"
        id="text90808"><tspan
          sodipodi:role="line"
          id="tspan90806"
-         style="font-size:3.52778px;stroke-width:0.264583"
+         style="font-size:3.52778px;stroke-width:0.264583;fill:#ff0000;fill-opacity:1"
          x="125.39359"
          y="72.35881">VCC_MCU</tspan></text>
     <path
@@ -3589,17 +3585,6 @@
          style="font-size:1.81137px;stroke-width:0.135853">BQ25171QWDRCRQ1</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.7051px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="145.01324"
-       y="150.88412"
-       id="text6708"><tspan
-         sodipodi:role="line"
-         id="tspan6706"
-         x="145.01324"
-         y="150.88412"
-         style="font-size:1.7051px;stroke-width:0.255765">GNSS_INT</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
        x="195.55855"
        y="146.94763"
@@ -3766,7 +3751,7 @@
          style="font-size:1.41752px;stroke-width:0.106314">BQ34210IPWRQ1</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.18226px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0545565"
+       style="font-style:normal;font-weight:normal;font-size:2.18226px;line-height:1.25;font-family:sans-serif;fill:#ff00e5;fill-opacity:1;stroke:none;stroke-width:0.0545565"
        x="139.77065"
        y="141.39226"
        id="text1618"><tspan
@@ -3774,7 +3759,7 @@
          id="tspan1616"
          x="139.77065"
          y="141.39226"
-         style="stroke-width:0.0545565">I2C</tspan></text>
+         style="stroke-width:0.0545565;fill:#ff00e5;fill-opacity:1">I2C</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.14001px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0535001"
@@ -3887,7 +3872,7 @@
          style="font-size:3.4102px;stroke-width:0.255765">TI</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.68051px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.630193"
+       style="font-style:normal;font-weight:normal;font-size:1.68051px;line-height:1.25;font-family:sans-serif;fill:#00550e;fill-opacity:1;stroke:none;stroke-width:0.630193"
        x="160.44968"
        y="108.3561"
        id="text13901"><tspan
@@ -3895,7 +3880,7 @@
          id="tspan13899"
          x="160.44968"
          y="108.3561"
-         style="font-size:1.68051px;stroke-width:0.630193">Active high</tspan></text>
+         style="font-size:1.68051px;stroke-width:0.630193;fill:#00550e;fill-opacity:1">Active high</tspan></text>
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.256167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker13907)"
        d="m 200.43878,110.95793 v 4.42268 h -5.74854"

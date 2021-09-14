@@ -65,7 +65,7 @@ bool try_str2double(const char double_str[], double_t* double_value);
 
 bool try_strl2double(const char double_str[], int32_t u8l_hex_str_len, double_t* double_value);
 
-bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, uint16_t* out_array_len);
+bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, uint32_t* out_array_len);
 
 const char* ltoa32_(int32_t s32_data, char s32_stringified[], uint8_t s32_base, uint32_t* s32_len);
 const char* ltoa64_(int64_t s64_data, char s64_stringified[], uint8_t s64_base, uint32_t* s64_len);

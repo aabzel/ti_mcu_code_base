@@ -163,4 +163,3 @@ uint32_t ipow(uint32_t base, uint32_t exponenta) {
     }
     return ret;
 }
-

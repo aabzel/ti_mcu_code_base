@@ -252,7 +252,7 @@ bool sx1262_send_opcode_command(int32_t argc, char* argv[]) {
         uint8_t op_code = 0;
         uint8_t tx_array[TX_SIZE];
         memset(tx_array, 0x00, sizeof(tx_array));
-        uint16_t tx_array_len = 0;
+        uint32_t tx_array_len = 0;
         uint8_t rx_array[RX_SIZE];
         memset(rx_array, 0x00, sizeof(rx_array));
         uint16_t rx_array_len = 0;
@@ -357,7 +357,7 @@ bool sx1262_tx_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t tx_array[TX_SIZE];
     memset(tx_array, 0x00, sizeof(tx_array));
-    uint16_t tx_array_len = 0;
+    uint32_t tx_array_len = 0;
     uint32_t timeout_s = 0;
     if(1 <= argc) {
         res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);

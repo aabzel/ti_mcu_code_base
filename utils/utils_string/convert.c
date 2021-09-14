@@ -1666,7 +1666,7 @@ uint16_t float_to_uint16(float val) {
     return out;
 }
 
-bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, uint16_t* out_array_len) {
+bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, uint32_t* out_array_len) {
     bool res = false;
     uint8_t out_shift = 0;
     uint32_t len_str_in = strlen(in_str_array);

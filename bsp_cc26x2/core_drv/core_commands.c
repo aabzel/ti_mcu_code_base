@@ -80,4 +80,3 @@ bool cmd_soft_reboot(int32_t argc, char* argv[]) {
     }
     return res;
 }
-

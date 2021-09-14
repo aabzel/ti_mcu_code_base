@@ -13,39 +13,39 @@
 
 /*TODO: Sort by index for bin search in future*/
 const ParamItem_t ParamArray[PARAM_CNT] = {
-                                           {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"}, /*num*/
-                                           {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"}, /*Hz*/
-                                           {PAR_ID_LORA_SF, 1, UINT8, "SF"},/*Chips / Symbol*/
-                                           {PAR_ID_LORA_CR, 1, UINT8, "CR"}, /*in raw bits/total bits*/
-                                           {PAR_ID_LORA_BW, 1, UINT8, "BW"},  /*Hz*/
-                                           {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
-                                           {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},/*bytes*/
-                                           {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
-                                           {PAR_ID_HEADER_TYPE , 1, UINT8, "HEAD_TYPE"},
-                                           {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
+    {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
+    {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"},      /*Hz*/
+    {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
+    {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
+    {PAR_ID_LORA_BW, 1, UINT8, "BW"},               /*Hz*/
+    {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
+    {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
+    {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
+    {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
+    {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
 };
 
-bool param_init(void){
+bool param_init(void) {
     bool res = true;
     bool out_res = true;
-    if(PARAM_CNT!=ARRAY_SIZE(ParamArray)){
-        LOG_ERROR(PARAM,"Param table corrupted");
+    if(PARAM_CNT != ARRAY_SIZE(ParamArray)) {
+        LOG_ERROR(PARAM, "Param table corrupted");
         res = false;
         out_res = false;
-    }else{
+    } else {
         res = true;
     }
-    uint16_t value_len=0;
-    uint16_t i=0;
+    uint16_t value_len = 0;
+    uint16_t i = 0;
     for(i = 0; i < ARRAY_SIZE(ParamArray); i++) {
         uint8_t value[ParamArray[i].len];
         res = mm_get(ParamArray[i].id, value, ParamArray[i].len, &value_len);
-        if(false==res){
-            LOG_WARNING(PARAM,"Param %u %s lacks in Flash FS",ParamArray[i].id,ParamArray[i].name);
+        if(false == res) {
+            LOG_WARNING(PARAM, "Param %u %s lacks in Flash FS", ParamArray[i].id, ParamArray[i].name);
             res = true;
         } else {
-            if(value_len!=ParamArray[i].len){
-                LOG_ERROR(PARAM,"Param %u %s len error in Flash FS",ParamArray[i].id,ParamArray[i].name);
+            if(value_len != ParamArray[i].len) {
+                LOG_ERROR(PARAM, "Param %u %s len error in Flash FS", ParamArray[i].id, ParamArray[i].name);
                 res = false;
                 out_res = false;
             }

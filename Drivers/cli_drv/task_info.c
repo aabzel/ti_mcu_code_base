@@ -110,7 +110,6 @@ bool diag_page_tasks(ostream_t* stream) {
     return true;
 }
 
-
 bool cmd_task_report(int32_t argc, char* argv[]) {
     (void)(argc);
     (void)(argv);
@@ -169,8 +168,7 @@ bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_f
     return res;
 }
 
-
-bool task_init(void){
+bool task_init(void) {
 
     iteration_cnt = 0;
     loop_duration_us = 0;
@@ -195,6 +193,6 @@ bool cmd_task_clear(int32_t argc, char* argv[]) {
     (void)(argc);
     (void)(argv);
     bool res = false;
-    res=task_init();
+    res = task_init();
     return res;
 }

@@ -8,8 +8,8 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-bool flash_scan_command(int32_t argc, char* argv[]);
 bool flash_diag_command(int32_t argc, char* argv[]);
+bool flash_scan_command(int32_t argc, char* argv[]);
 bool flash_read_command(int32_t argc, char* argv[]);
 bool flash_write_command(int32_t argc, char* argv[]);
 bool flash_write_nvs_command(int32_t argc, char* argv[]);

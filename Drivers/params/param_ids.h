@@ -10,12 +10,12 @@
 
 typedef enum eId_t {
     PAR_ID_REBOOT_CNT = 1,
-    PAR_ID_LORA_FREQ = 2, /*Hz*/
-    PAR_ID_LORA_SF = 3,   /*Chips / Symbol*/
-    PAR_ID_LORA_CR = 4, /*in raw bits / total bits*/
-    PAR_ID_LORA_BW = 5, /*Hz*/
+    PAR_ID_LORA_FREQ = 2,       /*Hz*/
+    PAR_ID_LORA_SF = 3,         /*Chips / Symbol*/
+    PAR_ID_LORA_CR = 4,         /*in raw bits / total bits*/
+    PAR_ID_LORA_BW = 5,         /*Hz*/
     PAR_ID_PREAMBLE_LENGTH = 6, /*byte*/
-    PAR_ID_PAYLOAD_LENGTH = 7,/*byte*/
+    PAR_ID_PAYLOAD_LENGTH = 7,  /*byte*/
     PAR_ID_CRC_TYPE = 8,
     PAR_ID_HEADER_TYPE = 9,
     PAR_ID_INV_IQ = 10,

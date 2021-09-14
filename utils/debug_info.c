@@ -160,13 +160,13 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     for(i = 0; i < size; i++) {
         if(0x08 == buff[i]) {
             io_printf("[BS]");
-        }else if(0x00 == buff[i]) {
+        } else if(0x00 == buff[i]) {
             io_printf(" ");
-        }else if(0x0A == buff[i]) {
+        } else if(0x0A == buff[i]) {
             io_printf("[LF]");
-        }else if(0x0D == buff[i]) {
+        } else if(0x0D == buff[i]) {
             io_printf("[CR]");
-        }else{
+        } else {
             io_printf("%c", buff[i]);
         }
     }
@@ -360,18 +360,17 @@ bool print_bit_representation(uint32_t val) {
     return res;
 }
 
-
-static bool print_text_addresses(uint32_t cur_stack_val,uint32_t top_stack_val){
+static bool print_text_addresses(uint32_t cur_stack_val, uint32_t top_stack_val) {
     bool res = false;
-    bool out_res= false;
+    bool out_res = false;
     uint32_t cur_addr = 0;
     uint32_t num = 1;
-    if(cur_stack_val<top_stack_val){
-        for(cur_addr=cur_stack_val; cur_addr<top_stack_val;cur_addr++){
-            uint32_t *ram_addr=(uint32_t *)cur_addr;
+    if(cur_stack_val < top_stack_val) {
+        for(cur_addr = cur_stack_val; cur_addr < top_stack_val; cur_addr++) {
+            uint32_t* ram_addr = (uint32_t*)cur_addr;
             res = is_flash_addr((uint32_t)*ram_addr);
-            if (res) {
-                io_printf("%3u addr[0x%08x]=0x%08x"CRLF, num,cur_addr,(uint32_t)*ram_addr);
+            if(res) {
+                io_printf("%3u addr[0x%08x]=0x%08x" CRLF, num, cur_addr, (uint32_t)*ram_addr);
                 out_res = true;
                 num++;
             }
@@ -380,14 +379,14 @@ static bool print_text_addresses(uint32_t cur_stack_val,uint32_t top_stack_val){
     return out_res;
 }
 
-bool parse_stack(void){
+bool parse_stack(void) {
     bool res = false;
-    uint32_t cur_stack_val =(uint32_t)&res;
+    uint32_t cur_stack_val = (uint32_t)&res;
     uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
-    uint32_t cur_stack_size=top_stack_val-cur_stack_val;
-    io_printf("Stack 0x%08x...0x%08x %u byte %u kByte"CRLF,cur_stack_val, top_stack_val,
-              cur_stack_size,cur_stack_size/1024);
-    res = print_text_addresses(cur_stack_val,top_stack_val);
+    uint32_t cur_stack_size = top_stack_val - cur_stack_val;
+    io_printf("Stack 0x%08x...0x%08x %u byte %u kByte" CRLF, cur_stack_val, top_stack_val, cur_stack_size,
+              cur_stack_size / 1024);
+    res = print_text_addresses(cur_stack_val, top_stack_val);
 
     return res;
 }

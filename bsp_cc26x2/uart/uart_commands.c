@@ -57,7 +57,7 @@ bool uart_send_command(int32_t argc, char* argv[]) {
         res = true;
         uint8_t uart_num = 0;
         uint8_t array[256];
-        uint16_t array_len = 0;
+        uint32_t array_len = 0;
         res = try_str2uint8(argv[0], &uart_num);
         if(false == res) {
             LOG_ERROR(UART, "Unable to parse UART Number [1....8]");

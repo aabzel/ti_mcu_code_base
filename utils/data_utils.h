@@ -87,7 +87,6 @@ uint8_t rx_min8u(uint8_t min8u_x1, uint8_t min8u_x2);
 uint8_t uint16_to_uint8_limiter(uint16_t in_val);
 uint32_t ipow(uint32_t base, uint32_t exponenta);
 
-
 #ifdef __cplusplus
 }
 #endif

@@ -67,7 +67,7 @@ bool spi_write_command(int32_t argc, char* argv[]) {
         res = true;
         uint8_t spi_num = 0;
         uint8_t tx_array[256];
-        uint16_t array_len = 0;
+        uint32_t array_len = 0;
         res = try_str2uint8(argv[0], &spi_num);
         if(false == res) {
             LOG_ERROR(SPI, "Unable to parse SPI Number [1....8]");
