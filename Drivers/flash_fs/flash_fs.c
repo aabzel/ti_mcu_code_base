@@ -21,37 +21,34 @@
 FlashFs_t FlashFs;
 
 /* status for a active page */
-static const uint8_t mm_PageStateActive[QWORD_LEN] = {0x00, 0x00, 0xA5, 0x5A};
-
-/* status for a ready page */
-static const uint8_t mm_PageStateReady[QWORD_LEN] = {0x00, 0x00, 0xFF, 0xFF};
-
-/* status for a clear page */
-static const uint8_t mm_PageStateClear[QWORD_LEN] = {0xFF, 0xFF, 0xFF, 0xFF};
+static const uint8_t mm_PageStateActive[QWORD_LEN]={0x00,0x00,0xa5,0x5a};
 
 /**
  *     @brief    locate currently active page
  *
  *     @param    mm_page_start - pointer where active page start address will be stored
  *     @param    mm_page_len - pointer where active page length will be stored
- *     @retval
+ *     @retval   exe status
  */
 bool mm_get_active_page(uint32_t* mm_page_start, uint32_t* mm_page_len) {
     bool res = false;
     /* select active page */
-    if(*(uint32_t*)MEMORY_MANAGER1_OFFSET == *(uint32_t*)mm_PageStateActive) {
+    uint32_t page_state_active = 0;
+    memcpy(&page_state_active, mm_PageStateActive,sizeof(mm_PageStateActive));
+    uint32_t first_qword_page1 = 0;
+    uint32_t first_qword_page2 = 0;
+    memcpy( (void* ) &first_qword_page1, (void*)MEMORY_MANAGER1_OFFSET,sizeof(first_qword_page1) );
+    memcpy( (void* ) &first_qword_page2, (void*)MEMORY_MANAGER2_OFFSET,sizeof(first_qword_page2) );
+    if(first_qword_page1 == page_state_active) {
         /* active page is #1 */
         *mm_page_start = MEMORY_MANAGER1_OFFSET;
         *mm_page_len = MEMORY_MANAGER1_LENGTH;
         res = true;
-    } else if(*(uint32_t*)MEMORY_MANAGER2_OFFSET == *(uint32_t*)mm_PageStateActive) {
+    } else if(first_qword_page2 == page_state_active) {
         /* active page is #2 */
         *mm_page_start = MEMORY_MANAGER2_OFFSET;
         *mm_page_len = MEMORY_MANAGER2_LENGTH;
         res = true;
-    } else if(*(uint32_t*)MEMORY_MANAGER1_OFFSET == *(uint32_t*)mm_PageStateReady ||
-              *(uint32_t*)MEMORY_MANAGER1_OFFSET == *(uint32_t*)mm_PageStateClear) {
-        res = false;
     } else {
         res = false;
     }
@@ -419,18 +416,18 @@ bool mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
 #ifdef FLASH_FS_AUTO_TOGGLE_PAGE
         res = mm_turn_page();
         if(false == res) {
-            return ret;
+            return false;
         }
 
         /* refresh information about previous item, first free item and empty space */
         res = mm_find_field(data_id, &prevItem, &empty, &rem_space);
-        if(false == res && res != MM_RET_NOT_FOUND) {
-            return ret;
+        if(false == res) {
+            return false;
         }
 
         /* ensure that now we have enough space */
         if(rem_space < completeLen) {
-            return MM_RET_CODE_NO_MEMORY;
+            return false;
         }
 #else
         return false;

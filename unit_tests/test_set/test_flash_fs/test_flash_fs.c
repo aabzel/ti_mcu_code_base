@@ -18,10 +18,10 @@
 tsr flash_fs+
 */
 
-bool test_flash_fs_1(void) {
+bool test_flash_fs_set_get_const(void) {
     EXPECT_EQ(7, sizeof(mmItem_t));
-    uint16_t data_id = 0x1234;
-    uint16_t write_value = 0xaabb;
+    uint16_t data_id = PAR_ID_TEST_START;
+    uint16_t write_value = 0xAA55;
     uint16_t read_value = 0;
     uint16_t read_value_len = 0;
     EXPECT_TRUE(mm_set(data_id, (unsigned char*)&write_value, sizeof(write_value)));
@@ -33,8 +33,8 @@ bool test_flash_fs_1(void) {
 
 bool test_flash_fs_inval(void) {
     EXPECT_EQ(7, sizeof(mmItem_t));
-    uint16_t data_id = 609;
-    uint16_t write_value = 1839;
+    uint16_t data_id = PAR_ID_TEST_START+1;
+    uint16_t write_value = 0x55AA;
     uint16_t read_value = 0;
     uint16_t read_value_len = 0;
     EXPECT_TRUE(mm_set(data_id, (unsigned char*)&write_value, sizeof(write_value)));
@@ -48,27 +48,9 @@ bool test_flash_fs_inval(void) {
 }
 
 #ifdef HAS_RNG
-bool test_flash_fs_2(void) {
-    uint16_t data_id;
-    uint16_t write_value;
-    uint16_t read_value = 0;
-    uint16_t read_value_len = 0;
 
-    for(uint16_t i = PAR_ID_TEST_START; i < PAR_ID_TEST_END; i++) {
-        data_id = (uint16_t)(i);
-        write_value = (uint16_t)generate_rand_uint32();
-        read_value = 0;
-        read_value_len = 0;
-        EXPECT_TRUE(mm_set(data_id, (unsigned char*)&write_value, sizeof(write_value)));
-        EXPECT_TRUE(mm_get(data_id, (unsigned char*)&read_value, sizeof(read_value), &read_value_len));
-        EXPECT_EQ(2, read_value_len);
-        EXPECT_EQ(write_value, read_value);
-    }
-    return true;
-}
-
-bool test_flash_fs_3(void) {
-    uint16_t data_id = PAR_ID_TEST_START + ((uint16_t)generate_rand_uint32() % (PAR_ID_TEST_END - PAR_ID_TEST_START));
+bool test_flash_fs_set_get_set(void) {
+    uint16_t data_id = PAR_ID_TEST_START+2;
     uint16_t write_value = 34;
     uint16_t read_value = 0;
     uint16_t read_value_len = 0;
