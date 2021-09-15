@@ -200,7 +200,7 @@ uint32_t spi_get_clock(SpiName_t spi_num) {
 }
 
 uint8_t spi_get_phase(SpiName_t spi_num) {
-    uint32_t phase = 0xFF;
+    uint32_t phase = 9;
     if(SpiInstance[spi_num].enable) {
         uint32_t control_0_reg = 0;
         control_0_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_CR0);
@@ -210,7 +210,7 @@ uint8_t spi_get_phase(SpiName_t spi_num) {
 }
 
 uint8_t spi_get_polarity(SpiName_t spi_num) {
-    uint32_t polarity = 0xFF;
+    uint32_t polarity = 9;
     if(SpiInstance[spi_num].enable) {
         uint32_t control_0_reg = 0;
         control_0_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_CR0);

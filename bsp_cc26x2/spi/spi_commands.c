@@ -28,7 +28,7 @@ bool spi_diag_command(int32_t argc, char* argv[]) {
         snprintf(temp_str, sizeof(temp_str), "%s  %2u " TSEP, temp_str, spi_get_data_size((SpiName_t)spi_num));
         snprintf(temp_str, sizeof(temp_str), "%s %6u " TSEP, temp_str, SpiInstance[spi_num].tx_byte_cnt);
         snprintf(temp_str, sizeof(temp_str), "%s %6u " TSEP, temp_str, SpiInstance[spi_num].rx_byte_cnt);
-        snprintf(temp_str, sizeof(temp_str), "%s %s " TSEP, temp_str, SpiInstance[spi_num].name);
+        snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, SpiInstance[spi_num].name);
         snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
         io_printf("%s", temp_str);
     }
