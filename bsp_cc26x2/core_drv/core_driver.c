@@ -9,6 +9,7 @@
 
 #include "bit_utils.h"
 #include "data_utils.h"
+#include "sys.h"
 #include "read_mem.h"
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
@@ -44,3 +45,11 @@ bool reboot(void) {
     return res;
 }
 
+
+bool is_ram_addr(uint32_t address) {
+    bool res = false;
+    if((RAM_START < address) && (address <= (RAM_START + RAM_SIZE))) {
+        res = true;
+    }
+    return res;
+}

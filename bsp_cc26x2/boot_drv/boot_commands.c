@@ -11,14 +11,48 @@
 #include "bit_utils.h"
 #include "boot_driver.h"
 #include "convert.h"
+#include "core_driver.h"
 #include "ctype.h"
 #include "data_utils.h"
 #include "debug_info.h"
 #include "diag_report.h"
 #include "io_utils.h"
+#include "flash_drv.h"
 #include "log.h"
 #include "ostream.h"
 #include "read_mem.h"
+#include "table_utils.h"
+
+static bool boot_scan_app(void) {
+    bool res = false;
+    bool res1 = false;
+    bool res2 = false;
+    uint32_t top_stack_val = 0;
+    uint32_t reset_handler_addr = 0;
+    uint32_t address=0;
+    uint32_t num=1;
+    static const table_col_t cols[] = {{7, "No"},    {12, "address"},     {12, "stack"},  {12, "resetH"}};
+    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+
+    for(address = NOR_FLASH_BASE; address < (NOR_FLASH_END-8); address += 4) {
+        top_stack_val = read_addr_32bit(address);
+        reset_handler_addr = read_addr_32bit(address+4);
+        res1 = is_ram_addr(top_stack_val);
+        res2 = is_flash_addr(reset_handler_addr);
+        if(res1 && res2) {
+            io_printf( TSEP);
+            io_printf(" %5u "TSEP, num);
+            io_printf(" 0x%08x "TSEP, address);
+            io_printf(" 0x%08x "TSEP, top_stack_val);
+            io_printf(" 0x%08x "TSEP, reset_handler_addr);
+            io_printf( CRLF);
+            num++;
+            res = true;
+        }
+    }
+    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    return res;
+}
 
 static bool parse_bl_config(uint32_t reg_val) {
     uint32_t sub_val = 0;
@@ -42,8 +76,9 @@ bool boot_diag_command(int32_t argc, char* argv[]) {
         uint32_t reg_val;
         reg_val = read_addr_32bit(CCFG_BASE + CCFG_O_BL_CONFIG);
         res = parse_bl_config(reg_val);
+        boot_scan_app();
     } else {
-        LOG_ERROR(BOOT, "Usage: btd");
+        LOG_ERROR(BOOT, "Usage: bd");
     }
     return res;
 }
@@ -60,7 +95,7 @@ bool boot_jump_addr_command(int32_t argc, char* argv[]) {
         LOG_ERROR(BOOT, "Usage: jm app_start_address");
     }
     if(res) {
-        res = jump_to_code(app_start_address);
+        res = boot_jump_to_code(app_start_address);
     }
     return res;
 }

@@ -8,7 +8,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-bool jump_to_code(uint32_t flash_addr);
+bool boot_jump_to_code(uint32_t flash_addr);
 
 #ifdef __cplusplus
 }
