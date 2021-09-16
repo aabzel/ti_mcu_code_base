@@ -70,13 +70,14 @@ bool diag_page_tasks(ostream_t* stream) {
     }
 
     total_run_time_us = calc_total_run_time();
-
+#ifdef HAS_DEBUG
     oprintf(stream, "loop duration %u us" CRLF, loop_duration_us);
     oprintf(stream, "max loop duration %u us" CRLF, loop_duration_max_us);
     oprintf(stream, "min loop duration %u us" CRLF, loop_duration_min_us);
+    oprintf(stream, "iteration cnt %u" CRLF, iteration_cnt);
+#endif /*HAS_DEBUG*/
     oprintf(stream, "total run time  %u us" CRLF, total_run_time_us);
     oprintf(stream, "up_time  %u ms" CRLF, g_up_time_ms);
-    oprintf(stream, "iteration cnt %u" CRLF, iteration_cnt);
     oprintf(stream, "total_time %llu us" CRLF, total_time_us);
     oprintf(stream, "total_time %llu ms" CRLF, total_time_ms);
     static const table_col_t cols[] = {{22, "Task name"}, {8, "Calls/s"},   {7, "CPU[%]"},
@@ -170,10 +171,12 @@ bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_f
 
 bool task_init(void) {
 
+#ifdef HAS_DEBUG
     iteration_cnt = 0;
     loop_duration_us = 0;
     loop_duration_min_us = UINT64_MAX;
     loop_duration_max_us = 0;
+#endif /*HAS_DEBUG*/
     int32_t id = 0;
     for(id = 0; id < TASK_ID_COUNT; id++) {
         task_data[id].start_count = 0;

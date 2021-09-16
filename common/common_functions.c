@@ -114,17 +114,19 @@ void common_loop(uint64_t loop_start_time_us) {
 void common_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
     uint64_t loop_start_time_us = 0;
+#ifdef HAS_DEBUG
     uint64_t prev_loop_start_time_us = 0;
+#endif /*HAS_DEBUG*/
     for(;;) {
+        loop_start_time_us = get_time_us();
 #ifdef HAS_DEBUG
         iteration_cnt++;
         gpio_toggle(COM_LOOP_SENSOR_DIO_NO);
-        loop_start_time_us = get_time_us();
         loop_duration_us = loop_start_time_us - prev_loop_start_time_us;
         loop_duration_min_us = rx_min64u(loop_duration_min_us, loop_duration_us);
         loop_duration_max_us = rx_max64u(loop_duration_max_us, loop_duration_us);
-#endif /*HAS_DEBUG*/
         prev_loop_start_time_us = loop_start_time_us;
+#endif /*HAS_DEBUG*/
         common_loop(loop_start_time_us);
     }
 }

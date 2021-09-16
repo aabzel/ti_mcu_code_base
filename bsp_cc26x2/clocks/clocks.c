@@ -27,22 +27,14 @@ uint64_t get_time_us(void) {
     up_time_ms = g_up_time_ms;
     cnt = SYS_TICK_PERIOD - sys_tick_val;
     usec = cnt / CLOCK_FOR_US;
-    // if(1000 < usec) {
-    /*Error*/
-    //    usec = 1000;
-    //}
     prev_time_us = cur_time_us;
     cur_time_us = ((((uint64_t)up_time_ms) * ((uint64_t)1000UL)) + ((uint64_t)usec));
     if(cur_time_us < prev_time_us) { /*Error*/
         diff_us = prev_time_us - cur_time_us;
-        //  cur_time_us = prev_time_us + 1;
     }
     return cur_time_us;
 }
 
-// uint64_t getRunTimeCounterValue64(void) {
-//    return get_time_us();
-//}
 
 uint32_t get_time_ms32(void) { return g_up_time_ms; }
 uint64_t get_time_ms64(void) { return (uint64_t)g_up_time_ms; }

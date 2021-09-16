@@ -15,8 +15,10 @@ bool wait_in_loop_ms(uint32_t wait_pause_ms) {
   bool loop = true;
   uint64_t loop_start_time_us = 0;
   while (loop) {
-    iteration_cnt++;                                                                                                   \
-    loop_start_time_us = get_time_us();                                                                       \
+#ifdef HAS_DEBUG
+    iteration_cnt++;
+#endif
+    loop_start_time_us = get_time_us();
     common_loop(loop_start_time_us);
 
     curr_ms = get_time_ms32();
