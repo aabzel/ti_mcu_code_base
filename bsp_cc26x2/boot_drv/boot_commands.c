@@ -43,7 +43,24 @@ bool boot_diag_command(int32_t argc, char* argv[]) {
         reg_val = read_addr_32bit(CCFG_BASE + CCFG_O_BL_CONFIG);
         res = parse_bl_config(reg_val);
     } else {
-        LOG_ERROR(SYS, "Usage: btd");
+        LOG_ERROR(BOOT, "Usage: btd");
+    }
+    return res;
+}
+
+bool boot_jump_addr_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    uint32_t app_start_address = 0;
+    if(1 == argc) {
+        res = try_str2uint32(argv[0], &app_start_address);
+        if(false == res) {
+            LOG_ERROR(BOOT, "Unable to spot addr", argv[0]);
+        }
+    } else {
+        LOG_ERROR(BOOT, "Usage: jm app_start_address");
+    }
+    if(res) {
+        res = jump_to_code(app_start_address);
     }
     return res;
 }

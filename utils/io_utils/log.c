@@ -138,6 +138,9 @@ const char *facility2str(log_facility_t facility) {
   case FLASH_FS:
     facility_str = "FLASH_FS";
     break;
+  case BOOT:
+    facility_str = "BOOT";
+    break;
   case SYS:
     facility_str = "SYS";
     break;

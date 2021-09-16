@@ -27,11 +27,7 @@ typedef struct {
     const shellcmd_t handler;
 } shell_cmd_info_t;
 
-#ifdef EXT_WDT_PRESENT
-#define EXT_WDT_TEST SHELL_CMD("wd_test_hw", "hwd_test", cmd_wd_test_hw, "Stop board (for hardware watchdog test)"),
-#else
-#define EXT_WDT_TEST
-#endif
+
 
 void shell_prompt(void); /*TODO: replace to cli_prompt*/
 bool cmd_calc(int32_t argc, char* argv[]);
@@ -52,36 +48,25 @@ bool cmd_low_level_control(int32_t argc, char* argv[]);
 bool cmd_read_memory(int32_t argc, char* argv[]);
 bool cmd_write_memory(int32_t argc, char* argv[]);
 
+#define BASE_COMMANDS                                                                                         \
+    SHELL_CMD("version", "vi", cmd_version, "Print version information"),                                          \
+    SHELL_CMD("help", "h", cmd_help, "Print list of shell commands"),                                                  \
+    SHELL_CMD("soft_reboot", "reboot", cmd_soft_reboot, "Reboot board"),                                           \
+    SHELL_CMD("sysinfo", "si", cmd_sysinfo, "Print information about threads & OS"),                               \
+
+
 #define TEST_FIRMWARE_COMMANDS                                                                                         \
     SHELL_CMD("write_mem", "wm", cmd_write_memory, "Write memory address"),                                            \
         SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"),                                           \
-        SHELL_CMD("bit_ctrl", "bc", cmd_low_level_control, "Set Clear bit in memory address"),
-
-#if defined(BOOTLOADER)
-#define DEFAULT_COMMANDS                                                                                               \
-    SHELL_CMD("help", "h", cmd_help, "Print list of shell commands"),                                                  \
-        SHELL_CMD("version", "vi", cmd_version, "Print version information"),                                          \
-        SHELL_CMD("sysinfo", "si", cmd_sysinfo, "Print information about threads & OS"),                               \
-        SHELL_CMD("soft_reboot", "reboot", cmd_soft_reboot, "Reboot board"),                                           \
-        SHELL_CMD("wd_test", "wd_test", cmd_wd_test, "Stop board (for watchdog test)"), EXT_WDT_TEST
-
-#else
-
-#define TEST_DEFAULT_COMMANDS                                                                                          \
-    SHELL_CMD("launch_function", "lfun", cmd_launch_function, "Launch any function by address in ROM"),                \
+        SHELL_CMD("bit_ctrl", "bc", cmd_low_level_control, "Set Clear bit in memory address"),                         \
+        SHELL_CMD("wd_test", "wd_test", cmd_wd_test, "Stop board (for watchdog test)"),                                \
         SHELL_CMD("try_stack", "tstk", cmd_try_stack, "Explore stack RAM"),                                            \
-        SHELL_CMD("repeat", "rpt", cmd_repeat, "Repeat any command N time with period"),
-
-#define DEFAULT_COMMANDS                                                                                               \
-    SHELL_CMD("help", "h", cmd_help, "Print list of shell commands"),                                                  \
+        SHELL_CMD("launch_function", "lfun", cmd_launch_function, "Launch any function by address in ROM"),            \
+        SHELL_CMD("repeat", "rpt", cmd_repeat, "Repeat any command N time with period"),                               \
         SHELL_CMD("calc", "calc", cmd_calc, "Calculator of data types"),                                               \
-        SHELL_CMD("version", "vi", cmd_version, "Print version information"),                                          \
         SHELL_CMD("ascii", "ascii", cmd_ascii, "Print ascii"),                                                         \
         SHELL_CMD("find_addr", "fadr", cmd_find_addr, "Find address by value"),                                        \
-        SHELL_CMD("sysinfo", "si", cmd_sysinfo, "Print information about threads & OS"),                               \
-        SHELL_CMD("wd_test", "wd_test", cmd_wd_test, "Stop board (for watchdog test)"),                                \
-        EXT_WDT_TEST TEST_DEFAULT_COMMANDS TEST_FIRMWARE_COMMANDS
-#endif
+
 
 #define COMMANDS_END SHELL_CMD(NULL, NULL, NULL, NULL)
 

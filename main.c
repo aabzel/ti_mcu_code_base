@@ -22,7 +22,7 @@
 #include "log.h"
 #include "uart_drv.h"
 
-#if defined(HAS_BOOT) && defined(HAS_GENERIC)
+#if defined(HAS_BOOTLOADER) && defined(HAS_GENERIC)
 #error "Firmware is unable to be bootloader and application simultaneously"
 #endif /*HAS_BOOT and HAS_GENERIC*/
 

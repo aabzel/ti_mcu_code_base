@@ -10,7 +10,8 @@
 #include <stdint.h>
 #include <ti/drivers/NVS.h>
 
-#define K_BYTES 1024
+#include "macro_utils.h"
+
 /*Hardware related code start*/
 #define NOR_FLASH_BASE 0x00000000
 #define NOR_FLASH_SIZE (352 * K_BYTES)

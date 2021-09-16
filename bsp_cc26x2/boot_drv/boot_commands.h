@@ -10,9 +10,12 @@ extern "C" {
 
 #include "ostream.h"
 
+bool boot_jump_addr_command(int32_t argc, char* argv[]);
 bool boot_diag_command(int32_t argc, char* argv[]);
 
-#define BOOT_COMMANDS SHELL_CMD("boot_diag", "btd", boot_diag_command, "Boot diag"),
+#define BOOT_COMMANDS                                                                                                  \
+    SHELL_CMD("boot_diag", "btd", boot_diag_command, "Boot diag"),                                                     \
+        SHELL_CMD("jump", "jm", boot_jump_addr_command, "jump to address"),
 
 #ifdef __cplusplus
 }

@@ -84,9 +84,10 @@
 
 #define COMMON_COMMANDS                                                                                                \
     ADC_COMMANDS                                                                                                       \
-    CLOCK_COMMANDS \
-    BOOT_COMMANDS\
-    DEFAULT_COMMANDS                                                                                                   \
+    CLOCK_COMMANDS                                                                                                     \
+    BASE_COMMANDS                                                                                                      \
+    BOOT_COMMANDS                                                                                                      \
+    TEST_FIRMWARE_COMMANDS                                                                                             \
     FLASH_COMMANDS                                                                                                     \
     I2C_COMMANDS                                                                                                       \
     GPIO_COMMANDS                                                                                                      \

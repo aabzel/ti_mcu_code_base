@@ -33,7 +33,7 @@ bool test_flash_fs_set_get_const(void) {
 
 bool test_flash_fs_inval(void) {
     EXPECT_EQ(7, sizeof(mmItem_t));
-    uint16_t data_id = PAR_ID_TEST_START+1;
+    uint16_t data_id = PAR_ID_TEST_START + 1;
     uint16_t write_value = 0x55AA;
     uint16_t read_value = 0;
     uint16_t read_value_len = 0;
@@ -50,7 +50,7 @@ bool test_flash_fs_inval(void) {
 #ifdef HAS_RNG
 
 bool test_flash_fs_set_get_set(void) {
-    uint16_t data_id = PAR_ID_TEST_START+2;
+    uint16_t data_id = PAR_ID_TEST_START + 2;
     uint16_t write_value = 34;
     uint16_t read_value = 0;
     uint16_t read_value_len = 0;

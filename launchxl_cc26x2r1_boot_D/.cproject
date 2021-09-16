@@ -107,16 +107,10 @@
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
-									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
-									<listOptionValue builtIn="false" value="HAS_RF"/>
-									<listOptionValue builtIn="false" value="HAS_SPI"/>
-									<listOptionValue builtIn="false" value="HAS_SPI0"/>
-									<listOptionValue builtIn="false" value="HAS_SX1262"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
-									<listOptionValue builtIn="false" value="USE_ICALL"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.954922929" name="Target processor version (--silicon_version, -mv)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.7M4" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CODE_STATE.1861942413" name="Designate code state, 16-bit (thumb) or 32-bit (--code_state)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CODE_STATE" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CODE_STATE.16" valueType="enumerated"/>
@@ -217,8 +211,8 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="unit_tests|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash_fs — копия"/>
+						<entry excluding="protocols/nmea_protocol|protocols/ubx_protocol|bsp_cc26x2/adc|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/spi|bsp_cc26x2/i2c|Drivers/sx1262|unit_tests|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

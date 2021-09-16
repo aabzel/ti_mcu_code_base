@@ -491,3 +491,4 @@ bool cmd_ascii(int32_t argc, char* argv[]) {
     }
     return res;
 }
+

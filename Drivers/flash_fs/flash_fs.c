@@ -21,7 +21,7 @@
 FlashFs_t FlashFs;
 
 /* status for a active page */
-static const uint8_t mm_PageStateActive[QWORD_LEN]={0x00,0x00,0xa5,0x5a};
+static const uint8_t mm_PageStateActive[QWORD_LEN] = {0x00, 0x00, 0xa5, 0x5a};
 
 /**
  *     @brief    locate currently active page
@@ -34,11 +34,11 @@ bool mm_get_active_page(uint32_t* mm_page_start, uint32_t* mm_page_len) {
     bool res = false;
     /* select active page */
     uint32_t page_state_active = 0;
-    memcpy(&page_state_active, mm_PageStateActive,sizeof(mm_PageStateActive));
+    memcpy(&page_state_active, mm_PageStateActive, sizeof(mm_PageStateActive));
     uint32_t first_qword_page1 = 0;
     uint32_t first_qword_page2 = 0;
-    memcpy( (void* ) &first_qword_page1, (void*)MEMORY_MANAGER1_OFFSET,sizeof(first_qword_page1) );
-    memcpy( (void* ) &first_qword_page2, (void*)MEMORY_MANAGER2_OFFSET,sizeof(first_qword_page2) );
+    memcpy((void*)&first_qword_page2, (void*)MEMORY_MANAGER2_OFFSET, QWORD_LEN);
+    memcpy((void*)&first_qword_page1, (void*)MEMORY_MANAGER1_OFFSET, QWORD_LEN);
     if(first_qword_page1 == page_state_active) {
         /* active page is #1 */
         *mm_page_start = MEMORY_MANAGER1_OFFSET;
