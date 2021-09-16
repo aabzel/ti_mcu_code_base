@@ -121,6 +121,7 @@ bool cmd_param_set(int32_t argc, char* argv[]) {
                 }
                 break;
             case UINT32:
+            case UINT32_HEX:
                 res = try_str2uint32(argv[1], (uint32_t*)wrData);
                 if(res) {
                     write_len = 4;

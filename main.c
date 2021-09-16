@@ -22,6 +22,10 @@
 #include "log.h"
 #include "uart_drv.h"
 
+#ifdef HAS_BOOTLOADER
+#include "boot_driver.h"
+#endif /*HAS_BOOTLOADER*/
+
 #if defined(HAS_BOOTLOADER) && defined(HAS_GENERIC)
 #error "Firmware is unable to be bootloader and application simultaneously"
 #endif /*HAS_BOOT and HAS_GENERIC*/
@@ -42,6 +46,10 @@ int main(void) {
     io_printf("Firmware launched!" CRLF);
     print_version();
     print_sys_info();
+
+#ifdef HAS_BOOTLOADER
+    res = boot_try_app();
+#endif /*HAS_BOOTLOADER*/
 
 #ifdef NORTOS
     common_main_loop();

@@ -23,6 +23,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
     {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
     {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
+    {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},      /*Flash Addr*/
 };
 
 bool param_init(void) {
@@ -110,6 +111,14 @@ bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* ou
                 Type32Union_t un32;
                 memcpy(&un32, value, sizeof(Type32Union_t));
                 snprintf(out_str, str_size, "%" PRIu32, un32.u32);
+                res = true;
+            }
+            break;
+        case UINT32_HEX:
+            if(4 == value_len) {
+                Type32Union_t un32;
+                memcpy(&un32, value, sizeof(Type32Union_t));
+                snprintf(out_str, str_size, "0x%08" PRIx32, un32.u32);
                 res = true;
             }
             break;
