@@ -1,52 +1,16 @@
-#include "test_list.h"
+#include "test_sw_list.h"
 
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "bit_utils_test.h"
-#include "byte_utils_test.h"
 #include "clocks.h"
 #include "convert.h"
-#include "data_utils_test.h"
 #include "debug_info.h"
 #include "diag_sys.h"
-#include "float_utils_test.h"
 #include "io_utils.h"
-#include "test_convert.h"
-#include "test_crc.h"
-#include "test_flash.h"
-#include "test_flash_fs.h"
-#include "test_nmea_proto.h"
-#include "test_params.h"
-#include "test_string_utils.h"
-#include "test_sx1262.h"
-#include "test_system.h"
-#include "test_time_utils.h"
-#include "test_ublox_proto.h"
 #include "unit_test_check.h"
 #include "writer_generic.h"
-
-/*Compile time assemble array */
-const unit_test_info_t test_list[] = {
-    {"type_transform", test_type_transformation},
-    TEST_SUIT_PARAMS DATA_UTILS_TEST_SUIT FLOAT_UTILS_TEST_SUIT TIME_UTILS_TEST_SUIT SYSTEM_TEST_SUIT TEST_SUIT_FLASH
-        NMEA_PROTO_TEST_SUIT CRC_TEST_SUIT TEST_SUIT_FLASH_FS TEST_SUIT_SX1262 CONVERT_TEST_SUIT STRING_UTILS_TEST_SUIT
-            UBLOX_PROTO_TEST_SUIT BYTE_UTILS_TEST_SUIT BIT_UTILS_TEST_SUIT{"array_init", test_array_init},
-    {"clock_us", test_clock_us},
-    {"clock_ms", test_clock_ms},
-    {"uspec_behavior", test_uspec_behavior},
-    {"array", test_array},
-    {"types", test_types},
-    {"64bit_mult", test_64bit_mult},
-    {"flt_u16", test_float_to_uint16},
-    {"utoa_bin8", test_utoa_bin8}};
-
-uint32_t get_test_list_cnt(void) {
-    uint32_t cnt = 0;
-    cnt = sizeof(test_list) / sizeof(test_list[0]);
-    return cnt;
-}
 
 static uint64_t mul64(uint32_t a, uint32_t b) {
     uint64_t out = a * b;
@@ -123,36 +87,6 @@ static bool test_type_transformation_arg(uint16_t expected, float input) {
 bool test_type_transformation(void) {
     EXPECT_TRUE(test_type_transformation_arg(125, 12.5f));
     EXPECT_TRUE(test_type_transformation_arg(1256, 125.6f));
-    return true;
-}
-
-bool test_clock_us(void) {
-    uint32_t i = 0;
-    uint64_t up_time_us_cur = 0;
-    uint64_t up_time_us_prev = 0;
-    up_time_us_prev = get_time_us();
-    pause_1us();
-    for(i = 0; i < 10000; i++) {
-        up_time_us_cur = get_time_us();
-        EXPECT_GR(up_time_us_prev, up_time_us_cur, i);
-        pause_1us();
-        up_time_us_prev = up_time_us_cur;
-    }
-    return true;
-}
-
-bool test_clock_ms(void) {
-    uint32_t i = 0;
-    uint32_t up_time_ms_cur = 0;
-    uint32_t up_time_ms_prev = 0;
-    up_time_ms_prev = get_time_ms32();
-    pause_1ms();
-    for(i = 0; i < 1000; i++) {
-        up_time_ms_cur = get_time_ms32();
-        EXPECT_GR(up_time_ms_prev, up_time_ms_cur, i);
-        pause_1ms();
-        up_time_ms_prev = up_time_ms_cur;
-    }
     return true;
 }
 

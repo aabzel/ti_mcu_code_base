@@ -17,7 +17,7 @@ pFunction Jump_To_Application;
 bool boot_jump_to_code(uint32_t app_start_address) {
     bool res = false;
     res = is_flash_addr(app_start_address);
-
+    LOG_INFO(BOOT, "Try boot 0x%08x", app_start_address);
     if(res) {
         uint32_t stack_top = read_addr_32bit(app_start_address);
         res = is_ram_addr(stack_top);
@@ -58,3 +58,9 @@ bool boot_try_app(void) {
     }
     return res;
 }
+
+
+bool boot_erase_app(void){
+    return false;
+}
+

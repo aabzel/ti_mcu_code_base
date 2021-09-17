@@ -14,16 +14,6 @@ extern const unit_test_info_t test_list[];
 
 uint32_t get_test_list_cnt(void);
 
-bool test_types(void);
-bool test_array_init(void);
-bool test_64bit_mult(void);
-bool test_utoa_bin8(void);
-bool test_float_to_uint16(void);
-bool test_type_transformation(void);
-bool test_array(void) ;
-bool test_uspec_behavior(void);
-bool test_clock_us(void);
-bool test_clock_ms(void);
 
 #ifdef __cplusplus
 }
