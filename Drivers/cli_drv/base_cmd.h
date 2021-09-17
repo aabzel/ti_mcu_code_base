@@ -47,13 +47,14 @@ bool reboot(void);
 bool cmd_low_level_control(int32_t argc, char* argv[]);
 bool cmd_read_memory(int32_t argc, char* argv[]);
 bool cmd_write_memory(int32_t argc, char* argv[]);
+bool cmd_echo(int32_t argc, char *argv []);
 
 #define BASE_COMMANDS                                                                                         \
     SHELL_CMD("version", "vi", cmd_version, "Print version information"),                                          \
     SHELL_CMD("help", "h", cmd_help, "Print list of shell commands"),                                                  \
     SHELL_CMD("soft_reboot", "reboot", cmd_soft_reboot, "Reboot board"),                                           \
     SHELL_CMD("sysinfo", "si", cmd_sysinfo, "Print information about threads & OS"),                               \
-
+    SHELL_CMD("echo","e",cmd_echo, "set echo"),
 
 #define TEST_FIRMWARE_COMMANDS                                                                                         \
     SHELL_CMD("write_mem", "wm", cmd_write_memory, "Write memory address"),                                            \

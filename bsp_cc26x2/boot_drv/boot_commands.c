@@ -16,8 +16,8 @@
 #include "data_utils.h"
 #include "debug_info.h"
 #include "diag_report.h"
-#include "io_utils.h"
 #include "flash_drv.h"
+#include "io_utils.h"
 #include "log.h"
 #include "ostream.h"
 #include "read_mem.h"
@@ -29,23 +29,23 @@ static bool boot_scan_app(void) {
     bool res2 = false;
     uint32_t top_stack_val = 0;
     uint32_t reset_handler_addr = 0;
-    uint32_t address=0;
-    uint32_t num=1;
-    static const table_col_t cols[] = {{7, "No"},    {12, "address"},     {12, "stack"},  {12, "resetH"}};
+    uint32_t address = 0;
+    uint32_t num = 1;
+    static const table_col_t cols[] = {{7, "No"}, {12, "address"}, {12, "stack"}, {12, "resetH"}};
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
 
-    for(address = NOR_FLASH_BASE; address < (NOR_FLASH_END-8); address += 4) {
+    for(address = NOR_FLASH_BASE; address < (NOR_FLASH_END - 8); address += 4) {
         top_stack_val = read_addr_32bit(address);
-        reset_handler_addr = read_addr_32bit(address+4);
+        reset_handler_addr = read_addr_32bit(address + 4);
         res1 = is_ram_addr(top_stack_val);
         res2 = is_flash_addr(reset_handler_addr);
         if(res1 && res2) {
-            io_printf( TSEP);
-            io_printf(" %5u "TSEP, num);
-            io_printf(" 0x%08x "TSEP, address);
-            io_printf(" 0x%08x "TSEP, top_stack_val);
-            io_printf(" 0x%08x "TSEP, reset_handler_addr);
-            io_printf( CRLF);
+            io_printf(TSEP);
+            io_printf(" %5u " TSEP, num);
+            io_printf(" 0x%08x " TSEP, address);
+            io_printf(" 0x%08x " TSEP, top_stack_val);
+            io_printf(" 0x%08x " TSEP, reset_handler_addr);
+            io_printf(CRLF);
             num++;
             res = true;
         }

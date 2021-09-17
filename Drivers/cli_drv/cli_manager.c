@@ -18,6 +18,7 @@
 #include "uart_string_reader.h"
 #include "writer_generic.h"
 
+bool cli_echo= true;
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
@@ -81,12 +82,13 @@ bool cli_init(void) {
     if(false == uart_string_reader_init(&cmd_reader)) {
         cli_init_done = false;
     } else {
-        set_echo(true);
+        cli_set_echo(true);
         cli_init_done = true;
         res = true;
     }
     return res;
 }
+
 
 bool cli_process(void) {
     if(true == huart[0].rx_int) {
@@ -197,4 +199,18 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
         cmd++;
     }
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+}
+
+bool cli_set_echo(bool echo_val) {
+    cli_echo = echo_val;
+    return true;
+}
+
+bool cli_get_echo(void) {
+    return cli_echo;
+}
+
+bool cli_toggle_echo(void) {
+    cli_echo = !cli_echo;
+    return true;
 }

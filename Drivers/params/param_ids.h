@@ -19,7 +19,7 @@ typedef enum eId_t {
     PAR_ID_CRC_TYPE = 8,
     PAR_ID_HEADER_TYPE = 9,
     PAR_ID_INV_IQ = 10,
-    PAR_ID_APP_START =11,       /*Flash address*/
+    PAR_ID_APP_START = 11, /*Flash address*/
     PAR_ID_TEST_START = 100,
     PAR_ID_TEST_END = 200,
     PAR_ID_CNT

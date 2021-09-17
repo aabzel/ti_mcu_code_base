@@ -30,7 +30,6 @@
 #error "Firmware is unable to be bootloader and application simultaneously"
 #endif /*HAS_BOOT and HAS_GENERIC*/
 
-
 int main(void) {
     bool res = true;
 #ifdef HAS_START_PAUSE

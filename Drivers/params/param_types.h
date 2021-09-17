@@ -2,17 +2,17 @@
 #define PARAM_TYPES_H
 
 typedef enum wParamType_t {
-    UINT8 ,
-    INT8  ,
+    UINT8,
+    INT8,
     UINT16,
-    INT16 ,
+    INT16,
     UINT32,
     UINT32_HEX,
-    INT32 ,
+    INT32,
     UINT64,
-    INT64 ,
+    INT64,
     STRING,
-    FLOAT ,
+    FLOAT,
     UNDEF,
 } ParamType_t;
 

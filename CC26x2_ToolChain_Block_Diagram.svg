@@ -35,9 +35,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="8.0227657"
-     inkscape:cx="101.34377"
-     inkscape:cy="843.27659"
+     inkscape:zoom="22.691808"
+     inkscape:cx="67.54741"
+     inkscape:cy="787.30315"
      inkscape:window-width="1920"
      inkscape:window-height="986"
      inkscape:window-x="2037"
@@ -883,12 +883,12 @@
        d="m 88.858561,186.82527 h 24.851259 v 7.34524"
        id="path1176" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.141264"
+       style="fill:none;stroke:#000000;stroke-width:0.144043"
        id="rect2356-6-1"
-       width="10.213934"
-       height="6.9237137"
-       x="12.013272"
-       y="201.28357" />
+       width="10.211155"
+       height="7.2007713"
+       x="12.014662"
+       y="201.28496" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.77255px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.119314"
@@ -2125,8 +2125,8 @@
          x="14.077636"
          y="226.67451">RS232</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.380307;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker2032-4);marker-end:url(#marker2254-4)"
-       d="m 15.408641,208.97255 v 7.40795"
+       style="fill:none;stroke:#000000;stroke-width:0.375894;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker2032-4);marker-end:url(#marker2254-4)"
+       d="m 15.408641,209.14348 v 7.23702"
        id="path8265-1" />
     <text
        xml:space="preserve"

@@ -876,7 +876,7 @@ static void dtoa_normal(double_t double_data, int32_t double_precision, char dou
 void dtoa_(double_t double_data_, int32_t double_precision_, char out_double_stringified_[]) {
     dtoa_normal(double_data_, double_precision_, out_double_stringified_);
 #ifndef DeviceFamily_CC26X2
-    switch(__fpclassifyd(double_data_)) {
+    switch(__fpclassifyl(double_data_)) {
     case FP_NORMAL:
     case FP_ZERO:
     case FP_SUBNORMAL:

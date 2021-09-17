@@ -22,7 +22,6 @@ uart_string_reader_t cmd_reader = {
     .lost_char_count = 0,
     .total_char_count = 0,
     .total_string_count = 0,
-    .echo = false,
 };
 
 uart_string_reader_t* get_uart_reader(void) { return &cmd_reader; }
@@ -60,7 +59,7 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
             char c = p[i];
             rdr->total_char_count++;
             if (c != '\n') {
-                if (rdr->echo) {
+                if (cli_echo) {
                     io_putchar(c);
                 }
                 switch (c) {
@@ -69,13 +68,13 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
                         rdr->string[rdr->string_len] = 0;
                         rdr->string_len--;
                     }
-                    if (rdr->echo) {
+                    if (cli_echo) {
                         io_putchar(' ');
                         io_putchar('\b');
                     }
                     break;
                 case '\r':
-                    if (rdr->echo) {
+                    if (cli_echo) {
                         io_putchar('\n');
                     }
                     rdr->string[rdr->string_len] = 0;
@@ -103,4 +102,4 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
 
 const char* uart_string_reader_get_str(const uart_string_reader_t* rdr) { return rdr->string; }
 
-void set_echo(bool echo_val) { cmd_reader.echo = echo_val; }
+

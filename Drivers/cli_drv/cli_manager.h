@@ -20,6 +20,7 @@
 
 extern uint32_t cli_task_cnt;
 extern bool cli_init_done;
+extern bool cli_echo;
 
 #define SHELL_CMD(long_cmd, short_cmd, func, description)                                                              \
     { short_cmd, long_cmd, description, func }
@@ -29,4 +30,11 @@ bool cli_process(void);
 bool process_shell_cmd(char* cmd_line);
 void help_dump_key(const char* subName1, const char* subName2);
 void *cliThread(void *arg0);
+bool cli_set_echo(bool echo);
+bool cli_get_echo(void);
+
+bool cli_set_echo(bool echo_val);
+bool cli_get_echo(void) ;
+bool cli_toggle_echo(void) ;
+
 #endif /*CLI_DRIVER_H*/

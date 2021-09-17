@@ -35,7 +35,6 @@ uint64_t get_time_us(void) {
     return cur_time_us;
 }
 
-
 uint32_t get_time_ms32(void) { return g_up_time_ms; }
 uint64_t get_time_ms64(void) { return (uint64_t)g_up_time_ms; }
 

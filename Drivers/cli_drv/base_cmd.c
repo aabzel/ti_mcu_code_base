@@ -18,6 +18,7 @@
 #include "oprintf.h"
 #include "read_mem.h"
 #include "str_utils.h"
+#include "uart_string_reader.h"
 
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
@@ -30,7 +31,7 @@
 #include "terminal_codes.h"
 #include "version.h"
 
-bool show_shell_prompt = true;
+
 bool user_mode = true;
 
 bool cmd_help(int32_t argc, char* argv[]) {
@@ -249,7 +250,7 @@ bool cmd_wd_test_hw(int32_t argc, char* argv[]) {
 }
 
 void shell_prompt(void) {
-    if(show_shell_prompt) {
+    if(cli_echo) {
         io_putstr("-->");
     }
 }
@@ -489,6 +490,27 @@ bool cmd_ascii(int32_t argc, char* argv[]) {
     } else {
         LOG_ERROR(SYS, "Usage: ascii [byte]");
     }
+    return res;
+}
+
+bool cmd_echo(int32_t argc, char *argv []) {
+    bool echo = false;
+    bool res = false;
+    if(0 == argc){
+        res = cli_toggle_echo();
+    }else if (1==argc) {
+        res = try_str2bool(argv[0], &echo);
+        if (false == res) {
+            LOG_ERROR(SYS, "Unable parse status %s",argv[0]);
+        }
+        res = cli_set_echo(echo);
+        if ( res ) {
+            LOG_INFO(SYS, "OK");
+        }
+    } else {
+        LOG_ERROR(SYS, "Usage: echo state");
+    }
+
     return res;
 }
 

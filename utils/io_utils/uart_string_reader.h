@@ -23,7 +23,6 @@ typedef struct {
     int64_t lost_char_count;
     int64_t total_char_count;
     int64_t total_string_count;
-    bool echo;
 } uart_string_reader_t;
 
 extern uart_string_reader_t cmd_reader;
@@ -35,7 +34,9 @@ void uart_string_reader_error_callback(uart_string_reader_t* r);
 void uart_string_reader_proccess(uart_string_reader_t* r);
 void uart_string_reader_clear_str(uart_string_reader_t* r); /* clear current string */
 const char* uart_string_reader_get_str(const uart_string_reader_t* r);
-void set_echo(bool echo_val);
+
+
+
 #ifdef __cplusplus
 }
 #endif
