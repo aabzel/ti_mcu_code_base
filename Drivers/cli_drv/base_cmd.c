@@ -10,7 +10,7 @@
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
-#include "device_id.h"
+//#include "device_id.h"
 #include "diag_sys.h"
 #include "io_utils.h"
 #include "log.h"
@@ -334,7 +334,9 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
             io_printf(CRLF"%03u/%u: execute command [%s]" CRLF, iter, num_of_try, read_command);
             strncpy(temp_command, read_command, sizeof(temp_command));
             process_shell_cmd(temp_command);
+#ifdef NORTOS
             wait_in_loop_ms(period_ms);
+#endif /*NORTOS*/
         }
     } else {
         LOG_ERROR(SYS, "Usage: rpt command period_ms times");

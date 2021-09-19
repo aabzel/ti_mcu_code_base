@@ -1,6 +1,10 @@
 #ifndef SPI_DRV_H
 #define SPI_DRV_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -54,10 +58,13 @@ uint32_t spi_get_clock(SpiName_t spi_num);
 uint8_t spi_get_phase(SpiName_t spi_num);
 uint8_t spi_get_polarity(SpiName_t spi_num);
 uint8_t spi_get_data_size(SpiName_t spi_num);
-
 uint8_t spi_get_transmit_int(SpiName_t spi_num);
 uint8_t spi_get_receive_int(SpiName_t spi_num);
 uint8_t spi_get_receive_timeout_interrupt(SpiName_t spi_num);
 uint8_t spi_get_receive_overrun_interrupt(SpiName_t spi_num);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SPI_DRV_H  */

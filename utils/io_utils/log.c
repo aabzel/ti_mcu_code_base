@@ -135,6 +135,9 @@ const char *facility2str(log_facility_t facility) {
   case UNKNOWN_FACILITY:
     facility_str = "?";
     break;
+   case LG_FLASH:
+    facility_str = "FLASH";
+    break;     
   case FLASH_FS:
     facility_str = "FLASH_FS";
     break;

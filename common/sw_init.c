@@ -3,7 +3,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef NORTOS
 #include "task_info.h"
+#endif /*NORTOS*/
 
 #ifdef HAS_LED
 #include "led_drv.h"

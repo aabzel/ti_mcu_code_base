@@ -1,5 +1,5 @@
-#ifndef INIT_UART_H
-#define INIT_UART_H
+#ifndef UART_DRV_H
+#define UART_DRV_H
 
 #include <ti/drivers/UART.h>
 
@@ -26,12 +26,12 @@ extern const uint_least8_t CONFIG_UART_0_CONST;
 extern UartHandle_t huart[CONFIG_UART_COUNT];
 
 bool uart_init(void);
-
 void cli_tune_read_char(void);
+bool uart_read(uint8_t uart_num,uint8_t* out_array, uint16_t array_len);
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len);
 uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling);
 bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate);
 bool proc_uart(uint8_t uart_index);
 bool proc_uart1(void);
 
-#endif /* INIT_UART_H  */
+#endif /* UART_DRV_H  */

@@ -19,7 +19,9 @@
 #include "log.h"
 #include "sw_init.h"
 #include "sys_config.h"
+#ifdef NORTOS
 #include "task_info.h"
+#endif 
 #include "uart_drv.h"
 
 #ifdef HAS_SX1262
@@ -62,6 +64,7 @@ bool sys_init(void) {
     return res;
 }
 
+#ifdef NORTOS
 void common_loop(uint64_t loop_start_time_us) {
     if(0u == loop_start_time_us) {
         return;
@@ -110,7 +113,9 @@ void common_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc, loop_start_time_us);
 #endif /*HAS_FLASH_FS*/
 }
+#endif /*NORTOS*/
 
+#ifdef NORTOS
 void common_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
     uint64_t loop_start_time_us = 0;
@@ -130,3 +135,4 @@ void common_main_loop(void) {
         common_loop(loop_start_time_us);
     }
 }
+#endif /*NORTOS*/

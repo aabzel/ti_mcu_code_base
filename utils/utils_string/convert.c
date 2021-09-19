@@ -17,7 +17,7 @@ static bool is_hex_digit(const char character);
 static bool is_true(const char* true_str_to_check);
 static bool is_false(const char* false_str_to_check);
 static void dtoa_normal(double_t double_data, int32_t double_precision, char double_stringified[]);
-static void ftoa_normal(float_t float_data, int32_t float_precision, char float_stringified[]);
+//static void ftoa_normal(float_t float_data, int32_t float_precision, char float_stringified[]);
 
 static const float_t rounders[(MAX_PRECISION + 1U)] = {
     0.5f,          /* 0 */
@@ -875,7 +875,7 @@ static void dtoa_normal(double_t double_data, int32_t double_precision, char dou
 
 void dtoa_(double_t double_data_, int32_t double_precision_, char out_double_stringified_[]) {
     dtoa_normal(double_data_, double_precision_, out_double_stringified_);
-#ifndef DeviceFamily_CC26X2
+#if ((!defined(DeviceFamily_CC26X2)) && (!defined(STM32F413xx)))
     switch(__fpclassifyl(double_data_)) {
     case FP_NORMAL:
     case FP_ZERO:
@@ -894,7 +894,7 @@ void dtoa_(double_t double_data_, int32_t double_precision_, char out_double_str
     }
 #endif /*DeviceFamily_CC26X2*/
 }
-
+#ifndef STM32F413xx
 static void ftoa_normal(float_t float_data, int32_t float_precision, char float_stringified[]) {
     uint32_t float_result_str_index = 0U;
     bool float_auto_precision = false;
@@ -968,10 +968,12 @@ static void ftoa_normal(float_t float_data, int32_t float_precision, char float_
         float_stringified[float_result_str_index] = '\0';
     }
 }
+#endif /*STM32F413xx*/
 
 // uint8_t __fpclassifyf(float_t float_data_) { return FP_SUBNORMAL; }
 
 void ftoa_(float_t float_data_, int32_t float_precision_, char float_stringified_[]) {
+#ifndef STM32F413xx
     switch(__fpclassifyf(float_data_)) {
     case FP_NORMAL:
     case FP_ZERO:
@@ -988,6 +990,7 @@ void ftoa_(float_t float_data_, int32_t float_precision_, char float_stringified
         (void)strcpy(float_stringified_, "???");
         break;
     }
+#endif /*STM32F413xx*/
 }
 
 uint32_t base64_encode(const uint8_t encode_data[], uint32_t encode_data_size, char encode_result[]) {

@@ -2,9 +2,12 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+
+#ifdef CC26X2
 #include <ti/drivers/Board.h>
 #include <Temperature.h>
 #include <TemperatureCC26X2.h>
+#endif /*CC26X2*/
 
 #ifdef NORTOS
 /*mandatory space NoRTOS uses stdint*/
@@ -15,12 +18,12 @@
 #include "clocks.h"
 #include "sys_tick.h"
 
-#ifdef HAS_FLASH
-#include "flash_drv.h"
+#ifdef HAS_ADC
+#include "adc_drv.h"
 #endif
 
-#ifdef HAS_RTC
-#include "rtc_drv.h"
+#ifdef HAS_FLASH
+#include "flash_drv.h"
 #endif
 
 #ifdef HAS_I2C
@@ -43,9 +46,6 @@
 #include "gpio_drv.h"
 #endif
 
-#ifdef HAS_ADC
-#include "adc_drv.h"
-#endif
 
 #ifdef HAS_DAC
 #include "dac_drv.h"
@@ -58,6 +58,10 @@
 #ifdef HAS_RNG
 #include "rng_drv.h"
 #endif
+
+#ifdef HAS_RTC
+#include "rtc_drv.h"
+#endif /*HAS_RTC*/
 
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
@@ -74,14 +78,23 @@
 
 bool hw_init(void) {
   bool res = true;
+
+#ifdef CC26X2
   Board_init();
+#endif /*CC26X2*/
+
 #ifdef NORTOS
   NoRTOS_start();
 #endif /*NORTOS*/
 
+#ifdef HAS_TEMP
   Temperature_init();
-  SysTickInit();
+#endif /*HAS_TEMP*/
 
+#ifdef NORTOS  
+  SysTickInit();
+#endif /*NORTOS*/
+  
 #ifdef HAS_WDT
   res = watchdog_init()&&res;
 #endif
@@ -125,6 +138,10 @@ bool hw_init(void) {
 #ifdef HAS_RNG
   res = try_init( rng_init(),"RNG") && res;
 #endif /*HAS_RNG*/
+
+#ifdef HAS_RTC
+  res = try_init( rtc_init(),"RTC") && res;
+#endif /*HAS_RTC*/
 
 #ifdef HAS_BLE
   res = try_init(ble_init(),"BLE") && res;

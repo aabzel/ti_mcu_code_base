@@ -5,11 +5,15 @@
 
 #include "byte_utils.h"
 #include "convert.h"
+#ifndef USE_HAL_DRIVER
 #include "core_driver.h"
+#endif
 #include "crc32.h"
 #include "data_utils.h"
 #include "device_id.h"
+#ifdef HAS_FLASH
 #include "flash_drv.h"
+#endif
 #include "io_utils.h"
 #include "oprintf.h"
 #include "sys.h"
@@ -63,14 +67,19 @@ bool print_version_s(ostream_t* stream) {
         //  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
         oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
         oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
+#ifndef USE_HAL_DRIVER
         uint32_t cpi_id = cpu_get_id();
+#endif /*USE_HAL_DRIVER*/
         oprintf(stream, "branch   : %s " CRLF, GIT_BRANCH);
         oprintf(stream, "last commit: %s" CRLF, GIT_LAST_COMMIT_HASH);
-
+#ifdef HAS_FLASH
         all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
+#endif /*HAS_FLASH*/
         oprintf(stream, "FlashCRC32: 0x%08X" CRLF, all_flash_crc);
         oprintf(stream, "main(): 0x%08p" CRLF, main);
+#ifdef __TI_COMPILER_VERSION__
         oprintf(stream, "TI compiler ver %u " CRLF, __TI_COMPILER_VERSION__);
+#endif
 
 #ifdef __GNUC__
         oputs(stream, "GCC" CRLF);
@@ -91,11 +100,12 @@ bool print_version_s(ostream_t* stream) {
 #ifdef HAS_DEBUG
         oputs(stream, "Debug" CRLF);
 #endif /*HAS_DEBUG*/
-        oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
 
+#ifndef USE_HAL_DRIVER
+        oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
         uint64_t ble_mac = get_ble_mac();
         oprintf(stream, "MAC: 0x%" PRIX64 CRLF, ble_mac);
-
+#endif /*USE_HAL_DRIVER*/
         oputs(stream, "by aabdev" CRLF);
         oputs(stream, CRLF);
     }

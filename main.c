@@ -38,7 +38,7 @@ int main(void) {
 
     res = try_init(sys_init(), "SYS") && res;
 
-    LOG_INFO(SYS, "init [%s]" CRLF, (true == res) ? "OK!" : "Error!");
+    LOG_INFO(SYS, "init [%s]" , (true == res) ? "OK!" : "Error!");
 #ifdef HAS_HEALTH_MONITOR
     HealthMon.init_error = !res;
 #endif /*HAS_HEALTH_MONITOR*/

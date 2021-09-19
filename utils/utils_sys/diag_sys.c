@@ -8,6 +8,11 @@
 #include "version.h"
 #include "writer_generic.h"
 
+#ifdef STM32F413xx
+#include "cmsis_os.h"
+#include "stm32f4xx_hal.h"
+#endif /*STM32F413xx*/
+
 extern void main(void);
 
 void print_sysinfo(void) {
@@ -24,7 +29,9 @@ void print_sysinfo(void) {
 }
 
 void Error_Handler(void) {
-    // __disable_irq();
+#ifdef STM32F413xx
+    __disable_irq();
+#endif /*STM32F413xx*/
     while(1) {
     }
 }

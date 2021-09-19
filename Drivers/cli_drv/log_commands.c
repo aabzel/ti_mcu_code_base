@@ -3,7 +3,9 @@
  */
 #include <string.h>
 
+#ifndef STM32F413xx
 #include <strings.h>
+#endif 
 
 #include "convert.h"
 #include "io_utils.h"

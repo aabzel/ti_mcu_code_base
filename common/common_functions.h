@@ -1,5 +1,5 @@
-#ifndef COMMON_FUNCTIONS_H
-#define COMMON_FUNCTIONS_H
+#ifndef COMMON_LOOP_H
+#define COMMON_LOOP_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -18,11 +18,11 @@
     TASK_INTEGRITY
 
 bool sys_init(void);
+#ifdef NORTOS
 void common_loop(uint64_t loop_start_time);
 void custom_loop(uint64_t loop_start_time);
-void common_init(void);
-void common_update_leds_state(void);
 void common_main_loop(void);
-bool wait_with_common_loop(uint64_t const waitMs);
+#endif /*NORTOS*/
 
-#endif /* COMMON_FUNCTIONS_H */
+
+#endif /* COMMON_LOOP_H */

@@ -30,7 +30,6 @@ void io_printf(const char *format, ...) {
 }
 
 void io_vprintf(const char *format, va_list vlist) {
-    //vprintf(format, vlist);
     ovprintf(&dbg_o.s, format, vlist);
 }
 
@@ -58,7 +57,7 @@ bool flush_printf(void) {
   bool res = true;
   if (huart[0].init_done) {
     uint32_t cnt = 0;
-    while ((isFromInterrupt() == false) && (false == writer_clean(&dbg_o))) {
+    while ((false==isFromInterrupt() ) && (false == writer_clean(&dbg_o))) {
       cnt++;
       if (100000 < cnt) {
         res = false;

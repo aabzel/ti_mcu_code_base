@@ -235,6 +235,16 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
     return res;
 }
 
+bool uart_read(uint8_t uart_num,uint8_t* out_array, uint16_t array_len){
+    bool res = false;
+    int_fast32_t ret =0;
+    ret = UART_read(huart[uart_num].uart_h, out_array, array_len);
+    if(ret==array_len) {
+        res = true;
+    }
+    return res;
+}
+
 uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling) {
     return 0;
 }

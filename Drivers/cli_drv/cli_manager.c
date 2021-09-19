@@ -13,6 +13,7 @@
 #include "none_blocking_pause.h"
 #include "shell_commands.h"
 #include "str_utils.h"
+#include "sys_config.h"
 #include "table_utils.h"
 #include "uart_drv.h"
 #include "uart_string_reader.h"
@@ -91,10 +92,10 @@ bool cli_init(void) {
 
 
 bool cli_process(void) {
-    if(true == huart[0].rx_int) {
-        uart_string_reader_rx_callback(&cmd_reader, (char)huart[0].rx_byte);
-        huart[0].rx_int = false;
-        UART_read(huart[0].uart_h, &huart[0].rx_byte, 1);
+    if(true == huart[CLI_UART_NUM].rx_int) {
+        uart_string_reader_rx_callback(&cmd_reader, (char)huart[CLI_UART_NUM].rx_byte);
+        huart[CLI_UART_NUM].rx_int = false;
+        uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1);
     }
 
     bool res = false;
@@ -104,9 +105,9 @@ bool cli_process(void) {
         if(true == cli_init_done) {
             entry = true;
             cli_task_cnt++;
-            if(true == huart[0].tx_int) {
+            if(true == huart[CLI_UART_NUM].tx_int) {
                 dbg_o.f_transmit(&dbg_o);
-                huart[0].tx_int = false;
+                huart[CLI_UART_NUM].tx_int = false;
             }
             uart_string_reader_proccess(&cmd_reader);
             res = true;
@@ -193,7 +194,9 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
             io_printf(" %18s " TSEP, cmd->long_name ? cmd->long_name : "");
             io_printf(" %s ", cmd->description ? cmd->description : "");
             io_printf(CRLF);
+#ifdef NORTOS
             wait_in_loop_ms(4);
+#endif /*NORTOS*/
             num++;
         }
         cmd++;

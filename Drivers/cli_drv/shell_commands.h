@@ -62,7 +62,6 @@ extern "C" {
 #define SX1262_COMMANDS
 #endif
 
-
 #ifdef HAS_FLASH_FS
 #include "flash_fs_commands.h"
 #else
@@ -88,13 +87,13 @@ extern "C" {
     FLASH_FS_COMMANDS                                                                                                  \
     LED_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
-    LOG_COMMANDS                                                                              \
-    PARAM_COMMANDS \
+    LOG_COMMANDS                                                                                                       \
+    PARAM_COMMANDS                                                                                                     \
     HEALTH_MONITOR_COMMANDS                                                                                            \
     NMEA_COMMANDS                                                                                                      \
     RF_COMMANDS                                                                                                        \
     SX1262_COMMANDS                                                                                                    \
-    TRNG_COMMANDS                                                              \
+    TRNG_COMMANDS                                                                                                      \
     UBLOX_COMMANDS
 
 #ifdef __cplusplus

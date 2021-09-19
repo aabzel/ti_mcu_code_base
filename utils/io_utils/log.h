@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-typedef enum {
+typedef enum eLog_level_t{
   LOG_LEVEL_UNKNOWN = -4,
   LOG_LEVEL_PARANOID = -3,
   LOG_LEVEL_DEBUG = -2,
@@ -22,26 +22,48 @@ typedef enum {
   LOG_LEVEL_LAST = LOG_LEVEL_CRITICAL
 } log_level_t;
 
-typedef enum {
+#ifdef STM32F413xx
+typedef uint8_t log_facility_t;
+#define UNKNOWN_FACILITY 0
+#define LG_ADC 1
+#define BOOT 2
+#define LG_DAC 3
+#define DIAG 4
+#define LG_I2C 5
+#define LG_FLASH 6
+#define FLASH_FS 7
+#define LORA 8
+#define LG_NVS 9
+#define TIM 10
+#define SPI 11
+#define PARAM 12
+#define LG_RF 13
+#define LG_RNG 14
+#define SYS 15
+#define UART 16
+#define ALL_FACILITY 17
+#else
+typedef enum eLog_facility_t {
   UNKNOWN_FACILITY=0,
-  ADC,
-  BOOT,
-  DAC,
-  DIAG,
-  I2C,
-  FLASH,
-  FLASH_FS,
-  LORA,
-  NVS,
-  TIM,
-  SPI,
-  PARAM,
-  RF,
-  RNG,
-  SYS,
-  UART,
-  ALL_FACILITY
+  ADC=1,
+  BOOT=2,
+  DAC=3,
+  DIAG=4,
+  I2C=5,
+  LG_FLASH=6,
+  FLASH_FS=7,
+  LORA=8,
+  NVS=9,
+  TIM=10,
+  SPI=11,
+  PARAM=12,
+  RF=13,
+  RNG=14,
+  SYS=15,
+  UART=16,
+  ALL_FACILITY=17
 } log_facility_t;
+#endif /*STM32F413xx*/
 
 extern log_level_t log_levels[ALL_FACILITY];
 

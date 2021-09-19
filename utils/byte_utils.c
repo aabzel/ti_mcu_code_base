@@ -1,6 +1,7 @@
 #include "byte_utils.h"
 
 #include <stdint.h>
+#include <string.h>
 
 #include "data_utils.h"
 

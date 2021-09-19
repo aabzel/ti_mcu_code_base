@@ -2,7 +2,12 @@
 #define COMMON_COMMANDS_H
 
 #include "log.h"
-#include "task_info.h"
+
+#ifdef NORTOS
+#include "task_commands.h"
+#else
+#define TASK_COMMANDS
+#endif /*NORTOS*/
 
 #ifdef HAS_BOOT_DIAG
 #include "boot_commands.h"
