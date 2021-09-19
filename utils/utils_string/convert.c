@@ -17,7 +17,7 @@ static bool is_hex_digit(const char character);
 static bool is_true(const char* true_str_to_check);
 static bool is_false(const char* false_str_to_check);
 static void dtoa_normal(double_t double_data, int32_t double_precision, char double_stringified[]);
-//static void ftoa_normal(float_t float_data, int32_t float_precision, char float_stringified[]);
+// static void ftoa_normal(float_t float_data, int32_t float_precision, char float_stringified[]);
 
 static const float_t rounders[(MAX_PRECISION + 1U)] = {
     0.5f,          /* 0 */
@@ -875,7 +875,7 @@ static void dtoa_normal(double_t double_data, int32_t double_precision, char dou
 
 void dtoa_(double_t double_data_, int32_t double_precision_, char out_double_stringified_[]) {
     dtoa_normal(double_data_, double_precision_, out_double_stringified_);
-#if ((!defined(DeviceFamily_CC26X2)) && (!defined(STM32F413xx)))
+#if((!defined(DeviceFamily_CC26X2)) && (!defined(STM32F413xx)))
     switch(__fpclassifyl(double_data_)) {
     case FP_NORMAL:
     case FP_ZERO:

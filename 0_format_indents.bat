@@ -6,6 +6,12 @@ set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\fw_loader_debug\main.c
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\stm32f413zgj6_d\Core\Src\freertos_init.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\stm32f413zgj6_d\Core\Src\freertos_init.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\ext_ram_simulator\ext_ram_sim_drv.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\ext_ram_simulator\ext_ram_sim_drv.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\ext_ram_simulator\ext_ram_sim_commands.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\ext_ram_simulator\ext_ram_sim_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\win_utils\scan_serial_port.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\win_utils\scan_serial_port.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\params\param_types.h

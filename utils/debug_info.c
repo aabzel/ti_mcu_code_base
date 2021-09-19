@@ -198,11 +198,11 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
     bool res = false;
     uint32_t pos = 0;
     uint32_t print_len = 0;
-    uint32_t rem;
+    int32_t rem;
     uint8_t hexLine[16 * 2 + 1];
     memset(hexLine, 0x00, sizeof(hexLine));
     if(16 < len) {
-        for(pos = 0; pos < len; pos += 16) {
+        for(pos = 0; pos < (len - 16); pos += 16) {
             res = true;
             hex2ascii(&addr[pos], 16, hexLine, (uint32_t)sizeof(hexLine));
             io_printf("%s", hexLine);
@@ -212,12 +212,14 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
         }
     }
     rem = len - print_len;
+
     if(0 < rem) {
+        memset(hexLine, 0x00, sizeof(hexLine));
         res = true;
         pos = len / 16;
-        hex2ascii(&addr[pos], rem, hexLine, sizeof(hexLine));
+        hex2ascii(&addr[print_len], rem, hexLine, sizeof(hexLine));
         io_printf("%s", hexLine);
-        print_ascii_line((char*)&addr[pos], rem, 16 - rem + 4);
+        print_ascii_line((char*)&addr[print_len], rem, 2 * (16 - rem) + 4);
     }
     if(true == new_line) {
         io_printf(CRLF);

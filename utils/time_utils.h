@@ -11,7 +11,7 @@ extern "C" {
 
 bool parse_time_from_val(uint32_t packed_time, struct tm* tm_stamp);
 bool parse_date_from_val(uint32_t packed_date, struct tm* tm_stamp);
-bool parse_date_time_from_string(char *name, struct tm* tm_stamp);
+bool parse_date_time_from_string(char* name, struct tm* tm_stamp);
 
 #ifdef __cplusplus
 }

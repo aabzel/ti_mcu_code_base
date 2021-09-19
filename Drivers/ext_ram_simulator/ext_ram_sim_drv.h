@@ -7,6 +7,7 @@
 #define EXT_RAM_SIZE 1024U
 
 extern uint8_t memory[EXT_RAM_SIZE];
+extern volatile uint32_t ext_ram_busy_cnt;
 
 bool ext_ram_erase(void);
 bool ext_ram_init(void);

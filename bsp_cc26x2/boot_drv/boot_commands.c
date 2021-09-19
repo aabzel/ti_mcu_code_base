@@ -100,7 +100,7 @@ bool boot_jump_addr_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool bool_erase_app(int32_t argc, char* argv[]){
+bool bool_erase_app(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = boot_erase_app();

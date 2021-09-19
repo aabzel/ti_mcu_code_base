@@ -59,8 +59,4 @@ bool boot_try_app(void) {
     return res;
 }
 
-
-bool boot_erase_app(void){
-    return false;
-}
-
+bool boot_erase_app(void) { return false; }

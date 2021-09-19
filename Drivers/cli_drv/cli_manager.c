@@ -11,7 +11,7 @@
 #include "io_utils.h"
 #include "log_commands.h"
 #include "none_blocking_pause.h"
-#include "shell_commands.h"
+#include "cli_commands.h"
 #include "str_utils.h"
 #include "sys_config.h"
 #include "table_utils.h"

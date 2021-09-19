@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "data_utils.h"
 #include "convert.h"
+#include "data_utils.h"
 #include "debug_info.h"
 #include "ext_ram_sim_drv.h"
 #include "io_utils.h"
@@ -19,6 +19,8 @@ bool ext_ram_diag_command(int32_t argc, char* argv[]) {
         float usage_pec = 0.0;
         uint32_t spare = 0;
         uint32_t busy = 0;
+
+        io_printf("busy_cnt: %u" CRLF, ext_ram_busy_cnt);
         res = mem_scan(&memory[0], sizeof(memory), &usage_pec, &spare, &busy);
         if(res) {
             io_printf("usage: %f %%" CRLF, usage_pec);
@@ -47,10 +49,10 @@ bool ext_ram_read_command(int32_t argc, char* argv[]) {
     if(2 <= argc) {
         res = try_str2uint32(argv[1], &size);
         if(sizeof(read_data) < size) {
-            LOG_ERROR(SYS, "Unable to read more %u byte",sizeof(read_data));
+            LOG_ERROR(SYS, "Unable to read more %u byte", sizeof(read_data));
             res = false;
-        }else{
-            LOG_INFO(SYS, "size %u",size);
+        } else {
+            LOG_INFO(SYS, "size %u", size);
         }
     }
 

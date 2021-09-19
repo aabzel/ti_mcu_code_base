@@ -322,7 +322,7 @@ bool flash_scan_command(int32_t argc, char* argv[]) {
         float usage_pec = 0.0f;
         uint32_t spare = 0;
         uint32_t busy = 0;
-        res = flash_scan((uint8_t*)NOR_FLASH_BASE, NOR_FLASH_SIZE, &usage_pec, &spare, &busy);
+        res = mem_scan((uint8_t*)NOR_FLASH_BASE, NOR_FLASH_SIZE, &usage_pec, &spare, &busy);
         if(res) {
             io_printf("usage: %f %%" CRLF, usage_pec);
             io_printf("spare: %u Bytes %u kBytes" CRLF, spare, spare / 1024);

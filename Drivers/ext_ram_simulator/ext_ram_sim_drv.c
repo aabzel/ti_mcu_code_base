@@ -4,8 +4,9 @@
 #include <stdbool.h>
 #include <string.h>
 
-static bool mem_busy = false;
+static volatile bool mem_busy = false;
 uint8_t memory[EXT_RAM_SIZE];
+uint32_t volatile ext_ram_busy_cnt = 0;
 
 bool ext_ram_read(uint32_t address, uint8_t* read_data, uint32_t size) {
     bool res = false;
@@ -16,6 +17,8 @@ bool ext_ram_read(uint32_t address, uint8_t* read_data, uint32_t size) {
             res = true;
         }
         mem_busy = false;
+    } else {
+        ext_ram_busy_cnt++;
     }
     return res;
 }
@@ -29,6 +32,8 @@ bool ext_ram_write(uint32_t address, uint8_t* wr_data, uint32_t size) {
             res = true;
         }
         mem_busy = false;
+    } else {
+        ext_ram_busy_cnt++;
     }
     return res;
 }
@@ -39,6 +44,8 @@ bool ext_ram_erase(void) {
         mem_busy = true;
         memset(memory, 0xFF, sizeof(memory));
         mem_busy = false;
+    } else {
+        ext_ram_busy_cnt++;
     }
     return res;
 }

@@ -21,7 +21,7 @@
 #include "sys_config.h"
 #ifdef NORTOS
 #include "task_info.h"
-#endif 
+#endif
 #include "uart_drv.h"
 
 #ifdef HAS_SX1262

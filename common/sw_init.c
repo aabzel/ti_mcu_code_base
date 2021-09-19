@@ -7,6 +7,11 @@
 #include "task_info.h"
 #endif /*NORTOS*/
 
+#ifdef HAS_EXT_RAM_EMUL
+#include "ext_ram_sim_drv.h"
+#endif /*HAS_EXT_RAM_EMUL*/  
+
+
 #ifdef HAS_LED
 #include "led_drv.h"
 #endif /*HAS_LED*/
@@ -75,6 +80,10 @@ bool sw_init(void) {
   res = try_init(param_init(),"param") && res;
 #endif /*HAS_PARAM*/
 
+#ifdef HAS_EXT_RAM_EMUL
+  res = try_init(ext_ram_init(),"ext_ram_em") && res;
+#endif /*HAS_EXT_RAM_EMUL*/  
+  
 #ifdef TASKS
   res = try_init(task_init(),"task")&& res;
 #endif /*TASKS*/

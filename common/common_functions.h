@@ -24,5 +24,4 @@ void custom_loop(uint64_t loop_start_time);
 void common_main_loop(void);
 #endif /*NORTOS*/
 
-
 #endif /* COMMON_LOOP_H */

@@ -14,6 +14,18 @@ extern "C" {
 #define LED_COMMANDS
 #endif
 
+#ifdef HAS_EXT_RAM_EMUL
+#include "ext_ram_sim_commands.h"
+#else
+#define EXT_RAM_EMUL_COMMANDS
+#endif
+
+#ifdef HAS_MX25L6433
+#include "mx25l6433f_commands.h"
+#else
+#define MX25L6433_COMMANDS
+#endif
+
 #ifdef HAS_CORTEX_M4
 #include "core_commands.h"
 #else
@@ -85,8 +97,10 @@ extern "C" {
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
     FLASH_FS_COMMANDS                                                                                                  \
+	MX25L6433_COMMANDS                                                                                                 \
     LED_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
+	EXT_RAM_EMUL_COMMANDS                                                                                              \
     LOG_COMMANDS                                                                                                       \
     PARAM_COMMANDS                                                                                                     \
     HEALTH_MONITOR_COMMANDS                                                                                            \

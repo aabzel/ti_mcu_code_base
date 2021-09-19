@@ -1,0 +1,12 @@
+random number generator
+
+TRNG True Random Number Generator 0x4002 8000
+TRNG True Random Number Generator 0x4002 8000
+
+
+C:\ti\simplelink_cc13x2_26x2_sdk_5_20_00_52\source\ti\devices\cc13x2_cc26x2\driverlib\trng.h
+C:\ti\simplelink_cc13x2_26x2_sdk_5_20_00_52\source\ti\devices\cc13x2_cc26x2\driverlib\trng.c
+
+
+C:\ti\simplelink_cc13x2_26x2_sdk_5_20_00_52\source\ti\drivers\TRNG.h
+C:\ti\simplelink_cc13x2_26x2_sdk_5_20_00_52\source\ti\drivers\TRNG.c

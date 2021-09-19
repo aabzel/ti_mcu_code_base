@@ -163,3 +163,26 @@ uint32_t ipow(uint32_t base, uint32_t exponenta) {
     }
     return ret;
 }
+
+bool mem_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare, uint32_t* busy) {
+    bool res = false;
+    if(usage_pec && spare && busy) {
+        res = true;
+        *spare = 0;
+        *busy = 0;
+        uint8_t* addr = base;
+        uint32_t cnt = 0;
+        for(addr = base, cnt = 0; addr < (base + size); addr++, cnt++) {
+            if(0xFF == (*addr)) {
+                (*spare)++;
+            } else {
+                (*busy)++;
+            }
+            if(!(cnt % 1000)) {
+                // wait_in_loop_ms(5);
+            }
+        }
+        *usage_pec = (float)(((float)(100U * (*busy))) / ((float)size));
+    }
+    return res;
+}

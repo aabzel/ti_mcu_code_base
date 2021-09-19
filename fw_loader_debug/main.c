@@ -25,7 +25,7 @@ static bool is_target_connected(void) {
     return res;
 }
 
-static bool restore_target(void){
+static bool restore_target(void) {
     bool res = false;
     char txBuffer[100] = "";
     strncpy(txBuffer, "e 1" CRLF, sizeof(txBuffer));
@@ -42,7 +42,7 @@ static bool restore_target(void){
     return res;
 }
 
-static bool parse_fw_version(void){
+static bool parse_fw_version(void) {
     bool res = false;
     char txBuffer[100] = "";
     strncpy(txBuffer, "vi" CRLF, sizeof(txBuffer));
@@ -88,7 +88,6 @@ int main(int argc, char* argv[]) {
 
     if(res) {
         res = parse_fw_version();
-
     }
 
     if(res) {
