@@ -62,7 +62,7 @@ bool uart_send_ll(uint8_t uart_num, uint8_t* tx_buffer, uint16_t len) {
       res = true;
       while (init_tx_cnt == huart[uart_num].tx_cnt) {
         cnt++;
-        if(0x0FFFFFFF<cnt){
+        if(0x00FFFFFF<cnt){
           res = false;
           break;
         }

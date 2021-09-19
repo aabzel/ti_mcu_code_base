@@ -19,16 +19,14 @@
 #ifdef HAS_CLI
 #include "cli_manager.h"
 #endif /*HAS_CLI*/
-typedef StaticSemaphore_t osStaticSemaphoreDef_t;
 
-SemaphoreHandle_t ext_ram_sem;
 TaskHandle_t CliTaskHandle;
 TaskHandle_t Task1Handle;
 TaskHandle_t Task2Handle;
 
 uint32_t wr_period_ms = 2;
 uint32_t rd_period_ms = 2;
-uint32_t sem_wait = 100;
+
 
 void StartTaskReader(void* argument) {
     bool res = false;
@@ -44,14 +42,13 @@ void StartTaskReader(void* argument) {
             res = ext_ram_read(0, (uint8_t*)&read_cur, sizeof(read_cur));
             if(res) {
                 diff = read_cur - read_prev;
-                if(1 == diff) {
-                    //io_printf("read cnt: %u" CRLF, read_cur);
+                if(0 != diff) {
+                    io_printf("read cnt: %u" CRLF, read_cur);
                 }
-                if(1 < diff) {
-                    LOG_ERROR(SYS, "cur %u prev %u diff %u", read_prev, read_cur, diff);
-                }
+                //if(1 < diff) {
+                //    LOG_ERROR(SYS, "cur %u prev %u diff %u", read_prev, read_cur, diff);
+                //}
                 read_prev = read_cur;
-
             } else {
                 LOG_ERROR(SYS, "Read error %u", err_cnt);
                 err_cnt++;
@@ -64,6 +61,7 @@ void StartTaskReader(void* argument) {
     }
 }
 
+#if 0
 void StartTaskWriter(void* argument) {
     bool res = false;
     uint32_t cnt = 0;
@@ -87,6 +85,7 @@ void StartTaskWriter(void* argument) {
         vTaskDelay(wr_period_ms);
     }
 }
+#endif
 
 void CliTask(void* argument) {
 
@@ -101,18 +100,12 @@ void CliTask(void* argument) {
 bool freertos_init(void) {
     bool out_res = true;
     BaseType_t stat = pdPASS;
-
-    ext_ram_sem = xSemaphoreCreateBinary();
-    if(NULL == ext_ram_sem) {
-        out_res = false;
-    }else{
-        xSemaphoreGive(ext_ram_sem);
-    }
-    
+#if 0
     stat = xTaskCreate((TaskFunction_t)StartTaskWriter, "Writer", (uint16_t)128 * 4, NULL, configMAX_PRIORITIES/2, &Task1Handle);
     if(pdPASS != stat) {
         out_res = false;
     }
+#endif
 
     stat = xTaskCreate((TaskFunction_t)StartTaskReader, "Reader", (uint16_t)128 * 4, NULL, configMAX_PRIORITIES/2, &Task2Handle);
     if(pdPASS != stat) {

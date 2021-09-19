@@ -12,6 +12,8 @@
 #include "ext_ram_sim_drv.h"
 #include "io_utils.h"
 #include "log.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 bool ext_ram_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -64,11 +66,18 @@ bool ext_ram_read_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        res = ext_ram_read(address, read_data, size);
-        if(res) {
-            print_mem(read_data, size, true);
-        } else {
-            LOG_ERROR(SYS, "Read error");
+          BaseType_t ret = 0;
+        ret = xSemaphoreTake(ext_ram_sem, sem_wait);
+        if(pdTRUE == ret) {
+            res = ext_ram_read(address, read_data, size);
+            if(res) {
+                print_mem(read_data, size, true);
+            } else {
+               LOG_ERROR(SYS, "Read error");
+            }
+            xSemaphoreGive(ext_ram_sem);
+        }else{
+           sem_err_cnt++;
         }
     }
     return res;
@@ -93,11 +102,18 @@ bool ext_ram_write_command(int32_t argc, char* argv[]) {
         }
     }
     if(res) {
-        res = ext_ram_write(address, tx_array, array_len);
-        if(false == res) {
-            LOG_ERROR(SYS, "Unable to write");
-        } else {
-            LOG_INFO(SYS, "OK!");
+        BaseType_t ret = 0;
+        ret = xSemaphoreTake(ext_ram_sem, sem_wait);
+        if(pdTRUE == ret) {
+            res = ext_ram_write(address, tx_array, array_len);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to write");
+            } else {
+                LOG_INFO(SYS, "OK!");
+            }
+            xSemaphoreGive(ext_ram_sem);
+        }else{
+           sem_err_cnt++;
         }
     }
 

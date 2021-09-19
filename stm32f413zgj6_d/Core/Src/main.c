@@ -23,12 +23,12 @@ int main(void){
 
   /* Initialize all configured peripherals */
 
-
+  osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
   res = try_init(sys_init(), "SYS") && res;
   LOG_INFO(SYS, "init [%s]", (true == res)? "OK!" : "Error!");
   
   /* Init scheduler */
-  osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
+
   res = freertos_init();
   if (res) {
       vTaskStartScheduler();
