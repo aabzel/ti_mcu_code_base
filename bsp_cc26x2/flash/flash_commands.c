@@ -138,18 +138,18 @@ bool flash_erase_command(int32_t argc, char* argv[]) {
         res = true;
         res = try_str2uint32(argv[0], &sector_address);
         if(false == res) {
-            LOG_ERROR(FLASH, "Unable to parse sector_address %s", argv[0]);
+            LOG_ERROR(LG_FLASH, "Unable to parse sector_address %s", argv[0]);
         }
         if(res) {
             res = flash_erase_sector(sector_address);
             if(res) {
-                LOG_INFO(FLASH, "FlashSectorErase OK");
+                LOG_INFO(LG_FLASH, "FlashSectorErase OK");
             } else {
-                LOG_ERROR(FLASH, "FlashSectorErase error");
+                LOG_ERROR(LG_FLASH, "FlashSectorErase error");
             }
         }
     } else {
-        LOG_ERROR(FLASH, "Usage: fe sector_address");
+        LOG_ERROR(LG_FLASH, "Usage: fe sector_address");
     }
     return res;
 }
@@ -233,46 +233,46 @@ bool flash_write_command(int32_t argc, char* argv[]) {
     if(1 <= argc) {
         res = try_str2uint32(argv[0], &flash_address);
         if(false == res) {
-            LOG_ERROR(FLASH, "Unable to parse sector_address %s", argv[0]);
+            LOG_ERROR(LG_FLASH, "Unable to parse sector_address %s", argv[0]);
         } else {
             res = is_flash_addr(flash_address);
             if(false == res) {
-                LOG_ERROR(FLASH, "not flash addr 0x%08x", flash_address);
+                LOG_ERROR(LG_FLASH, "not flash addr 0x%08x", flash_address);
             }
         }
     }
     if(2 <= argc) {
         res = try_str2array(argv[1], DataBuffer, sizeof(DataBuffer), &count);
         if(false == res) {
-            LOG_ERROR(FLASH, "Unable to extract hex_string %s", argv[1]);
+            LOG_ERROR(LG_FLASH, "Unable to extract hex_string %s", argv[1]);
         }
     }
 
     if(3 <= argc) {
         res = try_str2uint16(argv[2], &crc16_read);
         if(false == res) {
-            LOG_ERROR(FLASH, "Unable to parse crc16_read %s", argv[2]);
+            LOG_ERROR(LG_FLASH, "Unable to parse crc16_read %s", argv[2]);
         } else {
             res = crc16_check(DataBuffer, count, crc16_read);
             if(false == res) {
-                LOG_ERROR(FLASH, "crc16 error");
+                LOG_ERROR(LG_FLASH, "crc16 error");
             }
         }
     }
 
     if(3 < argc) {
-        LOG_ERROR(FLASH, "Usage: fw sector_address hex_string crc16_read");
-        LOG_INFO(FLASH, "sector_address");
-        LOG_INFO(FLASH, "hex_string 0x[0...F]+");
-        LOG_INFO(FLASH, "crc16_read");
+        LOG_ERROR(LG_FLASH, "Usage: fw sector_address hex_string crc16_read");
+        LOG_INFO(LG_FLASH, "sector_address");
+        LOG_INFO(LG_FLASH, "hex_string 0x[0...F]+");
+        LOG_INFO(LG_FLASH, "crc16_read");
     }
 
     if(res) {
         res = flash_wr(flash_address, DataBuffer, count);
         if(res) {
-            LOG_ERROR(FLASH, "FlashProgram ok");
+            LOG_ERROR(LG_FLASH, "FlashProgram ok");
         } else {
-            LOG_ERROR(FLASH, "FlashProgram error");
+            LOG_ERROR(LG_FLASH, "FlashProgram error");
         }
     }
     return res;

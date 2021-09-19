@@ -17,7 +17,7 @@ tsr flash_write
 */
 #define BLOCK_SIZE 129U
 bool test_flash_write(void) {
-    LOG_INFO(FLASH,"0x%08x",FLASH_ADDR_TEST);
+    LOG_INFO(LG_FLASH,"0x%08x",FLASH_ADDR_TEST);
     EXPECT_TRUE( flash_erase_sector(FLASH_ADDR_TEST));
     EXPECT_TRUE(is_flash_spare(FLASH_ADDR_TEST, FLASH_SECTOR_SIZE));
 
