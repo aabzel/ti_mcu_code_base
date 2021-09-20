@@ -48,7 +48,6 @@
 									<listOptionValue builtIn="false" value="${CG_TOOL_ROOT}/include"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos/posix"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/nortos/startup"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/common/nv"/>
@@ -64,7 +63,10 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/sx1262"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/adc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/clocks"/>
@@ -112,6 +114,7 @@
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
+									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_RELEASE"/>
 									<listOptionValue builtIn="false" value="HAS_RF"/>
 									<listOptionValue builtIn="false" value="HAS_RNG"/>
@@ -120,6 +123,7 @@
 									<listOptionValue builtIn="false" value="HAS_SX1262"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
+									<listOptionValue builtIn="false" value="HAS_UART1"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
 									<listOptionValue builtIn="false" value="HAS_UBX_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_WDT"/>
@@ -186,9 +190,18 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="bsp_cc26x2/bluetooth|unit_tests|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/utils_test"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_ublox_proto"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_sx1262"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_string"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_params"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_nmea_proto"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash_fs"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_crc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash_fs — копия"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_nmea_proto — копия"/>
+						<entry excluding="utils/utils_file|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/bluetooth|unit_tests|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

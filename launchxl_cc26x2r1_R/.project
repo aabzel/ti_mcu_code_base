@@ -41,11 +41,6 @@
 			<locationURI>$%7BWORKSPACE_LOC%7D/bsp_cc26x2</locationURI>
 		</link>
 		<link>
-			<name>com_utils</name>
-			<type>2</type>
-			<locationURI>$%7BWORKSPACE_LOC%7D/com_utils</locationURI>
-		</link>
-		<link>
 			<name>common</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/common</locationURI>

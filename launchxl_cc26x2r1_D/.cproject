@@ -71,10 +71,6 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/adc"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/roles/cc26xx"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/serial_port"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/bluetooth/spp_ble_server"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/clocks"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/core_drv"/>
@@ -149,9 +145,7 @@
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
 									<listOptionValue builtIn="false" value="HAS_UBX_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
-									<listOptionValue builtIn="false" value="ICALL_JT"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
-									<listOptionValue builtIn="false" value="USE_ICALL"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.954922929" name="Target processor version (--silicon_version, -mv)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.7M4" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CODE_STATE.1861942413" name="Designate code state, 16-bit (thumb) or 32-bit (--code_state)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CODE_STATE" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CODE_STATE.16" valueType="enumerated"/>
@@ -252,7 +246,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="Drivers/mx25l6433f|utils/utils_string/str_utils_ex.c|utils/utils_file|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Drivers/ext_ram_simulator|Drivers/mx25l6433f|utils/utils_string/str_utils_ex.c|utils/utils_file|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
