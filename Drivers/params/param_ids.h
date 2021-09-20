@@ -6,7 +6,7 @@
 
 #include "param_types.h"
 
-#define PARAM_CNT 11
+#define PARAM_CNT 12
 
 typedef enum eId_t {
     PAR_ID_REBOOT_CNT = 1,
@@ -20,6 +20,7 @@ typedef enum eId_t {
     PAR_ID_HEADER_TYPE = 9,
     PAR_ID_INV_IQ = 10,
     PAR_ID_APP_START = 11, /*Flash address*/
+    PAR_ID_BOOT_CMD = 12,
     PAR_ID_TEST_START = 100,
     PAR_ID_TEST_END = 200,
     PAR_ID_CNT

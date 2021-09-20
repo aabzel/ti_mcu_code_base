@@ -26,6 +26,10 @@
 #include "flash_drv.h"
 #endif
 
+#ifdef HAS_FLASH_NVS
+#include "flash_nvs_drv.h"
+#endif
+
 #ifdef HAS_I2C
 #include "i2c_drv.h"
 #endif
@@ -117,6 +121,10 @@ bool hw_init(void) {
 
 #ifdef HAS_FLASH
   res = try_init(flash_init(),"Flash") && res;
+#endif /*HAS_FLASH*/
+
+#ifdef HAS_FLASH_NVS
+  res = try_init(flash_nvs_init(),"Flash_nvs") && res;
 #endif /*HAS_FLASH*/
 
 #ifdef HAS_ADC

@@ -45,18 +45,32 @@ bool boot_jump_to_code(uint32_t app_start_address) {
 bool boot_try_app(void) {
     bool res = false;
     uint16_t real_len = 0;
-    uint32_t app_start_address = 0;
-    res = mm_get(PAR_ID_APP_START, (uint8_t*)&app_start_address, sizeof(app_start_address), &real_len);
-    if(res) {
-        if(real_len == sizeof(app_start_address)) {
-            res = boot_jump_to_code(app_start_address);
-        } else {
-            LOG_ERROR(BOOT, "boot app address len error %u", real_len);
+    CmdBoot_t stay_in_boot = BOOT_CMD_ENDEF;
+    res = mm_get(PAR_ID_BOOT_CMD, (uint8_t*)&stay_in_boot, sizeof(stay_in_boot), &real_len);
+    if (res) {
+        if (sizeof(stay_in_boot)!=real_len) {
+            res = false;
+            LOG_ERROR(BOOT, "boot cmd len error %u", real_len);
         }
     } else {
-        LOG_ERROR(BOOT, "Lack of boot app address");
+        LOG_ERROR(BOOT, "Lack of boot cmd ParamId: %u", PAR_ID_BOOT_CMD);
+    }
+
+    if(BOOT_CMD_STAY_ON==stay_in_boot){
+        res = true;
+    }else if(BOOT_CMD_LAUNCH_APP==stay_in_boot){
+        uint32_t app_start_address = 0;
+        res = mm_get(PAR_ID_APP_START, (uint8_t*)&app_start_address, sizeof(app_start_address), &real_len);
+        if(res) {
+            if(real_len == sizeof(app_start_address)) {
+                res = boot_jump_to_code(app_start_address);
+            } else {
+                LOG_ERROR(BOOT, "boot app address len error %u", real_len);
+            }
+        } else {
+            LOG_ERROR(BOOT, "Lack of boot app address");
+        }
     }
     return res;
 }
 
-bool boot_erase_app(void) { return false; }

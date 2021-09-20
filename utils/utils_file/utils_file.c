@@ -43,7 +43,7 @@ bool file_load_to_array(char* file_name, uint8_t** out_buff, uint32_t* out_size)
                 res = true;
                 size_t real_read = fread(file_array, file_size, 1, p_file);
                 if(real_read == file_size) {
-                    printf("\n[d] file load OK", file_name);
+                    printf("\n[d] file load OK %s", file_name);
                     *out_buff = file_array;
                     res = true;
                 } else {

@@ -1,5 +1,5 @@
 
-fw_loader_d.exe COM3 56000 launchxl_cc26x2r1_D_master_7bd8fca.bin
+fw_loader_d.exe COM6 56000 launchxl_cc26x2r1_R_master_0bfc203.bin
 
 
 

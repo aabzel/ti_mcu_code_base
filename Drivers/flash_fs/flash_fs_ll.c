@@ -10,7 +10,7 @@
 #include <string.h>
 
 #include "flash_fs.h"
-#include "flash_drv.h"
+#include "flash_nvs_drv.h"
 #include "memory_layout.h"
 
 

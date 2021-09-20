@@ -72,6 +72,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/clocks"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/core_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash_nvs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/gpio"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/spi"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/syscofig"/>
@@ -100,6 +101,7 @@
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH"/>
+									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>

@@ -11,7 +11,7 @@
 
 #include "crc8_autosar.h"
 #include "data_utils.h"
-#include "flash_drv.h"
+#include "flash_nvs_drv.h"
 #include "flash_fs_ll.h"
 #include "io_utils.h"
 #include "log.h"

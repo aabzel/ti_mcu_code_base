@@ -36,8 +36,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.836476"
-     inkscape:cx="142.43026"
-     inkscape:cy="588.40618"
+     inkscape:cx="826.55379"
+     inkscape:cy="450.55907"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
@@ -56,7 +56,7 @@
        orientation="0,297.0"
        id="guide1007" />
     <sodipodi:guide
-       position="0,140"
+       position="122.9083,106.3487"
        orientation="0,297.0"
        id="guide1009" />
     <sodipodi:guide
@@ -124,28 +124,28 @@
      id="layer3"
      inkscape:label="components">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4767"
        width="105.52787"
        height="10.511209"
        x="122.9083"
        y="103.6513" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5089"
        width="43.033615"
        height="11.868876"
        x="185.26025"
        y="117.12174" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091"
        width="28.356781"
        height="11.846428"
        x="122.91161"
        y="117.14419" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0"
        width="29.204008"
        height="11.837888"
@@ -214,21 +214,21 @@
          x="58.625061"
          y="126.68276">DAC</tspan></text>
     <rect
-       style="fill:none;stroke:#030003;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#030003;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect26156"
        width="32.121964"
        height="11.6089"
        x="18.358536"
        y="117.143" />
     <rect
-       style="fill:none;stroke:#030003;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#030003;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect26158"
        width="29.068615"
        height="11.71576"
        x="54.89706"
        y="117.12769" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.369479;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0-1"
        width="16.578447"
        height="11.968409"
@@ -257,14 +257,14 @@
          y="111.04581"
          style="stroke-width:0.162135">Flash FS</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.569757;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0-1-7"
        width="40.121567"
        height="10.43421"
        x="233.18024"
        y="103.68857" />
     <path
-       style="fill:none;stroke:#030003;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#030003;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 181.74527,142.85497 v -4.41919 l 0.32561,-21.30949 h -28.58467 l -0.18656,16.99347 H 18.507212 v 15.59286 H 181.89384 l -0.14857,-6.85765"
        id="path98"
        sodipodi:nodetypes="ccccccccc" />
@@ -280,7 +280,7 @@
          y="166.5979"
          style="stroke-width:0.264583">Registers </tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.413951;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0-1-3"
        width="20.887213"
        height="11.923936"
@@ -288,33 +288,33 @@
        y="116.8521" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:6.31013px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.157754"
-       x="253.65334"
-       y="124.7404"
+       style="font-style:normal;font-weight:normal;font-size:3.83424px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.214323"
+       x="253.59651"
+       y="124.59018"
        id="text3859-1-9-9"><tspan
          sodipodi:role="line"
          id="tspan3857-0-4-4"
-         style="stroke-width:0.157754"
-         x="253.65334"
-         y="124.7404">CRC8</tspan></text>
+         style="font-size:3.83424px;stroke-width:0.214323"
+         x="253.59651"
+         y="124.59018">CRC8/32</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.266214px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 237.11972,134.69472 h -51.84331 v 21.82726 l -166.807189,0 0,15.68251 218.650489,-0.0117 z"
        id="path941"
        sodipodi:nodetypes="ccccccc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.55331px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.113833"
-       x="258.97141"
-       y="152.51099"
+       x="256.91928"
+       y="147.49725"
        id="text2563"><tspan
          sodipodi:role="line"
          id="tspan2561"
          style="stroke-width:0.113833"
-         x="258.97141"
-         y="152.51099">RAM</tspan></text>
+         x="256.91928"
+         y="147.49725">RAM</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.526904;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3169"
        width="20.570345"
        height="37.127354"
@@ -333,7 +333,7 @@
          x="-160.03578"
          y="246.58484">FLASH</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.333431;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3169-5"
        width="8.1707973"
        height="37.430206"

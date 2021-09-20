@@ -21,6 +21,7 @@
 #include "log.h"
 #include "ostream.h"
 #include "read_mem.h"
+#include "sys_config.h"
 #include "table_utils.h"
 
 static bool boot_scan_app(void) {
@@ -102,8 +103,13 @@ bool boot_jump_addr_command(int32_t argc, char* argv[]) {
 
 bool bool_erase_app(int32_t argc, char* argv[]) {
     bool res = false;
-    if(0 == argc) {
-        res = boot_erase_app();
+    if (0 == argc) {
+        res = flash_erase_pages(APP_PAGE_START,APP_PAGE_START+APP_PAGE_CNT);
+        if (res) {
+            LOG_ERROR(BOOT, "OK");
+        } else {
+            LOG_ERROR(BOOT, "Unable app erase");
+        }
 
     } else {
         LOG_ERROR(BOOT, "Usage: ea");

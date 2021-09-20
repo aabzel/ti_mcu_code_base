@@ -80,6 +80,12 @@ extern "C" {
 #define FLASH_FS_COMMANDS
 #endif
 
+#ifdef HAS_FLASH_NVS
+#include "flash_nvs_commands.h"
+#else
+#define FLASH_NVS_COMMANDS
+#endif
+
 #ifdef HAS_PARAM
 #include "param_commands.h"
 #else
@@ -96,19 +102,21 @@ extern "C" {
     BMP180_COMMANDS                                                                                                    \
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
+    EXT_RAM_EMUL_COMMANDS                                                                                              \
+    MX25L6433_COMMANDS                                                                                                 \
     FLASH_FS_COMMANDS                                                                                                  \
-	MX25L6433_COMMANDS                                                                                                 \
-    LED_COMMANDS                                                                                                       \
-    LORA_COMMANDS                                                                                                      \
-	EXT_RAM_EMUL_COMMANDS                                                                                              \
-    LOG_COMMANDS                                                                                                       \
-    PARAM_COMMANDS                                                                                                     \
+    FLASH_NVS_COMMANDS                                                                                                 \
     HEALTH_MONITOR_COMMANDS                                                                                            \
+    LED_COMMANDS                                                                                                       \
+    LOG_COMMANDS                                                                                                       \
+    LORA_COMMANDS                                                                                                      \
     NMEA_COMMANDS                                                                                                      \
+    PARAM_COMMANDS                                                                                                     \
     RF_COMMANDS                                                                                                        \
     SX1262_COMMANDS                                                                                                    \
     TRNG_COMMANDS                                                                                                      \
     UBLOX_COMMANDS
+
 
 #ifdef __cplusplus
 } /* extern "C" */

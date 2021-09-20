@@ -1,43 +1,17 @@
--->tstk
-00000000
-00000001
-00000002
-0000000b
-0000000d
-00000020
-000000b8
-00000100
-00000120
-0000013d
-00000165
-0000021a
-00000231
-00000bb8
-00000d00
-00002000
-0000b899
-0000b89a
-00010000
-00010002
-00012000
-00013d23
-0001444d
-000165af
-00016a35
-000175c9
-0002011d
-00020dbd
-00021afd
-00022c13
-00023169
-000231cd
-00024977
-00025401
-000290cd
-0002a479
-0002d55b
-0002fd00
-00030c30
-00034588
-00055000
-Stack 0x20013ee8...0x20014000 280 byte 0 kByte
+	EXT_RAM_EMUL_COMMANDS                                                                                              \
+	MX25L6433_COMMANDS                                                                                                 \
+    BMP180_COMMANDS                                                                                                    \
+    COMMON_COMMANDS                                                                                                    \
+    CORTEX_M4_COMMANDS                                                                                                 \
+    FLASH_FS_COMMANDS                                                                                                  \
+    FLASH_NVS_COMMANDS                                                                                                 \
+    HEALTH_MONITOR_COMMANDS                                                                                            \
+    LED_COMMANDS                                                                                                       \
+    LOG_COMMANDS                                                                                                       \
+    LORA_COMMANDS                                                                                                      \
+    NMEA_COMMANDS                                                                                                      \
+    PARAM_COMMANDS                                                                                                     \
+    RF_COMMANDS                                                                                                        \
+    SX1262_COMMANDS                                                                                                    \
+    TRNG_COMMANDS                                                                                                      \
+    UBLOX_COMMANDS
