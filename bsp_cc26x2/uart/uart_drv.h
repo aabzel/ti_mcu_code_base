@@ -6,7 +6,7 @@
 #include "sys_config.h"
 #include "uart_common.h"
 
-#define CONFIG_UART_COUNT 2
+#define UART_COUNT 2
 #define UART_RX_ARRAY_SIZE 500U
 #define UART_RX_FIFO_ARRAY_SIZE 100U
 #define UART_TX_ARRAY_SIZE 600U
@@ -23,7 +23,7 @@
 
 extern const uint_least8_t CONFIG_UART_0_CONST;
 
-extern UartHandle_t huart[CONFIG_UART_COUNT];
+extern UartHandle_t huart[UART_COUNT];
 
 bool uart_init(void);
 void cli_tune_read_char(void);

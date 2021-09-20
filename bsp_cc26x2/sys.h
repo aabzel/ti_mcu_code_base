@@ -7,7 +7,6 @@
 #include "macro_utils.h"
 
 #define APP_START_ADDRESS (0x00000000)
-#define MCU_NAME "CC2652R1F"
 
 #define _disable_interrupt_()
 #define _enable_interrupt_()

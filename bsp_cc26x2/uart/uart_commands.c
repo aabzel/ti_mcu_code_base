@@ -128,7 +128,7 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
     uint8_t uart_num = 0;
     uint8_t over_sampling = 0;
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
-    for(uart_num = 0; uart_num < CONFIG_UART_COUNT; uart_num++) {
+    for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
         io_printf(TSEP);
         io_printf(" %02u  " TSEP, uart_num);
         baud_rate = uart_get_baud_rate(uart_num, &mantissa, &fraction, &over_sampling);

@@ -12,25 +12,31 @@
 
 #define IOC_BASE 0x40081000
 
-//#define DIN31_0_REG_ADDR (GPIO_BASE+GPIO_O_DIN31_0)
-//#define DOE31_0_REG_ADDR (GPIO_BASE+GPIO_O_DOE31_0)
 
-#define CONFIG_GPIO_COUNT 9
-
-#define CONFIG_GPIO_BUTTON_0 0
-#define CONFIG_GPIO_BUTTON_1 1
-#define CONFIG_GPIO_LED_0 2
-#define CONFIG_GPIO_LED_1 3
-#define CONFIG_GPIO_LORA_CS 4
-#define CONFIG_GPIO_LORA_RST 5
-#define CONFIG_GPIO_LORA_INT 6
-#define CONFIG_GPIO_LORA_BSY 7
-#define CONFIG_GPIO_LOOP_SENSOR 8
-
+#define CONFIG_GPIO_LED_0 0
+#define CONFIG_GPIO_LED_1 1
+#ifdef HAS_SX1262
+#define CONFIG_GPIO_LORA_CS 2
+#define CONFIG_GPIO_LORA_RST 3
+#define CONFIG_GPIO_LORA_INT 4
+#define CONFIG_GPIO_LORA_BSY 5
+#define LORA_PINS_CNT 4
+#else
+#define LORA_PINS_CNT 0
+#endif /*HAS_SX1262*/
+//#define CONFIG_GPIO_LOOP_SENSOR 6
+#ifdef LAUNCHXL_CC26X2R1
+#define CONFIG_GPIO_BUTTON_0 6
+#define CONFIG_GPIO_BUTTON_1 7
+#define BTN_PINS_CNT 2
 /* DIO13, LaunchPad Button BTN-1 (Left) */
 extern const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST;
 /* DIO14, LaunchPad Button BTN-2 (Right) */
 extern const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST;
+#else
+#define BTN_PINS_CNT 0
+#endif /*LAUNCHXL_CC26X2R1*/
+#define GPIO_COUNT (2 +LORA_PINS_CNT+BTN_PINS_CNT)
 
 /* DIO6, LaunchPad LED Red */
 extern const uint_least8_t CONFIG_GPIO_LED_0_CONST;
@@ -39,23 +45,21 @@ extern const uint_least8_t CONFIG_GPIO_LED_1_CONST;
 #define CONFIG_TI_DRIVERS_GPIO_COUNT 4
 
 /* LEDs are active high */
-#define CONFIG_GPIO_LED_ON (1)
-#define CONFIG_GPIO_LED_OFF (0)
-
-#define CONFIG_LED_ON (CONFIG_GPIO_LED_ON)
-#define CONFIG_LED_OFF (CONFIG_GPIO_LED_OFF)
+#define CONFIG_LED_ON (1)
+#define CONFIG_LED_OFF (0)
 
 extern PIN_Config BoardGpioInitTable[];
 
+#ifdef LAUNCHXL_CC26X2R1
 /* LaunchPad Button BTN-1 (Left), Parent Signal: CONFIG_GPIO_BUTTON_0 GPIO Pin, (DIO13) */
 #define CONFIG_PIN_0 0x0000000d
 /* LaunchPad Button BTN-2 (Right), Parent Signal: CONFIG_GPIO_BUTTON_1 GPIO Pin, (DIO14) */
 #define CONFIG_PIN_1 0x0000000e
-/* LaunchPad LED Red, Parent Signal: CONFIG_GPIO_LED_0 GPIO Pin, (DIO6) */
-#define CONFIG_PIN_2 0x00000006
-/* LaunchPad LED Green, Parent Signal: CONFIG_GPIO_LED_1 GPIO Pin, (DIO7) */
-#define CONFIG_PIN_3 0x00000007
 #define CONFIG_TI_DRIVERS_PIN_COUNT 4
+#else
+#define CONFIG_TI_DRIVERS_PIN_COUNT 2
+#endif
+
 
 bool gpio_init(void);
 

@@ -12,25 +12,27 @@
 #include "bit_utils.h"
 #include "data_utils.h"
 
+#ifdef LAUNCHXL_CC26X2R1
 const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST = CONFIG_GPIO_BUTTON_0;
 const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST = CONFIG_GPIO_BUTTON_1;
+#endif
 const uint_least8_t CONFIG_GPIO_LED_0_CONST = CONFIG_GPIO_LED_0;
 const uint_least8_t CONFIG_GPIO_LED_1_CONST = CONFIG_GPIO_LED_1;
 
-GPIO_PinConfig gpioPinConfigs[CONFIG_GPIO_COUNT] = {
-    GPIOCC26XX_DIO_13 | GPIO_DO_NOT_CONFIG, /* CONFIG_GPIO_BUTTON_0 : LaunchPad Button BTN-1 (Left) */
-    GPIOCC26XX_DIO_14 | GPIO_DO_NOT_CONFIG, /* CONFIG_GPIO_BUTTON_1 : LaunchPad Button BTN-2 (Right) */
-
-    GPIOCC26XX_DIO_06 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED |
-        GPIO_CFG_OUT_LOW, /* CONFIG_GPIO_LED_0 : LaunchPad LED Red */
-    GPIOCC26XX_DIO_07 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED |
-        GPIO_CFG_OUT_LOW, /* CONFIG_GPIO_LED_1 : LaunchPad LED Green */
-
+GPIO_PinConfig gpioPinConfigs[GPIO_COUNT] = {
+    GPIOCC26XX_DIO_07 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* CONFIG_GPIO_LED_1 : LaunchPad LED Green */
+    GPIOCC26XX_DIO_06 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* CONFIG_GPIO_LED_0 : LaunchPad LED Red */
+#ifdef HAS_SX1262
     GPIOCC26XX_DIO_11 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*LoRa CS*/
     GPIOCC26XX_DIO_27 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*LoRa Reset*/
     GPIOCC26XX_DIO_28 | GPIO_CFG_IN_NOPULL,                                          /*LoRa int*/
     GPIOCC26XX_DIO_29 | GPIO_CFG_IN_NOPULL,                                          /*LoRa Busy*/
+#endif /*HAS_SX1262*/
+#ifdef LAUNCHXL_CC26X2R1
+    GPIOCC26XX_DIO_13 | GPIO_DO_NOT_CONFIG, /* CONFIG_GPIO_BUTTON_0 : LaunchPad Button BTN-1 (Left) */
+    GPIOCC26XX_DIO_14 | GPIO_DO_NOT_CONFIG, /* CONFIG_GPIO_BUTTON_1 : LaunchPad Button BTN-2 (Right) */
     GPIOCC26XX_DIO_15 | GPIO_CFG_OUT_STD,                                            /*loop*/
+#endif /*LAUNCHXL_CC26X2R1*/
 
 };
 
@@ -42,39 +44,45 @@ GPIO_PinConfig gpioPinConfigs[CONFIG_GPIO_COUNT] = {
  *  reduce memory usage by enabling callback table optimization
  *  (GPIO.optimizeCallbackTableSize = true)
  */
-GPIO_CallbackFxn gpioCallbackFunctions[CONFIG_GPIO_COUNT] = {
-    NULL, /* CONFIG_GPIO_BUTTON_0 : LaunchPad Button BTN-1 (Left) */
-    NULL, /* CONFIG_GPIO_BUTTON_1 : LaunchPad Button BTN-2 (Right) */
+GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
     NULL, /* CONFIG_GPIO_LED_0 : LaunchPad LED Red */
     NULL, /* CONFIG_GPIO_LED_1 : LaunchPad LED Green */
+#ifdef HAS_SX1262
     NULL, /*LoRa CS*/
     NULL, /*LoRa Reset*/
     NULL, /*LoRa int*/
     NULL  /*LoRa Busy*/
+#endif
+#ifdef LAUNCHXL_CC26X2R1
+    NULL, /* CONFIG_GPIO_BUTTON_0 : LaunchPad Button BTN-1 (Left) */
+    NULL, /* CONFIG_GPIO_BUTTON_1 : LaunchPad Button BTN-2 (Right) */
+#endif
 };
 
-/*
- *  ======== GPIOCC26XX_config ========
- */
+
 const GPIOCC26XX_Config GPIOCC26XX_config = {.pinConfigs = (GPIO_PinConfig*)gpioPinConfigs,
                                              .callbacks = (GPIO_CallbackFxn*)gpioCallbackFunctions,
                                              .numberOfPinConfigs = 4,
                                              .numberOfCallbacks = 4,
                                              .intPriority = (~0)};
 
-PIN_Config BoardGpioInitTable[CONFIG_GPIO_COUNT + 1] = {
+PIN_Config BoardGpioInitTable[GPIO_COUNT + 1] = {
+    /* LaunchPad LED Green, Parent Signal: CONFIG_GPIO_LED_1 GPIO Pin, (DIO7) */
+    DIO_LED_GREEN | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
+    /* LaunchPad LED Red, Parent Signal: CONFIG_GPIO_LED_0 GPIO Pin, (DIO6) */
+    DIO_LED_RED | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
+#ifdef HAS_SX1262
+    DIO_SX1262_SS  | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,  /*LoRa CS*/
+    DIO_SX1262_RST  | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED, /*LoRa Reset*/
+    DIO_SX1262_INT  | PIN_INPUT_EN | PIN_NOPULL | PIN_IRQ_DIS,                           /*LoRa Int*/
+    DIO_SX1262_BUSY  | PIN_INPUT_EN | PIN_NOPULL | PIN_IRQ_DIS,                          /*LoRa Busy*/
+#endif /*HAS_SX1262*/
+#ifdef  LAUNCHXL_CC26X2R1
     /* LaunchPad Button BTN-1 (Left), Parent Signal: CONFIG_GPIO_BUTTON_0 GPIO Pin, (DIO13) */
     CONFIG_PIN_0 | PIN_INPUT_EN | PIN_PULLUP | PIN_IRQ_DIS,
     /* LaunchPad Button BTN-2 (Right), Parent Signal: CONFIG_GPIO_BUTTON_1 GPIO Pin, (DIO14) */
     CONFIG_PIN_1 | PIN_INPUT_EN | PIN_PULLUP | PIN_IRQ_DIS,
-    /* LaunchPad LED Red, Parent Signal: CONFIG_GPIO_LED_0 GPIO Pin, (DIO6) */
-    CONFIG_PIN_2 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
-    /* LaunchPad LED Green, Parent Signal: CONFIG_GPIO_LED_1 GPIO Pin, (DIO7) */
-    CONFIG_PIN_3 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
-    SX1262_SS_DIO_NO | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,  /*LoRa CS*/
-    SX1262_RST_DIO_NO | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED, /*LoRa Reset*/
-    SX1262_INT_DIO_NO | PIN_INPUT_EN | PIN_NOPULL | PIN_IRQ_DIS,                           /*LoRa Int*/
-    SX1262_BUSY_DIO_NO | PIN_INPUT_EN | PIN_NOPULL | PIN_IRQ_DIS,                          /*LoRa Busy*/
+#endif
     PIN_TERMINATE};
 
 const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {.intPriority = (~0), .swiPriority = 0};
@@ -112,8 +120,8 @@ bool gpio_init_layout(const Pin_t* inPinTable, uint8_t size) {
  */
 void gpioButtonFxn1(uint_least8_t index) {
     /* Toggle an LED */
-    GPIO_toggle(CONFIG_GPIO_LED_1);
-    GPIO_toggle(CONFIG_GPIO_LED_0);
+    GPIO_toggleDio((uint32_t)DIO_LED_GREEN);
+    GPIO_toggleDio((uint32_t)DIO_LED_RED);
 }
 
 bool gpio_init(void) {
@@ -125,24 +133,18 @@ bool gpio_init(void) {
     /* ==== /ti/drivers/PIN initialization ==== */
     if(PIN_init(BoardGpioInitTable) != PIN_SUCCESS) {
         res = false;
-
     } else {
         res = true;
-
         GPIO_init();
-
         /* Configure the LED and button pins */
         GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
         GPIO_setConfig(CONFIG_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+#ifdef LAUNCHXL_CC26X2R1
         GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+
         GPIO_setConfig(CONFIG_GPIO_LOOP_SENSOR, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-
-        /* Turn on user LED */
-        GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
-
         /* Install Button callback */
         GPIO_setCallback(CONFIG_GPIO_BUTTON_0, gpioButtonFxn0);
-
         /* Enable interrupts */
         GPIO_enableInt(CONFIG_GPIO_BUTTON_0);
 
@@ -158,20 +160,21 @@ bool gpio_init(void) {
             GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);
             GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
         }
-        GPIO_write(CONFIG_GPIO_LED_0, 0);
-        GPIO_write(CONFIG_GPIO_LED_1, 0);
+#endif
+        GPIO_writeDio(DIO_LED_RED, 0);
+        GPIO_writeDio(DIO_LED_GREEN, 0);
     }
     return res;
 }
 
-bool gpio_get_state(uint8_t dioNumber, uint8_t* logic_level) {
-    uint32_t value = GPIO_readDio((uint32_t)dioNumber);
+bool gpio_get_state(uint8_t dio_number, uint8_t* logic_level) {
+    uint32_t value = GPIO_readDio((uint32_t)dio_number);
     (*logic_level) = (uint8_t)value;
     return true;
 }
 
-bool gpio_set_state(uint8_t dioNumber, uint8_t logic_level) {
-    GPIO_writeDio(dioNumber, logic_level);
+bool gpio_set_state(uint8_t dio_number, uint8_t logic_level) {
+    GPIO_writeDio(dio_number, logic_level);
 #if 0
     GPIO_write((uint_least8_t)port_pin_num, (unsigned int)logic_level);
 #endif
@@ -211,10 +214,7 @@ uint8_t get_aux_num(uint8_t io_pin) {
     return aux_pin;
 }
 
-bool gpio_toggle(uint8_t dioNumber) {
-    GPIO_toggleDio((uint32_t)dioNumber);
-#if 0
-    GPIO_toggle((uint_least8_t)pin);
-#endif
+bool gpio_toggle(uint8_t dio_number) {
+    GPIO_toggleDio((uint32_t)dio_number);
     return true;
 }

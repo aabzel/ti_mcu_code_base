@@ -35,15 +35,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="10.733543"
-     inkscape:cx="516.18556"
-     inkscape:cy="254.34285"
+     inkscape:zoom="1.3416929"
+     inkscape:cx="296.2675"
+     inkscape:cy="271.29905"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:document-rotation="0">
@@ -696,17 +696,6 @@
        style="fill:none;stroke:#000000;stroke-width:0.116;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1464)"
        d="m 129.28265,55.68369 h 1.84004"
        id="path48996" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.54643px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.115982"
-       x="101.16702"
-       y="45.403809"
-       id="text61870"><tspan
-         sodipodi:role="line"
-         id="tspan61868"
-         style="font-size:1.54643px;stroke-width:0.115982"
-         x="101.16702"
-         y="45.403809">P8</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.25021"
        id="rect62146"
@@ -919,17 +908,6 @@
        d="m 147.2392,60.289136 h 0.84212"
        id="path111485"
        sodipodi:nodetypes="cc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.32273px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
-       x="101.51814"
-       y="47.490433"
-       id="text116147"><tspan
-         sodipodi:role="line"
-         id="tspan116145"
-         style="font-size:1.32273px;stroke-width:0.198409"
-         x="101.51814"
-         y="47.490433">10 pin</tspan></text>
     <rect
        style="fill:#00ffff;stroke:#000000;stroke-width:0.198409"
        id="rect119091"
@@ -2011,17 +1989,6 @@
        height="8.5231552"
        x="164.73404"
        y="42.103283" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.79202px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.134401"
-       x="116.2091"
-       y="50.643723"
-       id="text4439"><tspan
-         sodipodi:role="line"
-         id="tspan4437"
-         style="font-size:1.79202px;stroke-width:0.134401"
-         x="116.2091"
-         y="50.643723">XDS110 Debugger</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -3205,44 +3172,6 @@
        id="path110926" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.35663px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0589156"
-       x="141.42226"
-       y="44.324688"
-       id="text107929"><tspan
-         sodipodi:role="line"
-         id="tspan107927"
-         style="stroke-width:0.0589156"
-         x="141.42226"
-         y="44.324688">P7</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.32273px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
-       x="146.25696"
-       y="43.76178"
-       id="text112767"><tspan
-         sodipodi:role="line"
-         id="tspan112765"
-         style="font-size:1.32273px;stroke-width:0.198409"
-         x="146.25696"
-         y="43.76178">10 pin</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.32273px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
-       x="141.69928"
-       y="45.950687"
-       id="text114385"><tspan
-         sodipodi:role="line"
-         id="tspan114383"
-         style="font-size:1.32273px;stroke-width:0.198409"
-         x="141.69928"
-         y="45.950687">debug </tspan><tspan
-         sodipodi:role="line"
-         style="font-size:1.32273px;stroke-width:0.198409"
-         x="141.69928"
-         y="47.604099"
-         id="tspan2345">ext target</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.05818px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
        x="158.82886"
        y="45.372643"
@@ -3654,6 +3583,77 @@
          style="font-size:1.05833px;stroke-width:0.264583"
          x="125.14875"
          y="54.156357">128 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.54643px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.115982"
+       x="101.16702"
+       y="45.403809"
+       id="text61870"><tspan
+         sodipodi:role="line"
+         id="tspan61868"
+         style="font-size:1.54643px;stroke-width:0.115982"
+         x="101.16702"
+         y="45.403809">P8</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.32273px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
+       x="101.51814"
+       y="47.490433"
+       id="text116147"><tspan
+         sodipodi:role="line"
+         id="tspan116145"
+         style="font-size:1.32273px;stroke-width:0.198409"
+         x="101.51814"
+         y="47.490433">10 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.79202px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.134401"
+       x="116.2091"
+       y="50.643723"
+       id="text4439"><tspan
+         sodipodi:role="line"
+         id="tspan4437"
+         style="font-size:1.79202px;stroke-width:0.134401"
+         x="116.2091"
+         y="50.643723">XDS110 Debugger</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.35663px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0589156"
+       x="141.42226"
+       y="44.324688"
+       id="text107929"><tspan
+         sodipodi:role="line"
+         id="tspan107927"
+         style="stroke-width:0.0589156"
+         x="141.42226"
+         y="44.324688">P7</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.32273px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
+       x="146.25696"
+       y="43.76178"
+       id="text112767"><tspan
+         sodipodi:role="line"
+         id="tspan112765"
+         style="font-size:1.32273px;stroke-width:0.198409"
+         x="146.25696"
+         y="43.76178">10 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.32273px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"
+       x="141.69928"
+       y="45.950687"
+       id="text114385"><tspan
+         sodipodi:role="line"
+         id="tspan114383"
+         style="font-size:1.32273px;stroke-width:0.198409"
+         x="141.69928"
+         y="45.950687">debug </tspan><tspan
+         sodipodi:role="line"
+         style="font-size:1.32273px;stroke-width:0.198409"
+         x="141.69928"
+         y="47.604099"
+         id="tspan2345">ext target</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

@@ -126,7 +126,9 @@ void common_main_loop(void) {
         loop_start_time_us = get_time_us();
 #ifdef HAS_DEBUG
         iteration_cnt++;
+#ifdef LAUNCHXL_CC26X2R1
         gpio_toggle(COM_LOOP_SENSOR_DIO_NO);
+#endif /*LAUNCHXL_CC26X2R1*/
         loop_duration_us = loop_start_time_us - prev_loop_start_time_us;
         loop_duration_min_us = rx_min64u(loop_duration_min_us, loop_duration_us);
         loop_duration_max_us = rx_max64u(loop_duration_max_us, loop_duration_us);

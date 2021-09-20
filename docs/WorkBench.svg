@@ -851,11 +851,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.9899495"
-     inkscape:cx="742.46211"
-     inkscape:cy="522.24886"
+     inkscape:zoom="7.919596"
+     inkscape:cx="145.77764"
+     inkscape:cy="604.13435"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer4"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -2035,17 +2035,6 @@
        d="M 39.367255,168.21031 H 33.946363"
        id="path7762-6"
        sodipodi:nodetypes="cc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="35.039425"
-       y="166.93463"
-       id="text8902-8"><tspan
-         sodipodi:role="line"
-         id="tspan8900-6"
-         style="font-size:1.05833px;stroke-width:0.264583"
-         x="35.039425"
-         y="166.93463">SPI</tspan></text>
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.121152px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker6722-8-8-4);marker-end:url(#marker6460-7-4-4)"
        d="M 11.231779,168.23933 H 16.60412"
@@ -2066,6 +2055,57 @@
          style="font-size:1.76389px;stroke-width:0.264583"
          x="17.288313"
          y="168.36826">SX1262MB2CAS</tspan></text>
+    <rect
+       style="display:inline;opacity:0.998;fill:#d6ffdc;fill-opacity:1;stroke:#000000;stroke-width:0.492917"
+       id="rect875-81"
+       width="16.94706"
+       height="18.421993"
+       x="16.60412"
+       y="144.22371" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker1838);marker-start:url(#marker6722)"
+       d="m 33.575736,158.93898 h 13.624041 v 6.70908"
+       id="path3759" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.143764;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect7747"
+       width="3.2510583"
+       height="1.9759424"
+       x="30.364067"
+       y="157.97102" />
+    <rect
+       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.199547;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect7747-4"
+       width="4.972187"
+       height="2.4891074"
+       x="45.385937"
+       y="165.99934" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.352778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="32.021671"
+       y="159.60045"
+       id="text9756"><tspan
+         sodipodi:role="line"
+         id="tspan9754"
+         style="font-size:0.352778px;stroke-width:0.264583"
+         x="32.021671"
+         y="159.60045">10 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="43.247547"
+       y="160.04433"
+       id="text16398"><tspan
+         sodipodi:role="line"
+         id="tspan16396"
+         style="font-size:0.705556px;stroke-width:0.264583"
+         x="43.247547"
+         y="160.04433">5</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 42.82994,158.15674 -1.369756,1.36976"
+       id="path17029" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2827,5 +2867,87 @@
          style="font-size:1.76389px;stroke-width:0.264583"
          x="18.156626"
          y="187.20891">SX1262MB2CAS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="35.039425"
+       y="166.93463"
+       id="text8902-8"><tspan
+         sodipodi:role="line"
+         id="tspan8900-6"
+         style="font-size:1.05833px;stroke-width:0.264583"
+         x="35.039425"
+         y="166.93463">SPI</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.99996px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.149997"
+       x="19.171192"
+       y="150.12691"
+       id="text4727"><tspan
+         sodipodi:role="line"
+         id="tspan4725"
+         style="font-size:1.99996px;stroke-width:0.149997"
+         x="19.171192"
+         y="150.12691">Harvester</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="30.604259"
+       y="158.71455"
+       id="text7073"><tspan
+         sodipodi:role="line"
+         id="tspan7071"
+         style="font-size:0.705556px;stroke-width:0.264583"
+         x="30.604259"
+         y="158.71455">XP2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.79055px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.671455"
+       x="37.277489"
+       y="158.6091"
+       id="text13614"><tspan
+         sodipodi:role="line"
+         id="tspan13612"
+         style="font-size:1.79055px;stroke-width:0.671455"
+         x="37.277489"
+         y="158.6091">JTAG</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.674642px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.016866"
+       x="46.268913"
+       y="167.13933"
+       id="text107929"><tspan
+         sodipodi:role="line"
+         id="tspan107927"
+         style="stroke-width:0.016866"
+         x="46.268913"
+         y="167.13933">P7</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.378663px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0567993"
+       x="47.652966"
+       y="166.97818"
+       id="text112767"><tspan
+         sodipodi:role="line"
+         id="tspan112765"
+         style="font-size:0.378663px;stroke-width:0.0567993"
+         x="47.652966"
+         y="166.97818">10 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.378663px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0567993"
+       x="46.348221"
+       y="167.60481"
+       id="text114385"><tspan
+         sodipodi:role="line"
+         id="tspan114383"
+         style="font-size:0.378663px;stroke-width:0.0567993"
+         x="46.348221"
+         y="167.60481">debug </tspan><tspan
+         sodipodi:role="line"
+         style="font-size:0.378663px;stroke-width:0.0567993"
+         x="46.348221"
+         y="168.07814"
+         id="tspan2345">ext target</tspan></text>
   </g>
 </svg>

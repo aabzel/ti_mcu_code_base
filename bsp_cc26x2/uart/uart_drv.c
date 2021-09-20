@@ -27,9 +27,11 @@
 #include "uart_string_reader.h"
 #endif
 
-UartHandle_t huart[CONFIG_UART_COUNT] = {0};
+#include "sys_config.h"
 
-UARTCC26XX_Object uartCC26XXObjects[CONFIG_UART_COUNT];
+UartHandle_t huart[UART_COUNT] = {0};
+
+UARTCC26XX_Object uartCC26XXObjects[UART_COUNT];
 
 static unsigned char uartCC26XXRingBuffer0[32];
 static unsigned char uartCC26XXRingBuffer1[80];
@@ -40,7 +42,7 @@ static unsigned char uartCC26XXRingBuffer1[80];
 uint8_t rx_buff0[RX_ARR0_CNT];
 uint8_t rx_buff1[RX_ARR1_CNT];
 
-static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[CONFIG_UART_COUNT] = {
+static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
     {.baseAddr = UART0_BASE,
      .intNum = INT_UART0_COMB,
      .intPriority = (~0),
@@ -48,8 +50,8 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[CONFIG_UART_COUNT] = {
      .powerMngrId = PowerCC26XX_PERIPH_UART0,
      .ringBufPtr = uartCC26XXRingBuffer0,
      .ringBufSize = sizeof(uartCC26XXRingBuffer0),
-     .rxPin = IOID_2,
-     .txPin = IOID_3,
+     .rxPin = DIO_UART_CLI_TX,
+     .txPin = DIO_UART_CLI_RX,
      .ctsPin = PIN_UNASSIGNED,
      .rtsPin = PIN_UNASSIGNED,
      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
@@ -72,7 +74,7 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[CONFIG_UART_COUNT] = {
      .errorFxn = NULL},
 };
 
-const UART_Config UART_config[CONFIG_UART_COUNT] = {
+const UART_Config UART_config[UART_COUNT] = {
     {/* CONFIG_UART_0 */
      .fxnTablePtr = &UARTCC26XX_fxnTable,
      .object = &uartCC26XXObjects[CONFIG_UART_0],
@@ -84,7 +86,7 @@ const UART_Config UART_config[CONFIG_UART_COUNT] = {
 };
 
 const uint_least8_t CONFIG_UART_0_CONST = CONFIG_UART_0;
-const uint_least8_t UART_count = CONFIG_UART_COUNT;
+const uint_least8_t UART_count = UART_COUNT;
 
 static void uart0ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
     huart[CONFIG_UART_0].rx_cnt++;
@@ -229,7 +231,7 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
 
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
     bool res = false;
-    if(uart_num < CONFIG_UART_COUNT) {
+    if(uart_num < UART_COUNT) {
         res = uart_send_ll(uart_num, array, array_len);
     }
     return res;
