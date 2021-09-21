@@ -204,7 +204,9 @@ static bool init_uart1(void) {
 bool uart_init(void) {
     bool res = true;
 #ifdef HAS_GENERIC
+#ifndef HAS_HARVESTER
     res = init_uart1() && res;
+#endif /*HAS_HARVESTER*/
 #endif /*HAS_GENERIC*/
     res = init_uart0() && res;
     return res;
@@ -225,9 +227,10 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     uint32_t time_out = 0;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
+    /*TODO Calc needed time to wait*/
     while(init_tx_cnt == huart[uart_num].tx_cnt) {
         time_out++;
-        if(1000000 < time_out) {
+        if(10000 < time_out) {
             res = false;
             break;
         }

@@ -10,7 +10,6 @@
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
-//#include "device_id.h"
 #include "diag_sys.h"
 #include "io_utils.h"
 #include "log.h"

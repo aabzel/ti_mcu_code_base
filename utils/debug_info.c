@@ -16,7 +16,7 @@
 #endif
 #include "io_utils.h"
 #include "oprintf.h"
-#include "sys.h"
+#include "sys_config.h"
 #include "table_utils.h"
 #include "uart_drv.h"
 #include "version.h"
@@ -54,10 +54,34 @@ bool is_little_endian(void) {
     return bint.u8[0] == 4;
 }
 
+static bool print_fw_type(ostream_t* stream){
+    bool res = false;
+    if(stream){
+#ifdef HAS_BOOTLOADER
+        oputs(stream, "Bootloader ");
+#endif /*HAS_BOOTLOADER*/
+
+#ifdef HAS_GENERIC
+        oputs(stream, "Generic ");
+#endif /*HAS_GENERIC*/
+
+#ifdef HAS_RELEASE
+        oputs(stream, "Release" CRLF);
+#endif /*HAS_RELEASE*/
+
+#ifdef HAS_DEBUG
+        oputs(stream, "Debug" CRLF);
+#endif /*HAS_DEBUG*/
+        res = true;
+    }
+    return res;
+}
+
 bool print_version_s(ostream_t* stream) {
     bool res = false;
     if(stream) {
         res = false;
+        print_fw_type(stream);
         uint32_t all_flash_crc = 0;
         oprintf(stream, "Date     : %s " CRLF, __DATE__);
         oprintf(stream, "Time     : %s " CRLF, __TIME__);
@@ -85,21 +109,6 @@ bool print_version_s(ostream_t* stream) {
         oputs(stream, "GCC" CRLF);
 #endif /**/
 
-#ifdef HAS_BOOTLOADER
-        oputs(stream, "Bootloader ");
-#endif /*HAS_BOOTLOADER*/
-
-#ifdef HAS_GENERIC
-        oputs(stream, "Generic ");
-#endif /*HAS_GENERIC*/
-
-#ifdef HAS_RELEASE
-        oputs(stream, "Release" CRLF);
-#endif /*HAS_RELEASE*/
-
-#ifdef HAS_DEBUG
-        oputs(stream, "Debug" CRLF);
-#endif /*HAS_DEBUG*/
 
 #ifndef USE_HAL_DRIVER
         oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());

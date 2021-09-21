@@ -2,6 +2,8 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <hw_types.h>
+#include <hw_nvic.h>
 
 #include "core_driver.h"
 #include "flash_drv.h"
@@ -14,6 +16,13 @@
 typedef void (*pFunction)(void);
 pFunction Jump_To_Application;
 
+
+static bool disable_interrupt(void){
+    HWREG(NVIC_DIS0) = 0xffffffff;
+    HWREG(NVIC_DIS1) = 0xffffffff;
+    return true;
+}
+
 bool boot_jump_to_code(uint32_t app_start_address) {
     bool res = false;
     res = is_flash_addr(app_start_address);
@@ -23,9 +32,11 @@ bool boot_jump_to_code(uint32_t app_start_address) {
         res = is_ram_addr(stack_top);
         if(res) {
             uint32_t reset_handler = 0;
+            LOG_INFO(BOOT, "stack_top address 0x%08x", stack_top);
             LOG_INFO(BOOT, "Jump to address 0x%08x", app_start_address);
-            //  __disable_interrupt();
+            disable_interrupt();
             reset_handler = read_addr_32bit(app_start_address + 4);
+            LOG_INFO(BOOT, "App reset handler address 0x%08x", reset_handler);
             Jump_To_Application = (pFunction)reset_handler;
             /* Initialize user application's Stack Pointer */
             __set_MSP(stack_top);

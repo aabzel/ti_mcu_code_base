@@ -15,7 +15,7 @@
 
 #define DIO_UART_CLI_TX	12
 #define DIO_UART_CLI_RX	13
-
+#define APP_START_ADDRESS 0x00018000
 
 #define BOARD_NAME "Harvester"
 #define MCU_NAME "CC2642R1F"
