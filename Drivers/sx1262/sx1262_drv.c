@@ -41,11 +41,11 @@ speed up to 16 MHz
         res = sx1262_wait_on_busy(0);                                                                                  \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
-            GPIO_writeDio(SX1262_SS_DIO_NO, 0);                                                                        \
+            GPIO_writeDio(DIO_SX1262_SS, 0);                                                                        \
             wait_ms(1);                                                                                                \
             res = CALL_BACK;                                                                                           \
             wait_ms(1);                                                                                                \
-            GPIO_writeDio(SX1262_SS_DIO_NO, 1);                                                                        \
+            GPIO_writeDio(DIO_SX1262_SS, 1);                                                                        \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \
             res = false;                                                                                               \
@@ -105,7 +105,7 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
     uint32_t busy_value = 0;
     start_ms = get_time_ms32();
     while(loop) {
-        busy_value = GPIO_readDio(SX1262_BUSY_DIO_NO);
+        busy_value = GPIO_readDio(DIO_SX1262_BUSY);
         if(0 == busy_value) {
             res = true;
             loop = false;
@@ -662,18 +662,18 @@ static bool sx1262_init_gpio(void) {
     GPIO_setConfig(CONFIG_GPIO_LORA_INT, GPIO_CFG_IN_NOPULL);
     GPIO_setConfig(CONFIG_GPIO_LORA_BSY, GPIO_CFG_IN_NOPULL);
 
-    GPIO_writeDio(SX1262_SS_DIO_NO, 1);
-    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
+    GPIO_writeDio(DIO_SX1262_SS, 1);
+    GPIO_writeDio(DIO_SX1262_RST, 1);
 
     return res;
 }
 bool sx1262_reset(void) {
     bool res = true;
-    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
+    GPIO_writeDio(DIO_SX1262_RST, 1);
     wait_ms(20);
-    GPIO_writeDio(SX1262_RST_DIO_NO, 0);
+    GPIO_writeDio(DIO_SX1262_RST, 0);
     wait_ms(50);
-    GPIO_writeDio(SX1262_RST_DIO_NO, 1);
+    GPIO_writeDio(DIO_SX1262_RST, 1);
     wait_ms(20);
     return res;
 }
@@ -1268,10 +1268,10 @@ bool sx1262_process(void) {
         Sx1262Instance.get_sync_word = tempSx1262Instance.get_sync_word;
     }
 
-    Sx1262Instance.wire_int = (uint8_t)GPIO_readDio(SX1262_INT_DIO_NO);
-    Sx1262Instance.wire_busy = (uint8_t)GPIO_readDio(SX1262_BUSY_DIO_NO);
-    Sx1262Instance.wire_nss = (uint8_t)GPIO_readDio(SX1262_SS_DIO_NO);
-    Sx1262Instance.wire_rst = (uint8_t)GPIO_readDio(SX1262_RST_DIO_NO);
+    Sx1262Instance.wire_int = (uint8_t)GPIO_readDio(DIO_SX1262_INT);
+    Sx1262Instance.wire_busy = (uint8_t)GPIO_readDio(DIO_SX1262_BUSY);
+    Sx1262Instance.wire_nss = (uint8_t)GPIO_readDio(DIO_SX1262_SS);
+    Sx1262Instance.wire_rst = (uint8_t)GPIO_readDio(DIO_SX1262_RST);
 
     tempSx1262Instance.packet_type = PACKET_TYPE_UNDEF;
     res = sx1262_get_packet_type(&tempSx1262Instance.packet_type);

@@ -10,6 +10,7 @@
 
 #include "bit_utils.h"
 #include "clocks.h"
+#include "sys_config.h"
 #include "gpio_drv.h"
 
 SpiInstance_t SpiInstance[SPI_CNT] = {{
@@ -53,10 +54,10 @@ const SPICC26X2DMA_HWAttrs spiCC26X2DMAHWAttrs[SPI_CNT] = {{.baseAddr = SSI0_BAS
                                                             .defaultTxBufValue = 0xFF,
                                                             .rxChannelBitMask = 1 << UDMA_CHAN_SSI0_RX,
                                                             .txChannelBitMask = 1 << UDMA_CHAN_SSI0_TX,
-                                                            .mosiPin = BOARD_SPI0_MOSI,
-                                                            .misoPin = BOARD_SPI0_MISO,
-                                                            .clkPin = BOARD_SPI0_CLK,
-                                                            .csnPin = BOARD_SPI0_CSN,
+                                                            .mosiPin = DIO_BOARD_SPI0_MOSI,
+                                                            .misoPin = DIO_BOARD_SPI0_MISO,
+                                                            .clkPin = DIO_BOARD_SPI0_CLK,
+                                                            .csnPin = PIN_UNASSIGNED,
                                                             .minDmaTransferSize = 10},
                                                            {.baseAddr = SSI1_BASE,
                                                             .intNum = INT_SSI1_COMB,
@@ -66,10 +67,10 @@ const SPICC26X2DMA_HWAttrs spiCC26X2DMAHWAttrs[SPI_CNT] = {{.baseAddr = SSI0_BAS
                                                             .defaultTxBufValue = 0xFF,
                                                             .rxChannelBitMask = 1 << UDMA_CHAN_SSI1_RX,
                                                             .txChannelBitMask = 1 << UDMA_CHAN_SSI1_TX,
-                                                            .mosiPin = BOARD_SPI1_MOSI,
-                                                            .misoPin = BOARD_SPI1_MISO,
-                                                            .clkPin = BOARD_SPI1_CLK,
-                                                            .csnPin = BOARD_SPI1_CSN,
+                                                            .mosiPin = PIN_UNASSIGNED,
+                                                            .misoPin = PIN_UNASSIGNED,
+                                                            .clkPin = PIN_UNASSIGNED,
+                                                            .csnPin = PIN_UNASSIGNED,
                                                             .minDmaTransferSize = 10}};
 
 const SPI_Config SPI_config[SPI_CNT] = {

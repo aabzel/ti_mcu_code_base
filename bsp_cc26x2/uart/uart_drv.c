@@ -100,7 +100,7 @@ static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[CONFIG_UART_0].tx_cpl_cnt++;
 }
 
-#ifdef HAS_GENERIC
+#ifdef HAS_UBLOX
 static void uart1ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
@@ -113,7 +113,7 @@ static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[1].tx_int = true;
     huart[1].tx_cpl_cnt++;
 }
-#endif
+#endif /*HAS_UBLOX*/
 
 static bool init_uart0(void) {
     bool res = false;
@@ -159,6 +159,7 @@ static bool init_uart0(void) {
 }
 
 #ifdef HAS_GENERIC
+#ifdef HAS_UBLOX
 static bool init_uart1(void) {
     bool res = false;
     memset(&huart[1], 0x00, sizeof(huart[1]));
@@ -199,14 +200,15 @@ static bool init_uart1(void) {
     }
     return res;
 }
+#endif /*HAS_UBLOX*/
 #endif /*HAS_GENERIC*/
 
 bool uart_init(void) {
     bool res = true;
 #ifdef HAS_GENERIC
-#ifndef HAS_HARVESTER
+#ifdef HAS_UBLOX
     res = init_uart1() && res;
-#endif /*HAS_HARVESTER*/
+#endif /*HAS_UBLOX*/
 #endif /*HAS_GENERIC*/
     res = init_uart0() && res;
     return res;

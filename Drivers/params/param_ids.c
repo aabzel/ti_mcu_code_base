@@ -14,6 +14,7 @@
 /*TODO: Sort by index for bin search in future*/
 const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
+    {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},    /*num*/
     {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"},      /*Hz*/
     {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
     {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
