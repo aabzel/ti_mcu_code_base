@@ -36,7 +36,7 @@ extern const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST;
 #else
 #define BTN_PINS_CNT 0
 #endif /*LAUNCHXL_CC26X2R1*/
-#define GPIO_COUNT (2 +LORA_PINS_CNT+BTN_PINS_CNT)
+#define GPIO_COUNT (2 +LORA_PINS_CNT+BTN_PINS_CNT+1)
 
 /* DIO6, LaunchPad LED Red */
 extern const uint_least8_t CONFIG_GPIO_LED_0_CONST;

@@ -50,8 +50,8 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
      .powerMngrId = PowerCC26XX_PERIPH_UART0,
      .ringBufPtr = uartCC26XXRingBuffer0,
      .ringBufSize = sizeof(uartCC26XXRingBuffer0),
-     .rxPin = DIO_UART_CLI_TX,
-     .txPin = DIO_UART_CLI_RX,
+     .rxPin = DIO_UART_CLI_RX,
+     .txPin = DIO_UART_CLI_TX,
      .ctsPin = PIN_UNASSIGNED,
      .rtsPin = PIN_UNASSIGNED,
      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
@@ -100,6 +100,7 @@ static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[CONFIG_UART_0].tx_cpl_cnt++;
 }
 
+#ifdef HAS_GENERIC
 static void uart1ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
@@ -112,6 +113,7 @@ static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[1].tx_int = true;
     huart[1].tx_cpl_cnt++;
 }
+#endif
 
 static bool init_uart0(void) {
     bool res = false;
@@ -156,6 +158,7 @@ static bool init_uart0(void) {
     return res;
 }
 
+#ifdef HAS_GENERIC
 static bool init_uart1(void) {
     bool res = false;
     memset(&huart[1], 0x00, sizeof(huart[1]));
@@ -196,10 +199,13 @@ static bool init_uart1(void) {
     }
     return res;
 }
+#endif /*HAS_GENERIC*/
 
 bool uart_init(void) {
     bool res = true;
+#ifdef HAS_GENERIC
     res = init_uart1() && res;
+#endif /*HAS_GENERIC*/
     res = init_uart0() && res;
     return res;
 }

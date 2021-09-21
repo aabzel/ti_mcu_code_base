@@ -71,6 +71,9 @@ PIN_Config BoardGpioInitTable[GPIO_COUNT + 1] = {
     DIO_LED_GREEN | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
     /* LaunchPad LED Red, Parent Signal: CONFIG_GPIO_LED_0 GPIO Pin, (DIO6) */
     DIO_LED_RED | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
+#ifdef HAS_RS232
+    DIO_PS_RS232 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_HIGH | PIN_PUSHPULL | PIN_DRVSTR_MED,
+#endif /*HAS_RS232*/
 #ifdef HAS_SX1262
     DIO_SX1262_SS  | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,  /*LoRa CS*/
     DIO_SX1262_RST  | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED, /*LoRa Reset*/
@@ -139,6 +142,9 @@ bool gpio_init(void) {
         /* Configure the LED and button pins */
         GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
         GPIO_setConfig(CONFIG_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+#ifdef HAS_RS232
+        GPIO_setConfig(2, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+#endif /*HAS_RS232*/
 #ifdef LAUNCHXL_CC26X2R1
         GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
@@ -163,6 +169,9 @@ bool gpio_init(void) {
 #endif
         GPIO_writeDio(DIO_LED_RED, 0);
         GPIO_writeDio(DIO_LED_GREEN, 0);
+#ifdef HAS_RS232
+        GPIO_writeDio(DIO_PS_RS232, 1);
+#endif /*HAS_RS232*/
     }
     return res;
 }

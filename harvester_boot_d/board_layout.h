@@ -6,7 +6,7 @@
 
 #include "sys_config.h"
 
-#define DIO_CNT 6
+#define DIO_CNT 7
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {

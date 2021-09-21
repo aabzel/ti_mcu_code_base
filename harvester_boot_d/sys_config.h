@@ -11,6 +11,7 @@
 #define DIO_SX1262_RST 27 /*LoRa_NRESET*/
 #define DIO_SX1262_SS 0 /*SS0_LoRa*/
 #define DIO_SX1262_INT 28 /*LoRa_INT*/
+#define DIO_PS_RS232 7 /*Enable RS232 transceiver*/
 
 #define DIO_UART_CLI_TX	12
 #define DIO_UART_CLI_RX	13

@@ -19,7 +19,7 @@
 #include "uart_string_reader.h"
 #include "writer_generic.h"
 
-bool cli_echo= true;
+bool cli_echo = true;
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};

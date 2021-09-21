@@ -47,6 +47,7 @@ bool ext_ram_erase(void) {
         mem_busy = true;
         memset(memory, 0xFF, sizeof(memory));
         mem_busy = false;
+        res = true;
     } else {
         ext_ram_busy_cnt++;
     }
