@@ -1,6 +1,5 @@
 #include "watchdog_commands.h"
 
-#include <inttypes.h>
 
 #include "convert.h"
 #include "io_utils.h"

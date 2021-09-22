@@ -88,6 +88,21 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/watchdog"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_string"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_crc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_nmea_proto"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_ublox_proto"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/utils_test"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash_fs"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_params"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_spi"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
@@ -107,22 +122,27 @@
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
+									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
+									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
+									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262"/>
+									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
+									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
+									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.954922929" name="Target processor version (--silicon_version, -mv)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.7M4" valueType="enumerated"/>
@@ -224,18 +244,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|protocols/nmea_protocol|protocols/ubx_protocol|bsp_cc26x2/adc|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|unit_tests|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/utils_test"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_ublox_proto"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_sx1262"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_string"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_params"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_nmea_proto"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash_fs"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_crc"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set - Copy"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash_fs — копия"/>
+						<entry excluding="bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/adc|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -250,7 +259,7 @@
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/harvester_boot_d"/>
+			<resource resourceType="PROJECT" workspacePath="/harvester_generic_d"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>

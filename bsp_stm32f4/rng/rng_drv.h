@@ -4,10 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-/*!
- *  @def    BOARD_TRNGName
- *  @brief  Enum of TRNG names
- */
+
 typedef enum BOARD_TRNGName {
     BOARD_TRNG0 = 0,
     BOARD_TRNG1 = 1,

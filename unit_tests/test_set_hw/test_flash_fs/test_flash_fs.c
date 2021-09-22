@@ -47,7 +47,6 @@ bool test_flash_fs_inval(void) {
     return true;
 }
 
-#ifdef HAS_RNG
 
 bool test_flash_fs_set_get_set(void) {
     uint16_t data_id = PAR_ID_TEST_START + 2;
@@ -70,7 +69,7 @@ bool test_flash_fs_set_get_set(void) {
     EXPECT_EQ(write_value, read_value);
     return true;
 }
-#endif /*HAS_RAND*/
+
 
 static uint32_t calc_toggle_exp_page(uint32_t page) {
     uint32_t exp_page = 0;

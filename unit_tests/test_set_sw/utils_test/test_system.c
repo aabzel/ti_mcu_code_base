@@ -37,7 +37,7 @@ static bool test_heap_set(void) {
         } else {
             break;
         }
-    } //[2327387742]
+    }
 
     io_printf("can malloc %u bytes"CRLF,byte);
 

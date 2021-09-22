@@ -16,6 +16,7 @@ extern "C" {
 #include "test_crc.h"
 #include "test_nmea_proto.h"
 #include "test_string_utils.h"
+#include "test_system.h"
 #include "test_time_utils.h"
 #include "test_ublox_proto.h"
 #include "unit_test_check.h"
@@ -38,8 +39,9 @@ bool test_uspec_behavior(void);
     FLOAT_UTILS_TEST_SUIT \
     TIME_UTILS_TEST_SUIT \
     SYSTEM_TEST_SUIT \
-    NMEA_PROTO_TEST_SUIT\
-    CRC_TEST_SUIT\
+    NMEA_PROTO_TEST_SUIT \
+    CRC_TEST_SUIT \
+    TIME_UTILS_TEST_SUIT \
     CONVERT_TEST_SUIT\
     STRING_UTILS_TEST_SUIT\
     UBLOX_PROTO_TEST_SUIT\

@@ -30,6 +30,6 @@
 
 #define BOARD_NAME "Harvester"
 #define MCU_NAME "CC2642R1F"
-#define CLI_UART_BAUD_RATE 56000 /* bit/s */
+#define CLI_UART_BAUD_RATE 38400 /* bit/s */
 
 #endif /* SYS_CONFIG_H  */
