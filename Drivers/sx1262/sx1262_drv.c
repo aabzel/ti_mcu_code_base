@@ -197,6 +197,8 @@ static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
 
 bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
     bool res = false;
+    SX1262_CHIP_SELECT(sx1262_read_reg_proc(reg_addr, reg_val));
+#if 0
     res = false;
     res = sx1262_wait_on_busy(0);
     if(true == res) {
@@ -210,7 +212,7 @@ bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
         Sx1262Instance.busy_cnt++;
         res = false;
     }
-
+#endif
     return res;
 }
 

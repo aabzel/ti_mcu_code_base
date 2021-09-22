@@ -18,7 +18,7 @@ SpiInstance_t SpiInstance[SPI_CNT] = {{
                                           .rx_byte_cnt = 0,
                                           .tx_byte_cnt = 0,
                                           .base_addr = SSI0_BASE,
-                                          .enable = false,
+                                          .init_done = false,
                                       },
                                       {
                                           .SpiHandle = NULL,
@@ -26,7 +26,7 @@ SpiInstance_t SpiInstance[SPI_CNT] = {{
                                           .tx_byte_cnt = 0,
                                           .base_addr = SSI1_BASE,
                                           .name = "unued",
-                                          .enable = false,
+                                          .init_done = false,
                                       }};
 
 const uint_least8_t SPI_count = SPI_CNT;
@@ -95,7 +95,7 @@ static SPI_CallbackFxn spiCallbackFunctions[SPI_CNT] = {
 
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SPI_CallbackFxn transferCallbackFxn) {
     bool res = false;
-    SpiInstance[spi_num].enable = false;
+    SpiInstance[spi_num].init_done = false;
     SPI_init();
     SPI_Params_init(&SpiInstance[spi_num].SpiParams);
     strncpy(SpiInstance[spi_num].name, spi_name, SPI_NAME_SZ_BYTE);
@@ -117,7 +117,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SP
     SpiInstance[spi_num].SpiHandle = SPI_open(spi_num, &SpiInstance[spi_num].SpiParams);
     if(SpiInstance[spi_num].SpiHandle) {
         res = true;
-        SpiInstance[spi_num].enable = true;
+        SpiInstance[spi_num].init_done = true;
 #ifdef INIT_SPI_SEND
         uint8_t tx_buff[4] = {0x55, 0xaa, 0x55, 0xaa};
         res = spi_write(index, tx_buff, 4) && res;
@@ -222,7 +222,7 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
 
 uint32_t spi_get_clock(SpiName_t spi_num) {
     uint32_t spi_bit_rate = 0xFF;
-    if(SpiInstance[spi_num].enable) {
+    if(SpiInstance[spi_num].init_done) {
         uint32_t control_0_reg = 0;
         uint32_t clock_prescale_reg = 0;
         clock_prescale_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_CPSR);
@@ -236,7 +236,7 @@ uint32_t spi_get_clock(SpiName_t spi_num) {
 
 uint8_t spi_get_phase(SpiName_t spi_num) {
     uint32_t phase = 9;
-    if(SpiInstance[spi_num].enable) {
+    if(SpiInstance[spi_num].init_done) {
         uint32_t control_0_reg = 0;
         control_0_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_CR0);
         phase = extract_subval_from_32bit(control_0_reg, 7, 7);
@@ -246,7 +246,7 @@ uint8_t spi_get_phase(SpiName_t spi_num) {
 
 uint8_t spi_get_polarity(SpiName_t spi_num) {
     uint32_t polarity = 9;
-    if(SpiInstance[spi_num].enable) {
+    if(SpiInstance[spi_num].init_done) {
         uint32_t control_0_reg = 0;
         control_0_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_CR0);
         polarity = extract_subval_from_32bit(control_0_reg, 6, 6);
@@ -256,7 +256,7 @@ uint8_t spi_get_polarity(SpiName_t spi_num) {
 
 uint8_t spi_get_data_size(SpiName_t spi_num) {
     uint32_t data_size = 0xFF;
-    if(SpiInstance[spi_num].enable) {
+    if(SpiInstance[spi_num].init_done) {
         uint32_t control_0_reg = 0;
         control_0_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_CR0);
         data_size = extract_subval_from_32bit(control_0_reg, 3, 0) + 1;
@@ -267,7 +267,7 @@ uint8_t spi_get_data_size(SpiName_t spi_num) {
 uint8_t spi_get_transmit_int(SpiName_t spi_num) {
     uint8_t val = 0xFF;
 
-    if(SpiInstance[spi_num].enable) {
+    if(SpiInstance[spi_num].init_done) {
         uint32_t masked_interrupt_status_reg;
         masked_interrupt_status_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_RIS);
         val = GET_BIT_NUM(masked_interrupt_status_reg, SSI_IMSC_TXIM_BITN);
@@ -277,7 +277,7 @@ uint8_t spi_get_transmit_int(SpiName_t spi_num) {
 
 uint8_t spi_get_receive_int(SpiName_t spi_num) {
     uint8_t val = 0xFF;
-    if(SpiInstance[spi_num].enable) {
+    if(SpiInstance[spi_num].init_done) {
         uint32_t masked_interrupt_status_reg;
         masked_interrupt_status_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_RIS);
         val = GET_BIT_NUM(masked_interrupt_status_reg, SSI_IMSC_RXIM_BITN);
@@ -287,7 +287,7 @@ uint8_t spi_get_receive_int(SpiName_t spi_num) {
 
 uint8_t spi_get_receive_timeout_interrupt(SpiName_t spi_num) {
     uint8_t val = 0xFF;
-    if(SpiInstance[spi_num].enable) {
+    if(SpiInstance[spi_num].init_done) {
         uint32_t masked_interrupt_status_reg;
         masked_interrupt_status_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_RIS);
         val = GET_BIT_NUM(masked_interrupt_status_reg, SSI_IMSC_RTIM_BITN);
@@ -297,7 +297,7 @@ uint8_t spi_get_receive_timeout_interrupt(SpiName_t spi_num) {
 
 uint8_t spi_get_receive_overrun_interrupt(SpiName_t spi_num) {
     uint8_t val = 0xFF;
-    if(SpiInstance[spi_num].enable) {
+    if(SpiInstance[spi_num].init_done) {
         uint32_t masked_interrupt_status_reg;
         masked_interrupt_status_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_RIS);
         val = GET_BIT_NUM(masked_interrupt_status_reg, SSI_IMSC_RORIM_BITN);

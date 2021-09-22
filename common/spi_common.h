@@ -16,28 +16,24 @@
 typedef struct xSpiInstance_t {
   bool tx_int;
   bool rx_int;
-  uint8_t rx_byte;
   uint8_t *rx_buff;
-  uint8_t rx_byte_cnt;
-  uint8_t tx_byte_cnt;
-  uint32_t rx_cnt;
+  uint32_t rx_byte_cnt;
+  uint32_t tx_byte_cnt;
   uint32_t rxtx_cnt;
-  uint32_t tx_cnt;
   uint32_t err_cnt;
   volatile uint32_t it_cnt;
   uint32_t rx_buff_size;
   uint32_t tx_cpl_cnt;
-  bool init_done;
 #ifdef DeviceFamily_CC26X2
   uint32_t base_addr;
   SPI_Handle SpiHandle;
   SPI_Params SpiParams;
 #endif
-#ifdef  USE_HAL_DRIVER 
+#ifdef USE_HAL_DRIVER
   SPI_HandleTypeDef handle;
 #endif /*USE_HAL_DRIVER*/
   char name[SPI_NAME_SZ_BYTE];
-  bool enable;
+  bool init_done;
 }SpiInstance_t;
 
 #endif /* SPI_COMMON_H */

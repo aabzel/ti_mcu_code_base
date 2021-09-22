@@ -7,7 +7,7 @@ extern "C" {
 
 #include "lora_defs.h"
 
-#define DFLT_FREQ_MHZ 915000000UL
+#define DFLT_FREQ_MHZ 868000000UL
 #define DFLT_LORA_BW_500 LORA_BW_500
 #define DFLT_SF12 SF12
 #define DFLT_LORA_CR_4_8 LORA_CR_4_8
