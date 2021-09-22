@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="297mm"
    height="210mm"
    viewBox="0 0 297 210"
    version="1.1"
    id="svg251068"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="firmware_arch.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="firmware_arch.svg">
   <metadata
      id="metadata44">
     <rdf:RDF>
@@ -35,12 +35,12 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.836476"
-     inkscape:cx="826.55379"
-     inkscape:cy="450.55907"
+     inkscape:zoom="1.418238"
+     inkscape:cx="724.22733"
+     inkscape:cy="589.87347"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="-11"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer3"
@@ -83,6 +83,14 @@
        position="18.469221,61.453365"
        orientation="1,0"
        id="guide5065" />
+    <sodipodi:guide
+       position="116.2255,108.7924"
+       orientation="0,-1"
+       id="guide920" />
+    <sodipodi:guide
+       position="35.119503,93.183468"
+       orientation="0,-1"
+       id="guide922" />
   </sodipodi:namedview>
   <defs
      id="defs251065">
@@ -129,68 +137,68 @@
        width="105.52787"
        height="10.511209"
        x="122.9083"
-       y="103.6513" />
+       y="87.776291" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5089"
        width="43.033615"
        height="11.868876"
        x="185.26025"
-       y="117.12174" />
+       y="101.24674" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1.14792;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091"
-       width="28.356781"
-       height="11.846428"
-       x="122.91161"
-       y="117.14419" />
+       width="37.838749"
+       height="11.698508"
+       x="122.98557"
+       y="101.34319" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0"
        width="29.204008"
        height="11.837888"
        x="90.196518"
-       y="117.15632" />
+       y="101.28133" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0-6"
        width="29.069262"
        height="10.507919"
        x="90.2742"
-       y="103.65016" />
+       y="87.775154" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:6.31014px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.157754"
        x="95.356178"
-       y="124.67515"
+       y="108.80013"
        id="text3859-1"><tspan
          sodipodi:role="line"
          id="tspan3857-0"
          style="stroke-width:0.157754"
          x="95.356178"
-         y="124.67515">UART</tspan></text>
+         y="108.80013">UART</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:6.4382px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.160955"
        x="98.852554"
-       y="111.08979"
+       y="95.21479"
        id="text20802"><tspan
          sodipodi:role="line"
          id="tspan20800"
          style="stroke-width:0.160955"
          x="98.852554"
-         y="111.08979">CLI</tspan></text>
+         y="95.21479">CLI</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="20.894073"
-       y="126.6361"
+       y="110.76112"
        id="text21398"><tspan
          sodipodi:role="line"
          id="tspan21396"
          style="stroke-width:0.264583"
          x="20.894073"
-         y="126.6361">ADC</tspan></text>
+         y="110.76112">ADC</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -206,55 +214,55 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="58.625061"
-       y="126.68276"
+       y="110.80772"
        id="text24604"><tspan
          sodipodi:role="line"
          id="tspan24602"
          style="stroke-width:0.264583"
          x="58.625061"
-         y="126.68276">DAC</tspan></text>
+         y="110.80772">DAC</tspan></text>
     <rect
        style="fill:none;stroke:#030003;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect26156"
        width="32.121964"
        height="11.6089"
        x="18.358536"
-       y="117.143" />
+       y="101.26798" />
     <rect
        style="fill:none;stroke:#030003;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect26158"
        width="29.068615"
        height="11.71576"
        x="54.89706"
-       y="117.12769" />
+       y="101.25272" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5091-0-1"
        width="16.578447"
        height="11.968409"
        x="233.08009"
-       y="117.07893" />
+       y="101.20396" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:6.31013px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.157754"
        x="234.5257"
-       y="124.98949"
+       y="109.11453"
        id="text3859-1-9"><tspan
          sodipodi:role="line"
          id="tspan3857-0-4"
          style="stroke-width:0.157754"
          x="234.5257"
-         y="124.98949">NVS</tspan></text>
+         y="109.11453">NVS</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:6.48538px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.162135"
        x="233.8501"
-       y="111.04581"
+       y="95.170815"
        id="text69"><tspan
          sodipodi:role="line"
          id="tspan67"
          x="233.8501"
-         y="111.04581"
+         y="95.170815"
          style="stroke-width:0.162135">Flash FS</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -262,12 +270,12 @@
        width="40.121567"
        height="10.43421"
        x="233.18024"
-       y="103.68857" />
+       y="87.81356" />
     <path
        style="fill:none;stroke:#030003;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 181.74527,142.85497 v -4.41919 l 0.32561,-21.30949 h -28.58467 l -0.18656,16.99347 H 18.507212 v 15.59286 H 181.89384 l -0.14857,-6.85765"
+       d="m 181.74527,142.85497 v -4.41919 l 0.32561,-37.22818 h -17.96704 l -0.39575,15.91869 h -10.22188 l -0.18656,16.99347 -118.320066,0.57496 0.139918,-17.87819 -16.61229,-0.0466 0,32.94273 H 181.89384 l -0.14857,-6.85765"
        id="path98"
-       sodipodi:nodetypes="ccccccccc" />
+       sodipodi:nodetypes="ccccccccccccc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -285,21 +293,21 @@
        width="20.887213"
        height="11.923936"
        x="252.23001"
-       y="116.8521" />
+       y="100.97712" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.83424px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.214323"
        x="253.59651"
-       y="124.59018"
+       y="108.71518"
        id="text3859-1-9-9"><tspan
          sodipodi:role="line"
          id="tspan3857-0-4-4"
          style="font-size:3.83424px;stroke-width:0.214323"
          x="253.59651"
-         y="124.59018">CRC8/32</tspan></text>
+         y="108.71518">CRC8/32</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 237.11972,134.69472 h -51.84331 v 21.82726 l -166.807189,0 0,15.68251 218.650489,-0.0117 z"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 237.11972,116.81653 h -51.84331 l 0,39.70545 H 18.469221 v 15.68251 l 218.650489,-0.0117 z"
        id="path941"
        sodipodi:nodetypes="ccccccc" />
     <text
@@ -314,12 +322,12 @@
          x="256.91928"
          y="147.49725">RAM</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:1.21718;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3169"
        width="20.570345"
-       height="37.127354"
+       height="55.005539"
        x="252.17949"
-       y="134.69472" />
+       y="116.81654" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.55331px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.113833"
@@ -333,12 +341,30 @@
          x="-160.03578"
          y="246.58484">FLASH</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:1.21558;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3169-5"
        width="8.1707973"
-       height="37.430206"
+       height="55.308392"
        x="240.98752"
-       y="134.69472" />
+       y="116.81654" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:1.96289;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5091-2"
+       width="107.63577"
+       height="12.024918"
+       x="40.953468"
+       y="117.42428" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="67.677872"
+       y="127.27656"
+       id="text3859-8"><tspan
+         sodipodi:role="line"
+         id="tspan3857-8"
+         style="stroke-width:0.264583"
+         x="67.677872"
+         y="127.27656">DMA</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -348,34 +374,34 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="157.64513"
-       y="112.92013"
+       y="97.045151"
        id="text1395"><tspan
          sodipodi:role="line"
          id="tspan1393"
          style="stroke-width:0.264583"
          x="157.64513"
-         y="112.92013">LoRa</tspan></text>
+         y="97.045151">LoRa</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="186.03212"
-       y="125.94442"
+       y="110.06941"
        id="text2821"><tspan
          sodipodi:role="line"
          id="tspan2819"
          style="stroke-width:0.264583"
          x="186.03212"
-         y="125.94442">SysTick</tspan></text>
+         y="110.06941">SysTick</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="125.77205"
-       y="126.8413"
+       y="110.96632"
        id="text3859"><tspan
          sodipodi:role="line"
          id="tspan3857"
          style="stroke-width:0.264583"
          x="125.77205"
-         y="126.8413">SPI</tspan></text>
+         y="110.96632">SPI</tspan></text>
   </g>
 </svg>

@@ -9,56 +9,9 @@
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/pin/PINCC26XX.h>
 
+#include "board_layout.h"
 #include "bit_utils.h"
 #include "data_utils.h"
-
-#ifdef LAUNCHXL_CC26X2R1
-const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST = CONFIG_GPIO_BUTTON_0;
-const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST = CONFIG_GPIO_BUTTON_1;
-#endif
-const uint_least8_t CONFIG_GPIO_LED_0_CONST = CONFIG_GPIO_LED_0;
-const uint_least8_t CONFIG_GPIO_LED_1_CONST = CONFIG_GPIO_LED_1;
-
-GPIO_PinConfig gpioPinConfigs[GPIO_COUNT] = {
-    DIO_LED_GREEN | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* CONFIG_GPIO_LED_1 : LaunchPad LED Green */
-    DIO_LED_RED | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* CONFIG_GPIO_LED_0 : LaunchPad LED Red */
-#ifdef HAS_SX1262
-    DIO_SX1262_SS | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*LoRa CS*/
-    DIO_SX1262_RST | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*LoRa Reset*/
-    DIO_SX1262_INT | GPIO_CFG_IN_NOPULL,                                          /*LoRa int*/
-    DIO_SX1262_BUSY | GPIO_CFG_IN_NOPULL,                                          /*LoRa Busy*/
-#endif /*HAS_SX1262*/
-#ifdef LAUNCHXL_CC26X2R1
-    GPIOCC26XX_DIO_13 | GPIO_DO_NOT_CONFIG, /* CONFIG_GPIO_BUTTON_0 : LaunchPad Button BTN-1 (Left) */
-    GPIOCC26XX_DIO_14 | GPIO_DO_NOT_CONFIG, /* CONFIG_GPIO_BUTTON_1 : LaunchPad Button BTN-2 (Right) */
-    GPIOCC26XX_DIO_15 | GPIO_CFG_OUT_STD,                                            /*loop*/
-#endif /*LAUNCHXL_CC26X2R1*/
-
-};
-
-/*
- *  ======== gpioCallbackFunctions ========
- *  Array of callback function pointers
- *
- *  NOTE: Unused callback entries can be omitted from the callbacks array to
- *  reduce memory usage by enabling callback table optimization
- *  (GPIO.optimizeCallbackTableSize = true)
- */
-GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
-    NULL, /* CONFIG_GPIO_LED_0 : LaunchPad LED Red */
-    NULL, /* CONFIG_GPIO_LED_1 : LaunchPad LED Green */
-#ifdef HAS_SX1262
-    NULL, /*LoRa CS*/
-    NULL, /*LoRa Reset*/
-    NULL, /*LoRa int*/
-    NULL  /*LoRa Busy*/
-#endif
-#ifdef LAUNCHXL_CC26X2R1
-    NULL, /* CONFIG_GPIO_BUTTON_0 : LaunchPad Button BTN-1 (Left) */
-    NULL, /* CONFIG_GPIO_BUTTON_1 : LaunchPad Button BTN-2 (Right) */
-#endif
-};
-
 
 const GPIOCC26XX_Config GPIOCC26XX_config = {.pinConfigs = (GPIO_PinConfig*)gpioPinConfigs,
                                              .callbacks = (GPIO_CallbackFxn*)gpioCallbackFunctions,
@@ -66,27 +19,6 @@ const GPIOCC26XX_Config GPIOCC26XX_config = {.pinConfigs = (GPIO_PinConfig*)gpio
                                              .numberOfCallbacks = 4,
                                              .intPriority = (~0)};
 
-PIN_Config BoardGpioInitTable[GPIO_COUNT + 1] = {
-    /* LaunchPad LED Green, Parent Signal: CONFIG_GPIO_LED_1 GPIO Pin, (DIO7) */
-    DIO_LED_GREEN | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
-    /* LaunchPad LED Red, Parent Signal: CONFIG_GPIO_LED_0 GPIO Pin, (DIO6) */
-    DIO_LED_RED | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
-#ifdef HAS_RS232
-    DIO_PS_RS232 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_HIGH | PIN_PUSHPULL | PIN_DRVSTR_MED,
-#endif /*HAS_RS232*/
-#ifdef HAS_SX1262
-    DIO_SX1262_SS  | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,  /*LoRa CS*/
-    DIO_SX1262_RST  | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED, /*LoRa Reset*/
-    DIO_SX1262_INT  | PIN_INPUT_EN | PIN_NOPULL | PIN_IRQ_DIS,                           /*LoRa Int*/
-    DIO_SX1262_BUSY  | PIN_INPUT_EN | PIN_NOPULL | PIN_IRQ_DIS,                          /*LoRa Busy*/
-#endif /*HAS_SX1262*/
-#ifdef  LAUNCHXL_CC26X2R1
-    /* LaunchPad Button BTN-1 (Left), Parent Signal: CONFIG_GPIO_BUTTON_0 GPIO Pin, (DIO13) */
-    CONFIG_PIN_0 | PIN_INPUT_EN | PIN_PULLUP | PIN_IRQ_DIS,
-    /* LaunchPad Button BTN-2 (Right), Parent Signal: CONFIG_GPIO_BUTTON_1 GPIO Pin, (DIO14) */
-    CONFIG_PIN_1 | PIN_INPUT_EN | PIN_PULLUP | PIN_IRQ_DIS,
-#endif
-    PIN_TERMINATE};
 
 const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {.intPriority = (~0), .swiPriority = 0};
 
@@ -96,8 +28,8 @@ const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {.intPriority = (~0), .swiPriority =
  */
 void gpioButtonFxn0(uint_least8_t index) {
     /* Toggle an LED */
-    GPIO_toggle(CONFIG_GPIO_LED_0);
-    GPIO_toggle(CONFIG_GPIO_LED_1);
+    GPIO_toggleDio((uint32_t)DIO_LED_GREEN);
+    GPIO_toggleDio((uint32_t)DIO_LED_RED);
 }
 
 #if 0
@@ -139,12 +71,16 @@ bool gpio_init(void) {
     } else {
         res = true;
         GPIO_init();
-        /* Configure the LED and button pins */
-        GPIO_setConfig(CONFIG_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-        GPIO_setConfig(CONFIG_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+#ifdef HAS_LED
+        GPIO_setConfig(CONF_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+#endif /*HAS_LED*/
 #ifdef HAS_RS232
-        GPIO_setConfig(2, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_PS_RS232, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 #endif /*HAS_RS232*/
+#ifdef  HAS_TCAN4550
+        GPIO_setConfig(CONF_GPIO_CAN_CS, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+#endif /* HAS_TCAN4550 */
 #ifdef LAUNCHXL_CC26X2R1
         GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
@@ -167,11 +103,16 @@ bool gpio_init(void) {
             GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
         }
 #endif
+#ifdef HAS_LED
         GPIO_writeDio(DIO_LED_RED, 0);
         GPIO_writeDio(DIO_LED_GREEN, 0);
+#endif /*HAS_LED*/
 #ifdef HAS_RS232
         GPIO_writeDio(DIO_PS_RS232, 1);
 #endif /*HAS_RS232*/
+#ifdef  HAS_TCAN4550
+        GPIO_writeDio(DIO_SS1_CAN, 1);
+#endif /* HAS_TCAN4550 */
     }
     return res;
 }
@@ -184,9 +125,6 @@ bool gpio_get_state(uint8_t dio_number, uint8_t* logic_level) {
 
 bool gpio_set_state(uint8_t dio_number, uint8_t logic_level) {
     GPIO_writeDio(dio_number, logic_level);
-#if 0
-    GPIO_write((uint_least8_t)port_pin_num, (unsigned int)logic_level);
-#endif
     return true;
 }
 

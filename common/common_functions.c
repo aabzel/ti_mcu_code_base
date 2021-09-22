@@ -88,6 +88,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_UART1
     measure_task_interval(TASK_ID_UART1, 2000, proc_uart1, loop_start_time_us);
 #endif /*HAS_UART1*/
+
     // up fine^
 #ifdef HAS_UBLOX
     measure_task_interval(TASK_ID_UBX, 10000, ubx_proc_frame, loop_start_time_us);

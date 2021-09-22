@@ -11,33 +11,6 @@
 #include "board_layout.h"
 
 #define IOC_BASE 0x40081000
-
-
-#define CONFIG_GPIO_LED_0 0
-#define CONFIG_GPIO_LED_1 1
-#ifdef HAS_SX1262
-#define CONFIG_GPIO_LORA_CS 2
-#define CONFIG_GPIO_LORA_RST 3
-#define CONFIG_GPIO_LORA_INT 4
-#define CONFIG_GPIO_LORA_BSY 5
-#define LORA_PINS_CNT 4
-#else
-#define LORA_PINS_CNT 0
-#endif /*HAS_SX1262*/
-//#define CONFIG_GPIO_LOOP_SENSOR 6
-#ifdef LAUNCHXL_CC26X2R1
-#define CONFIG_GPIO_BUTTON_0 6
-#define CONFIG_GPIO_BUTTON_1 7
-#define BTN_PINS_CNT 2
-/* DIO13, LaunchPad Button BTN-1 (Left) */
-extern const uint_least8_t CONFIG_GPIO_BUTTON_0_CONST;
-/* DIO14, LaunchPad Button BTN-2 (Right) */
-extern const uint_least8_t CONFIG_GPIO_BUTTON_1_CONST;
-#else
-#define BTN_PINS_CNT 0
-#endif /*LAUNCHXL_CC26X2R1*/
-#define GPIO_COUNT (2 +LORA_PINS_CNT+BTN_PINS_CNT+1)
-
 /* DIO6, LaunchPad LED Red */
 extern const uint_least8_t CONFIG_GPIO_LED_0_CONST;
 /* DIO7, LaunchPad LED Green */
@@ -47,8 +20,6 @@ extern const uint_least8_t CONFIG_GPIO_LED_1_CONST;
 /* LEDs are active high */
 #define CONFIG_LED_ON (1)
 #define CONFIG_LED_OFF (0)
-
-extern PIN_Config BoardGpioInitTable[];
 
 #ifdef LAUNCHXL_CC26X2R1
 /* LaunchPad Button BTN-1 (Left), Parent Signal: CONFIG_GPIO_BUTTON_0 GPIO Pin, (DIO13) */

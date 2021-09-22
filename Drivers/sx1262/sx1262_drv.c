@@ -12,6 +12,7 @@ speed up to 16 MHz
 #include <string.h>
 
 #include "bit_utils.h"
+#include "board_layout.h"
 #include "byte_utils.h"
 #include "clocks.h"
 #include "data_utils.h"
@@ -657,10 +658,10 @@ bool sx1262_wakeup(void) {
 
 static bool sx1262_init_gpio(void) {
     bool res = true;
-    GPIO_setConfig(CONFIG_GPIO_LORA_RST, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
-    GPIO_setConfig(CONFIG_GPIO_LORA_CS, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
-    GPIO_setConfig(CONFIG_GPIO_LORA_INT, GPIO_CFG_IN_NOPULL);
-    GPIO_setConfig(CONFIG_GPIO_LORA_BSY, GPIO_CFG_IN_NOPULL);
+    GPIO_setConfig(CONF_GPIO_LORA_RST, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+    GPIO_setConfig(CONF_GPIO_LORA_CS, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+    GPIO_setConfig(CONF_GPIO_LORA_INT, GPIO_CFG_IN_NOPULL);
+    GPIO_setConfig(CONF_GPIO_LORA_BSY, GPIO_CFG_IN_NOPULL);
 
     GPIO_writeDio(DIO_SX1262_SS, 1);
     GPIO_writeDio(DIO_SX1262_RST, 1);
@@ -774,7 +775,7 @@ bool sx1262_init(void) {
     LOG_INFO(LORA, "Init SX1262");
     memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
     res = sx1262_load_params(&Sx1262Instance) && res;
-
+    GPIO_writeDio(DIO_SX1262_SS, 1);
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;

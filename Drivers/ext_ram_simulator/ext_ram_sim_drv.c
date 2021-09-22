@@ -11,7 +11,7 @@ uint8_t memory[EXT_RAM_SIZE];
 uint32_t volatile ext_ram_busy_cnt = 0;
 uint32_t sem_wait = 100;
 
-bool ext_ram_read(uint32_t address, uint8_t* read_data, uint32_t size) {
+bool ext_ram_read(uint32_t address, uint8_t* const read_data, uint32_t size) {
     bool res = false;
     if(false == mem_busy) {
         mem_busy = true;
@@ -26,7 +26,7 @@ bool ext_ram_read(uint32_t address, uint8_t* read_data, uint32_t size) {
     return res;
 }
 
-bool ext_ram_write(uint32_t address, uint8_t* wr_data, uint32_t size) {
+bool ext_ram_write(uint32_t address, const uint8_t* const  wr_data, uint32_t size) {
     bool res = false;
     if(false == mem_busy) {
         mem_busy = true;

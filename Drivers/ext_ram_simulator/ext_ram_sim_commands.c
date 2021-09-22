@@ -66,7 +66,7 @@ bool ext_ram_read_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-          BaseType_t ret = 0;
+         BaseType_t ret = 0;
         ret = xSemaphoreTake(ext_ram_sem, sem_wait);
         if(pdTRUE == ret) {
             res = ext_ram_read(address, read_data, size);

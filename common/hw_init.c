@@ -30,6 +30,10 @@
 #include "flash_nvs_drv.h"
 #endif
 
+#ifdef HAS_TCAN4550
+#include "tcan4550_drv.h"
+#endif /*HAS_TCAN4550*/
+
 #ifdef HAS_I2C
 #include "i2c_drv.h"
 #endif
@@ -114,6 +118,10 @@ bool hw_init(void) {
 #ifdef HAS_UART
   res = try_init(uart_init(),"UART") && res;
 #endif /*HAS_UART*/
+
+#ifdef HAS_TCAN4550
+  res = try_init(tcan4550_init(),"tcan4550") && res;
+#endif /*HAS_TCAN4550*/
 
 #ifdef HAS_TIM
   res = try_init(tim_init(),"TIM") && res;
