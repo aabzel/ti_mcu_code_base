@@ -19,7 +19,7 @@ const Pin_t PinTable[DIO_CNT] = {
 GPIO_PinConfig gpioPinConfigs[GPIO_COUNT] = {
     DIO_LED_GREEN | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* LED Green */
     DIO_LED_RED | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* LED Red */
-    DIO_PS_RS232 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*RS232 TX enable*/
+    DIO_PS_RS232 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH,  /*RS232 TX enable*/
     DIO_SX1262_SS | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*LoRa CS*/
     DIO_SX1262_RST | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*LoRa Reset*/
     DIO_SX1262_INT | GPIO_CFG_IN_NOPULL,                                          /*LoRa int*/
@@ -39,7 +39,6 @@ PIN_Config BoardGpioInitTable[GPIO_COUNT + 1] = {
     PIN_TERMINATE
 };
 
-
 GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
    NULL, /* CONFIG_GPIO_LED_0 : LaunchPad LED Red */
    NULL, /* CONFIG_GPIO_LED_1 : LaunchPad LED Green */
@@ -49,6 +48,3 @@ GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
    NULL, /* LoRa int*/
    NULL  /* LoRa Busy*/
 };
-
-
-

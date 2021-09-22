@@ -99,7 +99,7 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
     uint8_t logic_level = 0xFF;
 
     uint8_t io_pin = 0;
-    char temp_str[120];
+    char temp_str[200];
     for(io_pin = 0; io_pin < ARRAY_SIZE(PinTable); io_pin++) {
         res = gpio_get_state(io_pin, &logic_level);
         if(true == res) {
