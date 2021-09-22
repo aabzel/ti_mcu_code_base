@@ -1,9 +1,9 @@
 #include "boot_driver.h"
 
+#include <hw_nvic.h>
+#include <hw_types.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <hw_types.h>
-#include <hw_nvic.h>
 
 #include "core_driver.h"
 #include "flash_drv.h"
@@ -16,8 +16,7 @@
 typedef void (*pFunction)(void);
 pFunction Jump_To_Application;
 
-
-static bool disable_interrupt(void){
+static bool disable_interrupt(void) {
     HWREG(NVIC_DIS0) = 0xffffffff;
     HWREG(NVIC_DIS1) = 0xffffffff;
     return true;
@@ -58,8 +57,8 @@ bool boot_try_app(void) {
     uint16_t real_len = 0;
     CmdBoot_t stay_in_boot = BOOT_CMD_ENDEF;
     res = mm_get(PAR_ID_BOOT_CMD, (uint8_t*)&stay_in_boot, sizeof(stay_in_boot), &real_len);
-    if (res) {
-        if (sizeof(stay_in_boot)!=real_len) {
+    if(res) {
+        if(sizeof(stay_in_boot) != real_len) {
             res = false;
             LOG_ERROR(BOOT, "boot cmd len error %u", real_len);
         }
@@ -67,9 +66,9 @@ bool boot_try_app(void) {
         LOG_ERROR(BOOT, "Lack of boot cmd ParamId: %u", PAR_ID_BOOT_CMD);
     }
 
-    if(BOOT_CMD_STAY_ON==stay_in_boot){
+    if(BOOT_CMD_STAY_ON == stay_in_boot) {
         res = true;
-    }else if(BOOT_CMD_LAUNCH_APP==stay_in_boot){
+    } else if(BOOT_CMD_LAUNCH_APP == stay_in_boot) {
         uint32_t app_start_address = 0;
         res = mm_get(PAR_ID_APP_START, (uint8_t*)&app_start_address, sizeof(app_start_address), &real_len);
         if(res) {
@@ -84,4 +83,3 @@ bool boot_try_app(void) {
     }
     return res;
 }
-

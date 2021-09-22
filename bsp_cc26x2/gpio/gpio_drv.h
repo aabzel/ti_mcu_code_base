@@ -31,7 +31,6 @@ extern const uint_least8_t CONFIG_GPIO_LED_1_CONST;
 #define CONFIG_TI_DRIVERS_PIN_COUNT 2
 #endif
 
-
 bool gpio_init(void);
 
 /*GPIO API*/

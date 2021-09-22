@@ -10,8 +10,8 @@
 
 #include "bit_utils.h"
 #include "clocks.h"
-#include "sys_config.h"
 #include "gpio_drv.h"
+#include "sys_config.h"
 
 SpiInstance_t SpiInstance[SPI_CNT] = {{
                                           .SpiHandle = NULL,
@@ -56,7 +56,7 @@ const SPICC26X2DMA_HWAttrs spiCC26X2DMAHWAttrs[SPI_CNT] = {{.baseAddr = SSI0_BAS
                                                             .txChannelBitMask = 1 << UDMA_CHAN_SSI0_TX,
                                                             .mosiPin = DIO_SPI0_MOSI,
                                                             .misoPin = DIO_SPI0_MISO,
-                                                            .clkPin =  DIO_SPI0_SCLK,
+                                                            .clkPin = DIO_SPI0_SCLK,
                                                             .csnPin = PIN_UNASSIGNED,
                                                             .minDmaTransferSize = 10},
                                                            {.baseAddr = SSI1_BASE,
@@ -83,10 +83,14 @@ const SPI_Config SPI_config[SPI_CNT] = {
 };
 
 #ifdef HAS_SPI_INT
-uint32_t spi0_tx_cnt = 0;
-static void SPI0_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { spi0_tx_cnt++; }
-uint32_t spi1_tx_cnt = 0;
-static void SPI1_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { spi1_tx_cnt++; }
+static void SPI0_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { SpiInstance[0].it_cnt++; }
+static void SPI1_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { SpiInstance[1].it_cnt++; }
+
+static SPI_CallbackFxn spiCallbackFunctions[SPI_CNT] = {
+    SPI0_CallBack,
+    SPI1_CallBack,
+};
+
 #endif
 
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SPI_CallbackFxn transferCallbackFxn) {
@@ -105,7 +109,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SP
     SpiInstance[spi_num].SpiParams.transferMode = SPI_MODE_BLOCKING;
     SpiInstance[spi_num].SpiParams.transferCallbackFxn = NULL;
 #ifdef HAS_SPI_INT
-    SpiInstance[spi_num].SpiParams.transferCallbackFxn = transferCallbackFxn;
+    SpiInstance[spi_num].SpiParams.transferCallbackFxn = spiCallbackFunctions[spi_num];
     SpiInstance[spi_num].SpiParams.transferMode = SPI_MODE_CALLBACK;
 #endif
     SpiInstance[spi_num].SpiParams.transferTimeout = SPI_WAIT_FOREVER;
@@ -133,15 +137,35 @@ bool spi_init(void) {
     return res;
 }
 
-bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
+static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
+    bool res = false;
+    uint32_t cnt = 0;
+    while(1) {
+        if(init_it_cnt < SpiInstance[spi_num].it_cnt) {
+            res = true;
+            break;
+        }
+        cnt++;
+        if(100000000 < cnt) {
+            res = false;
+            break;
+        }
+    }
+    return res;
+}
+
+bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
     SPI_Transaction masterTransaction;
-
+    uint32_t init_it_cnt = 0;
     masterTransaction.arg = NULL;
     masterTransaction.count = tx_array_len;
     masterTransaction.rxBuf = NULL;
     masterTransaction.txBuf = (void*)tx_array;
 
+    if(spi_num < SPI_CNT) {
+        init_it_cnt = SpiInstance[spi_num].it_cnt;
+    }
     switch(spi_num) {
     case 0:
         res = SPI_transfer(SpiInstance[0].SpiHandle, &masterTransaction);
@@ -154,7 +178,10 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
         break;
     }
     if(res) {
-        SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
+        res = spi_wait_tx(spi_num, init_it_cnt);
+        if(res) {
+            SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
+        }
     }
     return res;
 }
@@ -162,11 +189,15 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
     SPI_Transaction masterTransaction;
+    uint32_t init_it_cnt = 0;
 
     masterTransaction.arg = NULL;
     masterTransaction.count = rx_array_len;
     masterTransaction.rxBuf = (void*)rx_array;
     masterTransaction.txBuf = NULL;
+    if(spi_num < SPI_CNT) {
+        init_it_cnt = SpiInstance[spi_num].it_cnt;
+    }
 
     switch(spi_num) {
     case SPI0_INX:
@@ -180,7 +211,10 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
         break;
     }
     if(res) {
-        SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
+        res = spi_wait_tx(spi_num, init_it_cnt);
+        if(res) {
+            SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
+        }
     }
 
     return res;

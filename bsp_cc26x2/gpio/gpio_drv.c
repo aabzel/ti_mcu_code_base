@@ -9,8 +9,8 @@
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/pin/PINCC26XX.h>
 
-#include "board_layout.h"
 #include "bit_utils.h"
+#include "board_layout.h"
 #include "data_utils.h"
 
 const GPIOCC26XX_Config GPIOCC26XX_config = {.pinConfigs = (GPIO_PinConfig*)gpioPinConfigs,
@@ -18,7 +18,6 @@ const GPIOCC26XX_Config GPIOCC26XX_config = {.pinConfigs = (GPIO_PinConfig*)gpio
                                              .numberOfPinConfigs = 4,
                                              .numberOfCallbacks = 4,
                                              .intPriority = (~0)};
-
 
 const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {.intPriority = (~0), .swiPriority = 0};
 
@@ -78,7 +77,7 @@ bool gpio_init(void) {
 #ifdef HAS_RS232
         GPIO_setConfig(CONF_GPIO_PS_RS232, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 #endif /*HAS_RS232*/
-#ifdef  HAS_TCAN4550
+#ifdef HAS_TCAN4550
         GPIO_setConfig(CONF_GPIO_CAN_CS, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
 #endif /* HAS_TCAN4550 */
 #ifdef LAUNCHXL_CC26X2R1
@@ -110,7 +109,7 @@ bool gpio_init(void) {
 #ifdef HAS_RS232
         GPIO_writeDio(DIO_PS_RS232, 1);
 #endif /*HAS_RS232*/
-#ifdef  HAS_TCAN4550
+#ifdef HAS_TCAN4550
         GPIO_writeDio(DIO_SS1_CAN, 1);
 #endif /* HAS_TCAN4550 */
     }

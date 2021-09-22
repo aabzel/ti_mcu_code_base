@@ -10,7 +10,7 @@
 #include "semphr.h"
 
 extern uint32_t sem_wait;
-extern uint32_t sem_err_cnt ;
+extern uint32_t sem_err_cnt;
 extern SemaphoreHandle_t ext_ram_sem;
 extern uint8_t memory[EXT_RAM_SIZE];
 extern volatile uint32_t ext_ram_busy_cnt;

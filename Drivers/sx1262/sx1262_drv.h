@@ -279,6 +279,7 @@ bool sx1262_reset_stats(void);
 bool sx1262_clear_dev_error(void);
 bool sx1262_clear_fifo(void);
 bool sx1262_clear_irq(uint16_t clear_irq_param);
+bool sx1262_chip_select(bool state);
 bool sx1262_conf_rx(void);
 bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
                         uint16_t rx_array_len);

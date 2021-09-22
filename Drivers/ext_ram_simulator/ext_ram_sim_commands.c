@@ -6,13 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "FreeRTOS.h"
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
 #include "ext_ram_sim_drv.h"
 #include "io_utils.h"
 #include "log.h"
-#include "FreeRTOS.h"
 #include "semphr.h"
 
 bool ext_ram_diag_command(int32_t argc, char* argv[]) {
@@ -66,18 +66,18 @@ bool ext_ram_read_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-         BaseType_t ret = 0;
+        BaseType_t ret = 0;
         ret = xSemaphoreTake(ext_ram_sem, sem_wait);
         if(pdTRUE == ret) {
             res = ext_ram_read(address, read_data, size);
             if(res) {
                 print_mem(read_data, size, true);
             } else {
-               LOG_ERROR(SYS, "Read error");
+                LOG_ERROR(SYS, "Read error");
             }
             xSemaphoreGive(ext_ram_sem);
-        }else{
-           sem_err_cnt++;
+        } else {
+            sem_err_cnt++;
         }
     }
     return res;
@@ -112,8 +112,8 @@ bool ext_ram_write_command(int32_t argc, char* argv[]) {
                 LOG_INFO(SYS, "OK!");
             }
             xSemaphoreGive(ext_ram_sem);
-        }else{
-           sem_err_cnt++;
+        } else {
+            sem_err_cnt++;
         }
     }
 

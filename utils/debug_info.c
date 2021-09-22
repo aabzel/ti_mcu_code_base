@@ -54,9 +54,9 @@ bool is_little_endian(void) {
     return bint.u8[0] == 4;
 }
 
-static bool print_fw_type(ostream_t* stream){
+static bool print_fw_type(ostream_t* stream) {
     bool res = false;
-    if(stream){
+    if(stream) {
 #ifdef HAS_BOOTLOADER
         oputs(stream, "Bootloader ");
 #endif /*HAS_BOOTLOADER*/
@@ -108,7 +108,6 @@ bool print_version_s(ostream_t* stream) {
 #ifdef __GNUC__
         oputs(stream, "GCC" CRLF);
 #endif /**/
-
 
 #ifndef USE_HAL_DRIVER
         oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());

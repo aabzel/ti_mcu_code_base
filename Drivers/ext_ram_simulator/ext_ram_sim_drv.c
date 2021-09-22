@@ -26,7 +26,7 @@ bool ext_ram_read(uint32_t address, uint8_t* const read_data, uint32_t size) {
     return res;
 }
 
-bool ext_ram_write(uint32_t address, const uint8_t* const  wr_data, uint32_t size) {
+bool ext_ram_write(uint32_t address, const uint8_t* const wr_data, uint32_t size) {
     bool res = false;
     if(false == mem_busy) {
         mem_busy = true;
@@ -61,9 +61,9 @@ bool ext_ram_init(void) {
     ext_ram_sem = xSemaphoreCreateBinary();
     if(NULL == ext_ram_sem) {
         res = false;
-    }else{
+    } else {
         xSemaphoreGive(ext_ram_sem);
     }
-    
+
     return res;
 }

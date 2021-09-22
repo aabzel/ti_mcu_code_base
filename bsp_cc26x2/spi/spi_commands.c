@@ -40,17 +40,19 @@ bool spi_diag_command(int32_t argc, char* argv[]) {
 bool spi_diag_int_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t spi_num = 0;
-    static const table_col_t cols[] = {{5, "No"}, {4, "rx"}, {4, "tx"}, {6, "rxTo"}, {6, "RxOrun"}, {10, "name"}};
+    static const table_col_t cols[] = {{5, "No"},   {4, "rx"},     {4, "tx"},   {4, "it"},
+                                       {6, "rxTo"}, {6, "RxOrun"}, {10, "name"}};
     char temp_str[120];
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     for(spi_num = 0; spi_num < SPI_CNT; spi_num++) {
         strcpy(temp_str, TSEP);
         snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, spi_num);
-        snprintf(temp_str, sizeof(temp_str), "%s %1u " TSEP, temp_str, spi_get_receive_int((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s %1u " TSEP, temp_str, spi_get_transmit_int((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s %1u " TSEP, temp_str,
+        snprintf(temp_str, sizeof(temp_str), "%s %2u " TSEP, temp_str, spi_get_receive_int((SpiName_t)spi_num));
+        snprintf(temp_str, sizeof(temp_str), "%s %2u " TSEP, temp_str, spi_get_transmit_int((SpiName_t)spi_num));
+        snprintf(temp_str, sizeof(temp_str), "%s %2u " TSEP, temp_str, SpiInstance[spi_num].it_cnt);
+        snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str,
                  spi_get_receive_timeout_interrupt((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s %1u " TSEP, temp_str,
+        snprintf(temp_str, sizeof(temp_str), "%s %4u " TSEP, temp_str,
                  spi_get_receive_overrun_interrupt((SpiName_t)spi_num));
         snprintf(temp_str, sizeof(temp_str), "%s %s " TSEP, temp_str, SpiInstance[spi_num].name);
         snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
@@ -85,7 +87,7 @@ bool spi_write_command(int32_t argc, char* argv[]) {
             if(false == res) {
                 LOG_ERROR(SPI, "Unable to send SPI");
             } else {
-                io_printf(CRLF);
+                LOG_INFO(SPI, "OK");
             }
         }
     } else {

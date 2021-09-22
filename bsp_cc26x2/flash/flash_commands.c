@@ -170,7 +170,6 @@ bool flash_read_command(int32_t argc, char* argv[]) {
         }
 
         if(true == res) {
-
         }
     } else {
         LOG_ERROR(NVS, "Usage: fr offset buffer_size");

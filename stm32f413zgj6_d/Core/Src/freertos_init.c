@@ -27,7 +27,6 @@ TaskHandle_t Task2Handle;
 uint32_t wr_period_ms = 2;
 uint32_t rd_period_ms = 2;
 
-
 void StartTaskReader(void* argument) {
     bool res = false;
     uint32_t read_cur = 0;
@@ -45,7 +44,7 @@ void StartTaskReader(void* argument) {
                 if(0 != diff) {
                     io_printf("read cnt: %u" CRLF, read_cur);
                 }
-                //if(1 < diff) {
+                // if(1 < diff) {
                 //    LOG_ERROR(SYS, "cur %u prev %u diff %u", read_prev, read_cur, diff);
                 //}
                 read_prev = read_cur;
@@ -54,8 +53,8 @@ void StartTaskReader(void* argument) {
                 err_cnt++;
             }
             xSemaphoreGive(ext_ram_sem);
-        }else{
-           sem_err_cnt++;
+        } else {
+            sem_err_cnt++;
         }
         vTaskDelay(rd_period_ms);
     }
@@ -107,12 +106,14 @@ bool freertos_init(void) {
     }
 #endif
 
-    stat = xTaskCreate((TaskFunction_t)StartTaskReader, "Reader", (uint16_t)128 * 4, NULL, configMAX_PRIORITIES/2, &Task2Handle);
+    stat = xTaskCreate((TaskFunction_t)StartTaskReader, "Reader", (uint16_t)128 * 4, NULL, configMAX_PRIORITIES / 2,
+                       &Task2Handle);
     if(pdPASS != stat) {
         out_res = false;
     }
 
-    stat = xTaskCreate((TaskFunction_t)CliTask, "CLI", (uint16_t)128 * 8, NULL, configMAX_PRIORITIES-2, &CliTaskHandle);
+    stat =
+        xTaskCreate((TaskFunction_t)CliTask, "CLI", (uint16_t)128 * 8, NULL, configMAX_PRIORITIES - 2, &CliTaskHandle);
     if(pdPASS != stat) {
         out_res = false;
     }

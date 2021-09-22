@@ -9,7 +9,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #include "macro_utils.h"
 
 /*Hardware related code start*/
@@ -28,7 +27,7 @@
 
 bool flash_init(void);
 bool flash_wr(uint32_t addr, uint8_t* array, uint32_t array_len);
-bool flash_erase_pages(uint8_t page_start,uint8_t page_end );
+bool flash_erase_pages(uint8_t page_start, uint8_t page_end);
 bool flash_erase_sector(uint32_t sector_address);
 bool flash_read(uint32_t in_flash_addr, uint8_t* rx_array, uint32_t array_len);
 bool is_errased(uint32_t addr, uint32_t size);

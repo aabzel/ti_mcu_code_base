@@ -15,9 +15,6 @@
 #include "memory_layout.h"
 #include "none_blocking_pause.h"
 
-
-
-
 bool flash_init(void) {
     bool res = true;
     return res;
@@ -110,7 +107,6 @@ bool flash_erase_sector(uint32_t sector_address) {
     return res;
 }
 
-
 bool is_errased(uint32_t addr, uint32_t size) {
     bool res = false;
     res = is_arr_pat((uint8_t*)addr, size, 0xff);
@@ -188,22 +184,21 @@ bool flash_find_spare_region(uint32_t* out_addr, uint32_t size) {
     return res;
 }
 
-uint32_t flash_page2addr(uint8_t page){
-    uint32_t address = page*FLASH_SECTOR_SIZE;
+uint32_t flash_page2addr(uint8_t page) {
+    uint32_t address = page * FLASH_SECTOR_SIZE;
     return address;
 }
 
-bool flash_erase_pages(uint8_t page_start,uint8_t page_end ) {
+bool flash_erase_pages(uint8_t page_start, uint8_t page_end) {
     bool res = false;
-    if(page_start<=page_end){
+    if(page_start <= page_end) {
         res = true;
         uint8_t page = 0;
-        uint32_t sector_address=0;
-        for(page=page_start; page<=page_end; page++) {
-            sector_address = flash_page2addr(  page);
-            res = flash_erase_sector(  sector_address)&&res;
+        uint32_t sector_address = 0;
+        for(page = page_start; page <= page_end; page++) {
+            sector_address = flash_page2addr(page);
+            res = flash_erase_sector(sector_address) && res;
         }
     }
     return res;
 }
-

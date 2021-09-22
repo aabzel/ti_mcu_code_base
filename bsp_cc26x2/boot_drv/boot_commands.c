@@ -103,9 +103,9 @@ bool boot_jump_addr_command(int32_t argc, char* argv[]) {
 
 bool bool_erase_app(int32_t argc, char* argv[]) {
     bool res = false;
-    if (0 == argc) {
-        res = flash_erase_pages(APP_PAGE_START,APP_PAGE_START+APP_PAGE_CNT);
-        if (res) {
+    if(0 == argc) {
+        res = flash_erase_pages(APP_PAGE_START, APP_PAGE_START + APP_PAGE_CNT);
+        if(res) {
             LOG_ERROR(BOOT, "OK");
         } else {
             LOG_ERROR(BOOT, "Unable app erase");

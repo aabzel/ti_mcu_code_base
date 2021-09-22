@@ -23,6 +23,11 @@ speed up to 16 MHz
 #include "lora_handler.h"
 #include "none_blocking_pause.h"
 #include "spi_drv.h"
+#include "sys_config.h"
+
+#ifndef HAS_SPI
+#error "SX1262 requires SPI driver"
+#endif
 
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
@@ -42,11 +47,11 @@ speed up to 16 MHz
         res = sx1262_wait_on_busy(0);                                                                                  \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
-            GPIO_writeDio(DIO_SX1262_SS, 0);                                                                        \
-            wait_ms(1);                                                                                                \
+            res = sx1262_chip_select(true);                                                                            \
+            res = wait_ms(2);                                                                                          \
             res = CALL_BACK;                                                                                           \
-            wait_ms(1);                                                                                                \
-            GPIO_writeDio(DIO_SX1262_SS, 1);                                                                        \
+            res = wait_ms(2);                                                                                          \
+            res = sx1262_chip_select(false);                                                                           \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \
             res = false;                                                                                               \
@@ -165,6 +170,7 @@ bool sx1262_is_connected(void) {
     return res;
 }
 
+/*TODO: rewrite*/
 #define READ_REG_HEADER_SZ 3
 static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
     bool res = false;
@@ -191,7 +197,20 @@ static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
 
 bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
     bool res = false;
-    SX1262_CHIP_SELECT(sx1262_read_reg_proc(reg_addr, reg_val));
+    res = false;
+    res = sx1262_wait_on_busy(0);
+    if(true == res) {
+        res = true;
+        res = sx1262_chip_select(true);
+        res = wait_ms(2);
+        res = sx1262_read_reg_proc(reg_addr, reg_val);
+        res = wait_ms(2);
+        res = sx1262_chip_select(false);
+    } else {
+        Sx1262Instance.busy_cnt++;
+        res = false;
+    }
+
     return res;
 }
 
@@ -1285,5 +1304,21 @@ bool sx1262_process(void) {
         Sx1262Instance.rand_num = tempSx1262Instance.rand_num;
     }
 
+    return res;
+}
+
+bool sx1262_chip_select(bool state) {
+    bool res = false;
+    if(true == state) {
+        GPIO_writeDio(DIO_SX1262_SS, 0);
+        GPIO_writeDio(DIO_SS1_CAN, 1);
+        res = true;
+    } else if(false == state) {
+        GPIO_writeDio(DIO_SX1262_SS, 1);
+        GPIO_writeDio(DIO_SS1_CAN, 1);
+        res = true;
+    } else {
+        res = false;
+    }
     return res;
 }

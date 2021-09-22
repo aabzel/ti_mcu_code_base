@@ -24,11 +24,12 @@ typedef struct xSpiInstance_t {
   uint32_t rxtx_cnt;
   uint32_t tx_cnt;
   uint32_t err_cnt;
+  volatile uint32_t it_cnt;
   uint32_t rx_buff_size;
   uint32_t tx_cpl_cnt;
   bool init_done;
-    uint32_t base_addr;
 #ifdef DeviceFamily_CC26X2
+  uint32_t base_addr;
   SPI_Handle SpiHandle;
   SPI_Params SpiParams;
 #endif
@@ -38,6 +39,5 @@ typedef struct xSpiInstance_t {
   char name[SPI_NAME_SZ_BYTE];
   bool enable;
 }SpiInstance_t;
-
 
 #endif /* SPI_COMMON_H */

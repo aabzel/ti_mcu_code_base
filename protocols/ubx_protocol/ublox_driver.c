@@ -7,6 +7,10 @@
 #include "uart_drv.h"
 #include "ubx_protocol.h"
 
+#ifndef HAS_UART
+#error "Ublox driver requires UART driver"
+#endif
+
 keyValItem_t keyValTable[UBX_KEY_CNT] = {{0x30210001, 0x00, UBX_U2}};
 
 xNavInfo_t NavInfo;
