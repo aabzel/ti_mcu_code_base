@@ -12,8 +12,10 @@
 #include "debug_info.h"
 #include "diag_page_nums.h"
 #include "diag_report.h"
+#include "io_utils.h"
 #include "flash_drv.h"
 #include "log.h"
+#include "none_blocking_pause.h"
 #include "str_utils.h"
 #include "table_utils.h"
 
@@ -23,6 +25,7 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
     char line_str[120];
     uint32_t prot = 0;
     uint32_t spare = 0;
+    bool is_print = false;
     uint32_t busy = 0;
     float usage_pec = 0.0f;
     static const table_col_t cols[] = {{5, "num"},   {11, "Start"}, {11, "End"}, {7, "WrSta"},
@@ -43,10 +46,12 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
         flash_scan((uint8_t*)flash_addr, FLASH_SECTOR_SIZE, &usage_pec, &spare, &busy);
         snprintf(line_str, sizeof(line_str), "%s %6s" TSEP, line_str, (FLASH_SECTOR_SIZE == spare) ? "spare" : "busy");
         snprintf(line_str, sizeof(line_str), "%s %6.2f " TSEP, line_str, usage_pec);
-        snprintf(line_str, sizeof(line_str), "%s", line_str);
-        if(is_contain(line_str, key_word1, key_word2)) {
+        snprintf(line_str, sizeof(line_str), "%s\r\n", line_str);
+        is_print = is_contain(line_str, key_word1, key_word2);
+        if(is_print) {
             io_printf(TSEP " %3u ", num);
-            io_printf("%s" CRLF, line_str);
+            io_printf("%s", line_str);
+            wait_in_loop_ms(4);
             num++;
         }
     }

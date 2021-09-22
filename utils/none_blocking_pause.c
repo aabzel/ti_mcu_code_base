@@ -34,6 +34,7 @@ bool wait_in_loop_ms(uint32_t wait_pause_ms) {
 bool wait_ms(int32_t wait_pause_ms) {
   uint32_t start_ms = 0U;
   uint32_t curr_ms = 0U;
+  uint32_t cnt = 0;
   bool res = false;
   start_ms = get_time_ms32();
   bool loop = true;
@@ -45,6 +46,12 @@ bool wait_ms(int32_t wait_pause_ms) {
       res = true;
       loop = false;
       break;
+    }
+    cnt++;
+    if((2500*wait_pause_ms)<cnt){
+        res = false;
+        loop = false;
+        break;
     }
   }
   return res;
