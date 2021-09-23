@@ -74,3 +74,19 @@ uint64_t sw_pause_ms(uint32_t delay_in_ms) {
     }
     return cnt;
 }
+
+uint32_t clock_incr_per_ms(uint32_t delay_ms) {
+    uint32_t cnt = 0;
+    uint32_t start_time_ms = get_time_ms32();
+    uint32_t cut_time_ms = 0;
+    uint32_t diff_ms = 0;
+    while(1) {
+        cut_time_ms = get_time_ms32();
+        diff_ms = cut_time_ms - start_time_ms;
+        if(delay_ms < diff_ms) {
+            break;
+        }
+        cnt++;
+    }
+    return cnt;
+}

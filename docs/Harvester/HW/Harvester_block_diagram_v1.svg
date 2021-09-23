@@ -1217,11 +1217,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="432.625"
-     inkscape:cy="284.25"
+     inkscape:zoom="16"
+     inkscape:cx="272.09375"
+     inkscape:cy="324.1875"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer7"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1260,6 +1260,14 @@
        position="0,210"
        orientation="0,297.0"
        id="guide16148" />
+    <sodipodi:guide
+       position="74.116408,115.60989"
+       orientation="1,0"
+       id="guide15511" />
+    <sodipodi:guide
+       position="76.506141,140"
+       orientation="1,0"
+       id="guide15893" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -1306,14 +1314,14 @@
        x="28.043137"
        y="61.759102" />
     <rect
-       style="opacity:0.998;fill:#f2f2f2;stroke:#000000;stroke-width:0.353053"
+       style="opacity:0.998;fill:#cacaca;stroke:#000000;stroke-width:0.353053;fill-opacity:1"
        id="rect979"
        width="21.106422"
        height="13.809372"
        x="103.3609"
        y="61.961975" />
     <rect
-       style="opacity:0.998;fill:#f2f2f2;stroke:#000000;stroke-width:0.352544"
+       style="opacity:0.998;fill:#cacaca;stroke:#000000;stroke-width:0.352544;fill-opacity:1"
        id="rect979-7"
        width="21.1562"
        height="13.737018"
@@ -1325,7 +1333,7 @@
        id="path1642-2"
        sodipodi:nodetypes="ccccc" />
     <rect
-       style="fill:#f2f2f2;stroke:#000000;stroke-width:0.536286"
+       style="fill:#cacaca;stroke:#000000;stroke-width:0.536286;fill-opacity:1"
        id="rect835-6"
        width="46.231304"
        height="71.60804"
@@ -1464,43 +1472,9 @@
        d="M 21.20086,133.38031 H 39.348286"
        id="path1015" />
     <path
-       style="fill:none;stroke:#009cff;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1841);marker-end:url(#marker1591)"
-       d="M 78.126506,141.22616 H 58.278983"
-       id="path1021" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.39014px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.260651"
-       x="58.935909"
-       y="140.6843"
-       id="text1025"><tspan
-         sodipodi:role="line"
-         id="tspan1023"
-         x="58.935909"
-         y="140.6843"
-         style="font-size:1.39014px;stroke-width:0.260651">UART 38400 8N1</tspan></text>
-    <path
        style="fill:none;stroke:#000000;stroke-width:0.13101;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1188)"
        d="M 78.211113,137.03712 H 58.278983"
        id="path985-5" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.260651px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 68.407778,140.5912 -1.594157,1.59415"
-       id="path904" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.1413px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker3703);marker-end:url(#marker3989)"
-       d="m 112.06141,75.716379 v 10.61476"
-       id="path1004" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.62274px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.135853"
-       x="113.09072"
-       y="81.891808"
-       id="text1008"><tspan
-         sodipodi:role="line"
-         id="tspan1006"
-         x="113.09072"
-         y="81.891808"
-         style="font-size:3.62274px;stroke-width:0.135853">UART</tspan></text>
     <rect
        style="opacity:0.998;fill:#ffff00;stroke:#000000;stroke-width:0.300436"
        id="rect1014"
@@ -1644,7 +1618,7 @@
          y="90.773682"
          style="stroke-width:0.0581446">SPI</tspan></text>
     <rect
-       style="opacity:0.998;fill:#f9f9f9;stroke:#000000;stroke-width:0.345876"
+       style="opacity:0.998;fill:#cacaca;stroke:#000000;stroke-width:0.345876;fill-opacity:1"
        id="rect1216"
        width="18.506905"
        height="13.737021"
@@ -1945,13 +1919,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.61871px;line-height:1.25;font-family:sans-serif;fill:#0600ff;fill-opacity:1;stroke:none;stroke-width:0.0404678;stroke-opacity:1"
-       x="72.572311"
-       y="82.8834"
+       x="70.141449"
+       y="83.131447"
        id="text1208-3"><tspan
          sodipodi:role="line"
          id="tspan1206-5"
-         x="72.572311"
-         y="82.8834"
+         x="70.141449"
+         y="83.131447"
          style="fill:#0600ff;fill-opacity:1;stroke:none;stroke-width:0.0404678;stroke-opacity:1">SPI</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -2242,10 +2216,6 @@
        style="fill:none;stroke:#ff00d2;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 146.61895,141.18442 -1.63091,1.63091"
        id="path10361" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 112.7575,80.760229 -1.60724,0.92794"
-       id="path10363" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 112.93511,49.982971 -1.42904,1.429059"
@@ -2577,6 +2547,60 @@
   </g>
   <g
      inkscape:groupmode="layer"
+     id="layer12"
+     inkscape:label="UARTs">
+    <path
+       style="fill:none;stroke:#009eff;stroke-width:0.1413px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker3703);marker-end:url(#marker3989)"
+       d="m 112.06141,75.716379 v 10.61476"
+       id="path1004" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.62274px;line-height:1.25;font-family:sans-serif;fill:#00e2ff;fill-opacity:1;stroke:none;stroke-width:0.135853"
+       x="117.25344"
+       y="82.967567"
+       id="text1008"><tspan
+         sodipodi:role="line"
+         id="tspan1006"
+         x="117.25344"
+         y="82.967567"
+         style="font-size:3.62274px;stroke-width:0.135853;fill:#00e2ff;fill-opacity:1">UART</tspan></text>
+    <path
+       style="fill:none;stroke:#009eff;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 112.7575,80.760229 -1.60724,0.92794"
+       id="path10363" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.35461px;line-height:1.25;font-family:sans-serif;fill:#00e2ff;fill-opacity:1;stroke:none;stroke-width:0.0588654"
+       x="109.45654"
+       y="81.440239"
+       id="text5555-12"><tspan
+         sodipodi:role="line"
+         id="tspan5553-8"
+         x="109.45654"
+         y="81.440239"
+         style="stroke-width:0.0588654;fill:#00e2ff;fill-opacity:1">2</tspan></text>
+    <path
+       style="fill:none;stroke:#00c9ff;stroke-width:0.288641;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1841);marker-end:url(#marker1591)"
+       d="m 77.544951,116.58684 h -18.373"
+       id="path1021" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.39014px;line-height:1.25;font-family:sans-serif;fill:#00abff;fill-opacity:1;stroke:none;stroke-width:0.260651"
+       x="59.828876"
+       y="116.04498"
+       id="text1025"><tspan
+         sodipodi:role="line"
+         id="tspan1023"
+         x="59.828876"
+         y="116.04498"
+         style="font-size:1.39014px;fill:#00abff;fill-opacity:1;stroke-width:0.260651">UART 38400 8N1</tspan></text>
+    <path
+       style="fill:none;stroke:#00c9ff;stroke-width:0.260651px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 69.300746,115.95188 -1.594157,1.59415"
+       id="path904" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
      id="layer7"
      inkscape:label="SPI"
      style="display:inline">
@@ -2599,14 +2623,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#0600ff;fill-opacity:1;stroke:none;stroke-width:0.255765;stroke-opacity:1"
-       x="70.323784"
-       y="80.585907"
+       x="71.597092"
+       y="80.784348"
        id="text1552"><tspan
          sodipodi:role="line"
          id="tspan1550"
-         x="70.323784"
-         y="80.585907"
-         style="font-size:0.682038px;stroke-width:0.255765;stroke:none;stroke-opacity:1;fill:#0600ff;fill-opacity:1">3</tspan></text>
+         x="71.597092"
+         y="80.784348"
+         style="font-size:0.682038px;fill:#0600ff;fill-opacity:1;stroke:none;stroke-width:0.255765;stroke-opacity:1">3</tspan></text>
     <path
        style="fill:none;stroke:#001aff;stroke-width:0.256;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 71.260046,80.722933 0.612067,1.06013"
@@ -2851,19 +2875,19 @@
        x="85.616318"
        y="72.295097" />
     <rect
-       style="opacity:0.998;fill:#ffffff;stroke:#000000;stroke-width:0.267149;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect1991"
-       width="5.8454452"
-       height="3.5735641"
-       x="44.509918"
-       y="72.153831" />
-    <rect
        style="opacity:0.998;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.107373;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect6322"
        width="5.3018427"
        height="1.3295419"
        x="45.04604"
        y="150.297" />
+    <rect
+       style="opacity:0.998;fill:#ffffff;stroke:#000000;stroke-width:0.267149;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
+       id="rect1991"
+       width="5.8454452"
+       height="3.5735641"
+       x="44.509918"
+       y="72.153831" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2979,17 +3003,6 @@
          x="49.418335"
          y="64.062759"
          style="stroke-width:0.0320062">25 pin</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.61554px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0403887"
-       x="40.929501"
-       y="71.609871"
-       id="text1232"><tspan
-         sodipodi:role="line"
-         id="tspan1230"
-         x="40.929501"
-         y="71.609871"
-         style="stroke-width:0.0403887">LoRa</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.962934px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.180551"
@@ -4191,17 +4204,6 @@
          style="stroke-width:0.0588654">2</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.35461px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0588654"
-       x="109.45654"
-       y="81.440239"
-       id="text5555-12"><tspan
-         sodipodi:role="line"
-         id="tspan5553-8"
-         x="109.45654"
-         y="81.440239"
-         style="stroke-width:0.0588654">2</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.41018px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
        x="95.463959"
        y="70.118645"
@@ -4255,55 +4257,6 @@
          x="86.711517"
          y="74.632111"
          style="font-size:1.32247px;stroke-width:0.495925">69x Reg 32bit</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="42.068703"
-       y="74.759956"
-       id="text1625"><tspan
-         sodipodi:role="line"
-         id="tspan1623"
-         x="42.068703"
-         y="74.759956"
-         style="font-size:0.682038px;stroke-width:0.255765">slave</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="50.908501"
-       y="75.37014"
-       id="text1983"><tspan
-         sodipodi:role="line"
-         id="tspan1981"
-         x="50.908501"
-         y="75.37014"
-         style="font-size:0.682038px;stroke-width:0.255765">927 Rub</tspan><tspan
-         sodipodi:role="line"
-         x="50.908501"
-         y="76.222687"
-         style="font-size:0.682038px;stroke-width:0.255765"
-         id="tspan1985" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.624286px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.468215"
-       x="50.834854"
-       y="73.35067"
-       id="text2318"><tspan
-         sodipodi:role="line"
-         id="tspan2316"
-         x="50.834854"
-         y="73.35067"
-         style="font-size:0.624286px;stroke-width:0.468215">SEMTECH </tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.784448px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.294168"
-       x="45.100632"
-       y="74.229874"
-       id="text1989"><tspan
-         sodipodi:role="line"
-         id="tspan1987"
-         x="45.100632"
-         y="74.229874"
-         style="font-size:0.784448px;stroke-width:0.294168">26x Reg 8bit</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
@@ -4715,17 +4668,6 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="49.999443"
-       y="71.286232"
-       id="text2121"><tspan
-         sodipodi:role="line"
-         id="tspan2119"
-         x="49.999443"
-         y="71.286232"
-         style="font-size:1.05833px;stroke-width:0.264583">RAM 256Byte</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="52.899319"
        y="67.585785"
        id="text2129"><tspan
@@ -4804,6 +4746,77 @@
          x="80.458412"
          y="125.58784"
          style="font-size:2.79943px;stroke-width:0.524895">Bluetooth 5.1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.61554px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0403887"
+       x="40.929501"
+       y="71.609871"
+       id="text1232"><tspan
+         sodipodi:role="line"
+         id="tspan1230"
+         x="40.929501"
+         y="71.609871"
+         style="stroke-width:0.0403887">LoRa</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       x="42.068703"
+       y="74.759956"
+       id="text1625"><tspan
+         sodipodi:role="line"
+         id="tspan1623"
+         x="42.068703"
+         y="74.759956"
+         style="font-size:0.682038px;stroke-width:0.255765">slave</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       x="50.908501"
+       y="75.37014"
+       id="text1983"><tspan
+         sodipodi:role="line"
+         id="tspan1981"
+         x="50.908501"
+         y="75.37014"
+         style="font-size:0.682038px;stroke-width:0.255765">927 Rub</tspan><tspan
+         sodipodi:role="line"
+         x="50.908501"
+         y="76.222687"
+         style="font-size:0.682038px;stroke-width:0.255765"
+         id="tspan1985" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.624286px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.468215"
+       x="50.834854"
+       y="73.35067"
+       id="text2318"><tspan
+         sodipodi:role="line"
+         id="tspan2316"
+         x="50.834854"
+         y="73.35067"
+         style="font-size:0.624286px;stroke-width:0.468215">SEMTECH </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.784448px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.294168"
+       x="45.100632"
+       y="74.229874"
+       id="text1989"><tspan
+         sodipodi:role="line"
+         id="tspan1987"
+         x="45.100632"
+         y="74.229874"
+         style="font-size:0.784448px;stroke-width:0.294168">26x Reg 8bit</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="49.999443"
+       y="71.286232"
+       id="text2121"><tspan
+         sodipodi:role="line"
+         id="tspan2119"
+         x="49.999443"
+         y="71.286232"
+         style="font-size:1.05833px;stroke-width:0.264583">RAM 256Byte</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -4837,5 +4850,19 @@
          x="-82.55542"
          y="98.289314"
          style="font-size:0.682038px;fill:#00e6ff;fill-opacity:1;stroke-width:0.255765">active low</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer11"
+     inkscape:label="wishes">
+    <path
+       style="fill:none;stroke:#00c9ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker2149);marker-end:url(#marker2120)"
+       d="m 74.116408,116.60683 0,-46.60683 h 2.389731 l 2e-6,-28.308167"
+       id="path12326"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;stroke:#009eff;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker2159);marker-start:url(#marker2149)"
+       d="m 112.11288,83.76895 h 17.58634 V 41.814318"
+       id="path13297" />
   </g>
 </svg>

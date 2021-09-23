@@ -93,11 +93,11 @@ bool cli_init(void) {
 
 bool cli_process(void) {
     if(true == huart[CLI_UART_NUM].rx_int) {
+        huart[CLI_UART_NUM].rx_int = false;
 #ifndef USE_HAL_DRIVER
         uart_string_reader_rx_callback(&cmd_reader, (char)huart[CLI_UART_NUM].rx_byte);
-        uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1);
+        //uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1);
 #endif /*USE_HAL_DRIVER*/
-        huart[CLI_UART_NUM].rx_int = false;
     }
 
     bool res = false;

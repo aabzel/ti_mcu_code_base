@@ -28,11 +28,13 @@ typedef struct xUartHandle_t {
   uint32_t rx_cnt;
   uint32_t tx_cnt;
   uint32_t rx_buff_size;
+  uint32_t error_cnt;
   uint32_t tx_cpl_cnt;
   bool init_done;
   uint32_t* base_address;
 #ifdef DeviceFamily_CC26X2
   UART_Handle uart_h;
+  UART_Params uartParams;
 #endif
 #ifdef  USE_HAL_DRIVER 
   UART_HandleTypeDef uart_h;

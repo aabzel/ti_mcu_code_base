@@ -1,17 +1,7 @@
-	EXT_RAM_EMUL_COMMANDS                                                                                              \
-	MX25L6433_COMMANDS                                                                                                 \
-    BMP180_COMMANDS                                                                                                    \
-    COMMON_COMMANDS                                                                                                    \
-    CORTEX_M4_COMMANDS                                                                                                 \
-    FLASH_FS_COMMANDS                                                                                                  \
-    FLASH_NVS_COMMANDS                                                                                                 \
-    HEALTH_MONITOR_COMMANDS                                                                                            \
-    LED_COMMANDS                                                                                                       \
-    LOG_COMMANDS                                                                                                       \
-    LORA_COMMANDS                                                                                                      \
-    NMEA_COMMANDS                                                                                                      \
-    PARAM_COMMANDS                                                                                                     \
-    RF_COMMANDS                                                                                                        \
-    SX1262_COMMANDS                                                                                                    \
-    TRNG_COMMANDS                                                                                                      \
-    UBLOX_COMMANDS
+
+#define APP_START_ADDRESS 0x00018000
+#define DIO_LED_GREEN 30U
+#define DIO_LED_RED 26U
+#define DIO_PS_RS232 7U /*Enable RS232 transceiver*/
+#define DIO_UART_CLI_RX	13U
+#define DIO_UART_CLI_TX	12U

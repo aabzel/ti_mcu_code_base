@@ -12,6 +12,7 @@ extern "C" {
 #include "test_flash_fs.h"
 #include "test_params.h"
 #include "test_spi.h"
+#include "test_uart.h"
 #include "test_sx1262.h"
 
 bool test_clock_us(void);
@@ -21,14 +22,12 @@ bool test_clock_ms(void);
 #define TEST_SUIT_HW \
     TEST_SUIT_PARAMS \
 	TEST_SUIT_FLASH    \
+	TEST_SUIT_UART \
 	TEST_SUIT_FLASH_FS \
     TEST_SUIT_SPI \
 	TEST_SUIT_SX1262 \
     {"clock_us", test_clock_us},\
     {"clock_ms", test_clock_ms},
-
-
-
 
 #ifdef __cplusplus
 }
