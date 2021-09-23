@@ -19,17 +19,17 @@
 #endif /*USE_HAL_DRIVER*/
 
 typedef struct xUartHandle_t {
-  bool tx_int;
-  bool rx_int;
+  volatile bool tx_int;
+  volatile bool rx_int;
   uint8_t rx_byte;
   uint8_t *rx_buff;
   uint8_t rx_byte_cnt;
   uint8_t tx_byte_cnt;
-  uint32_t rx_cnt;
-  uint32_t tx_cnt;
+  volatile uint32_t rx_cnt;
+  volatile uint32_t tx_cnt;
   uint32_t rx_buff_size;
   uint32_t error_cnt;
-  uint32_t tx_cpl_cnt;
+  volatile uint32_t tx_cpl_cnt;
   bool init_done;
   uint32_t* base_address;
 #ifdef DeviceFamily_CC26X2

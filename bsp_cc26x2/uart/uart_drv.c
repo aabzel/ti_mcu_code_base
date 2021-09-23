@@ -34,7 +34,7 @@ UartHandle_t huart[UART_COUNT] = {0};
 UARTCC26XX_Object uartCC26XXObjects[UART_COUNT];
 
 static unsigned char uartCC26XXRingBuffer0[32];
-static unsigned char uartCC26XXRingBuffer1[80];
+static unsigned char uartCC26XXRingBuffer1[160];
 
 #define RX_ARR0_CNT 1U
 #define RX_ARR1_CNT 210U
@@ -67,8 +67,8 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
      .rxPin = DIO_GNSS_TXD,
      .txPin = DIO_GNSS_RXD,
 #else
-     .rxPin = PIN_UNASSIGNED,
-     .txPin = PIN_UNASSIGNED,
+     .rxPin = 10,
+     .txPin = 11,
 #endif /*HAS_UBLOX*/
      .ctsPin = PIN_UNASSIGNED,
      .rtsPin = PIN_UNASSIGNED,
@@ -101,7 +101,6 @@ static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[0].tx_cpl_cnt++;
 }
 
-#ifdef HAS_UBLOX
 static void uart1ReadCallback(UART_Handle handle, char* rxBuf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
@@ -114,70 +113,8 @@ static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[1].tx_int = true;
     huart[1].tx_cpl_cnt++;
 }
-#endif /*HAS_UBLOX*/
 
 static const uint32_t uartNum2Base[UART_COUNT] = {UART0_BASE, UART1_BASE};
-
-static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
-    bool res = false;
-    if(uart_num < UART_COUNT) {
-        memset(&huart[uart_num], 0x00, sizeof(huart[uart_num]));
-        huart[uart_num].rx_cnt = 0;
-        huart[uart_num].tx_cnt = 0;
-        huart[uart_num].tx_cpl_cnt = 0;
-        huart[uart_num].tx_byte_cnt = 0;
-        huart[uart_num].rx_buff = &rx_buff[uart_num][0];
-        strncpy(huart[uart_num].name, in_name, sizeof(huart[uart_num].name));
-        char connectionHint[40] = "";
-        snprintf(connectionHint, sizeof(connectionHint), "UART%u %u\n\r", uart_num, baud_rate);
-
-        UART_init();
-
-        UART_Params_init(&huart[uart_num].uartParams);
-        huart[uart_num].uartParams.baudRate = baud_rate;
-        huart[uart_num].uartParams.writeMode = UART_MODE_CALLBACK;
-        huart[uart_num].uartParams.writeDataMode = UART_DATA_BINARY;
-        huart[uart_num].uartParams.readMode = UART_MODE_CALLBACK;
-        huart[uart_num].uartParams.readDataMode = UART_DATA_BINARY;
-        huart[uart_num].uartParams.writeCallback = (UART_Callback)NULL;
-        huart[uart_num].uartParams.readCallback = (UART_Callback)NULL;
-        if(0 == uart_num) {
-            huart[uart_num].uartParams.writeCallback = (UART_Callback)uart0WriteCallback;
-            huart[uart_num].uartParams.readCallback = (UART_Callback)uart0ReadCallback;
-        } else if(1 == uart_num) {
-#ifdef HAS_UBLOX
-            huart[uart_num].uartParams.writeCallback = (UART_Callback)uart1WriteCallback;
-            huart[uart_num].uartParams.readCallback = (UART_Callback)uart1ReadCallback;
-#endif /*HAS_UBLOX*/
-        } else {
-            huart[uart_num].uartParams.writeCallback = (UART_Callback)NULL;
-            huart[uart_num].uartParams.readCallback = (UART_Callback)NULL;
-        }
-
-        huart[uart_num].uart_h = UART_open(uart_num, &huart[uart_num].uartParams);
-        if(NULL == huart[uart_num].uart_h) {
-            res = false;
-        } else {
-            res = true;
-            huart[uart_num].base_address = (uint32_t*)uartNum2Base[uart_num];
-            huart[uart_num].init_done = true;
-            res = uart_send(uart_num, (uint8_t*)connectionHint, strlen(connectionHint));
-            res = uart_read(uart_num, &huart[uart_num].rx_byte, 1);
-        }
-    }
-    return res;
-}
-
-bool uart_init(void) {
-    bool res = true;
-#ifdef HAS_GENERIC
-#ifdef HAS_UBLOX
-    res = init_uart_ll(1, "ZedF9P", UART1_BAUD_RATE) && res;
-#endif /*HAS_UBLOX*/
-#endif /*HAS_GENERIC*/
-    res = init_uart_ll(0, "CLI", UART0_BAUD_RATE) && res;
-    return res;
-}
 
 bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;
@@ -187,7 +124,7 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     /*TODO Calc needed time to wait*/
     while(init_tx_cnt == huart[uart_num].tx_cnt) {
         time_out++;
-        if(5000 < time_out) {/*TODO wind val*/
+        if(40000 < time_out) {/*TODO find val*/
             res = false;
             huart[uart_num].error_cnt++;
             break;
@@ -198,6 +135,12 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
 
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
     bool res = false;
+    if(1==uart_num){
+#ifdef HAS_BOOTLOADER
+        res = false;
+        return res;
+#endif /*HAS_BOOTLOADER*/
+    }
     if(uart_num < UART_COUNT) {
         res = uart_send_ll(uart_num, array, array_len);
     }
@@ -214,11 +157,6 @@ int cli_putchar_uart(int character) {
 
     return out_ch;
 }
-
-void cli_tune_read_char(void) { uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1); }
-
-
-
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     bool res = false;
     if(uart_num < UART_COUNT) {
@@ -227,6 +165,10 @@ bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     }
     return res;
 }
+
+void cli_tune_read_char(void) { uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1); }
+
+
 
 uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling) {
     return 0;
@@ -271,6 +213,7 @@ bool proc_uart(uint8_t uart_index) {
     return res;
 }
 #define UNLIKELY_SYMBOL 0XFF
+
 static bool uart_poll(uint8_t uart_index) {
     /*In case of uart interrupts fail*/
     bool res = true;
@@ -288,11 +231,75 @@ static bool uart_poll(uint8_t uart_index) {
     return res;
 }
 
+
 bool proc_uarts(void) {
-    bool res;
+    bool res = false;
     res = uart_poll(0);
+
 #ifdef HAS_UART1
     res = proc_uart(1);
 #endif /*HAS_UART1*/
+    return res;
+}
+
+
+static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
+    bool res = false;
+    if(uart_num < UART_COUNT) {
+        memset(&huart[uart_num], 0x00, sizeof(huart[uart_num]));
+        huart[uart_num].rx_cnt = 0;
+        huart[uart_num].tx_cnt = 0;
+        huart[uart_num].tx_cpl_cnt = 0;
+        huart[uart_num].tx_byte_cnt = 0;
+        huart[uart_num].rx_buff = &rx_buff[uart_num][0];
+        strncpy(huart[uart_num].name, in_name, sizeof(huart[uart_num].name));
+        char connectionHint[40] = "";
+        snprintf(connectionHint, sizeof(connectionHint), "UART%u %u\n\r", uart_num, baud_rate);
+
+        UART_init();
+
+        UART_Params_init(&huart[uart_num].uartParams);
+        huart[uart_num].uartParams.baudRate = baud_rate;
+        huart[uart_num].uartParams.writeMode = UART_MODE_CALLBACK;
+        huart[uart_num].uartParams.writeDataMode = UART_DATA_BINARY;
+        huart[uart_num].uartParams.readMode = UART_MODE_CALLBACK;
+        huart[uart_num].uartParams.readDataMode = UART_DATA_BINARY;
+        huart[uart_num].uartParams.writeCallback = (UART_Callback)NULL;
+        huart[uart_num].uartParams.readCallback = (UART_Callback)NULL;
+        if(0 == uart_num) {
+            huart[uart_num].uartParams.writeCallback = (UART_Callback)uart0WriteCallback;
+            huart[uart_num].uartParams.readCallback = (UART_Callback)uart0ReadCallback;
+        } else if(1 == uart_num) {
+            huart[uart_num].uartParams.writeCallback = (UART_Callback)uart1WriteCallback;
+            huart[uart_num].uartParams.readCallback = (UART_Callback)uart1ReadCallback;
+        } else {
+            huart[uart_num].uartParams.writeCallback = (UART_Callback)NULL;
+            huart[uart_num].uartParams.readCallback = (UART_Callback)NULL;
+        }
+
+        huart[uart_num].uart_h = UART_open(uart_num, &huart[uart_num].uartParams);
+        if(NULL == huart[uart_num].uart_h) {
+            res = false;
+        } else {
+            res = true;
+            huart[uart_num].base_address = (uint32_t*)uartNum2Base[uart_num];
+            huart[uart_num].init_done = true;
+#ifdef UART_SHOW
+            res = uart_send(uart_num, (uint8_t*)connectionHint, strlen(connectionHint));
+#endif /*UART_SHOW*/
+            res = uart_read(uart_num, &huart[uart_num].rx_byte, 1);
+        }
+    }
+    return res;
+}
+
+bool uart_init(void) {
+    bool res = true;
+    res = init_uart_ll(1, "ZedF9P", UART1_BAUD_RATE) && res;
+#ifdef HAS_GENERIC
+#ifdef HAS_UBLOX
+#endif /*HAS_UBLOX*/
+#endif /*HAS_GENERIC*/
+    res = init_uart_ll(0, "CLI", UART0_BAUD_RATE) && res;
     return res;
 }

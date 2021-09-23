@@ -171,6 +171,8 @@ bool cmd_param_set(int32_t argc, char* argv[]) {
             } else {
                 LOG_ERROR(PARAM, "Unable to write param_id %u", param_id);
             }
+        }else{
+            LOG_ERROR(PARAM, "len error");
         }
     } else {
         LOG_ERROR(PARAM, "Usage: ps id data");
