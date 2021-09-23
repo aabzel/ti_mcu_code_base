@@ -80,6 +80,17 @@ bool gpio_init(void) {
 #ifdef HAS_TCAN4550
         GPIO_setConfig(CONF_GPIO_CAN_CS, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
 #endif /* HAS_TCAN4550 */
+
+#ifdef HAS_ZED_F9P
+        GPIO_setConfig(CONF_GPIO_GNSS_RST_N, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_GNSS_INT, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_GNSS_SAFEBOOT_N, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+#endif /* HAS_ZED_F9P */
+
+#ifdef HAS_HARVESTER
+        GPIO_setConfig(CONF_GPIO_PWR_MUX_CTRL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+#endif /*HAS_HARVESTER*/
+
 #ifdef LAUNCHXL_CC26X2R1
         GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
@@ -112,6 +123,13 @@ bool gpio_init(void) {
 #ifdef HAS_TCAN4550
         GPIO_writeDio(DIO_SS1_CAN, 1);
 #endif /* HAS_TCAN4550 */
+#ifdef HAS_ZED_F9P
+        GPIO_writeDio(DIO_GNSS_INT, 1);
+        GPIO_writeDio(DIO_GNSS_SAFEBOOT_N, 1);
+        GPIO_writeDio(DIO_GNSS_RST_N, 0);
+#endif /* HAS_ZED_F9P */
+
+        GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
     }
     return res;
 }

@@ -1217,11 +1217,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16"
-     inkscape:cx="272.09375"
-     inkscape:cy="324.1875"
+     inkscape:zoom="1"
+     inkscape:cx="568.5"
+     inkscape:cy="369"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer7"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1720,7 +1720,7 @@
        id="path1586"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6456)"
+       style="fill:none;stroke:#ff0000;stroke-width:0.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1984)"
        d="M 155.15224,104.87817 V 161.5242 H 44.320496 l -0.08397,-3.56956"
        id="path1588"
        sodipodi:nodetypes="cccc" />
@@ -1735,7 +1735,7 @@
        id="path1592"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6446)"
+       style="fill:none;stroke:#ff0000;stroke-width:0.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1984)"
        d="m 44.320496,161.5242 -9.863174,-0.008 0.02009,-21.47467 5.517309,-0.096"
        id="path1594"
        sodipodi:nodetypes="cccc" />
@@ -1780,11 +1780,11 @@
        id="rect1648"
        width="8.5769968"
        height="3.7052619"
-       x="217.68974"
+       x="257.37674"
        y="147.75449" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.18493px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker7787)"
-       d="m 214.35124,144.31785 3.31123,0.008"
+       style="fill:none;stroke:#000000;stroke-width:0.210501;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker7787)"
+       d="m 214.33907,144.29015 43.24392,0.0933"
        id="path1654"
        sodipodi:nodetypes="cc" />
     <rect
@@ -1792,7 +1792,7 @@
        id="rect1648-3"
        width="8.5769968"
        height="3.7052619"
-       x="217.76801"
+       x="257.45502"
        y="142.58302" />
     <text
        xml:space="preserve"
@@ -2312,8 +2312,8 @@
        d="m 169.80775,41.605079 v 3.767565 h 77.22333 v 3.745122"
        id="path14824" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.18493px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker7787-4)"
-       d="m 214.29612,149.77398 3.31123,0.008"
+       style="fill:none;stroke:#000000;stroke-width:0.210501;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker7787-4)"
+       d="m 214.27768,149.71685 43.24084,0.0933"
        id="path1654-4"
        sodipodi:nodetypes="cc" />
     <text
@@ -2951,12 +2951,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.42555px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0606391"
-       x="218.26912"
+       x="257.95615"
        y="144.81305"
        id="text1652"><tspan
          sodipodi:role="line"
          id="tspan1650"
-         x="218.26912"
+         x="257.95615"
          y="144.81305"
          style="stroke-width:0.0606391">LED</tspan></text>
     <text
@@ -3988,12 +3988,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.42555px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.060639"
-       x="218.2551"
+       x="257.94211"
        y="150.50359"
        id="text1652-0"><tspan
          sodipodi:role="line"
          id="tspan1650-7"
-         x="218.2551"
+         x="257.94211"
          y="150.50359"
          style="stroke-width:0.060639">LED</tspan></text>
     <text
@@ -4282,13 +4282,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.39014px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.260651"
-       x="17.615948"
-       y="121.7023"
+       x="15.055172"
+       y="120.45115"
        id="text942"><tspan
          sodipodi:role="line"
          id="tspan940"
-         x="17.615948"
-         y="121.7023"
+         x="15.055172"
+         y="120.45115"
          style="font-size:1.39014px;stroke-width:0.260651">5 pin</tspan></text>
     <text
        xml:space="preserve"
@@ -4315,14 +4315,25 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.73767px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.260651"
-       x="14.974231"
-       y="118.58395"
+       x="15.137934"
+       y="116.90015"
        id="text938"><tspan
          sodipodi:role="line"
          id="tspan936"
-         x="14.974231"
-         y="118.58395"
+         x="15.137934"
+         y="116.90015"
          style="font-size:1.73767px;stroke-width:0.260651">USB</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.73767px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.260651"
+       x="15.07658"
+       y="118.88172"
+       id="text938-4"><tspan
+         sodipodi:role="line"
+         id="tspan936-1"
+         x="15.07658"
+         y="118.88172"
+         style="font-size:1.73767px;stroke-width:0.260651">mini</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.0426px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.260651"

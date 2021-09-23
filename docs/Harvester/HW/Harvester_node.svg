@@ -826,9 +826,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="465.27625"
-     inkscape:cy="420.02142"
+     inkscape:zoom="4.0000001"
+     inkscape:cx="620.37498"
+     inkscape:cy="260.49999"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
@@ -1156,15 +1156,15 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.83311px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.095828"
-       x="76.894241"
-       y="174.43042"
+       x="70.472908"
+       y="173.75331"
        id="text2190"
        transform="rotate(-43.945918)"><tspan
          sodipodi:role="line"
          id="tspan2188"
-         x="76.894241"
-         y="174.43042"
-         style="stroke-width:0.095828">USB</tspan></text>
+         x="70.472908"
+         y="173.75331"
+         style="stroke-width:0.095828">USB mini</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker5108);marker-end:url(#marker4768)"
        d="M 168.05172,82.406068 190.93946,60.079676"

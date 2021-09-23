@@ -64,6 +64,21 @@
         }                                                                                                              \
     } while(0);
 
+#define EXPECT_EQ_U8(val1, val2)                                                                                       \
+    do {                                                                                                               \
+        /*int val1 = vala; */                                                                                          \
+        /*int val2 = val2; */                                                                                          \
+        if(val1 != val2) {                                                                                             \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: %u  val2: %u" , __FUNCTION__, __LINE__, val1,                       \
+                      val2);                                                                                           \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: 0x%x val2: 0x%x", __FUNCTION__, __LINE__, val1,                     \
+                      val2);                                                                                           \
+            return false;                                                                                              \
+        } else {                                                                                                       \
+            /*printf ("\n OK!\n");  */                                                                                 \
+        }                                                                                                              \
+    } while(0);
+
 #define EXPECT_EQ_VARS(var1, var2, val)                                                                                \
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \

@@ -4,7 +4,7 @@
 #define TASKS    \
   TASK(CLI)      \
   TASK(FLASH_FS) \
-  TASK(LED)      
-
+  TASK(LED)      \
+  TASK(UART)  
 
 #endif /* TASK_CONFIG_H */

@@ -197,7 +197,7 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
             io_printf(" %s ", cmd->description ? cmd->description : "");
             io_printf(CRLF);
 #ifdef NORTOS
-            wait_in_loop_ms(4);
+            wait_in_loop_ms(2);
 #endif /*NORTOS*/
             num++;
         }

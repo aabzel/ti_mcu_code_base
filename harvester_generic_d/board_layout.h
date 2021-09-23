@@ -6,8 +6,8 @@
 
 #include "sys_config.h"
 
-#define DIO_CNT 7
-#define GPIO_COUNT 8U
+#define DIO_CNT 11
+#define GPIO_COUNT 12U
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {
@@ -23,11 +23,15 @@ typedef struct xPin_t {
 #define CONF_GPIO_LED_0 0
 #define CONF_GPIO_LED_1 1
 #define CONF_GPIO_PS_RS232 2
+#define CONF_GPIO_PWR_MUX_CTRL 3
 #define CONF_GPIO_LORA_CS 3
 #define CONF_GPIO_LORA_RST 4
 #define CONF_GPIO_LORA_INT 5
 #define CONF_GPIO_LORA_BSY 6
 #define CONF_GPIO_CAN_CS 7
+#define CONF_GPIO_GNSS_RST_N 8
+#define CONF_GPIO_GNSS_INT 9
+#define CONF_GPIO_GNSS_SAFEBOOT_N 10
 
 extern GPIO_PinConfig gpioPinConfigs[GPIO_COUNT];
 extern PIN_Config BoardGpioInitTable[GPIO_COUNT + 1];

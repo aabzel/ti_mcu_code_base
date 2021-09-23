@@ -16,9 +16,10 @@
 #define DIO_LED_RED 26U
 #define DIO_LEN 22U
 #define DIO_PS_RS232 7U /*Enable RS232 transceiver*/
-#define DIO_PWR_MUX_CTRL 14U
-#define DIO_RST_N_GNSS 18U
-#define DIO_SAFEBOOT_GNSS_N 19U
+#define DIO_PWR_MUX_CTRL 14U /*PWR_MUX_CTRL*/
+#define DIO_GNSS_INT 20U /*GNSS_INT*/
+#define DIO_GNSS_RST_N 18U /*RST_N_GNSS*/
+#define DIO_GNSS_SAFEBOOT_N 19U /*SAFEBOOT_GNSS_N*/
 #define DIO_SPI0_MISO 2U
 #define DIO_SPI0_MOSI 3U
 #define DIO_SPI0_SCLK 4U
@@ -29,7 +30,6 @@
 #define DIO_SX1262_SS 0U /*SS0_LoRa*/
 #define DIO_UART_CLI_RX	13U
 #define DIO_UART_CLI_TX	12U
-
 
 #define BOARD_NAME "Harvester"
 #define MCU_NAME "CC2642R1F"

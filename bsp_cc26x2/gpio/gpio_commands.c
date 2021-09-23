@@ -98,24 +98,24 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
     table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
     uint8_t logic_level = 0xFF;
 
-    uint8_t io_pin = 0;
+    uint8_t i = 0;
     char temp_str[200];
-    for(io_pin = 0; io_pin < ARRAY_SIZE(PinTable); io_pin++) {
-        res = gpio_get_state(io_pin, &logic_level);
+    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
+        res = gpio_get_state( PinTable[i].dio, &logic_level);
         if(true == res) {
             strcpy(temp_str, TSEP);
-            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, io_pin);
-            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, get_aux_num(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, get_mcu_pin(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s %2s  " TSEP, temp_str, get_pin_dir(io_pin));
+            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].dio);
+            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].aux_pin);
+            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].mcu_pin);
+            snprintf(temp_str, sizeof(temp_str), "%s %2s  " TSEP, temp_str, get_pin_dir(PinTable[i].dio));
             snprintf(temp_str, sizeof(temp_str), "%s  %s    " TSEP, temp_str, (1 == logic_level) ? "H" : "L");
-            snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, (1 == is_edge_irq_en(io_pin)) ? "Y" : "N");
-            snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_edge(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_pull_mode(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s %11s " TSEP, temp_str, get_gpio_type(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s %1u  " TSEP, temp_str, GPIO_getEventDio(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, get_gpio_alter_fun(io_pin));
-            snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, PinTable[io_pin].name);
+            snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, (1 == is_edge_irq_en(i)) ? "Y" : "N");
+            snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_edge(PinTable[i].dio));
+            snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_pull_mode(PinTable[i].dio));
+            snprintf(temp_str, sizeof(temp_str), "%s %11s " TSEP, temp_str, get_gpio_type(PinTable[i].dio));
+            snprintf(temp_str, sizeof(temp_str), "%s %1u  " TSEP, temp_str, GPIO_getEventDio(PinTable[i].dio));
+            snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, get_gpio_alter_fun(PinTable[i].dio));
+            snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, PinTable[i].name);
             snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
 
             if(is_contain(temp_str, key_word1, key_word2)) {

@@ -56,7 +56,6 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
      .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_4_8,
      .errorFxn = NULL},
-
     {.baseAddr = UART1_BASE,
      .intNum = INT_UART1_COMB,
      .intPriority = (~0),
@@ -64,8 +63,13 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
      .powerMngrId = PowerCC26XX_PERIPH_UART1,
      .ringBufPtr = uartCC26XXRingBuffer1,
      .ringBufSize = sizeof(uartCC26XXRingBuffer1),
+#ifdef HAS_UBLOX
      .rxPin = DIO_GNSS_TXD,
      .txPin = DIO_GNSS_RXD,
+#else
+     .rxPin = PIN_UNASSIGNED,
+     .txPin = PIN_UNASSIGNED,
+#endif /*HAS_UBLOX*/
      .ctsPin = PIN_UNASSIGNED,
      .rtsPin = PIN_UNASSIGNED,
      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
@@ -135,13 +139,16 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
         huart[uart_num].uartParams.writeDataMode = UART_DATA_BINARY;
         huart[uart_num].uartParams.readMode = UART_MODE_CALLBACK;
         huart[uart_num].uartParams.readDataMode = UART_DATA_BINARY;
-
+        huart[uart_num].uartParams.writeCallback = (UART_Callback)NULL;
+        huart[uart_num].uartParams.readCallback = (UART_Callback)NULL;
         if(0 == uart_num) {
             huart[uart_num].uartParams.writeCallback = (UART_Callback)uart0WriteCallback;
             huart[uart_num].uartParams.readCallback = (UART_Callback)uart0ReadCallback;
         } else if(1 == uart_num) {
+#ifdef HAS_UBLOX
             huart[uart_num].uartParams.writeCallback = (UART_Callback)uart1WriteCallback;
             huart[uart_num].uartParams.readCallback = (UART_Callback)uart1ReadCallback;
+#endif /*HAS_UBLOX*/
         } else {
             huart[uart_num].uartParams.writeCallback = (UART_Callback)NULL;
             huart[uart_num].uartParams.readCallback = (UART_Callback)NULL;
@@ -172,19 +179,6 @@ bool uart_init(void) {
     return res;
 }
 
-int cli_putchar_uart(int character) {
-    int out_ch = 0;
-    /*Works on little endian*/
-    bool res = uart_send(CLI_UART_NUM, (uint8_t*)&character, 1);
-    if(res) {
-        out_ch = character;
-    }
-
-    return out_ch;
-}
-
-void cli_tune_read_char(void) { uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1); }
-
 bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;
     uint32_t time_out = 0;
@@ -193,7 +187,7 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     /*TODO Calc needed time to wait*/
     while(init_tx_cnt == huart[uart_num].tx_cnt) {
         time_out++;
-        if(10000 < time_out) {
+        if(5000 < time_out) {/*TODO wind val*/
             res = false;
             huart[uart_num].error_cnt++;
             break;
@@ -209,6 +203,21 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
     }
     return res;
 }
+
+int cli_putchar_uart(int character) {
+    int out_ch = 0;
+    /*Works on little endian*/
+    bool res = uart_send(CLI_UART_NUM, (uint8_t*)&character, 1);
+    if(res) {
+        out_ch = character;
+    }
+
+    return out_ch;
+}
+
+void cli_tune_read_char(void) { uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1); }
+
+
 
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     bool res = false;
@@ -282,6 +291,8 @@ static bool uart_poll(uint8_t uart_index) {
 bool proc_uarts(void) {
     bool res;
     res = uart_poll(0);
+#ifdef HAS_UART1
     res = proc_uart(1);
+#endif /*HAS_UART1*/
     return res;
 }

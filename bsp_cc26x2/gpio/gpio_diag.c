@@ -13,7 +13,7 @@
 const char* get_gpio_mode(uint8_t pin) {
     char* name = "_";
     GPIO_PinConfig pin_cfg = 0;
-    if(pin < CONFIG_TI_DRIVERS_PIN_COUNT) {
+    if(pin < GPIO_COUNT) {
         GPIO_getConfig((uint_least8_t)pin, &pin_cfg);
     }
     return name;

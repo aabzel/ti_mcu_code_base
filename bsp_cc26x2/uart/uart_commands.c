@@ -42,11 +42,14 @@ bool diag_page_uarts(ostream_t* stream) {
 
 bool cmd_uarts(int32_t argc, char* argv[]) {
     (void)argv;
-    if(argc != 0) {
-        LOG_ERROR(UART, "Usage: uarts: help");
-        return dump_cmd_result(false);
+    bool res = false;
+    if (0==argc) {
+      res = diag_page_uarts(DBG_STREAM);
+    }else if(0<argc ) {
+        res = false;
+        LOG_ERROR(UART, "Usage: u");
     }
-    return show_diag_report(DIAG_PAGE_UARTS);
+    return res;
 }
 
 // us 8 byte

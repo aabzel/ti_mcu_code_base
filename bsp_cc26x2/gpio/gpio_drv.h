@@ -21,16 +21,6 @@ extern const uint_least8_t CONFIG_GPIO_LED_1_CONST;
 #define CONFIG_LED_ON (1)
 #define CONFIG_LED_OFF (0)
 
-#ifdef LAUNCHXL_CC26X2R1
-/* LaunchPad Button BTN-1 (Left), Parent Signal: CONFIG_GPIO_BUTTON_0 GPIO Pin, (DIO13) */
-#define CONFIG_PIN_0 0x0000000d
-/* LaunchPad Button BTN-2 (Right), Parent Signal: CONFIG_GPIO_BUTTON_1 GPIO Pin, (DIO14) */
-#define CONFIG_PIN_1 0x0000000e
-#define CONFIG_TI_DRIVERS_PIN_COUNT 4
-#else
-#define CONFIG_TI_DRIVERS_PIN_COUNT 2
-#endif
-
 bool gpio_init(void);
 
 /*GPIO API*/

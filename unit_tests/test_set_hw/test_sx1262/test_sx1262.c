@@ -79,7 +79,7 @@ bool test_sx1262_rx_addr(void) {
     uint8_t PayloadLengthRx = 0;
     EXPECT_TRUE(sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, set_rx_addr));
     EXPECT_TRUE(sx1262_get_rxbuff_status(&PayloadLengthRx, &read_rx_addr));
-    EXPECT_EQ(set_rx_addr, read_rx_addr);
+    EXPECT_EQ_U8(set_rx_addr, read_rx_addr);
     EXPECT_TRUE(sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS));
     return true;
 }
