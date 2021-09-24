@@ -6,6 +6,7 @@
 #include "gpio_drv.h"
 #include "sys_config.h"
 
+/*line order does not  matters!*/
 const Pin_t PinTable[DIO_CNT] = {
  {DIO_PWR_MUX_CTRL,   20,  0,   "PwrMux", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
  {DIO_LED_RED,        39,  0,    "R_LED", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
@@ -35,6 +36,7 @@ GPIO_PinConfig gpioPinConfigs[GPIO_COUNT] = {
     DIO_GNSS_SAFEBOOT_N | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /* GNSS_SAFEBOOT_N */
 };
 
+/*line order matters!*/
 PIN_Config BoardGpioInitTable[GPIO_COUNT + 1] = {
     DIO_LED_GREEN | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,/* LED Green */
     DIO_LED_RED | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,/* LED Red */

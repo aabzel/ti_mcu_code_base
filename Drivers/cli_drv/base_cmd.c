@@ -250,7 +250,7 @@ bool cmd_wd_test_hw(int32_t argc, char* argv[]) {
 
 void shell_prompt(void) {
     if(cli_echo) {
-        io_putstr("-->");
+        io_printf("-->");
     }
 }
 

@@ -87,6 +87,10 @@ bool gpio_init(void) {
         GPIO_setConfig(CONF_GPIO_GNSS_SAFEBOOT_N, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
 #endif /* HAS_ZED_F9P */
 
+#ifdef HAS_BOOTLOADER
+        GPIO_setConfig(CONF_GPIO_GNSS_RST_N, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+#endif /* HAS_BOOTLOADER */
+
 #ifdef HAS_HARVESTER
         GPIO_setConfig(CONF_GPIO_PWR_MUX_CTRL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
 #endif /*HAS_HARVESTER*/
@@ -123,12 +127,16 @@ bool gpio_init(void) {
 #ifdef HAS_TCAN4550
         GPIO_writeDio(DIO_SS1_CAN, 1);
 #endif /* HAS_TCAN4550 */
+
+
 #ifdef HAS_ZED_F9P
         GPIO_writeDio(DIO_GNSS_INT, 1);
         GPIO_writeDio(DIO_GNSS_SAFEBOOT_N, 1);
         GPIO_writeDio(DIO_GNSS_RST_N, 0);
 #endif /* HAS_ZED_F9P */
-
+#ifdef HAS_BOOTLOADER
+        GPIO_writeDio(DIO_GNSS_RST_N, 1);
+#endif /* HAS_BOOTLOADER */
         GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
     }
     return res;

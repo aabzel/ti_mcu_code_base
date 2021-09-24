@@ -95,9 +95,10 @@ bool cli_process(void) {
     if(true == huart[CLI_UART_NUM].rx_int) {
         huart[CLI_UART_NUM].rx_int = false;
 #ifndef USE_HAL_DRIVER
-        uart_string_reader_rx_callback(&cmd_reader, (char)huart[CLI_UART_NUM].rx_byte);
+        uart_string_reader_rx_callback(&cmd_reader, (char)huart[CLI_UART_NUM].rx_byte_it);
         //uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1);
 #endif /*USE_HAL_DRIVER*/
+        huart[CLI_UART_NUM].rx_it_proc_done = true;
     }
 
     bool res = false;
@@ -128,32 +129,32 @@ void *cliThread(void *arg0){
 
 bool process_shell_cmd(char* cmd_line) {
 #ifdef HAS_CLI_DEBUG
-    io_printf("proc command [%s]" CRLF, cmd_line);
+    io_printf("proc command [%s] %u" CRLF, cmd_line, strlen(cmd_line));
 #endif /*HAS_CLI_DEBUG*/
     static int shell_argc = 0;
     static char* shell_argv[SHELL_MAX_ARG_COUNT];
-    char* p = cmd_line;
+    char* pRun = cmd_line;
     const shell_cmd_info_t* cmd = shell_commands;
 
     shell_argc = 0;
     memset(shell_argv, 0, sizeof(shell_argv));
-    while((shell_argc < SHELL_MAX_ARG_COUNT) && (*p != 0)) {
-        while(isspace((uint8_t)*p)) {
-            p++;
+    while((shell_argc < SHELL_MAX_ARG_COUNT) && (0x00!=*pRun)) {
+        while(isspace((int)*pRun)) {
+            pRun++;
         }
-        if(*p != '\0') {
-            shell_argv[shell_argc] = p;
+        if('\0' !=*pRun ) {
+            shell_argv[shell_argc] = pRun;
             shell_argc++;
-            while(*p && !isspace((uint8_t)*p)) {
-                p++;
+            while(*pRun && !isspace((int)*pRun)) {
+                pRun++;
             }
-            if(*p != '\0') {
-                *p = '\0';
-                p++;
+            if(*pRun != '\0') {
+                *pRun = '\0';
+                pRun++;
             }
         }
     }
-    if(shell_argc == 0) {
+    if(0==shell_argc ) {
         shell_prompt();
         return true;
     }

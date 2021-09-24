@@ -7,6 +7,7 @@
 #include "data_utils.h"
 #include "diag_page_nums.h"
 #include "diag_report.h"
+#include "flash_drv.h"
 #include "sys.h"
 #include "sys_tick.h"
 #include "table_utils.h"
@@ -61,7 +62,11 @@ bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
         taskItem->start_period_min = rx_min64u(taskItem->start_period_min, period);
     }
     taskItem->init = true;
-    res = task_func();
+    if(true==is_flash_addr((uint32_t)task_func)){
+        res = task_func();
+    }else{
+        res = false;
+    }
     stop = get_time_us();
     if(start < stop) {
         delta = stop - start;

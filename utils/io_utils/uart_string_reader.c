@@ -33,7 +33,7 @@ void uart_string_reader_clear_str(uart_string_reader_t* rdr) {
 
 bool uart_string_reader_init(uart_string_reader_t* rdr) {
     (void)(rdr);
-    cli_tune_read_char();
+    //cli_tune_read_char();
     return true;
 }
 
@@ -45,7 +45,7 @@ void uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
 
 void uart_string_reader_error_callback(uart_string_reader_t* rdr) {
     rdr->error_count++;
-    cli_tune_read_char();
+   // cli_tune_read_char();
 }
 
 void uart_string_reader_proccess(uart_string_reader_t* rdr) {
@@ -56,13 +56,13 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
             break;
         }
         for (i = 0; i < size; i++) {
-            char c = p[i];
+            char character = p[i];
             rdr->total_char_count++;
-            if (c != '\n') {
+            if (character != '\n') {
                 if (cli_echo) {
-                    io_putchar(c);
+                    io_putchar(character);
                 }
-                switch (c) {
+                switch (character) {
                 case '\b':
                     if (rdr->string_len) {
                         rdr->string[rdr->string_len] = 0;
@@ -87,7 +87,7 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
                     break;
                 default:
                     if (rdr->string_len < rdr->string_size) {
-                        rdr->string[rdr->string_len] = c;
+                        rdr->string[rdr->string_len] = character;
                         rdr->string_len++;
                     } else {
                         rdr->lost_char_count++;

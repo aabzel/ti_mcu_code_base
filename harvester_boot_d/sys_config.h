@@ -12,6 +12,7 @@
 #define DIO_LEN 22U
 #define DIO_PS_RS232 7U /*Enable RS232 transceiver*/
 #define DIO_PWR_MUX_CTRL 14U /*PWR_MUX_CTRL*/
+#define DIO_GNSS_RST_N 18U /*RST_N_GNSS*/
 #define DIO_UART_CLI_RX	13U
 #define DIO_UART_CLI_TX	12U
 
