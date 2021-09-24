@@ -138,11 +138,17 @@ const char *facility2str(log_facility_t facility) {
    case LG_FLASH:
     facility_str = "FLASH";
     break;     
-  case FLASH_FS:
-    facility_str = "FLASH_FS";
+  case DIAG:
+    facility_str = "DIAG";
+    break;
+  case BATT:
+    facility_str = "BATT";
     break;
   case BOOT:
     facility_str = "BOOT";
+    break;
+  case FLASH_FS:
+    facility_str = "FLASH_FS";
     break;
   case SYS:
     facility_str = "SYS";
@@ -158,9 +164,6 @@ const char *facility2str(log_facility_t facility) {
     break;
   case SPI:
     facility_str = "SPI";
-    break;
-  case DIAG:
-    facility_str = "DIAG";
     break;
   case LORA:
     facility_str = "LoRa";

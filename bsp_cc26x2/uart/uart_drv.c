@@ -34,7 +34,10 @@ UartHandle_t huart[UART_COUNT] = {0};
 UARTCC26XX_Object uartCC26XXObjects[UART_COUNT];
 
 static unsigned char uartCC26XXRingBuffer0[32];
+
+#ifdef HAS_UART1
 static unsigned char uartCC26XXRingBuffer1[160];
+#endif /*HAS_UART1*/
 
 #define RX_ARR0_CNT 1U
 #define RX_ARR1_CNT 210U
@@ -56,6 +59,7 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
      .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_4_8,
      .errorFxn = NULL},
+#ifdef HAS_UART1
     {.baseAddr = UART1_BASE,
      .intNum = INT_UART1_COMB,
      .intPriority = (~0),
@@ -75,11 +79,14 @@ static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
      .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_4_8,
      .errorFxn = NULL},
+#endif /*HAS_UART1*/
 };
 
 const UART_Config UART_config[UART_COUNT] = {
     {.fxnTablePtr = &UARTCC26XX_fxnTable, .object = &uartCC26XXObjects[0], .hwAttrs = &uartCC26XXHWAttrs[0]},
+#ifdef HAS_UART1
     {.fxnTablePtr = &UARTCC26XX_fxnTable, .object = &uartCC26XXObjects[1], .hwAttrs = &uartCC26XXHWAttrs[1]},
+#endif /*HAS_UART1*/
 };
 
 const uint_least8_t UART_count = UART_COUNT;
@@ -99,7 +106,7 @@ static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[0].tx_int = true;
     huart[0].tx_cpl_cnt++;
 }
-
+#ifdef HAS_UART1
 static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
@@ -113,8 +120,13 @@ static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[1].tx_int = true;
     huart[1].tx_cpl_cnt++;
 }
-
-static const uint32_t uartNum2Base[UART_COUNT] = {UART0_BASE, UART1_BASE};
+#endif /*HAS_UART1*/
+static const uint32_t uartNum2Base[UART_COUNT] = {
+    UART0_BASE,
+#ifdef HAS_UART1
+    UART1_BASE
+#endif /*HAS_UART1*/
+};
 
 bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;
@@ -169,10 +181,6 @@ bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
 
     return res;
 }
-#if 0
-void cli_tune_read_char(void) { /*uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1);*/ }
-#endif
-
 
 uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling) {
     return 0;
@@ -205,7 +213,7 @@ bool proc_uart(uint8_t uart_index) {
             res = uart_read(uart_index, &huart[uart_index].rx_buff[0], RX_ARR1_CNT);
         } else if(0 == uart_index) {
             huart[uart_index].rx_byte = 0xFF;
-            res = uart_read(uart_index, &huart[uart_index].rx_byte, 1);
+            res = uart_read(uart_index,(uint8_t *) &huart[uart_index].rx_byte, 1);
             if(0x00 != huart[uart_index].rx_byte) {
                 res = true;
             } else {
@@ -275,8 +283,10 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
             huart[uart_num].uartParams.writeCallback = (UART_Callback)uart0WriteCallback;
             huart[uart_num].uartParams.readCallback = (UART_Callback)uart0ReadCallback;
         } else if(1 == uart_num) {
+#ifdef HAS_UART1
             huart[uart_num].uartParams.writeCallback = (UART_Callback)uart1WriteCallback;
             huart[uart_num].uartParams.readCallback = (UART_Callback)uart1ReadCallback;
+#endif
         } else {
             huart[uart_num].uartParams.writeCallback = (UART_Callback)NULL;
             huart[uart_num].uartParams.readCallback = (UART_Callback)NULL;
@@ -293,7 +303,7 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
 #ifdef UART_SHOW
             res = uart_send(uart_num, (uint8_t*)connectionHint, strlen(connectionHint));
 #endif /*UART_SHOW*/
-            uart_read(uart_num, &huart[uart_num].rx_byte, 1);
+            uart_read(uart_num,(uint8_t *) &huart[uart_num].rx_byte, 1);
         }
     }
     return res;

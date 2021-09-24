@@ -63,6 +63,7 @@
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
@@ -118,6 +119,7 @@
 									<listOptionValue builtIn="false" value="CC26XX"/>
 									<listOptionValue builtIn="false" value="DeviceFamily_CC26X2"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
+									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
 									<listOptionValue builtIn="false" value="HAS_CLI"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
@@ -223,6 +225,14 @@
 								<additionalInput kind="additionalinputdependency" paths=""/>
 							</inputType>
 							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.186421174" name="Resource Custom Build Step Output Type"/>
+						</tool>
+					</fileInfo>
+					<fileInfo id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.2039576451.35340890" name="bq25171_q1_commands.h" rcbsApplicability="disable" resourcePath="Drivers/bq25171_q1_drv/bq25171_q1_commands.h" toolsToInvoke="">
+						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.1678112640" name="Resource Custom Build Step">
+							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.465388635" name="Resource Custom Build Step Input Type">
+								<additionalInput kind="additionalinputdependency" paths=""/>
+							</inputType>
+							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.919125816" name="Resource Custom Build Step Output Type"/>
 						</tool>
 					</fileInfo>
 					<fileInfo id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.2039576451.1869693592" name="sx1262_logbook.txt" rcbsApplicability="disable" resourcePath="Drivers/sx1262/sx1262_logbook.txt" toolsToInvoke="">

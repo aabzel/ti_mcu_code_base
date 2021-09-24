@@ -52,23 +52,41 @@ bool boot_jump_to_code(uint32_t app_start_address) {
     return res;
 }
 
+static const char *boot_cmd2str(CmdBoot_t boot_cmd){
+    const char *name="error";
+    switch(boot_cmd){
+    case BOOT_CMD_STAY_ON:
+        name = "stay";
+        break;
+    case BOOT_CMD_LAUNCH_APP:
+        name = "launch";
+        break;
+    case BOOT_CMD_LAUNCH_APP_CRC:
+        name = "launchCrc";
+        break;
+    default:name="undef"; break;
+    }
+    return name;
+}
+
 bool boot_try_app(void) {
     bool res = false;
     uint16_t real_len = 0;
-    CmdBoot_t stay_in_boot = BOOT_CMD_ENDEF;
-    res = mm_get(PAR_ID_BOOT_CMD, (uint8_t*)&stay_in_boot, sizeof(stay_in_boot), &real_len);
+    CmdBoot_t boot_cmd = BOOT_CMD_ENDEF;
+    LOG_INFO(BOOT, "Try boot app...");
+    res = mm_get(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd), &real_len);
     if(res) {
-        if(sizeof(stay_in_boot) != real_len) {
+        if(sizeof(boot_cmd) != real_len) {
             res = false;
             LOG_ERROR(BOOT, "boot cmd len error %u", real_len);
         }
     } else {
         LOG_ERROR(BOOT, "Lack of boot cmd ParamId: %u", PAR_ID_BOOT_CMD);
     }
-
-    if(BOOT_CMD_STAY_ON == stay_in_boot) {
+    LOG_INFO(BOOT,"Boot cmd %s",boot_cmd2str(boot_cmd));
+    if(BOOT_CMD_STAY_ON == boot_cmd) {
         res = true;
-    } else if(BOOT_CMD_LAUNCH_APP == stay_in_boot) {
+    } else if(BOOT_CMD_LAUNCH_APP == boot_cmd) {
         uint32_t app_start_address = 0;
         res = mm_get(PAR_ID_APP_START, (uint8_t*)&app_start_address, sizeof(app_start_address), &real_len);
         if(res) {
@@ -80,6 +98,62 @@ bool boot_try_app(void) {
         } else {
             LOG_ERROR(BOOT, "Lack of boot app address");
         }
+    }else{
+        res = false;
     }
+    return res;
+}
+
+/*Application Hang on protection*/
+bool boot_init(void) {
+    uint16_t real_len = 0;
+    bool res = false;
+    uint8_t boot_cnt = 0;
+    res = mm_get(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt), &real_len);
+    if( (true==res) && (sizeof(boot_cnt)==real_len) ) {
+         LOG_INFO(BOOT, "launch try %u", boot_cnt);
+         if (APP_LAYNCH_TRY < boot_cnt) {
+             LOG_ERROR(BOOT, "Application seems hang on");
+             CmdBoot_t boot_cmd = BOOT_CMD_STAY_ON;
+             res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
+             if (false==res) {
+                 LOG_ERROR(BOOT, "Unable to send boot cmd");
+             } else {
+                 LOG_DEBUG(BOOT, "Send boot stay on OK");
+                 res = true;
+             }
+         } else {
+             boot_cnt++;
+             res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
+             if (false==res) {
+                 LOG_ERROR(BOOT, "Unable to update boot cnt");
+             }
+         }
+    } else {
+        res = true;
+        boot_cnt = 0;
+        res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
+        if ( false == res ) {
+            LOG_ERROR(BOOT, "Unable to init boot cnt");
+        }
+    }
+    return res;
+}
+
+bool boot_proc(void) {
+    bool res = false;
+    static uint8_t cnt=0;
+    if (0==cnt) {
+        /*Indicate boot that Application loaded fine*/
+        uint8_t boot_cnt = 0;
+        res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
+        if (false == res) {
+            LOG_ERROR(BOOT, "Unable to reset boot cnt");
+        }else{
+            res = true;
+            LOG_INFO(BOOT, "App loaded fine");
+        }
+    }
+    cnt++;
     return res;
 }

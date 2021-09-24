@@ -12,6 +12,7 @@
 #include "cli_manager.h"
 #endif /*HAS_CLI*/
 
+#include "boot_driver.h"
 #include "gpio_drv.h"
 #include "health_monitor.h"
 #include "hw_init.h"
@@ -69,6 +70,10 @@ void common_loop(uint64_t loop_start_time_us) {
     if(0u == loop_start_time_us) {
         return;
     }
+#ifdef HAS_GENERIC
+    measure_task_interval(TASK_ID_BOOT, 2000000, boot_proc, loop_start_time_us);
+#endif
+
 #ifdef HAS_DAC
     measure_task_interval(TASK_ID_DAC, 100000, dac_proc, loop_start_time_us);
 #endif

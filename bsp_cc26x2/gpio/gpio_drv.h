@@ -11,26 +11,26 @@
 #include "board_layout.h"
 
 #define IOC_BASE 0x40081000
-/* DIO6, LaunchPad LED Red */
-extern const uint_least8_t CONFIG_GPIO_LED_0_CONST;
-/* DIO7, LaunchPad LED Green */
-extern const uint_least8_t CONFIG_GPIO_LED_1_CONST;
+
 #define CONFIG_TI_DRIVERS_GPIO_COUNT 4
 
-/* LEDs are active high */
-#define CONFIG_LED_ON (1)
-#define CONFIG_LED_OFF (0)
+typedef enum ePullMode_t{
+ PULL_DOWN = 1,
+ PULL_UP = 2,
+ PULL_AIR = 3,
+ PULL_UNDEF = 4
+}PullMode_t;
 
 bool gpio_init(void);
-
-/*GPIO API*/
 bool gpio_get_state(uint8_t io_pin, uint8_t* logic_level);
 bool gpio_set_state(uint8_t io_pin, uint8_t logic_level);
 bool is_edge_irq_en(uint8_t dio_pin);
 bool gpio_toggle(uint8_t io_pin);
 bool proc_led(void);
+PullMode_t gpio_get_pull_mode(uint8_t dio_pin);
 uint8_t get_mcu_pin(uint8_t io_pin);
 uint8_t get_aux_num(uint8_t io_pin);
 bool gpio_init_layout(const Pin_t* PinTable, uint8_t size);
+GPIO_PinConfig gpio_get_cfg_dio(uint8_t dio_number);
 
 #endif /* INIT_GPIO_H  */

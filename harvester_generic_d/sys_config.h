@@ -7,6 +7,8 @@
 #define CLI_UART_NUM 0U
 /*DIO config */
 #define DIO_3V3_CTRL 21U
+#define DIO_BATT_SCL 5U
+#define DIO_BATT_SDA 6U
 #define DIO_CAN_INT_N 8U
 #define DIO_CAN_RST 9U
 #define DIO_GNSS_INT 20U

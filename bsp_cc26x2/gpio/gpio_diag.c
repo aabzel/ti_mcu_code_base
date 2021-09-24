@@ -177,16 +177,15 @@ const char* get_gpio_alter_fun(uint8_t dio_pin) {
 
 const char* get_gpio_pull_mode(uint8_t dio_pin) {
     char* pull_name = "no";
-    uint32_t* p_iocfg = (uint32_t*)(IOC_BASE + 4 * dio_pin);
-    uint32_t pull_code = extract_subval_from_32bit(*p_iocfg, 14, 13);
-    switch(pull_code) {
-    case 1:
+    PullMode_t mode = gpio_get_pull_mode(dio_pin);
+    switch(mode) {
+    case PULL_DOWN:
         pull_name = "Down";
         break;
-    case 2:
+    case PULL_UP:
         pull_name = " Up ";
         break;
-    case 3:
+    case PULL_AIR:
         pull_name = "Air ";
         break;
     default:

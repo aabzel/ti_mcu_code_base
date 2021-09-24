@@ -45,23 +45,24 @@ typedef uint8_t log_facility_t;
 #else
 typedef enum eLog_facility_t {
   UNKNOWN_FACILITY=0,
-  ADC=1,
-  BOOT=2,
-  DAC=3,
-  DIAG=4,
-  I2C=5,
-  LG_FLASH=6,
-  FLASH_FS=7,
-  LORA=8,
-  NVS=9,
-  TIM=10,
-  SPI=11,
-  PARAM=12,
-  RF=13,
-  RNG=14,
-  SYS=15,
-  UART=16,
-  ALL_FACILITY=17
+  ADC,
+  BATT ,
+  BOOT,
+  DAC,
+  DIAG,
+  I2C,
+  LG_FLASH,
+  FLASH_FS,
+  LORA,
+  NVS,
+  TIM,
+  SPI,
+  PARAM,
+  RF,
+  RNG,
+  SYS,
+  UART,
+  ALL_FACILITY
 } log_facility_t;
 #endif /*STM32F413xx*/
 

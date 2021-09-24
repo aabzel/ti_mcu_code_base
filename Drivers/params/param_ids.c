@@ -14,7 +14,6 @@
 /*TODO: Sort by index for bin search in future*/
 const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
-    {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},         /*num*/
     {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"},      /*Hz*/
     {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
     {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
@@ -25,7 +24,9 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
     {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
     {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},        /*1-stay in boot 0-launch App*/
+    {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},         /*num*/
     {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"}, /*Flash Addr*/
+    {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"}, /*Flash Addr*/
 };
 
 bool param_init(void) {

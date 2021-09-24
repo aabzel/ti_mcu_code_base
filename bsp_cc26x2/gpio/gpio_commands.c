@@ -44,9 +44,8 @@ bool gpio_get_command(int32_t argc, char* argv[]) {
             }
         }
     } else {
-        LOG_ERROR(SYS, "Usage: gg gpio_port gpio_pin");
-        LOG_INFO(SYS, "gpio_port [A...Z]");
-        LOG_INFO(SYS, "gpio_pin 0....15 ");
+        LOG_ERROR(SYS, "Usage: gg dio");
+        LOG_INFO(SYS, "dio 0....31 ");
     }
     return res;
 }
@@ -90,7 +89,8 @@ bool gpio_set_command(int32_t argc, char* argv[]) {
 
 static bool diag_gpio(char* key_word1, char* key_word2) {
     bool res = false;
-
+    replace_char(key_word1, '_', ' ');
+    replace_char(key_word2, '_', ' ');
     static const table_col_t cols[] = {{5, "No"},    {5, "dio"},     {5, "aux"},  {5, "pin"},  {5, "dir"},
                                        {7, "level"}, {5, "irq"},     {6, "edge"}, {6, "pull"}, {13, "type"},
                                        {4, "ev"},    {10, "AltFun"}, {12, "name"}};

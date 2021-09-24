@@ -54,6 +54,9 @@
 #include "gpio_drv.h"
 #endif
 
+#ifdef HAS_BQ25171_Q1
+#include "bq25171_q1_drv.h"
+#endif /*HAS_BQ25171_Q1*/
 
 #ifdef HAS_DAC
 #include "dac_drv.h"
@@ -170,6 +173,10 @@ bool hw_init(void) {
 #ifdef HAS_RF
   res = try_init(rf_init(),"RF") && res;
 #endif /*HAS_RF*/
+
+#ifdef HAS_BQ25171_Q1
+  res = try_init(bq25171_q1_init(),"bq251") && res;
+#endif /*HAS_BQ25171_Q1*/
 
   return res;
 }

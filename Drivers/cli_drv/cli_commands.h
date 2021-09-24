@@ -44,11 +44,6 @@ extern "C" {
 #define NMEA_COMMANDS
 #endif
 
-#ifdef HAS_HEALTH_MONITOR
-#include "health_monitor_command.h"
-#else
-#define HEALTH_MONITOR_COMMANDS
-#endif
 
 #ifdef HAS_BMP180
 #include "bmp180_commands.h"
@@ -56,22 +51,10 @@ extern "C" {
 #define BMP180_COMMANDS
 #endif
 
-#ifdef HAS_LORA
-#include "lora_commands.h"
+#ifdef HAS_BQ25171_Q1
+#include "bq25171_q1_commands.h"
 #else
-#define LORA_COMMANDS
-#endif
-
-#ifdef HAS_RF
-#include "rf_commands.h"
-#else
-#define RF_COMMANDS
-#endif
-
-#ifdef HAS_SX1262
-#include "sx1262_commands.h"
-#else
-#define SX1262_COMMANDS
+#define BMP180_COMMANDS
 #endif
 
 #ifdef HAS_FLASH_FS
@@ -85,6 +68,31 @@ extern "C" {
 #else
 #define FLASH_NVS_COMMANDS
 #endif
+
+#ifdef HAS_HEALTH_MONITOR
+#include "health_monitor_command.h"
+#else
+#define HEALTH_MONITOR_COMMANDS
+#endif
+
+#ifdef HAS_LORA
+#include "lora_commands.h"
+#else
+#define LORA_COMMANDS
+#endif
+
+#ifdef HAS_RF
+#include "rf_commands.h"
+#else
+#define RF_COMMANDS
+#endif /*HAS_RF*/
+
+#ifdef HAS_SX1262
+#include "sx1262_commands.h"
+#else
+#define SX1262_COMMANDS
+#endif
+
 
 #ifdef HAS_PARAM
 #include "param_commands.h"
@@ -100,16 +108,17 @@ extern "C" {
 
 #define SHELL_COMMANDS                                                                                                 \
     BMP180_COMMANDS                                                                                                    \
+    BQ25171_Q1_COMMANDS                                                                                                \
     COMMON_COMMANDS                                                                                                    \
     CORTEX_M4_COMMANDS                                                                                                 \
     EXT_RAM_EMUL_COMMANDS                                                                                              \
-    MX25L6433_COMMANDS                                                                                                 \
     FLASH_FS_COMMANDS                                                                                                  \
     FLASH_NVS_COMMANDS                                                                                                 \
     HEALTH_MONITOR_COMMANDS                                                                                            \
     LED_COMMANDS                                                                                                       \
     LOG_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
+    MX25L6433_COMMANDS                                                                                                 \
     NMEA_COMMANDS                                                                                                      \
     PARAM_COMMANDS                                                                                                     \
     RF_COMMANDS                                                                                                        \

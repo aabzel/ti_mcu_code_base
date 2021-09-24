@@ -11,6 +11,9 @@
 #include "ext_ram_sim_drv.h"
 #endif /*HAS_EXT_RAM_EMUL*/  
 
+#ifdef HAS_BOOTLOADER
+#include "boot_driver.h"
+#endif /*HAS_BOOTLOADER*/
 
 #ifdef HAS_LED
 #include "led_drv.h"
@@ -88,5 +91,8 @@ bool sw_init(void) {
   res = try_init(task_init(),"task")&& res;
 #endif /*TASKS*/
 
+#ifdef HAS_BOOTLOADER
+  res = try_init(boot_init(),"boot") && res;
+#endif /*HAS_BOOTLOADER*/
   return res;
 }

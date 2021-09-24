@@ -58,6 +58,18 @@ void gpioButtonFxn1(uint_least8_t index) {
     GPIO_toggleDio((uint32_t)DIO_LED_RED);
 }
 
+GPIO_PinConfig gpio_get_cfg_dio(uint8_t dio_number){
+    GPIO_PinConfig gpio_pin_cfg = GPIO_CFG_IN_NOPULL;
+    uint8_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
+        if(PinTable[i].dio == dio_number) {
+            gpio_pin_cfg = PinTable[i].pinConfig;
+            break;
+        }
+    }
+    return gpio_pin_cfg;
+}
+
 bool gpio_init(void) {
     bool res = false;
     /*init gpioPinConfigs tructure */
@@ -71,8 +83,8 @@ bool gpio_init(void) {
         res = true;
         GPIO_init();
 #ifdef HAS_LED
-        GPIO_setConfig(CONF_GPIO_LED_0, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-        GPIO_setConfig(CONF_GPIO_LED_1, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_LED_0, gpio_get_cfg_dio(DIO_LED_RED));
+        GPIO_setConfig(CONF_GPIO_LED_1, gpio_get_cfg_dio(DIO_LED_GREEN));
 #endif /*HAS_LED*/
 #ifdef HAS_RS232
         GPIO_setConfig(CONF_GPIO_PS_RS232, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
@@ -92,7 +104,10 @@ bool gpio_init(void) {
 #endif /* HAS_BOOTLOADER */
 
 #ifdef HAS_HARVESTER
-        GPIO_setConfig(CONF_GPIO_PWR_MUX_CTRL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_PWR_MUX_CTRL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+        GPIO_setConfig(CONF_GPIO_LEN, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_BATT_SCL, gpio_get_cfg_dio(DIO_BATT_SCL));
+        GPIO_setConfig(CONF_GPIO_BATT_SDA, gpio_get_cfg_dio(DIO_BATT_SDA));
 #endif /*HAS_HARVESTER*/
 
 #ifdef LAUNCHXL_CC26X2R1
@@ -128,16 +143,20 @@ bool gpio_init(void) {
         GPIO_writeDio(DIO_SS1_CAN, 1);
 #endif /* HAS_TCAN4550 */
 
-
 #ifdef HAS_ZED_F9P
         GPIO_writeDio(DIO_GNSS_INT, 1);
         GPIO_writeDio(DIO_GNSS_SAFEBOOT_N, 1);
         GPIO_writeDio(DIO_GNSS_RST_N, 0);
 #endif /* HAS_ZED_F9P */
+
 #ifdef HAS_BOOTLOADER
         GPIO_writeDio(DIO_GNSS_RST_N, 1);
 #endif /* HAS_BOOTLOADER */
-        GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
+
+#ifdef HAS_HARVESTER
+        GPIO_writeDio(DIO_LEN, 0);
+        GPIO_writeDio(DIO_PWR_MUX_CTRL, 1);
+#endif /*HAS_HARVESTER*/
     }
     return res;
 }
@@ -161,6 +180,15 @@ bool is_edge_irq_en(uint8_t dio_pin) {
     }
     return res;
 }
+
+
+PullMode_t gpio_get_pull_mode(uint8_t dio_pin) {
+    PullMode_t pull_mode = PULL_UNDEF;
+    uint32_t* p_iocfg = (uint32_t*)(IOC_BASE + 4 * dio_pin);
+    pull_mode =(PullMode_t) extract_subval_from_32bit(*p_iocfg, 14, 13);
+    return pull_mode;
+}
+
 
 uint8_t get_mcu_pin(uint8_t io_pin) {
     uint8_t mcu_pin = 0;
@@ -190,3 +218,5 @@ bool gpio_toggle(uint8_t dio_number) {
     GPIO_toggleDio((uint32_t)dio_number);
     return true;
 }
+
+
