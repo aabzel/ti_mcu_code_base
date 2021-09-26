@@ -2,12 +2,12 @@ https://en.wikipedia.org/wiki/Real-time_kinematic_positioning
   
 https://rtklibexplorer.wordpress.com/2018/11/30/a-first-look-at-the-u-blox-zed-f9p-dual-frequency-receiver/
 
-Конфигурацию базовой станции
-взят ZED-F9P модуль
+Конфигурация базовой станции:
+take ZED-F9P модуль
 Ucenter 1904
 
 Reset configuration
-Скачать base config file из GIT Hub
+Download base config file из GIT Hub
 
 Advanced config
 Установить координаты антенны
@@ -78,20 +78,5 @@ CFG
 save current config 
 Flash
 send
-
-
-
-
-
-
- 
-
- 
-
-Thanks a lot for the tutorial. 
-
-What is the maximum allowable distance between RTK base and RTK rover in case of a stable  real time wireless data link between gadgets? 
-Regards,
-АБ
 
 
