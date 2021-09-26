@@ -1,0 +1,97 @@
+https://en.wikipedia.org/wiki/Real-time_kinematic_positioning
+  
+https://rtklibexplorer.wordpress.com/2018/11/30/a-first-look-at-the-u-blox-zed-f9p-dual-frequency-receiver/
+
+Конфигурацию базовой станции
+взят ZED-F9P модуль
+Ucenter 1904
+
+Reset configuration
+Скачать base config file из GIT Hub
+
+Advanced config
+Установить координаты антенны
+Configure Tmode3  Mode 2-fixed mode use 
+Lat lon alt pos
+send
+
+CFG-PRT  
+UART1 UART2
+Protocol in RTMC3
+out Protocol out RTCM3 
+baud rare 115200
+
+UART2
+Protocol in RTMC3
+Protocol out RTCM3
+baud rare 115200
+
+CFG 
+save current config 
+Flash
+send
+
+
+Configure rover 
+reset to default config 
+
+Configuration 9
+Advanced config
+load rover file from ublox git hub
+send
+updare baud rate 
+ 
+
+view config view
+PRT 
+UART2 
+Protocol in RTCM3
+protocol out NMEA
+baud rare 115200
+send
+
+
+UART1 
+Protocol in RTCM3
+protocol out UBX+NMEA
+baud rare 115200
+send
+
+RATE 
+UTC time
+Measurement Period 200
+send
+
+GLO time
+Measurement Period 200
+send
+
+BSD time
+Measurement Period 200
+send
+
+GAL time
+Measurement Period 200
+send
+
+CFG 
+save current config 
+Flash
+send
+
+
+
+
+
+
+ 
+
+ 
+
+Thanks a lot for the tutorial. 
+
+What is the maximum allowable distance between RTK base and RTK rover in case of a stable  real time wireless data link between gadgets? 
+Regards,
+АБ
+
+
