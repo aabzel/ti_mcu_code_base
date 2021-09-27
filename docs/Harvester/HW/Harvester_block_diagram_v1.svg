@@ -1421,11 +1421,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="271.75"
-     inkscape:cy="578.5"
+     inkscape:zoom="8"
+     inkscape:cx="696.0625"
+     inkscape:cy="602.375"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1504,6 +1504,10 @@
        position="71.482536,86.574598"
        orientation="1,0"
        id="guide4540" />
+    <sodipodi:guide
+       position="182.64519,47.60371"
+       orientation="0,-1"
+       id="guide69498" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -2332,8 +2336,9 @@
          style="font-size:1.61679px;fill:#00ff1f;fill-opacity:1;stroke-width:0.121259">PWR_MUX_CTRL</tspan></text>
     <path
        style="fill:none;stroke:#008000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker7440)"
-       d="m 124.44835,151.80951 h 33.6515 v 10.72199 c 0,0 26.99874,-0.25836 27.25709,0 0.25836,0.25835 0,-10.85116 0,-10.85116 h 8.78428"
-       id="path6704" />
+       d="m 124.44835,151.80951 h 33.6515 v 10.72199 h 27.25709 v -10.85116 h 8.78428"
+       id="path6704"
+       sodipodi:nodetypes="cccccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.256167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker7094)"
        d="m 124.44835,153.74722 h 32.42429 v 11.43249 h 30.16365 v -11.75544 h 6.97575"
@@ -4125,15 +4130,15 @@
          style="font-size:1.02305px;stroke-width:0.255765">Active Low</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="177.47235"
-       y="161.83679"
+       style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;fill:#006f19;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       x="177.63771"
+       y="163.7881"
        id="text8131"><tspan
          sodipodi:role="line"
          id="tspan8129"
-         x="177.47235"
-         y="161.83679"
-         style="font-size:1.02305px;stroke-width:0.255765">Charge Enable</tspan></text>
+         x="177.63771"
+         y="163.7881"
+         style="font-size:1.02305px;stroke-width:0.255765;fill:#006f19;fill-opacity:1">Charge Enable</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
