@@ -43,9 +43,9 @@ bool diag_page_uarts(ostream_t* stream) {
 bool cmd_uarts(int32_t argc, char* argv[]) {
     (void)argv;
     bool res = false;
-    if (0==argc) {
-      res = diag_page_uarts(DBG_STREAM);
-    }else if(0<argc ) {
+    if(0 == argc) {
+        res = diag_page_uarts(DBG_STREAM);
+    } else if(0 < argc) {
         res = false;
         LOG_ERROR(UART, "Usage: u");
     }

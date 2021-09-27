@@ -54,8 +54,8 @@ extern "C" {
 #ifdef HAS_BQ25171_Q1
 #include "bq25171_q1_commands.h"
 #else
-#define BMP180_COMMANDS
-#endif
+#define BQ25171_Q1_COMMANDS
+#endif /*HAS_BQ25171_Q1*/
 
 #ifdef HAS_FLASH_FS
 #include "flash_fs_commands.h"
@@ -100,6 +100,12 @@ extern "C" {
 #define PARAM_COMMANDS
 #endif
 
+#ifdef HAS_PWR_MUX
+#include "pwr_mux_commands.h"
+#else
+#define PWR_MUX_COMMANDS
+#endif
+
 #ifdef HAS_RNG
 #include "rng_commands.h"
 #else
@@ -121,6 +127,7 @@ extern "C" {
     MX25L6433_COMMANDS                                                                                                 \
     NMEA_COMMANDS                                                                                                      \
     PARAM_COMMANDS                                                                                                     \
+    PWR_MUX_COMMANDS                                                                                                   \
     RF_COMMANDS                                                                                                        \
     SX1262_COMMANDS                                                                                                    \
     TRNG_COMMANDS                                                                                                      \

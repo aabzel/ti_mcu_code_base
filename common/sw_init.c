@@ -7,6 +7,7 @@
 #include "task_info.h"
 #endif /*NORTOS*/
 
+
 #ifdef HAS_EXT_RAM_EMUL
 #include "ext_ram_sim_drv.h"
 #endif /*HAS_EXT_RAM_EMUL*/  
@@ -45,9 +46,14 @@
 #include "param_ids.h"
 #endif /*HAS_PARAM*/
 
+#ifdef HAS_PWR_MUX
+#include "pwr_mux_drv.h"
+#endif /*HAS_PWR_MUX*/
+
 bool sw_init(void) {
   bool res = true;
   
+
 #ifdef HAS_LED
   res = try_init(led_init(),"LED") && res;
 #endif /*HAS_LED*/
@@ -82,6 +88,10 @@ bool sw_init(void) {
 #ifdef HAS_PARAM
   res = try_init(param_init(),"param") && res;
 #endif /*HAS_PARAM*/
+
+#ifdef HAS_PWR_MUX
+  res = try_init( pwr_src_init( ),"PWR_MUX") && res;
+#endif /*HAS_PWR_MUX*/
 
 #ifdef HAS_EXT_RAM_EMUL
   res = try_init(ext_ram_init(),"ext_ram_em") && res;

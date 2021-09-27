@@ -58,7 +58,7 @@ void gpioButtonFxn1(uint_least8_t index) {
     GPIO_toggleDio((uint32_t)DIO_LED_RED);
 }
 
-GPIO_PinConfig gpio_get_cfg_dio(uint8_t dio_number){
+GPIO_PinConfig gpio_get_cfg_dio(uint8_t dio_number) {
     GPIO_PinConfig gpio_pin_cfg = GPIO_CFG_IN_NOPULL;
     uint8_t i = 0;
     for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
@@ -155,7 +155,7 @@ bool gpio_init(void) {
 
 #ifdef HAS_HARVESTER
         GPIO_writeDio(DIO_LEN, 0);
-        GPIO_writeDio(DIO_PWR_MUX_CTRL, 1);
+        GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
 #endif /*HAS_HARVESTER*/
     }
     return res;
@@ -181,14 +181,12 @@ bool is_edge_irq_en(uint8_t dio_pin) {
     return res;
 }
 
-
 PullMode_t gpio_get_pull_mode(uint8_t dio_pin) {
     PullMode_t pull_mode = PULL_UNDEF;
     uint32_t* p_iocfg = (uint32_t*)(IOC_BASE + 4 * dio_pin);
-    pull_mode =(PullMode_t) extract_subval_from_32bit(*p_iocfg, 14, 13);
+    pull_mode = (PullMode_t)extract_subval_from_32bit(*p_iocfg, 14, 13);
     return pull_mode;
 }
-
 
 uint8_t get_mcu_pin(uint8_t io_pin) {
     uint8_t mcu_pin = 0;
@@ -218,5 +216,3 @@ bool gpio_toggle(uint8_t dio_number) {
     GPIO_toggleDio((uint32_t)dio_number);
     return true;
 }
-
-

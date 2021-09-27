@@ -101,7 +101,7 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
     uint8_t i = 0;
     char temp_str[200];
     for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
-        res = gpio_get_state( PinTable[i].dio, &logic_level);
+        res = gpio_get_state(PinTable[i].dio, &logic_level);
         if(true == res) {
             strcpy(temp_str, TSEP);
             snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].dio);

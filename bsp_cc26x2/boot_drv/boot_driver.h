@@ -14,8 +14,8 @@ typedef enum eCmdBoot_t {
     BOOT_CMD_LAUNCH_APP = 0,
     BOOT_CMD_LAUNCH_APP_CRC = 1,
     BOOT_CMD_STAY_ON = 2,
-    BOOT_CMD_ENDEF = 3 }
-CmdBoot_t;
+    BOOT_CMD_ENDEF = 3
+} CmdBoot_t;
 
 bool boot_init(void);
 bool boot_erase_app(void);

@@ -6,8 +6,8 @@
 
 #include "sys_config.h"
 
-#define DIO_CNT 10
-#define GPIO_COUNT 6U
+#define DIO_CNT 13
+#define GPIO_COUNT 9U
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {
@@ -20,8 +20,11 @@ typedef struct xPin_t {
     PIN_Config pinCfg;
 } Pin_t;
 
+#define CONF_GPIO_BATT_SCL 7
+#define CONF_GPIO_BATT_SDA 8
 #define CONF_GPIO_LED_0 0
 #define CONF_GPIO_LED_1 1
+#define CONF_GPIO_GNSS_INT 6
 #define CONF_GPIO_PS_RS232 2
 #define CONF_GPIO_PWR_MUX_CTRL 3
 #define CONF_GPIO_GNSS_RST_N 4

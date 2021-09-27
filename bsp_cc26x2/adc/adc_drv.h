@@ -11,9 +11,10 @@ typedef struct xADCItem_t{
     uint8_t aux_pin;
     uint8_t io_pin;
     uint8_t pin;
+    float scale;
 }ADCItem_t;
 
-#define ADC_ITEMS_CNT 12
+#define ADC_ITEMS_CNT 3
 extern uint32_t AdcCodes[ADC_ITEMS_CNT];
 extern const ADCItem_t AdcItemsLUT[ADC_ITEMS_CNT];
 

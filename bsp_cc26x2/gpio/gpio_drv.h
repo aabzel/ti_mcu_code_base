@@ -14,12 +14,7 @@
 
 #define CONFIG_TI_DRIVERS_GPIO_COUNT 4
 
-typedef enum ePullMode_t{
- PULL_DOWN = 1,
- PULL_UP = 2,
- PULL_AIR = 3,
- PULL_UNDEF = 4
-}PullMode_t;
+typedef enum ePullMode_t { PULL_DOWN = 1, PULL_UP = 2, PULL_AIR = 3, PULL_UNDEF = 4 } PullMode_t;
 
 bool gpio_init(void);
 bool gpio_get_state(uint8_t io_pin, uint8_t* logic_level);

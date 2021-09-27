@@ -93,11 +93,12 @@ const uint_least8_t UART_count = UART_COUNT;
 
 static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[0].rx_cnt++;
+    huart[0].rx_it_proc_done = false;
     huart[0].rx_int = true;
-    if((1 == size) && (NULL!=rx_buf)) {
-       huart[0].rx_byte_it = (uint8_t) *(rx_buf);
+    if((1 == size) && (NULL != rx_buf)) {
+        huart[0].rx_byte_it = (uint8_t) * (rx_buf);
     } else {
-       huart[0].error_cnt++;
+        huart[0].error_cnt++;
     }
 }
 
@@ -110,7 +111,8 @@ static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
 static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
-    if(rx_buf){
+    huart[1].rx_it_proc_done = false;
+    if(rx_buf) {
         huart[1].rx_byte = *(rx_buf);
     }
 }
@@ -121,10 +123,9 @@ static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[1].tx_cpl_cnt++;
 }
 #endif /*HAS_UART1*/
-static const uint32_t uartNum2Base[UART_COUNT] = {
-    UART0_BASE,
+static const uint32_t uartNum2Base[UART_COUNT] = {UART0_BASE,
 #ifdef HAS_UART1
-    UART1_BASE
+                                                  UART1_BASE
 #endif /*HAS_UART1*/
 };
 
@@ -136,7 +137,7 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     /*TODO Calc needed time to wait*/
     while(init_tx_cnt == huart[uart_num].tx_cnt) {
         time_out++;
-        if(10000 < time_out) {/*TODO find val*/
+        if(10000 < time_out) { /*TODO find val*/
             res = false;
             huart[uart_num].error_cnt++;
             break;
@@ -147,7 +148,7 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
 
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
     bool res = false;
-    if(1==uart_num){
+    if(1 == uart_num) {
 #ifdef HAS_BOOTLOADER
         res = false;
         return res;
@@ -172,10 +173,10 @@ int cli_putchar_uart(int character) {
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     bool res = false;
     if(uart_num < UART_COUNT) {
-        int_fast32_t ret=0;
+        int_fast32_t ret = 0;
         ret = UART_read(huart[uart_num].uart_h, out_array, array_len);
-        if(0<ret){
-           res = true;
+        if(0 < ret) {
+            res = true;
         }
     }
 
@@ -213,7 +214,7 @@ bool proc_uart(uint8_t uart_index) {
             res = uart_read(uart_index, &huart[uart_index].rx_buff[0], RX_ARR1_CNT);
         } else if(0 == uart_index) {
             huart[uart_index].rx_byte = 0xFF;
-            res = uart_read(uart_index,(uint8_t *) &huart[uart_index].rx_byte, 1);
+            res = uart_read(uart_index, (uint8_t*)&huart[uart_index].rx_byte, 1);
             if(0x00 != huart[uart_index].rx_byte) {
                 res = true;
             } else {
@@ -231,19 +232,20 @@ static bool uart_poll(uint8_t uart_index) {
     /*In case of uart interrupts fail*/
     bool res = true;
     static uint8_t rx_byte = UNLIKELY_SYMBOL1;
-    res = uart_read(uart_index, &rx_byte, 1);
-    if((UNLIKELY_SYMBOL1 != rx_byte) &&(UNLIKELY_SYMBOL2 != rx_byte) &&(res)) {
-        res = true;
-        huart[uart_index].rx_byte = rx_byte;
-        if(CLI_UART_NUM == uart_index) {
-            uart_string_reader_rx_callback(&cmd_reader, (char)rx_byte);
+    if(true==huart[CLI_UART_NUM].rx_it_proc_done){
+        res = uart_read(uart_index, &rx_byte, 1);
+        if((UNLIKELY_SYMBOL1 != rx_byte) && (UNLIKELY_SYMBOL2 != rx_byte) && (res)) {
+            res = true;
+            huart[uart_index].rx_byte = rx_byte;
+            if(CLI_UART_NUM == uart_index) {
+                uart_string_reader_rx_callback(&cmd_reader, (char)rx_byte);
+            }
+        } else {
+            res = false;
         }
-    } else {
-        res = false;
     }
     return res;
 }
-
 
 bool proc_uarts(void) {
     bool res = false;
@@ -254,7 +256,6 @@ bool proc_uarts(void) {
 #endif /*HAS_UART1*/
     return res;
 }
-
 
 static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
     bool res = false;
@@ -303,7 +304,7 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
 #ifdef UART_SHOW
             res = uart_send(uart_num, (uint8_t*)connectionHint, strlen(connectionHint));
 #endif /*UART_SHOW*/
-            uart_read(uart_num,(uint8_t *) &huart[uart_num].rx_byte, 1);
+            uart_read(uart_num, (uint8_t*)&huart[uart_num].rx_byte, 1);
         }
     }
     return res;

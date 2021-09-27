@@ -2,6 +2,7 @@
 #define TASK_CONFIG_H
 
 #define TASKS                                                                  \
+  TASK(ADC)                                                                    \
   TASK(BOOT)                                                                   \
   TASK(CLI)                                                                    \
   TASK(FLASH_FS)                                                               \

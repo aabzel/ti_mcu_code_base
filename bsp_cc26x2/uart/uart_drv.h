@@ -7,7 +7,6 @@
 #include "sys_config.h"
 #include "uart_common.h"
 
-
 #ifdef HAS_BOOTLOADER
 #define UART_COUNT 1
 #else
@@ -28,7 +27,7 @@ extern const uint_least8_t CONFIG_UART_0_CONST;
 extern UartHandle_t huart[UART_COUNT];
 
 bool uart_init(void);
-//void cli_tune_read_char(void);
+// void cli_tune_read_char(void);
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len);
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len);
 uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling);

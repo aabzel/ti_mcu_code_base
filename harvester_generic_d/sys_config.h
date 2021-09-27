@@ -5,10 +5,15 @@
 #define APP_PAGE_CNT 26U
 #define APP_START_ADDRESS 0x00018000
 #define CLI_UART_NUM 0U
+
+#define VOL_DIV_SCALE_PWR 11.0f
+#define VOL_DIV_SCALE_ACC 1.47619f
 /*DIO config */
 #define DIO_3V3_CTRL 21U
 #define DIO_BATT_SCL 5U
 #define DIO_BATT_SDA 6U
+#define DIO_KL30_ADC 24U
+#define DIO_BATT_ADC 25U
 #define DIO_CAN_INT_N 8U
 #define DIO_CAN_RST 9U
 #define DIO_GNSS_INT 20U

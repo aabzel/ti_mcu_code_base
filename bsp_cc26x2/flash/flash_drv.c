@@ -89,8 +89,8 @@ bool flash_wr(uint32_t flash_addr, uint8_t* wr_array, uint32_t array_len) {
             }
         }
     }
-   // VIMSLineBufEnable(VIMS_BASE);
-   // VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
+    // VIMSLineBufEnable(VIMS_BASE);
+    // VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
     return res;
 }
 
@@ -103,8 +103,8 @@ bool flash_erase_sector(uint32_t sector_address) {
         if(FAPI_STATUS_SUCCESS == ret) {
             res = true;
         }
-        //VIMSLineBufEnable(VIMS_BASE);
-       // VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
+        // VIMSLineBufEnable(VIMS_BASE);
+        // VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
     }
     return res;
 }

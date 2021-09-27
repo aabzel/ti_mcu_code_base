@@ -52,9 +52,9 @@ bool boot_jump_to_code(uint32_t app_start_address) {
     return res;
 }
 
-static const char *boot_cmd2str(CmdBoot_t boot_cmd){
-    const char *name="error";
-    switch(boot_cmd){
+static const char* boot_cmd2str(CmdBoot_t boot_cmd) {
+    const char* name = "error";
+    switch(boot_cmd) {
     case BOOT_CMD_STAY_ON:
         name = "stay";
         break;
@@ -64,7 +64,9 @@ static const char *boot_cmd2str(CmdBoot_t boot_cmd){
     case BOOT_CMD_LAUNCH_APP_CRC:
         name = "launchCrc";
         break;
-    default:name="undef"; break;
+    default:
+        name = "undef";
+        break;
     }
     return name;
 }
@@ -83,7 +85,7 @@ bool boot_try_app(void) {
     } else {
         LOG_ERROR(BOOT, "Lack of boot cmd ParamId: %u", PAR_ID_BOOT_CMD);
     }
-    LOG_INFO(BOOT,"Boot cmd %s",boot_cmd2str(boot_cmd));
+    LOG_INFO(BOOT, "Boot cmd %s", boot_cmd2str(boot_cmd));
     if(BOOT_CMD_STAY_ON == boot_cmd) {
         res = true;
     } else if(BOOT_CMD_LAUNCH_APP == boot_cmd) {
@@ -98,7 +100,7 @@ bool boot_try_app(void) {
         } else {
             LOG_ERROR(BOOT, "Lack of boot app address");
         }
-    }else{
+    } else {
         res = false;
     }
     return res;
@@ -110,30 +112,30 @@ bool boot_init(void) {
     bool res = false;
     uint8_t boot_cnt = 0;
     res = mm_get(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt), &real_len);
-    if( (true==res) && (sizeof(boot_cnt)==real_len) ) {
-         LOG_INFO(BOOT, "launch try %u", boot_cnt);
-         if (APP_LAYNCH_TRY < boot_cnt) {
-             LOG_ERROR(BOOT, "Application seems hang on");
-             CmdBoot_t boot_cmd = BOOT_CMD_STAY_ON;
-             res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
-             if (false==res) {
-                 LOG_ERROR(BOOT, "Unable to send boot cmd");
-             } else {
-                 LOG_DEBUG(BOOT, "Send boot stay on OK");
-                 res = true;
-             }
-         } else {
-             boot_cnt++;
-             res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
-             if (false==res) {
-                 LOG_ERROR(BOOT, "Unable to update boot cnt");
-             }
-         }
+    if((true == res) && (sizeof(boot_cnt) == real_len)) {
+        LOG_INFO(BOOT, "launch try %u", boot_cnt);
+        if(APP_LAYNCH_TRY < boot_cnt) {
+            LOG_ERROR(BOOT, "Application seems hang on");
+            CmdBoot_t boot_cmd = BOOT_CMD_STAY_ON;
+            res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
+            if(false == res) {
+                LOG_ERROR(BOOT, "Unable to send boot cmd");
+            } else {
+                LOG_DEBUG(BOOT, "Send boot stay on OK");
+                res = true;
+            }
+        } else {
+            boot_cnt++;
+            res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
+            if(false == res) {
+                LOG_ERROR(BOOT, "Unable to update boot cnt");
+            }
+        }
     } else {
         res = true;
         boot_cnt = 0;
         res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
-        if ( false == res ) {
+        if(false == res) {
             LOG_ERROR(BOOT, "Unable to init boot cnt");
         }
     }
@@ -142,18 +144,18 @@ bool boot_init(void) {
 
 bool boot_proc(void) {
     bool res = false;
-    static uint8_t cnt=0;
-    if (0==cnt) {
+    static bool cnt = false;
+    if(false == cnt) {
         /*Indicate boot that Application loaded fine*/
         uint8_t boot_cnt = 0;
         res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
-        if (false == res) {
+        if(false == res) {
             LOG_ERROR(BOOT, "Unable to reset boot cnt");
-        }else{
+        } else {
             res = true;
             LOG_INFO(BOOT, "App loaded fine");
         }
     }
-    cnt++;
+    cnt = true;
     return res;
 }
