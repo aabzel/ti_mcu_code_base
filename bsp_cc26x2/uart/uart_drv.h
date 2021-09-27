@@ -3,6 +3,7 @@
 
 #include <hw_memmap.h>
 #include <ti/drivers/UART.h>
+#include <ti/drivers/uart/UARTCC26XX.h>
 
 #include "sys_config.h"
 #include "uart_common.h"
@@ -25,6 +26,7 @@
 extern const uint_least8_t CONFIG_UART_0_CONST;
 
 extern UartHandle_t huart[UART_COUNT];
+extern const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT];
 
 bool uart_init(void);
 // void cli_tune_read_char(void);

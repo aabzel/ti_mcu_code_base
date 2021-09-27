@@ -44,7 +44,7 @@ static unsigned char uartCC26XXRingBuffer1[160];
 
 uint8_t rx_buff[UART_COUNT][RX_ARR0_CNT];
 
-static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
+const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
     {.baseAddr = UART0_BASE,
      .intNum = INT_UART0_COMB,
      .intPriority = (~0),

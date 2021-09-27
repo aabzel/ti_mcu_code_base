@@ -1,6 +1,7 @@
 #include "uart_commands.h"
 
 #include <inttypes.h>
+#include <uart.h>
 
 #include "base_cmd.h"
 #include "convert.h"
@@ -121,33 +122,100 @@ bool uart_init_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-/*TODO: calculate */
+/*TODO: calculate baud_rate*/
 bool uart_diag_command(int32_t argc, char* argv[]) {
-    const table_col_t cols[] = {{5, "Num"},       {7, "manti"}, {7, "fract"}, {7, "overS"},
-                                {10, "baudRate"}, {9, "rx"},    {9, "tx"},    {10, "name"}};
-    uint32_t baud_rate = 0;
-    uint16_t mantissa = 0;
-    uint16_t fraction = 0;
-    uint8_t uart_num = 0;
-    uint8_t over_sampling = 0;
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
-    for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
-        io_printf(TSEP);
-        io_printf(" %02u  " TSEP, uart_num);
-        baud_rate = uart_get_baud_rate(uart_num, &mantissa, &fraction, &over_sampling);
-        io_printf(" %05u " TSEP, mantissa);
-        io_printf(" %05u " TSEP, fraction);
-        io_printf(" %02u    " TSEP, over_sampling);
-        if(0 < baud_rate) {
-            io_printf(" %07u  " TSEP, baud_rate);
-        } else {
-            io_printf("          " TSEP, baud_rate);
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        const table_col_t cols[] = {{5, "Num"},       {7, "manti"}, {7, "fract"}, {7, "overS"},
+                                    {10, "baudRate"}, {9, "rx"},    {9, "tx"},    {10, "name"}};
+        uint32_t baud_rate = 0;
+        uint16_t mantissa = 0;
+        uint16_t fraction = 0;
+        uint8_t uart_num = 0;
+        uint8_t over_sampling = 0;
+        table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
+            io_printf(TSEP);
+            io_printf(" %02u  " TSEP, uart_num);
+            baud_rate = uart_get_baud_rate(uart_num, &mantissa, &fraction, &over_sampling);
+            io_printf(" %05u " TSEP, mantissa);
+            io_printf(" %05u " TSEP, fraction);
+            io_printf(" %02u    " TSEP, over_sampling);
+            if(0 < baud_rate) {
+                io_printf(" %07u  " TSEP, baud_rate);
+            } else {
+                io_printf("          " TSEP, baud_rate);
+            }
+            io_printf(" %07u " TSEP, huart[uart_num].rx_cnt);
+            io_printf(" %07u " TSEP, huart[uart_num].tx_cnt);
+            io_printf(" %7s  " TSEP, huart[uart_num].name);
+            io_printf(CRLF);
         }
-        io_printf(" %07u " TSEP, huart[uart_num].rx_cnt);
-        io_printf(" %07u " TSEP, huart[uart_num].tx_cnt);
-        io_printf(" %7s  " TSEP, huart[uart_num].name);
-        io_printf(CRLF);
+        table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    } else {
+        LOG_ERROR(UART, "Usage: ud");
+
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
-    return false;
+    return res;
+}
+
+static bool uart_int_diag(bool Masked){
+    bool res = false;
+    io_printf(" %s Interrupt Status" CRLF, (true==Masked)?"Masked":"Raw");
+    const table_col_t cols[] = {{5, "Num"},
+                                {12, "Is"},
+                                {4, "Eot"},
+                                {4, "Oe"},
+                                {4, "Be"},
+                                {4, "Pe"},
+                                {4, "Fe"},
+                                {4, "Rt"},
+                                {4, "Tx"},
+                                {4, "Rx"},
+                                {4, "CTS"},
+                                {10, "name"},
+                                     };
+        uint32_t int_status=0;
+        uint8_t uart_num = 0;
+        table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
+            io_printf(TSEP);
+            io_printf(" %02u  " TSEP, uart_num);
+            int_status = UARTIntStatus(uartCC26XXHWAttrs[uart_num].baseAddr, Masked);
+            io_printf(" 0x%08x " TSEP, int_status);
+            io_printf("  %u " TSEP, UART_INT_EOT==(UART_INT_EOT&int_status));
+            io_printf("  %u " TSEP, UART_INT_OE==(UART_INT_OE&int_status));
+            io_printf("  %u " TSEP, UART_INT_BE==(UART_INT_BE&int_status));
+            io_printf("  %u " TSEP, UART_INT_PE==(UART_INT_PE&int_status));
+            io_printf("  %u " TSEP, UART_INT_FE==(UART_INT_FE&int_status));
+            io_printf("  %u " TSEP, UART_INT_RT==(UART_INT_RT&int_status));
+            io_printf("  %u " TSEP, UART_INT_TX==(UART_INT_TX&int_status));
+            io_printf("  %u " TSEP, UART_INT_RX==(UART_INT_RX&int_status));
+            io_printf("  %u " TSEP, UART_INT_CTS==(UART_INT_CTS&int_status));
+            io_printf(" %7s  " TSEP, huart[uart_num].name);
+            io_printf(CRLF);
+        }
+        table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    return res;
+}
+
+bool uart_int_diag_command(int32_t argc, char* argv[]){
+    bool res = false;
+    bool is_masked = false;
+    if(0 == argc){
+        res = true;
+    }else if(1 == argc) {
+        res = try_str2bool(argv[0], &is_masked);
+        if(false == res) {
+            LOG_ERROR(UART, "Unable to parse type");
+        }
+    } else {
+        LOG_ERROR(UART, "Usage: uid is_masked");
+    }
+
+    if(res){
+        res =uart_int_diag(is_masked);//RIS
+    }
+    return res;
 }
