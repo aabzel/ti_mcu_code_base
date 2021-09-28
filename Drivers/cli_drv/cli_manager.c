@@ -92,11 +92,12 @@ bool cli_init(void) {
 
 
 bool cli_process(void) {
+    static uint8_t rx_byte=0;
     if(true == huart[CLI_UART_NUM].rx_int) {
         huart[CLI_UART_NUM].rx_int = false;
 #ifndef USE_HAL_DRIVER
         uart_string_reader_rx_callback(&cmd_reader, (char)huart[CLI_UART_NUM].rx_byte_it);
-        //uart_read(CLI_UART_NUM, &huart[CLI_UART_NUM].rx_byte, 1);
+        uart_read(CLI_UART_NUM, &rx_byte, 1);
 #endif /*USE_HAL_DRIVER*/
         huart[CLI_UART_NUM].rx_it_proc_done = true;
     }
@@ -198,7 +199,7 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
             io_printf(" %s ", cmd->description ? cmd->description : "");
             io_printf(CRLF);
 #ifdef NORTOS
-            wait_in_loop_ms(2);
+            wait_in_loop_ms(1);
 #endif /*NORTOS*/
             num++;
         }

@@ -18,75 +18,6 @@
 #include "str_utils.h"
 #include "table_utils.h"
 
-/*
-gg D 1
-*/
-bool gpio_get_command(int32_t argc, char* argv[]) {
-    bool res = false;
-    if(1 == argc) {
-        res = true;
-        uint8_t logic_level = 0xFF;
-        uint8_t port_pin_num = 0;
-
-        if(true == res) {
-            res = try_str2uint8(argv[0], &port_pin_num);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract port_pin_num %s", argv[0]);
-            }
-        }
-
-        if(true == res) {
-            res = gpio_get_state(port_pin_num, &logic_level);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to get gpio state");
-            } else {
-                io_printf("%u" CRLF, logic_level);
-            }
-        }
-    } else {
-        LOG_ERROR(SYS, "Usage: gg dio");
-        LOG_INFO(SYS, "dio 0....31 ");
-    }
-    return res;
-}
-
-bool gpio_set_command(int32_t argc, char* argv[]) {
-    bool res = false;
-    if(2 == argc) {
-        res = true;
-        uint8_t logic_level = 0xFF;
-        uint8_t port_pin_num = 0;
-
-        if(true == res) {
-            res = try_str2uint8(argv[0], &port_pin_num);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract port_pin_num %s", argv[0]);
-            }
-        }
-
-        if(true == res) {
-            res = try_str2uint8(argv[1], &logic_level);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract logic_level %s", argv[1]);
-            }
-        }
-
-        if(true == res) {
-            res = gpio_set_state(port_pin_num, logic_level);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to set gpio state");
-            } else {
-                io_printf("%u" CRLF, logic_level);
-            }
-        }
-    } else {
-        LOG_ERROR(SYS, "Usage: gs gpio_port gpio_pin logic_level");
-        LOG_INFO(SYS, "gpio_pin 0....30 ");
-        LOG_INFO(SYS, "logic_level 0..1 ");
-    }
-    return res;
-}
-
 static bool diag_gpio(char* key_word1, char* key_word2) {
     bool res = false;
     replace_char(key_word1, '_', ' ');
@@ -100,6 +31,7 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
 
     uint8_t i = 0;
     char temp_str[200];
+    DioDir_t gpio_dir;
     for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
         res = gpio_get_state(PinTable[i].dio, &logic_level);
         if(true == res) {
@@ -107,7 +39,8 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
             snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].dio);
             snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].aux_pin);
             snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].mcu_pin);
-            snprintf(temp_str, sizeof(temp_str), "%s %2s  " TSEP, temp_str, get_pin_dir(PinTable[i].dio));
+            gpio_dir = gpio_get_dir(PinTable[i].dio);
+            snprintf(temp_str, sizeof(temp_str), "%s %2s  " TSEP, temp_str, gpio_dir2str(gpio_dir));
             snprintf(temp_str, sizeof(temp_str), "%s  %s    " TSEP, temp_str, (1 == logic_level) ? "H" : "L");
             snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, (1 == is_edge_irq_en(i)) ? "Y" : "N");
             snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_edge(PinTable[i].dio));
@@ -128,6 +61,74 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
 
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
 
+    return res;
+}
+/*
+gg D 1
+*/
+bool gpio_get_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(1 == argc) {
+        res = true;
+        uint8_t logic_level = 0xFF;
+        uint8_t dio_num = 0;
+
+        if(true == res) {
+            res = try_str2uint8(argv[0], &dio_num);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract dio_num %s", argv[0]);
+            }
+        }
+
+        if(true == res) {
+            res = gpio_get_state(dio_num, &logic_level);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to get gpio state");
+            } else {
+                io_printf("%u" CRLF, logic_level);
+            }
+        }
+    } else {
+        LOG_ERROR(SYS, "Usage: gg dio");
+        LOG_INFO(SYS, "dio 0....31 ");
+    }
+    return res;
+}
+
+bool gpio_set_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(2 == argc) {
+        res = true;
+        uint8_t logic_level = 0xFF;
+        uint8_t dio_num = 0;
+
+        if(true == res) {
+            res = try_str2uint8(argv[0], &dio_num);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract dio_num %s", argv[0]);
+            }
+        }
+
+        if(true == res) {
+            res = try_str2uint8(argv[1], &logic_level);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract logic_level %s", argv[1]);
+            }
+        }
+
+        if(true == res) {
+            res = gpio_set_state(dio_num, logic_level);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to set gpio state");
+            } else {
+                io_printf("%u" CRLF, logic_level);
+            }
+        }
+    } else {
+        LOG_ERROR(SYS, "Usage: gs dio_num gpio_pin logic_level");
+        LOG_INFO(SYS, "gpio_pin 0....30 ");
+        LOG_INFO(SYS, "logic_level 0..1 ");
+    }
     return res;
 }
 
@@ -162,26 +163,127 @@ bool gpio_toggle_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(1 == argc) {
         res = true;
-        uint8_t port_pin_num = 0;
+        uint8_t dio_num = 0;
 
         if(true == res) {
-            res = try_str2uint8(argv[0], &port_pin_num);
+            res = try_str2uint8(argv[0], &dio_num);
             if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract port_pin_num %s", argv[0]);
+                LOG_ERROR(SYS, "Unable to extract dio_num %s", argv[0]);
             }
         }
 
         if(true == res) {
-            res = gpio_toggle(port_pin_num);
+            res = gpio_toggle(dio_num);
             if(false == res) {
                 LOG_ERROR(SYS, "Unable to toggle gpio");
             } else {
-                io_printf("pin %u toggled" CRLF, port_pin_num);
+                io_printf("pin %u toggled" CRLF, dio_num);
             }
         }
     } else {
-        LOG_ERROR(SYS, "Usage: gt gpio_port gpio_pin");
+        LOG_ERROR(SYS, "Usage: gt dio_num gpio_pin");
         LOG_INFO(SYS, "gpio_pin 0....15 ");
+    }
+    return res;
+}
+
+bool gpio_get_dir_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(1 == argc) {
+        res = true;
+        uint8_t dio_num = 0;
+        DioDir_t dio_dir = GPIO_DIR_UNDEF;
+        if(true == res) {
+            res = try_str2uint8(argv[0], &dio_num);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract dio_num %s", argv[0]);
+            }
+        }
+
+        if(true == res) {
+            dio_dir = gpio_get_dir(dio_num);
+            if(false == res) {
+                LOG_ERROR(SYS, "error");
+            } else {
+                io_printf("pin %u dir %u" CRLF, dio_num, dio_dir);
+            }
+        }
+    } else {
+        LOG_ERROR(SYS, "Usage: gd dio_num");
+    }
+    return res;
+}
+
+bool gpio_set_pull_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    uint8_t dio = 0;
+    uint8_t pull_mode = 0;
+    if(2 == argc) {
+        res = true;
+
+        if(true == res) {
+            res = try_str2uint8(argv[0], &dio);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract dio %s", argv[0]);
+            }
+        }
+
+        if(true == res) {
+            res = try_str2uint8(argv[1], &pull_mode);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract pull_mode %s", argv[1]);
+            }
+        }
+
+        if(true == res) {
+            res = gpio_set_pull_mode(dio, (PullMode_t)pull_mode);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to set pull");
+            } else {
+                LOG_INFO(SYS, "OK");
+            }
+        }
+    } else {
+        LOG_ERROR(SYS, "Usage: gp dio mode");
+        LOG_INFO(SYS, "dio 0....15 ");
+        LOG_INFO(SYS, "mode [1-Down 2-Up 3-Air]");
+    }
+    return res;
+}
+
+bool gpio_set_in_mode_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    uint8_t dio = 0;
+    bool is_in_mode = 0;
+    if(2 == argc) {
+        res = true;
+
+        if(true == res) {
+            res = try_str2uint8(argv[0], &dio);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract dio %s", argv[0]);
+            }
+        }
+
+        if(true == res) {
+            res = try_str2bool(argv[1], &is_in_mode);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract is_in_mode %s", argv[1]);
+            }
+        }
+
+        if(true == res) {
+            res = gpio_set_in_mode(dio, is_in_mode);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to set in mode");
+            } else {
+                LOG_INFO(SYS, "OK");
+            }
+        }
+    } else {
+        LOG_ERROR(SYS, "Usage: gis dio is_in_mode");
+        LOG_INFO(SYS, "dio 0....15");
+        LOG_INFO(SYS, "state [0-off 1-on]");
     }
     return res;
 }

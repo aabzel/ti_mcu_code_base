@@ -1,7 +1,7 @@
-
-#define APP_START_ADDRESS 0x00018000
-#define DIO_LED_GREEN 30U
-#define DIO_LED_RED 26U
-#define DIO_PS_RS232 7U /*Enable RS232 transceiver*/
-#define DIO_UART_CLI_RX	13U
-#define DIO_UART_CLI_TX	12U
+bool gpio_get_command(int32_t argc, char* argv[]);
+bool gpio_get_dir_command(int32_t argc, char* argv[]);
+bool gpio_list_command(int32_t argc, char* argv[]);
+bool gpio_set_command(int32_t argc, char* argv[]);
+bool gpio_set_in_mode_command(int32_t argc, char* argv[]);
+bool gpio_set_pull_command(int32_t argc, char* argv[]);
+bool gpio_toggle_command(int32_t argc, char* argv[]);

@@ -61,7 +61,6 @@ bool pwr_src_init(void) {
     return res;
 }
 
-
 PwrSource_t pwr_src_get(void) {
     PwrSource_t cur_prw_src = PWR_SRC_UNDEF;
     uint32_t val = 0;

@@ -5,11 +5,14 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "gpio_drv.h"
 #include "sys_config.h"
 
 bool bq25171_q1_init(void){
     bool res = false;
-    res = bq25171_q1_charge_enable(true);
+    res = bq25171_q1_charge_enable(false);
+    res = gpio_set_pull_mode(  DIO_GNSS_INT, PULL_AIR) && res;
+    res = gpio_set_dir( DIO_GNSS_INT, GPIO_DIR_NONE) && res;
     return res;
 }
 

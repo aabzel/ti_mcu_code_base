@@ -4,14 +4,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "gpio_drv.h"
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
 
-#define IOC_BASE 0x40081000
-
+const char* gpio_dir2str(DioDir_t gpio_dir);
 const char* get_gpio_mode(uint8_t io_pin);
 const char* get_gpio_type(uint8_t io_pin);
-const char* get_pin_dir(uint8_t io_pin);
 const char* get_gpio_alter_fun(uint8_t dio_pin);
 const char* get_gpio_pull_mode(uint8_t dio_pin);
 const char* get_gpio_edge(uint8_t dio_pin);

@@ -24,16 +24,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
-     inkscape:cx="365.44643"
-     inkscape:cy="558.92857"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="1022.7795"
+     inkscape:cy="544.47222"
      inkscape:document-units="mm"
      inkscape:current-layer="layer6"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
-     inkscape:window-x="-11"
+     inkscape:window-x="1909"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:pagecheckerboard="0" />
@@ -244,5 +244,27 @@
          style="font-size:2.19571px;fill:#ffff00;stroke-width:0.164678"
          x="71.606789"
          y="138.86514">GNSS_TXD</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.86583px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.121646"
+       x="187.33444"
+       y="166.73517"
+       id="text1779"><tspan
+         sodipodi:role="line"
+         id="tspan1777"
+         style="fill:#ffff00;stroke-width:0.121646"
+         x="187.33444"
+         y="166.73517">TP82</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.31482px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0328705"
+       x="188.2016"
+       y="168.40112"
+       id="text3991"><tspan
+         sodipodi:role="line"
+         id="tspan3989"
+         style="fill:#ffff00;stroke-width:0.0328705"
+         x="188.2016"
+         y="168.40112">PWR_MUX_CTRL</tspan></text>
   </g>
 </svg>

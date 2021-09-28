@@ -55,7 +55,7 @@ bool adc_init_command(int32_t argc, char* argv[]) {
         res = adc_init();
         if(false == res) {
             LOG_ERROR(ADC, "ADC init error");
-        }else{
+        } else {
             LOG_INFO(ADC, "ADC init OK");
         }
     } else {
@@ -145,10 +145,8 @@ bool adc_all_command(int32_t argc, char* argv[]) {
         res = true;
         int32_t microvolts = 0;
         uint32_t adc_value_pop = 0, i = 0;
-        static const table_col_t cols[] = {
-            {7, "input"}, {5, "DIO"}, {5, "pin"}, {10, "popValue"},
-            {10, "getValue"}, {11, "microvolts"}, {11, "volts"}, {11, "Scaled"}
-        };
+        static const table_col_t cols[] = {{7, "input"},     {5, "DIO"},         {5, "pin"},    {10, "popValue"},
+                                           {10, "getValue"}, {11, "microvolts"}, {11, "volts"}, {11, "Scaled"}};
 
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
         for(i = 0; i < ARRAY_SIZE(AdcItemsLUT); i++) {
@@ -161,7 +159,7 @@ bool adc_all_command(int32_t argc, char* argv[]) {
                 io_printf(" %8u " TSEP, AdcCodes[i]);
                 io_printf(" %9u " TSEP, microvolts);
                 io_printf("  %7.3f  " TSEP, 0.000001f * ((float)microvolts));
-                io_printf("  %7.3f  " TSEP, 0.000001f * ((float)microvolts)*AdcItemsLUT[i].scale);
+                io_printf("  %7.3f  " TSEP, 0.000001f * ((float)microvolts) * AdcItemsLUT[i].scale);
                 io_printf(CRLF);
             }
         }
@@ -171,4 +169,3 @@ bool adc_all_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
-

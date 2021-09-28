@@ -29,7 +29,8 @@ extern UartHandle_t huart[UART_COUNT];
 extern const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT];
 
 bool uart_init(void);
-// void cli_tune_read_char(void);
+bool uart_deinit(uint8_t uart_num);
+bool is_uart_valid(uint8_t uart_num);
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len);
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len);
 uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling);

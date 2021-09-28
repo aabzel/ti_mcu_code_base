@@ -1,5 +1,6 @@
 #include "gpio_diag.h"
 
+#include <hw_memmap.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -183,13 +184,13 @@ const char* get_gpio_pull_mode(uint8_t dio_pin) {
         pull_name = "Down";
         break;
     case PULL_UP:
-        pull_name = " Up ";
+        pull_name = "Up";
         break;
     case PULL_AIR:
-        pull_name = "Air ";
+        pull_name = "Air";
         break;
     default:
-        pull_name = "Err ";
+        pull_name = "Err";
         break;
     }
     return pull_name;
@@ -262,14 +263,24 @@ const char* get_gpio_edge(uint8_t dio_pin) {
     return edge_name;
 }
 
-const char* get_pin_dir(uint8_t dioNumber) {
-    uint32_t out_en = GPIO_getOutputEnableDio((uint32_t)dioNumber);
-    static char dir[4] = "";
-    memset(dir, 0x00, sizeof(dir));
-    if(GPIO_OUTPUT_ENABLE == out_en) {
-        snprintf(dir, sizeof(dir), "%so", dir);
-    } else {
-        snprintf(dir, sizeof(dir), "%si", dir);
+const char* gpio_dir2str(DioDir_t gpio_dir) {
+    const char* name = "undef";
+    switch(gpio_dir) {
+    case GPIO_DIR_IN:
+        name = "i";
+        break;
+    case GPIO_DIR_OUT:
+        name = "o";
+        break;
+    case GPIO_DIR_INOUT:
+        name = "io";
+        break;
+    case GPIO_DIR_NONE:
+        name = "-";
+        break;
+    default:
+        name = "er";
+        break;
     }
-    return dir;
+    return name;
 }

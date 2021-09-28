@@ -1,9 +1,11 @@
 #include "uart_drv.h"
 
+#include <ioc.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <gpio.h>
 
 #ifdef DeviceFamily_CC26X2
 #include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
@@ -13,19 +15,23 @@
 #include <ti/drivers/UART.h>
 #include <ti/drivers/power/PowerCC26X2.h>
 #include <ti/drivers/uart/UARTCC26XX.h>
-#endif
+#endif /*DeviceFamily_CC26X2*/
+
+#ifdef HAS_GPIO
+#include "gpio_drv.h"
+#endif /*HAS_GPIO*/
 
 #ifdef HAS_UBLOX
 #include "ubx_protocol.h"
-#endif
+#endif /*HAS_UBLOX*/
 
 #ifdef HAS_NMEA
 #include "nmea_protocol.h"
-#endif
+#endif /*HAS_NMEA*/
 
 #ifdef HAS_CLI
 #include "uart_string_reader.h"
-#endif
+#endif /*HAS_CLI*/
 
 #include "sys_config.h"
 
@@ -129,6 +135,14 @@ static const uint32_t uartNum2Base[UART_COUNT] = {UART0_BASE,
 #endif /*HAS_UART1*/
 };
 
+bool is_uart_valid(uint8_t uart_num) {
+    bool res = false;
+    if(uart_num < UART_COUNT) {
+        res = true;
+    }
+    return res;
+}
+
 bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;
     uint32_t time_out = 0;
@@ -228,11 +242,12 @@ bool proc_uart(uint8_t uart_index) {
 #define UNLIKELY_SYMBOL1 0XFF
 #define UNLIKELY_SYMBOL2 0X00
 
+
 static bool uart_poll(uint8_t uart_index) {
     /*In case of uart interrupts fail*/
     bool res = true;
     static uint8_t rx_byte = UNLIKELY_SYMBOL1;
-    if(true==huart[CLI_UART_NUM].rx_it_proc_done){
+    if(true == huart[CLI_UART_NUM].rx_it_proc_done) {
         res = uart_read(uart_index, &rx_byte, 1);
         if((UNLIKELY_SYMBOL1 != rx_byte) && (UNLIKELY_SYMBOL2 != rx_byte) && (res)) {
             res = true;
@@ -247,9 +262,14 @@ static bool uart_poll(uint8_t uart_index) {
     return res;
 }
 
+
 bool proc_uarts(void) {
     bool res = false;
-    res = uart_poll(0);
+    uint32_t uart_error=0;
+    uart_error= UARTRxErrorGet(uartCC26XXHWAttrs[0].baseAddr);
+    if (uart_error) {
+        res = uart_poll(0);
+    }
 
 #ifdef HAS_UART1
     res = proc_uart(1);
@@ -320,3 +340,17 @@ bool uart_init(void) {
     res = init_uart_ll(0, "CLI", UART0_BAUD_RATE) && res;
     return res;
 }
+
+bool uart_deinit(uint8_t uart_num) {
+    bool res = false;
+    res = is_uart_valid(uart_num);
+    if(res) {
+        res = gpio_set_dir(uartCC26XXHWAttrs[uart_num].txPin, GPIO_DIR_NONE) & res;
+        res = gpio_set_dir(uartCC26XXHWAttrs[uart_num].rxPin, GPIO_DIR_NONE) & res;
+        IOCIOPortIdSet(uartCC26XXHWAttrs[uart_num].txPin, IOC_PORT_GPIO);
+        IOCIOPortIdSet(uartCC26XXHWAttrs[uart_num].rxPin, IOC_PORT_GPIO);
+    }
+
+    return res;
+}
+

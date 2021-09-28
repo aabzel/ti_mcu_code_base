@@ -1,5 +1,7 @@
 #include "gpio_drv.h"
 
+#include <ioc.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -47,6 +49,13 @@ bool gpio_init_layout(const Pin_t* inPinTable, uint8_t size) {
 }
 #endif
 
+inline bool is_dio(uint8_t dio_pin) {
+    bool res = false;
+    if(dio_pin <= IOID_31) {
+        res = true;
+    }
+    return res;
+}
 /*
  *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_1.
  *  This may not be used for all boards.
@@ -144,9 +153,8 @@ bool gpio_init(void) {
 #endif /* HAS_TCAN4550 */
 
 #ifdef HAS_ZED_F9P
-        GPIO_writeDio(DIO_GNSS_INT, 1);
         GPIO_writeDio(DIO_GNSS_SAFEBOOT_N, 1);
-        GPIO_writeDio(DIO_GNSS_RST_N, 0);
+        GPIO_writeDio(DIO_GNSS_RST_N, 1);
 #endif /* HAS_ZED_F9P */
 
 #ifdef HAS_BOOTLOADER
@@ -154,6 +162,7 @@ bool gpio_init(void) {
 #endif /* HAS_BOOTLOADER */
 
 #ifdef HAS_HARVESTER
+        GPIO_writeDio(DIO_GNSS_INT, 1);
         GPIO_writeDio(DIO_LEN, 0);
         GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
 #endif /*HAS_HARVESTER*/
@@ -181,11 +190,74 @@ bool is_edge_irq_en(uint8_t dio_pin) {
     return res;
 }
 
+bool gpio_set_pull_mode(uint8_t dio_pin, PullMode_t pull_mode) {
+    uint32_t ui32Pull = IOC_NO_IOPULL;
+
+    bool res = false;
+    res = is_dio(dio_pin);
+    if(res) {
+
+        switch(pull_mode) {
+        case PULL_DOWN: {
+            ui32Pull = IOC_IOPULL_DOWN;
+            res = true;
+        } break;
+        case PULL_UP: {
+            ui32Pull = IOC_IOPULL_UP;
+            res = true;
+        } break;
+        case PULL_AIR: {
+            ui32Pull = IOC_NO_IOPULL;
+            res = true;
+        } break;
+        default: {
+            ui32Pull = IOC_NO_IOPULL;
+            res = false;
+        } break;
+        }
+    }
+    if(true == res) {
+        IOCIOPortPullSet((uint32_t)dio_pin, ui32Pull);
+    }
+
+    return res;
+}
+
 PullMode_t gpio_get_pull_mode(uint8_t dio_pin) {
     PullMode_t pull_mode = PULL_UNDEF;
     uint32_t* p_iocfg = (uint32_t*)(IOC_BASE + 4 * dio_pin);
     pull_mode = (PullMode_t)extract_subval_from_32bit(*p_iocfg, 14, 13);
     return pull_mode;
+}
+
+bool gpio_get_in_mode(uint8_t dio_pin) {
+    bool res = false;
+    bool is_input = false;
+    res = is_dio(dio_pin);
+    if(res) {
+        uint32_t* p_iocfg = (uint32_t*)(IOC_BASE + 4 * dio_pin);
+        is_input = CHECK_BIT_NUM(*p_iocfg, 29);
+    }
+    return is_input;
+}
+
+bool gpio_set_in_mode(uint8_t dio_pin, bool is_in_mode) {
+    bool res = false;
+    res = is_dio(dio_pin);
+    if(res) {
+        uint32_t ui32Input = IOC_INPUT_ENABLE;
+        if(true == is_in_mode) {
+            ui32Input = IOC_INPUT_ENABLE;
+            res = true;
+        } else {
+            ui32Input = IOC_INPUT_DISABLE;
+            res = true;
+        }
+        if(res) {
+            IOCIOInputSet((uint32_t)dio_pin, ui32Input);
+        }
+    }
+    return res;
 }
 
 uint8_t get_mcu_pin(uint8_t io_pin) {
@@ -215,4 +287,54 @@ uint8_t get_aux_num(uint8_t io_pin) {
 bool gpio_toggle(uint8_t dio_number) {
     GPIO_toggleDio((uint32_t)dio_number);
     return true;
+}
+
+uint32_t gpio_get_alter_fun(uint8_t dio_pin) {
+    uint32_t* p_iocfg = (uint32_t*)(IOC_BASE + 4 * dio_pin);
+    uint32_t port_id = MASK_5BIT & (*p_iocfg);
+    return port_id;
+}
+
+DioDir_t gpio_get_dir(uint8_t dio_pin) {
+    DioDir_t dir = GPIO_DIR_UNDEF;
+    bool is_input = gpio_get_in_mode(dio_pin);
+    uint32_t out_en = GPIO_getOutputEnableDio((uint32_t)dio_pin);
+    if(is_input) {
+        if(GPIO_OUTPUT_ENABLE == out_en) {
+            dir = GPIO_DIR_INOUT;
+        } else {
+            dir = GPIO_DIR_IN;
+        }
+    } else {
+        if(GPIO_OUTPUT_ENABLE == out_en) {
+            dir = GPIO_DIR_OUT;
+        } else {
+            dir = GPIO_DIR_NONE;
+        }
+    }
+
+    return dir;
+}
+
+bool gpio_set_dir(uint8_t dio_pin, DioDir_t des_dir) {
+    bool res = false;
+    res = is_dio(dio_pin);
+    if(res) {
+        if(GPIO_DIR_IN == des_dir) {
+            IOCIOInputSet((uint32_t)dio_pin, IOC_INPUT_ENABLE);
+            GPIO_setOutputEnableDio((uint32_t)dio_pin, GPIO_OUTPUT_DISABLE);
+            res = true;
+        } else if(GPIO_DIR_OUT == des_dir) {
+            GPIO_setOutputEnableDio((uint32_t)dio_pin, GPIO_OUTPUT_ENABLE);
+            res = true;
+        } else if(GPIO_DIR_INOUT == des_dir) {
+            GPIO_setOutputEnableDio((uint32_t)dio_pin, GPIO_OUTPUT_ENABLE);
+            res = true;
+        } else {
+            IOCIOInputSet((uint32_t)dio_pin, IOC_INPUT_DISABLE);
+            GPIO_setOutputEnableDio((uint32_t)dio_pin, GPIO_OUTPUT_DISABLE);
+            res = true;
+        }
+    }
+    return res;
 }

@@ -6,7 +6,7 @@
 
 #include "sys_config.h"
 
-#define DIO_CNT 16
+#define DIO_CNT 18
 #define GPIO_COUNT 15U
 
 #define PIN_NAME_LEN 10
