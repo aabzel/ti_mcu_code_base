@@ -1,7 +1,0 @@
-bool gpio_get_command(int32_t argc, char* argv[]);
-bool gpio_get_dir_command(int32_t argc, char* argv[]);
-bool gpio_list_command(int32_t argc, char* argv[]);
-bool gpio_set_command(int32_t argc, char* argv[]);
-bool gpio_set_in_mode_command(int32_t argc, char* argv[]);
-bool gpio_set_pull_command(int32_t argc, char* argv[]);
-bool gpio_toggle_command(int32_t argc, char* argv[]);

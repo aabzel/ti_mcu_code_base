@@ -1,11 +1,18 @@
+#include <stdbool.h>
+
 #include "fifo_index.h"
 
-void fifo_index_init(fifo_index_info_t *r_init, fifo_index_t size_init) {
-  r_init->size = size_init;
-  r_init->count = 0U;
-  r_init->start = 0U;
-  r_init->end = 0U;
-  r_init->errors = false;
+bool fifo_index_init(fifo_index_info_t *fifo_indexer, fifo_index_t size) {
+  bool res = false;
+  if ( (NULL != fifo_indexer) && (0<size)) {
+      res = true;
+      fifo_indexer->size = size;
+      fifo_indexer->count = 0U;
+      fifo_indexer->start = 0U;
+      fifo_indexer->end = 0U;
+      fifo_indexer->errors = false;
+  }
+  return res;
 }
 
 bool fifo_index_valid(const fifo_index_info_t *r_valid) {
@@ -46,7 +53,7 @@ fifo_index_t fifo_index_add(fifo_index_info_t *r_add) {
   if (r_add->count < r_add->size) {
     ret_add = r_add->end;
     r_add->end++;
-    if (r_add->end >= r_add->size) {
+    if (r_add->size <= r_add->end ) {
       r_add->end = 0U;
     }
     r_add->count++;

@@ -1421,11 +1421,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="696.0625"
-     inkscape:cy="602.375"
+     inkscape:zoom="11.313708"
+     inkscape:cx="399.55953"
+     inkscape:cy="323.1478"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer12"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -2971,29 +2971,29 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.08732px;line-height:1.25;font-family:sans-serif;fill:#00ffff;fill-opacity:1;stroke:none;stroke-width:0.0407746"
-       x="-84.797012"
-       y="113.10744"
+       x="-84.025276"
+       y="111.68089"
        id="text1008"
        transform="rotate(-90)"><tspan
          sodipodi:role="line"
          id="tspan1006"
-         x="-84.797012"
-         y="113.10744"
+         x="-84.025276"
+         y="111.68089"
          style="font-size:1.08732px;fill:#00ffff;fill-opacity:1;stroke-width:0.0407746">UART0</tspan></text>
     <path
        style="fill:none;stroke:#00eeff;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 112.7575,80.760229 -1.60724,0.92794"
+       d="m 112.7575,78.643561 -1.60724,0.92794"
        id="path10363" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.35461px;line-height:1.25;font-family:sans-serif;fill:#00ffff;fill-opacity:1;stroke:none;stroke-width:0.0588654"
        x="110.59077"
-       y="80.855583"
+       y="78.738914"
        id="text5555-12"><tspan
          sodipodi:role="line"
          id="tspan5553-8"
          x="110.59077"
-         y="80.855583"
+         y="78.738914"
          style="fill:#00ffff;fill-opacity:1;stroke-width:0.0588654">2</tspan></text>
     <path
        style="fill:#00ffff;stroke:#3ef3ff;stroke-width:0.288641;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1841);marker-end:url(#marker1591)"
@@ -5181,15 +5181,15 @@
          id="tspan1985" /></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.624286px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.468215"
-       x="50.834854"
-       y="73.35067"
+       style="font-style:normal;font-weight:normal;font-size:1.16958px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.877183"
+       x="50.799175"
+       y="73.343483"
        id="text2318"><tspan
          sodipodi:role="line"
          id="tspan2316"
-         x="50.834854"
-         y="73.35067"
-         style="font-size:0.624286px;stroke-width:0.468215">SEMTECH </tspan></text>
+         x="50.799175"
+         y="73.343483"
+         style="font-size:1.16958px;stroke-width:0.877183">SEMTECH </tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.784448px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.294168"

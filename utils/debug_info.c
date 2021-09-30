@@ -57,6 +57,7 @@ bool is_little_endian(void) {
 static bool print_fw_type(ostream_t* stream) {
     bool res = false;
     if(stream) {
+        oprintf(stream, "config: %s " CRLF, CONFIG_NAME);
 #ifdef HAS_BOOTLOADER
         oputs(stream, "Bootloader ");
 #endif /*HAS_BOOTLOADER*/

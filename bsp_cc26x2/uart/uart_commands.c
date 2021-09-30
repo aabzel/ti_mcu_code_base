@@ -127,8 +127,8 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        const table_col_t cols[] = {{5, "Num"}, {10, "baudRate"}, {9, "rx"},    {9, "tx"},  {6, "err"},    {10, "name"}};
-        uint32_t baud_rate = 0,uart_error=0;
+        const table_col_t cols[] = {{5, "Num"}, {10, "baudRate"}, {9, "rx"}, {9, "tx"}, {6, "err"}, {10, "name"}};
+        uint32_t baud_rate = 0, uart_error = 0;
         uint8_t uart_num = 0;
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
         for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
@@ -223,6 +223,41 @@ bool uart_deinit_command(int32_t argc, char* argv[]) {
         }
     } else {
         LOG_ERROR(UART, "Usage: udi uart_num");
+    }
+    return res;
+}
+
+/*us 1 0 1*/
+bool uart_forward_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    bool status = false;
+    uint8_t uart_num1 = 0;
+    uint8_t uart_num2 = 0;
+    if(1 <= argc) {
+        res = try_str2uint8(argv[0], &uart_num1);
+        if(false == res) {
+            LOG_ERROR(UART, "Unable to parse uart num1 %s", argv[0]);
+        }
+    }
+    if(2 <= argc) {
+        res = try_str2uint8(argv[1], &uart_num2);
+        if(false == res) {
+            LOG_ERROR(UART, "Unable to parse uart num1 %s", argv[1]);
+        }
+    }
+    if(3 <= argc) {
+        res = try_str2bool(argv[2], &status);
+        if(false == res) {
+            LOG_ERROR(UART, "Unable to parse status %s", argv[2]);
+        }
+    }
+
+    if(3 < argc) {
+        LOG_ERROR(UART, "Usage: uf uart_num1 uart_nu2");
+    }
+
+    if(res) {
+        huart[uart_num1].is_uart_fwd[uart_num2] = status;
     }
     return res;
 }

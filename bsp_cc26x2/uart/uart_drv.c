@@ -1,11 +1,11 @@
 #include "uart_drv.h"
 
+#include <gpio.h>
 #include <ioc.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <gpio.h>
 
 #ifdef DeviceFamily_CC26X2
 #include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
@@ -34,8 +34,7 @@
 #endif /*HAS_CLI*/
 
 #include "sys_config.h"
-
-UartHandle_t huart[UART_COUNT] = {0};
+#include "uart_common.h"
 
 UARTCC26XX_Object uartCC26XXObjects[UART_COUNT];
 
@@ -48,7 +47,8 @@ static unsigned char uartCC26XXRingBuffer1[160];
 #define RX_ARR0_CNT 1U
 #define RX_ARR1_CNT 210U
 
-uint8_t rx_buff[UART_COUNT][RX_ARR0_CNT];
+static uint8_t rx_buff[UART_COUNT][RX_ARR0_CNT];
+static volatile uint8_t tx_buff[UART_COUNT][UART_FIFO_TX_SIZE];
 
 const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
     {.baseAddr = UART0_BASE,
@@ -108,11 +108,6 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     }
 }
 
-static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
-    huart[0].tx_cnt++;
-    huart[0].tx_int = true;
-    huart[0].tx_cpl_cnt++;
-}
 #ifdef HAS_UART1
 static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_cnt++;
@@ -120,9 +115,19 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_it_proc_done = false;
     if(rx_buf) {
         huart[1].rx_byte = *(rx_buf);
+        if(true == huart[1].is_uart_fwd[0]) {
+            fifo_char_add(&huart[0].TxFifo, huart[1].rx_byte);
+        }
     }
 }
+#endif /*HAS_UART1*/
 
+static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
+    huart[0].tx_cnt++;
+    huart[0].tx_int = true;
+    huart[0].tx_cpl_cnt++;
+}
+#ifdef HAS_UART1
 static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[1].tx_cnt++;
     huart[1].tx_int = true;
@@ -184,6 +189,7 @@ int cli_putchar_uart(int character) {
 
     return out_ch;
 }
+
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     bool res = false;
     if(uart_num < UART_COUNT) {
@@ -242,7 +248,6 @@ bool proc_uart(uint8_t uart_index) {
 #define UNLIKELY_SYMBOL1 0XFF
 #define UNLIKELY_SYMBOL2 0X00
 
-
 static bool uart_poll(uint8_t uart_index) {
     /*In case of uart interrupts fail*/
     bool res = true;
@@ -262,13 +267,23 @@ static bool uart_poll(uint8_t uart_index) {
     return res;
 }
 
-
 bool proc_uarts(void) {
     bool res = false;
-    uint32_t uart_error=0;
-    uart_error= UARTRxErrorGet(uartCC26XXHWAttrs[0].baseAddr);
-    if (uart_error) {
+    uint32_t uart_error = 0;
+    uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[0].baseAddr);
+    if(uart_error) {
         res = uart_poll(0);
+    }
+
+    fifo_index_t size = 0;
+    size = fifo_char_get_size(&huart[CLI_UART_NUM].TxFifo);
+    if(0 < size) {
+        fifo_index_t read_size = 0;
+        const char* txData = fifo_char_get_contiguous_block(&huart[CLI_UART_NUM].TxFifo, &read_size);
+        if((NULL != txData) && (0 < read_size)) {
+            res = uart_send(CLI_UART_NUM, (uint8_t*)txData, read_size);
+        } else {
+        }
     }
 
 #ifdef HAS_UART1
@@ -281,10 +296,6 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
     bool res = false;
     if(uart_num < UART_COUNT) {
         memset(&huart[uart_num], 0x00, sizeof(huart[uart_num]));
-        huart[uart_num].rx_cnt = 0;
-        huart[uart_num].tx_cnt = 0;
-        huart[uart_num].tx_cpl_cnt = 0;
-        huart[uart_num].tx_byte_cnt = 0;
         huart[uart_num].rx_buff = &rx_buff[uart_num][0];
         strncpy(huart[uart_num].name, in_name, sizeof(huart[uart_num].name));
         char connectionHint[40] = "";
@@ -317,7 +328,7 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
         if(NULL == huart[uart_num].uart_h) {
             res = false;
         } else {
-            res = true;
+            res = fifo_init(&huart[uart_num].TxFifo, (char*)&tx_buff[uart_num][0], UART_FIFO_TX_SIZE);
             huart[uart_num].base_address = (uint32_t*)uartNum2Base[uart_num];
             huart[uart_num].init_done = true;
             huart[uart_num].rx_it_proc_done = true;
@@ -333,8 +344,8 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
 bool uart_init(void) {
     bool res = true;
 #ifdef HAS_GENERIC
-    res = init_uart_ll(1, "ZedF9P", UART1_BAUD_RATE) && res;
 #ifdef HAS_UBLOX
+    res = init_uart_ll(1, "ZedF9P", UART1_BAUD_RATE) && res;
 #endif /*HAS_UBLOX*/
 #endif /*HAS_GENERIC*/
     res = init_uart_ll(0, "CLI", UART0_BAUD_RATE) && res;
@@ -353,4 +364,3 @@ bool uart_deinit(uint8_t uart_num) {
 
     return res;
 }
-

@@ -15,6 +15,7 @@
 #include "str_utils.h"
 #include "sys_config.h"
 #include "table_utils.h"
+#include "uart_common.h"
 #include "uart_drv.h"
 #include "uart_string_reader.h"
 #include "writer_generic.h"
@@ -199,7 +200,7 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
             io_printf(" %s ", cmd->description ? cmd->description : "");
             io_printf(CRLF);
 #ifdef NORTOS
-            wait_in_loop_ms(1);
+            //wait_in_loop_ms(1);
 #endif /*NORTOS*/
             num++;
         }

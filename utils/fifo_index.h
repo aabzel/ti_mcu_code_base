@@ -24,7 +24,7 @@ typedef struct {
 #define FIFO_INDEX_INIT(size)                                                  \
   { (size), 0, 0, 0, false }
 
-void fifo_index_init(fifo_index_info_t *r_init, fifo_index_t size_init);
+bool fifo_index_init(fifo_index_info_t *r_init, fifo_index_t size_init);
 bool fifo_index_valid(const fifo_index_info_t *r_valid);
 
 fifo_index_t fifo_index_add(fifo_index_info_t *r_add);

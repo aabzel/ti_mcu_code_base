@@ -6,6 +6,8 @@
 #include "uart_drv.h"
 #include "sys_config.h"
 #include "unit_test_check.h"
+#include "uart_common.h"
+
 
 bool test_uart0_write(void) {
     uint8_t array[2];

@@ -1,12 +1,12 @@
-#ifndef UART_DRV_H
-#define UART_DRV_H
+#ifndef USART_DRV_H
+#define USART_DRV_H
 
 #include <hw_memmap.h>
 #include <ti/drivers/UART.h>
 #include <ti/drivers/uart/UARTCC26XX.h>
 
 #include "sys_config.h"
-#include "uart_common.h"
+//#include "uart_common.h"
 
 #ifdef HAS_BOOTLOADER
 #define UART_COUNT 1
@@ -14,6 +14,7 @@
 #define UART_COUNT 2
 #endif /*HAS_BOOTLOADER*/
 
+#define UART_FIFO_TX_SIZE 128U
 #define UART_RX_ARRAY_SIZE 500U
 #define UART_RX_FIFO_ARRAY_SIZE 100U
 #define UART_TX_ARRAY_SIZE 600U
@@ -25,7 +26,6 @@
 
 extern const uint_least8_t CONFIG_UART_0_CONST;
 
-extern UartHandle_t huart[UART_COUNT];
 extern const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT];
 
 bool uart_init(void);
@@ -38,4 +38,4 @@ bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate);
 bool proc_uart(uint8_t uart_index);
 bool proc_uarts(void);
 
-#endif /* UART_DRV_H  */
+#endif /* USART_DRV_H  */

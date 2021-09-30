@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "fifo_char_buffer.h"
+
 #ifdef DeviceFamily_CC26X2
 #include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
 #include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
@@ -17,6 +19,8 @@
 #ifdef USE_HAL_DRIVER
 #include "stm32f4xx_hal.h"
 #endif /*USE_HAL_DRIVER*/
+
+#include "uart_drv.h"
 
 typedef struct xUartHandle_t {
   volatile bool tx_int;
@@ -42,6 +46,8 @@ typedef struct xUartHandle_t {
   UART_HandleTypeDef uart_h;
 #endif /*USE_HAL_DRIVER*/
   char name[8];
+  bool is_uart_fwd[UART_COUNT];
+  fifo_char_t TxFifo;
 }UartHandle_t;
 
 
@@ -51,6 +57,8 @@ typedef enum {
   UART_ERROR_NE,
   UART_ERROR_ORE
 } rx_uart_error_t;
+
+extern UartHandle_t huart[UART_COUNT];
 
 const char *uart_error2str(rx_uart_error_t e);
 #endif /* UART_COMMON_H */

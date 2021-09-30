@@ -12,13 +12,41 @@ extern "C" {
 #include "byte_utils_test.h"
 #include "data_utils_test.h"
 #include "float_utils_test.h"
+
+#ifdef HAS_CONVERT_TEST_SUIT
 #include "test_convert.h"
+#else
+#define CONVERT_TEST_SUIT
+#endif
+
+#ifdef HAS_CRC_TEST_SUIT
 #include "test_crc.h"
+#else
+#define CRC_TEST_SUIT
+#endif
+
+#ifdef HAS_UBLOX_PROTO_TEST_SUIT
+#include "test_ublox_proto.h"
+#else
+#define UBLOX_PROTO_TEST_SUIT
+#endif
+
+#ifdef HAS_NMEA_PROTO_TEST_SUIT
 #include "test_nmea_proto.h"
+#else
+#define NMEA_PROTO_TEST_SUIT
+#endif
+
+#ifdef HAS_STRING_UTILS_TEST_SUIT
 #include "test_string_utils.h"
+#else
+#define STRING_UTILS_TEST_SUIT
+#endif
+
+#include "test_fifo.h"
+#include "test_fifo_indexer.h"
 #include "test_system.h"
 #include "test_time_utils.h"
-#include "test_ublox_proto.h"
 #include "unit_test_check.h"
 #include "writer_generic.h"
 
@@ -41,7 +69,9 @@ bool test_uspec_behavior(void);
     SYSTEM_TEST_SUIT \
     NMEA_PROTO_TEST_SUIT \
     CRC_TEST_SUIT \
+    TEST_SUIT_FIFO_INDEXER\
     TIME_UTILS_TEST_SUIT \
+	TEST_SUIT_FIFO \
     CONVERT_TEST_SUIT\
     STRING_UTILS_TEST_SUIT\
     UBLOX_PROTO_TEST_SUIT\

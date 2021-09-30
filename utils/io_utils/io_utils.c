@@ -5,6 +5,7 @@
 #include "sys.h"
 #include "uart_drv.h"
 #include "writer_generic.h"
+#include "uart_common.h"
 
 print_callback_t print_callback_f;
 

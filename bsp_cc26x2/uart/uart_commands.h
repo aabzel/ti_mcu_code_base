@@ -17,9 +17,11 @@ bool uart_init_command(int32_t argc, char* argv[]);
 bool uart_deinit_command(int32_t argc, char* argv[]);
 bool uart_diag_command(int32_t argc, char* argv[]);
 bool uart_int_diag_command(int32_t argc, char* argv[]);
+bool uart_forward_command(int32_t argc, char* argv[]);
 
 #define UART_COMMANDS                                                                                                  \
     SHELL_CMD("uarts", "u", cmd_uarts, "Print UARTs statistics"),                                                      \
+        SHELL_CMD("uart_fwd", "uf", uart_forward_command, "UART forward command"),                                     \
         SHELL_CMD("uart_init", "ui", uart_init_command, "UART init"),                                                  \
         SHELL_CMD("uart_deinit", "udi", uart_deinit_command, "UART deinit"),                                           \
         SHELL_CMD("uart_diag", "ud", uart_diag_command, "UART diag"),                                                  \
