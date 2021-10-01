@@ -1,5 +1,6 @@
 #include "writer_generic.h"
 
+#include <stdbool.h>
 #include <string.h>
 
 #include "fifo_char.h"
@@ -35,7 +36,7 @@ void writer_putc(void *_s, char ch) {
 }
 
 void writer_puts(void *_s, const char *str, int32_t len) {
-  if (len == 1) {
+  if (1 == len) {
     writer_putc(_s, *str);
   } else {
     generic_writer_t *s = (generic_writer_t *)_s;
@@ -43,7 +44,7 @@ void writer_puts(void *_s, const char *str, int32_t len) {
     if (len < 0) {
       len = strlen(str);
     }
-    fifo_push_array((Fifo_array_t* ) &s->fifo,(char* const ) str, (uint16_t) len);
+    fifo_push_array((Fifo_array_t* ) &s->fifo, (char* const ) str, (fifo_index_t) len);
     if (fifo_get_count(&s->fifo)) {
       s->f_transmit(s);
     }

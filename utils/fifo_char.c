@@ -32,13 +32,13 @@ bool fifo_reset(Fifo_array_t* const instance) {
     return res;
 }
 
-bool fifo_clean(Fifo_array_t* const instance) {
+bool fifo_clean(Fifo_array_t* instance) {
     bool res = true;
     fifo_index_t i = 0;
     char outChar = 0x00;
     for(i = 0; i < instance->fifoState.size; i++) {
-        res = fifo_pull(instance, &outChar) ;
-        if(false==res){
+        res = fifo_pull(instance, &outChar);
+        if(false == res) {
             res = true;
             break;
         }
@@ -111,7 +111,7 @@ bool fifo_peek(Fifo_array_t* instance, char* const outChar) {
     return res;
 }
 
-bool fifo_push_array(Fifo_array_t* instance, char* const inArr, uint16_t arrLen) {
+bool fifo_push_array(Fifo_array_t* instance, char* const inArr, fifo_index_t arrLen) {
     bool res = true;
 #if DEBUG_FIFO_CHAR
     rx_printf("\n\r%s [%s] size %d\n\r", __FUNCTION__, inArr, arrLen);
@@ -130,7 +130,7 @@ bool fifo_push_array(Fifo_array_t* instance, char* const inArr, uint16_t arrLen)
     return res;
 }
 
-bool fifo_pull_array(Fifo_array_t* instance, char* const outArr, uint16_t* const outLen) {
+bool fifo_pull_array(Fifo_array_t* instance, char* const outArr, fifo_index_t* const outLen) {
     bool res = true;
     if((NULL != outArr) && (NULL != outLen) && (true == instance->initDone)) {
         bool runLoop = true;
@@ -157,7 +157,7 @@ bool fifo_pull_array(Fifo_array_t* instance, char* const outArr, uint16_t* const
     return res;
 }
 
-bool fifo_peek_array(Fifo_array_t* instance, char* outArr, uint16_t* const outLen) {
+bool fifo_peek_array(Fifo_array_t* instance, char* outArr, fifo_index_t* const outLen) {
     bool res = false;
     if(NULL != instance) {
         if((NULL != outArr) && (NULL != outLen)) {

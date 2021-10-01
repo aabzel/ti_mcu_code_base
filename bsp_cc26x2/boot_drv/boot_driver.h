@@ -8,6 +8,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#define DFLT_APP_START_ADDR 0x00018000
 #define APP_LAYNCH_TRY 5U
 #define FINE_START_TIME_OUT_MS 3000U
 

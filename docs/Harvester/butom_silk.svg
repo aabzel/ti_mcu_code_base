@@ -24,16 +24,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="1022.7795"
-     inkscape:cy="544.47222"
+     inkscape:zoom="1.979899"
+     inkscape:cx="616.44559"
+     inkscape:cy="568.71588"
      inkscape:document-units="mm"
      inkscape:current-layer="layer6"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
-     inkscape:window-x="1909"
+     inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:pagecheckerboard="0" />
@@ -266,5 +266,38 @@
          style="fill:#ffff00;stroke-width:0.0328705"
          x="188.2016"
          y="168.40112">PWR_MUX_CTRL</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.31482px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0328705"
+       x="145.04939"
+       y="161.02155"
+       id="text3991-8"><tspan
+         sodipodi:role="line"
+         id="tspan3989-8"
+         style="fill:#ffff00;stroke-width:0.0328705"
+         x="145.04939"
+         y="161.02155">PWR_MUX_CTRL</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.59582px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0648959"
+       x="183.21399"
+       y="141.66183"
+       id="text1345"><tspan
+         sodipodi:role="line"
+         id="tspan1343"
+         style="fill:#ffff00;stroke-width:0.0648959"
+         x="183.21399"
+         y="141.66183">VCC_MCU</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.58092px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0895232"
+       x="144.76488"
+       y="159.38597"
+       id="text3769"><tspan
+         sodipodi:role="line"
+         id="tspan3767"
+         style="fill:#ffff00;stroke-width:0.0895232"
+         x="144.76488"
+         y="159.38597">TP83</tspan></text>
   </g>
 </svg>

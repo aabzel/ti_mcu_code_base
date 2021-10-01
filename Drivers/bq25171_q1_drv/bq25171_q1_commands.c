@@ -44,8 +44,8 @@ bool bq25171_q1_diag_command(int32_t argc, char* argv[]) {
         uint32_t cen = 0;
 #ifdef HAS_ADC
         float batt_vltage;
-        batt_vltage = adc_get_value_by_dio(DIO_BATT_ADC);
-        io_printf("Vbat: %f V" CRLF, batt_vltage * VOL_DIV_SCALE_ACC);
+        batt_vltage = adc_get_value_by_dio(DIO_BATT_ADC, true);
+        io_printf("Vbat: %f V" CRLF, batt_vltage);
 #endif /*HAS_ADC*/
         cen = GPIO_readDio((uint32_t)DIO_GNSS_INT);
         io_printf("Charge %s" CRLF, (0 == cen) ? "Enable" : "Shutdown");

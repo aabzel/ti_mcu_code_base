@@ -4,4 +4,5 @@
 	<deviceFamily value="TMS470"/>
 	<connection value="common/targetdb/connections/TIXDS110_Connection.xml"/>
 	<isTargetManual value="false"/>
+	<sourceLookupPath value=""/>
 </projectOptions>

@@ -4,9 +4,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "sys_config.h"
+#ifdef HAS_ADC
+#include "adc_drv.h"
+#endif
 
+#include "float_utils.h"
 #include "log.h"
+#include "sys_config.h"
 
 #ifdef HAS_PARAM
 #include "param_ids.h"
@@ -31,12 +35,21 @@ const char* pwr_source2str(PwrSource_t pwr_source) {
     }
     return name;
 }
+
 bool pwr_src_set(PwrSource_t source) {
     bool res = true;
     if(PWR_SRC_VCC_3V3 == source) {
         GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
     } else if(PWR_SRC_3V0_BATT == source) {
-        GPIO_writeDio(DIO_PWR_MUX_CTRL, 1);
+        float vbatt_voltage = 0.0f;
+#ifdef HAS_ADC
+        vbatt_voltage = adc_get_value_by_dio(DIO_BATT_ADC, true);
+#endif
+        if(true == is_float_equal_absolute(vbatt_voltage, NORMAL_BATT_VOL, 0.5f)) {
+            GPIO_writeDio(DIO_PWR_MUX_CTRL, 1);
+        } else {
+            LOG_ERROR(PWR, "Batt voltage too low %f norm: %f", vbatt_voltage, NORMAL_BATT_VOL);
+        }
     } else {
         res = false;
     }

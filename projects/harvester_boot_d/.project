@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>harvester_utest_sw_d</name>
+	<name>harvester_boot_d</name>
 	<comment></comment>
 	<projects>
-		<project>harvester_boot_d</project>
-		<project>harvester_utest_hw_d</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -43,6 +41,11 @@
 			<locationURI>$%7BWORKSPACE_LOC%7D/bsp_cc26x2</locationURI>
 		</link>
 		<link>
+			<name>com_utils</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/com_utils</locationURI>
+		</link>
+		<link>
 			<name>common</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/common</locationURI>
@@ -76,11 +79,6 @@
 			<name>utils</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/utils</locationURI>
-		</link>
-		<link>
-			<name>unit_tests/test_set_sw/utils_test/test_sw_list.c</name>
-			<type>1</type>
-			<locationURI>$%7BWORKSPACE_LOC%7D/unit_tests/test_set_sw/test_sw_list.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

@@ -96,33 +96,33 @@ bool gpio_init(void) {
         GPIO_setConfig(CONF_GPIO_LED_1, gpio_get_cfg_dio(DIO_LED_GREEN));
 #endif /*HAS_LED*/
 #ifdef HAS_RS232
-        GPIO_setConfig(CONF_GPIO_PS_RS232, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_PS_RS232, gpio_get_cfg_dio(DIO_PS_RS232));
 #endif /*HAS_RS232*/
 #ifdef HAS_TCAN4550
-        GPIO_setConfig(CONF_GPIO_CAN_CS, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+        GPIO_setConfig(CONF_GPIO_CAN_CS, gpio_get_cfg_dio(DIO_SS1_CAN));
 #endif /* HAS_TCAN4550 */
 
 #ifdef HAS_ZED_F9P
-        GPIO_setConfig(CONF_GPIO_GNSS_RST_N, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-        GPIO_setConfig(CONF_GPIO_GNSS_INT, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
-        GPIO_setConfig(CONF_GPIO_GNSS_SAFEBOOT_N, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+        GPIO_setConfig(CONF_GPIO_GNSS_RST_N, gpio_get_cfg_dio(DIO_GNSS_RST_N));
+        GPIO_setConfig(CONF_GPIO_GNSS_INT, gpio_get_cfg_dio(DIO_GNSS_INT));
+        GPIO_setConfig(CONF_GPIO_GNSS_SAFEBOOT_N, gpio_get_cfg_dio(DIO_GNSS_SAFEBOOT_N));
 #endif /* HAS_ZED_F9P */
 
 #ifdef HAS_BOOTLOADER
-        GPIO_setConfig(CONF_GPIO_GNSS_RST_N, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
+        GPIO_setConfig(CONF_GPIO_GNSS_RST_N, gpio_get_cfg_dio(DIO_GNSS_RST_N));
 #endif /* HAS_BOOTLOADER */
 
 #ifdef HAS_HARVESTER
-        GPIO_setConfig(CONF_GPIO_PWR_MUX_CTRL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_HIGH);
-        GPIO_setConfig(CONF_GPIO_LEN, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONF_GPIO_PWR_MUX_CTRL, gpio_get_cfg_dio(DIO_PWR_MUX_CTRL));
+        GPIO_setConfig(CONF_GPIO_LEN, gpio_get_cfg_dio(DIO_LEN));
         GPIO_setConfig(CONF_GPIO_BATT_SCL, gpio_get_cfg_dio(DIO_BATT_SCL));
         GPIO_setConfig(CONF_GPIO_BATT_SDA, gpio_get_cfg_dio(DIO_BATT_SDA));
 #endif /*HAS_HARVESTER*/
 
 #ifdef LAUNCHXL_CC26X2R1
-        GPIO_setConfig(CONFIG_GPIO_BUTTON_0, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+        GPIO_setConfig(CONFIG_GPIO_BUTTON_0, gpio_get_cfg_dio(DIO_BUTTON_0));
 
-        GPIO_setConfig(CONFIG_GPIO_LOOP_SENSOR, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_LOW);
+        GPIO_setConfig(CONFIG_GPIO_LOOP_SENSOR, gpio_get_cfg_dio(DIO_LOOP_SENSOR));
         /* Install Button callback */
         GPIO_setCallback(CONFIG_GPIO_BUTTON_0, gpioButtonFxn0);
         /* Enable interrupts */
@@ -134,7 +134,7 @@ bool gpio_init(void) {
          */
         if(CONFIG_GPIO_BUTTON_0 != CONFIG_GPIO_BUTTON_1) {
             /* Configure BUTTON1 pin */
-            GPIO_setConfig(CONFIG_GPIO_BUTTON_1, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
+            GPIO_setConfig(CONFIG_GPIO_BUTTON_1, gpio_get_cfg_dio(DIO_BUTTON_1));
 
             /* Install Button callback */
             GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);

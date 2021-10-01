@@ -22,6 +22,5 @@ extern uint16_t adcValue0;
 //12-bit ADC
 bool adc_init(void);
 bool adc_proc(void);
-float adc_get_value_by_dio(uint8_t dio);
-
+float adc_get_value_by_dio(uint8_t des_dio, bool scaled);
 #endif /* ADC_DRV_H  */

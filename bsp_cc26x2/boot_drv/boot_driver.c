@@ -101,6 +101,11 @@ bool boot_try_app(void) {
             }
         } else {
             LOG_ERROR(BOOT, "Lack of boot app address");
+            app_start_address = DFLT_APP_START_ADDR;
+            res = mm_set(PAR_ID_APP_START, (uint8_t*)&app_start_address, sizeof(app_start_address));
+            if(false == res) {
+                LOG_ERROR(BOOT, "Error set dflt start adddr");
+            }
         }
     } else {
         res = false;

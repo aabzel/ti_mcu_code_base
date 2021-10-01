@@ -55,7 +55,7 @@ bool adc_proc(void) {
     return res;
 }
 
-float adc_get_value_by_dio(uint8_t des_dio) {
+float adc_get_value_by_dio(uint8_t des_dio, bool scaled) {
     float voltage = 0.0f;
     uint8_t i = 0;
     for(i = 0; i < ARRAY_SIZE(AdcItemsLUT); i++) {
@@ -63,6 +63,9 @@ float adc_get_value_by_dio(uint8_t des_dio) {
             int32_t microvolts = 0;
             microvolts = AUXADCValueToMicrovolts(AUXADC_FIXED_REF_VOLTAGE_NORMAL, AdcCodes[i]);
             voltage = 0.000001f * ((float)microvolts);
+            if(true == scaled) {
+                voltage *= AdcItemsLUT[i].scale;
+            }
             break;
         }
     }
