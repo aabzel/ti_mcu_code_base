@@ -30,7 +30,7 @@ bool fifo_index_valid(const fifo_index_info_t *r_valid);
 fifo_index_t fifo_index_add(fifo_index_info_t *r_add);
 fifo_index_t fifo_index_get(fifo_index_info_t *r_get);
 fifo_index_t fifo_index_continuus_used_size(const fifo_index_info_t *r_cus);
-void fifo_index_free(fifo_index_info_t *r_free, fifo_index_t size_free);
+bool fifo_index_free(fifo_index_info_t *r_free, fifo_index_t size_free);
 fifo_index_t fifo_index_get_used(const fifo_index_info_t *r_used);
 fifo_index_t fifo_index_get_size(const fifo_index_info_t *r_size);
 

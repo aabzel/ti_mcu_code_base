@@ -108,17 +108,17 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
         huart[0].error_cnt++;
     }
 }
-static uint8_t ch = 0;
 #ifdef HAS_UART1
+static uint8_t ch = 0;
 static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
     huart[1].rx_it_proc_done = false;
-    bool res = false;
     if(rx_buf) {
         huart[1].rx_byte = *(rx_buf);
-        res = fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
+        fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
 #ifdef HAS_UART_FWD
+        bool res = false;
         if(true == huart[1].is_uart_fwd[0]) {
             res = fifo_push(&huart[0].TxFifo, huart[1].rx_byte);
             if(false == res) {
@@ -127,7 +127,7 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
         }
 #endif /*HAS_UART_FWD*/
     }
-    res = uart_read(1, &ch, 1);
+    uart_read(1, &ch, 1);
 }
 #endif /*HAS_UART1*/
 
@@ -207,7 +207,7 @@ bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     if(uart_num < UART_COUNT) {
         int_fast32_t ret = 0;
         ret = UART_read(huart[uart_num].uart_h, out_array, array_len);
-        if(0 < ret) {
+        if(0 <= ret) {
             res = true;
         }
     }

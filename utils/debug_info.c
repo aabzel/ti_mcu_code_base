@@ -35,7 +35,7 @@ static bool stack_dir(int32_t* main_local_addr) {
 }
 
 bool explore_stack_dir(void) {
-    // fun's local variable
+
     bool res = false;
     int32_t main_local;
     res = stack_dir(&main_local);

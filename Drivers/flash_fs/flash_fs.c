@@ -591,6 +591,11 @@ bool flash_fs_init(void) {
         res = mm_set(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt));
     } else {
         LOG_WARNING(FLASH_FS, "lack of reboot counter");
+        reboot_cnt = 0;
+        res = mm_set(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt));
+        if(false == res) {
+            LOG_WARNING(FLASH_FS, "Reset reboot counter");
+        }
     }
     return res;
 }

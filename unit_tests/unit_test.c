@@ -94,6 +94,7 @@ static uint32_t unit_test_run_name(const char* name) {
                 count += unit_test_run(index);
             }
         }
+
     }
     return count;
 }

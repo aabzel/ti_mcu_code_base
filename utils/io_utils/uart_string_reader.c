@@ -7,6 +7,7 @@
 #include "io_utils.h"
 #include "sys.h"
 #include "timer_utils.h"
+#include "fifo_char.h"
 #include "uart_drv.h"
 
 static char cmd_reader_data[UART_RX_FIFO_ARRAY_SIZE];
@@ -16,7 +17,10 @@ uart_string_reader_t cmd_reader = {
     .string_size = sizeof(cmd_reader_string),
     .callback = (handle_string_f) (process_shell_cmd),
     .string = cmd_reader_string,
-    .fifo = {{(sizeof(cmd_reader_data)), 0, 0, 0, 0}, cmd_reader_data},
+    .fifo = {.fifoState={(sizeof(cmd_reader_data)), 0, 0, 0, 0},
+             .array=cmd_reader_data,
+             .initDone=true
+     },
     .string_len = 0,
     .error_count = 0,
     .lost_char_count = 0,
@@ -38,7 +42,8 @@ bool uart_string_reader_init(uart_string_reader_t* rdr) {
 }
 
 void uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
-    if (false == fifo_char_add(&rdr->fifo, c)) {
+    //if (false == fifo_char_add(&rdr->fifo, c)) {
+    if (false == fifo_push(&rdr->fifo, c)) {
         rdr->lost_char_count++;
     }
 }
@@ -50,8 +55,10 @@ void uart_string_reader_error_callback(uart_string_reader_t* rdr) {
 
 void uart_string_reader_proccess(uart_string_reader_t* rdr) {
     while (1) {
-        fifo_index_t size = 0, i;
-        const char* p = fifo_char_get_contiguous_block(&rdr->fifo, &size);
+        fifo_index_t size = 0, i=0;
+        char p[200];
+        //const char* p = fifo_char_get_contiguous_block(&rdr->fifo, &size);
+        fifo_pull_array(&rdr->fifo, p, &size);
         if (0 == size) {
             break;
         }
@@ -96,7 +103,7 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
                 }
             }
         }
-        fifo_char_free(&rdr->fifo, size);
+        //fifo_char_free(&rdr->fifo, size);
     }
 }
 

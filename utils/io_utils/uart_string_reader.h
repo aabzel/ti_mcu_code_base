@@ -8,7 +8,8 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "fifo_char_buffer.h"
+//#include "fifo_char_buffer.h"
+#include "fifo_char.h"
 //#include "uart_common.h"
 
 typedef void (*handle_string_f)(char* s);
@@ -17,7 +18,7 @@ typedef struct {
     uint16_t string_size;
     handle_string_f callback;
     char* string;
-    fifo_char_t fifo;
+    Fifo_array_t fifo;
     uint16_t string_len;
     int64_t error_count;
     int64_t lost_char_count;

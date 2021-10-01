@@ -74,8 +74,9 @@ fifo_index_t fifo_index_get(fifo_index_info_t *r_get) {
   return ret_get;
 }
 
-void fifo_index_free(fifo_index_info_t *r_free, fifo_index_t size_free) {
-  if (r_free->count >= size_free) {
+bool fifo_index_free(fifo_index_info_t *r_free, fifo_index_t size_free) {
+  bool res = false;
+  if (size_free <= r_free->count ) {
     fifo_index_t s = size_free;
     fifo_index_t count_before_wrap = r_free->size - r_free->start;
     r_free->count -= s;
@@ -86,9 +87,12 @@ void fifo_index_free(fifo_index_info_t *r_free, fifo_index_t size_free) {
     if (0U != s) {
       r_free->start += s;
     }
+    res = true;
   } else {
     r_free->errors = true;
+    res = false;
   }
+  return res;
 }
 
 fifo_index_t fifo_index_continuus_used_size(const fifo_index_info_t *r_cus) {

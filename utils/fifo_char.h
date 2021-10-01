@@ -17,6 +17,10 @@ typedef struct xFifo_array_t {
     bool initDone;
 } Fifo_array_t;
 
+fifo_index_t fifo_get_count(Fifo_array_t* const instance);
+fifo_index_t fifo_get_size(Fifo_array_t* const instance);
+bool fifo_clean(Fifo_array_t* const instance);
+bool fifo_free(Fifo_array_t* fifo, fifo_index_t size);
 bool fifo_reset(Fifo_array_t* const instance);
 bool fifo_init(Fifo_array_t* const instance, char* const inArray, uint16_t capacity);
 bool fifo_push(Fifo_array_t* const instance, char inChar);

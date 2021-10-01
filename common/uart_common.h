@@ -28,7 +28,7 @@ typedef struct xUartHandle_t {
   bool rx_it_proc_done;
   volatile uint8_t rx_byte;
   volatile uint8_t rx_byte_it;
-  uint8_t *rx_buff;
+  volatile uint8_t *rx_buff;
   uint8_t rx_byte_cnt;
   uint8_t tx_byte_cnt;
   volatile uint32_t rx_cnt;

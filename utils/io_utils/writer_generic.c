@@ -2,6 +2,7 @@
 
 #include <string.h>
 
+#include "fifo_char.h"
 #include "uart_common.h"
 #include "uart_drv.h"
 #include "writer_uart.h"
@@ -14,13 +15,19 @@ generic_writer_t dbg_o = {
     .lost_char_count = 0,
     .total_char_count = 0,
     .error_count = 0,
-    .fifo = {{sizeof(dbg_o_data), 0, 0, 0, 0}, dbg_o_data},
+    .fifo = {.fifoState={.size=sizeof(dbg_o_data),
+                         .start=0,
+                         .end=0,
+                         .count=0,
+                         .errors=0},
+             .array=dbg_o_data,
+             .initDone=true},
     .f_transmit = uart_writer_transmit,
 };
 
 void writer_putc(void *_s, char ch) {
   generic_writer_t *s = (generic_writer_t *)_s;
-  if (!fifo_char_add(&s->fifo, ch)) {
+  if (false==fifo_push(&s->fifo, ch)) {
     s->lost_char_count++;
   } else {
     s->f_transmit(s);
@@ -36,14 +43,8 @@ void writer_puts(void *_s, const char *str, int32_t len) {
     if (len < 0) {
       len = strlen(str);
     }
-    while (len) {
-      if (!fifo_char_add(&s->fifo, *str)) {
-        s->lost_char_count += len;
-      }
-      str++;
-      len--;
-    }
-    if (fifo_char_get_used(&s->fifo)) {
+    fifo_push_array((Fifo_array_t* ) &s->fifo,(char* const ) str, (uint16_t) len);
+    if (fifo_get_count(&s->fifo)) {
       s->f_transmit(s);
     }
   }
@@ -52,9 +53,9 @@ void writer_puts(void *_s, const char *str, int32_t len) {
 void writer_error_callback(generic_writer_t *s) { s->error_count++; }
 
 bool writer_clean(const generic_writer_t *s) {
-  return ((fifo_char_get_used(&s->fifo) == 0));
+    return fifo_clean((Fifo_array_t* const)&s->fifo) ;
 }
 
 bool writer_half_clean(const generic_writer_t *s) {
-  { return (fifo_char_get_used(&s->fifo) < fifo_char_get_size(&s->fifo) / 2); }
+    return (fifo_get_count((Fifo_array_t* const)&s->fifo) < (fifo_get_size((Fifo_array_t* const)&s->fifo) / 2));
 }

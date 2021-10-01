@@ -3,7 +3,7 @@
 
 #include "auto_version.h"
 
-#define VERSION_GENERATION 2
+#define VERSION_GENERATION 3
 #define CONFIG_NAME "uTestSw"
 
 #endif /*VERSION_H*/

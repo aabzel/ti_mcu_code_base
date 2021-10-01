@@ -5,7 +5,7 @@
 
 static bool is_char_valid(char inChar);
 
-/*Array is given outside because dynamic memory prohibeted*/
+/*Array is given outside because dynamic memory prohibited*/
 bool fifo_init(Fifo_array_t* const instance, char* const inArray, uint16_t capacity) {
     bool res = false;
     if((NULL != instance) && (0u < capacity)) {
@@ -28,6 +28,20 @@ bool fifo_reset(Fifo_array_t* const instance) {
         instance->fifoState.start = 0u;
         instance->fifoState.end = 0u;
         res = true;
+    }
+    return res;
+}
+
+bool fifo_clean(Fifo_array_t* const instance) {
+    bool res = true;
+    fifo_index_t i = 0;
+    char outChar = 0x00;
+    for(i = 0; i < instance->fifoState.size; i++) {
+        res = fifo_pull(instance, &outChar) ;
+        if(false==res){
+            res = true;
+            break;
+        }
     }
     return res;
 }
@@ -182,3 +196,17 @@ static bool is_char_valid(char inChar) {
 #endif
     return res;
 }
+
+fifo_index_t fifo_get_count(Fifo_array_t* const instance) {
+    fifo_index_t ret;
+    ret = instance->fifoState.count;
+    return ret;
+}
+
+fifo_index_t fifo_get_size(Fifo_array_t* const instance) {
+    fifo_index_t ret;
+    ret = instance->fifoState.size;
+    return ret;
+}
+
+bool fifo_free(Fifo_array_t* instance, fifo_index_t size) { return fifo_index_free(&instance->fifoState, size); }

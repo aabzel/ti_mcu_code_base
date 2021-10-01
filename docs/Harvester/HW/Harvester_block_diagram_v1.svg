@@ -1421,11 +1421,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.313708"
-     inkscape:cx="399.55953"
-     inkscape:cy="323.1478"
+     inkscape:zoom="7.9999996"
+     inkscape:cx="772.93753"
+     inkscape:cy="326.50001"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer12"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1568,8 +1568,8 @@
        x="78.36322"
        y="61.961975" />
     <path
-       style="fill:#ececec;stroke:#000000;stroke-width:0.152868px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 240.11812,93.04983 v 19.29166 l -20.53005,1.91361 V 91.235214 Z"
+       style="fill:#ececec;stroke:#000000;stroke-width:0.145346px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 240.11812,95.085391 v 17.439789 l -20.53005,1.72992 V 93.444966 Z"
        id="path1642-2"
        sodipodi:nodetypes="ccccc" />
     <rect
@@ -2320,7 +2320,7 @@
          style="font-size:1.02305px;stroke-width:0.255765;fill:#ff0000;fill-opacity:1">VCC_GNSS</tspan></text>
     <path
        style="fill:none;stroke:#00ff16;stroke-width:0.386667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker18963)"
-       d="m 124.44835,90.222752 h 107.96762 l 0,1.541517"
+       d="m 124.44835,90.222752 h 107.96762 l 0.0314,3.608574"
        id="path6332"
        sodipodi:nodetypes="ccc" />
     <text
@@ -2489,8 +2489,9 @@
        id="path11607" />
     <path
        style="fill:none;stroke:#00ff29;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker12011)"
-       d="M 204.73402,64.871025 V 81.21236 h 31.32629 v 11.303297"
-       id="path12007" />
+       d="M 204.73402,64.871025 V 81.21236 h 31.32629 l 0,13.254599"
+       id="path12007"
+       sodipodi:nodetypes="cccc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.1761px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.441035"
@@ -3944,35 +3945,35 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.82844px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.457113"
-       x="220.72255"
-       y="100.08915"
+       x="220.52411"
+       y="102.86727"
        id="text6326"><tspan
          sodipodi:role="line"
          id="tspan6324"
-         x="220.72255"
-         y="100.08915"
+         x="220.52411"
+         y="102.86727"
          style="font-size:1.82844px;stroke-width:0.457113">TPS2115AIPWRQ1</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.36407px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="220.72018"
-       y="102.39796"
+       x="220.91862"
+       y="104.71306"
        id="text6656"><tspan
          sodipodi:role="line"
          id="tspan6654"
-         x="220.72018"
-         y="102.39796"
+         x="220.91862"
+         y="104.71306"
          style="font-size:1.36407px;stroke-width:0.255765">Power Multiplexer</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.28217px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.171163"
-       x="233.45636"
-       y="95.566338"
+       x="232.39803"
+       y="99.568161"
        id="text6660"><tspan
          sodipodi:role="line"
          id="tspan6658"
-         x="233.45636"
-         y="95.566338"
+         x="232.39803"
+         y="99.568161"
          style="font-size:2.28217px;stroke-width:0.171163">8 pin</tspan></text>
     <text
        xml:space="preserve"
@@ -4308,13 +4309,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.43409px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.135853"
-       x="220.51559"
-       y="97.277725"
+       x="220.21794"
+       y="100.65116"
        id="text1584-6"><tspan
          sodipodi:role="line"
          id="tspan1582-7"
-         x="220.51559"
-         y="97.277725"
+         x="220.21794"
+         y="100.65116"
          style="stroke-width:0.135853">DA3</tspan></text>
     <text
        xml:space="preserve"
@@ -4330,13 +4331,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.4102px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="223.49756"
-       y="109.66436"
+       x="221.51318"
+       y="111.54951"
        id="text6670"><tspan
          sodipodi:role="line"
          id="tspan6668"
-         x="223.49756"
-         y="109.66436"
+         x="221.51318"
+         y="111.54951"
          style="font-size:3.4102px;stroke-width:0.255765">TI</tspan></text>
     <text
        xml:space="preserve"
@@ -5503,48 +5504,48 @@
          style="font-size:1.76389px;fill:#00ffff;stroke-width:0.264583">460800</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="221.9807"
-       y="105.61155"
+       style="font-style:normal;font-weight:normal;font-size:1.18458px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.444215"
+       x="221.44882"
+       y="108.44824"
        id="text5073"><tspan
          sodipodi:role="line"
          id="tspan5071"
-         style="font-size:0.705556px;stroke-width:0.264583"
-         x="221.9807"
-         y="105.61155">–40°C to 85°C</tspan></text>
+         style="font-size:1.18458px;stroke-width:0.444215"
+         x="221.44882"
+         y="108.44824">–40°C to 85°C</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="230.49324"
-       y="108.5582"
+       style="font-style:normal;font-weight:normal;font-size:1.60706px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.602648"
+       x="226.86768"
+       y="110.74996"
        id="text7393"><tspan
          sodipodi:role="line"
          id="tspan7391"
-         style="font-size:0.705556px;stroke-width:0.264583"
-         x="230.49324"
-         y="108.5582">84 mΩ</tspan></text>
+         style="font-size:1.60706px;stroke-width:0.602648"
+         x="226.86768"
+         y="110.74996">84 mΩ</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="232.44736"
-       y="105.42447"
+       style="font-style:normal;font-weight:normal;font-size:1.5951px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.598161"
+       x="220.60725"
+       y="106.549"
        id="text9361"><tspan
          sodipodi:role="line"
          id="tspan9359"
-         style="font-size:0.705556px;stroke-width:0.264583"
-         x="232.44736"
-         y="105.42447">TSSOP-8</tspan></text>
+         style="font-size:1.5951px;stroke-width:0.598161"
+         x="220.60725"
+         y="106.549">TSSOP-8</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.745919px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0559438"
        x="231.99269"
-       y="93.163712"
+       y="95.27211"
        id="text17645"><tspan
          sodipodi:role="line"
          id="tspan17643"
          style="font-size:0.745919px;stroke-width:0.0559438"
          x="231.99269"
-         y="93.163712">D1</tspan></text>
+         y="95.27211">D1</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.2569px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0942674"
