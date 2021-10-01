@@ -18,6 +18,6 @@ void uart_writer_transmit(struct generic_writer_s *s) {
     if (MAX_UART_BLOCK < s->in_transmit) {
       s->in_transmit = MAX_UART_BLOCK;
     }
-    uart_send(CLI_UART_NUM,(uint8_t *)data, s->in_transmit);
+    uart_send(CLI_UART_NUM,(uint8_t *)data, s->in_transmit, true);
   }
 }

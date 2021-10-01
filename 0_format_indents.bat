@@ -6,6 +6,8 @@ set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\fw_loader_debug\main.c
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set_sw\test_fifo\test_fifo_char.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set_sw\test_fifo\test_fifo_char.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\fifo_char_buffer.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\fifo_char_buffer.h
 

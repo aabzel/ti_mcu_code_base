@@ -154,7 +154,7 @@ bool gpio_init(void) {
 
 #ifdef HAS_ZED_F9P
         GPIO_writeDio(DIO_GNSS_SAFEBOOT_N, 1);
-        GPIO_writeDio(DIO_GNSS_RST_N, 1);
+        GPIO_writeDio(DIO_GNSS_RST_N, 0);
 #endif /* HAS_ZED_F9P */
 
 #ifdef HAS_BOOTLOADER

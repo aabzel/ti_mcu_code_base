@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "fifo_char_buffer.h"
+#include "fifo_char.h"
 
 #ifdef DeviceFamily_CC26X2
 #include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
@@ -47,7 +47,7 @@ typedef struct xUartHandle_t {
 #endif /*USE_HAL_DRIVER*/
   char name[8];
   bool is_uart_fwd[UART_COUNT];
-  fifo_char_t TxFifo;
+  Fifo_array_t TxFifo;
 }UartHandle_t;
 
 

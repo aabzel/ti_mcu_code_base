@@ -2,6 +2,13 @@ https://en.wikipedia.org/wiki/Real-time_kinematic_positioning
   
 https://rtklibexplorer.wordpress.com/2018/11/30/a-first-look-at-the-u-blox-zed-f9p-dual-frequency-receiver/
 
+https://habr.com/ru/post/516994/
+
+https://www.youtube.com/watch?v=FpkUXmM7mrc&t=223s
+55.8642, 37.45090
+55.864222255831216, 37.45089886290918
+37.45090000
+
 Конфигурация базовой станции:
 take ZED-F9P модуль
 Ucenter 1904
@@ -10,7 +17,7 @@ Reset configuration
 Download base config file из GIT Hub
 
 Advanced config
-Установить координаты антенны
+Установить координаты антенны 
 Configure Tmode3  Mode 2-fixed mode use 
 Lat lon alt pos
 send
@@ -30,6 +37,7 @@ CFG
 save current config 
 Flash
 send
+55.8642222, 37.45090000
 
 
 Configure rover 

@@ -9,8 +9,11 @@ extern "C" {
 #include <stdint.h>
 
 bool test_fifo(void);
+bool test_fifo_overrun(void);
 
-#define TEST_SUIT_FIFO {"fifo", test_fifo},
+#define TEST_SUIT_FIFO_BUFF     \
+                     {"fifo", test_fifo_overrun}, \
+                     {"fifo_overrun", test_fifo_overrun},
 
 #ifdef __cplusplus
 }

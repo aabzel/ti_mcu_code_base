@@ -14,6 +14,11 @@
 Led_t greenLed;
 Led_t redLed;
 
+static void test_leds(void) {
+    GPIO_writeDio(DIO_LED_RED, 1);
+    GPIO_writeDio(DIO_LED_GREEN, 1);
+}
+
 bool led_init(void) {
     greenLed.period_ms = LED_PERIOD_MS;
     greenLed.duty = LED_DUTY;
@@ -23,10 +28,8 @@ bool led_init(void) {
     redLed.duty = LED_RED_DUTY;
     redLed.phase_ms = LED_RED_PHASE;
 
-    GPIO_writeDio(DIO_LED_RED, 0);
-    GPIO_writeDio(DIO_LED_GREEN, 0);
-    // GPIO_write(CONFIG_GPIO_LED_0, 0);
-    // GPIO_write(CONFIG_GPIO_LED_1, 0);
+    test_leds();
+
     return true;
 }
 
@@ -43,7 +46,6 @@ static uint8_t pwm_calc_sample(uint32_t cut_tick_ms, uint32_t period_ms, uint32_
 bool proc_led(void) {
     uint32_t cut_tick = get_time_ms32();
     uint8_t val = pwm_calc_sample(cut_tick, greenLed.period_ms, greenLed.duty, greenLed.phase_ms);
-    // GPIO_write(CONFIG_GPIO_LED_1, val);
     GPIO_writeDio(DIO_LED_GREEN, val);
 
 #ifdef HAS_HEALTH_MONITOR
@@ -51,9 +53,7 @@ bool proc_led(void) {
     if(HealthMon.init_error) {
         red_led_val = pwm_calc_sample(cut_tick, redLed.period_ms, redLed.duty, redLed.phase_ms);
     }
-    // GPIO_write(CONFIG_GPIO_LED_0, red_led_val);
     GPIO_writeDio(DIO_LED_RED, red_led_val);
 #endif /*HAS_HEALTH_MONITOR*/
-    // if err turn red LED
     return true;
 }

@@ -33,6 +33,7 @@
 #include "uart_string_reader.h"
 #endif /*HAS_CLI*/
 
+#include "fifo_char.h"
 #include "sys_config.h"
 #include "uart_common.h"
 
@@ -116,7 +117,11 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     if(rx_buf) {
         huart[1].rx_byte = *(rx_buf);
         if(true == huart[1].is_uart_fwd[0]) {
-            fifo_char_add(&huart[0].TxFifo, huart[1].rx_byte);
+            bool res = false;
+            res = fifo_push(&huart[0].TxFifo, huart[1].rx_byte);
+            if(false == res) {
+                huart[0].error_cnt++;
+            }
         }
     }
 }
@@ -148,24 +153,27 @@ bool is_uart_valid(uint8_t uart_num) {
     return res;
 }
 
-bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
+bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len, bool is_wait) {
     bool res = true;
     uint32_t time_out = 0;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
+    /*Wait previous transfer*/
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
     /*TODO Calc needed time to wait*/
-    while(init_tx_cnt == huart[uart_num].tx_cnt) {
-        time_out++;
-        if(10000 < time_out) { /*TODO find val*/
-            res = false;
-            huart[uart_num].error_cnt++;
-            break;
+    if(is_wait) {
+        while(init_tx_cnt == huart[uart_num].tx_cnt) {
+            time_out++;
+            if(10000 < time_out) { /*TODO find val*/
+                res = false;
+                huart[uart_num].error_cnt++;
+                break;
+            }
         }
     }
     return res;
 }
 
-bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
+bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wait) {
     bool res = false;
     if(1 == uart_num) {
 #ifdef HAS_BOOTLOADER
@@ -174,7 +182,7 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
 #endif /*HAS_BOOTLOADER*/
     }
     if(uart_num < UART_COUNT) {
-        res = uart_send_ll(uart_num, array, array_len);
+        res = uart_send_ll(uart_num, array, array_len, is_wait);
     }
     return res;
 }
@@ -182,7 +190,7 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len) {
 int cli_putchar_uart(int character) {
     int out_ch = 0;
     /*Works on little endian*/
-    bool res = uart_send(CLI_UART_NUM, (uint8_t*)&character, 1);
+    bool res = uart_send(CLI_UART_NUM, (uint8_t*)&character, 1, true);
     if(res) {
         out_ch = character;
     }
@@ -275,20 +283,23 @@ bool proc_uarts(void) {
         res = uart_poll(0);
     }
 
-    fifo_index_t size = 0;
-    size = fifo_char_get_size(&huart[CLI_UART_NUM].TxFifo);
-    if(0 < size) {
-        fifo_index_t read_size = 0;
-        const char* txData = fifo_char_get_contiguous_block(&huart[CLI_UART_NUM].TxFifo, &read_size);
-        if((NULL != txData) && (0 < read_size)) {
-            res = uart_send(CLI_UART_NUM, (uint8_t*)txData, read_size);
-        } else {
-        }
-    }
-
 #ifdef HAS_UART1
     res = proc_uart(1);
 #endif /*HAS_UART1*/
+    return res;
+}
+
+bool proc_uart1_fwd(void) {
+    bool res = false;
+
+    fifo_index_t read_size = 0;
+    char txData[UART_FIFO_TX_SIZE*2];
+    res = fifo_pull_array(&huart[CLI_UART_NUM].TxFifo, txData, &read_size);
+    if((true == res) && (0 < read_size)) {
+        res = uart_send(CLI_UART_NUM, (uint8_t*)txData, read_size, false);
+    } else {
+    }
+
     return res;
 }
 

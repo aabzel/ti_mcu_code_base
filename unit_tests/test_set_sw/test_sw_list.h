@@ -44,6 +44,7 @@ extern "C" {
 #endif
 
 #include "test_fifo.h"
+#include "test_fifo_char.h"
 #include "test_fifo_indexer.h"
 #include "test_system.h"
 #include "test_time_utils.h"
@@ -70,8 +71,9 @@ bool test_uspec_behavior(void);
     NMEA_PROTO_TEST_SUIT \
     CRC_TEST_SUIT \
     TEST_SUIT_FIFO_INDEXER\
+    TEST_SUIT_FIFO_CHAR \
     TIME_UTILS_TEST_SUIT \
-	TEST_SUIT_FIFO \
+    TEST_SUIT_FIFO_BUFF \
     CONVERT_TEST_SUIT\
     STRING_UTILS_TEST_SUIT\
     UBLOX_PROTO_TEST_SUIT\

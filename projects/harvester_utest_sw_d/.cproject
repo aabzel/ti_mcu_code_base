@@ -199,7 +199,6 @@
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/ble5stack/libraries/cc26x2r1/OneLib.a"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/lib/ccs/m4f/drivers_cc26x2.a"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_LIBRARIES}"/>
-									<listOptionValue builtIn="false" value="ti_utils_build_linker.cmd.genlibs"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_LIBRARIES}"/>
 									<listOptionValue builtIn="false" value="ti/devices/cc13x2_cc26x2/driverlib/bin/ccs/driverlib.lib"/>
 									<listOptionValue builtIn="false" value="libc.a"/>

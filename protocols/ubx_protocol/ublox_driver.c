@@ -37,7 +37,7 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
     crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
     memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
     if(true == res) {
-        uart_send(1, tx_array, tx_array_len);
+        uart_send(1, tx_array, tx_array_len, true);
     }
     return res;
 }

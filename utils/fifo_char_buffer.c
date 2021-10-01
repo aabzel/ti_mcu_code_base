@@ -25,10 +25,9 @@ bool fifo_char_add(fifo_char_t* fifo, char ch) {
 
 char* fifo_char_get_contiguous_block(const fifo_char_t* fifo, fifo_index_t* size) {
     char* retval = (char*)NULL;
-
     *size = fifo_index_continuus_used_size(&fifo->indexer);
     if(*size) {
-        retval = fifo->data + fifo->indexer.start;
+        retval = (char*)(fifo->data + fifo->indexer.start);
     } else {
         retval = (char*)NULL;
     }
@@ -50,7 +49,7 @@ fifo_index_t fifo_char_get_size(const fifo_char_t* fifo) {
     return retval;
 }
 
-bool fifo_init(fifo_char_t* fifo, char* fifo_mem, fifo_index_t size) {
+bool fifo_char_init(fifo_char_t* fifo, char* fifo_mem, fifo_index_t size) {
     bool res = false;
     if((NULL != fifo_mem) && (0 < size)) {
         res = true;
