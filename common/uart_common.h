@@ -47,6 +47,7 @@ typedef struct xUartHandle_t {
 #endif /*USE_HAL_DRIVER*/
   char name[8];
   bool is_uart_fwd[UART_COUNT];
+  Fifo_array_t RxFifo;
   Fifo_array_t TxFifo;
 }UartHandle_t;
 

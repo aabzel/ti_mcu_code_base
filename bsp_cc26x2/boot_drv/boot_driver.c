@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "clocks.h"
 #include "core_driver.h"
 #include "flash_drv.h"
 #include "flash_fs.h"
@@ -13,6 +14,7 @@
 #include "read_mem.h"
 #include "sys.h"
 
+static bool fine_start_event = false;
 typedef void (*pFunction)(void);
 pFunction Jump_To_Application;
 
@@ -111,6 +113,7 @@ bool boot_init(void) {
     uint16_t real_len = 0;
     bool res = false;
     uint8_t boot_cnt = 0;
+    fine_start_event = false;
     res = mm_get(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt), &real_len);
     if((true == res) && (sizeof(boot_cnt) == real_len)) {
         LOG_INFO(BOOT, "launch try %u", boot_cnt);
@@ -144,18 +147,20 @@ bool boot_init(void) {
 
 bool boot_proc(void) {
     bool res = false;
-    static bool cnt = false;
-    if(false == cnt) {
-        /*Indicate boot that Application loaded fine*/
-        uint8_t boot_cnt = 0;
-        res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
-        if(false == res) {
-            LOG_ERROR(BOOT, "Unable to reset boot cnt");
-        } else {
-            res = true;
-            LOG_INFO(BOOT, "App loaded fine");
+    uint32_t up_time_ms = get_time_ms32();
+    if(FINE_START_TIME_OUT_MS < up_time_ms) {
+        if(false == fine_start_event) {
+            /*Indicate boot that Application loaded fine*/
+            uint8_t boot_cnt = 0;
+            res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
+            if(false == res) {
+                LOG_ERROR(BOOT, "Unable to reset boot cnt");
+            } else {
+                res = true;
+                LOG_INFO(BOOT, "App loaded fine");
+            }
         }
+        fine_start_event = true;
     }
-    cnt = true;
     return res;
 }

@@ -48,7 +48,7 @@ static unsigned char uartCC26XXRingBuffer1[160];
 #define RX_ARR0_CNT 1U
 #define RX_ARR1_CNT 210U
 
-static uint8_t rx_buff[UART_COUNT][RX_ARR0_CNT];
+static volatile uint8_t rx_buff[UART_COUNT][UART_FIFO_RX_SIZE];
 static volatile uint8_t tx_buff[UART_COUNT][UART_FIFO_TX_SIZE];
 
 const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
@@ -108,22 +108,26 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
         huart[0].error_cnt++;
     }
 }
-
+static uint8_t ch = 0;
 #ifdef HAS_UART1
 static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
     huart[1].rx_it_proc_done = false;
+    bool res = false;
     if(rx_buf) {
         huart[1].rx_byte = *(rx_buf);
+        res = fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
+#ifdef HAS_UART_FWD
         if(true == huart[1].is_uart_fwd[0]) {
-            bool res = false;
             res = fifo_push(&huart[0].TxFifo, huart[1].rx_byte);
             if(false == res) {
                 huart[0].error_cnt++;
             }
         }
+#endif /*HAS_UART_FWD*/
     }
+    res = uart_read(1, &ch, 1);
 }
 #endif /*HAS_UART1*/
 
@@ -219,18 +223,14 @@ bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate) { return false; }
 
 bool proc_uart(uint8_t uart_index) {
     bool res = false;
-    if(true == huart[uart_index].rx_int) {
-        huart[uart_index].rx_int = false;
-        if(1 == uart_index) {
-            uint16_t byte_no;
-#if defined(HAS_NMEA) || defined(HAS_UBLOX)
-            uint8_t rx_byte = 0;
-#endif /*defined(HAS_NMEA) ||defined(HAS_UBLOX) */
-            for(byte_no = 0; byte_no < RX_ARR1_CNT; byte_no++) {
-#if defined(HAS_NMEA) || defined(HAS_UBLOX)
-                rx_byte = huart[uart_index].rx_buff[byte_no];
-#endif /*defined(HAS_NMEA) ||defined(HAS_UBLOX) */
 
+    // huart[uart_index].rx_int = false;
+    if(1 == uart_index) {
+        uint8_t rx_byte = 0;
+        res = true;
+        while(res) {
+            res = fifo_pull(&huart[1].RxFifo, (char*)&rx_byte);
+            if(res) {
 #ifdef HAS_NMEA
                 nmea_proc_byte(rx_byte);
 #endif /*HAS_NMEA*/
@@ -239,20 +239,17 @@ bool proc_uart(uint8_t uart_index) {
                 ubx_proc_byte(rx_byte);
 #endif /*HAS_UBLOX*/
             }
-            res = uart_read(uart_index, &huart[uart_index].rx_buff[0], RX_ARR1_CNT);
-        } else if(0 == uart_index) {
-            huart[uart_index].rx_byte = 0xFF;
-            res = uart_read(uart_index, (uint8_t*)&huart[uart_index].rx_byte, 1);
-            if(0x00 != huart[uart_index].rx_byte) {
-                res = true;
-            } else {
-                res = false;
-            }
         }
         res = true;
+    } else if(0 == uart_index) {
+        res = true;
+    } else {
+        res = false;
     }
+
     return res;
 }
+
 #define UNLIKELY_SYMBOL1 0XFF
 #define UNLIKELY_SYMBOL2 0X00
 
@@ -278,7 +275,7 @@ static bool uart_poll(uint8_t uart_index) {
 bool proc_uarts(void) {
     bool res = false;
     uint32_t uart_error = 0;
-    uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[0].baseAddr);
+    uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[0].baseAddr); // 9
     if(uart_error) {
         res = uart_poll(0);
     }
@@ -289,19 +286,19 @@ bool proc_uarts(void) {
     return res;
 }
 
+#ifdef HAS_UART_FWD
 bool proc_uart1_fwd(void) {
     bool res = false;
-
     fifo_index_t read_size = 0;
-    char txData[UART_FIFO_TX_SIZE*2];
+    char txData[UART_FIFO_TX_SIZE * 2];
     res = fifo_pull_array(&huart[CLI_UART_NUM].TxFifo, txData, &read_size);
     if((true == res) && (0 < read_size)) {
         res = uart_send(CLI_UART_NUM, (uint8_t*)txData, read_size, false);
     } else {
     }
-
     return res;
 }
+#endif
 
 static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
     bool res = false;
@@ -340,6 +337,7 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
             res = false;
         } else {
             res = fifo_init(&huart[uart_num].TxFifo, (char*)&tx_buff[uart_num][0], UART_FIFO_TX_SIZE);
+            res = fifo_init(&huart[uart_num].RxFifo, (char*)&rx_buff[uart_num][0], UART_FIFO_RX_SIZE) && res;
             huart[uart_num].base_address = (uint32_t*)uartNum2Base[uart_num];
             huart[uart_num].init_done = true;
             huart[uart_num].rx_it_proc_done = true;

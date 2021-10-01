@@ -1,8 +1,8 @@
 #ifndef FIFO_CHAR_BUFFER_H
 #define FIFO_CHAR_BUFFER_H
 
-#include <stdbool.h>
 #include "fifo_index.h"
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,7 +10,7 @@ extern "C" {
 
 typedef struct {
     fifo_index_info_t indexer;
-    volatile char* data;
+    char* data;
 } fifo_char_t;
 
 bool fifo_char_init(fifo_char_t* fifo, char* fifo_mem, fifo_index_t size);

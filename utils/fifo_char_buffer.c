@@ -27,7 +27,7 @@ char* fifo_char_get_contiguous_block(const fifo_char_t* fifo, fifo_index_t* size
     char* retval = (char*)NULL;
     *size = fifo_index_continuus_used_size(&fifo->indexer);
     if(*size) {
-        retval = (char*)(fifo->data + fifo->indexer.start);
+        retval = (fifo->data + fifo->indexer.start);
     } else {
         retval = (char*)NULL;
     }

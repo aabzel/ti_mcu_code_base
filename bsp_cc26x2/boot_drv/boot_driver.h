@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 
 #define APP_LAYNCH_TRY 5U
+#define FINE_START_TIME_OUT_MS 3000U
 
 typedef enum eCmdBoot_t {
     BOOT_CMD_LAUNCH_APP = 0,
