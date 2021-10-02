@@ -11,6 +11,7 @@
   TASK(NMEA)                                                                   \
   TASK(RF)                                                                     \
   TASK(UART)                                                                   \
+  TASK(UART1_FWD)                                                              \
   TASK(UBX)
 
 #endif /* TASK_CONFIG_H */

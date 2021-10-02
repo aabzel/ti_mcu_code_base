@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-//#include "fifo_char_buffer.h"
 #include "fifo_index.h"
 #include "oprintf.h"
 #include "fifo_char.h"
@@ -18,7 +17,7 @@ typedef struct generic_writer_s {
   int64_t total_char_count;
   int64_t error_count;
   Fifo_array_t fifo;
-  void (*f_transmit)(struct generic_writer_s *writer);
+  bool (*f_transmit)(struct generic_writer_s *writer);
   volatile void *instance;
 } generic_writer_t;
 

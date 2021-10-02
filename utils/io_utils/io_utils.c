@@ -9,6 +9,7 @@
 
 print_callback_t print_callback_f;
 
+#ifndef X86_64
 void io_putstr(const char *str) {
   if (huart[CLI_UART_NUM].init_done) {
     oputs(&dbg_o.s, str);
@@ -34,7 +35,6 @@ void io_vprintf(const char *format, va_list vlist) {
     ovprintf(&dbg_o.s, format, vlist);
 }
 
-
 bool is_printf_clean(void) {
   if (huart[CLI_UART_NUM].init_done) {
     if (!writer_clean(&dbg_o)) {
@@ -43,6 +43,12 @@ bool is_printf_clean(void) {
   }
   return true;
 }
+
+void io_putstrln(const char *str) {
+  io_putstr(str);
+  io_putstr(CRLF);
+}
+#endif /*not X86_64*/
 
 void wait_for_printf(void) {
   if (huart[CLI_UART_NUM].init_done) {
@@ -70,11 +76,6 @@ bool flush_printf(void) {
 }
 
 ostream_t *get_console_stream(void) { return DBG_STREAM; }
-
-void io_putstrln(const char *str) {
-  io_putstr(str);
-  io_putstr(CRLF);
-}
 
 bool print_indent(uint16_t indent){
     bool res = false;

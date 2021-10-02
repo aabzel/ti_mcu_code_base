@@ -16,7 +16,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROGRAM.CC2652R1F.ccxml.Texas Instruments XDS110 USB Debug Probe/Cortex_M4_0" value="${build_artifact:harvester_utest_sw_d}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.CC2652R1F.ccxml.Texas Instruments XDS110 USB Debug Probe/Cortex_M4_0" value="harvester_utest_sw_d"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:harvester_utest_sw_d}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.CC2652R1F.ccxml.Texas Instruments XDS110 USB Debug Probe/Cortex_M4_0" value="C:\projects\code_base\projects\harvester_utest_sw_d\Debug\harvester_utest_sw_d_PATTERN.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.CC2652R1F.ccxml.Texas Instruments XDS110 USB Debug Probe/Cortex_M4_0" value="C:\1_job\0_NPP_IT_ELMA\code_base_workspace\ti_mcu_code_base\projects\harvester_utest_sw_d\Debug\harvester_utest_sw_d_PATTERN.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/harvester_utest_sw_d"/>
 </listAttribute>

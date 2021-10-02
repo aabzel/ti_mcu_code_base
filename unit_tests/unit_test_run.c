@@ -1,4 +1,3 @@
-
 #include "unit_test_run.h"
 
 #include <inttypes.h>
@@ -7,6 +6,7 @@
 #ifdef HAS_DEV_ERROR_HANDLER
 #include "dev_error_handler.h"
 #endif
+#include "io_utils.h"
 #include "log.h"
 #include "none_blocking_pause.h"
 #include "print_buffer.h"

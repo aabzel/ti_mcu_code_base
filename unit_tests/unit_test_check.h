@@ -4,8 +4,9 @@
 #include <inttypes.h>
 #include <math.h>
 #include <string.h>
-
+#ifdef HAS_CLI
 #include "diag_sys.h"
+#endif
 #include "io_utils.h"
 #include "log.h"
 #include "unit_test_run.h"
@@ -49,7 +50,7 @@
         }                                                                                                              \
     } while(0);
 
-#define EXPECT_EQ(val1, val2)                                                                                          \
+#define EXPECT_EQ_U64(val1, val2)                                                                                      \
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
@@ -64,7 +65,7 @@
         }                                                                                                              \
     } while(0);
 
-#define EXPECT_EQ_U8(val1, val2)                                                                                       \
+#define EXPECT_EQ(val1, val2)                                                                                          \
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \

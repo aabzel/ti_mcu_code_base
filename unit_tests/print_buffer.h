@@ -1,7 +1,3 @@
-#ifndef PRINT_BUFFER_H
-#define PRINT_BUFFER_H
-
-#ifdef HAS_CLI
 
     #include "io_utils.h"
     #include "oprintf.h"
@@ -36,6 +32,3 @@ void redirect_stream_to_stdio(void);
 }
     #endif
 
-#endif /*HAS_CLI*/
-
-#endif /* PRINT_BUFFER_H */

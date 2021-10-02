@@ -4,13 +4,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "clocks.h"
 #include "convert.h"
 #include "debug_info.h"
 #include "data_utils.h"
+#ifdef HAS_CLI
 #include "diag_sys.h"
+#endif
 #include "io_utils.h"
 #ifdef HAS_HW_TESTS
+#include "clocks.h"
 #include "test_hw_list.h"
 #endif /*HAS_HW_TESTS*/
 #ifdef HAS_SW_TESTS

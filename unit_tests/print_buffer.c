@@ -1,8 +1,10 @@
-#ifdef HAS_UNIT_TEST
 
-    #include "print_buffer.h"
+#include "print_buffer.h"
 
-    #include <string.h>
+#include <stdbool.h>
+#include <string.h>
+
+#include "ostream.h"
 
 char last_cmd_result_str[LAST_CMD_RESULT_SIZE + 1U];
 static char test_stream_str[64];
@@ -24,4 +26,4 @@ void print_buf_reset(void) {
     (void)memset(test_stream_str, 0, sizeof(test_stream_str));
 }
 
-#endif /*HAS_UNIT_TEST*/
+

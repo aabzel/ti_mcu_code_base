@@ -6,8 +6,8 @@ INCDIR			+= -I$(UTILS_DIR)
 
 #include $(UTILS_DIR)/string_utils/string_utils.mk
 
-#SOURCES += $(UTILS_DIR)/bit_utils.c
-#SOURCES += $(UTILS_DIR)/byte_utils.c
-SOURCES += $(UTILS_DIR)/float_utils.c
-#SOURCES += $(UTILS_DIR)/utils.c
+#SOURCES_C += $(UTILS_DIR)/bit_utils.c
+#SOURCES_C += $(UTILS_DIR)/byte_utils.c
+SOURCES_C += $(UTILS_DIR)/float_utils.c
+#SOURCES_C += $(UTILS_DIR)/utils.c
 
