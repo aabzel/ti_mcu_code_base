@@ -1,7 +1,7 @@
 echo off
 echo %0
 set project_dir=%1
-set workspace_dir=%project_dir%\..\
+set workspace_dir=%project_dir%\..\..\
 echo sing_firmware
 COPY /Y  %project_dir%\..\auto_version_pattern.h %project_dir%\auto_version.h
 set tool_path=%workspace_dir%\tool\

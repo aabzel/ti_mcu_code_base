@@ -5,7 +5,7 @@ echo build_workspace_dir=%workspace_dir%
 
 set ide_tool_path=%2
 set project_name=%3
-set project_dir=%workspace_dir%\%project_name%
+set project_dir=%workspace_dir%\projects\%project_name%
 rem set  ide_tool=C:\ti\ccs1040\ccs\eclipse\jre\bin\java.exe startup.jar
 call %workspace_dir%\tool\clean_artefacts.bat %project_dir%
 call %workspace_dir%\tool\sign_code.bat %project_dir% 

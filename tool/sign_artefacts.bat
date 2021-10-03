@@ -2,9 +2,9 @@ rem echo off
 echo %0
 set workspace_dir=%1
 set project_name=%2
-set project_dir=%workspace_dir%%project_name%
+set project_dir=%workspace_dir%projects\%project_name%
 echo project_dir=%project_dir%
-set workspace_dir=%project_dir%\..\
+set workspace_dir=%project_dir%\..\..\
 
 FOR /F "tokens=* delims=" %%a IN ('git branch') DO (
  set branch_var=%%a
