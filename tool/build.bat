@@ -14,11 +14,11 @@ echo clean_artefacts
 call %workspace_dir%\tool\clean_artefacts.bat %project_dir%
 echo sign_code
 call %workspace_dir%\tool\sign_code.bat %project_dir% 
-set  ide_tool=%ide_tool_path% -noSplash
+set ide_tool=%ide_tool_path% -noSplash
 
 echo Copy project to workspace
 xcopy /s /E /I /Y  %workspace_dir%\projects\%project_name% %workspace_dir%\%project_name% 
-
+%ide_tool%  -data  %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.clean
 echo Start IDE build cmd
 %ide_tool% -data %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.workspace  -ccs.buildType full
 echo Copy project from workspace to project dirr
