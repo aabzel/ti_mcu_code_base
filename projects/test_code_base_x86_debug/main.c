@@ -19,6 +19,6 @@ int main(int argc, char* argv[]) {
     printf("test code base!\n");
 	EXPECT_TRUE( unit_test_sw_run());
 
-    printf("End program.\n");
+    printf("\nEnd program.\n");
     return ret;
 }

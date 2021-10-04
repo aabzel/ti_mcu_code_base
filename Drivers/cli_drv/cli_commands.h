@@ -112,6 +112,14 @@ extern "C" {
 #define TRNG_COMMANDS
 #endif
 
+#ifdef HAS_RTCM3
+#include "rtcm3_commands.h"
+#else
+#define RTCM3_COMMANDS
+#endif
+
+
+
 #define SHELL_COMMANDS                                                                                                 \
     BMP180_COMMANDS                                                                                                    \
     BQ25171_Q1_COMMANDS                                                                                                \
@@ -129,6 +137,7 @@ extern "C" {
     PARAM_COMMANDS                                                                                                     \
     PWR_MUX_COMMANDS                                                                                                   \
     RF_COMMANDS                                                                                                        \
+    RTCM3_COMMANDS    \
     SX1262_COMMANDS                                                                                                    \
     TRNG_COMMANDS                                                                                                      \
     UBLOX_COMMANDS

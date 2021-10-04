@@ -52,7 +52,7 @@ static unsigned char uartCC26XXRingBuffer1[160];
 #define RX_ARR0_CNT 1U
 #define RX_ARR1_CNT 210U
 
-static volatile uint8_t rx_buff[UART_COUNT][UART_FIFO_RX_SIZE];
+static volatile uint8_t rx_buff[UART_COUNT][UART_FIFO_RX_SIZE]; /*TODO Make variable array size for each UART*/
 static volatile uint8_t tx_buff[UART_COUNT][UART_FIFO_TX_SIZE];
 
 const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
@@ -120,9 +120,12 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_it_proc_done = false;
     if(rx_buf) {
         huart[1].rx_byte = *(rx_buf);
-        fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
-#ifdef HAS_UART_FWD
         bool res = false;
+        res= fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
+        if(false == res) {
+            huart[1].error_cnt++;
+        }
+#ifdef HAS_UART_FWD
         if(true == huart[1].is_uart_fwd[0]) {
             res = fifo_push(&huart[0].TxFifo, huart[1].rx_byte);
             if(false == res) {
@@ -232,9 +235,12 @@ bool proc_uart(uint8_t uart_index) {
     if(1 == uart_index) {
         uint8_t rx_byte = 0;
         res = true;
-        while(res) {
+        bool loop = true;
+        uint32_t cnt=0;
+        while(loop) {
             res = fifo_pull(&huart[1].RxFifo, (char*)&rx_byte);
-            if(res) {
+            if(true==res) {
+                loop = true;
 #ifdef HAS_RTCM3
                 rtcm3_proc_byte(rx_byte);
 #endif /*HAS_RTCM3*/
@@ -246,8 +252,14 @@ bool proc_uart(uint8_t uart_index) {
 #ifdef HAS_UBLOX
                 ubx_proc_byte(rx_byte);
 #endif /*HAS_UBLOX*/
+            }else{
+                loop = false;
             }
-        }
+            cnt++;
+            if(UART_FIFO_RX_SIZE*2<cnt){
+                loop = false;
+            }
+        }/*while(loop) */
         res = true;
     } else if(0 == uart_index) {
         res = true;
@@ -286,6 +298,11 @@ bool proc_uarts(void) {
     uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[0].baseAddr); // 9
     if(uart_error) {
         res = uart_poll(0);
+    }
+
+    uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[1].baseAddr); // 9
+    if(uart_error) {
+        res = uart_poll(1);
     }
 
 #ifdef HAS_UART1

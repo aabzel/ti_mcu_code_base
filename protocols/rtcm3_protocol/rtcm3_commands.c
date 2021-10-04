@@ -1,5 +1,5 @@
 
-#include "rtcm3_command.h"
+#include "rtcm3_commands.h"
 
 #include <stdbool.h>
 #include <stdio.h>
