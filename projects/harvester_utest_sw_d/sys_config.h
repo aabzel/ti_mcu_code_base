@@ -8,6 +8,7 @@
 
 #define VOL_DIV_SCALE_PWR 11.0f
 #define VOL_DIV_SCALE_ACC 1.47619f
+#define WDT_TIMEOUT_MS 10000
 /*DIO config */
 #define DIO_3V3_CTRL 21U
 #define DIO_BATT_SCL 5U

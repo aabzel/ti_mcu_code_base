@@ -131,8 +131,8 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
                                     {10, "baudRate"},
                                     {9, "rx"},
                                     {9, "tx"},
-                                    {8, "rFiCnt"},
-                                    {8, "tFiCnt"},
+                                    {7, "rFiCnt"},
+                                    {7, "tFiCnt"},
                                     {6, "StErr"}, {6, "rErr"},
                                     {10, "name"}};
         uint32_t baud_rate = 0, uart_error = 0;
@@ -151,8 +151,8 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
             io_printf(" %07u " TSEP, huart[uart_num].rx_cnt);
             io_printf(" %07u " TSEP, huart[uart_num].tx_cnt);
 
-            io_printf(" %03u " TSEP, huart[uart_num].RxFifo.fifoState.count);
-            io_printf(" %03u " TSEP, huart[uart_num].TxFifo.fifoState.count);
+            io_printf(" %4u  " TSEP, huart[uart_num].RxFifo.fifoState.count);
+            io_printf(" %4u  " TSEP, huart[uart_num].TxFifo.fifoState.count);
 
             io_printf(" 0x%02x " TSEP, uart_error);
             io_printf(" %4u " TSEP, huart[uart_num].error_cnt);

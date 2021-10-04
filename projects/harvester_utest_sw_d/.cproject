@@ -147,8 +147,8 @@
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
-									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
+									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="HAS_ZED_F9P"/>

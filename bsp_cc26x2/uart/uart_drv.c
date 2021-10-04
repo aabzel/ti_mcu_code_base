@@ -107,7 +107,20 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[0].rx_it_proc_done = false;
     huart[0].rx_int = true;
     if((1 == size) && (NULL != rx_buf)) {
+        bool res = false;
         huart[0].rx_byte_it = (uint8_t) * (rx_buf);
+        res = fifo_push(&huart[0].RxFifo, huart[0].rx_byte);
+        if(false == res) {
+            huart[0].error_cnt++;
+        }
+#ifdef HAS_UART0_FWD
+        if(true == huart[0].is_uart_fwd[1]) {
+            res = fifo_push(&huart[1].TxFifo, huart[0].rx_byte);
+            if(false == res) {
+                huart[1].error_cnt++;
+            }
+        }
+#endif /*HAS_UART0_FWD*/
     } else {
         huart[0].error_cnt++;
     }
@@ -118,21 +131,21 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
     huart[1].rx_it_proc_done = false;
-    if(rx_buf) {
+    if(NULL !=rx_buf) {
         huart[1].rx_byte = *(rx_buf);
         bool res = false;
         res= fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
         if(false == res) {
             huart[1].error_cnt++;
         }
-#ifdef HAS_UART_FWD
+#ifdef HAS_UART1_FWD
         if(true == huart[1].is_uart_fwd[0]) {
             res = fifo_push(&huart[0].TxFifo, huart[1].rx_byte);
             if(false == res) {
                 huart[0].error_cnt++;
             }
         }
-#endif /*HAS_UART_FWD*/
+#endif /*HAS_UART1_FWD*/
     }
     uart_read(1, &ch, 1);
 }
@@ -168,7 +181,7 @@ bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len, bool
     bool res = true;
     uint32_t time_out = 0;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
-    /*Wait previous transfer*/
+    /*TODO Wait previous transfer*/
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
     /*TODO Calc needed time to wait*/
     if(is_wait) {
@@ -311,7 +324,7 @@ bool proc_uarts(void) {
     return res;
 }
 
-#ifdef HAS_UART_FWD
+#ifdef HAS_UART1_FWD
 bool proc_uart1_fwd(void) {
     bool res = false;
     fifo_index_t read_size = 0;
