@@ -92,6 +92,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/rtcm3_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash_fs"/>
@@ -134,6 +135,7 @@
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
+									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
@@ -272,8 +274,9 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_crc — копия"/>
 						<entry excluding="utils/fifo_char_buffer.c|unit_tests/test_set_sw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_ublox_proto — копия"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_crc — копия"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

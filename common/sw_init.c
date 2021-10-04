@@ -29,6 +29,10 @@
 #include "ubx_protocol.h"
 #endif /*HAS_UBLOX*/
 
+#ifdef HAS_RTCM3
+#include "rtcm3_protocol.h"
+#endif /*HAS_RTCM3*/
+
 #ifdef HAS_NMEA
 #include "nmea_protocol.h"
 #endif
@@ -69,6 +73,10 @@ bool sw_init(void) {
 #ifdef HAS_NMEA
     res = try_init(nmea_init(), "NMEA") && res;
 #endif
+
+#ifdef HAS_RTCM3
+    res = try_init(rtcm3_protocol_init(), "RTCM3") && res;
+#endif /*HAS_RTCM3*/
 
 #ifdef HAS_UBLOX
     res = try_init(ublox_protocol_init(), "UBXProto") && res;

@@ -44,7 +44,7 @@ void writer_puts(void *_s, const char *str, int32_t len) {
     if (len < 0) {
       len = strlen(str);
     }
-    fifo_push_array((Fifo_array_t* ) &s->fifo, (char* const ) str, (fifo_index_t) len);
+    fifo_push_array((Fifo_array_t* ) &s->fifo, (char* ) str, (fifo_index_t) len);
     if (fifo_get_count(&s->fifo)) {
       s->f_transmit(s);
     }
@@ -54,9 +54,9 @@ void writer_puts(void *_s, const char *str, int32_t len) {
 void writer_error_callback(generic_writer_t *s) { s->error_count++; }
 
 bool writer_clean(const generic_writer_t *s) {
-    return fifo_clean((Fifo_array_t* const)&s->fifo) ;
+    return fifo_clean((Fifo_array_t* )&s->fifo) ;
 }
 
 bool writer_half_clean(const generic_writer_t *s) {
-    return (fifo_get_count((Fifo_array_t* const)&s->fifo) < (fifo_get_size((Fifo_array_t* const)&s->fifo) / 2));
+    return (fifo_get_count((Fifo_array_t* )&s->fifo) < (fifo_get_size((Fifo_array_t* )&s->fifo) / 2));
 }

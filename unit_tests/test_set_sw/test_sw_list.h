@@ -43,6 +43,15 @@ extern "C" {
 #define STRING_UTILS_TEST_SUIT
 #endif
 
+
+#ifdef HAS_TEST_SUIT_RTCM3_PROTO
+#include "test_rtcm3_proto.h"
+#else
+#define TEST_SUIT_RTCM3_PROTO
+#endif
+
+
+
 #include "test_fifo.h"
 #include "test_fifo_char.h"
 #include "test_fifo_indexer.h"
@@ -71,9 +80,10 @@ bool test_uspec_behavior(void);
     NMEA_PROTO_TEST_SUIT \
     CRC_TEST_SUIT \
     TEST_SUIT_FIFO_INDEXER\
-    TEST_SUIT_FIFO_CHAR \
-    TIME_UTILS_TEST_SUIT \
     TEST_SUIT_FIFO_BUFF \
+    TEST_SUIT_FIFO_CHAR \
+    TEST_SUIT_RTCM3_PROTO\
+    TIME_UTILS_TEST_SUIT \
     CONVERT_TEST_SUIT\
     STRING_UTILS_TEST_SUIT\
     UBLOX_PROTO_TEST_SUIT\

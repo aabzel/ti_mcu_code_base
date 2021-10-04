@@ -1,17 +1,6 @@
 @echo off
-del /S *.o
-If exist "*.exe" (
-    Echo File exist
-    del *.exe
-)
-cd ..
-del *.o
-If exist "*.exe" (
-    Echo File exist
-    del *.exe
-)
-
-cd test_code_base_x86_debug
+set WORKSPACE_LOC = %cd%/../..
+call %WORKSPACE_LOC%/clean_temp.bat
 
 make clean
 

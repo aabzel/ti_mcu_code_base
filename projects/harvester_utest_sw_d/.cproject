@@ -91,15 +91,17 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/rtcm3_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_fifo"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_nmea_proto"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_ublox_proto"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_rtcm3_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_string"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/utils_test"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_ublox_proto"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
@@ -134,12 +136,14 @@
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
+									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
@@ -271,12 +275,22 @@
 							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.1481069227" name="Resource Custom Build Step Output Type"/>
 						</tool>
 					</fileInfo>
+					<fileInfo id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.2039576451.1841269113" name="rtcm3_protocol.c" rcbsApplicability="disable" resourcePath="protocols/rtcm3_protocol/rtcm3_protocol.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905.1774806016">
+						<tool id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905.1774806016" name="Arm Compiler" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905">
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.999352832" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.1895354429" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS.1258286632" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM2_SRCS.2028427368" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM2_SRCS"/>
+						</tool>
+						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.1041801832" name="Resource Custom Build Step">
+							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.485426375" name="Resource Custom Build Step Input Type">
+								<additionalInput kind="additionalinputdependency" paths=""/>
+							</inputType>
+							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.777494868" name="Resource Custom Build Step Output Type"/>
+						</tool>
+					</fileInfo>
 					<sourceEntries>
-						<entry excluding="unit_tests/test_set_hw|unit_tests/test_set_sw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_crc"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/utils_test"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_fifo"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_crc — копия"/>
+						<entry excluding="unit_tests/test_set_hw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

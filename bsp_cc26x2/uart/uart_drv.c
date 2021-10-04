@@ -29,6 +29,10 @@
 #include "nmea_protocol.h"
 #endif /*HAS_NMEA*/
 
+#ifdef HAS_RTCM3
+#include "rtcm3_protocol.h"
+#endif /*HAS_RTCM3*/
+
 #ifdef HAS_CLI
 #include "uart_string_reader.h"
 #endif /*HAS_CLI*/
@@ -231,6 +235,10 @@ bool proc_uart(uint8_t uart_index) {
         while(res) {
             res = fifo_pull(&huart[1].RxFifo, (char*)&rx_byte);
             if(res) {
+#ifdef HAS_RTCM3
+                rtcm3_proc_byte(rx_byte);
+#endif /*HAS_RTCM3*/
+
 #ifdef HAS_NMEA
                 nmea_proc_byte(rx_byte);
 #endif /*HAS_NMEA*/

@@ -5,9 +5,11 @@ UTILS_DIR = $(PROJECT_ROOT)utils
 INCDIR			+= -I$(UTILS_DIR)
 
 #include $(UTILS_DIR)/string_utils/string_utils.mk
+include $(UTILS_DIR)/crc/crc.mk
 
-#SOURCES_C += $(UTILS_DIR)/bit_utils.c
-#SOURCES_C += $(UTILS_DIR)/byte_utils.c
+SOURCES_C += $(UTILS_DIR)/bit_utils.c
+SOURCES_C += $(UTILS_DIR)/byte_utils.c
+SOURCES_C += $(UTILS_DIR)/data_utils.c
 SOURCES_C += $(UTILS_DIR)/float_utils.c
 #SOURCES_C += $(UTILS_DIR)/utils.c
 

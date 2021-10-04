@@ -1,8 +1,8 @@
 MK_PATH:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 #@echo $(error MK_PATH= $(MK_PATH))
 PROJECT_ROOT:= $(MK_PATH)../../
-
-INCDIR			+= -I$(PROJECT_ROOT)
+#@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
+INCDIR += -I$(PROJECT_ROOT)
 
 BUILDDIR := $(PROJECT_ROOT)/Build
 
@@ -27,13 +27,14 @@ CFLAGS  += -O0
 #OPT += -DSORT_LIST
 OPT += -DHAS_UTESTS
 OPT += -DX86_64
-         
+
 #files to link:
 LFLAGS= -static
-  
+
 EXECUTABLE=test_code_base
 
 include $(PROJECT_ROOT)utils/utils_file/utils_file.mk
+include $(PROJECT_ROOT)protocols/protocols.mk
 include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)unit_tests/unit_test.mk

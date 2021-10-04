@@ -1,6 +1,7 @@
 #ifndef OPRINTF_H
 #define OPRINTF_H
 
+#include <stddef.h>
 #include <stdarg.h>
 #include <stdint.h>
 
@@ -9,7 +10,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifndef X86_64
 typedef int32_t ssize_t;
+#endif
+
 
 void oprintf(ostream_t *s, const char *fmt, ...);
 //    __attribute__ ((format (printf, 2, 3)));

@@ -146,7 +146,7 @@ static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
             break;
         }
         cnt++;
-        if(5000000 < cnt) {
+        if(2500000 < cnt) {
             res = false;
             break;
         }

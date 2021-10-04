@@ -77,11 +77,6 @@
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/utils</locationURI>
 		</link>
-		<link>
-			<name>unit_tests/test_set_sw/utils_test/test_sw_list.c</name>
-			<type>1</type>
-			<locationURI>$%7BWORKSPACE_LOC%7D/unit_tests/test_set_sw/test_sw_list.c</locationURI>
-		</link>
 	</linkedResources>
 	<variableList>
 		<variable>
