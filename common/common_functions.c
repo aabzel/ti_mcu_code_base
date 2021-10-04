@@ -84,7 +84,7 @@ void common_loop(uint64_t loop_start_time_us) {
 
 #ifdef HAS_WDT
     measure_task_interval(TASK_ID_WDT, 1000, proc_watchdog, loop_start_time_us);
-#endif
+#endif /*HAS_WDT*/
 
 #ifdef HAS_LED
     measure_task_interval(TASK_ID_LED, 5000, proc_led, loop_start_time_us);

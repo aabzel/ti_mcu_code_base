@@ -3,7 +3,12 @@ echo %0
 set project_dir=%1
 set workspace_dir=%project_dir%\..\..\
 echo sing_firmware
-COPY /Y  %project_dir%\..\auto_version_pattern.h %project_dir%\auto_version.h
+echo ....
+
+echo workspace_dir=%workspace_dir%
+echo project_dir=%project_dir%
+
+COPY /Y  %workspace_dir%auto_version_pattern.h %project_dir%\auto_version.h
 set tool_path=%workspace_dir%\tool\
 echo tool_path=%tool_path% 
 FOR /F "tokens=* delims=" %%a IN ('git branch') DO (

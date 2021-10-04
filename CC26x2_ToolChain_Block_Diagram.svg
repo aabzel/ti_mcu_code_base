@@ -35,9 +35,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.0056914"
-     inkscape:cx="293.91361"
-     inkscape:cy="287.18276"
+     inkscape:zoom="4.0113828"
+     inkscape:cx="507.92959"
+     inkscape:cy="549.43647"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
@@ -1135,6 +1135,28 @@
        height="4.5978403"
        x="67.228828"
        y="59.673244" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.44277px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0860692"
+       x="23.901497"
+       y="82.533211"
+       id="text1921"><tspan
+         sodipodi:role="line"
+         id="tspan1919"
+         style="stroke-width:0.0860692"
+         x="23.901497"
+         y="82.533211">.ccxml</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:6.55927px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.163982"
+       x="133.08105"
+       y="136.67311"
+       id="text4305"><tspan
+         sodipodi:role="line"
+         id="tspan4303"
+         style="stroke-width:0.163982"
+         x="133.08105"
+         y="136.67311">dbgjtag</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
