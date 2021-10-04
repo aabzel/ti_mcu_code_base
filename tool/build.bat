@@ -18,9 +18,9 @@ set ide_tool=%ide_tool_path% -noSplash
 
 echo Copy project to workspace
 xcopy /s /E /I /Y  %workspace_dir%\projects\%project_name% %workspace_dir%\%project_name% 
-%ide_tool%  -data  %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.clean
+%ide_tool%  -data  %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.clean -ccs.autoImport
 echo Start IDE build cmd
-%ide_tool% -data %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.workspace  -ccs.buildType full
+%ide_tool% -data %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.workspace  -ccs.buildType full -ccs.autoImport
 echo Copy project from workspace to project dirr
 xcopy /s /E /I /Y %workspace_dir%\%project_name% %workspace_dir%\projects\%project_name% 
 echo Delete project from workspace
