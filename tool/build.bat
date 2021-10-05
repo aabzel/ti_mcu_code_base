@@ -8,6 +8,7 @@ echo build_workspace_dir=%workspace_dir%
 set ide_tool_path=%2
 echo ide_tool_path=%ide_tool_path%
 set project_name=%3
+echo project_name=%project_name%
 set project_dir=%workspace_dir%projects\%project_name%
 
 echo clean_artefacts
@@ -24,6 +25,8 @@ echo Start IDE clean cmd
 %ide_tool%  -data  %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.clean -ccs.autoImport
 echo Start IDE build cmd
 %ide_tool% -data %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.workspace  -ccs.buildType full -ccs.autoImport
+sleep 10
+
 echo Copy project from workspace to project dirr
 xcopy /s /E /I /Y %workspace_dir%\%project_name% %workspace_dir%\projects\%project_name% 
 echo Delete project from workspace
