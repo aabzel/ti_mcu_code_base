@@ -33,3 +33,6 @@ echo Delete project from workspace
 rmdir /s /q %workspace_dir%\%project_name%
 COPY /Y  %workspace_dir%\auto_version_pattern.h %project_dir%\auto_version.h
 call %workspace_dir%\tool\sign_artefacts.bat %workspace_dir% %project_name%
+
+rem Links
+rem http://software-dl.ti.com/ccs/esd/documents/ccs_projects-command-line.html

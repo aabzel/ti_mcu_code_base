@@ -1,3 +1,3 @@
 git remote -v
-git checkout -- .
+rem git checkout -- .
 git pull origin master
