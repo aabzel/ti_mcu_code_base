@@ -55,6 +55,8 @@ bool test_system(void) {
     uint16_t real_size=0;
 #ifdef X86_64
     EXPECT_FALSE(test_malloc_zero());
+#else
+    EXPECT_TRUE(test_malloc_zero());
 #endif
     EXPECT_TRUE(test_heap_set());
     EXPECT_TRUE( try_alloc_on_stack(10, 0x55,&real_size));
