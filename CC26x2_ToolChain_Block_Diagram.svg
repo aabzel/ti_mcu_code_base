@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
    height="297mm"
    viewBox="0 0 210 297"
    version="1.1"
    id="svg251068"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="CC26x2_ToolChain_Block_Diagram.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="CC26x2_ToolChain_Block_Diagram.svg">
   <metadata
      id="metadata254">
     <rdf:RDF>
@@ -35,15 +35,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="4.0113828"
-     inkscape:cx="507.92959"
-     inkscape:cy="549.43647"
+     inkscape:zoom="8.0227656"
+     inkscape:cx="258.63502"
+     inkscape:cy="940.82842"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="-11"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer6"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:document-rotation="0">
@@ -2547,14 +2547,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.66232px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0415583"
-       x="72.228973"
-       y="248.10352"
+       x="81.496094"
+       y="247.8067"
        id="text10900"><tspan
          sodipodi:role="line"
          id="tspan10898"
          style="stroke-width:0.0415583"
-         x="72.228973"
-         y="248.10352">USB</tspan></text>
+         x="81.496094"
+         y="247.8067">USB</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.02248px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255621"
@@ -2568,15 +2568,15 @@
          y="253.72186">TM4C1294NCPDTT3R</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.18215px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
-       x="86.747528"
-       y="247.99014"
+       style="font-style:normal;font-weight:normal;font-size:1.74987px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.328102"
+       x="58.170742"
+       y="248.2236"
        id="text1605"><tspan
          sodipodi:role="line"
          id="tspan1603"
-         style="font-size:1.18215px;stroke-width:0.221654"
-         x="86.747528"
-         y="247.99014">XDS110 Debugger</tspan></text>
+         style="font-size:1.74987px;stroke-width:0.328102"
+         x="58.170742"
+         y="248.2236">XDS110 Debugger</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.35632px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.108908"
