@@ -38,6 +38,7 @@ bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len);
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wait);
 uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling);
 bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate);
+uint32_t uart_get_baudrate(uint8_t uart_num);
 bool proc_uart(uint8_t uart_index);
 bool proc_uarts(void);
 

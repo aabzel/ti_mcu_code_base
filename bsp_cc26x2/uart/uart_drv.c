@@ -17,6 +17,8 @@
 #include <ti/drivers/uart/UARTCC26XX.h>
 #endif /*DeviceFamily_CC26X2*/
 
+#include "clocks.h"
+
 #ifdef HAS_GPIO
 #include "gpio_drv.h"
 #endif /*HAS_GPIO*/
@@ -101,6 +103,10 @@ const UART_Config UART_config[UART_COUNT] = {
 };
 
 const uint_least8_t UART_count = UART_COUNT;
+static uint32_t baudRateLuTable[UART_COUNT]={
+                                      UART0_BAUD_RATE,
+                                      UART1_BAUD_RATE
+};
 
 static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[0].rx_cnt++;
@@ -177,17 +183,22 @@ bool is_uart_valid(uint8_t uart_num) {
     return res;
 }
 
-bool uart_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len, bool is_wait) {
+bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len, bool is_wait) {
     bool res = true;
-    uint32_t time_out = 0;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
+    uint32_t baudrate = uart_get_baudrate(  uart_num);
+    uint32_t up_time_start_ms = get_time_ms32( );
+    uint32_t up_time_cur_ms = 0;
+    uint32_t duration_ms = 0;
+    uint32_t tx_duration_ms = calc_uart_transfer_time_ms(  baudrate, len);
     /*TODO Wait previous transfer*/
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
     /*TODO Calc needed time to wait*/
     if(is_wait) {
         while(init_tx_cnt == huart[uart_num].tx_cnt) {
-            time_out++;
-            if(10000 < time_out) { /*TODO find val*/
+            up_time_cur_ms = get_time_ms32( );
+            duration_ms = up_time_cur_ms-up_time_start_ms;
+            if((10*(tx_duration_ms+1)) < duration_ms) { /*TODO find val*/
                 res = false;
                 huart[uart_num].error_cnt++;
                 break;
@@ -206,7 +217,7 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wai
 #endif /*HAS_BOOTLOADER*/
     }
     if(uart_num < UART_COUNT) {
-        res = uart_send_ll(uart_num, array, array_len, is_wait);
+        res = uart_send_wait_ll(uart_num, array, array_len, is_wait);
     }
     return res;
 }
@@ -239,7 +250,19 @@ uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* frac
     return 0;
 }
 
-bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate) { return false; }
+bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate) {
+    /*TODO: Implement set baud rate*/
+    return false;
+}
+
+
+uint32_t uart_get_baudrate(uint8_t uart_num) {
+    uint32_t baudrate = 0;
+    if (uart_num < UART_COUNT) {
+        baudrate = baudRateLuTable[uart_num];
+    }
+    return  baudrate;
+}
 
 bool proc_uart(uint8_t uart_index) {
     bool res = false;
@@ -269,7 +292,7 @@ bool proc_uart(uint8_t uart_index) {
                 loop = false;
             }
             cnt++;
-            if(UART_FIFO_RX_SIZE * 2 < cnt) {
+            if((UART_FIFO_RX_SIZE * 2) < cnt) {
                 loop = false;
             }
         } /*while(loop) */

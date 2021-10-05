@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <time.h>
 
+#include "float_utils.h"
 #include "time_utils.h"
+#include "uart_common.h"
 #include "unit_test_check.h"
 
 bool test_date_utils_1(void) {
@@ -41,6 +43,26 @@ bool test_time_utils_2(void) {
 
 /*tsr time_utils+*/
 bool test_time_utils(void) {
+  uint32_t duration_us;
+  uint32_t duration_ms;
+  duration_us = calc_uart_transfer_time_us(460800, 128);
+  EXPECT_BETWEEN(3000,duration_us,3500);
+  EXPECT_TRUE(is_float_equal_absolute(3333.3f, (float) duration_us, 100.0f));
+
+  duration_us = calc_uart_transfer_time_us(38400, 128);
+  EXPECT_BETWEEN(40000-10,duration_us,40000+10);
+  EXPECT_TRUE(is_float_equal_absolute(40000.0f, (float) duration_us, 100.0f));
+
+  duration_ms = calc_uart_transfer_time_ms(460800, 128);
+  EXPECT_BETWEEN(3,duration_ms,4);
+  EXPECT_TRUE(is_float_equal_absolute(3.3f, (float) duration_ms, 0.9f));
+
+  duration_ms = calc_uart_transfer_time_ms(38400, 128);
+  EXPECT_BETWEEN(40-2,duration_ms,40+2);
+  EXPECT_TRUE(is_float_equal_absolute(40.0f, (float) duration_ms, 100.0f));
+
+
+
   EXPECT_TRUE(test_time_utils_1());
   EXPECT_TRUE(test_time_utils_2());
   EXPECT_TRUE(test_date_utils_1());

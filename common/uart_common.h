@@ -20,7 +20,9 @@
 #include "stm32f4xx_hal.h"
 #endif /*USE_HAL_DRIVER*/
 
+#ifdef HAS_MCU
 #include "uart_drv.h"
+#endif
 
 typedef struct xUartHandle_t {
   volatile bool tx_int;
@@ -45,8 +47,10 @@ typedef struct xUartHandle_t {
 #ifdef  USE_HAL_DRIVER 
   UART_HandleTypeDef uart_h;
 #endif /*USE_HAL_DRIVER*/
-  char name[8];
+#ifdef  HAS_MCU
   bool is_uart_fwd[UART_COUNT];
+#endif
+  char name[8];
   Fifo_array_t RxFifo;
   Fifo_array_t TxFifo;
 }UartHandle_t;
@@ -59,7 +63,12 @@ typedef enum {
   UART_ERROR_ORE
 } rx_uart_error_t;
 
+#ifdef HAS_MCU
 extern UartHandle_t huart[UART_COUNT];
+bool uart_common_init(uint8_t uart_num);
+#endif
 
+uint32_t calc_uart_transfer_time_ms(uint32_t baudrate, uint32_t bytes);
+uint32_t calc_uart_transfer_time_us(uint32_t baudrate, uint32_t bytes);
 const char *uart_error2str(rx_uart_error_t e);
 #endif /* UART_COMMON_H */

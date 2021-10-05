@@ -136,9 +136,9 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
             io_printf(TSEP);
             io_printf(" %02u  " TSEP, uart_num);
             uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[uart_num].baseAddr);
-
+            baud_rate = uart_get_baudrate(uart_num);
             if(0 < baud_rate) {
-                io_printf(" %07u  " TSEP, baud_rate);
+                io_printf(" %7u  " TSEP, baud_rate);
             } else {
                 io_printf("          " TSEP, baud_rate);
             }

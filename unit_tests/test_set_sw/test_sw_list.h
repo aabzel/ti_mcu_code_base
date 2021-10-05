@@ -43,7 +43,6 @@ extern "C" {
 #define STRING_UTILS_TEST_SUIT
 #endif
 
-
 #ifdef HAS_TEST_SUIT_RTCM3_PROTO
 #include "test_rtcm3_proto.h"
 #else
@@ -69,7 +68,6 @@ bool test_array(void) ;
 bool test_uspec_behavior(void);
 
 #define TEST_SUIT_SW \
-    {"type_transform", test_type_transformation}, \
     DATA_UTILS_TEST_SUIT \
     FLOAT_UTILS_TEST_SUIT \
     TIME_UTILS_TEST_SUIT \
@@ -92,6 +90,7 @@ bool test_uspec_behavior(void);
     {"64bit_mult", test_64bit_mult},\
     {"flt_u16", test_float_to_uint16},\
     {"utoa_bin8", test_utoa_bin8},\
+    {"type_transform", test_type_transformation}, \
 
 #ifdef __cplusplus
 }

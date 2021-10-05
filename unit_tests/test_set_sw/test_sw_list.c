@@ -86,15 +86,19 @@ bool test_64bit_mult(void) {
     return true;
 }
 
+#ifdef HAS_MCU
 static bool test_type_transformation_arg(uint16_t expected, float input) {
     EXPECT_EQ(expected, (uint16_t)( ((float)10U) * (input) ));
     EXPECT_EQ(expected, (uint16_t)( ((float)10.0f) * (input) ));
     return true;
 }
+#endif
 
 bool test_type_transformation(void) {
+#ifdef HAS_MCU
     EXPECT_TRUE(test_type_transformation_arg(125, 12.5f));
     EXPECT_TRUE(test_type_transformation_arg(1256, 125.6f));
+#endif
     return true;
 }
 
