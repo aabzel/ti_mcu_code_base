@@ -131,10 +131,10 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
     huart[1].rx_it_proc_done = false;
-    if(NULL !=rx_buf) {
+    if(NULL != rx_buf) {
         huart[1].rx_byte = *(rx_buf);
         bool res = false;
-        res= fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
+        res = fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
         if(false == res) {
             huart[1].error_cnt++;
         }
@@ -249,10 +249,10 @@ bool proc_uart(uint8_t uart_index) {
         uint8_t rx_byte = 0;
         res = true;
         bool loop = true;
-        uint32_t cnt=0;
+        uint32_t cnt = 0;
         while(loop) {
             res = fifo_pull(&huart[1].RxFifo, (char*)&rx_byte);
-            if(true==res) {
+            if(true == res) {
                 loop = true;
 #ifdef HAS_RTCM3
                 rtcm3_proc_byte(rx_byte);
@@ -265,14 +265,14 @@ bool proc_uart(uint8_t uart_index) {
 #ifdef HAS_UBLOX
                 ubx_proc_byte(rx_byte);
 #endif /*HAS_UBLOX*/
-            }else{
+            } else {
                 loop = false;
             }
             cnt++;
-            if(UART_FIFO_RX_SIZE*2<cnt){
+            if(UART_FIFO_RX_SIZE * 2 < cnt) {
                 loop = false;
             }
-        }/*while(loop) */
+        } /*while(loop) */
         res = true;
     } else if(0 == uart_index) {
         res = true;

@@ -58,7 +58,7 @@ static bool rtcm3_proc_wait_len(uint8_t rx_byte) {
         Rtcm3Porotocol.exp_len.len8[0] = rx_byte;
         Rtcm3Porotocol.load_len = 3;
 #ifdef X86_64
-        printf("\n   exp len %u",Rtcm3Porotocol.exp_len.field.len);
+        printf("\n   exp len %u", Rtcm3Porotocol.exp_len.field.len);
 #endif
         Rtcm3Porotocol.rx_state = RTCM3_WAIT_PAYLOAD;
         res = true;
@@ -88,7 +88,7 @@ bool rtcm3_proc_wait_payload(uint8_t rx_byte) {
 
 static bool rtcm3_proc_wait_crc24(uint8_t rx_byte) {
 #ifdef X86_64
-    printf("\n %s() 0x%02x",__FUNCTION__,rx_byte);
+    printf("\n %s() 0x%02x", __FUNCTION__, rx_byte);
 #endif
     bool res = false;
     uint16_t crc24_index = RTCM3_HEADER_SIZE + Rtcm3Porotocol.exp_len.field.len;

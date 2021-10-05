@@ -90,7 +90,6 @@ void common_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_LED, 5000, proc_led, loop_start_time_us);
 #endif /*HAS_LED*/
 
-
 #ifdef HAS_UART
     measure_task_interval(TASK_ID_UART, 1, proc_uarts, loop_start_time_us);
 #endif /*HAS_UART1*/

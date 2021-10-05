@@ -50,9 +50,6 @@ extern "C" {
 #define TEST_SUIT_RTCM3_PROTO
 #endif
 
-
-
-#include "test_fifo.h"
 #include "test_fifo_char.h"
 #include "test_fifo_indexer.h"
 #include "test_system.h"
@@ -80,7 +77,6 @@ bool test_uspec_behavior(void);
     NMEA_PROTO_TEST_SUIT \
     CRC_TEST_SUIT \
     TEST_SUIT_FIFO_INDEXER\
-    TEST_SUIT_FIFO_BUFF \
     TEST_SUIT_FIFO_CHAR \
     TEST_SUIT_RTCM3_PROTO\
     TIME_UTILS_TEST_SUIT \

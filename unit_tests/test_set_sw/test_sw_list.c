@@ -4,13 +4,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "clocks.h"
 #include "convert.h"
-#include "debug_info.h"
-#include "diag_sys.h"
 #include "io_utils.h"
 #include "unit_test_check.h"
+#ifdef HAS_CLI
+#include "clocks.h"
+#include "diag_sys.h"
+#include "debug_info.h"
 #include "writer_generic.h"
+#endif /*HAS_CLI*/
 
 static uint64_t mul64(uint32_t a, uint32_t b) {
     uint64_t out = a * b;
@@ -29,8 +31,10 @@ bool test_float_to_uint16(void) {
 bool test_array(void) {
     uint8_t a = 3;
     uint8_t b[4] = {1, 2, 3, 4};
+#ifdef HAS_CLI
     io_printf("a[b]: %u " CRLF, a[b]);
     io_printf("b[a]: %u " CRLF, b[a]);
+#endif /*HAS_CLI*/
     EXPECT_EQ(a[b], b[a]);
 
     a = 0xff;
@@ -65,22 +69,26 @@ bool test_64bit_mult(void) {
     uint64_t exp = 0x00000002CB417800;
     EXPECT_EQ(8, sizeof(uint64_t));
     uint64_t temp10x3 = mul64(1000, 12000000);
+#ifdef HAS_CLI
     print_mem((uint8_t*)&temp10x3, sizeof(temp10x3), false);
+#endif /*HAS_CLI*/
     // in memory          0x007841cb00000000
     // value              0x00000000cb417800
     EXPECT_EQ((uint64_t)0x00000002cb417800, temp10x3);
     // exp        3410065408 cb417800 2 3410065408 14646119404580896770
     //  temp10x3: 48         cb417800 2 3410065408 14646119404580896770!
+#ifdef HAS_CLI
     io_printf("\n exp: %" PRIu64 "" CRLF, 0x00000002CB417800);
     print_mem((uint8_t*)&exp, 8U, false);
     print_mem((uint8_t*)&temp10x3, 8U, false);
     io_printf("\n temp10x3: %" PRIu64 "" CRLF, temp10x3);
+#endif /*HAS_CLI*/
     return true;
 }
 
 static bool test_type_transformation_arg(uint16_t expected, float input) {
-    EXPECT_EQ(expected, (uint16_t)(10U) * (input));
-    EXPECT_EQ(expected, (uint16_t)(10.0f) * (input));
+    EXPECT_EQ(expected, (uint16_t)( ((float)10U) * (input) ));
+    EXPECT_EQ(expected, (uint16_t)( ((float)10.0f) * (input) ));
     return true;
 }
 

@@ -15,7 +15,6 @@
 #include "sys.h"
 #include "sys_config.h"
 
-
 static bool fine_start_event = false;
 typedef void (*pFunction)(void);
 pFunction Jump_To_Application;
@@ -155,7 +154,7 @@ bool boot_init(void) {
 bool boot_proc(void) {
     bool res = false;
     uint32_t up_time_ms = get_time_ms32();
-    if((2*WDT_TIMEOUT_MS) < up_time_ms) {
+    if((2 * WDT_TIMEOUT_MS) < up_time_ms) {
         if(false == fine_start_event) {
             /*Indicate boot that Application loaded fine*/
             uint8_t boot_cnt = 0;

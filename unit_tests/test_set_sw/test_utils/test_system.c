@@ -11,7 +11,7 @@ static bool test_malloc_zero(void) {
     bool res = false;
     char *ptr = malloc(0);
     if (NULL != ptr) {
-        res = false;
+        res = false; /*X86_64*/
         free(ptr);
     } else {
         res = true;
@@ -21,6 +21,9 @@ static bool test_malloc_zero(void) {
 
 
 static bool test_heap_set(void) {
+#ifdef  X86_64
+    printf("\n%s():"CRLF,__FUNCTION__);
+#endif
     bool res = false;
     uint32_t byte = 3;
     uint32_t mult = 10;
@@ -38,15 +41,21 @@ static bool test_heap_set(void) {
             break;
         }
     }
-
+#ifdef  X86_64
+    printf("can malloc %u bytes %u kBytes %u MBytes"CRLF,byte,byte/1024,byte/(1024*1024));
+    /*PC:  2,094,737,251 byte*/
+#endif
+#ifdef HAS_MCU
     io_printf("can malloc %u bytes"CRLF,byte);
-
+#endif
     return res;
 }
 
 bool test_system(void) {
     uint16_t real_size=0;
-    EXPECT_TRUE(test_malloc_zero());
+#ifdef X86_64
+    EXPECT_FALSE(test_malloc_zero());
+#endif
     EXPECT_TRUE(test_heap_set());
     EXPECT_TRUE( try_alloc_on_stack(10, 0x55,&real_size));
     EXPECT_EQ( 10,real_size);

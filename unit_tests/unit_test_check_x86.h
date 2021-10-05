@@ -5,7 +5,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-//#include "io_utils.h"
+
+#include "io_utils.h"
 //#include "unit_test_run.h"
 /*Macros for Polymorphism*/
 #define EXPECT_EQ_MEM(memL, memR, len)                                                                                 \
@@ -52,7 +53,7 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if(val1 != val2) {                                                                                             \
-            printf(  "\n%s():Line: %d in val1: %" PRIu64 " val2: %" PRIu64 "\n", __FUNCTION__, __LINE__, val1,       \
+            printf(  "\n%s():Line: %d in val1: %" PRIu64 " val2: %" PRIu64 , __FUNCTION__, __LINE__, val1,       \
                       val2);                                                                                           \
             printf(  "\n%s():Line: %d in val1: 0x%" PRIx64 " val2: 0x%" PRIx64 "\n", __FUNCTION__, __LINE__, val1,   \
                       val2);                                                                                           \
@@ -67,7 +68,7 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if(val1 != val2) {                                                                                             \
-            printf(  "\n%s():Line: %d in val1: %u  val2: %u\n", __FUNCTION__, __LINE__, val1, val2);                 \
+            printf(  "\n%s():Line: %d in val1: %u  val2: %u", __FUNCTION__, __LINE__, val1, val2);                 \
             printf(  "\n%s():Line: %d in val1: 0x%x val2: 0x%x\n", __FUNCTION__, __LINE__, val1, val2);              \
             return false;                                                                                              \
         } else {                                                                                                       \
@@ -143,7 +144,7 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if((val2) < (val1)) {                                                                                          \
-            printf(  "\n%s():Line: %d in val1: %llu val2: %llu id: %u\n", __FUNCTION__, __LINE__, val1, val2, id);   \
+            printf(  "\n%s():Line: %d in val1: %llu val2: %llu id: %u", __FUNCTION__, __LINE__, val1, val2, id);   \
             printf(  "\n%s():Line: %d in val1: 0x%llx val2: 0x%llx id: %u\n", __FUNCTION__, __LINE__, val1, val2,    \
                       id);                                                                                             \
             return false;                                                                                              \

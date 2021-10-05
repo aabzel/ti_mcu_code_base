@@ -11,6 +11,8 @@ extern "C" {
 
 #define CRLF "\r\n"
 
+#ifndef X86_64
+
 #define io_puts io_putstr
 #define io_putc io_putchar
 #define io_flush flush_printf
@@ -28,6 +30,9 @@ void io_putstr(const char *str);
 void io_putstrln(const char *str);
 void io_vprintf (const char *format, va_list vlist);
 void wait_for_printf(void);
+
+#endif /*not X86_64*/
+
 
 #ifdef __cplusplus
 }

@@ -94,7 +94,7 @@ bool bit32_control_proc(uint32_t* p_reg, char cmd, uint8_t bit_num) {
     if(bit_num <= 31) {
         res = true;
         // uint32_t volatile * const p_reg = (uint32_t *) address_val;
-        //io_printf("%p %u " CRLF, p_reg, p_reg[0]);
+        // io_printf("%p %u " CRLF, p_reg, p_reg[0]);
         // uint32_t* val = (uint32_t*)address_val;
         switch(cmd) {
         case 's':
@@ -110,7 +110,7 @@ bool bit32_control_proc(uint32_t* p_reg, char cmd, uint8_t bit_num) {
             res = false;
             break;
         }
-        //io_printf("%p %u " CRLF, p_reg, p_reg[0]);
+        // io_printf("%p %u " CRLF, p_reg, p_reg[0]);
     }
     return res;
 }

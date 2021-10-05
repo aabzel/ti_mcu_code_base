@@ -27,6 +27,7 @@ CFLAGS  += -O0
 #OPT += -DSORT_LIST
 OPT += -DHAS_UTESTS
 OPT += -DX86_64
+OPT += -DHAS_SW_TESTS
 
 #files to link:
 LFLAGS= -static

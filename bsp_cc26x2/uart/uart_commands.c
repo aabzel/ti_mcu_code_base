@@ -127,14 +127,8 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        const table_col_t cols[] = {{5, "Num"},
-                                    {10, "baudRate"},
-                                    {9, "rx"},
-                                    {9, "tx"},
-                                    {7, "rFiCnt"},
-                                    {7, "tFiCnt"},
-                                    {6, "StErr"}, {6, "rErr"},
-                                    {10, "name"}};
+        const table_col_t cols[] = {{5, "Num"},    {10, "baudRate"}, {9, "rx"},   {9, "tx"},   {7, "rFiCnt"},
+                                    {7, "tFiCnt"}, {6, "StErr"},     {6, "rErr"}, {10, "name"}};
         uint32_t baud_rate = 0, uart_error = 0;
         uint8_t uart_num = 0;
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));

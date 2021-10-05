@@ -7,7 +7,9 @@
 extern bool test_failed;
 
 uint32_t unit_test_run(uint32_t index);
+#ifdef HAS_CLI
 void failed_tests_print(void);
+#endif
 void failed_tests_reset(void);
 
 #endif /* UNIT_TEST_RUN_H */

@@ -25,8 +25,10 @@ uint32_t get_unit_test_count(void) {
 }
 
 void unit_test_init(void) {
+#ifdef HAS_CLI
     LOG_INFO(SYS, "Unit_test info begin at 0x%p end at 0x%p. %" PRIu32 " tests in firmware", &__begin_unit_test_info,
              &__end_unit_test_info, get_unit_test_count());
+#endif /*HAS_CLI*/
 }
 
 const unit_test_info_t* get_unit_test(uint32_t test_index) {
@@ -44,26 +46,32 @@ void dump_unit_test_all(void) {
     for (index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
         if (ui != NULL) {
+#ifdef HAS_CLI
             io_puts(ui->name);
             io_puts(".");
             io_puts(rx_utoa32(index + 1U));
             io_puts(CRLF);
+#endif /*HAS_CLI*/
         }
     }
 }
 
 void dump_unit_test_key(const char* key) {
     uint32_t index;
+#ifdef HAS_CLI
     LOG_INFO(SYS, "%s() key %s", __FUNCTION__, key);
+#endif /*HAS_CLI*/
     for (index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
         if (ui != NULL) {
             if (NULL != str_case_str(ui->name, key)) {
+#ifdef HAS_CLI
                 io_puts(ui->name);
                 io_puts(".");
                 io_puts(rx_utoa32(index + 1U));
                 io_puts(CRLF);
                 io_flush();
+#endif /*HAS_CLI*/
             }
         }
     }
@@ -71,7 +79,9 @@ void dump_unit_test_key(const char* key) {
 
 static uint32_t unit_test_run_key(const char* key) {
     uint32_t index;
+#ifdef HAS_CLI
     LOG_INFO(SYS, "%s() key %s", __FUNCTION__, key);
+#endif /*HAS_CLI*/
     uint32_t count = 0U;
     for (index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
@@ -124,7 +134,9 @@ static uint32_t unit_test_run_range(uint32_t from_index, uint32_t to_index) {
 }
 
 void unit_tests_run(const char* key) {
+#ifdef HAS_CLI
     io_printf("%s() key %s" CRLF, __FUNCTION__, key);
+#endif /*HAS_CLI*/
     char test_name[100] = "";
     uint32_t count = 0U;
 
@@ -172,11 +184,15 @@ void unit_tests_run(const char* key) {
             p++;
             if (true != try_str2uint32(test_name, &from_number)) {
                 ok = false;
+#ifdef HAS_CLI
                 LOG_ERROR(SYS, "Invalid \"from\" test number %s", test_name);
+#endif /*HAS_CLI*/
             }
             if (true != try_str2uint32(p, &to_number)) {
                 ok = false;
+#ifdef HAS_CLI
                 LOG_ERROR(SYS, "Invalid \"to\" test number %s", p);
+#endif /*HAS_CLI*/
             }
             if (true == ok) {
                 count = unit_test_run_range(from_number - 1U, to_number - 1U);
@@ -184,11 +200,15 @@ void unit_tests_run(const char* key) {
         }
     }
     if (0U == count) {
+#ifdef HAS_CLI
         io_printf(VT_SETCOLOR_RED "Test %s not found!" CRLF, key);
         io_puts("!ERRTEST" VT_SETCOLOR_NORMAL CRLF);
+#endif /*HAS_CLI*/
     }
+#ifdef HAS_CLI
     if (count > 1U) {
         failed_tests_print();
     }
     io_flush();
+#endif /*HAS_CLI*/
 }

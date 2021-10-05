@@ -3,21 +3,23 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "test_list.h"
 #include "test_rtcm3_proto.h"
 #include "unit_test_check.h"
-
-static bool unit_test_sw_run(void){
-	bool res = false;
-	EXPECT_TRUE( test_rtcm3_proto());
-	return true;
-}
-
+#include "unit_test_run.h"
 
 int main(int argc, char* argv[]) {
-	int ret=0;
+    int ret = 0;
     bool res = false;
     printf("test code base!\n");
-	EXPECT_TRUE( unit_test_sw_run());
+
+    uint32_t cnt = get_test_list_cnt();
+    printf("number of tests: %u\n", cnt);
+
+    uint32_t index = 0;
+    for(index = 0; index < cnt; index++) {
+        unit_test_run(index);
+    };
 
     printf("\nEnd program.\n");
     return ret;
