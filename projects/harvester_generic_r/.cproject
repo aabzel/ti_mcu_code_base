@@ -139,6 +139,7 @@
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
+									<listOptionValue builtIn="false" value="HAS_WDT"/>
 									<listOptionValue builtIn="false" value="HAS_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
@@ -264,9 +265,9 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
+						<entry excluding="unit_tests|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_ublox_proto — копия"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_crc — копия"/>
-						<entry excluding="unit_tests|utils/fifo_char_buffer.c|unit_tests/test_set_sw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

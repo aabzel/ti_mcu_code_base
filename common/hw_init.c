@@ -74,9 +74,6 @@
 #include "rtc_drv.h"
 #endif /*HAS_RTC*/
 
-#ifdef HAS_WDT
-#include "watchdog_drv.h"
-#endif
 
 #ifdef HAS_BLE
 #include "ble_drv.h"
@@ -86,6 +83,9 @@
 #include "sx1262_drv.h"
 #endif /*HAS_SX1262*/
 
+#ifdef HAS_WDT
+#include "watchdog_drv.h"
+#endif
 
 bool hw_init(void) {
   bool res = true;
@@ -105,10 +105,6 @@ bool hw_init(void) {
 #ifdef NORTOS  
   SysTickInit();
 #endif /*NORTOS*/
-  
-#ifdef HAS_WDT
-  res = watchdog_init()&&res;
-#endif
 
 #ifdef HAS_GPIO
   res = gpio_init() && res;
@@ -121,6 +117,10 @@ bool hw_init(void) {
 #ifdef HAS_UART
   res = try_init(uart_init(),"UART") && res;
 #endif /*HAS_UART*/
+
+#ifdef HAS_WDT
+  res = try_init(watchdog_init(),"WDT") && res;
+#endif /*HAS_WDT*/
 
 #ifdef HAS_TCAN4550
   res = try_init(tcan4550_init(),"tcan4550") && res;
