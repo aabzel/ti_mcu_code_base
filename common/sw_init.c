@@ -110,5 +110,10 @@ bool sw_init(void) {
 #ifdef HAS_BOOTLOADER
     res = try_init(boot_init(), "boot") && res;
 #endif /*HAS_BOOTLOADER*/
+
+#ifdef HAS_LORA
+    res = try_init(lora_init(), "LoRa") && res;
+#endif /*HAS_LORA*/
+
     return res;
 }

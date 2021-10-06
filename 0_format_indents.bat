@@ -5,8 +5,10 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\projects\test_code_base_x86_debug\main.c
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\fifo_array.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\fifo_array.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\projects\test_code_base_x86_debug\main.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\crc\crc24_q.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\crc\crc24_q.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\common\sw_init.c

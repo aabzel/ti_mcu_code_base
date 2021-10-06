@@ -14,8 +14,8 @@
 #include "writer_generic.h"
 #endif /*HAS_CLI*/
 
-static uint64_t mul64(uint32_t a, uint32_t b) {
-    uint64_t out = a * b;
+static uint64_t mul64(uint64_t val_a, uint64_t val_b) {
+    uint64_t out = val_a * val_b;
     return out;
 }
 
@@ -68,13 +68,13 @@ bool test_array_init(void) {
 bool test_64bit_mult(void) {
     uint64_t exp = 0x00000002CB417800;
     EXPECT_EQ(8, sizeof(uint64_t));
-    uint64_t temp10x3 = mul64(1000, 12000000);
+    uint64_t temp10x3 = mul64((uint64_t)1000, (uint64_t)12000000);
 #ifdef HAS_CLI
     print_mem((uint8_t*)&temp10x3, sizeof(temp10x3), false);
 #endif /*HAS_CLI*/
     // in memory          0x007841cb00000000
     // value              0x00000000cb417800
-    EXPECT_EQ((uint64_t)0x00000002cb417800, temp10x3);
+    EXPECT_EQ_U64((uint64_t)12000000000, temp10x3);
     // exp        3410065408 cb417800 2 3410065408 14646119404580896770
     //  temp10x3: 48         cb417800 2 3410065408 14646119404580896770!
 #ifdef HAS_CLI
@@ -111,7 +111,11 @@ typedef struct xSomeType_t {
 bool test_types(void) {
     EXPECT_EQ(1, sizeof(char));
     EXPECT_EQ(4, sizeof(float));
+#ifdef X86_64
+    EXPECT_EQ(8, sizeof(size_t));
+#else
     EXPECT_EQ(4, sizeof(size_t));
+#endif
     EXPECT_EQ(4, sizeof(unsigned));
     EXPECT_EQ(1, sizeof(uint8_t));
     EXPECT_EQ(8, sizeof(uint64_t));

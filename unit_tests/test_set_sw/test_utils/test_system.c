@@ -19,7 +19,8 @@ static bool test_malloc_zero(void) {
     return res;
 }
 
-
+#ifndef X86_64
+/*Long test*/
 static bool test_heap_set(void) {
 #ifdef  X86_64
     printf("\n%s():"CRLF,__FUNCTION__);
@@ -46,10 +47,11 @@ static bool test_heap_set(void) {
     /*PC:  2,094,737,251 byte*/
 #endif
 #ifdef HAS_MCU
-    io_printf("can malloc %u bytes"CRLF,byte);
+    io_printf("can malloc %u bytes %u kBytes %u MBytes"CRLF,byte,byte/1024,byte/(1024*1024));
 #endif
     return res;
 }
+#endif
 
 bool test_system(void) {
     uint16_t real_size=0;
@@ -58,7 +60,9 @@ bool test_system(void) {
 #else
     EXPECT_TRUE(test_malloc_zero());
 #endif
+#ifndef X86_64
     EXPECT_TRUE(test_heap_set());
+#endif
     EXPECT_TRUE( try_alloc_on_stack(10, 0x55,&real_size));
     EXPECT_EQ( 10,real_size);
     return true;

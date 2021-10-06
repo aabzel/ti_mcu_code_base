@@ -50,6 +50,7 @@ extern "C" {
 #endif
 
 #include "test_fifo_char.h"
+#include "test_fifo_array.h"
 #include "test_fifo_indexer.h"
 #include "test_system.h"
 #include "test_time_utils.h"
@@ -76,6 +77,7 @@ bool test_uspec_behavior(void);
     CRC_TEST_SUIT \
     TEST_SUIT_FIFO_INDEXER\
     TEST_SUIT_FIFO_CHAR \
+    TEST_SUIT_FIFO_ARRAY\
     TEST_SUIT_RTCM3_PROTO\
     TIME_UTILS_TEST_SUIT \
     CONVERT_TEST_SUIT\

@@ -209,4 +209,6 @@ fifo_index_t fifo_get_size(Fifo_array_t* const instance) {
     return ret;
 }
 
-bool fifo_free(Fifo_array_t* instance, fifo_index_t size) { return fifo_index_free(&instance->fifoState, size); }
+bool fifo_free(Fifo_array_t* instance, fifo_index_t size) {
+    return fifo_index_free(&instance->fifoState, size);
+}

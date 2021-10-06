@@ -11,6 +11,7 @@ SOURCES_C += $(UTILS_DIR)/time_utils.c
 SOURCES_C += $(UTILS_DIR)/bit_utils.c
 SOURCES_C += $(UTILS_DIR)/byte_utils.c
 SOURCES_C += $(UTILS_DIR)/data_utils.c
+SOURCES_C += $(UTILS_DIR)/fifo_array.c
 SOURCES_C += $(UTILS_DIR)/fifo_char.c
 SOURCES_C += $(UTILS_DIR)/fifo_index.c
 SOURCES_C += $(UTILS_DIR)/float_utils.c
