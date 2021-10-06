@@ -250,10 +250,10 @@ bool sx1262_send_opcode_command(int32_t argc, char* argv[]) {
     if(3 == argc) {
         res = true;
         uint8_t op_code = 0;
-        uint8_t tx_array[TX_SIZE];
+        uint8_t tx_array[TX_SIZE]={0};
         memset(tx_array, 0x00, sizeof(tx_array));
         uint32_t tx_array_len = 0;
-        uint8_t rx_array[RX_SIZE];
+        uint8_t rx_array[RX_SIZE]={0};
         memset(rx_array, 0x00, sizeof(rx_array));
         uint16_t rx_array_len = 0;
         if(true == res) {
@@ -355,7 +355,7 @@ bool sx1262_reg_map_command(int32_t argc, char* argv[]) {
 
 bool sx1262_tx_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint8_t tx_array[TX_SIZE];
+    uint8_t tx_array[TX_SIZE]={0};
     memset(tx_array, 0x00, sizeof(tx_array));
     uint32_t tx_array_len = 0;
     uint32_t timeout_s = 0;
@@ -429,7 +429,7 @@ bool sx1262_rx_command(int32_t argc, char* argv[]) {
 bool sx1262_read_fifo_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t offset = 0;
-    uint8_t rx_array[FIFO_SIZE];
+    uint8_t rx_array[FIFO_SIZE]={0};
     memset(rx_array, 0x00, sizeof(rx_array));
     uint16_t payload_len = FIFO_SIZE;
     if(0 == argc) {
@@ -615,7 +615,7 @@ bool sx1262_read_rx_payload_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        uint8_t rx_payload[FIFO_SIZE];
+        uint8_t rx_payload[FIFO_SIZE]={0};
         uint8_t rx_size = 0;
         res = sx1262_get_rx_payload(rx_payload, &rx_size, sizeof(rx_payload));
         if(res) {

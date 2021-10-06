@@ -25,7 +25,7 @@
 extern int main(void);
 static bool stack_dir(int32_t* main_local_addr) {
     bool res = false;
-    int32_t fun_local;
+    int32_t fun_local=0;
     if(((void*)main_local_addr) < ((void*)&fun_local)) {
         io_printf("Stack grows from small addr to big addr -> \n" CRLF);
     } else {
@@ -148,7 +148,7 @@ bool print_u16_un(U16_bit_t un) {
 }
 
 bool print_16bit_types(void* val) {
-    U16_bit_t union16bit;
+    U16_bit_t union16bit={0};
     memcpy(&union16bit, val, 2);
 
     print_u16_un(union16bit);
@@ -208,7 +208,7 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
     uint32_t pos = 0;
     uint32_t print_len = 0;
     int32_t rem;
-    uint8_t hexLine[16 * 2 + 1];
+    uint8_t hexLine[16 * 2 + 1]={0};
     memset(hexLine, 0x00, sizeof(hexLine));
     if(16 < len) {
         for(pos = 0; pos < (len - 16); pos += 16) {
@@ -239,7 +239,7 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
 bool print_mem2(uint8_t* addr, uint32_t len, bool new_line) {
     io_printf("0x");
     bool res = false;
-    char asciiLine[18];
+    char asciiLine[18]="";
     uint8_t char_pos = 0;
     memset(asciiLine, 0x00, sizeof(asciiLine));
     if(0 < len) {

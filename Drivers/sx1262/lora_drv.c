@@ -33,7 +33,7 @@ bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
 
     substr = strstr((char*)rx_payload, PING_PREFIX);
     if(NULL != substr) {
-        uint8_t tx_buf[TX_SIZE];
+        uint8_t tx_buf[TX_SIZE]={0};
         uint64_t ble_mac = get_ble_mac();
         snprintf((char*)tx_buf, sizeof(tx_buf), "MAC:0x%" PRIx64, ble_mac);
         res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf) + 1, 0);
@@ -43,6 +43,6 @@ bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
 
 bool lora_init(void){
     bool res = false;
-    res = fifo_arr_init(&FiFoLoRaTx, &ArrLoRaTxNode, ARRAY_SIZE(ArrLoRaTxNode));
+    res = fifo_arr_init(&FiFoLoRaTx, &ArrLoRaTxNode[0], ARRAY_SIZE(ArrLoRaTxNode));
     return res;
 }

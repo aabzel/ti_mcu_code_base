@@ -471,7 +471,7 @@ bool mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
 
  */
 bool mm_get_address(uint16_t data_id, uint8_t** file_address, uint16_t* fileLen) {
-    mmItem_t *item, *empty;
+    mmItem_t *item=NULL, *empty=NULL;
     bool res = false;
     uint32_t rem_space = 0;
 
@@ -505,7 +505,7 @@ bool mm_get_address(uint16_t data_id, uint8_t** file_address, uint16_t* fileLen)
 
  */
 bool mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* fileLen) {
-    mmItem_t *item, *empty;
+    mmItem_t *item=NULL, *empty=NULL;
     bool res = false;
     uint32_t rem_space = 0;
 

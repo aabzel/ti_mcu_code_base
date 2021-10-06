@@ -117,3 +117,4 @@ ubs 0x10 0x14
 Links
 https://github.com/antoine-peartree/nrf5X_GnssDriver/blob/master/src/gnss_parser.c
 http://software-dl.ti.com/ccs/esd/documents/ccs_projects-command-line.html
+https://linux.die.net/man/1/gmake

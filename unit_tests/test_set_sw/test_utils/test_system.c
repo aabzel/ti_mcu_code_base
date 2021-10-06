@@ -19,6 +19,11 @@ static bool test_malloc_zero(void) {
     return res;
 }
 
+static float byte2Mbyte(float byte){
+    float mByte = byte/(1024.0f*1024.0f);
+    return mByte;
+}
+
 #ifndef X86_64
 /*Long test*/
 static bool test_heap_set(void) {
@@ -42,12 +47,13 @@ static bool test_heap_set(void) {
             break;
         }
     }
-#ifdef  X86_64
-    printf("can malloc %u bytes %u kBytes %u MBytes"CRLF,byte,byte/1024,byte/(1024*1024));
-    /*PC:  2,094,737,251 byte*/
+#ifdef X86_64
+    printf("can malloc %u bytes %u kBytes %f MBytes"CRLF,byte,byte/1024, byte2Mbyte(byte));
+    /* PC:  2,094,737,251 byte */
 #endif
 #ifdef HAS_MCU
-    io_printf("can malloc %u bytes %u kBytes %u MBytes"CRLF,byte,byte/1024,byte/(1024*1024));
+    LOG_INFO(SYS,"can malloc %u bytes %u kBytes %f MBytes",byte,byte/1024, byte2Mbyte(byte));
+    /* MCU: can malloc 46875 bytes 45,77 kBytes */
 #endif
     return res;
 }

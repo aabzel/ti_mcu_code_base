@@ -10,7 +10,7 @@
 
 bool uart_writer_transmit(struct generic_writer_s* s) {
     bool res = false;
-    char data[400];
+    char data[400]="";
     res = fifo_pull_array(&s->fifo, data, (uint16_t*)&s->in_transmit);
     if(0 < s->in_transmit) {
         s->total_char_count += s->in_transmit;

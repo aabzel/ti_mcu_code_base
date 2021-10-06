@@ -11,7 +11,7 @@ bool test_byte_copy_rev(void);
 bool test_byte_reverse(void);
 bool test_byte_type_sizes(void);
 
-#define BYTE_UTILS_TEST_SUIT \
+#define TEST_SUIT_UTILS_BYTE \
                              {"byte_reverse", test_byte_reverse}, \
                              {"byte_type_sizes", test_byte_type_sizes}, \
                              {"byte_copy_rev", test_byte_copy_rev},

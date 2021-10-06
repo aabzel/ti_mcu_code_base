@@ -199,7 +199,7 @@ bool test_convert_try_str2luint32(void) {
 
 bool test_convert_try_str2lint32(void) {
     int32_t value = -1;
-    char inStr[40];
+    char inStr[40]="";
 
     strncpy(inStr, "words and 987", sizeof(inStr));
     EXPECT_FALSE(try_strl2int32(inStr, strlen(inStr), &value));
@@ -543,7 +543,7 @@ bool test_convert_str_sizeof(void) {
 }
 
 bool test_convert_dtoa(void) {
-    char str[100];
+    char str[100]="";
     double val = 12345678912345678.;
     dtoa_(val, -1, str);
     EXPECT_STREQ("12345678912345678", str);
@@ -635,7 +635,7 @@ bool test_convert_dtoa(void) {
 }
 
 bool test_convert_dtoa_trim_zero(void) {
-    char str[100];
+    char str[100]="";
     double val = 100;
     dtoa_(val, -1, str);
     EXPECT_STREQ("100", str);
@@ -643,7 +643,7 @@ bool test_convert_dtoa_trim_zero(void) {
 }
 
 bool test_convert_dtoa_nan(void) {
-    char str[100];
+    char str[100]="";
     double val = NAN;
     dtoa_(val, -1, str);
     EXPECT_STREQ("NAN", str);
@@ -652,7 +652,7 @@ bool test_convert_dtoa_nan(void) {
 
 /*fails*/
 bool test_convert_dtoa_inf(void) {
-    char str[100];
+    char str[100]="";
     double val = INFINITY;
     dtoa_(val, -1, str);
     EXPECT_STREQ("INF", str);
@@ -660,7 +660,7 @@ bool test_convert_dtoa_inf(void) {
 }
 
 bool test_convert_ftoa_nan(void) {
-    char str[100];
+    char str[100]="";
     float val = NAN;
     ftoa_(val, -1, str);
     EXPECT_STREQ("NAN", str);
@@ -668,7 +668,7 @@ bool test_convert_ftoa_nan(void) {
 }
 
 bool test_convert_ftoa_inf(void) {
-    char str[100];
+    char str[100]="";
     float val = INFINITY;
     ftoa_(val, -1, str);
     EXPECT_STREQ("INF", str);

@@ -109,7 +109,7 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
     uint8_t class_num = 0;
     uint8_t id = 0;
     uint32_t payload_len = 0U;
-    uint8_t payload[100];
+    uint8_t payload[100]={0};
     if(2 <= argc) {
         res = true;
         payload_len = 0U;

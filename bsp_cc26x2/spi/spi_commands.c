@@ -68,7 +68,7 @@ bool spi_write_command(int32_t argc, char* argv[]) {
     if(2 == argc) {
         res = true;
         uint8_t spi_num = 0;
-        uint8_t tx_array[256];
+        uint8_t tx_array[256]={0};
         uint32_t array_len = 0;
         res = try_str2uint8(argv[0], &spi_num);
         if(false == res) {
@@ -103,7 +103,7 @@ bool spi_read_command(int32_t argc, char* argv[]) {
     if(2 == argc) {
         res = true;
         uint8_t spi_num = 0;
-        uint8_t array[256];
+        uint8_t array[256]={0};
         memset(array, 0x0, sizeof(array));
         uint16_t array_len = 0;
         res = try_str2uint8(argv[0], &spi_num);

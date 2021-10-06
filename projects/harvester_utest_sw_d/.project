@@ -3,7 +3,6 @@
 	<name>harvester_utest_sw_d</name>
 	<comment></comment>
 	<projects>
-		<project>harvester_boot_d</project>
 		<project>harvester_utest_hw_d</project>
 	</projects>
 	<buildSpec>
@@ -80,11 +79,11 @@
 	</linkedResources>
 	<variableList>
 		<variable>
-			<name>CC2652R1F_DRIVER_INC</name>
+			<name>CC26X2R1F_DRIVER_INC</name>
 			<value>file:/C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/inc</value>
 		</variable>
 		<variable>
-			<name>CC2652R1F_DRIVER_LIB</name>
+			<name>CC26X2R1F_DRIVER_LIB</name>
 			<value>file:/C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/source/ti/devices/cc13x2_cc26x2/driverlib</value>
 		</variable>
 	</variableList>

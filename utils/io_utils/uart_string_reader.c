@@ -37,12 +37,10 @@ void uart_string_reader_clear_str(uart_string_reader_t* rdr) {
 
 bool uart_string_reader_init(uart_string_reader_t* rdr) {
     (void)(rdr);
-    //cli_tune_read_char();
     return true;
 }
 
 void uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
-    //if (false == fifo_char_add(&rdr->fifo, c)) {
     if (false == fifo_push(&rdr->fifo, c)) {
         rdr->lost_char_count++;
     }
@@ -50,20 +48,18 @@ void uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
 
 void uart_string_reader_error_callback(uart_string_reader_t* rdr) {
     rdr->error_count++;
-   // cli_tune_read_char();
 }
 
 void uart_string_reader_proccess(uart_string_reader_t* rdr) {
     while (1) {
         fifo_index_t size = 0, i=0;
-        char p[200];
-        //const char* p = fifo_char_get_contiguous_block(&rdr->fifo, &size);
-        fifo_pull_array(&rdr->fifo, p, &size);
+        char data[200]="";
+        fifo_pull_array(&rdr->fifo, data, &size);
         if (0 == size) {
             break;
         }
         for (i = 0; i < size; i++) {
-            char character = p[i];
+            char character = data[i];
             rdr->total_char_count++;
             if (character != '\n') {
                 if (cli_echo) {
@@ -103,7 +99,6 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
                 }
             }
         }
-        //fifo_char_free(&rdr->fifo, size);
     }
 }
 

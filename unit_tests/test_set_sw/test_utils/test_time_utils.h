@@ -9,7 +9,7 @@ extern "C" {
 
 bool test_time_utils(void);
 
-#define TIME_UTILS_TEST_SUIT {"time_utils", test_time_utils},
+#define TEST_SUIT_UTILS_TIME {"time_utils", test_time_utils},
 
 #ifdef __cplusplus
 }

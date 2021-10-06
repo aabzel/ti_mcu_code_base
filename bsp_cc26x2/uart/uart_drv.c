@@ -352,7 +352,7 @@ bool proc_uarts(void) {
 bool proc_uart1_fwd(void) {
     bool res = false;
     fifo_index_t read_size = 0;
-    char txData[UART_FIFO_TX_SIZE * 2];
+    char txData[UART_FIFO_TX_SIZE * 2]={0};
     res = fifo_pull_array(&huart[CLI_UART_NUM].TxFifo, txData, &read_size);
     if((true == res) && (0 < read_size)) {
         res = uart_send(CLI_UART_NUM, (uint8_t*)txData, read_size, false);

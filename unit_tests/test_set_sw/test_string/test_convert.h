@@ -55,7 +55,7 @@ bool test_convert_utoa_bin24(void);
 bool test_convert_utoa_bin16(void);
 bool test_convert_assemble_uint32(void);
 
-#define CONVERT_TEST_SUIT                                                                                              \
+#define TEST_SUIT_CONVERT                                                                                              \
     {"strl2double", test_convert_try_strl2double}, {"str2int8", test_convert_try_str2int8},                            \
         {"str2uint8_invalid", test_convert_try_str2uint8_invalid}, {"is_dec_str", test_convert_is_dec_str},            \
         {"is_hex_str", test_convert_is_hex_str}, {"str2uint8", test_convert_try_str2uint8},                            \

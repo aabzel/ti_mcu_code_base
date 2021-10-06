@@ -24,6 +24,10 @@
 #include "log.h"
 #endif /*HAS_CLI*/
 
+#ifdef HAS_LORA
+#include "lora_drv.h"
+#endif /*HAS_LORA*/
+
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #include "ubx_protocol.h"

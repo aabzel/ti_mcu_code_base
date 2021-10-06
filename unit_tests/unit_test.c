@@ -167,7 +167,7 @@ void unit_tests_run(const char* key) {
     }
 
     if (0U == count) {
-        uint32_t number;
+        uint32_t number=0;
         if (true == try_str2uint32(test_name, &number)) {
             count = unit_test_run(number - 1U);
         }
@@ -178,7 +178,7 @@ void unit_tests_run(const char* key) {
     if (0U == count) {
         if (strchr(test_name, (int32_t)'-') != NULL) {
             bool ok = true;
-            uint32_t from_number, to_number;
+            uint32_t from_number=0, to_number=0;
             char* p = strchr(test_name, (int32_t)'-');
             *p = '\0';
             p++;

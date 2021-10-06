@@ -1,7 +1,7 @@
 echo off
 echo %0
 set project_dir=%cd%
-set workspace_dir=%project_dir%\..\
+set workspace_dir=%project_dir%\..\..\
 
 for %%f in (Debug\*.out) do (
     if "%%~xf"==".out" 	set artifact_out=%%f  

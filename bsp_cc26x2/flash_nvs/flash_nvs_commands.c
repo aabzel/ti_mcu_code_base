@@ -2,6 +2,7 @@
 
 #include <flash.h>
 #include <inttypes.h>
+#include <string.h>
 #include <stdio.h>
 #include <vims.h>
 
@@ -113,7 +114,8 @@ bool flash_nvs_write_command(int32_t argc, char* argv[]) {
     if(2 == argc) {
         res = true;
         uint32_t offset = 0;
-        uint8_t array[256];
+        uint8_t array[256]={0};
+        memset(array,0xFF,sizeof(array));
         uint32_t array_len = 0;
         if(res) {
             res = try_str2uint32(argv[0], &offset);

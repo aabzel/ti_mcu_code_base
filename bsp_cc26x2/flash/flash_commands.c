@@ -187,7 +187,7 @@ bool flash_write_command(int32_t argc, char* argv[]) {
     uint16_t crc16_read = 0;
     uint32_t flash_address = 0;
     uint32_t count = 0;
-    uint8_t DataBuffer[256];
+    uint8_t DataBuffer[256]={0};
     memset(DataBuffer, 0xFF, sizeof(DataBuffer));
     if(1 <= argc) {
         res = try_str2uint32(argv[0], &flash_address);

@@ -20,7 +20,7 @@ bool test_crc24q13(void);
 bool test_crc24q80(void);
 bool test_crc16(void);
 
-#define CRC_TEST_SUIT \
+#define TEST_SUIT_CRC \
     {"crc32", test_crc32}, \
     {"crc8", test_crc8}, \
     {"crc16", test_crc16}, \

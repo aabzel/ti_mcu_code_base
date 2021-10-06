@@ -10,6 +10,7 @@
 
 extern FifoArray_t FiFoLoRaTx;
 
+bool lora_init(void);
 bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size);
 
 #endif /* LORA_DRV_H  */

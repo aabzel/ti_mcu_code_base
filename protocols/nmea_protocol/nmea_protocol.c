@@ -270,7 +270,7 @@ uint8_t nmea_calc_checksum(char* nmea_data, uint16_t len) {
 
 bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
     bool res = false;
-    uint8_t read_crc;
+    uint8_t read_crc=0;
     uint16_t len = strlen(nmea_msg) - 4;
     char* ptr = strchr(nmea_msg, '*') + 1;
     res = try_strl2uint8_hex(ptr, 2, &read_crc);

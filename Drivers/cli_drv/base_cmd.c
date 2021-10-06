@@ -312,8 +312,8 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
         char read_command[MAX_RPT_CMD_LEN] = "";
         char temp_command[MAX_RPT_CMD_LEN] = "";
         res = true;
-        uint32_t period_ms;
-        uint32_t num_of_try;
+        uint32_t period_ms=0;
+        uint32_t num_of_try=0;
         strncpy(read_command, argv[0], sizeof(read_command));
         if(true == res) {
             res = try_str2uint32(argv[1], &period_ms);

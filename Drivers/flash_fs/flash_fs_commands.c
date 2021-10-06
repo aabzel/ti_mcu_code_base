@@ -64,7 +64,7 @@ bool cmd_flash_fs_diag(int32_t argc, char* argv[]) {
 
 bool cmd_flash_fs_get(int32_t argc, char* argv[]) {
     bool res = false;
-    unsigned char array[100];
+    unsigned char array[100] = "";
     uint16_t file_id = 0;
     uint16_t file_len = 0;
     if(1 == argc) {
@@ -143,7 +143,7 @@ bool cmd_flash_fs_set(int32_t argc, char* argv[]) {
         uint32_t write_len = 0;
         res = true;
         bool is_text = false;
-        Type32Union_t union_data;
+        Type32Union_t union_data={0};
         uint8_t text[80] = "";
         uint16_t file_id = 0;
         if(true == res) {

@@ -9,7 +9,7 @@ extern "C" {
 
 bool test_data_utils(void);
 
-#define DATA_UTILS_TEST_SUIT {"data_utils", test_data_utils},
+#define TEST_SUIT_UTILS_DATA {"data_utils", test_data_utils},
 
 #ifdef __cplusplus
 }

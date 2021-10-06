@@ -20,7 +20,7 @@ speed up to 16 MHz
 #include "gpio_drv.h"
 #include "io_utils.h"
 #include "log.h"
-#include "lora_handler.h"
+#include "lora_drv.h"
 #include "none_blocking_pause.h"
 #include "spi_drv.h"
 #include "sys_config.h"
@@ -61,7 +61,7 @@ speed up to 16 MHz
 #define GET_4_BYTE_OPCODE(OP_CODE, OUT_VAL_16_BIT)                                                                     \
     do {                                                                                                               \
         if(OUT_VAL_16_BIT) {                                                                                           \
-            uint8_t rx_array[4];                                                                                       \
+            uint8_t rx_array[4];                                                                                   \
             memset(rx_array, 0x00, sizeof(rx_array));                                                                  \
             res = sx1262_send_opcode(OP_CODE, NULL, 0, rx_array, sizeof(rx_array));                                    \
             if(res) {                                                                                                  \
@@ -670,7 +670,7 @@ bool sx1262_conf_rx(void) {
 }
 
 bool sx1262_wakeup(void) {
-    uint8_t status;
+    uint8_t status=0;
     bool res = true;
     res = sx1262_get_status(&status) && res;
     res = sx1262_set_standby(STDBY_RC) && res;
@@ -873,7 +873,7 @@ bool sx1262_get_sync_word(uint64_t* sync_word) {
     bool res = true;
     if(sync_word) {
         res = true;
-        Type64Union_t var64bit;
+        Type64Union_t var64bit={0};
         res = sx1262_read_reg(SYNC_WORD_0, &var64bit.u8[0]) && res;
         res = sx1262_read_reg(SYNC_WORD_1, &var64bit.u8[1]) && res;
         res = sx1262_read_reg(SYNC_WORD_2, &var64bit.u8[2]) && res;
@@ -893,7 +893,7 @@ bool sx1262_get_rand(uint32_t* rand_num) {
     bool res = true;
     if(rand_num) {
         res = true;
-        Type32Union_t var32bit;
+        Type32Union_t var32bit={0};
         res = sx1262_read_reg(RAND_NUM_GEN_0, &var32bit.u8[0]) && res;
         res = sx1262_read_reg(RAND_NUM_GEN_1, &var32bit.u8[1]) && res;
         res = sx1262_read_reg(RAND_NUM_GEN_2, &var32bit.u8[2]) && res;
@@ -1175,7 +1175,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
  * */
 bool sx1262_process(void) {
     bool res = false;
-    Sx1262_t tempSx1262Instance;
+    Sx1262_t tempSx1262Instance={0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
 
     if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {

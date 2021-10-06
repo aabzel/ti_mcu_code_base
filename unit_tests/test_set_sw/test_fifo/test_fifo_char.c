@@ -12,7 +12,7 @@
 bool test_fifo_char_array_overrun(void) {
     Fifo_array_t FifiObj;
     char peek_ch = '0';
-    char FiFoHeap[6];
+    char FiFoHeap[6]="";
     fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap));
     EXPECT_FALSE(fifo_push_array(&FifiObj, STRING19, strlen(STRING19)));
 
@@ -20,7 +20,7 @@ bool test_fifo_char_array_overrun(void) {
     EXPECT_EQ('1', peek_ch);
 
     uint16_t outLen = 0;
-    char outArray[100];
+    char outArray[100]="";
     EXPECT_TRUE(fifo_pull_array(&FifiObj, outArray, &outLen));
     EXPECT_EQ(6, outLen);
     EXPECT_STREQ("123456", outArray);
@@ -29,8 +29,8 @@ bool test_fifo_char_array_overrun(void) {
 
 bool test_fifo_char_array(void) {
     Fifo_array_t FifiObj;
-    char FiFoHeap[10];
-    char outArray[100];
+    char FiFoHeap[10]="";
+    char outArray[100]="";
     char peek_ch = '0';
     uint16_t outLen = 0;
     fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap));
@@ -51,7 +51,7 @@ bool test_fifo_char_array(void) {
 
 bool test_fifo_char_overrun(void) {
     Fifo_array_t FifiObj;
-    char FiFoHeap[5];
+    char FiFoHeap[5]="";
 
     char outChar = '0';
     char peek_ch = '0';

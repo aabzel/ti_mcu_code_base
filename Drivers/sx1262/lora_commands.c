@@ -6,7 +6,7 @@
 #include "convert.h"
 #include "io_utils.h"
 #include "log.h"
-#include "lora_handler.h"
+#include "lora_drv.h"
 #include "sx1262_drv.h"
 
 bool lora_sent_command(int32_t argc, char* argv[]) {
