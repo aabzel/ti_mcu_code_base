@@ -6,7 +6,6 @@
 #include <ti/drivers/uart/UARTCC26XX.h>
 
 #include "sys_config.h"
-//#include "uart_common.h"
 
 #ifdef HAS_BOOTLOADER
 #define UART_COUNT 1

@@ -103,9 +103,10 @@ const UART_Config UART_config[UART_COUNT] = {
 };
 
 const uint_least8_t UART_count = UART_COUNT;
-static uint32_t baudRateLuTable[UART_COUNT]={
-                                      UART0_BAUD_RATE,
-                                      UART1_BAUD_RATE
+static uint32_t baudRateLuTable[UART_COUNT] = {UART0_BAUD_RATE,
+#ifdef HAS_UART1
+                                               UART1_BAUD_RATE
+#endif
 };
 
 static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
@@ -186,19 +187,19 @@ bool is_uart_valid(uint8_t uart_num) {
 bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len, bool is_wait) {
     bool res = true;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
-    uint32_t baudrate = uart_get_baudrate(  uart_num);
-    uint32_t up_time_start_ms = get_time_ms32( );
+    uint32_t baudrate = uart_get_baudrate(uart_num);
+    uint32_t up_time_start_ms = get_time_ms32();
     uint32_t up_time_cur_ms = 0;
     uint32_t duration_ms = 0;
-    uint32_t tx_duration_ms = calc_uart_transfer_time_ms(  baudrate, len);
+    uint32_t tx_duration_ms = calc_uart_transfer_time_ms(baudrate, len);
     /*TODO Wait previous transfer*/
     UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
     /*TODO Calc needed time to wait*/
     if(is_wait) {
         while(init_tx_cnt == huart[uart_num].tx_cnt) {
-            up_time_cur_ms = get_time_ms32( );
-            duration_ms = up_time_cur_ms-up_time_start_ms;
-            if((10*(tx_duration_ms+1)) < duration_ms) { /*TODO find val*/
+            up_time_cur_ms = get_time_ms32();
+            duration_ms = up_time_cur_ms - up_time_start_ms;
+            if((10 * (tx_duration_ms + 1)) < duration_ms) { /*TODO find val*/
                 res = false;
                 huart[uart_num].error_cnt++;
                 break;
@@ -255,13 +256,12 @@ bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate) {
     return false;
 }
 
-
 uint32_t uart_get_baudrate(uint8_t uart_num) {
     uint32_t baudrate = 0;
-    if (uart_num < UART_COUNT) {
+    if(uart_num < UART_COUNT) {
         baudrate = baudRateLuTable[uart_num];
     }
-    return  baudrate;
+    return baudrate;
 }
 
 bool proc_uart(uint8_t uart_index) {
@@ -335,11 +335,12 @@ bool proc_uarts(void) {
     if(uart_error) {
         res = uart_poll(0);
     }
-
+#ifdef HAS_UART1
     uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[1].baseAddr); // 9
     if(uart_error) {
         res = uart_poll(1);
     }
+#endif /*HAS_UART1*/
 
 #ifdef HAS_UART1
     res = proc_uart(1);
@@ -361,19 +362,20 @@ bool proc_uart1_fwd(void) {
 }
 #endif
 
-static bool init_uart_ll(uint8_t uart_num, char* in_name, uint32_t baud_rate) {
+static bool init_uart_ll(uint8_t uart_num, char* in_name) {
     bool res = false;
     if(uart_num < UART_COUNT) {
         memset(&huart[uart_num], 0x00, sizeof(huart[uart_num]));
         huart[uart_num].rx_buff = &rx_buff[uart_num][0];
         strncpy(huart[uart_num].name, in_name, sizeof(huart[uart_num].name));
+#ifdef UART_SHOW
         char connectionHint[40] = "";
-        snprintf(connectionHint, sizeof(connectionHint), "UART%u %u\n\r", uart_num, baud_rate);
-
+        snprintf(connectionHint, sizeof(connectionHint), "UART%u %u\n\r", uart_num, uart_get_baudrate(uart_num));
+#endif
         UART_init();
 
         UART_Params_init(&huart[uart_num].uartParams);
-        huart[uart_num].uartParams.baudRate = baud_rate;
+        huart[uart_num].uartParams.baudRate = uart_get_baudrate(uart_num);
         huart[uart_num].uartParams.writeMode = UART_MODE_CALLBACK;
         huart[uart_num].uartParams.writeDataMode = UART_DATA_BINARY;
         huart[uart_num].uartParams.readMode = UART_MODE_CALLBACK;
@@ -415,10 +417,10 @@ bool uart_init(void) {
     bool res = true;
 #ifdef HAS_GENERIC
 #ifdef HAS_UBLOX
-    res = init_uart_ll(1, "ZedF9P", UART1_BAUD_RATE) && res;
+    res = init_uart_ll(1, "ZedF9P") && res;
 #endif /*HAS_UBLOX*/
 #endif /*HAS_GENERIC*/
-    res = init_uart_ll(0, "CLI", UART0_BAUD_RATE) && res;
+    res = init_uart_ll(0, "CLI") && res;
     return res;
 }
 

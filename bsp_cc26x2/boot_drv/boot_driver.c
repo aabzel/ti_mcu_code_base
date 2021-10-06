@@ -48,6 +48,13 @@ bool boot_jump_to_code(uint32_t app_start_address) {
             res = false;
             LOG_ERROR(BOOT, "Error top stack size pointer 0x%08x lim: [0x%08x 0x%08x]", stack_top, RAM_START,
                       RAM_START + RAM_SIZE);
+            uint8_t boot_cmd = BOOT_CMD_STAY_ON;
+            res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
+            if(false == res) {
+                LOG_ERROR(BOOT, "Unable to send stay on");
+            } else {
+                LOG_WARNING(BOOT, "Stay in boot");
+            }
         }
     } else {
         LOG_ERROR(BOOT, "Not a Flash 0x%08x", app_start_address);
@@ -99,6 +106,7 @@ bool boot_try_app(void) {
                 res = boot_jump_to_code(app_start_address);
             } else {
                 LOG_ERROR(BOOT, "boot app address len error %u", real_len);
+                res = false;
             }
         } else {
             LOG_ERROR(BOOT, "Lack of boot app address");
