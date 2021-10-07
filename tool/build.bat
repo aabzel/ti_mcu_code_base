@@ -22,9 +22,9 @@ xcopy /s /E /I /Y  %workspace_dir%\projects\%project_name% %workspace_dir%\%proj
 echo check workspace content:
 dir %workspace_dir%
 echo Start IDE clean cmd
-%ide_tool%  -data  %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.clean -ccs.autoImport
+%ide_tool%  -data  %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.clean  -ccs.autoImport -ccs.autoOpen
 echo Start IDE build cmd
-%ide_tool% -data %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.buildType full -ccs.autoImport
+%ide_tool% -data %workspace_dir% -application com.ti.ccstudio.apps.projectBuild -ccs.projects %project_name% -ccs.buildType full -ccs.autoImport -ccs.autoOpen
 sleep 15
 
 echo Copy project from workspace to project dirr
