@@ -11,19 +11,19 @@ print_callback_t print_callback_f;
 
 #ifndef X86_64
 void io_putstr(const char *str) {
-  if (huart[CLI_UART_NUM].init_done) {
+  if (huart[UART_NUM_CLI].init_done) {
     oputs(&dbg_o.s, str);
   }
 }
 
 void io_putchar(char ch) {
-  if (huart[CLI_UART_NUM].init_done) {
+  if (huart[UART_NUM_CLI].init_done) {
     (&dbg_o.s)->f_putch(&dbg_o.s, ch);
   }
 }
 
 void io_printf(const char *format, ...) {
-  if (huart[CLI_UART_NUM].init_done) {
+  if (huart[UART_NUM_CLI].init_done) {
     va_list vlist;
     va_start(vlist, format);
     ovprintf(&dbg_o.s, format, vlist);
@@ -36,7 +36,7 @@ void io_vprintf(const char *format, va_list vlist) {
 }
 
 bool is_printf_clean(void) {
-  if (huart[CLI_UART_NUM].init_done) {
+  if (huart[UART_NUM_CLI].init_done) {
     if (!writer_clean(&dbg_o)) {
       return false;
     }
@@ -51,7 +51,7 @@ void io_putstrln(const char *str) {
 #endif /*not X86_64*/
 
 void wait_for_printf(void) {
-  if (huart[CLI_UART_NUM].init_done) {
+  if (huart[UART_NUM_CLI].init_done) {
     while (!writer_half_clean(&dbg_o)) {
       int32_t j;
       for (j = 0; j < 100000; j++) {
@@ -62,7 +62,7 @@ void wait_for_printf(void) {
 
 bool flush_printf(void) {
   bool res = true;
-  if (huart[CLI_UART_NUM].init_done) {
+  if (huart[UART_NUM_CLI].init_done) {
     uint32_t cnt = 0;
     while ((false==isFromInterrupt() ) && (false == writer_clean(&dbg_o))) {
       cnt++;

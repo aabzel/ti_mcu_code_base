@@ -70,16 +70,17 @@ void common_loop(uint64_t loop_start_time_us) {
     if(0u == loop_start_time_us) {
         return;
     }
+#if 0
 #ifdef HAS_GENERIC
     measure_task_interval(TASK_ID_BOOT, 2000000, boot_proc, loop_start_time_us);
 #endif
-
 #ifdef HAS_DAC
     measure_task_interval(TASK_ID_DAC, 100000, dac_proc, loop_start_time_us);
 #endif
 
 #ifdef HAS_ADC
     measure_task_interval(TASK_ID_ADC, 100000, adc_proc, loop_start_time_us);
+#endif
 #endif
 
 #ifdef HAS_WDT
@@ -102,6 +103,10 @@ void common_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_UART1_FWD, 1, proc_uart1_fwd, loop_start_time_us);
 #endif
 
+#ifdef HAS_CLI
+    measure_task_interval(TASK_ID_CLI, 3000, cli_process, loop_start_time_us);
+#endif /*HAS_CLI*/
+#if 0
 #ifdef HAS_UBLOX
     measure_task_interval(TASK_ID_UBX, 10000, ubx_proc_frame, loop_start_time_us);
 #endif /*HAS_UBLOX*/
@@ -109,18 +114,18 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_NMEA
     measure_task_interval(TASK_ID_NMEA, 500000, nmea_proc_message, loop_start_time_us);
 #endif /*HAS_NMEA*/
+#endif
 
-#ifdef HAS_CLI
-    measure_task_interval(TASK_ID_CLI, 3000, cli_process, loop_start_time_us);
-#endif /*HAS_CLI*/
 
 #ifdef HAS_RF
     measure_task_interval(TASK_ID_RF, 3000, rf_process, loop_start_time_us);
 #endif /*HAS_RF*/
 
 #ifdef HAS_SX1262
-    measure_task_interval(TASK_ID_LORA, 10000, sx1262_process, loop_start_time_us);
+    measure_task_interval(TASK_ID_LORA, 100, sx1262_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
+#if 0
+#endif
 
 #ifdef HAS_FLASH_FS
     measure_task_interval(TASK_ID_FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc, loop_start_time_us);

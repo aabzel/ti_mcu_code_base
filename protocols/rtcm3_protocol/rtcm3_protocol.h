@@ -13,6 +13,13 @@ extern "C" {
 #define RTCM3_HEADER_SIZE 3U
 #define RTCM3_CRC24_SIZE 3U
 
+typedef enum eRtcm3IfCmt_t {
+    RT_UART_ID = 0,
+    RT_LORA_ID = 1,
+    RTCM_IF_CNT = 2,
+    RT_BOTH_ID = 3,
+} Rtcm3IfCmt_t;
+
 typedef enum eRtcm3ProtState_t {
     RTCM3_WAIT_PREAMBLE = 0U,
     RTCM3_WAIT_LEN = 1U,
@@ -34,21 +41,27 @@ typedef union uRtcm3Len_t {
 
 typedef struct xRtcm3Porotocol_t {
     uint32_t rx_pkt_cnt;
+    uint32_t rx_rx_pkt_cnt;
     uint32_t crc_err_cnt;
     uint32_t load_len;
+#ifdef HAS_DEBUG
+    uint16_t max_len;
+    uint16_t min_len;
+#endif
     Rtcm3Len_t exp_len;
     uint32_t read_crc;
     uint16_t ack_cnt;
     Rtcm3ProtState_t rx_state;
     uint8_t rx_frame[RTCM3_RX_FRAME_SIZE];
     uint8_t fix_frame[RTCM3_RX_FRAME_SIZE];
+    uint8_t interface;
 } Rtcm3Porotocol_t;
 
-extern Rtcm3Porotocol_t Rtcm3Porotocol;
+extern Rtcm3Porotocol_t Rtcm3Porotocol[RTCM_IF_CNT];
 
-bool rtcm3_protocol_init(void);
-bool rtcm3_proc_byte(uint8_t rx_byte);
-bool rtcm3_reset_rx(void);
+bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, uint8_t interface);
+bool rtcm3_proc_byte(Rtcm3Porotocol_t* instance, uint8_t rx_byte);
+bool rtcm3_reset_rx(Rtcm3Porotocol_t* instance);
 
 #ifdef __cplusplus
 }

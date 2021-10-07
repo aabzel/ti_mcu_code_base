@@ -143,7 +143,7 @@ bool cmd_flash_fs_set(int32_t argc, char* argv[]) {
         uint32_t write_len = 0;
         res = true;
         bool is_text = false;
-        Type32Union_t union_data={0};
+        Type32Union_t union_data = {0};
         uint8_t text[80] = "";
         uint16_t file_id = 0;
         if(true == res) {

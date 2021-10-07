@@ -66,6 +66,11 @@ bool test_fifo_array(void) {
     return true;
 }
 
-bool test_fifo_array_overrun(void){
+bool test_fifo_array_types(void){
+#ifdef X86_64
+    EXPECT_EQ(16,sizeof(Array_t));
+#else
+    EXPECT_EQ(8,sizeof(Array_t));
+#endif
     return true;
 }

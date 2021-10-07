@@ -9,6 +9,7 @@ speed up to 16 MHz
 #include <gpio.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "bit_utils.h"
@@ -61,7 +62,7 @@ speed up to 16 MHz
 #define GET_4_BYTE_OPCODE(OP_CODE, OUT_VAL_16_BIT)                                                                     \
     do {                                                                                                               \
         if(OUT_VAL_16_BIT) {                                                                                           \
-            uint8_t rx_array[4];                                                                                   \
+            uint8_t rx_array[4];                                                                                       \
             memset(rx_array, 0x00, sizeof(rx_array));                                                                  \
             res = sx1262_send_opcode(OP_CODE, NULL, 0, rx_array, sizeof(rx_array));                                    \
             if(res) {                                                                                                  \
@@ -218,19 +219,22 @@ bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
 
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
-    bool res = true;
+    bool res = false;
+    if (tx_array_len + OPCODE_SIZE < FIFO_SIZE) {
+        res = true;
+        /*VLA prohibited here because heap can meet stack in unpredictable time*/
+        static uint8_t tempTxArray[FIFO_SIZE];
+        tempTxArray[0] = op_code;
+        uint16_t temp_tx_arr_len = tx_array_len + OPCODE_SIZE;
 
-    uint8_t tempTxArray[tx_array_len + OPCODE_SIZE];
-    tempTxArray[0] = op_code;
-    uint16_t temp_tx_arr_len = tx_array_len + OPCODE_SIZE;
+        if((NULL != tx_array) && (0 < tx_array_len)) {
+            memcpy(&tempTxArray[1], tx_array, temp_tx_arr_len);
+        }
 
-    if((NULL != tx_array) && (0 < tx_array_len)) {
-        memcpy(&tempTxArray[1], tx_array, temp_tx_arr_len);
-    }
-
-    res = spi_write((SpiName_t)SX1262_SPI_NUM, tempTxArray, temp_tx_arr_len) && res;
-    if((0 < rx_array_len) && (NULL != out_rx_array)) {
-        res = spi_read((SpiName_t)SX1262_SPI_NUM, out_rx_array, rx_array_len) && res;
+        res = spi_write((SpiName_t)SX1262_SPI_NUM, tempTxArray, temp_tx_arr_len) && res;
+        if((0 < rx_array_len) && (NULL != out_rx_array)) {
+            res = spi_read((SpiName_t)SX1262_SPI_NUM, out_rx_array, rx_array_len) && res;
+        }
     }
 
     return res;
@@ -634,7 +638,7 @@ bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_
 bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len) {
     bool res;
     if((NULL != payload) && (payload_len <= FIFO_SIZE)) {
-        uint8_t tx_array[payload_len + 1];
+        static uint8_t tx_array[FIFO_SIZE];
         memset(tx_array, 0x00, sizeof(tx_array));
         tx_array[0] = offset;
         memcpy(&tx_array[1], payload, payload_len);
@@ -670,7 +674,7 @@ bool sx1262_conf_rx(void) {
 }
 
 bool sx1262_wakeup(void) {
-    uint8_t status=0;
+    uint8_t status = 0;
     bool res = true;
     res = sx1262_get_status(&status) && res;
     res = sx1262_set_standby(STDBY_RC) && res;
@@ -795,6 +799,7 @@ bool sx1262_init(void) {
     bool res = true;
     LOG_INFO(LORA, "Init SX1262");
     memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
+    Sx1262Instance.tx_done = true;
     res = sx1262_load_params(&Sx1262Instance) && res;
     GPIO_writeDio(DIO_SX1262_SS, 1);
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);
@@ -862,6 +867,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
         // res = sx1262_write_buffer(offset, tx_buf, tx_buf_len) && res;
+        Sx1262Instance.tx_done = false;
         res = sx1262_set_tx(timeout_s) && res;
     } else {
         res = false;
@@ -873,7 +879,7 @@ bool sx1262_get_sync_word(uint64_t* sync_word) {
     bool res = true;
     if(sync_word) {
         res = true;
-        Type64Union_t var64bit={0};
+        Type64Union_t var64bit = {0};
         res = sx1262_read_reg(SYNC_WORD_0, &var64bit.u8[0]) && res;
         res = sx1262_read_reg(SYNC_WORD_1, &var64bit.u8[1]) && res;
         res = sx1262_read_reg(SYNC_WORD_2, &var64bit.u8[2]) && res;
@@ -893,7 +899,7 @@ bool sx1262_get_rand(uint32_t* rand_num) {
     bool res = true;
     if(rand_num) {
         res = true;
-        Type32Union_t var32bit={0};
+        Type32Union_t var32bit = {0};
         res = sx1262_read_reg(RAND_NUM_GEN_0, &var32bit.u8[0]) && res;
         res = sx1262_read_reg(RAND_NUM_GEN_1, &var32bit.u8[1]) && res;
         res = sx1262_read_reg(RAND_NUM_GEN_2, &var32bit.u8[2]) && res;
@@ -1069,7 +1075,7 @@ bool sx1262_read_buffer(int16_t offset, uint8_t* out_payload, uint16_t payload_l
     bool res = false;
 
     if((out_payload) && (payload_len <= FIFO_SIZE) && (0 <= offset) && (offset <= (FIFO_SIZE - 1))) {
-        uint8_t rx_array[payload_len + 3];
+        static uint8_t rx_array[FIFO_SIZE + 3];
         memset(rx_array, 0xFF, sizeof(rx_array));
 
         uint8_t tx_array[1];
@@ -1175,12 +1181,27 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
  * */
 bool sx1262_process(void) {
     bool res = false;
-    Sx1262_t tempSx1262Instance={0};
+    Sx1262_t tempSx1262Instance = {0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
-
+    // Sx1262Instance.tx_done_time_stamp_ms;
     if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
         Sx1262Instance.busy_cnt = 0;
         res = sx1262_init();
+    }
+
+    uint32_t cur_time_stamp_ms = get_time_ms32();
+    uint32_t tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
+    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == Sx1262Instance.tx_done)) {
+        Array_t txNode = {.size = 0, .pArr = NULL};
+        res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &txNode);
+        if((true == res)) {
+            if((0 < txNode.size) && (txNode.pArr)) {
+                res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
+            }
+            if(txNode.pArr) {
+                free(txNode.pArr);
+            }
+        }
     }
 
     res = sx1262_get_status(&tempSx1262Instance.dev_status);
@@ -1215,7 +1236,11 @@ bool sx1262_process(void) {
             res = false;
             break;
         case COM_STAT_COM_TX_DONE:
+#ifdef HAS_SX1262_DEBUG
             LOG_INFO(LORA, "TX done");
+#endif
+            Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
+            Sx1262Instance.tx_done = true;
             res = sx1262_start_rx(0);
             break;
         default:
@@ -1236,6 +1261,7 @@ bool sx1262_process(void) {
         Sx1262Instance.rx_payload_len = tempSx1262Instance.rx_payload_len;
         Sx1262Instance.rx_buffer_pointer = tempSx1262Instance.rx_buffer_pointer;
     }
+#ifdef HAS_SX1262_POLL
 
     tempSx1262Instance.rx_status = 0;
     tempSx1262Instance.rssi_sync = 0;
@@ -1243,7 +1269,6 @@ bool sx1262_process(void) {
     tempSx1262Instance.rssi_pkt = 0;
     tempSx1262Instance.snr_pkt = 0;
     tempSx1262Instance.signal_rssi_pkt = 0;
-
     res = sx1262_get_packet_status(&tempSx1262Instance.rx_status, &tempSx1262Instance.rssi_sync,
                                    &tempSx1262Instance.rssi_avg, &tempSx1262Instance.rssi_pkt,
                                    &tempSx1262Instance.snr_pkt, &tempSx1262Instance.signal_rssi_pkt);
@@ -1276,6 +1301,7 @@ bool sx1262_process(void) {
         // proc_dev_err(op_error);
         Sx1262Instance.op_error = tempSx1262Instance.op_error;
     }
+#endif /*HAS_SX1262_POLL*/
 
     tempSx1262Instance.irq_stat = 0;
     res = sx1262_get_irq_status(&tempSx1262Instance.irq_stat);

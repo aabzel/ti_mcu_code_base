@@ -14,7 +14,7 @@ extern "C" {
 
 #include "spi_common.h"
 
-#define SPI0_BIT_RATE_HZ 2000000
+#define SPI0_BIT_RATE_HZ 4000000
 #define SPI1_BIT_RATE_HZ 100000
 
 /* SPI Board */

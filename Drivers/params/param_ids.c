@@ -144,7 +144,7 @@ bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* ou
             break;
         case INT64:
             if(8 == value_len) {
-                Type64Union_t un64={0};
+                Type64Union_t un64 = {0};
                 memcpy(&un64, value, sizeof(Type64Union_t));
                 snprintf(out_str, str_size, "%" PRId64, un64.s64);
                 res = true;

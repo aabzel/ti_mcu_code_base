@@ -9,8 +9,8 @@
 #include "unit_test_check.h"
 #ifdef HAS_CLI
 #include "clocks.h"
-#include "diag_sys.h"
 #include "debug_info.h"
+#include "diag_sys.h"
 #include "writer_generic.h"
 #endif /*HAS_CLI*/
 
@@ -88,8 +88,8 @@ bool test_64bit_mult(void) {
 
 #ifdef HAS_MCU
 static bool test_type_transformation_arg(uint16_t expected, float input) {
-    EXPECT_EQ(expected, (uint16_t)( ((float)10U) * (input) ));
-    EXPECT_EQ(expected, (uint16_t)( ((float)10.0f) * (input) ));
+    EXPECT_EQ(expected, (uint16_t)(((float)10U) * (input)));
+    EXPECT_EQ(expected, (uint16_t)(((float)10.0f) * (input)));
     return true;
 }
 #endif

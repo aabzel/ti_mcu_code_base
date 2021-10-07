@@ -5,6 +5,9 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 
+
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\lora\lora_drv.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\lora\lora_drv.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set_sw\test_sw_list.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set_sw\test_sw_list.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\fifo_array.c

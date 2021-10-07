@@ -62,7 +62,6 @@ typedef union uType8Union_t {
 } Type8Union_t;
 
 bool hex2ascii(uint8_t* in_hex, uint32_t hex_len, uint8_t* out_ascii, uint32_t ascii_len);
-bool is_arr_pat(uint8_t* arr, uint32_t size, uint8_t patt);
 bool try_alloc_on_stack(int n, uint8_t pat, uint16_t* real_size);
 const char* get_spaces_str(uint32_t spaces_length);
 float ms2Hz(uint16_t ms);
@@ -73,8 +72,8 @@ int32_t rx_min32(int32_t min32_x1, int32_t min32_x2);
 int8_t rx_max8(int8_t max8_x1, int8_t max8_x2);
 int8_t rx_min8(int8_t min8_x1, int8_t min8_x2);
 int8_t two_complement_to_decimal(uint8_t in_code, int significant_bits);
-uint16_t rx_max16u(uint16_t max16u_x1, uint16_t max16u_x2);
-uint16_t rx_min16u(uint16_t min16u_x1, uint16_t min16u_x2);
+uint16_t max16u(uint16_t max16u_x1, uint16_t max16u_x2);
+uint16_t min16u(uint16_t min16u_x1, uint16_t min16u_x2);
 uint16_t swap16(uint16_t u16_num);
 uint32_t rx_max32u(uint32_t max32u_x1, uint32_t max32u_x2);
 uint32_t rx_min32u(uint32_t min32u_x1, uint32_t min32u_x2);

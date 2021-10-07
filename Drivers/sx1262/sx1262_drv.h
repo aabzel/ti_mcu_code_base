@@ -223,6 +223,7 @@ typedef struct xSx1262_t {
     uint64_t set_sync_word;
     uint64_t get_sync_word;
     uint32_t rf_frequency_hz;
+    uint32_t tx_done_time_stamp_ms;
     uint32_t busy_cnt;
     uint32_t rand_num;
     uint16_t op_error;
@@ -241,8 +242,10 @@ typedef struct xSx1262_t {
     uint8_t wire_rst;
     uint8_t wire_nss;
     uint8_t wire_busy;
+    uint32_t tx_time_out_ms;
     uint8_t signal_rssi_pkt;
     int8_t rssi_inst;
+    bool tx_done;
     ChipMode_t chip_mode;
     PaketStat_t gfsk;
     PaketStat_t lora;

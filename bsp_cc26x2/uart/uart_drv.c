@@ -133,7 +133,7 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     }
 }
 #ifdef HAS_UART1
-static uint8_t ch = 0;
+static uint8_t ch1 = 0;
 static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[1].rx_cnt++;
     huart[1].rx_int = true;
@@ -154,7 +154,7 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
         }
 #endif /*HAS_UART1_FWD*/
     }
-    uart_read(1, &ch, 1);
+    uart_read(1, &ch1, 1);
 }
 #endif /*HAS_UART1*/
 
@@ -226,7 +226,7 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wai
 int cli_putchar_uart(int character) {
     int out_ch = 0;
     /*Works on little endian*/
-    bool res = uart_send(CLI_UART_NUM, (uint8_t*)&character, 1, true);
+    bool res = uart_send(UART_NUM_CLI, (uint8_t*)&character, 1, true);
     if(res) {
         out_ch = character;
     }
@@ -278,7 +278,7 @@ bool proc_uart(uint8_t uart_index) {
             if(true == res) {
                 loop = true;
 #ifdef HAS_RTCM3
-                rtcm3_proc_byte(rx_byte);
+                rtcm3_proc_byte(&Rtcm3Porotocol[RT_UART_ID], rx_byte);
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_NMEA
@@ -313,13 +313,13 @@ static bool uart_poll(uint8_t uart_index) {
     /*In case of uart interrupts fail*/
     bool res = true;
     static uint8_t rx_byte = UNLIKELY_SYMBOL1;
-    if(true == huart[CLI_UART_NUM].rx_it_proc_done) {
+    if(true == huart[UART_NUM_CLI].rx_it_proc_done) {
         res = uart_read(uart_index, &rx_byte, 1);
         if((UNLIKELY_SYMBOL1 != rx_byte) && (UNLIKELY_SYMBOL2 != rx_byte) && (res)) {
             res = true;
             huart[uart_index].rx_byte = rx_byte;
-            if(CLI_UART_NUM == uart_index) {
-                uart_string_reader_rx_callback(&cmd_reader, (char)rx_byte);
+            if(UART_NUM_CLI == uart_index) {
+                // uart_string_reader_rx_callback(&cmd_reader, (char)rx_byte);
             }
         } else {
             res = false;
@@ -352,10 +352,10 @@ bool proc_uarts(void) {
 bool proc_uart1_fwd(void) {
     bool res = false;
     fifo_index_t read_size = 0;
-    char txData[UART_FIFO_TX_SIZE * 2]={0};
-    res = fifo_pull_array(&huart[CLI_UART_NUM].TxFifo, txData, &read_size);
+    char txData[UART_FIFO_TX_SIZE * 2] = {0};
+    res = fifo_pull_array(&huart[UART_NUM_CLI].TxFifo, txData, &read_size);
     if((true == res) && (0 < read_size)) {
-        res = uart_send(CLI_UART_NUM, (uint8_t*)txData, read_size, false);
+        res = uart_send(UART_NUM_CLI, (uint8_t*)txData, read_size, false);
     } else {
     }
     return res;

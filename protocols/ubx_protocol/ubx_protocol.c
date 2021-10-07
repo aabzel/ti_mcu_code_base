@@ -204,4 +204,3 @@ bool ubx_update_stat(uint8_t val_class) {
 
     return res;
 }
-

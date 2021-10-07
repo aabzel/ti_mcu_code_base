@@ -94,13 +94,13 @@ bool cli_init(void) {
 
 bool cli_process(void) {
     static uint8_t rx_byte=0;
-    if(true == huart[CLI_UART_NUM].rx_int) {
-        huart[CLI_UART_NUM].rx_int = false;
+    if(true == huart[UART_NUM_CLI].rx_int) {
+        huart[UART_NUM_CLI].rx_int = false;
 #ifndef USE_HAL_DRIVER
-        uart_string_reader_rx_callback(&cmd_reader, (char)huart[CLI_UART_NUM].rx_byte_it);
-        uart_read(CLI_UART_NUM, &rx_byte, 1);
+        uart_string_reader_rx_callback(&cmd_reader, (char)huart[UART_NUM_CLI].rx_byte_it);
+        uart_read(UART_NUM_CLI, &rx_byte, 1);
 #endif /*USE_HAL_DRIVER*/
-        huart[CLI_UART_NUM].rx_it_proc_done = true;
+        huart[UART_NUM_CLI].rx_it_proc_done = true;
     }
 
     bool res = false;
@@ -110,9 +110,9 @@ bool cli_process(void) {
         if(true == cli_init_done) {
             entry = true;
             cli_task_cnt++;
-            if(true == huart[CLI_UART_NUM].tx_int) {
+            if(true == huart[UART_NUM_CLI].tx_int) {
                 dbg_o.f_transmit(&dbg_o);
-                huart[CLI_UART_NUM].tx_int = false;
+                huart[UART_NUM_CLI].tx_int = false;
             }
             uart_string_reader_proccess(&cmd_reader);
             res = true;

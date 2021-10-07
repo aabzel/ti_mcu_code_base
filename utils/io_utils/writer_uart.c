@@ -8,16 +8,16 @@
 
 #define MAX_UART_BLOCK 100U
 
-bool uart_writer_transmit(struct generic_writer_s* s) {
+bool uart_writer_transmit(struct generic_writer_s* writer) {
     bool res = false;
-    char data[400]="";
-    res = fifo_pull_array(&s->fifo, data, (uint16_t*)&s->in_transmit);
-    if(0 < s->in_transmit) {
-        s->total_char_count += s->in_transmit;
-        if(MAX_UART_BLOCK < s->in_transmit) {
-            s->in_transmit = MAX_UART_BLOCK;
+    char data[300] = ""; /*TODO Determine min size*/
+    res = fifo_pull_array(&writer->fifo, data, (uint16_t*)&writer->in_transmit);
+    if(0 < writer->in_transmit) {
+        writer->total_char_count += writer->in_transmit;
+        if(MAX_UART_BLOCK < writer->in_transmit) {
+            writer->in_transmit = MAX_UART_BLOCK;
         }
-        res = uart_send(CLI_UART_NUM, (uint8_t*)data, s->in_transmit, true);
+        res = uart_send(UART_NUM_CLI, (uint8_t*)data, writer->in_transmit, true);
     }
     return res;
 }

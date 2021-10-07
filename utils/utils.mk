@@ -7,6 +7,7 @@ INCDIR += -I$(UTILS_DIR)
 include $(UTILS_DIR)/utils_string/utils_string.mk
 include $(UTILS_DIR)/crc/crc.mk
 
+SOURCES_C += $(UTILS_DIR)/array.c
 SOURCES_C += $(UTILS_DIR)/time_utils.c
 SOURCES_C += $(UTILS_DIR)/bit_utils.c
 SOURCES_C += $(UTILS_DIR)/byte_utils.c

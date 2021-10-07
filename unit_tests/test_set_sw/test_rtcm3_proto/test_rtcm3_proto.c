@@ -10,24 +10,19 @@ const uint8_t rtcm3_message[36] = {0xD3, 0x00, 0x1E, 0x44, 0x60, 0x00, 0x1C, 0x7
                                    0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
                                    0x54, 0x50, 0x7C, 0x15, 0x9E, 0x12, 0x2C, 0xDA, 0x60, 0x6A, 0x26, 0x5D};
 
-static bool test_rtcm3_proto_1(void) {
+bool test_rtcm3_proto_1(void) {
     uint8_t i = 0;
 #ifndef X86_64
     EXPECT_TRUE(uart_deinit(1));
 #endif
-    rtcm3_reset_rx();
-    Rtcm3Porotocol.rx_pkt_cnt = 0;
+    rtcm3_reset_rx(&Rtcm3Porotocol[RT_UART_ID]);
+    Rtcm3Porotocol[RT_UART_ID].rx_pkt_cnt = 0;
     for(i = 0; i < sizeof(rtcm3_message); i++) {
-        rtcm3_proc_byte(rtcm3_message[i]);
+        rtcm3_proc_byte(&Rtcm3Porotocol[RT_UART_ID], rtcm3_message[i]);
     }
-    EXPECT_EQ(0, Rtcm3Porotocol.load_len);
-    EXPECT_EQ(1, Rtcm3Porotocol.rx_pkt_cnt);
+    EXPECT_EQ(0, Rtcm3Porotocol[RT_UART_ID].load_len);
+    EXPECT_EQ(1, Rtcm3Porotocol[RT_UART_ID].rx_pkt_cnt);
 
-    return true;
-}
-
-bool test_rtcm3_proto(void) {
-    EXPECT_TRUE(test_rtcm3_proto_1());
     return true;
 }
 

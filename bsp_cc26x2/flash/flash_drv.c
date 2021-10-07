@@ -10,6 +10,7 @@
 #include <hw_types.h>
 #include <vims.h>
 
+#include "array.h"
 #include "bit_utils.h"
 #include "data_utils.h"
 #include "memory_layout.h"

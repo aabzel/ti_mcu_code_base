@@ -44,7 +44,7 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
 
 #define UBX_KEY_SIZE 4
 static bool ubx_config_data_parse(uint8_t* payload) {
-    uint32_t read_key=0;
+    uint32_t read_key = 0;
     uint16_t i = 0;
     bool res = false;
     memcpy(&read_key, payload, UBX_KEY_SIZE);

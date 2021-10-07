@@ -1,6 +1,7 @@
 #include <math.h>
 #include <string.h>
 
+#include "array.h"
 #include "data_utils.h"
 
 uint8_t uint16_to_uint8_limiter(uint16_t in_val) {
@@ -15,11 +16,11 @@ uint8_t rx_max8u(uint8_t max8u_x1, uint8_t max8u_x2) { return (((max8u_x1) > (ma
 
 uint8_t rx_min8u(uint8_t min8u_x1, uint8_t min8u_x2) { return (((min8u_x1) < (min8u_x2)) ? (min8u_x1) : (min8u_x2)); }
 
-uint16_t rx_max16u(uint16_t max16u_x1, uint16_t max16u_x2) {
+uint16_t max16u(uint16_t max16u_x1, uint16_t max16u_x2) {
     return (((max16u_x1) > (max16u_x2)) ? (max16u_x1) : (max16u_x2));
 }
 
-uint16_t rx_min16u(uint16_t min16u_x1, uint16_t min16u_x2) {
+uint16_t min16u(uint16_t min16u_x1, uint16_t min16u_x2) {
     return (((min16u_x1) < (min16u_x2)) ? (min16u_x1) : (min16u_x2));
 }
 
@@ -111,17 +112,6 @@ uint8_t extract_digit(uint32_t in_num, uint8_t digit_index) {
         i++;
     }
     return out_digit;
-}
-
-bool is_arr_pat(uint8_t* arr, uint32_t size, uint8_t patt) {
-    bool res = true;
-    uint32_t i = 0;
-    for(i = 0; i < size; i++) {
-        if(patt != arr[i]) {
-            res = false;
-        }
-    }
-    return res;
 }
 
 bool try_alloc_on_stack(int n, uint8_t pat, uint16_t* real_size) {

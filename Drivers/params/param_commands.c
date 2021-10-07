@@ -37,7 +37,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        char valStr[40]="";
+        char valStr[40] = "";
         memset(valStr, 0x00, sizeof(valStr));
         uint16_t i = 0, num = 1;
         static const table_col_t cols[] = {{5, "No"}, {5, "id"}, {12, "name"}, {5, "len"}, {11, "val"}};

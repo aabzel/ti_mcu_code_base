@@ -61,8 +61,8 @@ extern "C" {
 #endif
 
 #ifdef HAS_TEST_SUIT_FIFO
-#include "test_fifo_char.h"
 #include "test_fifo_array.h"
+#include "test_fifo_char.h"
 #include "test_fifo_indexer.h"
 #else
 #define TEST_SUIT_FIFO_ARRAY
@@ -72,7 +72,6 @@ extern "C" {
 
 #include "unit_test_check.h"
 
-
 #include "unit_test_info.h"
 
 bool test_types(void);
@@ -81,34 +80,29 @@ bool test_64bit_mult(void);
 bool test_utoa_bin8(void);
 bool test_float_to_uint16(void);
 bool test_type_transformation(void);
-bool test_array(void) ;
+bool test_array(void);
 bool test_uspec_behavior(void);
 
-#define TEST_SUIT_SW \
-    TEST_SUIT_UTILS_DATA \
-    TEST_SUIT_UTILS_FLOAT \
-    TEST_SUIT_UTILS_BIT \
-    TEST_SUIT_UTILS_BYTE \
-    TEST_SUIT_UTILS_TIME \
-    TEST_SUIT_CRC \
-    TEST_SUIT_FIFO_INDEXER\
-    TEST_SUIT_FIFO_CHAR \
-    TEST_SUIT_FIFO_ARRAY\
-    TEST_SUIT_RTCM3_PROTO \
-    TEST_SUIT_UTILS_TIME \
-    TEST_SUIT_SYSTEM \
-    NMEA_PROTO_TEST_SUIT \
-    TEST_SUIT_CONVERT \
-    STRING_UTILS_TEST_SUIT \
-    UBLOX_PROTO_TEST_SUIT\
-    {"array_init", test_array_init},\
-    {"uspec_behavior", test_uspec_behavior},\
-    {"array", test_array},\
-    {"types", test_types},\
-    {"64bit_mult", test_64bit_mult},\
-    {"flt_u16", test_float_to_uint16},\
-    {"utoa_bin8", test_utoa_bin8},\
-    {"type_transform", test_type_transformation}, \
+#define TEST_SUIT_SW                                                                                                   \
+    TEST_SUIT_UTILS_DATA                                                                                               \
+    TEST_SUIT_UTILS_FLOAT                                                                                              \
+    TEST_SUIT_UTILS_BIT                                                                                                \
+    TEST_SUIT_UTILS_BYTE                                                                                               \
+    TEST_SUIT_UTILS_TIME                                                                                               \
+    TEST_SUIT_CRC                                                                                                      \
+    TEST_SUIT_FIFO_INDEXER                                                                                             \
+    TEST_SUIT_FIFO_CHAR                                                                                                \
+    TEST_SUIT_FIFO_ARRAY                                                                                               \
+    TEST_SUIT_RTCM3_PROTO                                                                                              \
+    TEST_SUIT_UTILS_TIME                                                                                               \
+    TEST_SUIT_SYSTEM                                                                                                   \
+    NMEA_PROTO_TEST_SUIT                                                                                               \
+    TEST_SUIT_CONVERT                                                                                                  \
+    STRING_UTILS_TEST_SUIT                                                                                             \
+    UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init}, {"uspec_behavior", test_uspec_behavior},                     \
+        {"array", test_array}, {"types", test_types}, {"64bit_mult", test_64bit_mult},                                 \
+        {"flt_u16", test_float_to_uint16}, {"utoa_bin8", test_utoa_bin8},                                              \
+        {"type_transform", test_type_transformation},
 
 #ifdef __cplusplus
 }

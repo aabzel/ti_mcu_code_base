@@ -10,15 +10,12 @@ extern "C" {
 
 #include "fifo_index.h"
 
-typedef struct xArray_t {
-    uint32_t size;
-    uint8_t *pArr;
-} Array_t;
+#include "array.h"
 
 #define FIFO_ARR_NODE_CNT 10U
 typedef struct xFifoArray_t {
     fifo_index_info_t fifoState;
-    Array_t *pDataArray;
+    Array_t* pDataArray;
     bool init_done;
 } FifoArray_t;
 
