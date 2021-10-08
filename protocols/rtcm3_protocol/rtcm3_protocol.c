@@ -75,13 +75,13 @@ static bool rtcm3_proc_wait_len(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
         instance->rx_state = RTCM3_WAIT_PAYLOAD;
         res = true;
 #ifdef HAS_DEBUG
-        instance->max_len = max16u(instance->max_len,instance->exp_len.field.len);
-        instance->min_len = min16u(instance->min_len ,instance->exp_len.field.len);
+        instance->max_len = max16u(instance->max_len, instance->exp_len.field.len);
+        instance->min_len = min16u(instance->min_len, instance->exp_len.field.len);
 #endif
-        if (RTCM3_RX_FRAME_SIZE < instance->exp_len.field.len) {
+        if(RTCM3_RX_FRAME_SIZE < instance->exp_len.field.len) {
             res = false;
-#ifdef HAS_MCU
-            LOG_ERROR(SYS,"TooBig frame %u byte",instance->exp_len.field.len);
+#ifdef HAS_DEBUG_RTCM3
+            LOG_ERROR(SYS, "TooBig frame %u byte", instance->exp_len.field.len);
 #endif
             rtcm3_reset_rx(instance);
         }

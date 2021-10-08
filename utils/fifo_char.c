@@ -26,8 +26,6 @@ bool fifo_init(Fifo_array_t* const instance, char* const inArray, uint16_t capac
         instance->array = inArray;
         instance->initDone = true;
         res = true;
-    } else {
-        instance->initDone = false;
     }
     return res;
 }

@@ -31,6 +31,12 @@ task_data_t task_data[] = {
 };
 #endif /* TASKS */
 
+
+uint16_t task_cnt(void){
+    uint16_t cnt = ARRAY_SIZE(task_data);
+    return cnt;
+}
+
 uint64_t calc_total_run_time(void) {
     uint64_t tot_run_time = 0;
     int32_t id = 0;
@@ -46,38 +52,40 @@ uint64_t calc_total_run_time(void) {
 
 bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
     bool res = false;
-    taskItem->start_count++;
-    uint64_t stop = 0, delta = 0, period = 0;
-    uint64_t start = get_time_us();
-    if(taskItem->start_time_prev < start) {
-        period = start - taskItem->start_time_prev;
-        res = true;
-    } else {
-        period = 0; /*(0x1000000U + start) - TASK_ITEM.start_time_prev; */
-        res = false;
+    if(taskItem){
+        taskItem->start_count++;
+        uint64_t stop = 0, delta = 0, period = 0;
+        uint64_t start = get_time_us();
+        if(taskItem->start_time_prev < start) {
+            period = start - taskItem->start_time_prev;
+            res = true;
+        } else {
+            period = 0; /*(0x1000000U + start) - TASK_ITEM.start_time_prev; */
+            res = false;
+        }
+        taskItem->start_time_prev = start;
+        if(taskItem->init) {
+            taskItem->start_period_max = rx_max64u(taskItem->start_period_max, period);
+            taskItem->start_period_min = rx_min64u(taskItem->start_period_min, period);
+        }
+        taskItem->init = true;
+        if(true==is_flash_addr((uint32_t)task_func)){
+            res = task_func();
+        }else{
+            res = false;
+        }
+        stop = get_time_us();
+        if(start < stop) {
+            delta = stop - start;
+            res = true;
+        } else {
+            delta = 0; /*(0x1000000U + stop) - start;*/
+            res = false;
+        }
+        taskItem->run_time_total += delta;
+        taskItem->run_time_min = rx_min64u(taskItem->run_time_min, delta);
+        taskItem->run_time_max = rx_max64u(taskItem->run_time_max, delta);
     }
-    taskItem->start_time_prev = start;
-    if(taskItem->init) {
-        taskItem->start_period_max = rx_max64u(taskItem->start_period_max, period);
-        taskItem->start_period_min = rx_min64u(taskItem->start_period_min, period);
-    }
-    taskItem->init = true;
-    if(true==is_flash_addr((uint32_t)task_func)){
-        res = task_func();
-    }else{
-        res = false;
-    }
-    stop = get_time_us();
-    if(start < stop) {
-        delta = stop - start;
-        res = true;
-    } else {
-        delta = 0; /*(0x1000000U + stop) - start;*/
-        res = false;
-    }
-    taskItem->run_time_total += delta;
-    taskItem->run_time_min = rx_min64u(taskItem->run_time_min, delta);
-    taskItem->run_time_max = rx_max64u(taskItem->run_time_max, delta);
     return res;
 }
 

@@ -25,7 +25,7 @@ bool ublox_protocol_init(void) {
     return true;
 }
 
-uint16_t ubx_calc_crc16(uint8_t* array, uint16_t len) {
+uint16_t ubx_calc_crc16(uint8_t* const array, uint16_t len) {
     uint16_t crc16 = 0U;
     uint8_t crc_a = 0, crc_b = 0;
     uint16_t i = 0;
@@ -90,6 +90,9 @@ static bool proc_ublox_wait_len(uint8_t rx_byte) {
         memcpy(&UbloxPorotocol.exp_len, &UbloxPorotocol.rx_frame[4], UBX_LEN_SIZE);
         UbloxPorotocol.rx_state = UBX_WAIT_PAYLOAD;
         res = true;
+        if(UBX_RX_FRAME_SIZE < UbloxPorotocol.exp_len) {
+            ubx_reset_rx();
+        }
     } else {
         ubx_reset_rx();
     }

@@ -42,6 +42,22 @@ speed up to 16 MHz
 #include "sx1262_diag.h"
 #endif
 
+bool sx1262_chip_select(bool state) {
+    bool res = false;
+    if(true == state) {
+        GPIO_writeDio(DIO_SX1262_SS, 0);
+        GPIO_writeDio(DIO_SS1_CAN, 1);
+        res = true;
+    } else if(false == state) {
+        GPIO_writeDio(DIO_SX1262_SS, 1);
+        GPIO_writeDio(DIO_SS1_CAN, 1);
+        res = true;
+    } else {
+        res = false;
+    }
+    return res;
+}
+
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
@@ -220,7 +236,7 @@ bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
     bool res = false;
-    if (tx_array_len + OPCODE_SIZE < FIFO_SIZE) {
+    if((tx_array_len + OPCODE_SIZE) < FIFO_SIZE) {
         res = true;
         /*VLA prohibited here because heap can meet stack in unpredictable time*/
         static uint8_t tempTxArray[FIFO_SIZE];
@@ -309,8 +325,12 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
     res = sx1262_send_opcode(OPCODE_GET_RX_BUFFER_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
         Sx1262Instance.status = rx_array[1];
-        *out_payload_length_rx = rx_array[2];
-        *out_rx_start_buffer_pointer = rx_array[3];
+        if(out_payload_length_rx) {
+            *out_payload_length_rx = rx_array[2];
+        }
+        if(out_rx_start_buffer_pointer) {
+            *out_rx_start_buffer_pointer = rx_array[3];
+        }
     }
     return res;
 }
@@ -636,7 +656,7 @@ bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_
 }
 
 bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len) {
-    bool res;
+    bool res = false;
     if((NULL != payload) && (payload_len <= FIFO_SIZE)) {
         static uint8_t tx_array[FIFO_SIZE];
         memset(tx_array, 0x00, sizeof(tx_array));
@@ -949,13 +969,11 @@ bool sx1262_get_packet_type(RadioPacketType_t* packet_type) {
 /*GetStatus*/
 bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
-    if(out_status) {
-        uint8_t rx_array[2];
-        memset(rx_array, 0xFF, sizeof(rx_array));
+    if(NULL != out_status) {
+        uint8_t rx_array[2] = {0xFF, 0xFF};
+        // memset(rx_array, 0xFF, sizeof(rx_array));
         res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
         *out_status = rx_array[1];
-    } else {
-        *out_status = 0xFF;
     }
     return res;
 }
@@ -1183,12 +1201,11 @@ bool sx1262_process(void) {
     bool res = false;
     Sx1262_t tempSx1262Instance = {0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
-    // Sx1262Instance.tx_done_time_stamp_ms;
+
     if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
         Sx1262Instance.busy_cnt = 0;
         res = sx1262_init();
     }
-
     uint32_t cur_time_stamp_ms = get_time_ms32();
     uint32_t tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
     if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == Sx1262Instance.tx_done)) {
@@ -1203,9 +1220,9 @@ bool sx1262_process(void) {
             }
         }
     }
-
     res = sx1262_get_status(&tempSx1262Instance.dev_status);
     if(res) {
+
         res = true;
         Sx1262Instance.dev_status = tempSx1262Instance.dev_status;
 
@@ -1247,10 +1264,9 @@ bool sx1262_process(void) {
             res = false;
             break;
         }
+
         Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
-
         res = sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
-
         res = sx1262_reset_stats();
     }
 
@@ -1261,6 +1277,7 @@ bool sx1262_process(void) {
         Sx1262Instance.rx_payload_len = tempSx1262Instance.rx_payload_len;
         Sx1262Instance.rx_buffer_pointer = tempSx1262Instance.rx_buffer_pointer;
     }
+
 #ifdef HAS_SX1262_POLL
 
     tempSx1262Instance.rx_status = 0;
@@ -1332,21 +1349,5 @@ bool sx1262_process(void) {
         Sx1262Instance.rand_num = tempSx1262Instance.rand_num;
     }
 
-    return res;
-}
-
-bool sx1262_chip_select(bool state) {
-    bool res = false;
-    if(true == state) {
-        GPIO_writeDio(DIO_SX1262_SS, 0);
-        GPIO_writeDio(DIO_SS1_CAN, 1);
-        res = true;
-    } else if(false == state) {
-        GPIO_writeDio(DIO_SX1262_SS, 1);
-        GPIO_writeDio(DIO_SS1_CAN, 1);
-        res = true;
-    } else {
-        res = false;
-    }
     return res;
 }

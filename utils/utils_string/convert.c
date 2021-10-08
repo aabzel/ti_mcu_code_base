@@ -63,9 +63,9 @@ bool try_strl2uint64(const char u64l_str[], int32_t u64l_str_len, uint64_t* u64l
     bool u64l_success = true;
     bool u64l_str_not_empty = true;
     int32_t u64l_len = u64l_str_len;
-    *u64l_value = 0U;
     if(NULL != u64l_str) {
         if(NULL != u64l_value) {
+            *u64l_value = 0U;
             u64l_str_not_empty = get_str_len(u64l_str, &u64l_len);
             if(u64l_str_not_empty == false) {
                 u64l_success = false;

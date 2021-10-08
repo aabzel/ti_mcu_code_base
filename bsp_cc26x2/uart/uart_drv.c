@@ -288,6 +288,7 @@ bool proc_uart(uint8_t uart_index) {
 #ifdef HAS_UBLOX
                 ubx_proc_byte(rx_byte);
 #endif /*HAS_UBLOX*/
+
             } else {
                 loop = false;
             }

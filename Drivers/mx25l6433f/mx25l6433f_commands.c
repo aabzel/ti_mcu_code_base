@@ -8,7 +8,7 @@
 
 
 bool cmd_mx25_diag(int32_t argc, char* argv[]){
-	bool res;
+	bool res = false;
 	return res;
 }
 
@@ -48,7 +48,9 @@ bool mx25_read_command(int32_t argc, char* argv[]){
     }
     return res;
 }
-bool mx25_write_command(int32_t argc, char* argv[]){}
+bool mx25_write_command(int32_t argc, char* argv[]){
+	return false;
+}
 
 bool mx25_erase_command(int32_t argc, char* argv[]){
       (void)argv;

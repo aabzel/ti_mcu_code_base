@@ -70,7 +70,7 @@ bool lora_init(void) {
 
 bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
     bool res = false;
-    if((NULL!=tx_payload) && (len<=RTCM3_RX_FRAME_SIZE)) {
+    if((NULL != tx_payload) && (len <= RTCM3_RX_FRAME_SIZE)) {
         uint8_t* data = memdup((uint8_t*)tx_payload, len);
         if(data) {
             Array_t txNode = {.size = 0, .pArr = NULL};
@@ -80,10 +80,10 @@ bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
             if(false == res) {
                 LoRaInterface.err_cnt++;
             }
-        }else{
+        } else {
             LoRaInterface.err_cnt++;
         }
-    }else{
+    } else {
         LoRaInterface.err_cnt++;
     }
     return res;
