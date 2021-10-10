@@ -17,6 +17,11 @@ static bool ubx_diag(void) {
     io_printf("crc cnt   : %u" CRLF, UbloxPorotocol.crc_err_cnt);
     io_printf("rx state  : %u" CRLF, UbloxPorotocol.rx_state);
     io_printf("ack cnt   : %u" CRLF, UbloxPorotocol.ack_cnt);
+#ifdef HAS_DEBUG
+    io_printf("sync cnt: %u" CRLF, UbloxPorotocol.sync_cnt);
+    io_printf("min len: %u" CRLF, UbloxPorotocol.min_len);
+    io_printf("max len: %u" CRLF, UbloxPorotocol.max_len);
+#endif
     uint8_t i = 0;
 
     table_col_t cols[] = {{7, "class"}, {8, "rx_cnt"}};

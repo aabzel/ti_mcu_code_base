@@ -66,6 +66,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/lora"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/sx1262"/>

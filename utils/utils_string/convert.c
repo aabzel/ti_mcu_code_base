@@ -12,7 +12,7 @@ static bool try_hex_char_to_u8(uint8_t hex_char, uint8_t* hex_char_to_u8_value);
 static bool try_dec_char_to_u8(uint8_t dec_char, uint8_t* dec_char_to_u8_value);
 static bool is_signed(const char first_str_char, int32_t* first_digit_index);
 static bool get_str_len(const char char_str[], int32_t* str_len);
-static bool rx_strtod(const char str[], const char** endptr, double_t* result);
+// static bool rx_strtod(const char str[], const char** endptr, double* result);
 static bool is_hex_digit(const char character);
 static bool is_true(const char* true_str_to_check);
 static bool is_false(const char* false_str_to_check);
@@ -586,17 +586,159 @@ bool try_str2bool(const char bool_str[], bool* bool_value) {
     return bool_success;
 }
 
+static bool rx_strtod(const char str[], const char** endptr, double* result) {
+    bool strtod_success = true;
+    if(NULL != result) {
+        bool strtod_negative = false;
+        double number = 0.0;
+        uint32_t u32_number;
+        uint32_t str_index = 0U;
+        int32_t s32_number;
+        int32_t exponent = 0;
+        uint8_t num_digits = 0U;
+        uint8_t num_decimals = 0U;
+        uint8_t temp_value = 0U;
+
+        /* Skip leading whitespace */
+        while(0 < isspace((int32_t)(str[str_index]))) {
+            str_index++;
+        }
+
+        /* Handle optional sign */
+        if(('-' == str[str_index]) || ('+' == str[str_index])) {
+            if('-' == str[str_index]) {
+                strtod_negative = true;
+            }
+            str_index++;
+        }
+
+        /* Process string of digits */
+        while(0 < isdigit((int32_t)(str[str_index]))) {
+            temp_value = 0U;
+            (void)try_dec_char_to_u8((uint8_t)str[str_index], &temp_value);
+            number = (number * 10.0) + ((double)temp_value);
+            // printf("\n digit=%c temp_value=%u",str[str_index],temp_value);
+            // printf(" number=%f ",number);
+            str_index++;
+            num_digits++;
+        }
+        // printf("\n number=%f ",number);
+        /* Process decimal part  */
+        if(str[str_index] == '.') {
+            str_index++;
+
+            while(isdigit((int32_t)(str[str_index])) > 0) {
+                (void)try_dec_char_to_u8((uint8_t)str[str_index], &temp_value);
+                number = (number * 10.0) + (double_t)temp_value;
+                str_index++;
+                num_digits++;
+                num_decimals++;
+            }
+
+            exponent -= (int32_t)num_decimals;
+        }
+
+        if(num_digits == 0U) {
+            if(endptr != NULL) {
+                *endptr = &str[str_index];
+            }
+
+            strtod_success = false;
+        }
+        if(strtod_success == true) {
+            /* Correct for sign */
+            if(strtod_negative == true) {
+                number = (-1.0) * number;
+            }
+
+            /* Process an exponent string */
+            if((str[str_index] == 'e') || (str[str_index] == 'E')) {
+                /* Handle optional sign */
+                strtod_negative = false;
+                str_index++;
+
+                if(('-' == str[str_index]) || ('+' == str[str_index])) {
+                    if('-' == str[str_index]) {
+                        strtod_negative = true;
+                    }
+                    str_index++;
+                }
+
+                if(isdigit((int32_t)(str[str_index])) > 0) {
+                    /* Process string of digits */
+                    s32_number = 0;
+                    while(isdigit((int32_t)(str[str_index])) > 0) {
+                        (void)try_dec_char_to_u8((uint8_t)str[str_index], &temp_value);
+                        s32_number = (s32_number * 10) + (int32_t)temp_value;
+                        str_index++;
+                    }
+
+                    if(strtod_negative == true) {
+                        exponent -= s32_number;
+                    } else {
+                        exponent += s32_number;
+                    }
+                } else { /* No exponent after e */
+                    strtod_success = false;
+                }
+            }
+
+            if((exponent < DBL_MIN_10_EXP) || (exponent > DBL_MAX_10_EXP)) {
+                if(endptr != NULL) {
+                    *endptr = &str[str_index];
+                }
+
+                strtod_success = false;
+            }
+
+            if(strtod_success == true) {
+                /* Scale the result */
+                double_t p10 = 10.0;
+                s32_number = exponent;
+                if(s32_number < 0) {
+                    s32_number = -s32_number;
+                }
+
+                u32_number = (uint32_t)(s32_number);
+
+                while(u32_number != 0U) {
+                    if((u32_number & 1U) > 0U) {
+                        if(exponent < 0) {
+                            number /= p10;
+                        } else {
+                            number *= p10;
+                        }
+                    }
+                    u32_number >>= 1;
+                    p10 *= p10;
+                }
+
+                if(endptr != NULL) {
+                    *endptr = &str[str_index];
+                }
+                if(NULL != result) {
+                    *result = number;
+                }
+            }
+        }
+    } else {
+        strtod_success = false;
+    }
+    return strtod_success;
+}
+
 /* STRING TO FLOATING
  * ************************************************************************** */
 
-bool try_str2float(const char float_str[], float_t* float_value) {
+bool try_str2float(const char float_str[], float* float_value) {
     bool float_success = false;
 
     if((NULL != float_value) && (NULL != float_str)) {
         const char* float_ptr = NULL;
-        double_t float_temp_value = 0.0;
+        double float_temp_value = 0.0;
         float_success = rx_strtod(float_str, &float_ptr, &float_temp_value);
-
+        // printf("\n\nfloat_success=%u float_str=[%s] float_ptr[%s]
+        // float_temp_value=%f",float_success,float_str,float_ptr,float_temp_value);
         if((float_success == true) && (*float_ptr != '\0')) {
             float_success = false;
         } else {
@@ -619,7 +761,7 @@ bool try_str2float(const char float_str[], float_t* float_value) {
     return float_success;
 }
 
-bool try_str2double(const char double_str[], double_t* double_value) {
+bool try_str2double(const char double_str[], double* double_value) {
     bool double_success = false;
     const char* double_ptr = NULL;
     if(NULL != double_str) {
@@ -1258,7 +1400,7 @@ static bool try_dec_char_to_u8(uint8_t dec_char, uint8_t* dec_char_to_u8_value) 
     uint8_t dec_char_to_u8_result = 0U;
     bool dec_char_to_u8_success = true;
 
-    if((dec_char < (uint8_t)'0') || (dec_char > (uint8_t)'9')) {
+    if((dec_char < (uint8_t)'0') || ((uint8_t)'9' < dec_char)) {
         dec_char_to_u8_success = false;
     }
 
@@ -1376,144 +1518,6 @@ static bool is_hex_digit(const char character) {
         res = false;
     }
     return res;
-}
-
-static bool rx_strtod(const char str[], const char** endptr, double_t* result) {
-    bool strtod_success = true;
-    if(NULL != result) {
-        bool strtod_negative = false;
-        double_t number = 0.0;
-        uint32_t u32_number;
-        uint32_t str_index = 0U;
-        int32_t s32_number;
-        int32_t exponent = 0;
-        uint8_t num_digits = 0U;
-        uint8_t num_decimals = 0U;
-        uint8_t temp_value = 0U;
-
-        /* Skip leading whitespace */
-        while(isspace((int32_t)(str[str_index])) > 0) {
-            str_index++;
-        }
-
-        /* Handle optional sign */
-        if(('-' == str[str_index]) || ('+' == str[str_index])) {
-            if('-' == str[str_index]) {
-                strtod_negative = true;
-            }
-            str_index++;
-        }
-
-        /* Process string of digits */
-        while(isdigit((int32_t)(str[str_index])) > 0) {
-            (void)try_dec_char_to_u8((uint8_t)str[str_index], &temp_value);
-            number = (number * 10.0) + (double_t)temp_value;
-            str_index++;
-            num_digits++;
-        }
-
-        /* Process decimal part  */
-        if(str[str_index] == '.') {
-            str_index++;
-
-            while(isdigit((int32_t)(str[str_index])) > 0) {
-                (void)try_dec_char_to_u8((uint8_t)str[str_index], &temp_value);
-                number = (number * 10.0) + (double_t)temp_value;
-                str_index++;
-                num_digits++;
-                num_decimals++;
-            }
-
-            exponent -= (int32_t)num_decimals;
-        }
-
-        if(num_digits == 0U) {
-            if(endptr != NULL) {
-                *endptr = &str[str_index];
-            }
-
-            strtod_success = false;
-        }
-        if(strtod_success == true) {
-            /* Correct for sign */
-            if(strtod_negative == true) {
-                number = (-1.0) * number;
-            }
-
-            /* Process an exponent string */
-            if((str[str_index] == 'e') || (str[str_index] == 'E')) {
-                /* Handle optional sign */
-                strtod_negative = false;
-                str_index++;
-
-                if(('-' == str[str_index]) || ('+' == str[str_index])) {
-                    if('-' == str[str_index]) {
-                        strtod_negative = true;
-                    }
-                    str_index++;
-                }
-
-                if(isdigit((int32_t)(str[str_index])) > 0) {
-                    /* Process string of digits */
-                    s32_number = 0;
-                    while(isdigit((int32_t)(str[str_index])) > 0) {
-                        (void)try_dec_char_to_u8((uint8_t)str[str_index], &temp_value);
-                        s32_number = (s32_number * 10) + (int32_t)temp_value;
-                        str_index++;
-                    }
-
-                    if(strtod_negative == true) {
-                        exponent -= s32_number;
-                    } else {
-                        exponent += s32_number;
-                    }
-                } else { /* No exponent after e */
-                    strtod_success = false;
-                }
-            }
-
-            if((exponent < DBL_MIN_10_EXP) || (exponent > DBL_MAX_10_EXP)) {
-                if(endptr != NULL) {
-                    *endptr = &str[str_index];
-                }
-
-                strtod_success = false;
-            }
-
-            if(strtod_success == true) {
-                /* Scale the result */
-                double_t p10 = 10.0;
-                s32_number = exponent;
-                if(s32_number < 0) {
-                    s32_number = -s32_number;
-                }
-
-                u32_number = (uint32_t)(s32_number);
-
-                while(u32_number != 0U) {
-                    if((u32_number & 1U) > 0U) {
-                        if(exponent < 0) {
-                            number /= p10;
-                        } else {
-                            number *= p10;
-                        }
-                    }
-                    u32_number >>= 1;
-                    p10 *= p10;
-                }
-
-                if(endptr != NULL) {
-                    *endptr = &str[str_index];
-                }
-                if(NULL != result) {
-                    *result = number;
-                }
-            }
-        }
-    } else {
-        strtod_success = false;
-    }
-    return strtod_success;
 }
 
 static bool is_true(const char* true_str_to_check) {

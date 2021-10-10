@@ -80,7 +80,7 @@ bool cmd_flash_fs_get(int32_t argc, char* argv[]) {
             if(false == res) {
                 LOG_ERROR(FLASH_FS, "mm_get error");
             } else {
-                print_mem((uint8_t*)array, (uint16_t)file_len, false);
+                print_mem((uint8_t*)array, (uint16_t)file_len, true, false);
                 io_printf(CRLF);
             }
         }

@@ -19,6 +19,10 @@ bool ublox_protocol_init(void) {
     ubx_reset_rx();
     UbloxPorotocol.rx_pkt_cnt = 0;
     UbloxPorotocol.ack_cnt = 0;
+#ifdef HAS_DEBUG
+    UbloxPorotocol.min_len = 0xffff;
+    UbloxPorotocol.max_len = 0;
+#endif
     UbloxPorotocol.unproc_frame = false;
     memset(UbloxPorotocol.fix_frame, 0x00, UBX_RX_FRAME_SIZE);
     memset(tableRxClass, 0x00, sizeof(tableRxClass));
@@ -56,6 +60,9 @@ static bool proc_ublox_wait_sync1(uint8_t rx_byte) {
         UbloxPorotocol.rx_state = UBX_WAIT_CLASS;
         UbloxPorotocol.rx_frame[1] = rx_byte;
         UbloxPorotocol.load_len = 2;
+#ifdef HAS_DEBUG
+        UbloxPorotocol.sync_cnt++;
+#endif
         res = true;
     } else {
         ubx_reset_rx();
@@ -88,6 +95,10 @@ static bool proc_ublox_wait_len(uint8_t rx_byte) {
         UbloxPorotocol.rx_frame[5] = rx_byte;
         UbloxPorotocol.load_len = 6;
         memcpy(&UbloxPorotocol.exp_len, &UbloxPorotocol.rx_frame[4], UBX_LEN_SIZE);
+#ifdef HAS_DEBUG
+        UbloxPorotocol.min_len = min16u(UbloxPorotocol.min_len, UbloxPorotocol.exp_len);
+        UbloxPorotocol.max_len = max16u(UbloxPorotocol.max_len, UbloxPorotocol.exp_len);
+#endif /*HAS_DEBUG*/
         UbloxPorotocol.rx_state = UBX_WAIT_PAYLOAD;
         res = true;
         if(UBX_RX_FRAME_SIZE < UbloxPorotocol.exp_len) {

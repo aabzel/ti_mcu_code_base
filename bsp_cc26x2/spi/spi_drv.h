@@ -13,8 +13,8 @@ extern "C" {
 #endif /*DeviceFamily_CC26X2*/
 
 #include "spi_common.h"
-
-#define SPI0_BIT_RATE_HZ 4000000
+/*4Mhz test fifo fails*/
+#define SPI0_BIT_RATE_HZ 2000000
 #define SPI1_BIT_RATE_HZ 100000
 
 /* SPI Board */

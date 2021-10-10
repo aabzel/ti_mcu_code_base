@@ -60,8 +60,8 @@ bool try_strl2int8_hex(const char s8l_hex_str[], int32_t s8l_hex_str_len, int8_t
 
 bool try_str2bool(const char bool_str[], bool* bool_value);
 
-bool try_str2float(const char float_str[], float_t* float_value);
-bool try_str2double(const char double_str[], double_t* double_value);
+bool try_str2float(const char float_str[], float* float_value);
+bool try_str2double(const char double_str[], double* double_value);
 
 bool try_strl2double(const char double_str[], int32_t u8l_hex_str_len, double_t* double_value);
 

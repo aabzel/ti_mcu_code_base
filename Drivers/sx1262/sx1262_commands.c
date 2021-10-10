@@ -27,6 +27,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         LOG_INFO(LORA, "rx_buffer_pointer: %u 0x%x", Sx1262Instance.rx_buffer_pointer,
                  Sx1262Instance.rx_buffer_pointer);
         LOG_INFO(LORA, "rx_payload_len: %u byte", Sx1262Instance.rx_payload_len);
+        LOG_INFO(LORA, "data aval cnt: %u", Sx1262Instance.data_aval_cnt);
         LOG_INFO(LORA, "busyCnt: %u", Sx1262Instance.busy_cnt);
         io_printf("RssiInst: %d dBm" CRLF, Sx1262Instance.rssi_inst);
         io_printf("RssiPkt: %u" CRLF, Sx1262Instance.rssi_pkt);
@@ -283,7 +284,7 @@ bool sx1262_send_opcode_command(int32_t argc, char* argv[]) {
         if(true == res) {
             res = sx1262_send_opcode(op_code, tx_array, tx_array_len, rx_array, rx_array_len);
             if(res) {
-                print_mem(rx_array, rx_array_len, true);
+                print_mem(rx_array, rx_array_len, true, true);
                 LOG_INFO(LORA, "OK");
             } else {
                 LOG_ERROR(LORA, "Error");
@@ -384,7 +385,7 @@ bool sx1262_tx_command(int32_t argc, char* argv[]) {
     }
     if(true == res) {
         LOG_INFO(LORA, "LoRa tx");
-        print_mem(tx_array, tx_array_len, true);
+        print_mem(tx_array, tx_array_len, true, true);
         res = sx1262_start_tx(tx_array, tx_array_len, timeout_s);
         if(res) {
             LOG_INFO(LORA, "TX OK");
@@ -464,7 +465,7 @@ bool sx1262_read_fifo_command(int32_t argc, char* argv[]) {
     if(res) {
         res = sx1262_read_buffer(offset, rx_array, payload_len);
         if(res) {
-            print_mem(rx_array, payload_len, true);
+            print_mem(rx_array, payload_len, true, true);
             LOG_INFO(LORA, "read buff OK");
         } else {
             LOG_ERROR(LORA, "read buff Error");
@@ -620,7 +621,7 @@ bool sx1262_read_rx_payload_command(int32_t argc, char* argv[]) {
         res = sx1262_get_rx_payload(rx_payload, &rx_size, sizeof(rx_payload));
         if(res) {
             LOG_INFO(LORA, "load %u byte", rx_size);
-            print_mem(rx_payload, rx_size, true);
+            print_mem(rx_payload, rx_size, true, true);
         } else {
             LOG_ERROR(LORA, "Error");
         }

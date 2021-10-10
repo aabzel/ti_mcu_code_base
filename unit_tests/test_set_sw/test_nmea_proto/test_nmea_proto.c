@@ -11,13 +11,13 @@ static bool test_nmea_proto_gnrmc(void) {
    EXPECT_TRUE( gnss_parse_rmc((char*)msg_gnrmc, &rmc));
    EXPECT_EQ(72316,rmc.utc);
    EXPECT_EQ('A',rmc.data_valid);
-   EXPECT_NEAR(5551.84825,rmc.lat,0.00001);
+   EXPECT_NEAR(5551.84825l,rmc.lat,1e-6);
    EXPECT_EQ('N',rmc.lat_dir);
-   EXPECT_NEAR(3725.60995,rmc.lon,0.00001);
+   EXPECT_NEAR(3725.60995l,rmc.lon,0.00001f);
    EXPECT_EQ('E',rmc.lon_dir);
-   EXPECT_NEAR(0.010,rmc.speed_knots,0.00001);
+   EXPECT_NEAR(0.010l,rmc.speed_knots,0.00001f);
    EXPECT_EQ(290721,rmc.date);
-   EXPECT_NEAR(11.73, rmc.mv, 0.00001);
+   EXPECT_NEAR(11.73l, rmc.mv, 0.00001f);
    EXPECT_EQ('E',rmc.mv_ew);
    EXPECT_EQ('A',rmc.pos_mode);
 

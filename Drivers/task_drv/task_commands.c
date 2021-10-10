@@ -29,8 +29,8 @@ bool diag_page_tasks(ostream_t* stream) {
     }
 
     total_run_time_us = calc_total_run_time();
-#ifdef HAS_DEBUG
     uint16_t t_cnt=task_cnt();
+#ifdef HAS_DEBUG
     oprintf(stream, "task cnt %u" CRLF, t_cnt);
     oprintf(stream, "loop duration %u us" CRLF, loop_duration_us);
     oprintf(stream, "max loop duration %u us" CRLF, loop_duration_max_us);

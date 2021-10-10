@@ -1,5 +1,4 @@
 
-
 #ifndef LORA_DRV_H
 #define LORA_DRV_H
 
@@ -12,6 +11,8 @@ extern FifoArray_t FiFoLoRaTx;
 
 typedef struct xLoRaIf_t {
     uint32_t err_cnt;
+    uint32_t tx_ok_cnt;
+    uint32_t tx_done_cnt;
     FifoArray_t FiFoLoRaTx;
 } LoRaIf_t;
 

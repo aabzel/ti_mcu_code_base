@@ -58,6 +58,11 @@ typedef struct xUbloxPorotocol_t {
     uint32_t crc_err_cnt;
     uint32_t load_len;
     uint16_t exp_len;
+#ifdef HAS_DEBUG
+    uint16_t min_len;
+    uint16_t max_len;
+    uint32_t sync_cnt;
+#endif
     uint16_t read_crc;
     uint16_t ack_cnt;
     uint8_t rx_state;

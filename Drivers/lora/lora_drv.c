@@ -40,7 +40,7 @@ bool rtcm3_lora_rx_proc(uint8_t* const payload, uint32_t size) {
     return res;
 }
 
-bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
+bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
     bool res = false;
     char* substr = NULL;
     uint16_t offset = strlen(CMD_PREFIX);
@@ -64,6 +64,8 @@ bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
 
 bool lora_init(void) {
     bool res = false;
+    LoRaInterface.tx_ok_cnt = 0;
+    LoRaInterface.tx_done_cnt = 0;
     res = fifo_arr_init(&LoRaInterface.FiFoLoRaTx, &ArrLoRaTxNode[0], ARRAY_SIZE(ArrLoRaTxNode));
     return res;
 }

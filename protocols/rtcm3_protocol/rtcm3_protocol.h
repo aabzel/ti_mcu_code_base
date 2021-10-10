@@ -39,12 +39,20 @@ typedef union uRtcm3Len_t {
     Rtcm3LenBit_t field;
 } Rtcm3Len_t;
 
+typedef struct xRtcm3Header_t {
+    uint8_t preamble;
+    Rtcm3Len_t ex_len;
+} __attribute__((packed)) Rtcm3Header_t ;
+
 typedef struct xRtcm3Porotocol_t {
     uint32_t rx_pkt_cnt;
     uint32_t rx_rx_pkt_cnt;
+    uint32_t lost_pkt_cnt;
     uint32_t crc_err_cnt;
     uint32_t load_len;
+    uint32_t err_cnt;
 #ifdef HAS_DEBUG
+    uint32_t preamble_cnt;
     uint16_t max_len;
     uint16_t min_len;
 #endif
@@ -55,13 +63,15 @@ typedef struct xRtcm3Porotocol_t {
     uint8_t rx_frame[RTCM3_RX_FRAME_SIZE];
     uint8_t fix_frame[RTCM3_RX_FRAME_SIZE];
     uint8_t interface;
+    bool lora_fwd;
 } Rtcm3Porotocol_t;
 
 extern Rtcm3Porotocol_t Rtcm3Porotocol[RTCM_IF_CNT];
 
-bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, uint8_t interface);
+bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, uint8_t interface, bool lora_fwd);
 bool rtcm3_proc_byte(Rtcm3Porotocol_t* instance, uint8_t rx_byte);
 bool rtcm3_reset_rx(Rtcm3Porotocol_t* instance);
+bool is_rtcm3_frame(uint8_t* arr, uint16_t len);
 
 #ifdef __cplusplus
 }

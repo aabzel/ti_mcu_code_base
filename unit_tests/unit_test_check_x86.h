@@ -13,7 +13,7 @@
     do {                                                                                                               \
         int ret = memcmp(memL, memR, len);                                                                             \
         if(0 != ret) {                                                                                                 \
-            printf(  "\n[e]%s:Line: %d different memory %d\n", __FUNCTION__, __LINE__, ret);                            \
+            printf(  "\n[e] %s:Line: %d different memory %d\n", __FUNCTION__, __LINE__, ret);                            \
             return false;                                                                                              \
         }                                                                                                              \
     } while(0);
@@ -21,11 +21,15 @@
 #define EXPECT_NEAR(base, val, error)                                                                                  \
     do {                                                                                                               \
         if((base + error) < val) {                                                                                     \
-            printf(  "\n[e]%s:Line: %d in val %f big \n\n", __FUNCTION__, __LINE__, val);                                 \
+            printf(  "\n[e] %s:Line: %d base %f eror %f \n", __FUNCTION__, __LINE__, base , error);                        \
+            printf(  "\n[e] %s:Line: %d up lim %f \n", __FUNCTION__, __LINE__, base + error);                          \
+            printf(  "\n[e] %s:Line: %d in val %f big \n\n", __FUNCTION__, __LINE__, val);                             \
             return false;                                                                                              \
         }                                                                                                              \
         if(val < (base - error)) {                                                                                     \
-            printf(  "\n[e]%s:Line: %d in val %f small \n\n", __FUNCTION__, __LINE__, val);                               \
+                        printf(  "\n[e] %s:Line: %d base %f eror %f \n", __FUNCTION__, __LINE__, base , error);                        \
+            printf(  "\n[e] %s:Line: %d low lim %f \n", __FUNCTION__, __LINE__, base - error);                         \
+            printf(  "\n[e] %s:Line: %d in val %f small \n\n", __FUNCTION__, __LINE__, val);                           \
             return false;                                                                                              \
         }                                                                                                              \
     } while(0);
@@ -34,7 +38,7 @@
     do {                                                                                                               \
         bool val = val_in;                                                                                             \
         if(true != ((bool)val)) {                                                                                      \
-            printf(  "\n[e]%s:Line: %d in val %d \n", __FUNCTION__, __LINE__, (int)val);                                \
+            printf(  "\n[e] %s:Line: %d in val %d \n", __FUNCTION__, __LINE__, (int)val);                              \
             return false;                                                                                              \
         }                                                                                                              \
     } while(0);
@@ -43,7 +47,7 @@
     do {                                                                                                               \
         bool val = val_in;                                                                                             \
         if(false != ((bool)val)) {                                                                                     \
-            printf(  "\n[e]%s:Line: %d in val %d \n", __FUNCTION__, __LINE__, (int)val);                                \
+            printf(  "\n[e] %s:Line: %d in val %d \n", __FUNCTION__, __LINE__, (int)val);                                \
             return false;                                                                                              \
         }                                                                                                              \
     } while(0);
@@ -53,9 +57,9 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if(val1 != val2) {                                                                                             \
-            printf(  "\n[e]%s():Line: %d in val1: %" PRIu64 " val2: %" PRIu64 , __FUNCTION__, __LINE__, val1,       \
+            printf(  "\n[e] %s():Line: %d in val1: %" PRIu64 " val2: %" PRIu64 , __FUNCTION__, __LINE__, val1,       \
                       val2);                                                                                           \
-            printf(  "\n[e]%s():Line: %d in val1: 0x%" PRIx64 " val2: 0x%" PRIx64 "\n", __FUNCTION__, __LINE__, val1,   \
+            printf(  "\n[e] %s():Line: %d in val1: 0x%" PRIx64 " val2: 0x%" PRIx64 "\n", __FUNCTION__, __LINE__, val1,   \
                       val2);                                                                                           \
             return false;                                                                                              \
         } else {                                                                                                       \
@@ -68,8 +72,8 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if(val1 != val2) {                                                                                             \
-            printf(  "\n[e]%s():Line: %d in val1: %u  val2: %u", __FUNCTION__, __LINE__, val1, val2);                 \
-            printf(  "\n[e]%s():Line: %d in val1: 0x%x val2: 0x%x\n", __FUNCTION__, __LINE__, val1, val2);              \
+            printf(  "\n[e] %s():Line: %d in val1: %u  val2: %u", __FUNCTION__, __LINE__, val1, val2);                 \
+            printf(  "\n[e] %s():Line: %d in val1: 0x%x val2: 0x%x\n", __FUNCTION__, __LINE__, val1, val2);              \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \
@@ -81,7 +85,7 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if(!((var1 == val) || (var2 == val))) {                                                                        \
-            printf(  "\n[e]%s():Line:%d in var1:%u var2:%u val:%u \n", __FUNCTION__, __LINE__, var1, var2, val);        \
+            printf(  "\n[e] %s():Line:%d in var1:%u var2:%u val:%u \n", __FUNCTION__, __LINE__, var1, var2, val);        \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \
@@ -93,7 +97,7 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if((val1) == (val2)) {                                                                                         \
-            printf(  "\n[e]%s():Line: %d in val1: %u val2: %u \n", __FUNCTION__, __LINE__, val1, val2);                 \
+            printf(  "\n[e] %s():Line: %d in val1: %u val2: %u \n", __FUNCTION__, __LINE__, val1, val2);                 \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \
@@ -103,7 +107,7 @@
 #define EXPECT_STREQ(strL, strR)                                                                                       \
     do {                                                                                                               \
         if(0 != strcmp(strL, strR)) {                                                                                  \
-            printf(  "\n[e]%s:Line: %d in " CRLF "strL: [%s] " CRLF "strR: [%s] \n", __FUNCTION__, __LINE__, strL,      \
+            printf(  "\n[e] %s:Line: %d in " CRLF "strL: [%s] " CRLF "strR: [%s] \n", __FUNCTION__, __LINE__, strL,      \
                       strR);                                                                                           \
             return false;                                                                                              \
         }                                                                                                              \
@@ -114,10 +118,10 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if((val) < (left)) {                                                                                           \
-            printf(  "\n[e]%s():Line: %d in left: %u val: %u \n", __FUNCTION__, __LINE__, left, val);                   \
+            printf(  "\n[e] %s():Line: %d in left: %u val: %u \n", __FUNCTION__, __LINE__, left, val);                   \
             return false;                                                                                              \
         } else if((right) < (val)) {                                                                                   \
-            printf(  "\n[e]%s():Line: %d in val: %u right: %u \n", __FUNCTION__, __LINE__, val, right);                 \
+            printf(  "\n[e] %s():Line: %d in val: %u right: %u \n", __FUNCTION__, __LINE__, val, right);                 \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \
@@ -129,10 +133,10 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if((val) < (exp_v - precision)) {                                                                              \
-            printf(  "\n[e]%s():Line: %d in val: %u exp_v: %u \n", __FUNCTION__, __LINE__, val, exp_v);                 \
+            printf(  "\n[e] %s():Line: %d in val: %u exp_v: %u \n", __FUNCTION__, __LINE__, val, exp_v);                 \
             return false;                                                                                              \
         } else if((exp_v + precision) < val) {                                                                         \
-            printf(  "\n[e]%s():Line: %d in val: %u exp_v: %u \n", __FUNCTION__, __LINE__, val, exp_v);                 \
+            printf(  "\n[e] %s():Line: %d in val: %u exp_v: %u \n", __FUNCTION__, __LINE__, val, exp_v);                 \
             return false;                                                                                              \
         } else {                                                                                                       \
             /*printf ("\n OK!\n");  */                                                                                 \
@@ -144,8 +148,8 @@
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
         if((val2) < (val1)) {                                                                                          \
-            printf(  "\n[e]%s():Line: %d in val1: %llu val2: %llu id: %u", __FUNCTION__, __LINE__, val1, val2, id);   \
-            printf(  "\n[e]%s():Line: %d in val1: 0x%llx val2: 0x%llx id: %u\n", __FUNCTION__, __LINE__, val1, val2,    \
+            printf(  "\n[e] %s():Line: %d in val1: %llu val2: %llu id: %u", __FUNCTION__, __LINE__, val1, val2, id);   \
+            printf(  "\n[e] %s():Line: %d in val1: 0x%llx val2: 0x%llx id: %u\n", __FUNCTION__, __LINE__, val1, val2,    \
                       id);                                                                                             \
             return false;                                                                                              \
         } else {                                                                                                       \
