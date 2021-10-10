@@ -47,7 +47,8 @@ typedef struct xRtcm3Header_t {
 typedef struct xRtcm3Porotocol_t {
     uint32_t rx_pkt_cnt;
     uint32_t rx_rx_pkt_cnt;
-    uint32_t lost_pkt_cnt;
+    uint32_t lora_lost_pkt_cnt;
+    uint32_t uart_lost_pkt_cnt;
     uint32_t crc_err_cnt;
     uint32_t load_len;
     uint32_t err_cnt;

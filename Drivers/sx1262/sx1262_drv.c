@@ -690,7 +690,7 @@ bool sx1262_conf_rx(void) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
-    // res = sx1262_start_rx(0) && res;
+    // res = sx1262_start_rx(0xFFFFFF) && res;
     return res;
 }
 
@@ -852,7 +852,7 @@ bool sx1262_init(void) {
         Sx1262Instance.set_sync_word = SYNC_WORD;
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
 
-        res = sx1262_start_rx(0) && res;
+        res = sx1262_start_rx(0xFFFFFF) && res;
     } else {
         LOG_ERROR(LORA, "SX1262 link error");
     }
@@ -1102,7 +1102,7 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint8_t* out_size, uint16_t max
     uint8_t rx_start_buffer_pointer = 0;
     res = sx1262_get_rxbuff_status(&rx_payload_len, &rx_start_buffer_pointer);
     if(rx_payload_len <= max_size) {
-#ifdef HAS_SX1262_DEBUG
+#ifdef HAS_SX1262_DEBUG_RX
         LOG_INFO(LORA, "rx_len %u start %u", rx_payload_len, rx_start_buffer_pointer);
 #endif
         res = sx1262_read_buffer(rx_start_buffer_pointer - 1, out_payload, (uint16_t)rx_payload_len);
@@ -1233,12 +1233,14 @@ bool sx1262_process(void) {
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.data_aval_cnt++;
-#ifdef HAS_SX1262_DEBUG
+#ifdef HAS_SX1262_DEBUG_RX
             LOG_INFO(LORA, "Data available!");
-#endif /*HAS_SX1262_DEBUG*/
+#endif /*HAS_SX1262_DEBUG_RX*/
             res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
             if(res) {
+#ifdef HAS_SX1262_DEBUG_RX
                 res = print_mem(rx_payload, rx_size, true, true);
+#endif /*HAS_SX1262_DEBUG_RX*/
                 res = lora_proc_payload(rx_payload, rx_size);
             }
         } break;
@@ -1256,13 +1258,13 @@ bool sx1262_process(void) {
             res = false;
             break;
         case COM_STAT_COM_TX_DONE:
-#ifdef HAS_SX1262_DEBUG
+#ifdef HAS_SX1262_DEBUG_TX
             LOG_INFO(LORA, "TX done");
 #endif
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
             Sx1262Instance.tx_done = true;
             LoRaInterface.tx_done_cnt++;
-            res = sx1262_start_rx(0);
+            res = sx1262_start_rx(0xFFFFFF);
             break;
         default:
             res = false;

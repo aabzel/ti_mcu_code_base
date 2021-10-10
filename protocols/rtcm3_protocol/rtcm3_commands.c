@@ -18,7 +18,8 @@ static bool rtcm3_diag(void) {
     bool res = false;
     uint8_t interface = 0;
     static const table_col_t cols[] = {{6, "if"},{5, "loF"},
-                                       {9, "lost"},
+                                       {9, "lostLoRa"},
+                                       {9, "lostUart"},
                                        {9, "rxCnt"},
                                        {9, "preCnt"},
                                        {9, "crcErCnt"},
@@ -30,7 +31,8 @@ static bool rtcm3_diag(void) {
         io_printf(TSEP);
         io_printf(" %4s " TSEP, interfacefRtcmLuTable[interface]);
         io_printf("  %1u  " TSEP, Rtcm3Porotocol[interface].lora_fwd);
-        io_printf(" %7u " TSEP,  Rtcm3Porotocol[interface].lost_pkt_cnt);
+        io_printf(" %7u " TSEP,  Rtcm3Porotocol[interface].lora_lost_pkt_cnt);
+        io_printf(" %7u " TSEP,  Rtcm3Porotocol[interface].uart_lost_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].rx_pkt_cnt);
 #ifdef HAS_DEBUG
         io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].preamble_cnt);
