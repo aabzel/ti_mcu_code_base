@@ -168,6 +168,9 @@ const char *facility2str(log_facility_t facility) {
   case SPI:
     facility_str = "SPI";
     break;
+  case CAN:
+    facility_str = "CAN";
+    break;
   case LORA:
     facility_str = "LoRa";
     break;

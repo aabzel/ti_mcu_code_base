@@ -99,7 +99,8 @@ bool gpio_init(void) {
         GPIO_setConfig(CONF_GPIO_PS_RS232, gpio_get_cfg_dio(DIO_PS_RS232));
 #endif /*HAS_RS232*/
 #ifdef HAS_TCAN4550
-        GPIO_setConfig(CONF_GPIO_CAN_CS, gpio_get_cfg_dio(DIO_SS1_CAN));
+        GPIO_setConfig(CONF_GPIO_CAN_CS, gpio_get_cfg_dio(DIO_CAN_SS));
+        GPIO_setConfig(CONF_GPIO_CAN_RST, gpio_get_cfg_dio(DIO_CAN_RST));
 #endif /* HAS_TCAN4550 */
 
 #ifdef HAS_ZED_F9P
@@ -149,7 +150,8 @@ bool gpio_init(void) {
         GPIO_writeDio(DIO_PS_RS232, 1);
 #endif /*HAS_RS232*/
 #ifdef HAS_TCAN4550
-        GPIO_writeDio(DIO_SS1_CAN, 1);
+        GPIO_writeDio(DIO_CAN_SS, 1);
+        GPIO_writeDio(DIO_CAN_RST, 1);
 #endif /* HAS_TCAN4550 */
 
 #ifdef HAS_ZED_F9P

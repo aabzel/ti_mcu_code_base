@@ -13,18 +13,18 @@
 bool tcan4550_init(void) {
     bool res = true;
     GPIO_writeDio(DIO_CAN_SS, 1);
-    GPIO_writeDio(DIO_CAN_RST, 0);
+    GPIO_writeDio(DIO_CAN_RST, 1);
 
-    res=tcan4550_reset();
+    res = tcan4550_reset();
     return res;
 }
 
 bool tcan4550_reset(void){
     bool res= true;
-    GPIO_writeDio(DIO_CAN_RST, 1);
+    GPIO_writeDio(DIO_CAN_RST, 0);
     /*tPULSE_WIDTH Width of the input pulse 30 us*/
     delay_ms(1);
-    GPIO_writeDio(DIO_CAN_RST, 0);
+    GPIO_writeDio(DIO_CAN_RST, 1);
     return res;
 }
 

@@ -55,7 +55,7 @@
 #define OPCODE_SET_PACKET_TYPE 0x8A
 #define OPCODE_SET_MODULATION_PARAMS 0x8b
 #define OPCODE_SET_PACKET_PARAMS 0x8C
-#define OPCODE_SET_TX_PARAMS 0x8e
+#define OPCODE_SET_TX_PARAMS 0x8E
 #define OPCODE_SET_BUFFER_BASE_ADDR 0x8F
 #define OPCODE_SET_FALLBACK_MODE 0x93
 #define OPCODE_SET_RX_DUTY_CYCLE 0x94
@@ -167,6 +167,14 @@ typedef enum eRadioPacketTypes_t {
     PACKET_TYPE_UNDEF = 0xFF
 } RadioPacketType_t;
 
+typedef enum eOutputPower_t {
+    OP_14_DBM = 0,
+    OP_17_DBM = 1,
+    OP_20_DBM = 2,
+    OP_22_DBM = 3,
+    OP_UNDEF = 4
+} OutputPower_t;
+
 typedef enum eChipMode_t {
     CHP_MODE_UNDEF = 0x0,
     CHP_MODE_STBY_RC = 0x2,
@@ -175,6 +183,7 @@ typedef enum eChipMode_t {
     CHP_MODE_RX = 0x5,
     CHP_MODE_TX = 0x6
 } ChipMode_t;
+
 
 typedef struct xPaketStat_t {
     uint16_t nb_pkt_received;
@@ -245,6 +254,7 @@ typedef struct xSx1262_t {
     uint8_t wire_busy;
     uint32_t tx_time_out_ms;
     uint8_t signal_rssi_pkt;
+    int8_t output_power;
     int8_t rssi_inst;
     bool tx_done;
     ChipMode_t chip_mode;

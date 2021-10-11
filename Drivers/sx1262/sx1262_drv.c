@@ -41,7 +41,9 @@ speed up to 16 MHz
 #include "param_ids.h"
 #endif
 
+#ifdef HAS_SX1262_DEBUG
 #include "sx1262_diag.h"
+#endif
 
 bool sx1262_chip_select(bool state) {
     bool res = false;
@@ -782,7 +784,9 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     }
 
     if(false == res) {
+#ifdef HAS_SX1262_DEBUG
         LOG_WARNING(LORA, "Set default spreading_factor [%u] %u Chips/Symbol", DFLT_SF,spreading_factor2num(DFLT_SF));
+#endif
         sx1262Instance->mod_params.spreading_factor = DFLT_SF;
         res = true;
     }
@@ -790,11 +794,28 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     res = mm_get(PAR_ID_LORA_FREQ, (uint8_t*)&sx1262Instance->rf_frequency_hz, sizeof(sx1262Instance->rf_frequency_hz),
                  &file_len);
     if((true == res) && (4 == file_len)) {
+#ifdef HAS_SX1262_DEBUG
         LOG_INFO(LORA, "Set rf freq from params %u Hz", sx1262Instance->rf_frequency_hz);
+#endif
     } else {
+#ifdef HAS_SX1262_DEBUG
         LOG_WARNING(LORA, "Set default freq %u Hz", DFLT_FREQ_MHZ);
+#endif
         sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
         res = true;
+    }
+
+    res = mm_get(PAR_ID_LORA_OUT_POWER, (uint8_t*)&sx1262Instance->output_power, sizeof(sx1262Instance->output_power),
+                 &file_len);
+    if( (true==res) && (1==file_len) ){
+#ifdef HAS_SX1262_DEBUG
+        LOG_INFO(LORA, "Set output power from params [%u] %d dBm", sx1262Instance->output_power, sx1262Instance->output_power);
+#endif
+    } else {
+#ifdef HAS_SX1262_DEBUG
+        LOG_WARNING(LORA, "Set default output power [%u] %d dBm",DFLT_FREQ_MHZ, DFLT_FREQ_MHZ);
+#endif
+        sx1262Instance->output_power=DFLT_OUT_POWER;
     }
 
 #endif /*HAS_FLASH_FS*/
@@ -961,7 +982,6 @@ bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
     if(NULL != out_status) {
         uint8_t rx_array[2] = {0xFF, 0xFF};
-        // memset(rx_array, 0xFF, sizeof(rx_array));
         res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
         *out_status = rx_array[1];
     }
@@ -1198,6 +1218,7 @@ bool sx1262_process(void) {
         Sx1262Instance.busy_cnt = 0;
         res = sx1262_init();
     }
+
     uint32_t cur_time_stamp_ms = get_time_ms32();
     uint32_t tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
     if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == Sx1262Instance.tx_done)) {
@@ -1205,13 +1226,8 @@ bool sx1262_process(void) {
         res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &txNode);
         if((true == res)) {
             if((0 < txNode.size) && (txNode.pArr)) {
-                res = is_rtcm3_frame(txNode.pArr, txNode.size);
-                if(res){
-                    res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
-                    if(res) {
-                        LoRaInterface.tx_ok_cnt++;
-                    }
-                }else{
+                res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
+                if(res) {
                     LoRaInterface.tx_ok_cnt++;
                 }
             }
@@ -1220,9 +1236,9 @@ bool sx1262_process(void) {
             }
         }
     }
+
     res = sx1262_get_status(&tempSx1262Instance.dev_status);
     if(res) {
-
         res = true;
         Sx1262Instance.dev_status = tempSx1262Instance.dev_status;
 
@@ -1239,7 +1255,7 @@ bool sx1262_process(void) {
             res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
             if(res) {
 #ifdef HAS_SX1262_DEBUG_RX
-                res = print_mem(rx_payload, rx_size, true, true);
+                res = print_mem(rx_payload, rx_size, false, true);
 #endif /*HAS_SX1262_DEBUG_RX*/
                 res = lora_proc_payload(rx_payload, rx_size);
             }
@@ -1270,9 +1286,10 @@ bool sx1262_process(void) {
             res = false;
             break;
         }
-
         Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
+
         res = sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
+
         res = sx1262_reset_stats();
     }
 
@@ -1283,7 +1300,6 @@ bool sx1262_process(void) {
         Sx1262Instance.rx_payload_len = tempSx1262Instance.rx_payload_len;
         Sx1262Instance.rx_buffer_pointer = tempSx1262Instance.rx_buffer_pointer;
     }
-
 #ifdef HAS_SX1262_POLL
 
     tempSx1262Instance.rx_status = 0;

@@ -27,6 +27,12 @@
 #define TIM_COMMANDS
 #endif
 
+#ifdef HAS_TCAN4550
+#include "tcan4550_commands.h"
+#else
+#define TCAN4550_COMMANDS
+#endif
+
 #ifdef HAS_RTC
 #include "rtc_commands.h"
 #else
@@ -93,6 +99,7 @@
     BOOT_COMMANDS                                                                                                      \
     CLOCK_COMMANDS                                                                                                     \
     DAC_COMMANDS                                                                                                       \
+    TCAN4550_COMMANDS                                                                                                  \
     FLASH_COMMANDS                                                                                                     \
     GPIO_COMMANDS                                                                                                      \
     I2C_COMMANDS                                                                                                       \

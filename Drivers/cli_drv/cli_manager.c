@@ -91,7 +91,6 @@ bool cli_init(void) {
     return res;
 }
 
-
 bool cli_process(void) {
     static uint8_t rx_byte=0;
     if(true == huart[UART_NUM_CLI].rx_int) {

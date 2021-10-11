@@ -47,6 +47,7 @@ typedef enum eLog_facility_t {
   UNKNOWN_FACILITY=0,
   ADC,
   BATT ,
+  CAN,
   BOOT,
   DAC,
   DIAG,

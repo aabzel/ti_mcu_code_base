@@ -1,4 +1,3 @@
-
 /*FSM for RTCM3 protocol*/
 #include "rtcm3_protocol.h"
 

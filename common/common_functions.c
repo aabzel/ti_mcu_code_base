@@ -77,6 +77,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_GENERIC
     measure_task_interval(TASK_ID_BOOT, 2000000, boot_proc, loop_start_time_us);
 #endif
+
 #ifdef HAS_DAC
     measure_task_interval(TASK_ID_DAC, 100000, dac_proc, loop_start_time_us);
 #endif
