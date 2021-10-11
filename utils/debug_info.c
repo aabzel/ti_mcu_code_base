@@ -203,7 +203,7 @@ bool print_bin(uint8_t* buff, uint16_t size, uint16_t indent) {
     return res;
 }
 
-bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
+bool print_mem(uint8_t* addr, uint32_t len, bool is_ascii, bool new_line) {
     bool res = false;
     uint32_t pos = 0;
     uint32_t print_len = 0;
@@ -215,7 +215,9 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
             res = true;
             hex2ascii(&addr[pos], 16, hexLine, (uint32_t)sizeof(hexLine));
             io_printf("%s", hexLine);
-            print_ascii_line((char*)&addr[pos], 16, 4);
+            if(is_ascii) {
+                print_ascii_line((char*)&addr[pos], 16, 4);
+            }
             print_len += 16;
             io_printf(CRLF);
         }
@@ -228,7 +230,9 @@ bool print_mem(uint8_t* addr, uint32_t len, bool new_line) {
         pos = len / 16;
         hex2ascii(&addr[print_len], rem, hexLine, sizeof(hexLine));
         io_printf("%s", hexLine);
-        print_ascii_line((char*)&addr[print_len], rem, 2 * (16 - rem) + 4);
+        if(is_ascii) {
+            print_ascii_line((char*)&addr[print_len], rem, 2 * (16 - rem) + 4);
+        }
     }
     if(true == new_line) {
         io_printf(CRLF);

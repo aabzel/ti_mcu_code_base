@@ -1,0 +1,10 @@
+
+
+исключение происходит в функции proc_uarts
+proc_uart
+ubx_proc_byte
+
+
+
+-m "Fix static analysys errors"
+

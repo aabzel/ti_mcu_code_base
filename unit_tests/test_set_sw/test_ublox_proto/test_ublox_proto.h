@@ -7,9 +7,12 @@ extern "C" {
 
 #include <stdbool.h>
 
-bool test_ublox_proto(void);
+bool test_ublox_proto_err_len(void);
+bool test_ublox_proto_set_baud(void);
 
-#define UBLOX_PROTO_TEST_SUIT {"ublox_proto", test_ublox_proto},
+#define UBLOX_PROTO_TEST_SUIT {"ublox_proto_set_baud", test_ublox_proto_set_baud},\
+                              {"ublox_proto_err_len", test_ublox_proto_err_len},
+
 
 #ifdef __cplusplus
 }

@@ -88,6 +88,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_UTILS_FLOAT                                                                                              \
     TEST_SUIT_UTILS_BIT                                                                                                \
     TEST_SUIT_UTILS_BYTE                                                                                               \
+    TEST_SUIT_CONVERT                                                                                                  \
     TEST_SUIT_UTILS_TIME                                                                                               \
     TEST_SUIT_CRC                                                                                                      \
     TEST_SUIT_FIFO_INDEXER                                                                                             \
@@ -96,8 +97,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_RTCM3_PROTO                                                                                              \
     TEST_SUIT_UTILS_TIME                                                                                               \
     TEST_SUIT_SYSTEM                                                                                                   \
-    NMEA_PROTO_TEST_SUIT                                                                                               \
-    TEST_SUIT_CONVERT                                                                                                  \
+    TEST_SUIT_NMEA_PROTO                                                                                               \
     STRING_UTILS_TEST_SUIT                                                                                             \
     UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init}, {"uspec_behavior", test_uspec_behavior},                     \
         {"array", test_array}, {"types", test_types}, {"64bit_mult", test_64bit_mult},                                 \

@@ -45,6 +45,7 @@ typedef enum {
 #endif /* TASKS */
 
 #ifdef TASKS
+uint16_t task_cnt(void);
 uint64_t calc_total_run_time(void) ;
 bool task_init(void);
 bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_func)(void),

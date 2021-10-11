@@ -40,7 +40,7 @@ bool rtcm3_lora_rx_proc(uint8_t* const payload, uint32_t size) {
     return res;
 }
 
-bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
+bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
     bool res = false;
     char* substr = NULL;
     uint16_t offset = strlen(CMD_PREFIX);
@@ -64,13 +64,15 @@ bool lora_proc_payload(uint8_t* rx_payload, uint8_t rx_size) {
 
 bool lora_init(void) {
     bool res = false;
+    LoRaInterface.tx_ok_cnt = 0;
+    LoRaInterface.tx_done_cnt = 0;
     res = fifo_arr_init(&LoRaInterface.FiFoLoRaTx, &ArrLoRaTxNode[0], ARRAY_SIZE(ArrLoRaTxNode));
     return res;
 }
 
 bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
     bool res = false;
-    if((NULL!=tx_payload) && (len<=RTCM3_RX_FRAME_SIZE)) {
+    if((NULL != tx_payload) && (len <= RTCM3_RX_FRAME_SIZE)) {
         uint8_t* data = memdup((uint8_t*)tx_payload, len);
         if(data) {
             Array_t txNode = {.size = 0, .pArr = NULL};
@@ -80,10 +82,10 @@ bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
             if(false == res) {
                 LoRaInterface.err_cnt++;
             }
-        }else{
+        } else {
             LoRaInterface.err_cnt++;
         }
-    }else{
+    } else {
         LoRaInterface.err_cnt++;
     }
     return res;

@@ -9,7 +9,7 @@ extern "C" {
 
 bool test_nmea_proto(void);
 
-#define NMEA_PROTO_TEST_SUIT {"nmea_proto", test_nmea_proto},
+#define TEST_SUIT_NMEA_PROTO {"nmea_proto", test_nmea_proto},
 
 #ifdef __cplusplus
 }

@@ -326,22 +326,22 @@ bool test_convert_try_str2float(void) {
     float* valueNull = NULL;
 
     EXPECT_TRUE(try_str2float("1", &value));
-    EXPECT_NEAR(1.0, value, 0.01);
+    EXPECT_NEAR(1.0f, value, 0.01f);
 
     EXPECT_TRUE(try_str2float("2e10", &value));
     EXPECT_NEAR(2e10, value, 0.01);
 
     EXPECT_TRUE(try_str2float(".1", &value));
-    EXPECT_NEAR(0.1, value, 0.01);
+    EXPECT_NEAR(0.1f, value, 0.01);
 
     EXPECT_TRUE(try_str2float("0.1", &value));
-    EXPECT_NEAR(0.1, value, 0.01);
+    EXPECT_NEAR(0.1f, value, 0.01);
 
     EXPECT_TRUE(try_str2float("3.", &value));
-    EXPECT_NEAR(3.0, value, 0.01);
+    EXPECT_NEAR(3.0f, value, 0.01);
 
     EXPECT_TRUE(try_str2float("0", &value));
-    EXPECT_NEAR(0.0, value, 0.01);
+    EXPECT_NEAR(0.0f, value, 0.01);
 
     EXPECT_TRUE(try_str2float(".2e35", &value));
     EXPECT_NEAR(2e34, value, 1e27);

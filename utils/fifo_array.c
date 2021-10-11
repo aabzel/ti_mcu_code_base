@@ -19,8 +19,6 @@ bool fifo_arr_init(FifoArray_t* const instance, Array_t* const heap, fifo_index_
         instance->pDataArray = heap;
         instance->init_done = true;
         res = true;
-    } else {
-        instance->init_done = false;
     }
     return res;
 }

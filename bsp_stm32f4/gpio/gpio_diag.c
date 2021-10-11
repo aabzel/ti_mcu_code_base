@@ -268,9 +268,9 @@ const char* get_pin_dir(uint8_t dioNumber) {
     static char dir[4] = "";
     memset(dir, 0x00, sizeof(dir));
     if(GPIO_OUTPUT_ENABLE == out_en) {
-        snprintf(dir, sizeof(dir), "%so", dir);
+        snprintf(dir, sizeof(dir), "o");
     } else {
-        snprintf(dir, sizeof(dir), "%si", dir);
+        snprintf(dir, sizeof(dir), "i");
     }
     return dir;
 }

@@ -34,13 +34,17 @@ bool rtcm3_reset_rx(Rtcm3Porotocol_t* instance) {
     return true;
 }
 
-bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, uint8_t interface) {
+bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, uint8_t interface, bool lora_fwd) {
     rtcm3_reset_rx(instance);
-    memset(&Rtcm3Porotocol, 0x0, sizeof(Rtcm3Porotocol));
-    instance->ack_cnt = 0;
-    instance->interface = interface;
+    memset(instance, 0x0, sizeof(Rtcm3Porotocol_t));
     memset(instance->fix_frame, 0x00, RTCM3_RX_FRAME_SIZE);
     memset(instance->rx_frame, 0x00, RTCM3_RX_FRAME_SIZE);
+#ifdef HAS_DEBUG
+    instance->lora_fwd = false;
+#else
+    instance->lora_fwd = lora_fwd;
+#endif
+    instance->interface = interface;
     return true;
 }
 
@@ -50,6 +54,9 @@ static bool rtcm3_proc_wait_preamble(Rtcm3Porotocol_t* instance, uint8_t rx_byte
         instance->rx_state = RTCM3_WAIT_LEN;
         instance->rx_frame[0] = rx_byte;
         instance->load_len = 1;
+#ifdef HAS_DEBUG
+        instance->preamble_cnt++;
+#endif
         res = true;
     } else {
         rtcm3_reset_rx(instance);
@@ -75,13 +82,14 @@ static bool rtcm3_proc_wait_len(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
         instance->rx_state = RTCM3_WAIT_PAYLOAD;
         res = true;
 #ifdef HAS_DEBUG
-        instance->max_len = max16u(instance->max_len,instance->exp_len.field.len);
-        instance->min_len = min16u(instance->min_len ,instance->exp_len.field.len);
+        instance->max_len = max16u(instance->max_len, instance->exp_len.field.len);
+        instance->min_len = min16u(instance->min_len, instance->exp_len.field.len);
 #endif
-        if (RTCM3_RX_FRAME_SIZE < instance->exp_len.field.len) {
+        if(RTCM3_RX_FRAME_SIZE < instance->exp_len.field.len) {
             res = false;
-#ifdef HAS_MCU
-            LOG_ERROR(SYS,"TooBig frame %u byte",instance->exp_len.field.len);
+            instance->err_cnt++;
+#ifdef HAS_DEBUG_RTCM3
+            LOG_ERROR(SYS, "TooBig frame %u byte", instance->exp_len.field.len);
 #endif
             rtcm3_reset_rx(instance);
         }
@@ -139,13 +147,19 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
             /*Send RTCM3 frame to LoRa*/
 #ifdef HAS_LORA
-            if(RT_UART_ID == instance->interface) {
+            if((RT_UART_ID == instance->interface) && (true==instance->lora_fwd)) {
                 res = lora_send_queue(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE);
+                if(false==res){
+                    instance->lora_lost_pkt_cnt++;
+                }
             }
 #endif /*HAS_LORA*/
 #ifdef HAS_UART1
             if(RT_LORA_ID == instance->interface) {
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
+                if(false==res){
+                    instance->uart_lost_pkt_cnt++;
+                }
             }
 #endif /*HAS_UART1*/
             rtcm3_reset_rx(instance);
@@ -178,5 +192,41 @@ bool rtcm3_proc_byte(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
         rtcm3_reset_rx(instance);
         break;
     }
+    return res;
+}
+
+bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
+    bool res = true;
+    Rtcm3Len_t ex_len;
+    ex_len.len16 = 0;
+    uint32_t read_crc24 = 0;
+    uint16_t frame_length = 0;
+    uint16_t crc24_index = 0;
+    if((NULL == arr) || (0 == len)) {
+        res = false;
+    }
+
+    if(res) {
+        if(RTCM3_PREAMBLE != arr[0]) {
+            res = false;
+        }
+    }
+    if(res) {
+        ex_len.len8[0] = arr[2];
+        ex_len.len8[1] = arr[1];
+        if(0 == ex_len.field.len) {
+            res = false;
+        } else {
+            frame_length = ex_len.field.len + RTCM3_HEADER_SIZE;
+        }
+    }
+
+    if(res) {
+        crc24_index = RTCM3_HEADER_SIZE + ex_len.field.len;
+        memcpy(&read_crc24, &arr[crc24_index], RTCM3_CRC24_SIZE);
+        read_crc24 = reverse_byte_order_uint24(read_crc24);
+        res = crc24_q_check(arr, frame_length, read_crc24);
+    }
+
     return res;
 }

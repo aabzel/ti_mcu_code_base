@@ -52,6 +52,7 @@ bool test_sx1262_packet_type(void) {
 static bool test_sx1262_fifo_one(uint8_t pattern) {
     uint8_t write_payload[FIFO_SIZE] = {0};
     uint8_t read_payload[FIFO_SIZE] = {0};
+    memset(read_payload, 0xFF, sizeof(read_payload));
     memset(write_payload, pattern, sizeof(write_payload));
 
     EXPECT_TRUE(sx1262_write_buffer(0, write_payload, FIFO_SIZE));

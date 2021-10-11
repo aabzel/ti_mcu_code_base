@@ -1,8 +1,9 @@
+#include "data_utils.h"
+
 #include <math.h>
 #include <string.h>
 
 #include "array.h"
-#include "data_utils.h"
 
 uint8_t uint16_to_uint8_limiter(uint16_t in_val) {
     uint8_t out_val = 0xFF;
