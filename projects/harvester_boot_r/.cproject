@@ -66,6 +66,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/clocks"/>
@@ -217,7 +218,6 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="utils/utils_string/str_utils_ex.c|common/spi_common.c|protocols/rtcm3_protocol|utils/crc/crc8_sae_j1850.c|utils/crc/crc24_q.c|utils/utils_file|startup_cc13x2_cc26x2_ccs.c|Drivers/tcan4550_q1|Drivers/mx25l6433f|Drivers/ext_ram_simulator|protocols/nmea_protocol|protocols/ubx_protocol|bsp_cc26x2/adc|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/spi|bsp_cc26x2/i2c|Drivers/sx1262|unit_tests|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_hw/test_spi — копия"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/utils_test"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_ublox_proto"/>
@@ -230,6 +230,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_crc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set - Copy"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash_fs — копия"/>
+						<entry excluding="Drivers/lora|utils/utils_string/str_utils_ex.c|common/spi_common.c|protocols/rtcm3_protocol|utils/crc/crc8_sae_j1850.c|utils/crc/crc24_q.c|utils/utils_file|startup_cc13x2_cc26x2_ccs.c|Drivers/tcan4550_q1|Drivers/mx25l6433f|Drivers/ext_ram_simulator|protocols/nmea_protocol|protocols/ubx_protocol|bsp_cc26x2/adc|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/spi|bsp_cc26x2/i2c|Drivers/sx1262|unit_tests|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

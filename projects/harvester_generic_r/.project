@@ -36,6 +36,11 @@
 			<locationURI>$%7BWORKSPACE_LOC%7D/Drivers</locationURI>
 		</link>
 		<link>
+			<name>board_harvester_v1.h</name>
+			<type>1</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/boards/board_harvester_v1.h</locationURI>
+		</link>
+		<link>
 			<name>bsp_cc26x2</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/bsp_cc26x2</locationURI>
