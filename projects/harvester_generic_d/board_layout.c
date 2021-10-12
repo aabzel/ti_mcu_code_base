@@ -51,6 +51,7 @@ GPIO_PinConfig gpioPinConfigs[GPIO_COUNT] = {
 /*12*/   DIO_LEN | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* LEN */
 /*13*/   DIO_BATT_SCL | GPIO_CFG_IN_NOPULL , /* BATT_SCL */
 /*14*/   DIO_BATT_SDA | GPIO_CFG_IN_NOPULL , /* BATT_SDA */
+/*15*/   DIO_CAN_RST | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW , /* CAN_RST */
 };
 
 /*line order matters!*/
@@ -70,6 +71,7 @@ PIN_Config BoardGpioInitTable[GPIO_COUNT + 1] = {
 /*12*/   DIO_LEN | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,/* LEN */
 /*13*/   DIO_BATT_SCL | PIN_INPUT_EN | PIN_NOPULL,/* BATT_SCL */
 /*14*/   DIO_BATT_SDA | PIN_INPUT_EN | PIN_NOPULL,/* BATT_SDA */
+/*15*/   DIO_CAN_RST | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,/* CAN_RST */
          PIN_TERMINATE
 };
 
@@ -89,5 +91,6 @@ GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
 /*11*/  NULL,
 /*12*/  NULL,
 /*13*/  NULL,
-/*14*/  NULL
+/*14*/  NULL,
+/*15*/  NULL,/* CAN_RST */
 };

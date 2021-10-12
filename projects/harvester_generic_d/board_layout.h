@@ -7,7 +7,7 @@
 #include "sys_config.h"
 
 #define DIO_CNT 24
-#define GPIO_COUNT 15U
+#define GPIO_COUNT 16U
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {
@@ -23,6 +23,7 @@ typedef struct xPin_t {
 
 #define CONF_GPIO_BATT_SCL 13
 #define CONF_GPIO_BATT_SDA 14
+#define CONF_GPIO_CAN_RST 15
 #define CONF_GPIO_LED_0 0
 #define CONF_GPIO_LED_1 1
 #define CONF_GPIO_LEN 12

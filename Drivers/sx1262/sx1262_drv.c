@@ -27,6 +27,7 @@ speed up to 16 MHz
 #include "rtcm3_protocol.h"
 #include "none_blocking_pause.h"
 #include "spi_drv.h"
+#include "sx1262_diag.h"
 #include "sys_config.h"
 
 #ifndef HAS_SPI
@@ -49,11 +50,11 @@ bool sx1262_chip_select(bool state) {
     bool res = false;
     if(true == state) {
         GPIO_writeDio(DIO_SX1262_SS, 0);
-        GPIO_writeDio(DIO_SS1_CAN, 1);
+        GPIO_writeDio(DIO_CAN_SS, 1);
         res = true;
     } else if(false == state) {
         GPIO_writeDio(DIO_SX1262_SS, 1);
-        GPIO_writeDio(DIO_SS1_CAN, 1);
+        GPIO_writeDio(DIO_CAN_SS, 1);
         res = true;
     } else {
         res = false;
