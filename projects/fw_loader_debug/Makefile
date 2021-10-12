@@ -1,0 +1,66 @@
+MK_PATH:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+#@echo $(error MK_PATH= $(MK_PATH))
+PROJECT_ROOT:= $(MK_PATH)../
+
+INCDIR			+= -I$(PROJECT_ROOT)
+
+BUILDDIR := $(PROJECT_ROOT)/Build
+
+SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
+#@echo $(error SRC_PATH=$(SRC_PATH))
+
+OBJDIR := $(SRC_PATH)obj
+# the compiler to use
+#CC = clang
+CC = gcc
+
+# compiler flags:
+#  -g    adds debugging information to the executable file
+#  -Wall turns on most, but not all, compiler warnings
+CFLAGS  += -g
+#CFLAGS += -Og
+CFLAGS  += -O0
+#CFLAGS  += -Wall
+#CFLAGS  +=-pedantic
+#CFLAGS += -ftime-report
+
+#OPT += -DSORT_LIST
+OPT += -DHAS_UTESTS
+OPT += -DX86_64
+         
+#files to link:
+LFLAGS= -static
+  
+EXECUTABLE=fw_loader_d
+
+include $(PROJECT_ROOT)utils/utils_file/utils_file.mk
+include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
+include $(PROJECT_ROOT)utils/utils.mk
+include $(PROJECT_ROOT)utils/utils_string/string_utils.mk
+include $(PROJECT_ROOT)win_utils/win_utils.mk
+#include $(PROJECT_ROOT)tests/tests.mk
+SOURCES += main.c
+# the name to use for both the target source file, and the output file:
+#include $(PROJECT_ROOT)system_explore/system_explore.mk
+
+
+#@echo $(error SOURCES= $(SOURCES))
+INCDIR := $(subst /cygdrive/c/,C:/, $(INCDIR))
+#@echo $(error INCDIR= $(INCDIR))
+OBJ := $(patsubst %.c, %.o, $(SOURCES))
+OBJ := $(subst /cygdrive/c/,C:/, $(OBJ))
+#@echo $(error OBJ= $(OBJ))
+
+.PHONY:all
+
+all:$(OBJ) $(EXECUTABLE)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCDIR) $(OPT) -c $< -o $@ 
+	#mv *.o $(SRC_PATH)
+
+$(EXECUTABLE): $(OBJ)
+	$(CC) $(OPT) $(CFLAGS) $(INCDIR) $(OBJ) $(LFLAGS) -o $(EXECUTABLE).exe 
+
+clean:
+	rm -r $(EXECUTABLE) $(OBJ) 
