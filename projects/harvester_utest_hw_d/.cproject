@@ -142,14 +142,17 @@
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
 									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
-									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
+									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
-									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
+									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
+									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
+									<listOptionValue builtIn="false" value="HAS_UART0"/>
+									<listOptionValue builtIn="false" value="HAS_UART0_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
 									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
