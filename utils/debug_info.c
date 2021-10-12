@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "byte_utils.h"
+#include "boot_cfg.h"
 #include "convert.h"
 #ifndef USE_HAL_DRIVER
 #include "core_driver.h"

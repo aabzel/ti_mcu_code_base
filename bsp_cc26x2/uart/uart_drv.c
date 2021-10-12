@@ -348,19 +348,34 @@ bool proc_uarts(void) {
     return res;
 }
 
-#ifdef HAS_UART1_FWD
-bool proc_uart1_fwd(void) {
+#ifdef HAS_UART_FWD
+static bool proc_uart_fwd_ll(uint8_t uart_num) {
     bool res = false;
     fifo_index_t read_size = 0;
     char txData[UART_FIFO_TX_SIZE * 2] = {0};
-    res = fifo_pull_array(&huart[UART_NUM_CLI].TxFifo, txData, &read_size);
+    res = fifo_pull_array(&huart[uart_num].TxFifo, txData, &read_size);
     if((true == res) && (0 < read_size)) {
-        res = uart_send(UART_NUM_CLI, (uint8_t*)txData, read_size, false);
+        res = uart_send(uart_num, (uint8_t*)txData, read_size, false);
     } else {
     }
     return res;
 }
 #endif
+
+#ifdef HAS_UART0_FWD
+bool proc_uart0_fwd(void) {
+    bool res =  proc_uart_fwd_ll(0);
+    return res;
+}
+#endif /*HAS_UART0_FWD*/
+
+#ifdef HAS_UART1_FWD
+bool proc_uart1_fwd(void) {
+    bool res =  proc_uart_fwd_ll(1);
+    return res;
+}
+#endif /*HAS_UART1_FWD*/
+
 
 static bool init_uart_ll(uint8_t uart_num, char* in_name) {
     bool res = false;

@@ -37,6 +37,11 @@
 			<locationURI>$%7BWORKSPACE_LOC%7D/Drivers</locationURI>
 		</link>
 		<link>
+			<name>boards</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/boards</locationURI>
+		</link>
+		<link>
 			<name>bsp_cc26x2</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/bsp_cc26x2</locationURI>

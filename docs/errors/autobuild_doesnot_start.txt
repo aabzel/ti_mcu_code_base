@@ -1,0 +1,8 @@
+C:\ti\ccs1040\ccs\eclipse\eclipsec
+
+org.eclipse.core.internal.resources.ResourceException( )[372]: java.lang.Exception: Project is not open.
+
+
+
+
+https://e2e.ti.com/support/tools/code-composer-studio-group/ccs/f/code-composer-studio-forum/980648/failed-to-build-by-eclipsec

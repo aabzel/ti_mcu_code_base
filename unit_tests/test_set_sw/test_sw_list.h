@@ -45,13 +45,13 @@ extern "C" {
 #ifdef HAS_TEST_SUIT_NMEA_PROTO
 #include "test_nmea_proto.h"
 #else
-#define NMEA_PROTO_TEST_SUIT
+#define TEST_SUIT_NMEA_PROTO
 #endif
 
 #ifdef HAS_STRING_UTILS_TEST_SUIT
 #include "test_string_utils.h"
 #else
-#define STRING_UTILS_TEST_SUIT
+#define TEST_SUIT_STRING_UTILS
 #endif
 
 #ifdef HAS_TEST_SUIT_RTCM3_PROTO
@@ -98,8 +98,9 @@ bool test_uspec_behavior(void);
     TEST_SUIT_UTILS_TIME                                                                                               \
     TEST_SUIT_SYSTEM                                                                                                   \
     TEST_SUIT_NMEA_PROTO                                                                                               \
-    STRING_UTILS_TEST_SUIT                                                                                             \
-    UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init}, {"uspec_behavior", test_uspec_behavior},                     \
+    TEST_SUIT_STRING_UTILS                                                                                             \
+    UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init},                                                              \
+   {"uspec_behavior", test_uspec_behavior},                     \
         {"array", test_array}, {"types", test_types}, {"64bit_mult", test_64bit_mult},                                 \
         {"flt_u16", test_float_to_uint16}, {"utoa_bin8", test_utoa_bin8},                                              \
         {"type_transform", test_type_transformation},

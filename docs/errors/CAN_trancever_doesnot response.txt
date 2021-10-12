@@ -1,0 +1,22 @@
+
+Can not read registers of TCAN4550.
+
+
+команда чтения DEVICE_ID выдает сплошные нули
+CS в нуле при передаче
+На проводе MISO нет сигнала при SCLK.
+
+
+
+
+Причина
+Чип был под ресетом
+
+
+
+
+git commit -m "Add CAN FD driver. LoRa Power param."
+
+
+
+

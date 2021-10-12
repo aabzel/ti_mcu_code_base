@@ -1,3 +1,7 @@
+#ifndef BOARD_HARVESTER_V1_H
+#define BOARD_HARVESTER_V1_H
+
+/*DIO config */
 #define DIO_3V3_CTRL 21U
 #define DIO_BATT_ADC 25U
 #define DIO_BATT_SCL 5U
@@ -33,3 +37,13 @@
 #define DIO_TDO 16U
 #define DIO_UART_CLI_RX	13U
 #define DIO_UART_CLI_TX	12U
+
+
+
+#define VOL_DIV_SCALE_PWR 11.0f
+#define VOL_DIV_SCALE_ACC 1.47619f
+
+#define BOARD_NAME "Harvester"
+#define MCU_NAME "CC2642R1F"
+
+#endif /* BOARD_HARVESTER_V1_H  */

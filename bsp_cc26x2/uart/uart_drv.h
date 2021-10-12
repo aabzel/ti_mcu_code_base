@@ -29,7 +29,12 @@ extern const uint_least8_t CONFIG_UART_0_CONST;
 
 extern const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT];
 
+#ifdef HAS_UART0_FWD
+bool proc_uart0_fwd(void);
+#endif
+#ifdef HAS_UART1_FWD
 bool proc_uart1_fwd(void);
+#endif
 bool uart_init(void);
 bool uart_deinit(uint8_t uart_num);
 bool is_uart_valid(uint8_t uart_num);

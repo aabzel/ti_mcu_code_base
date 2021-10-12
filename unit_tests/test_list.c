@@ -36,7 +36,3 @@ uint32_t get_test_list_cnt(void) {
     cnt = ARRAY_SIZE(test_list);
     return cnt;
 }
-
-
-
-

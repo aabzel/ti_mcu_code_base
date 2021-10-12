@@ -11,7 +11,7 @@ bool test_string_utils(void);
 /*
 tsr string_utils+
 */
-#define STRING_UTILS_TEST_SUIT {"string_utils", test_string_utils},
+#define TEST_SUIT_STRING_UTILS {"string_utils", test_string_utils},
 
 #ifdef __cplusplus
 }

@@ -6,8 +6,8 @@
 
 #define UART_NUM_CLI 0U
 #define UART_NUM_ZED_F9P 1U
-#define WDT_TIMEOUT_MS 10000
+#define WDT_TIMEOUT_MS 10000U
 
-#define CLI_UART_BAUD_RATE 460800 /* bit/s */
+#define CLI_UART_BAUD_RATE 460800U /* bit/s */
 
 #endif /* SYS_CONFIG_H  */

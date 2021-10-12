@@ -1,0 +1,13 @@
+
+Загрузчик в суперцикле свалился в FaultISR в proc_uarts
+
+
+    uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[1].baseAddr); // 9
+    if(uart_error) {
+        res = uart_poll(1);
+    }
+	
+	
+	
+		  
+		  
