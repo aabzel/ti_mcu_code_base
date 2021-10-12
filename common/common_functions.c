@@ -13,7 +13,9 @@
 #endif /*HAS_CLI*/
 
 #include "boot_driver.h"
+#ifdef HAS_GPIO
 #include "gpio_drv.h"
+#endif
 #include "health_monitor.h"
 #include "hw_init.h"
 #include "io_utils.h"
