@@ -364,18 +364,17 @@ static bool proc_uart_fwd_ll(uint8_t uart_num) {
 
 #ifdef HAS_UART0_FWD
 bool proc_uart0_fwd(void) {
-    bool res =  proc_uart_fwd_ll(0);
+    bool res = proc_uart_fwd_ll(0);
     return res;
 }
 #endif /*HAS_UART0_FWD*/
 
 #ifdef HAS_UART1_FWD
 bool proc_uart1_fwd(void) {
-    bool res =  proc_uart_fwd_ll(1);
+    bool res = proc_uart_fwd_ll(1);
     return res;
 }
 #endif /*HAS_UART1_FWD*/
-
 
 static bool init_uart_ll(uint8_t uart_num, char* in_name) {
     bool res = false;

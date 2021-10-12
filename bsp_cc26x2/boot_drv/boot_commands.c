@@ -9,9 +9,9 @@
 
 #include "base_cmd.h"
 #include "bit_utils.h"
+#include "boot_cfg.h"
 #include "boot_driver.h"
 #include "convert.h"
-#include "boot_cfg.h"
 #include "core_driver.h"
 #include "ctype.h"
 #include "data_utils.h"

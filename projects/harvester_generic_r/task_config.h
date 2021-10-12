@@ -11,6 +11,7 @@
   TASK(NMEA)                                                                   \
   TASK(RF)                                                                     \
   TASK(UART)                                                                   \
+  TASK(UART0_FWD)                                                              \
   TASK(UART1_FWD)                                                              \
   TASK(WDT)                                                                    \
   TASK(UBX)

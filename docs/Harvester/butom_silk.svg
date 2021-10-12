@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="616.44559"
-     inkscape:cy="568.71588"
+     inkscape:zoom="22.4"
+     inkscape:cx="333.81696"
+     inkscape:cy="590.3125"
      inkscape:document-units="mm"
      inkscape:current-layer="layer6"
      inkscape:document-rotation="0"
@@ -125,15 +125,15 @@
          style="fill:#ffff00;stroke-width:0.0958859">TP24</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.45582px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0613956"
+       style="font-style:normal;font-weight:normal;font-size:1.09844px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.027461"
        x="94.12188"
-       y="152.85962"
+       y="151.85284"
        id="text5193"><tspan
          sodipodi:role="line"
          id="tspan5191"
          x="94.12188"
-         y="152.85962"
-         style="fill:#ffff00;stroke-width:0.0613956">TP96</tspan></text>
+         y="151.85284"
+         style="fill:#ffff00;stroke-width:0.027461">TP96</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.75965px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.118991"
@@ -299,5 +299,181 @@
          style="fill:#ffff00;stroke-width:0.0895232"
          x="144.76488"
          y="159.38597">TP83</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.87422px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0468557"
+       x="99.884575"
+       y="147.23532"
+       id="text1615"><tspan
+         sodipodi:role="line"
+         id="tspan1613"
+         style="fill:#ffff00;stroke-width:0.0468557"
+         x="99.884575"
+         y="147.23532">TP35</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.971444px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0242862"
+       x="99.857475"
+       y="145.57579"
+       id="text4655"><tspan
+         sodipodi:role="line"
+         id="tspan4653"
+         style="fill:#ffff00;stroke-width:0.0242862"
+         x="99.857475"
+         y="145.57579">SS1_CAN</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.8191px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.422864"
+       x="99.998322"
+       y="159.12798"
+       id="text7883"><tspan
+         sodipodi:role="line"
+         id="tspan7881"
+         style="font-size:2.8191px;fill:#ffff00;stroke-width:0.422864"
+         x="99.998322"
+         y="159.12798">TP41</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.44334px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0610839"
+       x="100.30501"
+       y="161.13449"
+       id="text10965"><tspan
+         sodipodi:role="line"
+         id="tspan10963"
+         style="fill:#ffff00;stroke-width:0.0610839"
+         x="100.30501"
+         y="161.13449">SCLK</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.79683px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0949209"
+       x="117.38213"
+       y="168.26523"
+       id="text13559"><tspan
+         sodipodi:role="line"
+         id="tspan13557"
+         style="fill:#ffff00;stroke-width:0.0949209"
+         x="117.38213"
+         y="168.26523">TP72</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.8639px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.139791"
+       x="117.66093"
+       y="169.90779"
+       id="text16335"><tspan
+         sodipodi:role="line"
+         id="tspan16333"
+         style="font-size:1.8639px;fill:#ffff00;stroke-width:0.139791"
+         x="117.66093"
+         y="169.90779">CAN_RST</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.89909px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0974774"
+       x="157.19086"
+       y="95.634659"
+       id="text20155"><tspan
+         sodipodi:role="line"
+         id="tspan20153"
+         style="fill:#ffff00;stroke-width:0.0974774"
+         x="157.19086"
+         y="95.634659">TP57</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.89909px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0974774"
+       x="214.11523"
+       y="116.48166"
+       id="text20155-2"><tspan
+         sodipodi:role="line"
+         id="tspan20153-2"
+         style="fill:#ffff00;stroke-width:0.0974774"
+         x="214.11523"
+         y="116.48166">TP51</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.90605px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0476514"
+       x="157.46193"
+       y="97.578407"
+       id="text22675"><tspan
+         sodipodi:role="line"
+         id="tspan22673"
+         style="fill:#ffff00;stroke-width:0.0476514"
+         x="157.46193"
+         y="97.578407">VCC_7V0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.90605px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0476514"
+       x="216.83159"
+       y="118.16585"
+       id="text22675-2"><tspan
+         sodipodi:role="line"
+         id="tspan22673-2"
+         style="fill:#ffff00;stroke-width:0.0476514"
+         x="216.83159"
+         y="118.16585">VCC_7V0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.90328px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0475819"
+       x="89.602089"
+       y="163.4165"
+       id="text30625"><tspan
+         sodipodi:role="line"
+         id="tspan30623"
+         style="fill:#ffff00;stroke-width:0.0475819"
+         x="89.602089"
+         y="163.4165">TP31</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.917668px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13765"
+       x="89.590782"
+       y="164.28375"
+       id="text32741"><tspan
+         sodipodi:role="line"
+         id="tspan32739"
+         style="font-size:0.917668px;fill:#ffff00;stroke-width:0.13765"
+         x="89.590782"
+         y="164.28375">SS0_LoRa</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="94.635788"
+       y="155.23599"
+       id="text35205"><tspan
+         sodipodi:role="line"
+         id="tspan35203"
+         style="font-size:1.05833px;fill:#ffff00;stroke-width:0.264583"
+         x="94.635788"
+         y="155.23599">TP40</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.96295px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.361106"
+       x="94.610649"
+       y="156.0885"
+       id="text37369"><tspan
+         sodipodi:role="line"
+         id="tspan37367"
+         style="font-size:0.96295px;fill:#ffff00;stroke-width:0.361106"
+         x="94.610649"
+         y="156.0885">MOSI</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="84.099701"
+       y="155.58444"
+       id="text40055"><tspan
+         sodipodi:role="line"
+         id="tspan40053"
+         style="font-size:1.76389px;fill:#ffff00;stroke-width:0.264583"
+         x="84.099701"
+         y="155.58444">TP37</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.65325px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.413314"
+       x="83.923485"
+       y="157.00638"
+       id="text42957"><tspan
+         sodipodi:role="line"
+         id="tspan42955"
+         style="font-size:1.65325px;fill:#ffff00;stroke-width:0.413314"
+         x="83.923485"
+         y="157.00638">MISO</tspan></text>
   </g>
 </svg>

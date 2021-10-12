@@ -122,9 +122,6 @@ bool hw_init(void) {
   res = try_init(watchdog_init(),"WDT") && res;
 #endif /*HAS_WDT*/
 
-#ifdef HAS_TCAN4550
-  res = try_init(tcan4550_init(),"tcan4550") && res;
-#endif /*HAS_TCAN4550*/
 
 #ifdef HAS_TIM
   res = try_init(tim_init(),"TIM") && res;
@@ -149,6 +146,10 @@ bool hw_init(void) {
 #ifdef HAS_SPI
   res = try_init(spi_init(),"SPI") && res;
 #endif /*HAS_SPI*/
+
+  #ifdef HAS_TCAN4550
+  res = try_init(tcan4550_init(),"tcan4550") && res;
+#endif /*HAS_TCAN4550*/
 
 #ifdef HAS_I2C
   res = try_init(i2c_init(),"I2C") && res;

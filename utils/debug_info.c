@@ -3,8 +3,8 @@
 #include <inttypes.h>
 #include <string.h>
 
-#include "byte_utils.h"
 #include "boot_cfg.h"
+#include "byte_utils.h"
 #include "convert.h"
 #ifndef USE_HAL_DRIVER
 #include "core_driver.h"
@@ -116,7 +116,7 @@ bool print_version_s(ostream_t* stream) {
         uint64_t ble_mac = get_ble_mac();
         oprintf(stream, "MAC: 0x%" PRIX64 CRLF, ble_mac);
 #endif /*USE_HAL_DRIVER*/
-        oputs(stream, "by aabdev" CRLF);
+        oputs(stream, "by TG: @aabdev" CRLF);
         oputs(stream, CRLF);
     }
     return res;

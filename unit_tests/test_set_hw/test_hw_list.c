@@ -8,6 +8,7 @@
 #include "debug_info.h"
 #include "diag_sys.h"
 #include "io_utils.h"
+#include "none_blocking_pause.h"
 #include "unit_test_check.h"
 #include "writer_generic.h"
 
@@ -15,6 +16,7 @@ bool test_clock_us(void) {
     uint32_t i = 0;
     uint64_t up_time_us_cur = 0;
     uint64_t up_time_us_prev = 0;
+    wait_in_loop_ms(20) ;
     up_time_us_prev = get_time_us();
     pause_1us();
     for(i = 0; i < 10000; i++) {

@@ -156,67 +156,71 @@ static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
 
 bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
-    SPI_Transaction masterTransaction;
-    uint32_t init_it_cnt = 0;
-    masterTransaction.arg = NULL;
-    masterTransaction.count = tx_array_len;
-    masterTransaction.rxBuf = NULL;
-    masterTransaction.txBuf = (void*)tx_array;
+    if(true == SpiInstance[spi_num].init_done) {
+        SPI_Transaction masterTransaction;
+        uint32_t init_it_cnt = 0;
+        masterTransaction.arg = NULL;
+        masterTransaction.count = tx_array_len;
+        masterTransaction.rxBuf = NULL;
+        masterTransaction.txBuf = (void*)tx_array;
 
-    if(spi_num < SPI_CNT) {
-        init_it_cnt = SpiInstance[spi_num].it_cnt;
-    }
-    switch(spi_num) {
-    case 0:
-        res = SPI_transfer(SpiInstance[0].SpiHandle, &masterTransaction);
-        break;
-    case 1:
-        res = SPI_transfer(SpiInstance[1].SpiHandle, &masterTransaction);
-        break;
-    default:
-        res = false;
-        break;
-    }
-    if(res) {
-        res = spi_wait_tx(spi_num, init_it_cnt);
-        if(res) {
-            SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
+        if(spi_num < SPI_CNT) {
+            init_it_cnt = SpiInstance[spi_num].it_cnt;
         }
-    }
+
+        switch(spi_num) {
+        case 0:
+            res = SPI_transfer(SpiInstance[0].SpiHandle, &masterTransaction);
+            break;
+        case 1:
+            res = SPI_transfer(SpiInstance[1].SpiHandle, &masterTransaction);
+            break;
+        default:
+            res = false;
+            break;
+        }
+        if(res) {
+            res = spi_wait_tx(spi_num, init_it_cnt);
+            if(res) {
+                SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
+            }
+        }
+    } /*true==init_done*/
     return res;
 }
 
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
-    SPI_Transaction masterTransaction;
-    uint32_t init_it_cnt = 0;
+    if(true == SpiInstance[spi_num].init_done) {
+        SPI_Transaction masterTransaction;
+        uint32_t init_it_cnt = 0;
 
-    masterTransaction.arg = NULL;
-    masterTransaction.count = rx_array_len;
-    masterTransaction.rxBuf = (void*)rx_array;
-    masterTransaction.txBuf = NULL;
-    if(spi_num < SPI_CNT) {
-        init_it_cnt = SpiInstance[spi_num].it_cnt;
-    }
+        masterTransaction.arg = NULL;
+        masterTransaction.count = rx_array_len;
+        masterTransaction.rxBuf = (void*)rx_array;
+        masterTransaction.txBuf = NULL;
+        if(spi_num < SPI_CNT) {
+            init_it_cnt = SpiInstance[spi_num].it_cnt;
+        }
 
-    switch(spi_num) {
-    case SPI0_INX:
-        res = SPI_transfer(SpiInstance[0].SpiHandle, &masterTransaction);
-        break;
-    case SPI1_INX:
-        res = SPI_transfer(SpiInstance[1].SpiHandle, &masterTransaction);
-        break;
-    default:
-        res = false;
-        break;
-    }
-    if(res) {
-        res = spi_wait_tx(spi_num, init_it_cnt);
+        switch(spi_num) {
+        case SPI0_INX:
+            res = SPI_transfer(SpiInstance[0].SpiHandle, &masterTransaction);
+            break;
+        case SPI1_INX:
+            res = SPI_transfer(SpiInstance[1].SpiHandle, &masterTransaction);
+            break;
+        default:
+            res = false;
+            break;
+        }
         if(res) {
-            SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
+            res = spi_wait_tx(spi_num, init_it_cnt);
+            if(res) {
+                SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
+            }
         }
     }
-
     return res;
 }
 
@@ -266,7 +270,6 @@ uint8_t spi_get_data_size(SpiName_t spi_num) {
 
 uint8_t spi_get_transmit_int(SpiName_t spi_num) {
     uint8_t val = 0xFF;
-
     if(SpiInstance[spi_num].init_done) {
         uint32_t masked_interrupt_status_reg;
         masked_interrupt_status_reg = HWREG(SpiInstance[spi_num].base_addr + SSI_O_RIS);

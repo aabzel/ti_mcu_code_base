@@ -9,7 +9,6 @@
 #define DIO_CAN_INT 8U
 #define DIO_CAN_RST 9U
 #define DIO_CAN_SS  1U
-#define DIO_GNSS_INT 20U
 #define DIO_GNSS_INT 20U /*GNSS_INT*/
 #define DIO_GNSS_RST_N 18U /*RST_N_GNSS*/
 #define DIO_GNSS_RXD 11U

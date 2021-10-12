@@ -98,9 +98,11 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash_fs"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_params"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_can"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash_fs"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_gpio"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_spi"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_uart"/>

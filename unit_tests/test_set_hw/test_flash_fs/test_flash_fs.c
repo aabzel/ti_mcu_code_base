@@ -7,6 +7,7 @@
 #include "flash_fs.h"
 #include "io_utils.h"
 #include "memory_layout.h"
+#include "none_blocking_pause.h"
 #include "param_ids.h"
 #include "unit_test_check.h"
 
@@ -53,6 +54,7 @@ bool test_flash_fs_set_get_set(void) {
     uint16_t write_value = 34;
     uint16_t read_value = 0;
     uint16_t read_value_len = 0;
+    wait_in_loop_ms(10) ;
     EXPECT_TRUE(mm_set(data_id, (unsigned char*)&write_value, sizeof(write_value)));
 
     EXPECT_TRUE(mm_get(data_id, (unsigned char*)&read_value, sizeof(read_value), &read_value_len));

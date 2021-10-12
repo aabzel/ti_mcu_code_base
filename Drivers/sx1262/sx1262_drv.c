@@ -24,8 +24,8 @@ speed up to 16 MHz
 #ifdef HAS_LORA
 #include "lora_drv.h"
 #endif
-#include "rtcm3_protocol.h"
 #include "none_blocking_pause.h"
+#include "rtcm3_protocol.h"
 #include "spi_drv.h"
 #include "sx1262_diag.h"
 #include "sys_config.h"
@@ -240,10 +240,10 @@ bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
     bool res = false;
-    if((tx_array_len + OPCODE_SIZE) < 2*FIFO_SIZE) {
+    if((tx_array_len + OPCODE_SIZE) < 2 * FIFO_SIZE) {
         res = true;
         /*VLA prohibited here because heap can meet stack in unpredictable time*/
-        static uint8_t tempTxArray[2*FIFO_SIZE];
+        static uint8_t tempTxArray[2 * FIFO_SIZE];
         tempTxArray[0] = op_code;
         uint16_t temp_tx_arr_len = tx_array_len + OPCODE_SIZE;
 
@@ -662,11 +662,11 @@ bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_
 bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len) {
     bool res = false;
     if((NULL != payload) && (payload_len <= FIFO_SIZE)) {
-        static uint8_t tx_array[FIFO_SIZE+1];
+        static uint8_t tx_array[FIFO_SIZE + 1];
         memset(tx_array, 0x00, sizeof(tx_array));
         tx_array[0] = offset;
         memcpy(&tx_array[1], payload, payload_len);
-        res = sx1262_send_opcode(OPCODE_WRITE_BUFFER, tx_array, payload_len+1, NULL, 0);
+        res = sx1262_send_opcode(OPCODE_WRITE_BUFFER, tx_array, payload_len + 1, NULL, 0);
     }
     return res;
 }
@@ -740,7 +740,8 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.coding_rate), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_coding_rate(sx1262Instance->mod_params.coding_rate)) {
-            LOG_INFO(LORA, "Set coding_rate from params [%u] %s",sx1262Instance->mod_params.coding_rate, coding_rate2str(sx1262Instance->mod_params.coding_rate));
+            LOG_INFO(LORA, "Set coding_rate from params [%u] %s", sx1262Instance->mod_params.coding_rate,
+                     coding_rate2str(sx1262Instance->mod_params.coding_rate));
         } else {
             res = false;
         }
@@ -748,7 +749,7 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
         res = false;
     }
     if(false == res) {
-        LOG_WARNING(LORA, "Set default coding rate [%u] %s",DFLT_LORA_CR, coding_rate2str(DFLT_LORA_CR));
+        LOG_WARNING(LORA, "Set default coding rate [%u] %s", DFLT_LORA_CR, coding_rate2str(DFLT_LORA_CR));
         sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
         res = true;
     }
@@ -757,7 +758,7 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.band_width), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_bandwidth(sx1262Instance->mod_params.band_width)) {
-            LOG_INFO(LORA, "Set bandwidth from params [%u] %7.3f kHz",sx1262Instance->mod_params.band_width,
+            LOG_INFO(LORA, "Set bandwidth from params [%u] %7.3f kHz", sx1262Instance->mod_params.band_width,
                      ((float)bandwidth2num(sx1262Instance->mod_params.band_width)) / 100.0f);
         } else {
             res = false;
@@ -766,7 +767,8 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
         res = false;
     }
     if(false == res) {
-        LOG_WARNING(LORA, "Set default bandwidth [%u] %7.3f kHz",DFLT_LORA_BW, ((float)bandwidth2num(DFLT_LORA_BW)) / 100.0f);
+        LOG_WARNING(LORA, "Set default bandwidth [%u] %7.3f kHz", DFLT_LORA_BW,
+                    ((float)bandwidth2num(DFLT_LORA_BW)) / 100.0f);
         sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
         res = true;
     }
@@ -775,7 +777,8 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.spreading_factor), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_spreading_factor(sx1262Instance->mod_params.spreading_factor)) {
-            LOG_INFO(LORA, "Set spreading_factor from params [%u] %u Chips/Symbol",sx1262Instance->mod_params.spreading_factor,
+            LOG_INFO(LORA, "Set spreading_factor from params [%u] %u Chips/Symbol",
+                     sx1262Instance->mod_params.spreading_factor,
                      spreading_factor2num(sx1262Instance->mod_params.spreading_factor));
         } else {
             res = false;
@@ -786,7 +789,7 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 
     if(false == res) {
 #ifdef HAS_SX1262_DEBUG
-        LOG_WARNING(LORA, "Set default spreading_factor [%u] %u Chips/Symbol", DFLT_SF,spreading_factor2num(DFLT_SF));
+        LOG_WARNING(LORA, "Set default spreading_factor [%u] %u Chips/Symbol", DFLT_SF, spreading_factor2num(DFLT_SF));
 #endif
         sx1262Instance->mod_params.spreading_factor = DFLT_SF;
         res = true;
@@ -808,15 +811,16 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 
     res = mm_get(PAR_ID_LORA_OUT_POWER, (uint8_t*)&sx1262Instance->output_power, sizeof(sx1262Instance->output_power),
                  &file_len);
-    if( (true==res) && (1==file_len) ){
+    if((true == res) && (1 == file_len)) {
 #ifdef HAS_SX1262_DEBUG
-        LOG_INFO(LORA, "Set output power from params [%u] %d dBm", sx1262Instance->output_power, sx1262Instance->output_power);
+        LOG_INFO(LORA, "Set output power from params [%u] %d dBm", sx1262Instance->output_power,
+                 sx1262Instance->output_power);
 #endif
     } else {
 #ifdef HAS_SX1262_DEBUG
-        LOG_WARNING(LORA, "Set default output power [%u] %d dBm",DFLT_FREQ_MHZ, DFLT_FREQ_MHZ);
+        LOG_WARNING(LORA, "Set default output power [%u] %d dBm", DFLT_FREQ_MHZ, DFLT_FREQ_MHZ);
 #endif
-        sx1262Instance->output_power=DFLT_OUT_POWER;
+        sx1262Instance->output_power = DFLT_OUT_POWER;
     }
 
 #endif /*HAS_FLASH_FS*/
@@ -826,8 +830,8 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 bool sx1262_init(void) {
     bool res = true;
     LOG_INFO(LORA, "Init SX1262");
-    static uint8_t call_cnt=0;
-    if(0==call_cnt){
+    static uint8_t call_cnt = 0;
+    if(0 == call_cnt) {
         memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
     }
     call_cnt = 1;
@@ -1109,7 +1113,7 @@ bool sx1262_read_buffer(int16_t offset, uint8_t* out_payload, uint16_t payload_l
 
         uint8_t tx_array[1];
         tx_array[0] = (uint8_t)offset;
-        res = sx1262_send_opcode(OPCODE_READ_BUFFER, tx_array, 1, rx_array, payload_len+3);
+        res = sx1262_send_opcode(OPCODE_READ_BUFFER, tx_array, 1, rx_array, payload_len + 3);
         if(res) {
             memcpy(out_payload, &rx_array[3], payload_len);
         }
@@ -1245,7 +1249,7 @@ bool sx1262_process(void) {
 
         Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
         uint8_t rx_payload[RX_SIZE] = {0};
-        memset(rx_payload,0x00,sizeof(rx_payload));
+        memset(rx_payload, 0x00, sizeof(rx_payload));
         uint8_t rx_size = 0;
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {

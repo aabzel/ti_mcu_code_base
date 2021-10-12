@@ -99,8 +99,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_SYSTEM                                                                                                   \
     TEST_SUIT_NMEA_PROTO                                                                                               \
     TEST_SUIT_STRING_UTILS                                                                                             \
-    UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init},                                                              \
-   {"uspec_behavior", test_uspec_behavior},                     \
+    UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init}, {"uspec_behavior", test_uspec_behavior},                     \
         {"array", test_array}, {"types", test_types}, {"64bit_mult", test_64bit_mult},                                 \
         {"flt_u16", test_float_to_uint16}, {"utoa_bin8", test_utoa_bin8},                                              \
         {"type_transform", test_type_transformation},

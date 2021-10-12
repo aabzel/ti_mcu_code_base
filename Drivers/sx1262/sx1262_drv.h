@@ -167,13 +167,7 @@ typedef enum eRadioPacketTypes_t {
     PACKET_TYPE_UNDEF = 0xFF
 } RadioPacketType_t;
 
-typedef enum eOutputPower_t {
-    OP_14_DBM = 0,
-    OP_17_DBM = 1,
-    OP_20_DBM = 2,
-    OP_22_DBM = 3,
-    OP_UNDEF = 4
-} OutputPower_t;
+typedef enum eOutputPower_t { OP_14_DBM = 0, OP_17_DBM = 1, OP_20_DBM = 2, OP_22_DBM = 3, OP_UNDEF = 4 } OutputPower_t;
 
 typedef enum eChipMode_t {
     CHP_MODE_UNDEF = 0x0,
@@ -183,7 +177,6 @@ typedef enum eChipMode_t {
     CHP_MODE_RX = 0x5,
     CHP_MODE_TX = 0x6
 } ChipMode_t;
-
 
 typedef struct xPaketStat_t {
     uint16_t nb_pkt_received;

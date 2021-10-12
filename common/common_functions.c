@@ -13,10 +13,15 @@
 #endif /*HAS_CLI*/
 
 #include "boot_driver.h"
+
 #ifdef HAS_GPIO
 #include "gpio_drv.h"
 #endif
+
+#ifdef HAS_HEALTH_MONITOR
 #include "health_monitor.h"
+#endif
+
 #include "hw_init.h"
 #include "io_utils.h"
 #include "log.h"

@@ -27,7 +27,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},        /*num*/
     {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"}, /*Flash Addr*/
     {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},    /*Flash Addr*/
-    {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},    /*loRa output power*/
+    {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},  /*loRa output power*/
     {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},          /*Power Source*/
 };
 
