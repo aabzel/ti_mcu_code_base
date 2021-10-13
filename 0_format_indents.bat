@@ -5,6 +5,10 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\gpio_pwm\gpio_pwm_commands.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\gpio_pwm\gpio_pwm_commands.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\gpio_pwm\gpio_pwm_drv.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\gpio_pwm\gpio_pwm_drv.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\utils_sys\device_id.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\utils_sys\device_id.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\tcan4550_q1\tcan4550_drv.c

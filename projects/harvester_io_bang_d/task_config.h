@@ -4,8 +4,9 @@
 #define TASKS                                                                  \
   TASK(BOOT)                                                                   \
   TASK(CLI)                                                                    \
-  TASK(UART)                                                                   \
   TASK(FLASH_FS)                                                               \
+  TASK(GPIO_PWM)                                                               \
   TASK(LED)                                                                    \
+  TASK(UART)
 
 #endif /* TASK_CONFIG_H */

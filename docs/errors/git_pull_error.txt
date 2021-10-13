@@ -1,0 +1,5 @@
+git pull error Rename from 'master.lock' to 'master' failed. Should I try again? (y/n)
+
+
+решение:
+запустить командную строку в качестве admin.

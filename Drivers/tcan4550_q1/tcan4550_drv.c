@@ -57,7 +57,7 @@ bool is_tcan4550_connected(void) {
         if(exp_dev_id == read_dev_id) {
             res = true;
             LOG_INFO(CAN, "spot dev id: 0x%llx", read_dev_id);
-            print_mem(&read_dev_id,sizeof(read_dev_id),true,true);
+            print_mem(&read_dev_id, sizeof(read_dev_id), true, true);
         } else {
             res = false;
             LOG_ERROR(CAN, "Unable to spot dev id: 0x%llx", read_dev_id);

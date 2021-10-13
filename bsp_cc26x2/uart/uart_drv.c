@@ -441,7 +441,7 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name) {
 
 bool uart_init(void) {
     bool res = true;
-#if (defined(HAS_UART1) && defined(HAS_GENERIC)&& defined(HAS_UBLOX))
+#if(defined(HAS_UART1) && defined(HAS_GENERIC) && defined(HAS_UBLOX))
     res = init_uart_ll(1, "ZedF9P") && res;
 #endif /*HAS_UART1 HAS_GENERIC HAS_UBLOX*/
 #ifdef HAS_UART0

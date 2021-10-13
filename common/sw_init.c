@@ -24,6 +24,10 @@
 #include "log.h"
 #endif /*HAS_CLI*/
 
+#ifdef HAS_GPIO_PWM
+#include "gpio_pwm_drv.h"
+#endif /*HAS_LORA*/
+
 #ifdef HAS_LORA
 #include "lora_drv.h"
 #endif /*HAS_LORA*/
@@ -120,5 +124,8 @@ bool sw_init(void) {
     res = try_init(lora_init(), "LoRa") && res;
 #endif /*HAS_LORA*/
 
+#ifdef HAS_GPIO_PWM
+    res = try_init(gpio_pwm_init(), "GPIO_PWM") && res;
+#endif /*HAS_LORA*/
     return res;
 }

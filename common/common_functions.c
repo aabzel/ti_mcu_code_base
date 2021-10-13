@@ -32,13 +32,13 @@
 #endif
 #include "uart_drv.h"
 
-#ifdef HAS_SX1262
-#include "sx1262_drv.h"
-#endif /*HAS_SX1262*/
-
 #ifdef HAS_ADC
 #include "adc_drv.h"
 #endif /*HAS_ADC*/
+
+#ifdef HAS_GPIO_PWM
+#include "gpio_pwm_drv.h"
+#endif /*HAS_GPIO_PWM*/
 
 #ifdef HAS_DAC
 #include "dac_drv.h"
@@ -51,6 +51,10 @@
 #ifdef HAS_RF
 #include "rf_drv.h"
 #endif /*HAS_RF*/
+
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
+#endif /*HAS_SX1262*/
 
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
@@ -131,6 +135,10 @@ void common_loop(uint64_t loop_start_time_us) {
 
 #ifdef HAS_FLASH_FS
     measure_task_interval(TASK_ID_FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc, loop_start_time_us);
+#endif /*HAS_FLASH_FS*/
+
+#ifdef HAS_GPIO_PWM
+    measure_task_interval(TASK_ID_GPIO_PWM, GPIO_PWM_PERIOD_US, gpio_pwm_proc, loop_start_time_us);
 #endif /*HAS_FLASH_FS*/
 }
 #endif /*NORTOS*/

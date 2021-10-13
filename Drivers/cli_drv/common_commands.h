@@ -21,6 +21,12 @@
 #define GPIO_COMMANDS
 #endif
 
+#ifdef HAS_GPIO_PWM
+#include "gpio_pwm_commands.h"
+#else
+#define GPIO_PWM_COMMANDS
+#endif
+
 #ifdef HAS_TIM
 #include "tim_commands.h"
 #else
@@ -102,6 +108,7 @@
     TCAN4550_COMMANDS                                                                                                  \
     FLASH_COMMANDS                                                                                                     \
     GPIO_COMMANDS                                                                                                      \
+    GPIO_PWM_COMMANDS                                                                                                  \
     I2C_COMMANDS                                                                                                       \
     RTC_COMMANDS                                                                                                       \
     SPI_COMMANDS                                                                                                       \
