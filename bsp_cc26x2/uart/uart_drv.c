@@ -58,6 +58,7 @@ static volatile uint8_t rx_buff[UART_COUNT][UART_FIFO_RX_SIZE]; /*TODO Make vari
 static volatile uint8_t tx_buff[UART_COUNT][UART_FIFO_TX_SIZE];
 
 const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
+#ifdef HAS_UART0
     {.baseAddr = UART0_BASE,
      .intNum = INT_UART0_COMB,
      .intPriority = (~0),
@@ -72,6 +73,7 @@ const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
      .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_4_8,
      .errorFxn = NULL},
+#endif /*HAS_UART0*/
 #ifdef HAS_UART1
     {.baseAddr = UART1_BASE,
      .intNum = INT_UART1_COMB,
@@ -96,16 +98,21 @@ const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
 };
 
 const UART_Config UART_config[UART_COUNT] = {
+#ifdef HAS_UART0
     {.fxnTablePtr = &UARTCC26XX_fxnTable, .object = &uartCC26XXObjects[0], .hwAttrs = &uartCC26XXHWAttrs[0]},
+#endif
 #ifdef HAS_UART1
     {.fxnTablePtr = &UARTCC26XX_fxnTable, .object = &uartCC26XXObjects[1], .hwAttrs = &uartCC26XXHWAttrs[1]},
 #endif /*HAS_UART1*/
 };
 
 const uint_least8_t UART_count = UART_COUNT;
-static uint32_t baudRateLuTable[UART_COUNT] = {UART0_BAUD_RATE,
+static uint32_t baudRateLuTable[UART_COUNT] = {
+#ifdef HAS_UART0
+    UART0_BAUD_RATE,
+#endif
 #ifdef HAS_UART1
-                                               UART1_BAUD_RATE
+    UART1_BAUD_RATE
 #endif
 };
 
@@ -158,11 +165,14 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
 }
 #endif /*HAS_UART1*/
 
+#ifdef HAS_UART0
 static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[0].tx_cnt++;
     huart[0].tx_int = true;
     huart[0].tx_cpl_cnt++;
 }
+#endif /*HAS_UART0*/
+
 #ifdef HAS_UART1
 static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[1].tx_cnt++;
@@ -269,6 +279,7 @@ bool proc_uart(uint8_t uart_index) {
 
     // huart[uart_index].rx_int = false;
     if(1 == uart_index) {
+#ifdef HAS_UART1
         uint8_t rx_byte = 0;
         res = true;
         bool loop = true;
@@ -297,6 +308,7 @@ bool proc_uart(uint8_t uart_index) {
             }
         } /*while(loop) */
         res = true;
+#endif /*HAS_UART1*/
     } else if(0 == uart_index) {
         res = true;
     } else {
@@ -429,12 +441,12 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name) {
 
 bool uart_init(void) {
     bool res = true;
-#ifdef HAS_GENERIC
-#ifdef HAS_UBLOX
+#if (defined(HAS_UART1) && defined(HAS_GENERIC)&& defined(HAS_UBLOX))
     res = init_uart_ll(1, "ZedF9P") && res;
-#endif /*HAS_UBLOX*/
-#endif /*HAS_GENERIC*/
+#endif /*HAS_UART1 HAS_GENERIC HAS_UBLOX*/
+#ifdef HAS_UART0
     res = init_uart_ll(0, "CLI") && res;
+#endif /*HAS_UART0*/
     return res;
 }
 

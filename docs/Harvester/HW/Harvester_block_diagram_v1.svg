@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="297mm"
    height="210mm"
    viewBox="0 0 297 210"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="Harvester_block_diagram_v1.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="Harvester_block_diagram_v1.svg">
   <defs
      id="defs2">
     <marker
@@ -1435,16 +1435,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.9999999"
-     inkscape:cx="415.25002"
-     inkscape:cy="256.50001"
+     inkscape:zoom="15.999999"
+     inkscape:cx="239.5331"
+     inkscape:cy="439.89699"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer12"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="-11"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      showguides="false"
@@ -3030,15 +3030,15 @@
        id="path1021" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.39014px;line-height:1.25;font-family:sans-serif;fill:#00ffff;fill-opacity:1;stroke:none;stroke-width:0.260651"
-       x="70.547844"
-       y="118.02701"
+       style="font-style:normal;font-weight:normal;font-size:1.93569px;line-height:1.25;font-family:sans-serif;fill:#00ffff;fill-opacity:1;stroke:none;stroke-width:0.362942"
+       x="70.864227"
+       y="118.93735"
        id="text1025"><tspan
          sodipodi:role="line"
          id="tspan1023"
-         x="70.547844"
-         y="118.02701"
-         style="font-size:1.39014px;fill:#00ffff;fill-opacity:1;stroke-width:0.260651">UART1  </tspan></text>
+         x="70.864227"
+         y="118.93735"
+         style="font-size:1.93569px;fill:#00ffff;fill-opacity:1;stroke-width:0.362942">UART1  </tspan></text>
     <path
        style="fill:#00ffff;stroke:#3ef3ff;stroke-width:0.260651px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 69.300746,115.95188 -1.594157,1.59415"
@@ -3067,15 +3067,15 @@
          style="font-size:1.76389px;fill:#00ffff;stroke-width:0.264583">2</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.39014px;line-height:1.25;font-family:sans-serif;fill:#00ffff;fill-opacity:1;stroke:none;stroke-width:0.260651"
-       x="59.104336"
-       y="118.5732"
+       style="font-style:normal;font-weight:normal;font-size:1.91688px;line-height:1.25;font-family:sans-serif;fill:#00ffff;fill-opacity:1;stroke:none;stroke-width:0.359415"
+       x="58.810509"
+       y="118.69261"
        id="text1025-6"><tspan
          sodipodi:role="line"
          id="tspan1023-9"
-         x="59.104336"
-         y="118.5732"
-         style="font-size:1.39014px;fill:#00ffff;fill-opacity:1;stroke-width:0.260651">UART1  </tspan></text>
+         x="58.810509"
+         y="118.69261"
+         style="font-size:1.91688px;fill:#00ffff;fill-opacity:1;stroke-width:0.359415">UART1  </tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

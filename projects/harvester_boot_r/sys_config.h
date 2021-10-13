@@ -3,7 +3,7 @@
 
 #include "board_harvester_v1.h"
 
-
+#define UART_COUNT 1
 #define UART_NUM_CLI 0U
 #define WDT_TIMEOUT_MS 10000U
 

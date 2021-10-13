@@ -7,12 +7,6 @@
 
 #include "sys_config.h"
 
-#ifdef HAS_BOOTLOADER
-#define UART_COUNT 1
-#else
-#define UART_COUNT 2
-#endif /*HAS_BOOTLOADER*/
-
 #define UART_FIFO_TX_SIZE 256U
 #define UART_FIFO_RX_SIZE 512U
 

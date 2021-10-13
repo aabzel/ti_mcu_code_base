@@ -158,11 +158,13 @@ bool boot_init(void) {
     }
     return res;
 }
-
+#ifdef HAS_GENERIC
 bool boot_proc(void) {
     bool res = false;
     uint32_t up_time_ms = get_time_ms32();
     if((2 * WDT_TIMEOUT_MS) < up_time_ms) {
+        /* Watchdog did not reset board still.
+           That means that everything all right.*/
         if(false == fine_start_event) {
             /*Indicate boot that Application loaded fine*/
             uint8_t boot_cnt = 0;
@@ -171,10 +173,11 @@ bool boot_proc(void) {
                 LOG_ERROR(BOOT, "Unable to reset boot cnt");
             } else {
                 res = true;
-                LOG_INFO(BOOT, "App loaded fine");
+                LOG_INFO(BOOT, "App loaded fine!");
             }
         }
         fine_start_event = true;
     }
     return res;
 }
+#endif
