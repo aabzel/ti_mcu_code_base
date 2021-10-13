@@ -24,6 +24,7 @@ bool cli_echo = true;
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
+char prev_cmd[40]="";
 
 /*logic AND for keyWords */
 static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const sub_name1, const char* const sub_name2) {
@@ -84,6 +85,7 @@ bool cli_init(void) {
     if(false == uart_string_reader_init(&cmd_reader)) {
         cli_init_done = false;
     } else {
+        memset(prev_cmd,0x00,sizeof(prev_cmd));
         cli_set_echo(true);
         cli_init_done = true;
         res = true;
@@ -132,6 +134,9 @@ bool process_shell_cmd(char* cmd_line) {
 #ifdef HAS_CLI_DEBUG
     io_printf("proc command [%s] %u" CRLF, cmd_line, strlen(cmd_line));
 #endif /*HAS_CLI_DEBUG*/
+    memset(prev_cmd, 0x00, sizeof(prev_cmd));
+    memcpy(prev_cmd, cmd_line, strlen(cmd_line));
+
     static int shell_argc = 0;
     static char* shell_argv[SHELL_MAX_ARG_COUNT];
     char* pRun = cmd_line;
@@ -220,4 +225,19 @@ bool cli_get_echo(void) {
 bool cli_toggle_echo(void) {
     cli_echo = !cli_echo;
     return true;
+}
+
+
+Arrow_t cli_arrows_parse(char cur_char){
+    Arrow_t arrow = ARROW_UNDEF;
+    static char prev_char=0;
+    static char prev_prev_char=0;
+    if((0x41==cur_char)&&
+       (0x5B==prev_char)&&
+       (0x1B==prev_prev_char)){
+        arrow = ARROW_UP;
+    }
+    prev_prev_char=prev_char;
+    prev_char=cur_char;
+    return arrow;
 }

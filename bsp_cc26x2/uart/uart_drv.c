@@ -123,15 +123,21 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     if((1 == size) && (NULL != rx_buf)) {
         bool res = false;
         huart[0].rx_byte_it = (uint8_t) * (rx_buf);
-        res = fifo_push(&huart[0].RxFifo, huart[0].rx_byte);
+        res = fifo_push(&huart[0].RxFifo, huart[0].rx_byte_it);
         if(false == res) {
             huart[0].error_cnt++;
         }
 #ifdef HAS_UART0_FWD
         if(true == huart[0].is_uart_fwd[1]) {
-            res = fifo_push(&huart[1].TxFifo, huart[0].rx_byte);
+            res = fifo_push(&huart[1].TxFifo, huart[0].rx_byte_it);
             if(false == res) {
                 huart[1].error_cnt++;
+            }
+        }
+        if(true == huart[0].is_uart_fwd[0]) {
+            res = fifo_push(&huart[0].TxFifo, huart[0].rx_byte_it);
+            if(false == res) {
+                huart[0].error_cnt++;
             }
         }
 #endif /*HAS_UART0_FWD*/

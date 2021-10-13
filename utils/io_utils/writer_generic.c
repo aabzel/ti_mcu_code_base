@@ -45,7 +45,8 @@ void writer_puts(void *_s, const char *str, int32_t len) {
       len = strlen(str);
     }
     fifo_push_array((Fifo_array_t* ) &s->fifo, (char* ) str, (fifo_index_t) len);
-    if (fifo_get_count(&s->fifo)) {
+    fifo_index_t size= fifo_get_count(&s->fifo);
+    if (0<size) {
       s->f_transmit(s);
     }
   }

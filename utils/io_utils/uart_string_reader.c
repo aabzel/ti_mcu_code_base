@@ -58,9 +58,18 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
         if (0 == size) {
             break;
         }
+        Arrow_t arr = ARROW_UNDEF;
         for (i = 0; i < size; i++) {
             char character = data[i];
             rdr->total_char_count++;
+
+            arr = cli_arrows_parse(character);
+            if(ARROW_UP == arr) {
+                io_printf("_%s", prev_cmd);
+                strncpy(rdr->string, prev_cmd, rdr->string_size);
+                rdr->string_len = strlen(prev_cmd);
+                character = 0x00;
+            }
             if (character != '\n') {
                 if (cli_echo) {
                     io_putchar(character);
@@ -76,7 +85,9 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
                         io_putchar('\b');
                     }
                     break;
-                case '\r':
+                case 0x1B:
+                    break;
+                case 0x0D://'\r'://
                     if (cli_echo) {
                         io_putchar('\n');
                     }

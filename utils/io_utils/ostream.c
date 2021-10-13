@@ -1,7 +1,11 @@
 #include "ostream.h"
 
+#include <stddef.h>
+#include <string.h>
+
 void oputs(ostream_t *ostream, const char *str) {
-  ostream->f_putstr(ostream, str, -1);
+  size_t len = strlen(str);
+  ostream->f_putstr(ostream, str, len);
 }
 
 void oputs_len(ostream_t *ostream, const char *str, int32_t len) {

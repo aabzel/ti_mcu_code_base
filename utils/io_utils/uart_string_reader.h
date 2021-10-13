@@ -8,9 +8,9 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-//#include "fifo_char_buffer.h"
+
 #include "fifo_char.h"
-//#include "uart_common.h"
+
 
 typedef void (*handle_string_f)(char* s);
 
