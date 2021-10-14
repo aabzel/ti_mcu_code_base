@@ -18,7 +18,7 @@
 #include "str_utils.h"
 #include "table_utils.h"
 
-static bool diag_gpio(char* key_word1, char* key_word2) {
+static bool gpio_diag(char* key_word1, char* key_word2) {
     bool res = false;
     replace_char(key_word1, '_', ' ');
     replace_char(key_word2, '_', ' ');
@@ -154,7 +154,7 @@ bool gpio_list_command(int32_t argc, char* argv[]) {
         LOG_ERROR(SYS, "Usage: gl keyWord");
     }
     if(true == res) {
-        res = diag_gpio(keyWord1, keyWord2);
+        res = gpio_diag(keyWord1, keyWord2);
     }
     return res;
 }

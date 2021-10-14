@@ -1,0 +1,7 @@
+
+
+HW_Tx_Msg
+HW_Tx_Msg(0x123, 0x08, msg_tx_1_Data);
+
+https://github.com/Ruslanzz/TCAN4550_msp430fr2476/tree/master/TCAN4550
+

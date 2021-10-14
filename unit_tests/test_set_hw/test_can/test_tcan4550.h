@@ -7,14 +7,16 @@ extern "C" {
 
 #include <stdbool.h>
 
-bool test_can_write(void) ;
-bool test_can_read_word(void) ;
-bool test_can_detect(void) ;
+bool test_can_write(void);
+bool test_can_read_word(void);
+bool test_can_detect(void);
+bool test_can_types(void);
 
-#define TEST_SUIT_TCAN4550              \
-    {"can_write", test_can_write}, \
-    {"can_detect", test_can_detect}, \
-    {"can_read_word", test_can_read_word},
+#define TEST_SUIT_TCAN4550                \
+    {"can_detect", test_can_detect},      \
+    {"can_read_word", test_can_read_word},\
+    {"can_write", test_can_write},        \
+    {"can_types", test_can_types},
 
 #ifdef __cplusplus
 }

@@ -8,9 +8,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #include "fifo_char.h"
-
 
 typedef void (*handle_string_f)(char* s);
 
@@ -35,8 +33,6 @@ void uart_string_reader_error_callback(uart_string_reader_t* r);
 void uart_string_reader_proccess(uart_string_reader_t* r);
 void uart_string_reader_clear_str(uart_string_reader_t* r); /* clear current string */
 const char* uart_string_reader_get_str(const uart_string_reader_t* r);
-
-
 
 #ifdef __cplusplus
 }

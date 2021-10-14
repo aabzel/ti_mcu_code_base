@@ -15,8 +15,8 @@ bool gpio_pwm_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     (void)argv;
     if(0 == argc) {
-        static const table_col_t cols[] = {{5, "dio"},  {7, "gpio"},  {5, "pin"},    {5, "state"},
-                                           {9, "freq"},{9, "periodMs"}, {7, "duty%"}, {8, "phaseMs"}};
+        static const table_col_t cols[] = {{5, "dio"},  {7, "gpio"},     {5, "pin"},   {5, "state"},
+                                           {9, "freq"}, {9, "periodMs"}, {7, "duty%"}, {8, "phaseMs"}};
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
         for(uint16_t i = 0; i < NUM_OF_PWM_DIO; i++) {
             if(DIO_SPARE != GpioPwmDioTable[i].satus) {
@@ -24,11 +24,11 @@ bool gpio_pwm_diag_command(int32_t argc, char* argv[]) {
                 io_printf(TABLE_SEPARATOR " %5s ", gpio_get_name(GpioPwmDioTable[i].dio));
                 io_printf(TABLE_SEPARATOR " %3u ", get_mcu_pin(GpioPwmDioTable[i].dio));
                 io_printf(TABLE_SEPARATOR " %3s ", bool2name(GpioPwmDioTable[i].satus));
-                GpioPwmDioTable[i].frequency = 1000.0f/((float)GpioPwmDioTable[i].period_ms);
+                GpioPwmDioTable[i].frequency = 1000.0f / ((float)GpioPwmDioTable[i].period_ms);
                 io_printf(TABLE_SEPARATOR " %7.2f ", GpioPwmDioTable[i].frequency);
                 io_printf(TABLE_SEPARATOR " %7u ", GpioPwmDioTable[i].period_ms);
                 io_printf(TABLE_SEPARATOR "  %3u  ", GpioPwmDioTable[i].duty_cycle);
-                io_printf(TABLE_SEPARATOR " %4d   "TABLE_SEPARATOR, GpioPwmDioTable[i].phase_ms);
+                io_printf(TABLE_SEPARATOR " %4d   " TABLE_SEPARATOR, GpioPwmDioTable[i].phase_ms);
 
                 io_printf(CRLF);
             }
@@ -44,7 +44,7 @@ bool gpio_pwm_set_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t dio_num = 0;
     uint8_t state = 0;
-    uint32_t  period_ms = 0;
+    uint32_t period_ms = 0;
     uint8_t duty = 0;
     int32_t phase_ms = 0;
     if(5 == argc) {
@@ -86,12 +86,12 @@ bool gpio_pwm_set_command(int32_t argc, char* argv[]) {
     }
 
     if(true == res) {
-        res = gpio_pwm_add(dio_num, period_ms, duty, phase_ms,(GpioPwmDioStates_t) state);
+        res = gpio_pwm_add(dio_num, period_ms, duty, phase_ms, (GpioPwmDioStates_t)state);
         if(false == res) {
             LOG_ERROR(SYS, "Unable to add GPIO PWM task");
         } else {
-            LOG_INFO(SYS, "set %s period %u duty %u %% phase %d us %s", gpio_get_name(dio_num), period_ms, duty, phase_ms,
-                     bool2name(state));
+            LOG_INFO(SYS, "set %s period %u duty %u %% phase %d us %s", gpio_get_name(dio_num), period_ms, duty,
+                     phase_ms, bool2name(state));
         }
     }
 

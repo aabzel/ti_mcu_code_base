@@ -88,7 +88,7 @@ bool cli_init(void) {
         cli_init_done = false;
     } else {
 #ifdef HAS_CLI_CMD_HISTORY
-        memset(prev_cmd,0x00,sizeof(prev_cmd));
+        memset(prev_cmd, 0x00,sizeof(prev_cmd));
 #endif
         cli_set_echo(true);
         cli_init_done = true;

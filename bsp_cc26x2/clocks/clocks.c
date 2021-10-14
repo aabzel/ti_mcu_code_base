@@ -6,10 +6,13 @@
 
 #include "sys_tick.h"
 
-void delay_ms(uint32_t delay_in_ms) {
+bool delay_ms(uint32_t delay_in_ms) {
+    bool res = false;
     uint32_t init_time_in_ms = g_up_time_ms;
     while(g_up_time_ms < (init_time_in_ms + delay_in_ms)) {
+        res = true;
     }
+    return res;
 }
 
 // uint32_t getRunTimeCounterValue32(void) { return (uint32_t)g_up_time_ms; }

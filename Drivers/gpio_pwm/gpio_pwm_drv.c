@@ -27,7 +27,7 @@ bool gpio_pwm_init(void) {
 
 bool gpio_pwm_add(uint8_t dio, uint32_t period_ms, uint8_t in_duty, int32_t phase_ms, GpioPwmDioStates_t in_state) {
     bool res = false;
-    uint16_t spot_index=0;
+    uint16_t spot_index = 0;
     for(uint16_t i = 0U; i < NUM_OF_PWM_DIO; i++) {
         if(GpioPwmDioTable[i].dio == dio) {
             spot_index = i;
@@ -45,21 +45,21 @@ bool gpio_pwm_add(uint8_t dio, uint32_t period_ms, uint8_t in_duty, int32_t phas
         }
     }
 
-    if(true==res){
-         GpioPwmDioTable[spot_index].duty_cycle = in_duty;
-         GpioPwmDioTable[spot_index].phase_ms = phase_ms;
-         GpioPwmDioTable[spot_index].period_ms = period_ms;
-         GpioPwmDioTable[spot_index].satus = in_state;
+    if(true == res) {
+        GpioPwmDioTable[spot_index].duty_cycle = in_duty;
+        GpioPwmDioTable[spot_index].phase_ms = phase_ms;
+        GpioPwmDioTable[spot_index].period_ms = period_ms;
+        GpioPwmDioTable[spot_index].satus = in_state;
     }
     return res;
 }
 
 static bool gpio_pwm_proc_one(uint8_t dio, uint8_t des_duty_cycle, uint32_t period_ms, int32_t phase_ms) {
     bool res = false;
-    uint8_t amplitude=0;
+    uint8_t amplitude = 0;
     uint32_t cur_time_ms = get_time_ms32();
-    amplitude =  pwm_sample_calc_num(  cur_time_ms,   period_ms, des_duty_cycle,  phase_ms);
-    //uint8_t amplitude = pwm_sample_calc(cur_time_us, des_frequency, des_phase, des_duty_cycle);
+    amplitude = pwm_sample_calc_num(cur_time_ms, period_ms, des_duty_cycle, phase_ms);
+    // uint8_t amplitude = pwm_sample_calc(cur_time_us, des_frequency, des_phase, des_duty_cycle);
     res = gpio_set_state(dio, amplitude);
     return res;
 }
