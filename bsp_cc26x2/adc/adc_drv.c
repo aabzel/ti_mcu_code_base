@@ -15,7 +15,7 @@
 
 uint32_t AdcCodes[ADC_ITEMS_CNT];
 const ADCItem_t AdcItemsLUT[ADC_ITEMS_CNT] = {
-    /* adc_channel              aux_pin    io_pin         pin   scale*/
+    /* adc_channel        aux_pin    io_pin         pin   scale*/
     {ADC_COMPB_IN_AUXIO6, 25, DIO_KL30_ADC, 37, VOL_DIV_SCALE_PWR},
     {ADC_COMPB_IN_AUXIO5, 24, DIO_BATT_ADC, 38, VOL_DIV_SCALE_ACC},
     {0xFF, 0xff, 0xFF, 0xff, 999.99f},

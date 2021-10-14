@@ -12,6 +12,8 @@
 #define LED_RED_DUTY 50 /*percent*/
 #define LED_RED_PHASE 1
 
+#define LED_POLL_PERIOD_US 500
+
 typedef struct xLed_t {
     uint32_t period_ms;
     uint32_t phase_ms;

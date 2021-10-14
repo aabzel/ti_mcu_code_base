@@ -82,7 +82,7 @@ void common_loop(uint64_t loop_start_time_us) {
         return;
     }
 #ifdef HAS_LED
-    measure_task_interval(TASK_ID_LED, 5000, proc_led, loop_start_time_us);
+    measure_task_interval(TASK_ID_LED, LED_POLL_PERIOD_US, proc_led, loop_start_time_us);
 #endif /*HAS_LED*/
 
 #ifdef HAS_GENERIC
@@ -140,6 +140,10 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_GPIO_PWM
     measure_task_interval(TASK_ID_GPIO_PWM, GPIO_PWM_PERIOD_US, gpio_pwm_proc, loop_start_time_us);
 #endif /*HAS_FLASH_FS*/
+
+#ifdef HAS_HEALTH_MONITOR
+    measure_task_interval(TASK_ID_HEAL_MON, HEAL_MON_PERIOD_US, health_monotor_proc, loop_start_time_us);
+#endif /*HAS_HEALTH_MONITOR*/
 }
 #endif /*NORTOS*/
 

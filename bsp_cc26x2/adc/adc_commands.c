@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "adc_drv.h"
+#include "gpio_drv.h"
 #include "convert.h"
 #include "data_utils.h"
 #include "io_utils.h"
@@ -146,7 +147,7 @@ bool adc_all_command(int32_t argc, char* argv[]) {
         int32_t microvolts = 0;
         uint32_t adc_value_pop = 0, i = 0;
         static const table_col_t cols[] = {{7, "input"},     {5, "DIO"},         {5, "pin"},    {10, "popValue"},
-                                           {10, "getValue"}, {11, "microvolts"}, {11, "volts"}, {11, "Scaled"}};
+                                           {10, "getValue"}, {11, "microvolts"}, {11, "volts"}, {11, "Scaled"},{7, "name"}};
 
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
         for(i = 0; i < ARRAY_SIZE(AdcItemsLUT); i++) {
@@ -160,6 +161,7 @@ bool adc_all_command(int32_t argc, char* argv[]) {
                 io_printf(" %9u " TSEP, microvolts);
                 io_printf("  %7.3f  " TSEP, 0.000001f * ((float)microvolts));
                 io_printf("  %7.3f  " TSEP, 0.000001f * ((float)microvolts) * AdcItemsLUT[i].scale);
+                io_printf("  %4s " TSEP, gpio_get_name(AdcItemsLUT[i].io_pin));
                 io_printf(CRLF);
             }
         }

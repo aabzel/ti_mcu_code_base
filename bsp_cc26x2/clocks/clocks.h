@@ -21,6 +21,7 @@ extern "C" {
 #define HOUR_2_MS(HOUR) ((HOUR)*60U * 60U * 1000U)
 #define MIN_2_MS(MIN) ((MIN)*60U * 1000U)
 #define S_2_MS(S) ((S)*1000U)
+#define S_2_US(S) ((S)*1000000U)
 #define MS_2_S(ms) (ms / 1000)
 #define MS_2_MIN(ms) (ms / (1000 * 60))
 
