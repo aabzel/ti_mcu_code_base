@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "byte_utils.h"
 #include "clocks.h"
 #include "data_utils.h"
 #include "debug_info.h"
@@ -15,6 +16,8 @@
 const uint64_t exp_dev_id = 0x343535305443414E;
 
 const Tcan4550Reg_t tCan4550RegLUT[] = {
+    {ADDR_IR,"InterReg"},
+    {ADDR_IE,"InterEn"},
     {ADDR_DEVICE_ID_0, "DevId"},
     {ADDR_SPI_2_REV, "SPIrev"},
     {ADDR_STATUS, "Status"},
@@ -67,7 +70,7 @@ static bool init_spi_header(HeaderCom_t* header, uint8_t op_code, uint16_t addre
     bool res = false;
     if(header) {
         header->op_code = op_code;
-        header->addr = address;
+        header->addr = reverse_byte_order_uint16(address);
         header->words_cnt = words_cnt;
         res = true;
     }

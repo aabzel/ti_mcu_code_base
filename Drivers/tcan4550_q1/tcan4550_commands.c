@@ -103,7 +103,7 @@ static bool tcan4550_reg_map_diag(char* key_word1, char* key_word2){
     uint16_t reg_cnt = tcan4550_get_reg_cnt();
     uint32_t reg_val=0;
     static const table_col_t cols[] = {{5, "Num"},
-                                       {8, "Name"},
+                                       {10, "Name"},
                                        {8, "addr"},
                                        {12, "value,hex"},
                                        {41, "reg value,bin"}};
@@ -114,7 +114,7 @@ static bool tcan4550_reg_map_diag(char* key_word1, char* key_word2){
         res = tcan4550_read_reg(  tCan4550RegLUT[i].addr, &reg_val);
         if(res){
           strcpy(temp_str, TSEP);
-          snprintf(temp_str, sizeof(temp_str), "%s %6s " TSEP, temp_str, tCan4550RegLUT[i].name);
+          snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, tCan4550RegLUT[i].name);
           snprintf(temp_str, sizeof(temp_str), "%s 0x%04x " TSEP, temp_str, tCan4550RegLUT[i].addr);
           snprintf(temp_str, sizeof(temp_str), "%s 0x%08x " TSEP, temp_str, reg_val);
           snprintf(temp_str, sizeof(temp_str), "%s %s " TSEP, temp_str, utoa_bin32(reg_val));
@@ -184,7 +184,7 @@ bool tcan4550_write_reg_command(int32_t argc, char* argv[]){
     if ((true==res) && (2==argc)) {
         res = tcan4550_write_reg(address, reg_val);
         if (true==res) {
-            LOG_INFO(CAN, "write ok");
+            LOG_INFO(CAN, "write addr 0x%x val 0x%x ok",address,reg_val);
         }else{
             LOG_ERROR(CAN, "write err");
         }

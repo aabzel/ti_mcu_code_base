@@ -16,6 +16,8 @@ extern "C" {
 #define ADDR_SPI_2_REV 0x0008
 #define ADDR_STATUS 0x000C
 #define ADDR_CREL 0x1000
+#define ADDR_IR  0x1050
+#define ADDR_IE 0x1054
 #define ADDR_MRAM 0x8000
 
 //#define DEVICE_ID "TCAN4550"
