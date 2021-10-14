@@ -30,6 +30,12 @@ extern "C" {
 #define TEST_SUIT_CONVERT
 #endif
 
+#ifdef HAS_TEST_CLI
+#include "test_cli.h"
+#else
+#define TEST_SUIT_CLI
+#endif
+
 #ifdef HAS_TEST_SUIT_CRC
 #include "test_crc.h"
 #else
@@ -90,6 +96,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_UTILS_BYTE                                                                                               \
     TEST_SUIT_CONVERT                                                                                                  \
     TEST_SUIT_UTILS_TIME                                                                                               \
+	TEST_SUIT_CLI                                                                                                      \
     TEST_SUIT_CRC                                                                                                      \
     TEST_SUIT_FIFO_INDEXER                                                                                             \
     TEST_SUIT_FIFO_CHAR                                                                                                \

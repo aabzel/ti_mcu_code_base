@@ -4,6 +4,7 @@ TEST_SET_SW_DIR = $(PROJECT_ROOT)unit_tests/test_set_sw
 
 INCDIR += -I$(TEST_SET_SW_DIR)
 
+include $(TEST_SET_SW_DIR)/test_cli/test_cli.mk
 include $(TEST_SET_SW_DIR)/test_crc/test_crc.mk
 include $(TEST_SET_SW_DIR)/test_fifo/test_fifo.mk
 include $(TEST_SET_SW_DIR)/test_rtcm3_proto/test_rtcm3_proto.mk

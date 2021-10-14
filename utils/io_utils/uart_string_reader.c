@@ -58,11 +58,13 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
         if (0 == size) {
             break;
         }
+#ifdef HAS_CLI_1_HISTORY
         Arrow_t arr = ARROW_UNDEF;
+#endif
         for (i = 0; i < size; i++) {
             char character = data[i];
             rdr->total_char_count++;
-
+#ifdef HAS_CLI_1_HISTORY
             arr = cli_arrows_parse(character);
             if(ARROW_UP == arr) {
                 io_printf("_%s", prev_cmd);
@@ -70,6 +72,7 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
                 rdr->string_len = strlen(prev_cmd);
                 character = 0x00;
             }
+#endif
             if (character != '\n') {
                 if (cli_echo) {
                     io_putchar(character);

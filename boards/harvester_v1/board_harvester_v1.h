@@ -36,8 +36,8 @@
 #define DIO_TDO 16U
 #define DIO_UART_CLI_RX	13U
 #define DIO_UART_CLI_TX	12U
-
-
+#define DIO_TDO 16U
+#define DIO_TDI 17U
 
 #define VOL_DIV_SCALE_PWR 11.0f
 #define VOL_DIV_SCALE_ACC 1.47619f

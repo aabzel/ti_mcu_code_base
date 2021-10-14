@@ -12,9 +12,6 @@
 extern "C" {
 #endif
 
-#define SHELL_MAX_ARG_COUNT 12
-#define SHELL_MAX_CMD_LEN 40
-
 extern bool show_shell_prompt;
 extern bool user_mode;
 

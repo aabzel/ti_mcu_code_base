@@ -24,7 +24,9 @@ bool cli_echo = true;
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
+#ifdef HAS_CLI_CMD_HISTORY
 char prev_cmd[40]="";
+#endif
 
 /*logic AND for keyWords */
 static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const sub_name1, const char* const sub_name2) {
@@ -85,7 +87,9 @@ bool cli_init(void) {
     if(false == uart_string_reader_init(&cmd_reader)) {
         cli_init_done = false;
     } else {
+#ifdef HAS_CLI_CMD_HISTORY
         memset(prev_cmd,0x00,sizeof(prev_cmd));
+#endif
         cli_set_echo(true);
         cli_init_done = true;
         res = true;
@@ -130,27 +134,18 @@ void *cliThread(void *arg0){
     }
 }
 
-bool process_shell_cmd(char* cmd_line) {
-#ifdef HAS_CLI_DEBUG
-    io_printf("proc command [%s] %u" CRLF, cmd_line, strlen(cmd_line));
-#endif /*HAS_CLI_DEBUG*/
-    memset(prev_cmd, 0x00, sizeof(prev_cmd));
-    memcpy(prev_cmd, cmd_line, strlen(cmd_line));
-
-    static int shell_argc = 0;
-    static char* shell_argv[SHELL_MAX_ARG_COUNT];
+bool cli_parse_args(char* cmd_line, int *argc, char** argv){
+    bool res = false;
+    int argc_loc=0;
     char* pRun = cmd_line;
-    const shell_cmd_info_t* cmd = shell_commands;
-
-    shell_argc = 0;
-    memset(shell_argv, 0, sizeof(shell_argv));
-    while((shell_argc < SHELL_MAX_ARG_COUNT) && (0x00!=*pRun)) {
+    while((argc_loc < SHELL_MAX_ARG_COUNT) && (0x00!=*pRun)) {
         while(isspace((int)*pRun)) {
             pRun++;
         }
         if('\0' !=*pRun ) {
-            shell_argv[shell_argc] = pRun;
-            shell_argc++;
+            argv[argc_loc] =( char*) pRun;
+            argc_loc++;
+            res = true;
             while(*pRun && !isspace((int)*pRun)) {
                 pRun++;
             }
@@ -159,27 +154,61 @@ bool process_shell_cmd(char* cmd_line) {
                 pRun++;
             }
         }
-    }
-    if(0==shell_argc ) {
+    }/*while*/
+    (*argc)=argc_loc;
+
+    return res;
+}
+
+bool process_shell_cmd(char* cmd_line) {
+    bool res = false;
+#ifdef HAS_CLI_DEBUG
+    io_printf("proc command [%s] %u" CRLF, cmd_line, strlen(cmd_line));
+#endif /*HAS_CLI_DEBUG*/
+
+#ifdef HAS_CLI_CMD_HISTORY
+    memset(prev_cmd, 0x00, sizeof(prev_cmd));
+    memcpy(prev_cmd, cmd_line, strlen(cmd_line));
+#endif
+    static int shell_argc = 0;
+    static char* shell_argv[SHELL_MAX_ARG_COUNT];
+    const shell_cmd_info_t* cmd = shell_commands;
+
+    /*TODO: make a single function for argument parsing*/
+    shell_argc = 0;
+    memset(shell_argv, 0, sizeof(shell_argv));
+    cli_parse_args(cmd_line,&shell_argc, &shell_argv[0]);
+
+    if(0 == shell_argc ) {
         shell_prompt();
-        return true;
+        res = true;
     }
-    while(cmd->handler) {
-        if((cmd->long_name && __strcasecmp(cmd->long_name, shell_argv[0]) == 0) ||
-           (cmd->short_name && __strcasecmp(cmd->short_name, shell_argv[0]) == 0)) {
-            cmd->handler(shell_argc - 1, shell_argv + 1);
-            shell_prompt();
-            return true;
+
+    if(false==res){
+        while(NULL != cmd->handler) {
+            if((cmd->long_name && __strcasecmp(cmd->long_name, shell_argv[0]) == 0) ||
+               (cmd->short_name && __strcasecmp(cmd->short_name, shell_argv[0]) == 0)) {
+                cmd->handler(shell_argc - 1, shell_argv + 1);
+                shell_prompt();
+                res = true;
+                break;
+
+            }
+            cmd++;
         }
-        cmd++;
     }
-    if(user_mode) {
-        LOG_ERROR(SYS, "Unknown command [%s]", shell_argv[0]);
-    } else {
-        dump_cmd_result_ex(false, "Unknown command");
+    if(false==res){
+        if(user_mode) {
+            LOG_ERROR(SYS, "Unknown command [%s]", shell_argv[0]);
+        } else {
+            dump_cmd_result_ex(false, "Unknown command");
+        }
+        shell_prompt();
+#ifdef HAS_CLI_CMD_HISTORY
+        memset(prev_cmd, 0x00, sizeof(prev_cmd));
+#endif
     }
-    shell_prompt();
-    return false;
+    return res;
 }
 
 void help_dump_key(const char* sub_name1, const char* sub_name2) {
@@ -227,7 +256,7 @@ bool cli_toggle_echo(void) {
     return true;
 }
 
-
+#ifdef HAS_CLI_CMD_HISTORY
 Arrow_t cli_arrows_parse(char cur_char){
     Arrow_t arrow = ARROW_UNDEF;
     static char prev_char=0;
@@ -241,3 +270,4 @@ Arrow_t cli_arrows_parse(char cur_char){
     prev_char=cur_char;
     return arrow;
 }
+#endif

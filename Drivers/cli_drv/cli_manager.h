@@ -14,6 +14,8 @@
 #define CLI_MANAGER_NAME "CLI"
 #define CLI_PERIOD_MS 300U
 #define CLI_UART CONFIG_UART_0
+#define SHELL_MAX_ARG_COUNT 12
+#define SHELL_MAX_CMD_LEN 40
 
 #define CMD_PREFIX "cmd "
 #define PING_PREFIX "ping"
@@ -32,14 +34,15 @@ typedef enum eArrow_t{
 
 #define SHELL_CMD(long_cmd, short_cmd, func, description)                                                              \
     { short_cmd, long_cmd, description, func }
-
+#ifdef HAS_CLI_CMD_HISTORY
 extern char prev_cmd[40];
-
+#endif
 bool cli_init(void);
 bool cli_process(void);
 bool process_shell_cmd(char* cmd_line);
 void help_dump_key(const char* subName1, const char* subName2);
 void *cliThread(void *arg0);
+bool cli_parse_args(char* cmd_line, int *argc, char** argv);
 bool cli_set_echo(bool echo);
 bool cli_get_echo(void);
 Arrow_t cli_arrows_parse(char cur_char);
