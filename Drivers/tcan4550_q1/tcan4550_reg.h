@@ -16,8 +16,6 @@
 #ifndef TCAN4550_REG_H
 #define TCAN4550_REG_H
 
-#define MRAM_SIZE									2048
-
 //*****************************************************************************
 // Register Address Sections
 //*****************************************************************************
@@ -26,24 +24,34 @@
 #define ADDR_MCAN									0x1000
 #define ADDR_MRAM									0x8000
 
+ 
+#define ADDR_DEVICE_ID0 0x0000
+#define ADDR_DEVICE_ID1 0x0004
+#define ADDR_READ_WRITE_TEST 0x0808
+#define ADDR_SPI_2_REV 0x0008
+#define ADDR_STATUS 0x000C
+#define ADDR_CREL 0x1000
+#define ADDR_FD_IR  0x1050 //Interrupt Register
+#define ADDR_FD_IE 0x1054 //Interrupt Enable
+#define ADDR_MRAM 0x8000
 
 /*
  * Device ID and SPI Registers: 	0x0000 Prefix
  */
-#define ADDR_SPI_DEVICE_ID0							0x0000
-#define ADDR_SPI_DEVICE_ID1							0x0004
+#define ADDR_DEVICE_ID0							0x0000
+#define ADDR_DEVICE_ID1							0x0004
 #define ADDR_SPI_REVISION							0x0008
 #define ADDR_SPI_STATUS								0x000C
 
 /*
  * device configuration registers and Interrupt Flags: 	0x0800 Prefix
  */
-#define ADDR_MODES_AND_PINS						0x0800
-#define ADDR_TIMESTAMP_PRESCALER		        0x0804
-#define ADDR_TEST_REGISTERS						0x0808
-#define ADDR_IR									0x0820
-#define ADDR_IF  							    0x0824
-#define ADDR_IE									0x0830
+#define ADDR_MODES_AND_PINS						0x0800 //Modes of Operation and Pin Configurations
+#define ADDR_TIMESTAMP_PRESCALER		        0x0804 //Timestamp Prescalar
+#define ADDR_TEST_REGISTERS						0x0808 //Read and Write Test Registers
+#define ADDR_IF									0x0820 //Interrupt Flags
+#define ADDR_MIF  							    0x0824 //MCAN Interrupt Flags
+#define ADDR_IE									0x0830 //Interrupt Enable
 
 
 /*
@@ -64,8 +72,9 @@
 #define ADDR_MCAN_ECR								0x1040
 #define ADDR_MCAN_PSR								0x1044
 #define ADDR_MCAN_TDCR								0x1048
-#define ADDR_MCAN_IR									0x1050
-#define ADDR_MCAN_IE									0x1054
+#define ADDR_MCAN_IR								0x1050
+#define ADDR_IR                                     0x1050
+#define ADDR_MCAN_IE								0x1054
 #define ADDR_MCAN_ILS								0x1058
 #define ADDR_MCAN_ILE								0x105C
 #define ADDR_MCAN_GFC								0x1080
@@ -91,8 +100,8 @@
 #define ADDR_MCAN_TXBCR								0x10D4
 #define ADDR_MCAN_TXBTO								0x10D8
 #define ADDR_MCAN_TXBCF								0x10DC
-#define ADDR_MCAN_TXBTIE								0x10E0
-#define ADDR_MCAN_TXBCIE								0x10E4
+#define ADDR_MCAN_TXBTIE							0x10E0
+#define ADDR_MCAN_TXBCIE							0x10E4
 #define ADDR_MCAN_TXEFC								0x10F0
 #define ADDR_MCAN_TXEFS								0x10F4
 #define ADDR_MCAN_TXEFA								0x10F8

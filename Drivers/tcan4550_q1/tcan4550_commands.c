@@ -18,11 +18,11 @@ bool tcan4550_diag_command(int32_t argc, char* argv[]){
     uint32_t out_reg = 0;
 
     out_reg = 0;
-    res = tcan4550_read_reg(ADDR_DEVICE_ID_0, &out_reg);
+    res = tcan4550_read_reg(ADDR_DEVICE_ID0, &out_reg);
     res=tcan4550_parse_reg_dev_id0(out_reg);
 
     out_reg = 0;
-    res = tcan4550_read_reg(ADDR_DEVICE_ID_1, &out_reg);
+    res = tcan4550_read_reg(ADDR_DEVICE_ID1, &out_reg);
     res = tcan4550_parse_reg_dev_id1(out_reg);
 
     out_reg = 0;
@@ -32,6 +32,14 @@ bool tcan4550_diag_command(int32_t argc, char* argv[]){
     out_reg = 0;
     res = tcan4550_read_reg(ADDR_STATUS, &out_reg);
     res = tcan4550_parse_reg_status(out_reg);
+
+    out_reg = 0;
+    res = tcan4550_read_reg(ADDR_DEV_CONFIG, &out_reg);
+    res = tcan4550_parse_reg_mode_op_cfg(out_reg);
+
+    out_reg = 0;
+    res = tcan4550_read_reg(ADDR_IF, &out_reg);
+    res =  tcan4550_parse_reg_interrupt_flags(  out_reg);
     return res;
 }
 
@@ -103,7 +111,7 @@ static bool tcan4550_reg_map_diag(char* key_word1, char* key_word2){
     uint16_t reg_cnt = tcan4550_get_reg_cnt();
     uint32_t reg_val=0;
     static const table_col_t cols[] = {{5, "Num"},
-                                       {10, "Name"},
+                                       {11, "Name"},
                                        {8, "addr"},
                                        {12, "value,hex"},
                                        {41, "reg value,bin"}};
@@ -114,7 +122,7 @@ static bool tcan4550_reg_map_diag(char* key_word1, char* key_word2){
         res = tcan4550_read_reg(  tCan4550RegLUT[i].addr, &reg_val);
         if(res){
           strcpy(temp_str, TSEP);
-          snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, tCan4550RegLUT[i].name);
+          snprintf(temp_str, sizeof(temp_str), "%s %9s " TSEP, temp_str, tCan4550RegLUT[i].name);
           snprintf(temp_str, sizeof(temp_str), "%s 0x%04x " TSEP, temp_str, tCan4550RegLUT[i].addr);
           snprintf(temp_str, sizeof(temp_str), "%s 0x%08x " TSEP, temp_str, reg_val);
           snprintf(temp_str, sizeof(temp_str), "%s %s " TSEP, temp_str, utoa_bin32(reg_val));
@@ -195,6 +203,36 @@ bool tcan4550_write_reg_command(int32_t argc, char* argv[]){
 }
 
 bool tcan4550_clear_mram_command(int32_t argc, char* argv[]){
-    bool res = tcan4550_clear_mram();
+    bool res = false;
+    res = tcan4550_clear_mram();
+    return res;
+}
+
+
+bool tcan4550_send_frame_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint16_t id= 0;
+    uint64_t data64 = 0;
+    if(1<=argc){
+        res = try_str2uint16(argv[0], &id);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract id %s", argv[0]);
+        }
+    }
+    if(2<=argc){
+        res = try_str2uint64(argv[1], &data64);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract data %s", argv[1]);
+        }
+    }
+
+    if (res) {
+        res = tcan4550_send(id, data64);
+        if (res) {
+            LOG_INFO(CAN, "send id: 0x%06x data: 0x%llx ok", id, data64);
+        } else {
+            LOG_ERROR(CAN, "Unable to send frame");
+        }
+    }
     return res;
 }

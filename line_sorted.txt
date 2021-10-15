@@ -1,24 +1,21 @@
- {DIO_BATT_ADC,       38,  0, "BATT_ADC", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
- {DIO_BATT_SCL,       10,  0, "BATT_SCL", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
- {DIO_BATT_SDA,       11,  0, "BATT_SDA", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
- {DIO_CAN_INT,        14,  0,  "CAN_INT", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
- {DIO_CAN_RST,        15,  0,  "CAN_RST", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_CAN_SS,          6,  0,   "CAN_SS", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, PIN_GPIO_OUTPUT_EN | PIN_GPIO_HIGH | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_GNSS_INT,       30,  0, "GNSS_Int", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH,      PIN_GPIO_OUTPUT_EN | PIN_GPIO_HIGH | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_GNSS_RST_N,     28,  0, "GNSS_Rst", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW,   PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_GNSS_RXD,       17,  0, "GNSS_RXD", NULL, GPIO_CFG_OUTPUT, PIN_NOPULL |PIN_GPIO_OUTPUT_EN},
- {DIO_GNSS_SAFEBOOT_N,29,  0,"GNSS_SaBo", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH,   PIN_GPIO_OUTPUT_EN | PIN_GPIO_HIGH | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_GNSS_TXD,       16,  0, "GNSS_TXD", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
- {DIO_KL30_ADC,       37,  0, "KL30_ADC", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
- {DIO_LED_GREEN,      43,  0,    "G_LED", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_LED_RED,        39,  0,    "R_LED", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_LEN,            32,  0,      "LEN", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_MISO,            7,  0,     "MISO", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
- {DIO_MOSI,            8,  0,     "MOSI", NULL, GPIO_CFG_OUT_STD, PIN_GPIO_OUTPUT_EN},
- {DIO_PS_RS232,       12,  0, "PS_RS232", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_PWR_MUX_CTRL,   20,  0,   "PwrMux", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_SCLK,            9,  0,     "SCLK", NULL, GPIO_CFG_OUT_STD, PIN_GPIO_OUTPUT_EN},
- {DIO_TDI,            27,  0,      "TDI", NULL, GPIO_CFG_INPUT,  PIN_INPUT_EN},
- {DIO_TDO,            26,  0,      "TDO", NULL, GPIO_CFG_OUTPUT, PIN_INPUT_EN},
- {DIO_UART_CLI_RX,    19,  0,   "MCU_RX", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN},
- {DIO_UART_CLI_TX,    18,  0,   "MCU_TX", NULL, GPIO_CFG_OUTPUT, PIN_PUSHPULL},
+    io_printf("bit %u-%u: wake_config %u", 30, 31, reg.wake_config);
+    io_printf("bit %u-%u: wd_timer %u", 28, 29, reg.wd_timer);
+    io_printf("bit %u: clk_ref %u", 27, reg.clk_ref);
+    io_printf("bit %u-%u: rsvd %u", 24, 26, reg.rsvd);
+    io_printf("bit %u%u: gpo2_config %u", 22, 23, reg.gpo2_config);
+    io_printf("bit %u: test_mode_en %u", 21, reg.test_mode_en);
+    io_printf("bit %u: rsvd %u", 20, reg.rsvd);
+    io_printf("bit %u: nwkrq_voltage %u", 19, reg.nwkrq_voltage);
+    io_printf("bit %u: wd_bit_set %u", 18, reg.wd_bit_set);
+    io_printf("bit %u-%u: wd_action %u", 16, 17, reg.wd_action);
+    io_printf("bit %u-%u: gpio1_config %u", 14, 15, reg.gpio1_config);
+    io_printf("bit %u: fail_safe_en %u", 13, reg.fail_safe_en);
+    io_printf("bit %u: rsvd %u", 12, reg.rsvd);
+    io_printf("bit %u-%u: gpio1_gpo_config %u", 10, 11, reg.gpio1_gpo_config);
+    io_printf("bit %u: inh_dis %u", 9, reg.inh_dis);
+    io_printf("bit %u: nwkrq_config %u", 8, reg.nwkrq_config);
+    io_printf("bit %u-%u: mode_sel %u", 6, 7, reg.mode_sel);
+    io_printf("bit %u-%u: rsvd %u", 4, 5, reg.rsvd);
+    io_printf("bit %u: wd_en %u", 3, reg.wd_en);
+    io_printf("bit %u: device_reset %u", 2, reg.device_reset);
+    io_printf("bit %u: test_mode_config %u", 0, reg.test_mode_config);    io_printf("bit %u: swe_dis %u", 1, reg.swe_dis);

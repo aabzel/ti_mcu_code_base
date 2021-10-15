@@ -23,12 +23,14 @@ static bool test_can_write_one(uint32_t write_val) {
 bool test_can_write(void) {
     EXPECT_TRUE(test_can_write_one(0x55555555));
     EXPECT_TRUE(test_can_write_one(0xAAAAAAAA));
+    EXPECT_TRUE(test_can_write_one(0x12345678));
+    EXPECT_TRUE(test_can_write_one(0x87654321));
     return true;
 }
 
 bool test_can_read_word(void) {
     uint32_t read_dev_id0_4 = 0;
-    EXPECT_TRUE( tcan4550_read(ADDR_DEVICE_ID_0, 1, (uint8_t *)&read_dev_id0_4, sizeof(read_dev_id0_4)));
+    EXPECT_TRUE( tcan4550_read(ADDR_DEVICE_ID0, 1, (uint8_t *)&read_dev_id0_4, sizeof(read_dev_id0_4)));
     EXPECT_EQ(0x5443414E, read_dev_id0_4);
     return true;
 }
@@ -37,6 +39,8 @@ bool test_can_types(void) {
     EXPECT_EQ(4, sizeof(HeaderCom_t));
     EXPECT_EQ(4, sizeof(tCanRegRev_t));
     EXPECT_EQ(4, sizeof(tCanRegStatus_t));
+    EXPECT_EQ(4, sizeof(tCanRegModeOpPinCfg_t));
+
 
     return true;
 }
