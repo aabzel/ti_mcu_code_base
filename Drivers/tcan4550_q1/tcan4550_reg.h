@@ -92,7 +92,7 @@
 #define ADDR_MCAN_RXF1S								0x10B4
 #define ADDR_MCAN_RXF1A								0x10B8
 #define ADDR_MCAN_RXESC								0x10BC
-#define ADDR_MCAN_TXBC								0x10C0
+#define ADDR_MCAN_TXBC								0x10C0 // Tx Buffer Configuration
 #define ADDR_MCAN_TXFQS								0x10C4
 #define ADDR_MCAN_TXESC								0x10C8
 #define ADDR_MCAN_TXBRP								0x10CC

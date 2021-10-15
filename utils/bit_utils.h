@@ -67,6 +67,7 @@ extern "C" {
 #define MASK_23BIT (uint32_t)0x007FFFFFU
 #define MASK_24BIT (uint32_t)0x00FFFFFFU
 #define MASK_25BIT (uint32_t)0x01FFFFFFU
+#define MASK_29BIT (uint32_t)0x1FFFFFFFU
 #define MASK_30BIT (uint32_t)0x3FFFFFFFU
 
 #define MASK_48BIT ((uint64_t)0x0000FFFFFFFFFFFFU)

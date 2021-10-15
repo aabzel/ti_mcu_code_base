@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "bit_utils.h"
 #include "byte_utils.h"
 #include "clocks.h"
 #include "data_utils.h"
@@ -16,9 +17,17 @@
 const uint64_t exp_dev_id = 0x343535305443414E;
 
 const Tcan4550Reg_t tCan4550RegLUT[] = {
-    {ADDR_IR, "IntReg"},         {ADDR_IE, "IntEn"},          {ADDR_IF, "IntFlgs"},
-    {ADDR_DEV_CONFIG, "DevCfg"}, {ADDR_DEVICE_ID0, "DevId0"}, {ADDR_DEVICE_ID1, "DevId1"},
-    {ADDR_SPI_2_REV, "SPIrev"},  {ADDR_STATUS, "Status"},     {ADDR_CREL, "CREL"},
+    {ADDR_IR, "IntReg"},
+    {ADDR_IE, "IntEn"},
+    {ADDR_IF, "IntFlgs"},
+    {ADDR_DEV_CONFIG, "DevCfg"},
+    {ADDR_DEVICE_ID0, "DevId0"},
+    {ADDR_DEVICE_ID1, "DevId1"},
+    {ADDR_SPI_2_REV, "SPIrev"},
+    {ADDR_STATUS, "Status"},
+    {ADDR_CREL, "CREL"},
+    {ADDR_MCAN_TXBC, "TxBufCfg"},
+    {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
 };
 
 const char* tcan4550_get_reg_name(uint16_t addr) {
@@ -138,13 +147,21 @@ bool tcan4550_init(void) {
     return res;
 }
 
+bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words) {
+    bool res = true;
+    uint8_t tx_array[4];
+    res = init_spi_header((HeaderCom_t*)tx_array, opcode, address, words);
+    res = spi_write(SPI0_INX, tx_array, sizeof(tx_array)) && res;
+    return res;
+}
+
+
+
 static bool tcan4550_read_reg_proc(uint16_t address, uint32_t* out_reg) {
     bool res = true;
     // see page 44 Figure 8-18. Read (Command OpCode 8h41)
     uint32_t read_reg;
-    uint8_t tx_array[4];
-    res = init_spi_header((HeaderCom_t*)tx_array, OP_CODE_READ, address, 1);
-    res = spi_write(SPI0_INX, tx_array, sizeof(tx_array)) && res;
+    res = tcan4550_send_spi_header(OP_CODE_READ, address, 1);
     res = spi_read(SPI0_INX, (uint8_t*)&read_reg, 4) && res;
     *out_reg = reverse_byte_order_uint32(read_reg);
     return res;
@@ -160,13 +177,17 @@ bool tcan4550_read_reg(uint16_t address, uint32_t* out_reg) {
     return res;
 }
 
+bool tcan4550_send_spi_burst(uint32_t word){
+    bool res = true;
+    uint32_t tx_word = reverse_byte_order_uint32(word);
+    res = spi_write(SPI0_INX, &tx_word, sizeof(tx_word)) && res;
+    return res;
+}
+
 static bool tcan4550_write_reg_proc(uint16_t address, uint32_t reg_val) {
     bool res = true;
-    uint8_t tx_array[8];
-    res = init_spi_header((HeaderCom_t*)tx_array, OP_CODE_WRITE, address, 1);
-    uint32_t tx_reg_val = reverse_byte_order_uint32(reg_val);
-    memcpy(&tx_array[4], &tx_reg_val, 4);
-    res = spi_write(SPI0_INX, tx_array, sizeof(tx_array)) && res;
+    res = tcan4550_send_spi_header(OP_CODE_WRITE, address, 1);
+    res = tcan4550_send_spi_burst(reg_val)&& res;
     return res;
 }
 
@@ -190,32 +211,162 @@ bool tcan4550_clear_mram(void) {
     return res;
 }
 
-bool tcan4550_send(uint16_t id, uint64_t data) {
-    bool res = false;
-    return res;
-}
-
 DevMode_t tcan4550_get_mode(void) {
     DevMode_t dev_mode = MODE_UNDEF;
     bool res = false;
     tCanRegModeOpPinCfg_t read_reg;
-    read_reg.word=0;
+    read_reg.word = 0;
     res = tcan4550_read_reg(ADDR_DEV_CONFIG, &read_reg.word);
     if(res) {
-        dev_mode = read_reg.mode_sel;
+        dev_mode =(DevMode_t) read_reg.mode_sel;
     }
     return dev_mode;
 }
 
 bool tcan4550_set_mode(DevMode_t dev_mode) {
-
     bool res = false;
     tCanRegModeOpPinCfg_t read_reg;
-    read_reg.word=0;
+    read_reg.word = 0;
     res = tcan4550_read_reg(ADDR_DEV_CONFIG, &read_reg.word);
     if(res) {
         read_reg.mode_sel = dev_mode;
-        res= tcan4550_write_reg(  ADDR_DEV_CONFIG,   read_reg.word) ;
+        res = tcan4550_write_reg(ADDR_DEV_CONFIG, read_reg.word);
+    }
+    return res;
+}
+
+/**
+ * @brief Converts the ESC (Element Size) value to number of bytes that it corresponds to
+ *
+ * @param inputESCValue is the value from an element size configuration register
+ * @return The number of bytes of data (8-64 bytes)
+ */
+static const uint8_t lookUpTable[8] = {8, 12, 16, 20, 24, 32, 48, 64};
+uint8_t txrxesc_2data_bytes(uint8_t code) { return lookUpTable[code & 0x07]; }
+
+/**
+ * @brief Converts the CAN message DLC hex value to the number of bytes it corresponds to
+ *
+ * @param inputDLC is the DLC value from/to a CAN message struct
+ * @return The number of bytes of data (0-64 bytes)
+ */
+static const uint8_t dlcLUT_9[7] = {12, 16, 20, 24, 32, 48, 64};
+uint8_t dlc_2_bytes(uint8_t dlc_code) {
+    uint8_t size = 0;
+    if(dlc_code < 9) {
+        size = dlc_code;
+    } else if(dlc_code < 16) {
+        size = dlcLUT_9[(dlc_code - 9)];
+    } else {
+        size = 0;
+    }
+    return size;
+}
+
+bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* data_payload) {
+    bool res = false;
+    TxBufCfg_t read_reg;
+    read_reg.word = 0;
+    uint16_t start_address = 0;
+    res = tcan4550_read_reg(ADDR_MCAN_TXBC, &read_reg.word);
+    if(res) {
+        res = false;
+        start_address = ADDR_MRAM + read_reg.tx_buf_start_addr;
+        if(32 < read_reg.tfqs) {
+            read_reg.tfqs = 32;
+        }
+
+        if(32 < read_reg.ndtb) {
+            read_reg.ndtb = 32;
+        }
+        if(buf_index <= (read_reg.ndtb - 1)) {
+
+        } else {
+            res = false;
+        }
+    }
+
+    uint8_t element_size = 0;
+    if(res) {
+        TxBufElmSzCfg_t reg;
+        reg.word = 0;
+        res = tcan4550_read_reg(ADDR_MCAN_TXESC, &reg.word);
+        element_size = txrxesc_2data_bytes(reg.tx_buff_data_size) + 8;
+        start_address += ((uint32_t)element_size * buf_index);
+        // Convert it to words for easier reading by dividing by 4, and only look at data payload
+        element_size = (dlc_2_bytes(header->dlc & 0x0F) + 8) >> 2;
+        if(0 < dlc_2_bytes(header->dlc & 0x0F) % 4) { // If we don't have a whole word worth of data...
+            // We need to round up to the nearest word (by default it truncates).
+            // Can be done by simply adding another word.
+            element_size += 1;
+        }
+        tcan4550_chip_select(true);
+        delay_ms(1);
+        res = tcan4550_send_spi_header(OP_CODE_WRITE, start_address, element_size);
+        W0_t reg_w0;
+        reg_w0.word = 0;
+        reg_w0.esi= header->esi;
+        reg_w0.xtd= header->xtd;
+        reg_w0.rtr= header->rtr;
+        if(header->xtd){
+            reg_w0.id = header->id & MASK_29BIT;
+        }else{
+            reg_w0.id = ((uint32_t)header->id & MASK_11BIT) << 18;
+        }
+        tcan4550_send_spi_burst(reg_w0.word);
+        //see Figure 12. Tx FIFO / Buffer Element
+        TxBuffW1_t reg_w1;
+        reg_w1.word = 0;
+        reg_w1.dlc=header->dlc;
+        reg_w1.brs=header->brs;
+        reg_w1.fdf=header->fdf;
+        reg_w1.efc=header->efc;
+        reg_w1.mm=header->mm;
+        tcan4550_send_spi_burst(reg_w1.word);
+
+        element_size = dlc_2_bytes(header->dlc & 0x0F); // Returns the number of data bytes
+        Type32Union_t un32;
+        un32.u32=0;
+        uint16_t i=0;
+        for(i=0; i< element_size; i+=4){
+            un32.u8[0]=data_payload[i];
+            un32.u8[1]=data_payload[i+1];
+            un32.u8[2]=data_payload[i+2];
+            un32.u8[3]=data_payload[i+3];
+            res = tcan4550_send_spi_burst(un32.u32);
+        }
+        delay_ms(1);
+        tcan4550_chip_select(false);
+    }
+
+
+    return res;
+}
+
+bool tcan4550_tx_buff_content(uint8_t buf_index) {
+    bool res = false;
+    if(buf_index < 31U) {
+        uint32_t write_value = 0;
+        res = tcan4550_read_reg(ADDR_MCAN_TXBAR, &write_value);
+        if(res) {
+            write_value |= 1U << buf_index;
+            res = tcan4550_write_reg(ADDR_MCAN_TXBAR, write_value);
+        }
+    }
+    return res;
+}
+
+bool tcan4550_send(uint16_t id, uint64_t data) {
+    bool res = false;
+    tCanTxHeader_t header;
+    memset(&header, 0x00, sizeof(header));
+    header.dlc = 8;
+    header.xtd = 0;
+    header.id = id;
+    header.fdf = 0;
+    res = tcan4550_write_tx_buff(0, &header, (uint8_t*) &data);
+    if (res) {
+      res = tcan4550_tx_buff_content(0);
     }
     return res;
 }
