@@ -19,9 +19,14 @@
 
 bool sx1262_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
-    if(0 == argc) {
+    if(1<=argc){
+        res = try_str2uint8(argv[0], &Sx1262Instance.debug);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract debug %s", argv[0]);
+        }
+    }
+    if(0 <= argc) {
         res = true;
-
         LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
         LOG_INFO(LORA, "packet type: %s", pack_type2str(Sx1262Instance.packet_type));
         LOG_INFO(LORA, "rx_buffer_pointer: %u 0x%x", Sx1262Instance.rx_buffer_pointer,
@@ -32,6 +37,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("RssiInst: %d dBm" CRLF, Sx1262Instance.rssi_inst);
         io_printf("RssiPkt: %u" CRLF, Sx1262Instance.rssi_pkt);
         io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
+        io_printf("debug: %u" CRLF, Sx1262Instance.debug);
         io_printf("RssiAvg: %u" CRLF, Sx1262Instance.rssi_avg);
         io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
         io_printf("status: %u" CRLF, Sx1262Instance.status);

@@ -250,6 +250,7 @@ typedef struct xSx1262_t {
     int8_t output_power;
     int8_t rssi_inst;
     bool tx_done;
+    bool debug;
     ChipMode_t chip_mode;
     PaketStat_t gfsk;
     PaketStat_t lora;

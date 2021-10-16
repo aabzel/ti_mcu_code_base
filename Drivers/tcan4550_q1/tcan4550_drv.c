@@ -180,7 +180,7 @@ bool tcan4550_read_reg(uint16_t address, uint32_t* out_reg) {
 bool tcan4550_send_spi_burst(uint32_t word){
     bool res = true;
     uint32_t tx_word = reverse_byte_order_uint32(word);
-    res = spi_write(SPI0_INX, &tx_word, sizeof(tx_word)) && res;
+    res = spi_write(SPI0_INX,(uint8_t* ) &tx_word, sizeof(tx_word)) && res;
     return res;
 }
 

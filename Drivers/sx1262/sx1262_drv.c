@@ -818,7 +818,7 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #endif
     } else {
 #ifdef HAS_SX1262_DEBUG
-        LOG_WARNING(LORA, "Set default output power [%u] %d dBm", DFLT_FREQ_MHZ, DFLT_FREQ_MHZ);
+        LOG_WARNING(LORA, "Set default output power [%u] %d dBm", DFLT_OUT_POWER, DFLT_OUT_POWER);
 #endif
         sx1262Instance->output_power = DFLT_OUT_POWER;
     }
@@ -836,6 +836,7 @@ bool sx1262_init(void) {
     }
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
+    Sx1262Instance.debug= true;
     res = sx1262_load_params(&Sx1262Instance) && res;
     GPIO_writeDio(DIO_SX1262_SS, 1);
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);
@@ -1254,14 +1255,14 @@ bool sx1262_process(void) {
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.data_aval_cnt++;
-#ifdef HAS_SX1262_DEBUG_RX
-            LOG_INFO(LORA, "Data available!");
-#endif /*HAS_SX1262_DEBUG_RX*/
+            if(Sx1262Instance.debug) {
+                LOG_INFO(LORA, "Data available!");
+            }
             res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
             if(res) {
-#ifdef HAS_SX1262_DEBUG_RX
-                res = print_mem(rx_payload, rx_size, false, true);
-#endif /*HAS_SX1262_DEBUG_RX*/
+                if(Sx1262Instance.debug) {
+                    res = print_mem(rx_payload, rx_size, true, true);
+                }
                 res = lora_proc_payload(rx_payload, rx_size);
             }
         } break;
