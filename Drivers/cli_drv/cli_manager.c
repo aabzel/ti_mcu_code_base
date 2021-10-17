@@ -6,28 +6,35 @@
 
 #include <ctype.h>
 
-#include "base_cmd.h"
 #include "data_utils.h"
+#ifndef X86_64
+#include "base_cmd.h"
 #include "io_utils.h"
 #include "log_commands.h"
 #include "none_blocking_pause.h"
 #include "cli_commands.h"
-#include "str_utils.h"
-#include "sys_config.h"
 #include "table_utils.h"
-#include "uart_common.h"
+#include "sys_config.h"
 #include "uart_drv.h"
 #include "uart_string_reader.h"
 #include "writer_generic.h"
+#endif
+
+#include "str_utils.h"
+#include "uart_common.h"
 
 bool cli_echo = true;
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
+#ifndef X86_64
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
+#endif
+
 #ifdef HAS_CLI_CMD_HISTORY
 char prev_cmd[40]="";
 #endif
 
+#ifndef X86_64
 /*logic AND for keyWords */
 static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const sub_name1, const char* const sub_name2) {
     bool res = false;
@@ -81,7 +88,9 @@ static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const su
 
     return res;
 }
+#endif
 
+#ifndef X86_64
 bool cli_init(void) {
     bool res = false;
     if(false == uart_string_reader_init(&cmd_reader)) {
@@ -96,7 +105,10 @@ bool cli_init(void) {
     }
     return res;
 }
+#endif
 
+
+#ifndef X86_64
 bool cli_process(void) {
     static uint8_t rx_byte=0;
     if(true == huart[UART_NUM_CLI].rx_int) {
@@ -126,13 +138,9 @@ bool cli_process(void) {
     }
     return res;
 }
+#endif
 
 
-void *cliThread(void *arg0){
-    while (1) {
-       // cli_process();
-    }
-}
 
 bool cli_parse_args(char* cmd_line, int *argc, char** argv){
     bool res = false;
@@ -160,6 +168,7 @@ bool cli_parse_args(char* cmd_line, int *argc, char** argv){
     return res;
 }
 
+#ifndef X86_64
 bool process_shell_cmd(char* cmd_line) {
     bool res = false;
 #ifdef HAS_CLI_DEBUG
@@ -210,7 +219,9 @@ bool process_shell_cmd(char* cmd_line) {
     }
     return res;
 }
+#endif
 
+#ifndef X86_64
 void help_dump_key(const char* sub_name1, const char* sub_name2) {
     uint16_t num=1;
     const shell_cmd_info_t* cmd = shell_commands;
@@ -241,6 +252,7 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
     }
     table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
 }
+#endif
 
 bool cli_set_echo(bool echo_val) {
     cli_echo = echo_val;

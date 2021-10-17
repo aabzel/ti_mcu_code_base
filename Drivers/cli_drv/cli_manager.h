@@ -9,7 +9,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifndef X86_64
 #include "uart_drv.h"
+#endif
 
 #define CLI_MANAGER_NAME "CLI"
 #define CLI_PERIOD_MS 300U
@@ -34,9 +36,11 @@ typedef enum eArrow_t{
 
 #define SHELL_CMD(long_cmd, short_cmd, func, description)                                                              \
     { short_cmd, long_cmd, description, func }
+
 #ifdef HAS_CLI_CMD_HISTORY
 extern char prev_cmd[40];
 #endif
+
 bool cli_init(void);
 bool cli_process(void);
 bool process_shell_cmd(char* cmd_line);

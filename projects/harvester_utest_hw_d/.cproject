@@ -111,6 +111,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/fifo"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_diag"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_math"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_string"/>

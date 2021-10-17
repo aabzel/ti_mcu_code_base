@@ -9,7 +9,24 @@
 
 #define STRING19 "123456789"
 
+bool test_fifo_2(void){
+#ifdef X86_64
+    printf("\n%s():", __FUNCTION__);
+#endif
+    Fifo_array_t FifiObj;
+    char peek_ch = '0';
+    char outChar = '0';
+    char FiFoHeap[6] = "";
+    EXPECT_TRUE( fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap)));
+    EXPECT_EQ(0, fifo_get_count(&FifiObj));
+
+    return true;
+}
+
 bool test_fifo_char_array_overrun(void) {
+#ifdef X86_64
+    printf("\n%s():", __FUNCTION__);
+#endif
     Fifo_array_t FifiObj;
     char peek_ch = '0';
     char FiFoHeap[6] = "";
@@ -28,12 +45,15 @@ bool test_fifo_char_array_overrun(void) {
 }
 
 bool test_fifo_char_array(void) {
+#ifdef X86_64
+    printf("\n%s():", __FUNCTION__);
+#endif
     Fifo_array_t FifiObj;
     char FiFoHeap[10] = "";
     char outArray[100] = "";
     char peek_ch = '0';
     uint16_t outLen = 0;
-    fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap));
+    EXPECT_TRUE( fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap)));
 
     EXPECT_TRUE(fifo_push_array(&FifiObj, "12345", 5));
 
@@ -50,6 +70,9 @@ bool test_fifo_char_array(void) {
 }
 
 bool test_fifo_char_overrun(void) {
+#ifdef X86_64
+    printf("\n%s():", __FUNCTION__);
+#endif
     Fifo_array_t FifiObj;
     char FiFoHeap[5] = "";
 

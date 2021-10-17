@@ -25,32 +25,19 @@ CFLAGS  += -O0
 #CFLAGS += -ftime-report
 
 #OPT += -DSORT_LIST
-OPT += -DHAS_UTESTS
-OPT += -DHAS_DEBUG
 OPT += -DX86_64
-OPT += -DHAS_SW_TESTS
 OPT += -DHAS_TEST_SUIT_FIFO
 OPT += -DHAS_TEST_SUIT_UTILS
-OPT += -DHAS_TEST_SUIT_RTCM3_PROTO
 OPT += -DHAS_TEST_SUIT_CONVERT
 OPT += -DHAS_TEST_SUIT_CRC
-OPT += -DHAS_TEST_SUIT_UBLOX_PROTO
-OPT += -DHAS_TEST_SUIT_NMEA_PROTO
 
 #files to link:
 LFLAGS= -static
 
-EXECUTABLE=test_code_base
+EXECUTABLE=test_leet_code
 
-include $(PROJECT_ROOT)common/common.mk
-include $(PROJECT_ROOT)Drivers/drivers.mk
-include $(PROJECT_ROOT)protocols/protocols.mk
-include $(PROJECT_ROOT)utils/utils_file/utils_file.mk
-include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
+include $(PROJECT_ROOT)leet_code_tasks/leet_code.mk
 include $(PROJECT_ROOT)utils/utils.mk
-include $(PROJECT_ROOT)unit_tests/unit_test.mk
-include $(PROJECT_ROOT)utils/utils_string/string_utils.mk
-#include $(PROJECT_ROOT)tests/tests.mk
 SOURCES_C += main.c
 # the name to use for both the target source file, and the output file:
 #include $(PROJECT_ROOT)system_explore/system_explore.mk

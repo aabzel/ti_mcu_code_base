@@ -12,6 +12,9 @@ uint8_t arr5[5]={1,2,3,4,5};
 uint8_t arr3[3]={1,2,3};
 uint8_t arr2[2]={1,2};
 bool test_fifo_array(void) {
+#ifdef X86_64
+    printf("\n%s():", __FUNCTION__);
+#endif
     FifoArray_t FiFoArr;
     Array_t NodeHeap[5];
     EXPECT_TRUE( fifo_arr_init(&FiFoArr, &NodeHeap[0], ARRAY_SIZE(NodeHeap)));
