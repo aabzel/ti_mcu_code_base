@@ -17,18 +17,10 @@
 const uint64_t exp_dev_id = 0x343535305443414E;
 
 const Tcan4550Reg_t tCan4550RegLUT[] = {
-    {ADDR_IR, "IntReg"},
-    {ADDR_IE, "IntEn"},
-    {ADDR_IF, "IntFlgs"},
-    {ADDR_MCAN_NBTP, "BitTiming"},
-    {ADDR_DEV_CONFIG, "DevCfg"},
-    {ADDR_DEVICE_ID0, "DevId0"},
-    {ADDR_DEVICE_ID1, "DevId1"},
-    {ADDR_SPI_2_REV, "SPIrev"},
-    {ADDR_STATUS, "Status"},
-    {ADDR_CREL, "CREL"},
-    {ADDR_MCAN_TXBC, "TxBufCfg"},
-    {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
+    {ADDR_IR, "IntReg"},           {ADDR_IE, "IntEn"},           {ADDR_IF, "IntFlgs"},
+    {ADDR_MCAN_NBTP, "BitTiming"}, {ADDR_DEV_CONFIG, "DevCfg"},  {ADDR_DEVICE_ID0, "DevId0"},
+    {ADDR_DEVICE_ID1, "DevId1"},   {ADDR_SPI_2_REV, "SPIrev"},   {ADDR_STATUS, "Status"},
+    {ADDR_CREL, "CREL"},           {ADDR_MCAN_TXBC, "TxBufCfg"}, {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
 };
 
 const char* tcan4550_get_reg_name(uint16_t addr) {
@@ -135,8 +127,6 @@ bool tcan4550_reset(void) {
     return res;
 }
 
-
-
 bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words) {
     bool res = true;
     uint8_t tx_array[4];
@@ -144,8 +134,6 @@ bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words) {
     res = spi_write(SPI0_INX, tx_array, sizeof(tx_array)) && res;
     return res;
 }
-
-
 
 static bool tcan4550_read_reg_proc(uint16_t address, uint32_t* out_reg) {
     bool res = true;
@@ -167,17 +155,17 @@ bool tcan4550_read_reg(uint16_t address, uint32_t* out_reg) {
     return res;
 }
 
-bool tcan4550_send_spi_burst(uint32_t word){
+bool tcan4550_send_spi_burst(uint32_t word) {
     bool res = true;
     uint32_t tx_word = reverse_byte_order_uint32(word);
-    res = spi_write(SPI0_INX,(uint8_t* ) &tx_word, sizeof(tx_word)) && res;
+    res = spi_write(SPI0_INX, (uint8_t*)&tx_word, sizeof(tx_word)) && res;
     return res;
 }
 
 static bool tcan4550_write_reg_proc(uint16_t address, uint32_t reg_val) {
     bool res = true;
     res = tcan4550_send_spi_header(OP_CODE_WRITE, address, 1);
-    res = tcan4550_send_spi_burst(reg_val)&& res;
+    res = tcan4550_send_spi_burst(reg_val) && res;
     return res;
 }
 
@@ -195,7 +183,7 @@ bool tcan4550_write_reg_lazy(uint16_t address, uint32_t reg_val) {
 bool tcan4550_clear_mram(void) {
     bool res = true;
     uint16_t curAddr = ADDR_MRAM;
-    for(curAddr = ADDR_MRAM; curAddr < (ADDR_MRAM + MRAM_SIZE-4); curAddr += 4) {
+    for(curAddr = ADDR_MRAM; curAddr < (ADDR_MRAM + MRAM_SIZE - 4); curAddr += 4) {
         res = tcan4550_write_reg(curAddr, 0) && res;
     }
     return res;
@@ -204,11 +192,11 @@ bool tcan4550_clear_mram(void) {
 /**
  * @brief Clears a SPIERR flag that may be set
  */
-bool tcan4550_clear_spi_err(void){
+bool tcan4550_clear_spi_err(void) {
     bool res = false;
     // Simply write all 1s to attempt to clear a SPIERR that was set
     res = tcan4550_write_reg(ADDR_SPI_STATUS, 0xFFFFFFFF);
-    return res ;
+    return res;
 }
 
 DevMode_t tcan4550_get_mode(void) {
@@ -218,7 +206,7 @@ DevMode_t tcan4550_get_mode(void) {
     read_reg.word = 0;
     res = tcan4550_read_reg(ADDR_DEV_CONFIG, &read_reg.word);
     if(res) {
-        dev_mode =(DevMode_t) read_reg.mode_sel;
+        dev_mode = (DevMode_t)read_reg.mode_sel;
     }
     return dev_mode;
 }
@@ -305,54 +293,52 @@ bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* 
         res = tcan4550_send_spi_header(OP_CODE_WRITE, start_address, element_size);
         W0_t reg_w0;
         reg_w0.word = 0;
-        reg_w0.esi= header->esi;
-        reg_w0.xtd= header->xtd;
-        reg_w0.rtr= header->rtr;
-        if(header->xtd){
+        reg_w0.esi = header->esi;
+        reg_w0.xtd = header->xtd;
+        reg_w0.rtr = header->rtr;
+        if(header->xtd) {
             reg_w0.id = header->id & MASK_29BIT;
-        }else{
+        } else {
             reg_w0.id = ((uint32_t)header->id & MASK_11BIT) << 18;
         }
         tcan4550_send_spi_burst(reg_w0.word);
-        //see Figure 12. Tx FIFO / Buffer Element
+        // see Figure 12. Tx FIFO / Buffer Element
         TxBuffW1_t reg_w1;
         reg_w1.word = 0;
-        reg_w1.dlc=header->dlc;
-        reg_w1.brs=header->brs;
-        reg_w1.fdf=header->fdf;
-        reg_w1.efc=header->efc;
-        reg_w1.mm=header->mm;
+        reg_w1.dlc = header->dlc;
+        reg_w1.brs = header->brs;
+        reg_w1.fdf = header->fdf;
+        reg_w1.efc = header->efc;
+        reg_w1.mm = header->mm;
         tcan4550_send_spi_burst(reg_w1.word);
 
         element_size = dlc_2_bytes(header->dlc & 0x0F); // Returns the number of data bytes
         Type32Union_t un32;
-        un32.u32=0;
-        uint16_t i=0;
-        for(i=0; i< element_size; i+=4){
-            un32.u8[0]=data_payload[i];
-            un32.u8[1]=data_payload[i+1];
-            un32.u8[2]=data_payload[i+2];
-            un32.u8[3]=data_payload[i+3];
+        un32.u32 = 0;
+        uint16_t i = 0;
+        for(i = 0; i < element_size; i += 4) {
+            un32.u8[0] = data_payload[i];
+            un32.u8[1] = data_payload[i + 1];
+            un32.u8[2] = data_payload[i + 2];
+            un32.u8[3] = data_payload[i + 3];
             res = tcan4550_send_spi_burst(un32.u32);
         }
         delay_ms(1);
         tcan4550_chip_select(false);
     }
 
-
     return res;
 }
 
-
-bool is_tcan4550_protected_reg_locked(tCanRegCCctrl_t *ctrl_reg){
+bool is_tcan4550_protected_reg_locked(tCanRegCCctrl_t* ctrl_reg) {
     bool res = false;
     tCanRegCCctrl_t reg;
-    reg.word=0;
-    res = tcan4550_read_reg(ADDR_MCAN_CCCR,&reg.word);
-    if(true==res){
+    reg.word = 0;
+    res = tcan4550_read_reg(ADDR_MCAN_CCCR, &reg.word);
+    if(true == res) {
         *ctrl_reg = reg;
         res = false;
-        if(0==reg.cce) {
+        if(0 == reg.cce) {
             res = true;
         }
     }
@@ -366,24 +352,24 @@ bool is_tcan4550_protected_reg_locked(tCanRegCCctrl_t *ctrl_reg){
  *
  * @return @c true if successfully enabled, otherwise return @c false
  */
-bool tcan4550_protected_registers_lock(void){
+bool tcan4550_protected_registers_lock(void) {
     bool res = false;
     tCanRegCCctrl_t reg;
-    reg.word=0;
+    reg.word = 0;
 
     res = is_tcan4550_protected_reg_locked(&reg);
 
-    if(false==res){
+    if(false == res) {
         uint8_t i;
-        for(i=0;i<5;i++){
+        for(i = 0; i < 5; i++) {
             reg.csr = 0;
             reg.csa = 0;
             reg.cce = 0;
             reg.init = 0;
-            res = tcan4550_write_reg( ADDR_MCAN_CCCR, reg.word);
-            if (res) {
+            res = tcan4550_write_reg(ADDR_MCAN_CCCR, reg.word);
+            if(res) {
                 res = is_tcan4550_protected_reg_locked(&reg);
-                if(res){
+                if(res) {
                     break;
                 }
             }
@@ -392,7 +378,6 @@ bool tcan4550_protected_registers_lock(void){
 
     return res;
 }
-
 
 bool tcan4550_tx_buff_content(uint8_t buf_index) {
     bool res = false;
@@ -415,9 +400,9 @@ bool tcan4550_send(uint16_t id, uint64_t data) {
     header.xtd = 0;
     header.id = id;
     header.fdf = 0;
-    res = tcan4550_write_tx_buff(0, &header, (uint8_t*) &data);
-    if (res) {
-      res = tcan4550_tx_buff_content(0);
+    res = tcan4550_write_tx_buff(0, &header, (uint8_t*)&data);
+    if(res) {
+        res = tcan4550_tx_buff_content(0);
     }
     return res;
 }
@@ -428,64 +413,66 @@ bool tcan4550_send(uint16_t id, uint64_t data) {
  * Writes the data timing information to MCAN using the input from the @c *nomTiming pointer
  *
  * @warning This function writes to protected MCAN registers
- * @note Requires that protected registers have been unlocked using @c TCAN4x5x_MCAN_EnableProtectedRegisters() and @c TCAN4x5x_MCAN_DisableProtectedRegisters() be used to lock the registers after configuration
+ * @note Requires that protected registers have been unlocked using @c TCAN4x5x_MCAN_EnableProtectedRegisters() and @c
+ * TCAN4x5x_MCAN_DisableProtectedRegisters() be used to lock the registers after configuration
  *
- * @param *nomTiming is a pointer of a @c TCAN4x5x_MCAN_Nominal_Timing_Simple struct containing the simplified nominal timing information
+ * @param *nomTiming is a pointer of a @c TCAN4x5x_MCAN_Nominal_Timing_Simple struct containing the simplified nominal
+ * timing information
  * @return @c true if successfully enabled, otherwise return @c false
  */
-bool tcan4550_configure_timing_simple(tCanRegBitTime_t *bit_time) {
+bool tcan4550_configure_timing_simple(tCanRegBitTime_t* bit_time) {
     bool res = false;
     res = tcan4550_write_reg(ADDR_MCAN_NBTP, bit_time->word);
-    return res ;
+    return res;
 }
 
-bool tcan4550_configure_data_timing_simple(tCanRegDataBitTime_t*data_time){
+bool tcan4550_configure_data_timing_simple(tCanRegDataBitTime_t* data_time) {
     bool res = false;
-    res = tcan4550_write_reg( ADDR_MCAN_DBTP,  data_time->word);
+    res = tcan4550_write_reg(ADDR_MCAN_DBTP, data_time->word);
     return res;
 }
 
-bool tcan4550_configure_interrupt(tCanRegIntEn_t *ie){
-    bool res =  tcan4550_write_reg(ADDR_IE, ie->word);
+bool tcan4550_configure_interrupt(tCanRegIntEn_t* ie) {
+    bool res = tcan4550_write_reg(ADDR_IE, ie->word);
     return res;
 }
-
 
 /**
  * @brief Read the device interrupts
  *
  * Reads the device interrupts and updates a @c TCAN4x5x_Device_Interrupts struct that is passed to the function
  *
- * @param *ir is a pointer to a @c TCAN4x5x_Device_Interrupts struct containing the interrupt bit fields that will be updated
+ * @param *ir is a pointer to a @c TCAN4x5x_Device_Interrupts struct containing the interrupt bit fields that will be
+ * updated
  */
-bool tcan4550_read_interrupt(tCanRegIntFl_t *ir){
+bool tcan4550_read_interrupt(tCanRegIntFl_t* ir) {
     bool res = false;
-    res = tcan4550_read_reg(ADDR_IF,&ir->word);
+    res = tcan4550_read_reg(ADDR_IF, &ir->word);
     return res;
 }
-
 
 /**
  * @brief Clear the device interrupts
  *
  * Will attempt to clear any interrupts that are marked as a '1' in the passed @c TCAN4x5x_Device_Interrupts struct
  *
- * @param *ir is a pointer to a @c TCAN4x5x_Device_Interrupts struct containing the interrupt bit fields that will be updated
+ * @param *ir is a pointer to a @c TCAN4x5x_Device_Interrupts struct containing the interrupt bit fields that will be
+ * updated
  */
-bool tcan4550_read_clear_interrupt(tCanRegIntFl_t *ir){
+bool tcan4550_read_clear_interrupt(tCanRegIntFl_t* ir) {
     bool res = false;
     res = tcan4550_write_reg(ADDR_IF, ir->word);
     return res;
 }
 
-bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t *reg){
+bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t* reg) {
     bool res = false;
     tCanRegCCctrl_t ctr_reg;
     ctr_reg.word = 0;
-    res = tcan4550_read_reg(ADDR_MCAN_CCCR,&ctr_reg.word);
-    if(res){
+    res = tcan4550_read_reg(ADDR_MCAN_CCCR, &ctr_reg.word);
+    if(res) {
         *reg = ctr_reg;
-        if((1==ctr_reg.init) && (1==ctr_reg.cce)){
+        if((1 == ctr_reg.init) && (1 == ctr_reg.cce)) {
             res = true;
         }
     }
@@ -499,59 +486,74 @@ bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t *reg){
  *
  * @return @c true if successfully enabled, otherwise return @c false
  */
-bool tcan4550_protected_registers_unlock(void){
-    uint8_t i=0;
+bool tcan4550_protected_registers_unlock(void) {
+    uint8_t i = 0;
     bool res = false;
     tCanRegCCctrl_t ctr_reg;
-    ctr_reg.word=0;
+    ctr_reg.word = 0;
 
     res = is_tcan4550_protected_reg_unlock(&ctr_reg);
-    if(true==res) {
+    if(true == res) {
         res = true;
     }
 
-    // Try up to 5 times to set the CCCR register, if not, then fail config, since we need these bits set to configure the device.
-    for (i = 0; i<5; i++) {
+    // Try up to 5 times to set the CCCR register, if not, then fail config, since we need these bits set to configure
+    // the device.
+    for(i = 0; i < 5; i++) {
         // Unset the CSA and CSR bits since those will be set if we're in standby mode.
-        //Writing a 1 to these bits will force a clock stop event and prevent the return to normal mode
-        ctr_reg.csa =0;
-        ctr_reg.csr =0;
+        // Writing a 1 to these bits will force a clock stop event and prevent the return to normal mode
+        ctr_reg.csa = 0;
+        ctr_reg.csr = 0;
         ctr_reg.cce = 1;
-        ctr_reg.init =1;
+        ctr_reg.init = 1;
         res = tcan4550_write_reg(ADDR_MCAN_CCCR, ctr_reg.word);
-        if(res){
-          res = is_tcan4550_protected_reg_unlock(&ctr_reg);
-          if(true==res){
-              break;
-          }
+        if(res) {
+            res = is_tcan4550_protected_reg_unlock(&ctr_reg);
+            if(true == res) {
+                break;
+            }
         }
-
     }
     return res;
 }
 
-
 /**
  * @brief Configures the MCAN global filter configuration register, using the passed Global Filter Configuration struct.
  *
- * Configures the default behavior of the MCAN controller when receiving messages. This can include accepting or rejecting CAN messages by default.
+ * Configures the default behavior of the MCAN controller when receiving messages. This can include accepting or
+ * rejecting CAN messages by default.
  *
  * @warning This function writes to protected MCAN registers
- * @note Requires that protected registers have been unlocked using @c TCAN4x5x_MCAN_EnableProtectedRegisters() and @c TCAN4x5x_MCAN_DisableProtectedRegisters() be used to lock the registers after configuration
+ * @note Requires that protected registers have been unlocked using @c TCAN4x5x_MCAN_EnableProtectedRegisters() and @c
+ * TCAN4x5x_MCAN_DisableProtectedRegisters() be used to lock the registers after configuration
  *
  * @param *gfc is a pointer of a @c TCAN4x5x_MCAN_Global_Filter_Configuration struct containing the register values
  * @return @c true if successfully enabled, otherwise return @c false
  */
-bool tcan4550_configure_global_filter(tCanRegGloFiltCfg_t *gfc){
-   bool res = false;
-   res = tcan4550_write_reg(ADDR_MCAN_GFC, gfc->word);
+bool tcan4550_configure_global_filter(tCanRegGloFiltCfg_t* gfc) {
+    bool res = false;
+    res = tcan4550_write_reg(ADDR_MCAN_GFC, gfc->word);
 
 #ifdef TCAN4x5x_MCAN_VERIFY_CONFIGURATION_WRITES
 #endif
-   return res;
+    return res;
 }
 
+bool tcan4550_configure_mcan_interrupt(tCanRegIntEn_t *mcan_ie){
+    bool res = true;
+    res = tcan4550_write_reg(ADDR_MCAN_IE, mcan_ie->word)&& res;
+    tCanRegIntLine_t it_reg;
+    it_reg.word=0;
+    it_reg.eint0=1;
+    // This is necessary to enable the MCAN Int mux to the output nINT pin
+    res = tcan4550_write_reg(ADDR_MCAN_ILE, it_reg.word)&& res;
+    return res;
+}
 
+bool tcan4550_device_configure(tCanRegModeOpPinCfg_t *dev_cfg){
+    bool res = true;
+    return res;
+}
 
 bool tcan4550_init(void) {
     bool res = true;
@@ -562,30 +564,28 @@ bool tcan4550_init(void) {
 
     res = is_tcan4550_connected();
     if(res) {
-        res = tcan4550_clear_spi_err()&&res;
+        res = tcan4550_clear_spi_err() && res;
         tCanRegIntEn_t ie;
-        ie.word=0;
-        res = tcan4550_configure_interrupt(&ie)&&res;
+        ie.word = 0;
+        res = tcan4550_configure_interrupt(&ie) && res;
 
         tCanRegIntFl_t dev_ir;
         dev_ir.word = 0;
-        res = tcan4550_read_interrupt(&dev_ir)&&res;
-        if(res){
-            if(1==dev_ir.pwron){
+        res = tcan4550_read_interrupt(&dev_ir) && res;
+        if(res) {
+            if(1 == dev_ir.pwron) {
                 res = tcan4550_read_clear_interrupt(&dev_ir);
             }
         }
 
         tCanRegBitTime_t reg_bit_time;
-        reg_bit_time.word=0;
+        reg_bit_time.word = 0;
         reg_bit_time.nbrp = 2;
         reg_bit_time.ntseg1 = 32;
         reg_bit_time.ntseg2 = 8;
 
-
-
         tCanRegDataBitTime_t data_time;
-        data_time.word = 0 ;
+        data_time.word = 0;
         data_time.dtseg1 = 15;
         data_time.dtseg2 = 5;
         data_time.dbrp = 1;
@@ -597,15 +597,36 @@ bool tcan4550_init(void) {
         gfc.anfe = 0;
         gfc.anfs = 0;
 
-        res = tcan4550_protected_registers_unlock()&& res;
+        res = tcan4550_protected_registers_unlock() && res;
 
-        res = tcan4550_configure_timing_simple(&reg_bit_time)&&res;
-        res = tcan4550_configure_data_timing_simple(&data_time)&&res;  // Setup CAN FD timing
-        res = tcan4550_configure_global_filter(&gfc)&&res;
+        res = tcan4550_configure_timing_simple(&reg_bit_time) && res;
+        res = tcan4550_configure_data_timing_simple(&data_time) && res; // Setup CAN FD timing
+        res = tcan4550_configure_global_filter(&gfc) && res;
 
-        res = tcan4550_clear_mram()&&res;
+        res = tcan4550_clear_mram() && res;
 
-        res = tcan4550_protected_registers_lock()&&res;
+        res = tcan4550_protected_registers_lock() && res;
+
+
+        tCanRegIntEn_t mcan_ie;
+        mcan_ie.word = 0;
+        mcan_ie.rf0ne = 1;
+
+        res = tcan4550_configure_mcan_interrupt(&mcan_ie) && res;
+
+        tCanRegModeOpPinCfg_t dev_cfg_reg;
+        dev_cfg_reg.word=0;
+        dev_cfg_reg.device_reset = 0;
+        dev_cfg_reg.clk_ref = 1;
+        dev_cfg_reg.wd_en = 0;
+        res = tcan4550_device_configure(&dev_cfg_reg) &&res;
+
+        // Set to normal mode, since configuration is done. This line turns on the transceiver
+        res = tcan4550_set_mode(MODE_NORMAL)&&res;
+
+        res = tcan4550_write_reg(ADDR_MCAN_IR, 0xFFFFFFFF)&&res;
+
+
     }
     return res;
 }

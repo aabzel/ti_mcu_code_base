@@ -758,8 +758,7 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.band_width), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_bandwidth(sx1262Instance->mod_params.band_width)) {
-            LOG_INFO(LORA, "Set bandwidth from params [%u] %s",
-                     sx1262Instance->mod_params.band_width,
+            LOG_INFO(LORA, "Set bandwidth from params [%u] %s", sx1262Instance->mod_params.band_width,
                      bandwidth2str(sx1262Instance->mod_params.band_width));
         } else {
             res = false;
@@ -837,7 +836,7 @@ bool sx1262_init(void) {
     }
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
-    Sx1262Instance.debug= true;
+    Sx1262Instance.debug = true;
     res = sx1262_load_params(&Sx1262Instance) && res;
     GPIO_writeDio(DIO_SX1262_SS, 1);
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);

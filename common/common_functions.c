@@ -171,7 +171,6 @@ void common_main_loop(void) {
 }
 #endif /*NORTOS*/
 
-
 bool try_init(bool status, char* message) {
     if(false == status) {
         LOG_ERROR(HMOM, "init %s error", message);

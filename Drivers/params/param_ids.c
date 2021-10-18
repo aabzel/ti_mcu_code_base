@@ -13,25 +13,24 @@
 #include "param_types.h"
 #include "sx1262_diag.h"
 
-
 /*TODO: Sort by index for bin search in future*/
 const ParamItem_t ParamArray[PARAM_CNT] = {
-    {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt",NULL},    /*num*/
-    {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq",NULL},      /*Hz*/
-    {PAR_ID_LORA_SF, 1, UINT8, "SF",spreading_factor2str}, /*Chips / Symbol*/
-    {PAR_ID_LORA_CR, 1, UINT8, "CR",coding_rate2str},      /*in raw bits/total bits*/
-    {PAR_ID_LORA_BW, 1, UINT8, "BW",bandwidth2str},        /*Hz*/
-    {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN",NULL}, /*bytes*/
-    {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN",NULL},   /*bytes*/
-    {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T",NULL},
-    {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE",NULL},
-    {PAR_ID_INV_IQ, 1, UINT8, "InvIQ",NULL},
-    {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd",boot_cmd2str},        /*1-stay in boot 0-launch App*/
-    {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt",NULL},        /*num*/
-    {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp",NULL}, /*Flash Addr*/
-    {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus",NULL},    /*Flash Addr*/
-    {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower",NULL},  /*loRa output power*/
-    {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc",NULL},          /*Power Source*/
+    {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt", NULL},      /*num*/
+    {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq", NULL},        /*Hz*/
+    {PAR_ID_LORA_SF, 1, UINT8, "SF", spreading_factor2str}, /*Chips / Symbol*/
+    {PAR_ID_LORA_CR, 1, UINT8, "CR", coding_rate2str},      /*in raw bits/total bits*/
+    {PAR_ID_LORA_BW, 1, UINT8, "BW", bandwidth2str},        /*Hz*/
+    {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN", NULL},   /*bytes*/
+    {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN", NULL},     /*bytes*/
+    {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T", NULL},
+    {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE", NULL},
+    {PAR_ID_INV_IQ, 1, UINT8, "InvIQ", NULL},
+    {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd", boot_cmd2str}, /*1-stay in boot 0-launch App*/
+    {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt", NULL},         /*num*/
+    {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp", NULL},  /*Flash Addr*/
+    {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus", NULL},     /*Flash Addr*/
+    {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower", NULL},   /*loRa output power*/
+    {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc", NULL},           /*Power Source*/
 };
 
 bool param_init(void) {
@@ -176,13 +175,12 @@ bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* ou
     return res;
 }
 
-
-const char *param_val2str(uint16_t id, uint8_t* value){
-    const char *name = "---";
+const char* param_val2str(uint16_t id, uint8_t* value) {
+    const char* name = "---";
     uint16_t i = 0;
     for(i = 0; i < ARRAY_SIZE(ParamArray); i++) {
         if(id == ParamArray[i].id) {
-            if (NULL != ParamArray[i].idval2str) {
+            if(NULL != ParamArray[i].idval2str) {
                 name = ParamArray[i].idval2str((uint8_t)*value);
             }
             break;
@@ -191,7 +189,3 @@ const char *param_val2str(uint16_t id, uint8_t* value){
 
     return name;
 }
-
-
-
-

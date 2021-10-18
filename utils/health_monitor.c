@@ -25,7 +25,6 @@ bool health_monotor_init(void) {
     return res;
 }
 
-
 bool health_monotor_proc(void) {
     bool res = false;
     float vKl30 = 0.0;

@@ -185,5 +185,3 @@ bool boot_proc(void) {
     return res;
 }
 #endif
-
-

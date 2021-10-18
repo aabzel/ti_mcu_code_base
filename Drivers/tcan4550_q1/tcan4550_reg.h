@@ -72,11 +72,11 @@
 #define ADDR_MCAN_ECR								0x1040
 #define ADDR_MCAN_PSR								0x1044
 #define ADDR_MCAN_TDCR								0x1048
-#define ADDR_MCAN_IR								0x1050
+#define ADDR_MCAN_IR								0x1050 //Interrupt Register
 #define ADDR_IR                                     0x1050
-#define ADDR_MCAN_IE								0x1054
+#define ADDR_MCAN_IE								0x1054 // Interrupt Enable
 #define ADDR_MCAN_ILS								0x1058
-#define ADDR_MCAN_ILE								0x105C
+#define ADDR_MCAN_ILE								0x105C // Interrupt Line Enable
 #define ADDR_MCAN_GFC								0x1080 // Global Filter Configuration
 #define ADDR_MCAN_SIDFC								0x1084 // Standard ID Filter Configuration
 #define ADDR_MCAN_XIDFC								0x1088 // Extended ID Filter Configuration

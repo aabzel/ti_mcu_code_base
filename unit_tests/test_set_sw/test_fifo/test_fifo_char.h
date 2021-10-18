@@ -12,11 +12,9 @@ bool test_fifo_char_array_overrun(void);
 bool test_fifo_char_array(void);
 bool test_fifo_2(void);
 
-#define TEST_SUIT_FIFO_CHAR                         \
-    {"fifo_ch_overrun", test_fifo_char_overrun},    \
-    {"fifo_2", test_fifo_2},                        \
-    {"fifo_ch_array", test_fifo_char_array},         \
-    {"fifo_ch_array_overrun", test_fifo_char_array_overrun},
+#define TEST_SUIT_FIFO_CHAR                                                                                            \
+    {"fifo_ch_overrun", test_fifo_char_overrun}, {"fifo_2", test_fifo_2}, {"fifo_ch_array", test_fifo_char_array},     \
+        {"fifo_ch_array_overrun", test_fifo_char_array_overrun},
 
 #ifdef __cplusplus
 }

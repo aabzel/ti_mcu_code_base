@@ -9,7 +9,7 @@
 
 #define STRING19 "123456789"
 
-bool test_fifo_2(void){
+bool test_fifo_2(void) {
 #ifdef X86_64
     printf("\n%s():", __FUNCTION__);
 #endif
@@ -17,7 +17,7 @@ bool test_fifo_2(void){
     char peek_ch = '0';
     char outChar = '0';
     char FiFoHeap[6] = "";
-    EXPECT_TRUE( fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap)));
+    EXPECT_TRUE(fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap)));
     EXPECT_EQ(0, fifo_get_count(&FifiObj));
 
     return true;
@@ -53,7 +53,7 @@ bool test_fifo_char_array(void) {
     char outArray[100] = "";
     char peek_ch = '0';
     uint16_t outLen = 0;
-    EXPECT_TRUE( fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap)));
+    EXPECT_TRUE(fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap)));
 
     EXPECT_TRUE(fifo_push_array(&FifiObj, "12345", 5));
 

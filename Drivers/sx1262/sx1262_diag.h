@@ -23,7 +23,7 @@ const char* cmd_stat2str(uint8_t cmd_stat);
 const char* pack_type2str(RadioPacketType_t packet_type);
 const char* coding_rate2str(LoRaCodingRate_t coding_rate);
 const char* bandwidth2str(uint8_t bandwidth);
-const char*  spreading_factor2str(uint8_t spreading_factor);
+const char* spreading_factor2str(uint8_t spreading_factor);
 
 #ifdef __cplusplus
 }

@@ -4,8 +4,8 @@
 #include <stdint.h>
 
 #ifdef NORTOS
-#include "task_info.h"
 #include "common_functions.h"
+#include "task_info.h"
 #endif /*NORTOS*/
 
 #ifdef HAS_EXT_RAM_EMUL

@@ -283,13 +283,12 @@ uint32_t bandwidth2num(BandWidth_t bandwidth) {
     return band_width;
 }
 
-const char* bandwidth2str(uint8_t bandwidth){
+const char* bandwidth2str(uint8_t bandwidth) {
     static char name[40] = "";
-    uint32_t band_width = bandwidth2num((BandWidth_t)  bandwidth);
-    snprintf(name,sizeof(name),"%u Hz", band_width);
+    uint32_t band_width = bandwidth2num((BandWidth_t)bandwidth);
+    snprintf(name, sizeof(name), "%u Hz", band_width);
     return name;
 }
-
 
 const char* coding_rate2str(LoRaCodingRate_t coding_rate) {
     const char* name = "undef";
@@ -318,9 +317,9 @@ uint32_t spreading_factor2num(SpreadingFactor_t spreading_factor) {
     return spreading_factors_num;
 }
 
-const char*  spreading_factor2str(uint8_t spreading_factor){
+const char* spreading_factor2str(uint8_t spreading_factor) {
     static char name[30] = "";
-    uint32_t spread_factor= spreading_factor2num((SpreadingFactor_t) spreading_factor);
-    snprintf(name,sizeof(name),"%u Chips/Symb",spread_factor);
+    uint32_t spread_factor = spreading_factor2num((SpreadingFactor_t)spreading_factor);
+    snprintf(name, sizeof(name), "%u Chips/Symb", spread_factor);
     return name;
 }

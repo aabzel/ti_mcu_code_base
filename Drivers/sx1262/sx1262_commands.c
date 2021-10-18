@@ -1,8 +1,8 @@
 #include "sx1262_commands.h"
 
 #include <inttypes.h>
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "bit_utils.h"
@@ -20,7 +20,7 @@
 
 bool sx1262_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
-    if(1<=argc){
+    if(1 <= argc) {
         res = try_str2bool(argv[0], &Sx1262Instance.debug);
         if(false == res) {
             LOG_ERROR(LORA, "Unable to extract debug %s", argv[0]);

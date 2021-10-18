@@ -42,7 +42,7 @@ uint16_t tcan4550_get_reg_cnt(void);
 bool tcan4550_chip_select(bool state);
 bool tcan4550_read(uint16_t address, uint8_t len, uint8_t* out_array, uint32_t size);
 bool tcan4550_write_reg(uint16_t address, uint32_t reg_val);
-bool tcan4550_configure_interrupt(tCanRegIntEn_t *int_en);
+bool tcan4550_configure_interrupt(tCanRegIntEn_t* int_en);
 
 bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words);
 

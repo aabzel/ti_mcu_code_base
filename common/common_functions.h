@@ -18,7 +18,7 @@
     TASK_INTEGRITY
 
 bool sys_init(void);
-bool try_init(bool status, char* message) ;
+bool try_init(bool status, char* message);
 #ifdef NORTOS
 void common_loop(uint64_t loop_start_time);
 void custom_loop(uint64_t loop_start_time);
