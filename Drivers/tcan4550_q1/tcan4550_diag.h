@@ -16,6 +16,8 @@ bool tcan4550_parse_reg_dev_id1(uint32_t reg_val);
 bool tcan4550_parse_reg_status(uint32_t reg_val);
 bool tcan4550_parse_reg_mode_op_cfg(uint32_t reg_val);
 bool tcan4550_parse_reg_interrupt_flags(uint32_t reg_val);
+bool tcan4550_parse_reg_bit_timing(uint32_t reg_val);
+
 #ifdef __cplusplus
 }
 #endif

@@ -40,8 +40,8 @@
  */
 #define ADDR_DEVICE_ID0							0x0000
 #define ADDR_DEVICE_ID1							0x0004
-#define ADDR_SPI_REVISION							0x0008
-#define ADDR_SPI_STATUS								0x000C
+#define ADDR_SPI_REVISION						0x0008
+#define ADDR_SPI_STATUS					    	0x000C
 
 /*
  * device configuration registers and Interrupt Flags: 	0x0800 Prefix
@@ -60,11 +60,11 @@
 #define ADDR_MCAN_CREL								0x1000
 #define ADDR_MCAN_ENDN								0x1004
 #define ADDR_MCAN_CUST								0x1008
-#define ADDR_MCAN_DBTP								0x100C
+#define ADDR_MCAN_DBTP								0x100C //
 #define ADDR_MCAN_TEST								0x1010
 #define ADDR_MCAN_RWD								0x1014
-#define ADDR_MCAN_CCCR								0x1018
-#define ADDR_MCAN_NBTP								0x101C
+#define ADDR_MCAN_CCCR								0x1018 // CC Control Register
+#define ADDR_MCAN_NBTP								0x101C // Nominal Bit Timing & Prescaler Register
 #define ADDR_MCAN_TSCC								0x1020
 #define ADDR_MCAN_TSCV								0x1024
 #define ADDR_MCAN_TOCC								0x1028
@@ -77,18 +77,18 @@
 #define ADDR_MCAN_IE								0x1054
 #define ADDR_MCAN_ILS								0x1058
 #define ADDR_MCAN_ILE								0x105C
-#define ADDR_MCAN_GFC								0x1080
-#define ADDR_MCAN_SIDFC								0x1084
-#define ADDR_MCAN_XIDFC								0x1088
+#define ADDR_MCAN_GFC								0x1080 // Global Filter Configuration
+#define ADDR_MCAN_SIDFC								0x1084 // Standard ID Filter Configuration
+#define ADDR_MCAN_XIDFC								0x1088 // Extended ID Filter Configuration
 #define ADDR_MCAN_XIDAM								0x1090
 #define ADDR_MCAN_HPMS								0x1094
 #define ADDR_MCAN_NDAT1								0x1098
 #define ADDR_MCAN_NDAT2								0x109C
-#define ADDR_MCAN_RXF0C								0x10A0
+#define ADDR_MCAN_RXF0C								0x10A0 // Rx FIFO 0 Configuration
 #define ADDR_MCAN_RXF0S								0x10A4
 #define ADDR_MCAN_RXF0A								0x10A8
 #define ADDR_MCAN_RXBC								0x10AC
-#define ADDR_MCAN_RXF1C								0x10B0
+#define ADDR_MCAN_RXF1C								0x10B0 // Rx FIFO 1 Configuration
 #define ADDR_MCAN_RXF1S								0x10B4
 #define ADDR_MCAN_RXF1A								0x10B8
 #define ADDR_MCAN_RXESC								0x10BC
@@ -105,6 +105,5 @@
 #define ADDR_MCAN_TXEFC								0x10F0
 #define ADDR_MCAN_TXEFS								0x10F4
 #define ADDR_MCAN_TXEFA								0x10F8
-//*****************************************************************************
 
 #endif /* TCAN4550_REG_H */

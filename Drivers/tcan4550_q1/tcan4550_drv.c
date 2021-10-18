@@ -20,6 +20,7 @@ const Tcan4550Reg_t tCan4550RegLUT[] = {
     {ADDR_IR, "IntReg"},
     {ADDR_IE, "IntEn"},
     {ADDR_IF, "IntFlgs"},
+    {ADDR_MCAN_NBTP, "BitTiming"},
     {ADDR_DEV_CONFIG, "DevCfg"},
     {ADDR_DEVICE_ID0, "DevId0"},
     {ADDR_DEVICE_ID1, "DevId1"},
@@ -134,18 +135,7 @@ bool tcan4550_reset(void) {
     return res;
 }
 
-bool tcan4550_init(void) {
-    bool res = true;
-    GPIO_writeDio(DIO_CAN_SS, 1);
-    GPIO_writeDio(DIO_CAN_RST, 1);
 
-    res = tcan4550_reset();
-
-    res = is_tcan4550_connected();
-    if(res) {
-    }
-    return res;
-}
 
 bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words) {
     bool res = true;
@@ -205,10 +195,20 @@ bool tcan4550_write_reg_lazy(uint16_t address, uint32_t reg_val) {
 bool tcan4550_clear_mram(void) {
     bool res = true;
     uint16_t curAddr = ADDR_MRAM;
-    for(curAddr = ADDR_MRAM; curAddr < (ADDR_MRAM + MRAM_SIZE); curAddr += 4) {
+    for(curAddr = ADDR_MRAM; curAddr < (ADDR_MRAM + MRAM_SIZE-4); curAddr += 4) {
         res = tcan4550_write_reg(curAddr, 0) && res;
     }
     return res;
+}
+
+/**
+ * @brief Clears a SPIERR flag that may be set
+ */
+bool tcan4550_clear_spi_err(void){
+    bool res = false;
+    // Simply write all 1s to attempt to clear a SPIERR that was set
+    res = tcan4550_write_reg(ADDR_SPI_STATUS, 0xFFFFFFFF);
+    return res ;
 }
 
 DevMode_t tcan4550_get_mode(void) {
@@ -343,6 +343,57 @@ bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* 
     return res;
 }
 
+
+bool is_tcan4550_protected_reg_locked(tCanRegCCctrl_t *ctrl_reg){
+    bool res = false;
+    tCanRegCCctrl_t reg;
+    reg.word=0;
+    res = tcan4550_read_reg(ADDR_MCAN_CCCR,&reg.word);
+    if(true==res){
+        *ctrl_reg = reg;
+        res = false;
+        if(0==reg.cce) {
+            res = true;
+        }
+    }
+    return res;
+}
+
+/**
+ * @brief Disable Protected MCAN Registers
+ *
+ * Attempts to disable CCCR.CCE and CCCR.INIT to disallow writes to protected registers
+ *
+ * @return @c true if successfully enabled, otherwise return @c false
+ */
+bool tcan4550_protected_registers_lock(void){
+    bool res = false;
+    tCanRegCCctrl_t reg;
+    reg.word=0;
+
+    res = is_tcan4550_protected_reg_locked(&reg);
+
+    if(false==res){
+        uint8_t i;
+        for(i=0;i<5;i++){
+            reg.csr = 0;
+            reg.csa = 0;
+            reg.cce = 0;
+            reg.init = 0;
+            res = tcan4550_write_reg( ADDR_MCAN_CCCR, reg.word);
+            if (res) {
+                res = is_tcan4550_protected_reg_locked(&reg);
+                if(res){
+                    break;
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
+
 bool tcan4550_tx_buff_content(uint8_t buf_index) {
     bool res = false;
     if(buf_index < 31U) {
@@ -367,6 +418,194 @@ bool tcan4550_send(uint16_t id, uint64_t data) {
     res = tcan4550_write_tx_buff(0, &header, (uint8_t*) &data);
     if (res) {
       res = tcan4550_tx_buff_content(0);
+    }
+    return res;
+}
+
+/**
+ * @brief Writes the MCAN nominal timing settings, using the simple nominal timing struct
+ *
+ * Writes the data timing information to MCAN using the input from the @c *nomTiming pointer
+ *
+ * @warning This function writes to protected MCAN registers
+ * @note Requires that protected registers have been unlocked using @c TCAN4x5x_MCAN_EnableProtectedRegisters() and @c TCAN4x5x_MCAN_DisableProtectedRegisters() be used to lock the registers after configuration
+ *
+ * @param *nomTiming is a pointer of a @c TCAN4x5x_MCAN_Nominal_Timing_Simple struct containing the simplified nominal timing information
+ * @return @c true if successfully enabled, otherwise return @c false
+ */
+bool tcan4550_configure_timing_simple(tCanRegBitTime_t *bit_time) {
+    bool res = false;
+    res = tcan4550_write_reg(ADDR_MCAN_NBTP, bit_time->word);
+    return res ;
+}
+
+bool tcan4550_configure_data_timing_simple(tCanRegDataBitTime_t*data_time){
+    bool res = false;
+    res = tcan4550_write_reg( ADDR_MCAN_DBTP,  data_time->word);
+    return res;
+}
+
+bool tcan4550_configure_interrupt(tCanRegIntEn_t *ie){
+    bool res =  tcan4550_write_reg(ADDR_IE, ie->word);
+    return res;
+}
+
+
+/**
+ * @brief Read the device interrupts
+ *
+ * Reads the device interrupts and updates a @c TCAN4x5x_Device_Interrupts struct that is passed to the function
+ *
+ * @param *ir is a pointer to a @c TCAN4x5x_Device_Interrupts struct containing the interrupt bit fields that will be updated
+ */
+bool tcan4550_read_interrupt(tCanRegIntFl_t *ir){
+    bool res = false;
+    res = tcan4550_read_reg(ADDR_IF,&ir->word);
+    return res;
+}
+
+
+/**
+ * @brief Clear the device interrupts
+ *
+ * Will attempt to clear any interrupts that are marked as a '1' in the passed @c TCAN4x5x_Device_Interrupts struct
+ *
+ * @param *ir is a pointer to a @c TCAN4x5x_Device_Interrupts struct containing the interrupt bit fields that will be updated
+ */
+bool tcan4550_read_clear_interrupt(tCanRegIntFl_t *ir){
+    bool res = false;
+    res = tcan4550_write_reg(ADDR_IF, ir->word);
+    return res;
+}
+
+bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t *reg){
+    bool res = false;
+    tCanRegCCctrl_t ctr_reg;
+    ctr_reg.word = 0;
+    res = tcan4550_read_reg(ADDR_MCAN_CCCR,&ctr_reg.word);
+    if(res){
+        *reg = ctr_reg;
+        if((1==ctr_reg.init) && (1==ctr_reg.cce)){
+            res = true;
+        }
+    }
+    return res;
+}
+
+/**
+ * @brief Enable Protected MCAN Registers
+ *
+ * Attempts to enable CCCR.CCE and CCCR.INIT to allow writes to protected registers, needed for MCAN configuration
+ *
+ * @return @c true if successfully enabled, otherwise return @c false
+ */
+bool tcan4550_protected_registers_unlock(void){
+    uint8_t i=0;
+    bool res = false;
+    tCanRegCCctrl_t ctr_reg;
+    ctr_reg.word=0;
+
+    res = is_tcan4550_protected_reg_unlock(&ctr_reg);
+    if(true==res) {
+        res = true;
+    }
+
+    // Try up to 5 times to set the CCCR register, if not, then fail config, since we need these bits set to configure the device.
+    for (i = 0; i<5; i++) {
+        // Unset the CSA and CSR bits since those will be set if we're in standby mode.
+        //Writing a 1 to these bits will force a clock stop event and prevent the return to normal mode
+        ctr_reg.csa =0;
+        ctr_reg.csr =0;
+        ctr_reg.cce = 1;
+        ctr_reg.init =1;
+        res = tcan4550_write_reg(ADDR_MCAN_CCCR, ctr_reg.word);
+        if(res){
+          res = is_tcan4550_protected_reg_unlock(&ctr_reg);
+          if(true==res){
+              break;
+          }
+        }
+
+    }
+    return res;
+}
+
+
+/**
+ * @brief Configures the MCAN global filter configuration register, using the passed Global Filter Configuration struct.
+ *
+ * Configures the default behavior of the MCAN controller when receiving messages. This can include accepting or rejecting CAN messages by default.
+ *
+ * @warning This function writes to protected MCAN registers
+ * @note Requires that protected registers have been unlocked using @c TCAN4x5x_MCAN_EnableProtectedRegisters() and @c TCAN4x5x_MCAN_DisableProtectedRegisters() be used to lock the registers after configuration
+ *
+ * @param *gfc is a pointer of a @c TCAN4x5x_MCAN_Global_Filter_Configuration struct containing the register values
+ * @return @c true if successfully enabled, otherwise return @c false
+ */
+bool tcan4550_configure_global_filter(tCanRegGloFiltCfg_t *gfc){
+   bool res = false;
+   res = tcan4550_write_reg(ADDR_MCAN_GFC, gfc->word);
+
+#ifdef TCAN4x5x_MCAN_VERIFY_CONFIGURATION_WRITES
+#endif
+   return res;
+}
+
+
+
+bool tcan4550_init(void) {
+    bool res = true;
+    GPIO_writeDio(DIO_CAN_SS, 1);
+    GPIO_writeDio(DIO_CAN_RST, 1);
+
+    res = tcan4550_reset();
+
+    res = is_tcan4550_connected();
+    if(res) {
+        res = tcan4550_clear_spi_err()&&res;
+        tCanRegIntEn_t ie;
+        ie.word=0;
+        res = tcan4550_configure_interrupt(&ie)&&res;
+
+        tCanRegIntFl_t dev_ir;
+        dev_ir.word = 0;
+        res = tcan4550_read_interrupt(&dev_ir)&&res;
+        if(res){
+            if(1==dev_ir.pwron){
+                res = tcan4550_read_clear_interrupt(&dev_ir);
+            }
+        }
+
+        tCanRegBitTime_t reg_bit_time;
+        reg_bit_time.word=0;
+        reg_bit_time.nbrp = 2;
+        reg_bit_time.ntseg1 = 32;
+        reg_bit_time.ntseg2 = 8;
+
+
+
+        tCanRegDataBitTime_t data_time;
+        data_time.word = 0 ;
+        data_time.dtseg1 = 15;
+        data_time.dtseg2 = 5;
+        data_time.dbrp = 1;
+
+        tCanRegGloFiltCfg_t gfc;
+        gfc.word = 0;
+        gfc.rrfe = 1;
+        gfc.rrfs = 1;
+        gfc.anfe = 0;
+        gfc.anfs = 0;
+
+        res = tcan4550_protected_registers_unlock()&& res;
+
+        res = tcan4550_configure_timing_simple(&reg_bit_time)&&res;
+        res = tcan4550_configure_data_timing_simple(&data_time)&&res;  // Setup CAN FD timing
+        res = tcan4550_configure_global_filter(&gfc)&&res;
+
+        res = tcan4550_clear_mram()&&res;
+
+        res = tcan4550_protected_registers_lock()&&res;
     }
     return res;
 }

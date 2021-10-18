@@ -40,6 +40,11 @@ bool tcan4550_diag_command(int32_t argc, char* argv[]){
     out_reg = 0;
     res = tcan4550_read_reg(ADDR_IF, &out_reg);
     res =  tcan4550_parse_reg_interrupt_flags(  out_reg);
+
+    out_reg = 0;
+    res = tcan4550_read_reg(ADDR_MCAN_NBTP, &out_reg);
+    res =  tcan4550_parse_reg_bit_timing(out_reg);
+
     return res;
 }
 

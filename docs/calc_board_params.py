@@ -1,3 +1,5 @@
+CAN_XTAL=40000000
+can_clk_period = 1/CAN_XTAL
 
 XTAL=48000000
 clk_Period = 1/XTAL
@@ -38,3 +40,12 @@ print ('Period of 32 bit 1ms timer {} s'.format(Period32bit1msTimer))
 print ('Period of 32 bit 1ms timer {} min'.format(Period32bit1msTimer/60))
 print ('Period of 32 bit 1ms timer {} h'.format(Period32bit1msTimer/(60*60)))
 print ('Period of 32 bit 1ms timer {} day'.format(Period32bit1msTimer/(60*60*24)))
+
+
+
+canbitRatePeriod =can_clk_period*2
+canbit_period = canbitRatePeriod*(32+8)
+can_bit_freq= 1/canbit_period;
+print ('CAN bit Period  {} s'.format(canbitRatePeriod))
+print ('canbit_period  {} s'.format(canbit_period))
+print ('can_bit_freq  {} Hz'.format(can_bit_freq))

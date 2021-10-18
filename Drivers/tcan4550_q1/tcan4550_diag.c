@@ -149,3 +149,23 @@ bool tcan4550_parse_reg_interrupt_flags(uint32_t reg_val) {
     io_printf("bit %u: CAN Bus normal %u" CRLF, 31, reg.canbusnom);
     return res;
 }
+
+
+bool tcan4550_parse_reg_bit_timing(uint32_t reg_val) {
+    bool res = false;
+    tCanRegBitTime_t reg;
+    float tq=0.0f;
+    float can_bit_period=0.0f;
+    float can_bit_rate = 0.0f;
+    memcpy(&reg, &reg_val, 4);
+    io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_MCAN_NBTP, tcan4550_get_reg_name(ADDR_MCAN_NBTP), reg_val, utoa_bin32(reg_val));
+    io_printf("bit %u-%u: Nominal Time Segment After Sample Point %u" CRLF, 0,6, reg.ntseg2);
+    io_printf("bit %u-%u: Nominal Time Segment Before Sample Point %u" CRLF, 8,15, reg.ntseg1);
+    tq=((float)reg.nbrp)*(1.0f/((float)CAN_XTAL_HZ));
+    io_printf("bit %u-%u: Nominal Bit Rate Prescaler %u bit quanta time: %f s" CRLF, 16,24, reg.nbrp, tq);
+    io_printf("bit %u-%u: Nominal (RE)Synchronization Jump Width %u" CRLF, 25,31, reg.nsjw);
+    can_bit_period  = tq*((float) (reg.ntseg1+reg.ntseg2));
+    can_bit_rate = 1.0f/can_bit_period  ;
+    io_printf("Can Bit Rate: %f Bit/s" CRLF, can_bit_rate);
+    return res;
+}
