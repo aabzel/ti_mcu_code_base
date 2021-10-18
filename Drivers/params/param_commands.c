@@ -16,60 +16,68 @@
 
 bool cmd_param_diag(int32_t argc, char* argv[]) {
     bool res = false;
-    char keyWord1[20] = "";
-    char keyWord2[20] = "";
-    if(0 <= argc) {
-        strncpy(keyWord1, "", sizeof(keyWord1));
-        strncpy(keyWord2, "", sizeof(keyWord2));
-        res = true;
-    }
-    if(1 <= argc) {
-        strncpy(keyWord1, argv[0], sizeof(keyWord1));
-        res = true;
-    }
-    if(2 <= argc) {
-        strncpy(keyWord2, argv[1], sizeof(keyWord2));
-        res = true;
-    }
 
-    if(2 < argc) {
-        LOG_ERROR(PARAM, "Usage: pg keyWord1 keyWord2");
-    }
-
-    if(res) {
-        char valStr[40] = "";
-        memset(valStr, 0x00, sizeof(valStr));
-        uint16_t i = 0, num = 1;
-        static const table_col_t cols[] = {{5, "No"}, {5, "id"}, {12, "name"}, {5, "len"}, {11, "val"}};
-        table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
-        char temp_str[120] = "";
-        for(i = 0; i < PARAM_CNT; i++) {
-            strcpy(temp_str, TSEP);
-            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].id);
-            snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, ParamArray[i].name);
-            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].len);
-            uint16_t value_len = 0;
-            uint8_t value[ParamArray[i].len];
-            res = mm_get(ParamArray[i].id, value, ParamArray[i].len, &value_len);
-            if(true == res) {
-                if(ParamArray[i].len == value_len) {
-                    res = raw_val_2str(value, value_len, ParamArray[i].type, valStr, sizeof(valStr));
-                } else {
-                    strncpy(valStr, "lenErr", sizeof(valStr));
-                }
-            } else {
-                strncpy(valStr, "lack", sizeof(valStr));
-            }
-
-            snprintf(temp_str, sizeof(temp_str), "%s %9s " TSEP, temp_str, valStr);
-            snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
-            if(is_contain(temp_str, keyWord1, keyWord2)) {
-                io_printf(TSEP " %3u ", num);
-                io_printf("%s", temp_str);
-                num++;
-            }
+    if(0 == argc) {
+        char keyWord1[20] = "";
+        char keyWord2[20] = "";
+        if(0 <= argc) {
+            strncpy(keyWord1, "", sizeof(keyWord1));
+            strncpy(keyWord2, "", sizeof(keyWord2));
+            res = true;
         }
-        table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        if(1 <= argc) {
+            strncpy(keyWord1, argv[0], sizeof(keyWord1));
+            res = true;
+        }
+        if(2 <= argc) {
+            strncpy(keyWord2, argv[1], sizeof(keyWord2));
+            res = true;
+        }
+
+        if(2 < argc) {
+            LOG_ERROR(PARAM, "Usage: pg keyWord1 keyWord2");
+        }
+
+        if(res) {
+            char valStr[40] = "";
+            memset(valStr, 0x00, sizeof(valStr));
+            uint16_t i = 0, num = 1;
+            static const table_col_t cols[] = {{5, "No"}, {5, "id"},
+                                               {12, "name"}, {5, "len"},
+                                               {12, "val"}, {16, "name"}};
+            table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+            char temp_str[120] = "";
+            for(i = 0; i < PARAM_CNT; i++) {
+                strcpy(temp_str, TSEP);
+                snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].id);
+                snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, ParamArray[i].name);
+                snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].len);
+                uint16_t value_len = 0;
+                uint8_t value[ParamArray[i].len];
+                res = mm_get(ParamArray[i].id, value, ParamArray[i].len, &value_len);
+                if(true == res) {
+                    if(ParamArray[i].len == value_len) {
+                        res = raw_val_2str(value, value_len, ParamArray[i].type, valStr, sizeof(valStr));
+                    } else {
+                        strncpy(valStr, "lenErr", sizeof(valStr));
+                    }
+                } else {
+                    strncpy(valStr, "lack", sizeof(valStr));
+                }
+
+                snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, valStr);
+                snprintf(temp_str, sizeof(temp_str), "%s %13s " TSEP, temp_str, param_val2str(ParamArray[i].id, value));
+                snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
+                if(is_contain(temp_str, keyWord1, keyWord2)) {
+                    io_printf(TSEP " %3u ", num);
+                    io_printf("%s", temp_str);
+                    num++;
+                }
+            }
+            table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        }
+    } else {
+        LOG_ERROR(PARAM, "Usage: pg");
     }
     return res;
 }

@@ -45,7 +45,9 @@
 
 UARTCC26XX_Object uartCC26XXObjects[UART_COUNT];
 
+#ifdef HAS_UART0
 static unsigned char uartCC26XXRingBuffer0[32];
+#endif /*HAS_UART0*/
 
 #ifdef HAS_UART1
 static unsigned char uartCC26XXRingBuffer1[160];

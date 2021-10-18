@@ -25,14 +25,6 @@ bool health_monotor_init(void) {
     return res;
 }
 
-bool try_init(bool status, char* message) {
-    if(false == status) {
-        LOG_ERROR(HMOM, "init %s error", message);
-    } else {
-        LOG_INFO(HMOM, "init %s OK", message);
-    }
-    return status;
-}
 
 bool health_monotor_proc(void) {
     bool res = false;

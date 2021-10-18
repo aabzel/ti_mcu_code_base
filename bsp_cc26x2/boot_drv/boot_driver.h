@@ -19,6 +19,7 @@ typedef enum eCmdBoot_t {
     BOOT_CMD_ENDEF = 3
 } CmdBoot_t;
 
+const char* boot_cmd2str(uint8_t boot_cmd);
 bool boot_init(void);
 bool boot_erase_app(void);
 bool boot_jump_to_code(uint32_t flash_addr);

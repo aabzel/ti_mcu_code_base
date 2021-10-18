@@ -15,7 +15,9 @@
 #include "sys.h"
 #include "sys_config.h"
 
+#ifdef HAS_GENERIC
 static bool fine_start_event = false;
+#endif
 typedef void (*pFunction)(void);
 pFunction Jump_To_Application;
 
@@ -62,7 +64,7 @@ bool boot_jump_to_code(uint32_t app_start_address) {
     return res;
 }
 
-static const char* boot_cmd2str(CmdBoot_t boot_cmd) {
+const char* boot_cmd2str(uint8_t boot_cmd) {
     const char* name = "error";
     switch(boot_cmd) {
     case BOOT_CMD_STAY_ON:
@@ -127,7 +129,9 @@ bool boot_init(void) {
     uint16_t real_len = 0;
     bool res = false;
     uint8_t boot_cnt = 0;
+#ifdef HAS_GENERIC
     fine_start_event = false;
+#endif
     res = mm_get(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt), &real_len);
     if((true == res) && (sizeof(boot_cnt) == real_len)) {
         LOG_INFO(BOOT, "launch try %u", boot_cnt);
@@ -181,3 +185,5 @@ bool boot_proc(void) {
     return res;
 }
 #endif
+
+

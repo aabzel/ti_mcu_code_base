@@ -758,8 +758,9 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.band_width), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_bandwidth(sx1262Instance->mod_params.band_width)) {
-            LOG_INFO(LORA, "Set bandwidth from params [%u] %7.3f kHz", sx1262Instance->mod_params.band_width,
-                     ((float)bandwidth2num(sx1262Instance->mod_params.band_width)) / 100.0f);
+            LOG_INFO(LORA, "Set bandwidth from params [%u] %s",
+                     sx1262Instance->mod_params.band_width,
+                     bandwidth2str(sx1262Instance->mod_params.band_width));
         } else {
             res = false;
         }

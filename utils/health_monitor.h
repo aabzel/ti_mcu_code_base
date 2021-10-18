@@ -22,7 +22,6 @@ typedef struct xHealthMon_t {
 extern HealthMon_t HealthMon;
 
 bool health_monotor_init(void);
-bool try_init(bool staus, char* message);
 bool health_monotor_proc(void);
 
 #ifdef __cplusplus

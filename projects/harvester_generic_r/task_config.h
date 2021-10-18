@@ -8,6 +8,7 @@
   TASK(FLASH_FS)                                                               \
   TASK(LED)                                                                    \
   TASK(LORA)                                                                   \
+  TASK(HEAL_MON)                                                               \
   TASK(NMEA)                                                                   \
   TASK(RF)                                                                     \
   TASK(UART)                                                                   \

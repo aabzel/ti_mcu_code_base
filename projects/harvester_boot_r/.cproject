@@ -63,6 +63,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/led_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
@@ -85,7 +86,9 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/fifo"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_diag"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_math"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_string"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_sys"/>
 								</option>
@@ -98,6 +101,7 @@
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_BOOTLOADER"/>
 									<listOptionValue builtIn="false" value="HAS_CLI"/>
+									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH"/>
@@ -105,7 +109,6 @@
 									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
-									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_MCU"/>
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
@@ -114,6 +117,7 @@
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
+									<listOptionValue builtIn="false" value="HAS_UART0"/>
 									<listOptionValue builtIn="false" value="HAS_WDT"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
@@ -231,7 +235,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_crc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set - Copy"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set/test_flash_fs — копия"/>
-						<entry excluding="boards/launchpad|Drivers/lora|utils/utils_string/str_utils_ex.c|common/spi_common.c|protocols/rtcm3_protocol|utils/crc/crc8_sae_j1850.c|utils/crc/crc24_q.c|utils/utils_file|startup_cc13x2_cc26x2_ccs.c|Drivers/tcan4550_q1|Drivers/mx25l6433f|Drivers/ext_ram_simulator|protocols/nmea_protocol|protocols/ubx_protocol|bsp_cc26x2/adc|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/spi|bsp_cc26x2/i2c|Drivers/sx1262|unit_tests|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="boards/stm32f4|boards/harvester_cc2642_v1|utils/health_monitor.c|utils/health_monitor_command.c|utils/fifo/fifo_array.c|Drivers/gpio_pwm|boards/launchpad|Drivers/lora|utils/utils_string/str_utils_ex.c|common/spi_common.c|protocols/rtcm3_protocol|utils/crc/crc8_sae_j1850.c|utils/crc/crc24_q.c|utils/utils_file|startup_cc13x2_cc26x2_ccs.c|Drivers/tcan4550_q1|Drivers/mx25l6433f|Drivers/ext_ram_simulator|protocols/nmea_protocol|protocols/ubx_protocol|bsp_cc26x2/adc|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/spi|bsp_cc26x2/i2c|Drivers/sx1262|unit_tests|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

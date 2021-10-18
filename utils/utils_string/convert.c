@@ -549,10 +549,6 @@ bool try_strl2int8_hex(const char s8l_hex_str[], int32_t s8l_hex_str_len, int8_t
     return s8l_hex_success;
 }
 
-/* STRING TO BOOL
- * ******************************************************************************
- */
-
 bool try_str2bool(const char bool_str[], bool* bool_value) {
     uint8_t bool_tmp_result[6] = {0U, 0U, 0U, 0U, 0U, 0U};
     int32_t bool_str_len = -1;

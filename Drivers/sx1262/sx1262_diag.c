@@ -242,38 +242,38 @@ bool print_int_diag(Sx1262IrqCnt_t* irq_cnt) {
 }
 
 /*returns band_width in kHz multiplied by 100 in order to fit in 2 bytes*/
-uint16_t bandwidth2num(BandWidth_t bandwidth) {
-    uint16_t band_width = 0;
+uint32_t bandwidth2num(BandWidth_t bandwidth) {
+    uint32_t band_width = 0;
     switch(bandwidth) {
     case LORA_BW_7:
-        band_width = 781;
+        band_width = 7810;
         break;
     case LORA_BW_10:
-        band_width = 1042;
+        band_width = 10420;
         break;
     case LORA_BW_15:
-        band_width = 1563;
+        band_width = 15630;
         break;
     case LORA_BW_20:
-        band_width = 2083;
+        band_width = 20830;
         break;
     case LORA_BW_31:
-        band_width = 3125;
+        band_width = 31250;
         break;
     case LORA_BW_41:
-        band_width = 4167;
+        band_width = 41670;
         break;
     case LORA_BW_62:
-        band_width = 6250;
+        band_width = 62500;
         break;
     case LORA_BW_125:
-        band_width = 12500;
+        band_width = 125000;
         break;
     case LORA_BW_250:
-        band_width = 25000;
+        band_width = 250000;
         break;
     case LORA_BW_500:
-        band_width = 50000;
+        band_width = 500000;
         break;
 
     default:
@@ -283,10 +283,13 @@ uint16_t bandwidth2num(BandWidth_t bandwidth) {
     return band_width;
 }
 
-uint32_t spreading_factor2num(SpreadingFactor_t spreading_factor) {
-    uint32_t spreading_factors_num = ipow(2, spreading_factor);
-    return spreading_factors_num;
+const char* bandwidth2str(uint8_t bandwidth){
+    static char name[40] = "";
+    uint32_t band_width = bandwidth2num((BandWidth_t)  bandwidth);
+    snprintf(name,sizeof(name),"%u Hz", band_width);
+    return name;
 }
+
 
 const char* coding_rate2str(LoRaCodingRate_t coding_rate) {
     const char* name = "undef";
@@ -307,5 +310,17 @@ const char* coding_rate2str(LoRaCodingRate_t coding_rate) {
         name = "error";
         break;
     }
+    return name;
+}
+
+uint32_t spreading_factor2num(SpreadingFactor_t spreading_factor) {
+    uint32_t spreading_factors_num = ipow(2, spreading_factor);
+    return spreading_factors_num;
+}
+
+const char*  spreading_factor2str(uint8_t spreading_factor){
+    static char name[30] = "";
+    uint32_t spread_factor= spreading_factor2num((SpreadingFactor_t) spreading_factor);
+    snprintf(name,sizeof(name),"%u Chips/Symb",spread_factor);
     return name;
 }

@@ -35,6 +35,7 @@ typedef struct xParamItem_t {
     uint16_t len;
     ParamType_t type;
     char* name;
+    const char* (*idval2str)(uint8_t val);
     /*char* units*/
 } ParamItem_t;
 
@@ -43,5 +44,6 @@ extern const ParamItem_t ParamArray[PARAM_CNT];
 bool param_init(void);
 ParamType_t param_get_type(Id_t id);
 bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* out_str, uint32_t str_size);
+const char *param_val2str(uint16_t id, uint8_t* value);
 
 #endif /* PARAM_IDS_H  */

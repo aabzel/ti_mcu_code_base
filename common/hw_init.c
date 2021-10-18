@@ -12,6 +12,7 @@
 #ifdef NORTOS
 /*mandatory space NoRTOS uses stdint*/
 #include <NoRTOS.h>
+#include "common_functions.h"
 #endif /*NORTOS*/
 
 #include "health_monitor.h"
