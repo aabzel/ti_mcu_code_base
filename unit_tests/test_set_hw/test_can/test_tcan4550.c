@@ -38,24 +38,26 @@ bool test_can_read_word(void) {
 }
 
 bool test_can_types(void) {
+
     EXPECT_EQ(4, sizeof(tCanRegRev_t));
     EXPECT_EQ(4, sizeof(tCanRegStatus_t));
     EXPECT_EQ(4, sizeof(tCanRegModeOpPinCfg_t));
-    EXPECT_EQ(4, sizeof(TxBufCfg_t));
-    EXPECT_EQ(4, sizeof(TxBufElmSzCfg_t));
-    EXPECT_EQ(4, sizeof(TxBuffW1_t));
-
+    EXPECT_EQ(4, sizeof(tCanRegTxBufCfg_t));
+    EXPECT_EQ(4, sizeof(tCanRegTxBufElmSzCfg_t));
     EXPECT_EQ(4, sizeof(tCanRegCCctrl_t));
     EXPECT_EQ(4, sizeof(tCanRegIntEn_t));
     EXPECT_EQ(4, sizeof(tCanRegBitTime_t));
     EXPECT_EQ(4, sizeof(tCanRegDataBitTime_t));
     EXPECT_EQ(4, sizeof(tCanRegGloFiltCfg_t));
     EXPECT_EQ(4, sizeof(tCanRegStdIdFiltCfg_t));
+    EXPECT_EQ(4, sizeof(tCanRegRxBufFiFoElemSzCgf_t));
     EXPECT_EQ(4, sizeof(tCanRegExtIdFiltCfg_t));
     EXPECT_EQ(4, sizeof(tCanRegRxFifo0Cfg_t));
+    EXPECT_EQ(4, sizeof(tCanRegTxEventFifoCgf_t));
     EXPECT_EQ(4, sizeof(tCanRegRxFifo1Cfg_t));
+    EXPECT_EQ(4, sizeof(tCanRegRxBufCgf_t));
 
-
+    EXPECT_EQ(4, sizeof(TxBuffW1_t));
     EXPECT_EQ(4, sizeof(HeaderCom_t));
     EXPECT_EQ(4, sizeof(W0_t));
 

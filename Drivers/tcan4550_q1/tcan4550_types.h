@@ -145,7 +145,7 @@ typedef struct xtCanRegRxFifo1Cfg_t {
     };
 } __attribute__((packed)) tCanRegRxFifo1Cfg_t;
 
-
+//0x0008 Revision
 typedef struct xtCanRegRev_t {
     union {
         uint32_t word;
@@ -158,6 +158,7 @@ typedef struct xtCanRegRev_t {
     };
 } __attribute__((packed)) tCanRegRev_t;
 
+//0x000C Status
 typedef struct xtCanRegStatus_t {
     union {
         uint32_t word;
@@ -218,7 +219,7 @@ typedef struct xtCanRegModeOpPinCfg_t {
     };
 } __attribute__((packed)) tCanRegModeOpPinCfg_t;
 
-//Interrupt Enable
+//0x0830 Interrupt Enable
 typedef struct xtCanRegIntEn_t {
     union {
         uint32_t word;
@@ -259,7 +260,7 @@ typedef struct xtCanRegIntEn_t {
 } __attribute__((packed)) tCanRegIntEn_t;
 
 
-/*Interrupt Flags*/
+/*0x0820 Interrupt Flags*/
 typedef struct xtCanRegIntFl_t {
     union {
         uint32_t word;
@@ -293,7 +294,8 @@ typedef struct xtCanRegIntFl_t {
     };
 } __attribute__((packed)) tCanRegIntFl_t;
 
-typedef struct xTxBufCfg_t {
+//10C0 Tx Buffer Configuration
+typedef struct xtCanRegTxBufCfg_t {
     union {
         uint32_t word;
         struct {
@@ -305,9 +307,9 @@ typedef struct xTxBufCfg_t {
             uint8_t rsvd2 : 1;          // 31  Reserved
         };
     };
-} __attribute__((packed)) TxBufCfg_t;
+} __attribute__((packed)) tCanRegTxBufCfg_t;
 
-
+//0x10C8 Tx Buffer Element Size Configuration
 typedef struct xTxBufElmSzCfg_t {
     union {
         uint32_t word;
@@ -316,7 +318,7 @@ typedef struct xTxBufElmSzCfg_t {
             uint32_t rsvd : 29;            // 3-31 Reserved
         };
     };
-} __attribute__((packed)) TxBufElmSzCfg_t;
+} __attribute__((packed)) tCanRegTxBufElmSzCfg_t;
 
 /**
  *  CAN message header for transmitted messages
@@ -347,6 +349,47 @@ typedef struct xW0_t {
     };
 } __attribute__((packed))W0_t;
 
+//0x10AC Rx Buffer Configuration
+typedef struct xRxBufCgf_t {
+    union {
+        uint32_t word;
+        struct {
+            uint16_t rbsa; //0-15 Rx Buffer Start Address
+            uint16_t rsvd;
+        };
+    };
+} __attribute__((packed))tCanRegRxBufCgf_t;
+
+
+//0x10BC Rx Buffer/FIFO Element Size Configuration
+typedef struct xRxBufFiFoElemSzCgf_t {
+    union {
+        uint32_t word;
+        struct {
+            uint8_t f0ds :3;    //rx fifo 0 data field size
+            uint8_t rsvd :1;    //reserved
+            uint8_t f1ds :3;    //rx fifo 1 data field size
+            uint8_t rsvd1 :1;   //reserved
+            uint8_t rbds :3;    //rx buffer data field size
+            uint32_t rsvd2: 21; //reserved
+        };
+    };
+} __attribute__((packed))tCanRegRxBufFiFoElemSzCgf_t;
+
+
+//0x10F0  Tx Event FIFO Configuration
+typedef struct xTxEventFifoCgf_t {
+    union {
+        uint32_t word;
+        struct {
+            uint16_t efsa;// event fifo start address
+            uint8_t efs  :6;// event fifo size
+            uint8_t rsvd1 :2;// reserved
+            uint8_t efwm :6;// event fifo watermark
+            uint8_t rsvd2 :2;//reserved
+        };
+    };
+} __attribute__((packed))tCanRegTxEventFifoCgf_t;
 
 typedef struct xTxBuffW1_t {
     union {

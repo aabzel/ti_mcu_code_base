@@ -265,7 +265,7 @@ uint8_t dlc_2_bytes(uint8_t dlc_code) {
 
 bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* data_payload) {
     bool res = false;
-    TxBufCfg_t read_reg;
+    tCanRegTxBufCfg_t read_reg;
     read_reg.word = 0;
     uint16_t start_address = 0;
     res = tcan4550_read_reg(ADDR_MCAN_TXBC, &read_reg.word);
@@ -288,7 +288,7 @@ bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* 
 
     uint8_t element_size = 0;
     if(res) {
-        TxBufElmSzCfg_t reg;
+        tCanRegTxBufElmSzCfg_t reg;
         reg.word = 0;
         res = tcan4550_read_reg(ADDR_MCAN_TXESC, &reg.word);
         element_size = txrxesc_2data_bytes(reg.tx_buff_data_size) + 8;
