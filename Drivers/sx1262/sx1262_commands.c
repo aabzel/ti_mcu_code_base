@@ -639,6 +639,13 @@ bool sx1262_read_rx_payload_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+static bool sx1262_statistic(void) {
+    bool res = true;
+    io_printf("tx done cnt: %u" CRLF, Sx1262Instance.tx_done_cnt);
+    io_printf("rx done cnt: %u" CRLF, Sx1262Instance.rx_done_cnt);
+    return res;
+}
+
 bool sx1262_test_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint32_t wait_pause_ms = 5000, tx_array_len = 0;
@@ -658,15 +665,17 @@ bool sx1262_test_command(int32_t argc, char* argv[]) {
         }
     }
 
-    if((2 < argc) || (0==argc)) {
+    if((2 < argc) || (0 == argc)) {
         LOG_ERROR(LORA, "Usage: sxs try_cnt pause_ms");
     }
 
     if(res) {
-        for(try_num = 0; try_num < try_cnt; try_num++) {
+        Sx1262Instance.tx_done_cnt = 0;
+        Sx1262Instance.rx_done_cnt = 0;
+        for(try_num = 1; try_num <= try_cnt; try_num++) {
             snprintf(tx_array, sizeof(tx_array), "ping_%u", try_num);
             tx_array_len = (uint16_t)strlen((char*)tx_array) + 1U;
-            LOG_INFO(LORA, "send %u/%u [%s]",try_num,try_cnt,tx_array);
+            LOG_INFO(LORA, "send %u/%u [%s]", try_num, try_cnt, tx_array);
             res = sx1262_start_tx(tx_array, tx_array_len, 0);
             if(res) {
                 LOG_INFO(LORA, "tx OK");
@@ -675,6 +684,18 @@ bool sx1262_test_command(int32_t argc, char* argv[]) {
             }
             wait_in_loop_ms(wait_pause_ms);
         }
+        sx1262_statistic();
+    }
+    return res;
+}
+
+
+bool sx1262_statistic_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 <= argc) {
+        res = sx1262_statistic();
+    } else {
+        LOG_ERROR(LORA, "Usage: sxst");
     }
     return res;
 }

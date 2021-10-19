@@ -1254,7 +1254,7 @@ bool sx1262_process(void) {
         uint8_t rx_size = 0;
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
-            Sx1262Instance.data_aval_cnt++;
+            Sx1262Instance.rx_done_cnt++;
             res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
             if(res) {
                 if(Sx1262Instance.debug) {
@@ -1283,6 +1283,7 @@ bool sx1262_process(void) {
             }
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
             Sx1262Instance.tx_done = true;
+            Sx1262Instance.tx_done_cnt++;
             LoRaInterface.tx_done_cnt++;
             res = sx1262_start_rx(0xFFFFFF);
             break;
