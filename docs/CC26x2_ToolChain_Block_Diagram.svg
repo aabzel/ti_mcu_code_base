@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
    height="297mm"
    viewBox="0 0 210 297"
    version="1.1"
    id="svg251068"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="CC26x2_ToolChain_Block_Diagram.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="CC26x2_ToolChain_Block_Diagram.svg">
   <metadata
      id="metadata254">
     <rdf:RDF>
@@ -35,15 +35,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="5.672952"
-     inkscape:cx="298.34555"
-     inkscape:cy="399.96813"
+     inkscape:zoom="1.418238"
+     inkscape:cx="153.96963"
+     inkscape:cy="261.91925"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="-11"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer6"
+     inkscape:current-layer="layer5"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:document-rotation="0">
@@ -107,6 +107,14 @@
        position="94.328276,181.80057"
        orientation="1,0"
        id="guide21268" />
+    <sodipodi:guide
+       position="27.890388,227.41395"
+       orientation="1,0"
+       id="guide1599" />
+    <sodipodi:guide
+       position="101.50957,246.87182"
+       orientation="1,0"
+       id="guide1601" />
   </sodipodi:namedview>
   <defs
      id="defs251065">
@@ -830,7 +838,7 @@
      id="layer4"
      inkscape:label="hardware">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.164832;stroke-opacity:1"
+       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.164832;stroke-opacity:1"
        id="rect265493"
        width="122.43372"
        height="190.29138"
@@ -933,7 +941,7 @@
      id="layer5"
      inkscape:label="OS">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.225627;stroke-opacity:1"
+       style="fill:#f2f4ff;stroke:#000000;stroke-width:0.225627;stroke-opacity:1;fill-opacity:1"
        id="rect261517"
        width="116.2466"
        height="174.49181"
@@ -955,24 +963,6 @@
          x="73.833221"
          y="33.459259"
          id="tspan6485">Microsoft Windows 10.0</tspan></text>
-    <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.19557;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1551"
-       width="24.399704"
-       height="5.9124246"
-       x="51.249474"
-       y="74.651123" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.91167px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0727919"
-       x="57.756199"
-       y="77.923721"
-       id="text1555"><tspan
-         sodipodi:role="line"
-         id="tspan1553"
-         x="57.756199"
-         y="77.923721"
-         style="stroke-width:0.0727919">gmake</tspan></text>
     <path
        style="fill:none;stroke:#ff00ff;stroke-width:0.222003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1561)"
        d="m 59.119378,65.865369 v 8.730497"
@@ -1004,24 +994,6 @@
          x="69.880508"
          y="69.750023"
          style="fill:#ff00ff;stroke-width:0.0239313">*.MakeFile</tspan></text>
-    <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.211612;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1848"
-       width="24.399704"
-       height="10.388186"
-       x="51.249474"
-       y="55.642952" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.22061px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0555155"
-       x="52.294868"
-       y="58.851124"
-       id="text1852"><tspan
-         sodipodi:role="line"
-         id="tspan1850"
-         x="52.294868"
-         y="58.851124"
-         style="stroke-width:0.0555155">Eclipse</tspan></text>
     <path
        style="fill:none;stroke:#ff00ff;stroke-width:0.36592px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1862)"
        d="m 54.017482,66.209501 0,5.475326 -7.117267,-0.07932 0.172307,-22.308466 9.607583,0.03089 -0.0042,6.391066"
@@ -1075,24 +1047,6 @@
          x="76.468269"
          y="120.2014"
          style="font-size:0.866595px;stroke-width:0.0324973">ver 20002005</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.41111px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="93.092331"
-       y="58.858978"
-       id="text3047"><tspan
-         sodipodi:role="line"
-         id="tspan3045"
-         style="font-size:1.41111px;stroke-width:0.264583"
-         x="93.092331"
-         y="58.858978">clang-format.exe</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.264999;stroke-opacity:1"
-       id="rect5879"
-       width="18.142744"
-       height="4.8971419"
-       x="91.459953"
-       y="56.200531" />
     <path
        style="fill:none;stroke:#05ff00;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker2092)"
        d="m 82.810436,50.457972 h 15.134071 v 5.474526"
@@ -1248,6 +1202,18 @@
      inkscape:label="files" />
   <g
      inkscape:groupmode="layer"
+     id="layer8"
+     inkscape:label="SDK">
+    <rect
+       style="fill:#ffdcdc;stroke:#000000;stroke-width:0.141691;stroke-opacity:1;fill-opacity:1"
+       id="rect261515"
+       width="73.619179"
+       height="84.090759"
+       x="27.890388"
+       y="100.78345" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="utility">
     <rect
@@ -1278,6 +1244,34 @@
        height="4.1592789"
        x="82.466225"
        y="171.20177" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.19557;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1551"
+       width="24.399704"
+       height="5.9124246"
+       x="51.249474"
+       y="74.651123" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.211612;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1848"
+       width="24.399704"
+       height="10.388186"
+       x="51.249474"
+       y="55.642952" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.264999;stroke-opacity:1"
+       id="rect5879"
+       width="18.142744"
+       height="4.8971419"
+       x="91.459953"
+       y="56.200531" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.125733"
+       id="rect7491"
+       width="24.24514"
+       height="7.6562638"
+       x="51.404037"
+       y="84.322601" />
   </g>
   <g
      inkscape:label="arrows"
@@ -1340,13 +1334,6 @@
          style="stroke-width:0.0938529"
          x="67.787117"
          y="137.00983">Linker</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.12689;stroke-opacity:1"
-       id="rect261515"
-       width="59.041672"
-       height="84.090759"
-       x="43.678238"
-       y="100.78345" />
     <rect
        style="fill:#ffdcd9;fill-opacity:1;stroke:#df0000;stroke-width:0.0907491;stroke-opacity:1"
        id="rect265625"
@@ -1467,24 +1454,6 @@
          style="stroke-width:0.108908"
          x="134.29138"
          y="141.7637">gmake.exe</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.125733"
-       id="rect7491"
-       width="24.24514"
-       height="7.6562638"
-       x="51.404037"
-       y="84.322601" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.9223px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.219172"
-       x="53.424812"
-       y="88.494225"
-       id="text8243"><tspan
-         sodipodi:role="line"
-         id="tspan8241"
-         style="font-size:2.9223px;stroke-width:0.219172"
-         x="53.424812"
-         y="88.494225">SysConfig </tspan></text>
     <path
        style="fill:none;stroke:#13ff00;stroke-width:0.473754;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2102)"
        d="M 66.309316,91.905307 V 105.39993"
@@ -1886,17 +1855,6 @@
        height="4.5335817"
        x="53.623543"
        y="105.8056" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.95539px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
-       x="54.560734"
-       y="109.03436"
-       id="text8982"><tspan
-         sodipodi:role="line"
-         id="tspan8980"
-         style="font-size:2.95539px;stroke-width:0.221654"
-         x="54.560734"
-         y="109.03436">Preprocessor</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.222003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14794)"
        d="m 66.275072,110.29144 v 3.48114"
@@ -2778,6 +2736,61 @@
          style="stroke-width:0.0395124;fill:#ff0000"
          x="95.133217"
          y="169.77313">*.out</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.91167px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0727919"
+       x="57.756199"
+       y="77.923721"
+       id="text1555"><tspan
+         sodipodi:role="line"
+         id="tspan1553"
+         x="57.756199"
+         y="77.923721"
+         style="stroke-width:0.0727919">gmake</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.22061px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0555155"
+       x="52.294868"
+       y="58.851124"
+       id="text1852"><tspan
+         sodipodi:role="line"
+         id="tspan1850"
+         x="52.294868"
+         y="58.851124"
+         style="stroke-width:0.0555155">Eclipse</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.41111px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="93.092331"
+       y="58.858978"
+       id="text3047"><tspan
+         sodipodi:role="line"
+         id="tspan3045"
+         style="font-size:1.41111px;stroke-width:0.264583"
+         x="93.092331"
+         y="58.858978">clang-format.exe</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.9223px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.219172"
+       x="53.424812"
+       y="88.494225"
+       id="text8243"><tspan
+         sodipodi:role="line"
+         id="tspan8241"
+         style="font-size:2.9223px;stroke-width:0.219172"
+         x="53.424812"
+         y="88.494225">SysConfig </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.95539px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
+       x="54.560734"
+       y="109.03436"
+       id="text8982"><tspan
+         sodipodi:role="line"
+         id="tspan8980"
+         style="font-size:2.95539px;stroke-width:0.221654"
+         x="54.560734"
+         y="109.03436">Preprocessor</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

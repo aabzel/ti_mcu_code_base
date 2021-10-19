@@ -1,20 +1,4 @@
-add lock 
-SX126xSetRfTxPower
-SX126xAntSwOn
-SX126x_Calibrate
-SX126x_CheckDeviceReady
-SX126x_SetCrcSeed
-SX126x_SetCrcPolynomial
-SX126x_SetWhiteningSeed
-SX126x_SetRxBoosted
-SX126x_SetRxDutyCycle
-SX126x_SetCad
-SX126x_SetTxContinuousWave
-SX126x_SetTxInfinitePreamble
-SX126x_SetLoRaSymbNumTimeout
-SX126x_SetRegulatorMode
-SX126x_CalibrateImage
-SX126x_SetCadParams
+чем шире полоса тем быстрее передается пакет
 
 
 

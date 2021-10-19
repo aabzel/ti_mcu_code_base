@@ -255,19 +255,17 @@ typedef struct xtCanRegModeOpPinCfg_t {
     };
 } __attribute__((packed)) tCanRegModeOpPinCfg_t;
 
-
-//0x105C  Interrupt Line Enable
+// 0x105C  Interrupt Line Enable
 typedef struct xCanRegIntLine_t {
     union {
         uint32_t word;
         struct {
-            uint8_t eint0 :1;   /*0 enable interrupt line 0*/
-            uint8_t eint1 :1;   /*1 enable interrupt line 1*/
+            uint8_t eint0 : 1;  /*0 enable interrupt line 0*/
+            uint8_t eint1 : 1;  /*1 enable interrupt line 1*/
             uint32_t rsvd : 30; /*2-31 reserved            */
         };
     };
 } __attribute__((packed)) tCanRegIntLine_t;
-
 
 // 0x0830 Interrupt Enable and
 // 0x1054  Interrupt Enable

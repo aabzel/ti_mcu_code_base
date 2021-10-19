@@ -43,7 +43,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
             memset(valStr, 0x00, sizeof(valStr));
             uint16_t i = 0, num = 1;
             static const table_col_t cols[] = {{5, "No"},  {5, "id"},   {12, "name"},
-                                               {5, "len"}, {12, "val"}, {16, "name"}};
+                                               {5, "len"}, {12, "val"}, {17, "name"}};
             table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
             char temp_str[120] = "";
             for(i = 0; i < PARAM_CNT; i++) {
@@ -65,7 +65,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                 }
 
                 snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, valStr);
-                snprintf(temp_str, sizeof(temp_str), "%s %13s " TSEP, temp_str, param_val2str(ParamArray[i].id, value));
+                snprintf(temp_str, sizeof(temp_str), "%s %15s " TSEP, temp_str, param_val2str(ParamArray[i].id, value));
                 snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
                 if(is_contain(temp_str, keyWord1, keyWord2)) {
                     io_printf(TSEP " %3u ", num);

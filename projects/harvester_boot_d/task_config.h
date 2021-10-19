@@ -4,6 +4,7 @@
 #define TASKS    \
   TASK(CLI)      \
   TASK(FLASH_FS) \
+  TASK(HEAL_MON)      \
   TASK(LED)      \
   TASK(UART)  
 

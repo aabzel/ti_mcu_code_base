@@ -1255,12 +1255,10 @@ bool sx1262_process(void) {
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.data_aval_cnt++;
-            if(Sx1262Instance.debug) {
-                LOG_INFO(LORA, "Data available!");
-            }
             res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
             if(res) {
                 if(Sx1262Instance.debug) {
+                    LOG_INFO(LORA, "rx %u byte", rx_size);
                     res = print_mem(rx_payload, rx_size, true, true);
                 }
                 res = lora_proc_payload(rx_payload, rx_size);
@@ -1280,9 +1278,9 @@ bool sx1262_process(void) {
             res = false;
             break;
         case COM_STAT_COM_TX_DONE:
-#ifdef HAS_SX1262_DEBUG_TX
-            LOG_INFO(LORA, "TX done");
-#endif
+            if(Sx1262Instance.debug) {
+                LOG_INFO(LORA, "TX done");
+            }
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
             Sx1262Instance.tx_done = true;
             LoRaInterface.tx_done_cnt++;

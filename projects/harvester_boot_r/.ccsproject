@@ -15,5 +15,5 @@
 	<templateProperties value="id=gpiointerrupt_CC26X2R1_LAUNCHXL_nortos_ccs.projectspec.gpiointerrupt_CC26X2R1_LAUNCHXL_nortos_ccs,buildProfile=release,isHybrid=true"/>
 	<origin value="C:\ti\simplelink_cc13x2_26x2_sdk_5_20_00_52\examples\nortos\CC26X2R1_LAUNCHXL\drivers\gpiointerrupt\ccs\gpiointerrupt_CC26X2R1_LAUNCHXL_nortos_ccs.projectspec"/>
 	<filesToOpen value=""/>
-	<isTargetManual value="false"/>
+	<isTargetManual value="true"/>
 </projectOptions>

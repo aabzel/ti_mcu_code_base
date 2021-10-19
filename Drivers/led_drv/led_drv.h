@@ -4,7 +4,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define LED_PERIOD_MS 1000
+#ifdef HAS_BOOTLOADER
+#define LED_GREEN_PERIOD_MS 200
+#else
+#define LED_GREEN_PERIOD_MS 1000
+#endif
+
 #define LED_DUTY 50 /*percent*/
 #define LED_PHASE 0
 

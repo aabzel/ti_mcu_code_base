@@ -35,7 +35,6 @@ typedef struct xParamItem_t {
     uint16_t len;
     ParamType_t type;
     char* name;
-    const char* (*idval2str)(uint8_t val);
     /*char* units*/
 } ParamItem_t;
 

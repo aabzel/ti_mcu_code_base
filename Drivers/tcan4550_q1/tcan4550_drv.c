@@ -539,18 +539,18 @@ bool tcan4550_configure_global_filter(tCanRegGloFiltCfg_t* gfc) {
     return res;
 }
 
-bool tcan4550_configure_mcan_interrupt(tCanRegIntEn_t *mcan_ie){
+bool tcan4550_configure_mcan_interrupt(tCanRegIntEn_t* mcan_ie) {
     bool res = true;
-    res = tcan4550_write_reg(ADDR_MCAN_IE, mcan_ie->word)&& res;
+    res = tcan4550_write_reg(ADDR_MCAN_IE, mcan_ie->word) && res;
     tCanRegIntLine_t it_reg;
-    it_reg.word=0;
-    it_reg.eint0=1;
+    it_reg.word = 0;
+    it_reg.eint0 = 1;
     // This is necessary to enable the MCAN Int mux to the output nINT pin
-    res = tcan4550_write_reg(ADDR_MCAN_ILE, it_reg.word)&& res;
+    res = tcan4550_write_reg(ADDR_MCAN_ILE, it_reg.word) && res;
     return res;
 }
 
-bool tcan4550_device_configure(tCanRegModeOpPinCfg_t *dev_cfg){
+bool tcan4550_device_configure(tCanRegModeOpPinCfg_t* dev_cfg) {
     bool res = true;
     return res;
 }
@@ -607,7 +607,6 @@ bool tcan4550_init(void) {
 
         res = tcan4550_protected_registers_lock() && res;
 
-
         tCanRegIntEn_t mcan_ie;
         mcan_ie.word = 0;
         mcan_ie.rf0ne = 1;
@@ -615,18 +614,16 @@ bool tcan4550_init(void) {
         res = tcan4550_configure_mcan_interrupt(&mcan_ie) && res;
 
         tCanRegModeOpPinCfg_t dev_cfg_reg;
-        dev_cfg_reg.word=0;
+        dev_cfg_reg.word = 0;
         dev_cfg_reg.device_reset = 0;
         dev_cfg_reg.clk_ref = 1;
         dev_cfg_reg.wd_en = 0;
-        res = tcan4550_device_configure(&dev_cfg_reg) &&res;
+        res = tcan4550_device_configure(&dev_cfg_reg) && res;
 
         // Set to normal mode, since configuration is done. This line turns on the transceiver
-        res = tcan4550_set_mode(MODE_NORMAL)&&res;
+        res = tcan4550_set_mode(MODE_NORMAL) && res;
 
-        res = tcan4550_write_reg(ADDR_MCAN_IR, 0xFFFFFFFF)&&res;
-
-
+        res = tcan4550_write_reg(ADDR_MCAN_IR, 0xFFFFFFFF) && res;
     }
     return res;
 }

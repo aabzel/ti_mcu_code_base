@@ -10,6 +10,7 @@ extern "C" {
 
 #include "cli_manager.h"
 
+bool sx1262_test_command(int32_t argc, char* argv[]);
 bool sx1262_clear_err_command(int32_t argc, char* argv[]);
 bool sx1262_clear_fifo_command(int32_t argc, char* argv[]);
 bool sx1262_diag_command(int32_t argc, char* argv[]);
@@ -36,6 +37,7 @@ bool sx1262_write_reg_command(int32_t argc, char* argv[]);
         SHELL_CMD("sx1262_clr_fifo", "sxcf", sx1262_clear_fifo_command, "SX1262 clear FIFO"),                          \
         SHELL_CMD("sx1262_diag", "sxd", sx1262_diag_command, "SX1262 diag"),                                           \
         SHELL_CMD("sx1262_init", "sxi", sx1262_init_command, "SX1262 init"),                                           \
+        SHELL_CMD("sx1262_test", "sxs", sx1262_test_command, "SX1262 test"),                                           \
         SHELL_CMD("sx1262_fifo", "sxrf", sx1262_read_fifo_command, "SX1262 read FIFO"),                                \
         SHELL_CMD("sx1262_int_diag", "sxid", sx1262_int_diag_command, "SX1262 interrupts diag"),                       \
         SHELL_CMD("sx1262_mod", "sxmd", sx1262_set_modulation_command, "SX1262 modulation"),                           \
