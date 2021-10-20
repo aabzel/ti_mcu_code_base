@@ -712,6 +712,33 @@ bool tcan4550_configure_mcan_interrupt(tCanRegIntEn_t* mcan_ie) {
 
 bool tcan4550_device_configure(tCanRegModeOpPinCfg_t* dev_cfg) {
     bool res = false;
+    tCanRegModeOpPinCfg_t OldRegModeOpPinCfg={0},NewRegModeOpPinCfg={0};
+    OldRegModeOpPinCfg.word =0;
+    res= tcan4550_read_reg(  ADDR_DEV_CONFIG, &OldRegModeOpPinCfg.word);
+    if (res) {
+        OldRegModeOpPinCfg.test_mode_en = 0;
+        OldRegModeOpPinCfg.device_reset = 0;
+        OldRegModeOpPinCfg.wd_en = 0;
+        OldRegModeOpPinCfg.mode_sel =0;
+        OldRegModeOpPinCfg.wd_action = 0;
+        OldRegModeOpPinCfg.fail_safe_en = 0;
+        OldRegModeOpPinCfg.nwkrq_voltage= 0;
+        OldRegModeOpPinCfg.wake_config  = 0;
+        OldRegModeOpPinCfg.clk_ref      = 0;
+        OldRegModeOpPinCfg.gpo2_config  = 0;
+        OldRegModeOpPinCfg.gpio1_config = 0;
+        OldRegModeOpPinCfg.wd_bit_set   = 0;
+        OldRegModeOpPinCfg.inh_dis=0;
+        OldRegModeOpPinCfg.gpio1_gpo_config=0;
+
+        NewRegModeOpPinCfg.word  = dev_cfg->word | OldRegModeOpPinCfg.word;
+
+        NewRegModeOpPinCfg.rsvd1 = 2;
+        NewRegModeOpPinCfg.rsvd2 = 0;
+        NewRegModeOpPinCfg.rsvd3 = 0;
+        NewRegModeOpPinCfg.rsvd4 = 0;
+        res = tcan4550_write_reg(ADDR_DEV_CONFIG, NewRegModeOpPinCfg.word);
+    }
     return res;
 }
 

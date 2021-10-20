@@ -221,7 +221,7 @@ typedef struct xtCanRegModeOpPinCfg_t {
             uint8_t swe_dis : 1;          /*1 Sleep Wake Error Disable: */
             uint8_t device_reset : 1;     /*2  Device Reset*/
             uint8_t wd_en : 1;            /*3  Watchdog Enable*/
-            uint8_t rsvd1 : 2;            /*4-5*/
+            uint8_t rsvd1 : 2;            /*4-5 */
             uint8_t mode_sel : 2;         /*6-7 Mode of operation select*/
             uint8_t nwkrq_config : 1;     /*8  nWKRQ Pin Function */
             uint8_t inh_dis : 1;          /*9  INH Pin Disable*/
@@ -235,7 +235,7 @@ typedef struct xtCanRegModeOpPinCfg_t {
             uint8_t rsvd3 : 1;            /*20  */
             uint8_t test_mode_en : 1;     /*21  Test mode enable. */
             uint8_t gpo2_config : 2;      /*22  GPO2 Pin GPO Configuration*/
-            uint8_t rsvd4 : 3;            /*24  */
+            uint8_t rsvd4 : 3;            /*24-26  Reserved */
             uint8_t clk_ref : 1;          /*27  CLKIN/Crystal Frequency Reference*/
             uint8_t wd_timer : 2;         /*28  Watchdog timer*/
             uint8_t wake_config : 2;      /*30  Wake pin configuration*/

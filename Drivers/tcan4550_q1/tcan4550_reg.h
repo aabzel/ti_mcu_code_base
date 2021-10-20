@@ -20,7 +20,7 @@
 // Register Address Sections
 //*****************************************************************************
 #define ADDR_SPI_CONFIG								0x0000
-#define ADDR_DEV_CONFIG								0x0800
+#define ADDR_DEV_CONFIG								0x0800 //Modes of Operation and Pin Configurations
 #define ADDR_MCAN									0x1000
 #define ADDR_MRAM									0x8000
 
