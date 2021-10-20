@@ -101,7 +101,7 @@ bool tcan4550_parse_reg_mode_op_cfg(uint32_t reg_val) {
     io_printf("bit %u-%u: wd_timer %u" CRLF, 28, 29, reg.wd_timer);
     io_printf("bit %u: clk_ref %u %s" CRLF, 27, reg.clk_ref, clk_ref2str(reg.clk_ref));
     io_printf("bit %u-%u: rsvd %u" CRLF, 24, 26, reg.rsvd4);
-    io_printf("bit %u%u: gpo2_config %u" CRLF, 22, 23, reg.gpo2_config);
+    io_printf("bit %u%u: gpo2_config %u" CRLF, 22, 23, reg.gpo2_config);//NC
     io_printf("bit %u: test_mode_en %u" CRLF, 21, reg.test_mode_en);
     io_printf("bit %u: rsvd %u" CRLF, 20, reg.rsvd3);
     io_printf("bit %u: nwkrq_voltage %u" CRLF, 19, reg.nwkrq_voltage);
@@ -110,7 +110,7 @@ bool tcan4550_parse_reg_mode_op_cfg(uint32_t reg_val) {
     io_printf("bit %u-%u: gpio1_config %u" CRLF, 14, 15, reg.gpio1_config);
     io_printf("bit %u: fail_safe_en %u" CRLF, 13, reg.fail_safe_en);
     io_printf("bit %u: rsvd %u" CRLF, 12, reg.rsvd2);
-    io_printf("bit %u-%u: gpio1_gpo_config %u" CRLF, 10, 11, reg.gpio1_gpo_config);
+    io_printf("bit %u-%u: gpio1_gpo_config %u" CRLF, 10, 11, reg.gpio1_gpo_config);//NC
     io_printf("bit %u: inh_dis %u" CRLF, 9, reg.inh_dis);
     io_printf("bit %u: nwkrq_config %u" CRLF, 8, reg.nwkrq_config);
     io_printf("bit %u-%u: mode_sel %u %s" CRLF, 6, 7, reg.mode_sel, mode2str(reg.mode_sel));

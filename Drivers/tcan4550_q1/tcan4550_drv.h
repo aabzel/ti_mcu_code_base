@@ -8,6 +8,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "tcan4550_constants.h"
 #include "tcan4550_reg.h"
 #include "tcan4550_types.h"
 
@@ -17,6 +18,15 @@ extern "C" {
 //#define DEVICE_ID "TCAN4550"
 #define OP_CODE_READ 0x41
 #define OP_CODE_WRITE 0x61
+
+typedef struct tCan4550_t{
+    uint32_t tx_frame_cnt;
+    uint32_t rx_frame_cnt;
+    uint32_t set_bit_rare;
+    uint32_t bit_rare;
+    DevMode_t cur_mode;
+}Can4550_t;
+
 
 typedef struct xHeaderCom_t {
     uint8_t op_code;
@@ -31,10 +41,12 @@ typedef struct xTcan4550Reg_t {
 
 extern const uint64_t exp_dev_id;
 
+extern Can4550_t CanPhy;
 extern const Tcan4550Reg_t tCan4550RegLUT[];
 
 bool is_tcan4550_connected(void);
 bool tcan4550_init(void);
+bool tcan4550_proc(void);
 bool tcan4550_reset(void);
 bool tcan4550_send(uint16_t id, uint64_t data);
 bool tcan4550_clear_mram(void);
@@ -42,8 +54,9 @@ uint16_t tcan4550_get_reg_cnt(void);
 bool tcan4550_chip_select(bool state);
 bool tcan4550_read(uint16_t address, uint8_t len, uint8_t* out_array, uint32_t size);
 bool tcan4550_write_reg(uint16_t address, uint32_t reg_val);
+bool tcan4550_write_verify_reg(uint16_t address, uint32_t reg_val);
 bool tcan4550_configure_interrupt(tCanRegIntEn_t* int_en);
-
+bool tcan4550_write_sid_filter(uint8_t filter_index, tCan4550SidFilter_t* filter);
 bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words);
 
 bool tcan4550_read_reg(uint16_t address, uint32_t* out_reg);

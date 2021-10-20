@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.4"
-     inkscape:cx="333.81696"
-     inkscape:cy="590.3125"
+     inkscape:zoom="3.959798"
+     inkscape:cx="709.00082"
+     inkscape:cy="282.0851"
      inkscape:document-units="mm"
      inkscape:current-layer="layer6"
      inkscape:document-rotation="0"
@@ -475,5 +475,104 @@
          style="font-size:1.65325px;fill:#ffff00;stroke-width:0.413314"
          x="83.923485"
          y="157.00638">MISO</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.08005px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0770015"
+       x="203.53162"
+       y="53.994583"
+       id="text4815"><tspan
+         sodipodi:role="line"
+         id="tspan4813"
+         style="fill:#ffff00;stroke-width:0.0770015"
+         x="203.53162"
+         y="53.994583">21</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.11326px;line-height:1.25;font-family:sans-serif;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.127832"
+       x="204.7207"
+       y="69.297089"
+       id="text6733"><tspan
+         sodipodi:role="line"
+         id="tspan6731"
+         style="stroke-width:0.127832;fill:#ffff00"
+         x="204.7207"
+         y="69.297089">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.11326px;line-height:1.25;font-family:sans-serif;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.127832"
+       x="196.90009"
+       y="69.079681"
+       id="text7243"><tspan
+         sodipodi:role="line"
+         id="tspan7241"
+         style="stroke-width:0.127832;fill:#ffff00"
+         x="196.90009"
+         y="69.079681">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.11326px;line-height:1.25;font-family:sans-serif;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.127832"
+       x="177.20982"
+       y="69.984413"
+       id="text7243-6"><tspan
+         sodipodi:role="line"
+         id="tspan7241-6"
+         style="fill:#ffff00;stroke-width:0.127832"
+         x="177.20982"
+         y="69.984413">6</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.03776px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0509441"
+       x="104.46736"
+       y="69.139633"
+       id="text9227"><tspan
+         sodipodi:role="line"
+         id="tspan9225"
+         style="fill:#ffff00;stroke-width:0.0509441"
+         x="104.46736"
+         y="69.139633">20</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.31211px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.173408"
+       x="103.31198"
+       y="59.101673"
+       id="text10981"><tspan
+         sodipodi:role="line"
+         id="tspan10979"
+         style="font-size:2.31211px;fill:#ffff00;stroke-width:0.173408"
+         x="103.31198"
+         y="59.101673">40</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.11326px;line-height:1.25;font-family:sans-serif;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.127832"
+       x="172.0983"
+       y="70.017822"
+       id="text7243-2"><tspan
+         sodipodi:role="line"
+         id="tspan7241-7"
+         style="fill:#ffff00;stroke-width:0.127832"
+         x="172.0983"
+         y="70.017822">7</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.787339px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0196836"
+       x="177.5459"
+       y="70.970963"
+       id="text14603"><tspan
+         sodipodi:role="line"
+         id="tspan14601"
+         style="fill:#ffff00;stroke-width:0.0196836"
+         x="177.5459"
+         y="70.970963">CAN_H</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="171.98795"
+       y="71.127098"
+       id="text16527"><tspan
+         sodipodi:role="line"
+         id="tspan16525"
+         style="font-size:1.05833px;fill:#ffff00;stroke-width:0.264583"
+         x="171.98795"
+         y="71.127098">CAN_L</tspan></text>
   </g>
 </svg>

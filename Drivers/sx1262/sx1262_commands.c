@@ -675,7 +675,7 @@ bool sx1262_test_command(int32_t argc, char* argv[]) {
         for(try_num = 1; try_num <= try_cnt; try_num++) {
             snprintf(tx_array, sizeof(tx_array), "ping_%u", try_num);
             tx_array_len = (uint16_t)strlen((char*)tx_array) + 1U;
-            LOG_INFO(LORA, "send %u/%u [%s]", try_num, try_cnt, tx_array);
+            LOG_INFO(LORA, "send %u/%u [%s] pause %u ms", try_num, try_cnt, tx_array, wait_pause_ms);
             res = sx1262_start_tx(tx_array, tx_array_len, 0);
             if(res) {
                 LOG_INFO(LORA, "tx OK");

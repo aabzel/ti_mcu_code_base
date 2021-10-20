@@ -33,7 +33,7 @@
 #define ADDR_CREL 0x1000
 #define ADDR_FD_IR  0x1050 //Interrupt Register
 #define ADDR_FD_IE 0x1054 //Interrupt Enable
-#define ADDR_MRAM 0x8000
+#define ADDR_MRAM  0x8000 //MRAM start address,
 
 /*
  * Device ID and SPI Registers: 	0x0000 Prefix
@@ -87,14 +87,14 @@
 #define ADDR_MCAN_RXF0C								0x10A0 // Rx FIFO 0 Configuration
 #define ADDR_MCAN_RXF0S								0x10A4
 #define ADDR_MCAN_RXF0A								0x10A8
-#define ADDR_MCAN_RXBC								0x10AC
+#define ADDR_MCAN_RXBC								0x10AC //
 #define ADDR_MCAN_RXF1C								0x10B0 // Rx FIFO 1 Configuration
 #define ADDR_MCAN_RXF1S								0x10B4
 #define ADDR_MCAN_RXF1A								0x10B8
 #define ADDR_MCAN_RXESC								0x10BC // Rx Buffer/FIFO Element Size Configuration
 #define ADDR_MCAN_TXBC								0x10C0 // Tx Buffer Configuration
 #define ADDR_MCAN_TXFQS								0x10C4
-#define ADDR_MCAN_TXESC								0x10C8
+#define ADDR_MCAN_TXESC								0x10C8 // Tx Buffer Element Size Configuration
 #define ADDR_MCAN_TXBRP								0x10CC
 #define ADDR_MCAN_TXBAR								0x10D0
 #define ADDR_MCAN_TXBCR								0x10D4

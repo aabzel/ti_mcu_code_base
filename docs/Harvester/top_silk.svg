@@ -25,10 +25,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="926.25"
-     inkscape:cy="509.64286"
+     inkscape:cx="542.67857"
+     inkscape:cy="278.92857"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -258,6 +258,50 @@
          x="93.192123"
          y="119.6619"
          style="fill:#ffff00;stroke-width:0.0404789">TP51</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.0825px;line-height:1.25;font-family:sans-serif;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.102063"
+       x="119.77193"
+       y="76.118866"
+       id="text1755"><tspan
+         sodipodi:role="line"
+         id="tspan1753"
+         style="fill:#ffff00;stroke-width:0.102063"
+         x="119.77193"
+         y="76.118866">6</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.0825px;line-height:1.25;font-family:sans-serif;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.102063"
+       x="124.25896"
+       y="75.658928"
+       id="text1755-9"><tspan
+         sodipodi:role="line"
+         id="tspan1753-6"
+         style="fill:#ffff00;stroke-width:0.102063"
+         x="124.25896"
+         y="75.658928">7</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="124.23605"
+       y="76.94178"
+       id="text4552"><tspan
+         sodipodi:role="line"
+         id="tspan4550"
+         style="font-size:1.05833px;fill:#ffff00;stroke-width:0.264583"
+         x="124.23605"
+         y="76.94178">CAN_L</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.705556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="120.0783"
+       y="76.918159"
+       id="text8116"><tspan
+         sodipodi:role="line"
+         id="tspan8114"
+         style="font-size:0.705556px;fill:#ffff00;stroke-width:0.264583"
+         x="120.0783"
+         y="76.918159">CAN_H</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

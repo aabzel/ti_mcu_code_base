@@ -5,19 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum eClkRef_t {
-    CLK_REF_20MHZ = 0,
-    CLK_REF_40MHZ = 1,
-    CLK_REF_UNDEF = 1,
-} ClkRef_t;
-
-typedef enum eMode_t {
-    MODE_SLEEP = 0,
-    MODE_STANDBY = 1,
-    MODE_NORMAL = 2,
-    MODE_RESERVED = 3,
-    MODE_UNDEF = 4,
-} DevMode_t;
+ 
 
 // 0x1018  CCCR "CC Control Register"
 typedef struct xtCanRegCCctrl_t {
@@ -342,7 +330,7 @@ typedef struct xtCanRegIntFl_t {
     };
 } __attribute__((packed)) tCanRegIntFl_t;
 
-// 10C0 Tx Buffer Configuration
+// 0x10C0 Tx Buffer Configuration
 typedef struct xtCanRegTxBufCfg_t {
     union {
         uint32_t word;
@@ -413,12 +401,12 @@ typedef struct xRxBufFiFoElemSzCgf_t {
     union {
         uint32_t word;
         struct {
-            uint8_t f0ds : 3;    // rx fifo 0 data field size
-            uint8_t rsvd : 1;    // reserved
-            uint8_t f1ds : 3;    // rx fifo 1 data field size
-            uint8_t rsvd1 : 1;   // reserved
-            uint8_t rbds : 3;    // rx buffer data field size
-            uint32_t rsvd2 : 21; // reserved
+            uint8_t f0ds : 3;    //0-2   Rx FIFO 0 Data Field Size
+            uint8_t rsvd : 1;    //3     reserved
+            uint8_t f1ds : 3;    //4-6   Rx FIFO 1 Data Field Size
+            uint8_t rsvd1 : 1;   //7     reserved
+            uint8_t rbds : 3;    //8-10  Rx Buffer Data Field Size
+            uint32_t rsvd2 : 21; //24-31 reserved
         };
     };
 } __attribute__((packed)) tCanRegRxBufFiFoElemSzCgf_t;
@@ -451,5 +439,82 @@ typedef struct xTxBuffW1_t {
         };
     };
 } __attribute__((packed)) TxBuffW1_t;
+
+
+/**
+ * @brief Standard ID filter struct
+ */
+typedef struct xtCan4550SidFilter_t{
+    union     {
+        uint32_t word;
+        struct {
+            uint16_t sfid2 : 11;  //0 -10 Standard Filter ID 2
+            uint8_t reserved : 5; //11-15
+            uint16_t sfid1 : 11;  //16-26 Standard Filter ID 1
+            uint8_t sfec : 3;     //27-29 Standard Filter Element Configuration
+            uint8_t sft : 2;      //30-31 Standard Filter Type
+        };
+    };
+}__attribute__((packed))  tCan4550SidFilter_t;
+
+/**
+ * @brief Defines the number of MRAM elements and the size of the elements
+ */
+typedef struct {
+    /************************
+     *    Filter Elements   *
+     ************************/
+
+    //! @brief Standard ID Number of Filter Elements: The number of 11-bit filters the user would like
+    //! \n Valid range is: 0 to 128
+    uint8_t sid_num_elements : 8;
+
+    //! @brief extended id number of filter elements: the number of 29-bit filters the user would like
+    //! \n valid range is: 0 to 64
+    uint8_t xid_num_elements : 7;
+
+
+    /************************
+     *  rx fifo elements    *
+     ************************/
+
+    //! @brief rx fifo 0 number of elements: the number of elements for the rx fifo 0
+    //! \n valid range is: 0 to 64
+    uint8_t rx0_num_elements : 7;
+
+    //! @brief rx fifo 0 element size: the number of bytes for the rx 0 fifo (data payload)
+    uint8_t rx0_element_size : 3;
+
+    //! @brief rx fifo 1 number of elements: the number of elements for the rx fifo 1
+    //!\n valid range is: 0 to 64
+    uint8_t rx1_num_elements : 7;
+
+    //! @brief rx fifo 1 element size: the number of bytes for the rx 1 fifo (data payload)
+    uint8_t rx1_element_size : 3;
+
+    //! @brief rx buffers number of elements: the number of elements for the rx buffers (not the fifo)
+    //! \n valid range is: 0 to 64
+    uint8_t rx_buf_num_elements : 7;
+
+    //! @brief rx buffers element size: the number of bytes for the rx buffers (data payload), not the fifo
+    uint8_t rx_buf_element_size : 3;
+
+    /************************
+     *  tx buffer elements  *
+     ************************/
+
+    //! @brief tx event fifo number of elements: the number of elements for the tx event fifo
+    //! \n valid range is: 0 to 32
+    uint8_t tx_event_fifo_num_elements : 6;
+
+    //! @brief tx buffers number of elements: the number of elements for the tx buffers
+    //! \n valid range is: 0 to 32
+    uint8_t tx_buffer_num_elements : 6;
+
+    //! @brief tx buffers element size: the number of bytes for the tx buffers (data payload)
+    uint8_t tx_buffer_element_size : 3;
+
+}__attribute__((packed)) TCAN4x5x_MRAM_Config;
+
 
 #endif /* TCAN4550_TYPES_H */
