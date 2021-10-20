@@ -8,12 +8,20 @@
 #include "io_utils.h"
 #include "log.h"
 #include "str_utils.h"
-#include "tcan4550_drv.h"
 #include "tcan4550_diag.h"
+#include "tcan4550_drv.h"
 #include "table_utils.h"
 #include "data_utils.h"
 
-bool tcan4550_diag_command(int32_t argc, char* argv[]){
+
+bool tcan4550_diag_hl_command(int32_t argc, char* argv[]){
+    bool res = true;
+    io_printf("cur_mode %s"CRLF,  mode2str(CanPhy.cur.mode));
+    io_printf("lock %s"CRLF,  (true==CanPhy.cur.lock)?"locked":"unlocked");
+    return res;
+}
+
+bool tcan4550_diag_ll_command(int32_t argc, char* argv[]){
     bool res = false;
     uint32_t out_reg = 0;
 
@@ -75,9 +83,57 @@ bool tcan4550_read_reg_command(int32_t argc, char* argv[]){
         res = tcan4550_read_reg( address, &reg_val);
         if (res) {
             io_printf("0x%08x 0b%s"CRLF, reg_val, utoa_bin32(reg_val));
-        }else{
+        } else {
             LOG_ERROR(CAN, "read error");
         }
+    }
+    return res;
+}
+
+bool tcan4550_set_lock_command(int32_t argc, char* argv[]){
+    bool res = false;
+    bool state=false;
+
+    if(1<=argc){
+        res = try_str2bool(argv[0], &state);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract state %s", argv[0]);
+        }
+    }
+
+    if (res && (1==argc)) {
+        res =  tcan4550_set_lock( state);
+        if (res) {
+            LOG_INFO(CAN, "OK");
+        }else{
+            LOG_ERROR(CAN, "err");
+        }
+    } else {
+        LOG_ERROR(CAN, "Usage: csl state");
+    }
+    return res;
+}
+
+bool tcan4550_set_mode_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint16_t dev_mode=0;
+
+    if(1<=argc){
+        res = try_str2uint8(argv[0], &dev_mode);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract mode %s", argv[0]);
+        }
+    }
+
+    if (res && (1==argc)) {
+        res =  tcan4550_set_mode((DevMode_t) dev_mode);
+        if (res) {
+            LOG_INFO(CAN, "OK %s",mode2str(dev_mode));
+        }else{
+            LOG_ERROR(CAN, "err");
+        }
+    } else {
+        LOG_ERROR(CAN, "Usage: csm mode");
     }
     return res;
 }
@@ -174,6 +230,11 @@ bool tcan4550_reg_map_command(int32_t argc, char* argv[]){
 bool tcan4550_reset_command(int32_t argc, char* argv[]){
     bool res = false;
     res = tcan4550_reset();
+    if(res){
+        LOG_INFO(CAN, "reset OK");
+    }else{
+        LOG_ERROR(CAN, "reset error");
+    }
     return res;
 }
 
@@ -212,13 +273,13 @@ bool tcan4550_clear_mram_command(int32_t argc, char* argv[]){
     res = tcan4550_clear_mram();
     return res;
 }
-
+//cs 0x55 0x1122334455667788
 
 bool tcan4550_send_frame_command(int32_t argc, char* argv[]){
     bool res = false;
     uint16_t id= 0;
     uint64_t data64 = 0;
-    if(1<=argc){
+    if(1<=argc) {
         res = try_str2uint16(argv[0], &id);
         if(false == res) {
             LOG_ERROR(CAN, "Unable to extract id %s", argv[0]);

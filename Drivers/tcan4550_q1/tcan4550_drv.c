@@ -268,26 +268,21 @@ bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* 
     bool res = false;
     tCanRegTxBufCfg_t read_reg;
     read_reg.word = 0;
+    uint8_t element_size=0;
     uint16_t start_address = 0;
     res = tcan4550_read_reg(ADDR_MCAN_TXBC, &read_reg.word);
     if(res) {
         res = false;
         start_address = ADDR_MRAM + read_reg.tx_buf_start_addr;
-        if(32 < read_reg.tfqs) {
-            read_reg.tfqs = 32;
-        }
-
-        if(32 < read_reg.ndtb) {
-            read_reg.ndtb = 32;
-        }
-        if(buf_index <= (read_reg.ndtb - 1)) {
-
-        } else {
+        read_reg.tfqs = uint8_limiter(  read_reg.tfqs, 32);
+        read_reg.ndtb = uint8_limiter(  read_reg.ndtb, 32);
+        element_size = read_reg.tfqs +  read_reg.ndtb ;
+        if((element_size - 1) < buf_index) {
             res = false;
         }
     }
 
-    uint8_t element_size = 0;
+    element_size = 0;
     if(res) {
         tCanRegTxBufElmSzCfg_t reg;
         reg.word = 0;
@@ -633,6 +628,7 @@ bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t* reg) {
     ctr_reg.word = 0;
     res = tcan4550_read_reg(ADDR_MCAN_CCCR, &ctr_reg.word);
     if(res) {
+        res = false;
         *reg = ctr_reg;
         if((1 == ctr_reg.init) && (1 == ctr_reg.cce)) {
             res = true;
@@ -640,6 +636,8 @@ bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t* reg) {
     }
     return res;
 }
+
+
 
 /**
  * @brief Enable Protected MCAN Registers
@@ -661,11 +659,11 @@ bool tcan4550_protected_registers_unlock(void) {
 
     // Try up to 5 times to set the CCCR register, if not, then fail config, since we need these bits set to configure
     // the device.
-    for(i = 0; i < 5; i++) {
+    ctr_reg.csa = 0;
+    ctr_reg.csr = 0;
+    for(i = 0; i < 10; i++) {
         // Unset the CSA and CSR bits since those will be set if we're in standby mode.
         // Writing a 1 to these bits will force a clock stop event and prevent the return to normal mode
-        ctr_reg.csa = 0;
-        ctr_reg.csr = 0;
         ctr_reg.cce = 1;
         ctr_reg.init = 1;
         res = tcan4550_write_reg(ADDR_MCAN_CCCR, ctr_reg.word);
@@ -675,6 +673,16 @@ bool tcan4550_protected_registers_unlock(void) {
                 break;
             }
         }
+    }
+    return res;
+}
+
+bool tcan4550_set_lock(bool state){
+    bool res = false;
+    if(state){
+        res = tcan4550_protected_registers_lock();
+    }else{
+        res = tcan4550_protected_registers_unlock();
     }
     return res;
 }
@@ -838,9 +846,9 @@ bool tcan4550_init(void) {
         MramConfig.tx_buffer_element_size = MRAM_64_Byte_Data;  // TX buffer data payload size
 
         res = tcan4550_mram_cfg(&MramConfig) && res;
-
+#ifndef HAS_DEBUG
         res = tcan4550_protected_registers_lock() && res;
-
+#endif
         tCanRegIntEn_t mcan_ie;
         mcan_ie.word = 0;
         mcan_ie.rf0ne = 1;
@@ -871,7 +879,30 @@ bool tcan4550_init(void) {
     return res;
 }
 
+uint32_t tcan4550_get_bit_rate(void){
+    bool res = false;
+    uint32_t bit_rate=0;
+
+    float tq = 0.0f;
+    float can_bit_period = 0.0f;
+    tCanRegBitTime_t reg;
+    res = tcan4550_read_reg(ADDR_MCAN_NBTP, &reg.word);
+    if (res) {
+       if(reg.nbrp && (reg.ntseg1 + reg.ntseg2)){
+         can_bit_period = tq * ((float)(reg.ntseg1 + reg.ntseg2));
+         tq = ((float)reg.nbrp) * (1.0f / ((float)CAN_XTAL_HZ));
+         bit_rate = (uint32_t) (1.0f / can_bit_period);
+       }
+    }
+    return bit_rate;
+}
+
 bool tcan4550_proc(void){
     bool res = false;
+    CanPhy.cur.mode = tcan4550_get_mode();
+    tCanRegCCctrl_t ctrl_reg;
+    CanPhy.cur.lock = is_tcan4550_protected_reg_locked(&ctrl_reg);
+
+    CanPhy.cur.bit_rate= tcan4550_get_bit_rate();
     return res;
 }

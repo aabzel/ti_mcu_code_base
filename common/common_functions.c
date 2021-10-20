@@ -52,6 +52,10 @@
 #include "rf_drv.h"
 #endif /*HAS_RF*/
 
+#ifdef HAS_TCAN4550
+#include "tcan4550_drv.h"
+#endif /*HAS_TCAN4550*/
+
 #ifdef HAS_SX1262
 #include "sx1262_drv.h"
 #endif /*HAS_SX1262*/
@@ -104,6 +108,11 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_UART
     measure_task_interval(TASK_ID_UART, 1, proc_uarts, loop_start_time_us);
 #endif /*HAS_UART1*/
+
+#ifdef HAS_TCAN4550
+    measure_task_interval(TASK_ID_TCAN4550, 500000, tcan4550_proc, loop_start_time_us);
+#endif /*HAS_TCAN4550*/
+
 
 #ifdef HAS_CLI
     measure_task_interval(TASK_ID_CLI, 3000, cli_process, loop_start_time_us);

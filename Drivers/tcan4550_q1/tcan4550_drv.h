@@ -19,13 +19,19 @@ extern "C" {
 #define OP_CODE_READ 0x41
 #define OP_CODE_WRITE 0x61
 
-typedef struct tCan4550_t{
+typedef struct {
+    uint32_t bit_rate;
+    bool lock;
+    DevMode_t mode;
+}Can4550State_t;
+
+typedef struct {
     uint32_t tx_frame_cnt;
     uint32_t rx_frame_cnt;
-    uint32_t set_bit_rare;
-    uint32_t bit_rare;
-    DevMode_t cur_mode;
+    Can4550State_t set;
+    Can4550State_t cur;
 }Can4550_t;
+
 
 
 typedef struct xHeaderCom_t {
@@ -45,12 +51,15 @@ extern Can4550_t CanPhy;
 extern const Tcan4550Reg_t tCan4550RegLUT[];
 
 bool is_tcan4550_connected(void);
+bool is_tcan4550_protected_reg_locked(tCanRegCCctrl_t* reg);
+bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t* reg);
 bool tcan4550_init(void);
+bool tcan4550_set_mode(DevMode_t dev_mode);
+bool tcan4550_set_lock(bool state);
 bool tcan4550_proc(void);
 bool tcan4550_reset(void);
 bool tcan4550_send(uint16_t id, uint64_t data);
 bool tcan4550_clear_mram(void);
-uint16_t tcan4550_get_reg_cnt(void);
 bool tcan4550_chip_select(bool state);
 bool tcan4550_read(uint16_t address, uint8_t len, uint8_t* out_array, uint32_t size);
 bool tcan4550_write_reg(uint16_t address, uint32_t reg_val);
@@ -62,10 +71,11 @@ bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words);
 bool tcan4550_read_reg(uint16_t address, uint32_t* out_reg);
 bool tcan4550_write_reg(uint16_t address, uint32_t reg_val);
 bool tcan4550_write_reg_lazy(uint16_t address, uint32_t reg_val);
-const char* tcan4550_get_reg_name(uint16_t addr);
 
+const char* tcan4550_get_reg_name(uint16_t addr);
+uint16_t tcan4550_get_reg_cnt(void);
 DevMode_t tcan4550_get_mode(void);
-bool tcan4550_set_mode(DevMode_t dev_mode);
+uint32_t tcan4550_get_bit_rate(void);
 
 #ifdef __cplusplus
 }

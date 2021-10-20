@@ -12,6 +12,20 @@ bool test_can_detect(void) {
     return true;
 }
 
+bool test_can_lock(void){
+    tCanRegCCctrl_t ctrl_reg;
+    ctrl_reg.word =0;
+
+    EXPECT_TRUE( tcan4550_set_lock(true));
+    EXPECT_TRUE( is_tcan4550_protected_reg_locked(&ctrl_reg));
+    EXPECT_FALSE(is_tcan4550_protected_reg_unlock(&ctrl_reg));
+
+    EXPECT_TRUE( tcan4550_set_lock(false));
+    EXPECT_FALSE( is_tcan4550_protected_reg_locked(&ctrl_reg));
+    EXPECT_TRUE(is_tcan4550_protected_reg_unlock(&ctrl_reg));
+    return true;
+}
+
 static bool test_can_write_one(uint16_t addr, uint32_t write_val) {
     uint32_t read_reg=0;
     EXPECT_TRUE( tcan4550_write_reg(addr, write_val)) ;

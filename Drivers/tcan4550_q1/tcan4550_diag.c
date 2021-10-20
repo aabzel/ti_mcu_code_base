@@ -20,7 +20,7 @@ static char* clk_ref2str(uint8_t code) {
     return name;
 }
 
-static char* mode2str(uint8_t code) {
+char* mode2str(uint8_t code) {
     char* name = "undf";
     switch(code) {
     case MODE_SLEEP:
