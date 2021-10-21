@@ -5,6 +5,48 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+//0x1044 Protocol Status Register
+
+//0x1050 Interrupt Register
+typedef struct xCanRegInt_t {
+    union {
+        uint32_t word;
+        struct {
+            uint8_t rf0n :1; /*0 Rx FIFO 0 New Message*/
+            uint8_t rf0w :1; /*1 Rx FIFO 0 Watermark Reached*/
+            uint8_t rf0f :1; /*2 Rx FIFO 0 Full*/
+            uint8_t rf0l :1; /*3 Rx FIFO 0 Message Lost*/
+            uint8_t rf1n :1; /*4 Rx FIFO 1 New Message*/
+            uint8_t rf1w :1; /*5 Rx FIFO 1 Watermark Reached*/
+            uint8_t rf1f :1; /*6 Rx FIFO 1 Full*/
+            uint8_t rf1l :1; /*7 Rx FIFO 1 Message Lost*/
+            uint8_t hpm  :1; /*8 High Priority Message*/
+            uint8_t tc   :1; /*9 Transmission Completed*/
+            uint8_t tcf  :1; /*10 Transmission Cancellation Finished*/
+            uint8_t tfe  :1; /*11 Tx FIFO Empty*/
+            uint8_t tefn :1; /*12 Tx Event FIFO New Entry*/
+            uint8_t tefw :1; /*13 Tx Event FIFO Watermark Reached*/
+            uint8_t teff :1; /*14 Tx Event FIFO Full*/
+            uint8_t tefl :1; /*15 Tx Event FIFO Element Lost*/
+            uint8_t tsw  :1; /*16 Timestamp Wraparound*/
+            uint8_t mrf  :1; /*17 Message RAM Access Failure*/
+            uint8_t too  :1; /*18 Timeout Occurred*/
+            uint8_t drx  :1; /*19 Message stored to Dedicated Rx Buffer*/
+            uint8_t bec  :1; /*20 Bit Error Corrected*/
+            uint8_t beu  :1; /*21 Bit Error Uncorrected*/
+            uint8_t elo  :1; /*22 ELO: Error Logging Overflow*/
+            uint8_t ep   :1; /*23 Error Passive*/
+            uint8_t ew   :1; /*24 Warning Status*/
+            uint8_t bo   :1; /*25 Bus_Off Status*/
+            uint8_t wdi  :1; /*26 Watchdog Interrupt*/
+            uint8_t pea  :1; /*27 Protocol Error in Arbitration Phase*/
+            uint8_t ped  :1; /*28 Protocol Error in Data Phase*/
+            uint8_t ara  :1; /*29 Access to Reserved Address*/
+            uint8_t rsvd :2; /*30*/
+        };
+    };
+} __attribute__((packed)) tCanRegInt_t;
+
 // 0x1018  CCCR "CC Control Register"
 typedef struct xtCanRegCCctrl_t {
     union {

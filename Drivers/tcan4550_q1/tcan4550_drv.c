@@ -28,6 +28,7 @@ const Tcan4550Reg_t tCan4550RegLUT[] = {
     {ADDR_SPI_2_REV, "SPIrev"},
     {ADDR_STATUS, "Status"},
     {ADDR_CREL, "CREL"},
+    {ADDR_MCAN_CCCR, "CcCtrl"},
     {ADDR_MCAN_TXBAR,"TxBufRqst"},
     {ADDR_MCAN_TXBC, "TxBufCfg"},
     {ADDR_MCAN_TXESC,"TxBufElSzCfg"},
@@ -640,7 +641,7 @@ bool tcan4550_read_interrupt(tCanRegIntFl_t* ir) {
  * @param *ir is a pointer to a @c TCAN4x5x_Device_Interrupts struct containing the interrupt bit fields that will be
  * updated
  */
-bool tcan4550_read_clear_interrupt(tCanRegIntFl_t* ir) {
+bool tcan4550_clear_interrupt(tCanRegIntFl_t* ir) {
     bool res = false;
     res = tcan4550_write_reg(ADDR_IF, ir->word);
     return res;
@@ -796,6 +797,18 @@ bool tcan4550_write_sid_filter(uint8_t filter_index, tCan4550SidFilter_t* filter
     return res;
 }
 
+bool tcan4550_configure_cccr_register( tCanRegCCctrl_t *CrtlReg ){
+    bool res = true;
+
+    tCanRegCCctrl_t newCrtlReg={0};
+    newCrtlReg.word = CrtlReg->word;
+    newCrtlReg.csa = 0;
+    newCrtlReg.cce = 1;
+    newCrtlReg.init = 1;
+    res =  tcan4550_write_reg(ADDR_MCAN_CCCR, newCrtlReg.word);
+    return res;
+}
+
 bool tcan4550_init(void) {
     bool res = true;
     LOG_INFO(CAN, "init");
@@ -812,22 +825,22 @@ bool tcan4550_init(void) {
         ie.word = 0;
         res = tcan4550_configure_interrupt(&ie) && res;
 
-        tCanRegIntFl_t dev_ir;
+        tCanRegIntFl_t dev_ir={0};
         dev_ir.word = 0;
         res = tcan4550_read_interrupt(&dev_ir) && res;
         if(res) {
             if(1 == dev_ir.pwron) {
-                res = tcan4550_read_clear_interrupt(&dev_ir);
+                res = tcan4550_clear_interrupt(&dev_ir);
             }
         }
 
-        tCanRegBitTime_t reg_bit_time;
+        tCanRegBitTime_t reg_bit_time={0};
         reg_bit_time.word = 0;
         reg_bit_time.nbrp = 2;
         reg_bit_time.ntseg1 = 32;
         reg_bit_time.ntseg2 = 8;
 
-        tCanRegDataBitTime_t data_time;
+        tCanRegDataBitTime_t data_time={0};
         data_time.word = 0;
         data_time.dtseg1 = 15;
         data_time.dtseg2 = 5;
@@ -840,12 +853,15 @@ bool tcan4550_init(void) {
         gfc.anfe = 0;
         gfc.anfs = 0;
 
-        res = tcan4550_protected_registers_unlock() && res;
+        tCanRegCCctrl_t CrtlReg = {0};
+        CrtlReg.fdoe = 0; // CAN FD mode enable
+        CrtlReg.brse = 0; // CAN FD Bit rate switch enable
 
+        res = tcan4550_protected_registers_unlock() && res;
+        res = tcan4550_configure_cccr_register(&CrtlReg)&& res;
+        res = tcan4550_configure_global_filter(&gfc) && res;
         res = tcan4550_configure_timing_simple(&reg_bit_time) && res;
         res = tcan4550_configure_data_timing_simple(&data_time) && res; // Setup CAN FD timing
-        res = tcan4550_configure_global_filter(&gfc) && res;
-
         res = tcan4550_clear_mram() && res;
 
         /* ************************************************************************
@@ -878,9 +894,10 @@ bool tcan4550_init(void) {
 #ifndef HAS_DEBUG
         res = tcan4550_protected_registers_lock() && res;
 #endif
-        tCanRegIntEn_t mcan_ie;
+        tCanRegIntEn_t mcan_ie={0};
         mcan_ie.word = 0;
         mcan_ie.rf0ne = 1;
+        mcan_ie.tce = 1;
 
         res = tcan4550_configure_mcan_interrupt(&mcan_ie) && res;
 
@@ -897,6 +914,7 @@ bool tcan4550_init(void) {
         dev_cfg_reg.word = 0;
 
         dev_cfg_reg.wake_config = 0;
+        dev_cfg_reg.swe_dis = 0;
         dev_cfg_reg.wd_timer = 3;
         dev_cfg_reg.clk_ref = 1;
         dev_cfg_reg.mode_sel = 2;
@@ -932,34 +950,8 @@ float tcan4550_get_bit_rate(void) {
     }
     return bit_rate;
 }
-
-bool tcan4550_proc(void) {
+bool tcan4550_poll_interrupts(void){
     bool res = false;
-    static CanDevMode_t prev_mode = MODE_UNDEF;
-    tCanRegCCctrl_t ctrl_reg;
-    CanPhy.cur.connected = is_tcan4550_connected();
-    if(false==CanPhy.cur.connected ){
-        LOG_ERROR(CAN, "SPI link error");
-    }
-
-    CanPhy.cur.lock = is_tcan4550_protected_reg_locked(&ctrl_reg);
-    tCanRegModeOpPinCfg_t ModeOpPinCfg = {0};
-    ModeOpPinCfg.word = 0;
-    res = tcan4550_read_reg(ADDR_DEV_CONFIG, &ModeOpPinCfg.word);
-    if(res) {
-        if(ModeOpPinCfg.wd_en) {
-            CanPhy.cur.wdt = true;
-        } else {
-            CanPhy.cur.wdt = false;
-        }
-    }
-    CanPhy.cur.bit_rate = tcan4550_get_bit_rate();
-    CanPhy.cur.mode = tcan4550_get_mode();
-    if(prev_mode != CanPhy.cur.mode) {
-        LOG_INFO(CAN, "cur mode %s", can_mode2str(CanPhy.cur.mode));
-    }
-    prev_mode = CanPhy.cur.mode; //
-
     tCanRegIntFl_t reg = {0};
     res = tcan4550_read_reg(ADDR_IF, &reg.word);
     if(res) {
@@ -1037,6 +1029,52 @@ bool tcan4550_proc(void) {
             LOG_WARNING(CAN, "CAN Bus normal");
         }
     }
-    // poll int
+    tCanRegInt_t IntReg={0};
+    res = tcan4550_read_reg(ADDR_MCAN_IR,&IntReg.word);
+    if (res) {
+        if (IntReg.word) {
+            LOG_WARNING(CAN,"IntReg 0x%08x",IntReg.word);
+            if(IntReg.pea){
+                LOG_WARNING(CAN,"Protocol Error in Arbitration Phase");
+            }
+
+            res = tcan4550_write_reg(ADDR_MCAN_IR, IntReg.word);
+        }
+    }
+
+    return res;
+}
+
+bool tcan4550_proc(void) {
+    bool res = false;
+    static CanDevMode_t prev_mode = MODE_UNDEF;
+    tCanRegCCctrl_t ctrl_reg;
+    CanPhy.cur.connected = is_tcan4550_connected();
+    if(false==CanPhy.cur.connected ){
+        LOG_ERROR(CAN, "SPI link error");
+    }
+
+    CanPhy.cur.lock = is_tcan4550_protected_reg_locked(&ctrl_reg);
+    tCanRegModeOpPinCfg_t ModeOpPinCfg = {0};
+    ModeOpPinCfg.word = 0;
+    res = tcan4550_read_reg(ADDR_DEV_CONFIG, &ModeOpPinCfg.word);
+    if(res) {
+        if(ModeOpPinCfg.wd_en) {
+            CanPhy.cur.wdt = true;
+        } else {
+            CanPhy.cur.wdt = false;
+        }
+    }
+    CanPhy.cur.bit_rate = tcan4550_get_bit_rate();
+    CanPhy.cur.mode = tcan4550_get_mode();
+    if(prev_mode != CanPhy.cur.mode) {
+        LOG_INFO(CAN, "new mode %s", can_mode2str(CanPhy.cur.mode));
+    }
+
+    res = tcan4550_poll_interrupts();
+
+
+    prev_mode = CanPhy.cur.mode;
+
     return res;
 }
