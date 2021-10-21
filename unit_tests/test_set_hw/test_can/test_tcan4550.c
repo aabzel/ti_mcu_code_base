@@ -94,8 +94,15 @@ static bool test_can_address(uint16_t addr) {
 
 bool test_can_mram(void){
     uint16_t addr=0;
-    for(addr=ADDR_MRAM; addr<=(ADDR_MRAM+MRAM_SIZE-4); addr++){
+    for(addr=ADDR_MRAM; addr<=(ADDR_MRAM+MRAM_SIZE-4); addr+=3){
         EXPECT_TRUE( test_can_address(  addr ));
     }
+    return true;
+}
+
+bool test_can_send(void){
+    uint16_t id= 0x123;
+    uint64_t data64 = 0x112233445566;
+    EXPECT_TRUE( tcan4550_send(id, data64));
     return true;
 }

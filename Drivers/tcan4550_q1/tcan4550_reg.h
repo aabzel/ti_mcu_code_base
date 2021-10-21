@@ -1,6 +1,4 @@
 /*
- * Description: This file contains the register definitions for the TCAN4x5x Family
- *
  * There are a few different define domains:
  *   - REG_MCAN_x: MCAN register address defines
  *   - MCAN_DLC_x: DLC values for the RX and TX FIFO element defines
@@ -16,9 +14,8 @@
 #ifndef TCAN4550_REG_H
 #define TCAN4550_REG_H
 
-//*****************************************************************************
 // Register Address Sections
-//*****************************************************************************
+
 #define ADDR_SPI_CONFIG								0x0000
 #define ADDR_DEV_CONFIG								0x0800 //Modes of Operation and Pin Configurations
 #define ADDR_MCAN									0x1000
@@ -46,7 +43,7 @@
 /*
  * device configuration registers and Interrupt Flags: 	0x0800 Prefix
  */
-#define ADDR_MODES_AND_PINS						0x0800 //Modes of Operation and Pin Configurations
+//#define ADDR_MODES_AND_PINS						0x0800 //Modes of Operation and Pin Configurations
 #define ADDR_TIMESTAMP_PRESCALER		        0x0804 //Timestamp Prescalar
 #define ADDR_TEST_REGISTERS						0x0808 //Read and Write Test Registers
 #define ADDR_IF									0x0820 //Interrupt Flags
@@ -96,7 +93,7 @@
 #define ADDR_MCAN_TXFQS								0x10C4
 #define ADDR_MCAN_TXESC								0x10C8 // Tx Buffer Element Size Configuration
 #define ADDR_MCAN_TXBRP								0x10CC
-#define ADDR_MCAN_TXBAR								0x10D0
+#define ADDR_MCAN_TXBAR								0x10D0 // Tx Buffer Add Request
 #define ADDR_MCAN_TXBCR								0x10D4
 #define ADDR_MCAN_TXBTO								0x10D8
 #define ADDR_MCAN_TXBCF								0x10DC

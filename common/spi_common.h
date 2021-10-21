@@ -16,6 +16,7 @@
 typedef struct xSpiInstance_t {
   bool tx_int;
   bool rx_int;
+  volatile bool it_done;
   uint8_t *rx_buff;
   uint32_t rx_byte_cnt;
   uint32_t tx_byte_cnt;

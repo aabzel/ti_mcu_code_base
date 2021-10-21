@@ -5,29 +5,27 @@
 #include <stdbool.h>
 #include <stdint.h>
 
- 
-
 // 0x1018  CCCR "CC Control Register"
 typedef struct xtCanRegCCctrl_t {
     union {
         uint32_t word;
         struct {
-            uint8_t init : 1;   // 0  Initialization
-            uint8_t cce : 1;    // 1  Configuration Change Enable
-            uint8_t rom : 1;    // 2  Restricted Operation Mode
-            uint8_t csa : 1;    // 3  Clock Stop Acknowledge
-            uint8_t csr : 1;    // 4  Clock Stop Request
-            uint8_t mon : 1;    // 5  Bus Monitoring Mode is Disabled
-            uint8_t dar : 1;    // 6  Disable Automatic Retransmission
-            uint8_t test : 1;   // 7  Test Mode Enable
-            uint8_t fdoe : 1;   // 8  FD Operation Enable
-            uint8_t brse : 1;   // 9  Bit Rate Switch Enable
-            uint8_t rsvd1 : 2;  // 10 Reserved
-            uint8_t pxhd : 1;   // 12 Protocol Exception Handling Disable
-            uint8_t efbi : 1;   // 13 Edge Filtering during Bus Integration
-            uint8_t txp : 1;    // 14 Transmitter Pause
-            uint8_t niso : 1;   // 15 Non ISO Operation
-            uint16_t rsvd2 : 1; // 16-31 Reserved
+            uint8_t init : 1;  // 0  Initialization
+            uint8_t cce : 1;   // 1  Configuration Change Enable
+            uint8_t rom : 1;   // 2  Restricted Operation Mode
+            uint8_t csa : 1;   // 3  Clock Stop Acknowledge
+            uint8_t csr : 1;   // 4  Clock Stop Request
+            uint8_t mon : 1;   // 5  Bus Monitoring Mode is Disabled
+            uint8_t dar : 1;   // 6  Disable Automatic Retransmission
+            uint8_t test : 1;  // 7  Test Mode Enable
+            uint8_t fdoe : 1;  // 8  FD Operation Enable
+            uint8_t brse : 1;  // 9  Bit Rate Switch Enable
+            uint8_t rsvd1 : 2; // 10-11 Reserved
+            uint8_t pxhd : 1;  // 12 Protocol Exception Handling Disable
+            uint8_t efbi : 1;  // 13 Edge Filtering during Bus Integration
+            uint8_t txp : 1;   // 14 Transmitter Pause
+            uint8_t niso : 1;  // 15 Non ISO Operation
+            uint16_t rsvd2;    // 16-31 Reserved
         };
     };
 } __attribute__((packed)) tCanRegCCctrl_t;
@@ -187,27 +185,27 @@ typedef struct xtCanRegStatus_t {
     union {
         uint32_t word;
         struct {
-            uint8_t inter : 1;
-            uint8_t spi_error_interrupt : 1;
-            uint8_t internal_error_interrupt : 1;
-            uint8_t internal_access_active : 1;
-            uint8_t read_fifo_available : 1;
-            uint8_t write_fifo_available : 1;
-            uint16_t rsvd1 : 10;
-            uint8_t read_underflow : 1;
-            uint8_t read_overflow : 1;
-            uint8_t write_underflow : 1;
-            uint8_t write_overflow : 1;
-            uint8_t invalid_command : 1;
-            uint8_t spi_end_error : 1;
-            uint8_t rsvd2 : 2;
-            uint8_t write_fifo_overflow : 1;
-            uint8_t read_fifo_empty : 1;
-            uint8_t read_fifo_underflow : 1;
-            uint8_t internal_error_log_write : 1;
-            uint8_t internal_write_error : 1;
-            uint8_t internal_read_error : 1;
-            uint8_t rsvd3 : 2;
+            uint8_t inter : 1;                     //0     Value of interrupt input level (active high)
+            uint8_t spi_error_interrupt : 1;       //1     Unmasked SPI error set
+            uint8_t internal_error_interrupt : 1;  //2     Unmasked Internal error set
+            uint8_t internal_access_active : 1;    //3     Internal Multiple transfer mode access in progress
+            uint8_t read_fifo_available : 1;       //4     Read fifo entries is greater than or equal to the read_fifo_threshold
+            uint8_t write_fifo_available : 1;      //5     write fifo empty entries is greater than or equal to the write_fifo_threshold
+            uint16_t rsvd1 : 10;                   //6-15  Reserved
+            uint8_t read_underflow : 1;            //16    SPI read sequence ended with less data transferred then requested
+            uint8_t read_overflow : 1;             //17    SPI read sequence had continue requests after the data transfer was completed
+            uint8_t write_underflow : 1;           //18    SPI write sequence ended with less data transferred then requested
+            uint8_t write_overflow : 1;            //19    SPI write sequence had continue requests after the data transfer was completed
+            uint8_t invalid_command : 1;           //20    Invalid SPI command received
+            uint8_t spi_end_error : 1;             //21    SPI transfer did not end on a byte boundary
+            uint8_t rsvd2 : 2;                     //22-23 Reserved
+            uint8_t write_fifo_overflow : 1;       //24    Write/command FIFO overflow
+            uint8_t read_fifo_empty : 1;           //25    Read FIFO empty for first read data word to return
+            uint8_t read_fifo_underflow : 1;       //26    Read FIFO underflow after 1 or more read data words returned
+            uint8_t internal_error_log_write : 1;  //27    Entry written to the Internal error log
+            uint8_t internal_write_error : 1;      //28    Internal write received an error response
+            uint8_t internal_read_error : 1;       //29    Internal read received an error response
+            uint8_t rsvd3 : 2;                     //30-31 Reserved
         };
     };
 } __attribute__((packed)) tCanRegStatus_t;
@@ -301,31 +299,31 @@ typedef struct xtCanRegIntFl_t {
     union {
         uint32_t word;
         struct {
-            uint8_t vtwd : 1;      // 0
-            uint8_t m_can_int : 1; // 1
+            uint8_t vtwd : 1;      // 0 Global Voltage, Temp or WDTO
+            uint8_t m_can_int : 1; // 1 M_CAN global INT
             uint8_t rsvd1 : 1;     // 2
-            uint8_t spierr : 1;    // 3
+            uint8_t spierr : 1;    // 3 SPI Error
             uint8_t rsvd2 : 1;     // 4
-            uint8_t canerr : 1;    // 5
-            uint8_t wkrq : 1;      // 6
-            uint8_t globalerr : 1; // 7
-            uint8_t candom : 1;    // 8
+            uint8_t canerr : 1;    // 5 CAN Error
+            uint8_t wkrq : 1;      // 6 Wake Request
+            uint8_t globalerr : 1; // 7 Global Error (Any Fault)
+            uint8_t candom : 1;    // 8 CAN Stuck Dominant
             uint8_t rsvd3 : 1;     // 9
-            uint8_t canslnt : 1;   // 10
+            uint8_t canslnt : 1;   // 10 CAN Silent
             uint8_t rsvd4 : 2;     // 11
-            uint8_t wkerr : 1;     // 13
-            uint8_t lwu : 1;       // 14
-            uint8_t canint : 1;    // 15
-            uint8_t eccerr : 1;    // 16
+            uint8_t wkerr : 1;     // 13 Wake Error
+            uint8_t lwu : 1;       // 14 Local Wake Up
+            uint8_t canint : 1;    // 15 Can Bus Wake Up Interrupt
+            uint8_t eccerr : 1;    // 16 Uncorrectable ECC error detected
             uint8_t rsvd5 : 1;     // 17
-            uint8_t wdto : 1;      // 18
-            uint8_t tsd : 1;       // 19
-            uint8_t pwron : 1;     // 20
-            uint8_t uvio : 1;      // 21
-            uint8_t uvsup : 1;     // 22
-            uint8_t sms : 1;       // 23
+            uint8_t wdto : 1;      // 18 Watchdog Time Out
+            uint8_t tsd : 1;       // 19 Thermal Shutdown
+            uint8_t pwron : 1;     // 20 Power ON
+            uint8_t uvio : 1;      // 21 Under Voltage VIO
+            uint8_t uvsup : 1;     // 22 Under Voltage VSUP and UVCCOUT
+            uint8_t sms : 1;       // 23 Sleep Mode Status
             uint8_t rsvd6 : 7;     // 24-30
-            uint8_t canbusnom : 1; // 31
+            uint8_t canbusnom : 1; // 31 CAN Bus normal
         };
     };
 } __attribute__((packed)) tCanRegIntFl_t;
@@ -401,12 +399,12 @@ typedef struct xRxBufFiFoElemSzCgf_t {
     union {
         uint32_t word;
         struct {
-            uint8_t f0ds : 3;    //0-2   Rx FIFO 0 Data Field Size
-            uint8_t rsvd : 1;    //3     reserved
-            uint8_t f1ds : 3;    //4-6   Rx FIFO 1 Data Field Size
-            uint8_t rsvd1 : 1;   //7     reserved
-            uint8_t rbds : 3;    //8-10  Rx Buffer Data Field Size
-            uint32_t rsvd2 : 21; //24-31 reserved
+            uint8_t f0ds : 3;    // 0-2   Rx FIFO 0 Data Field Size
+            uint8_t rsvd : 1;    // 3     reserved
+            uint8_t f1ds : 3;    // 4-6   Rx FIFO 1 Data Field Size
+            uint8_t rsvd1 : 1;   // 7     reserved
+            uint8_t rbds : 3;    // 8-10  Rx Buffer Data Field Size
+            uint32_t rsvd2 : 21; // 24-31 reserved
         };
     };
 } __attribute__((packed)) tCanRegRxBufFiFoElemSzCgf_t;
@@ -440,22 +438,21 @@ typedef struct xTxBuffW1_t {
     };
 } __attribute__((packed)) TxBuffW1_t;
 
-
 /**
  * @brief Standard ID filter struct
  */
-typedef struct xtCan4550SidFilter_t{
-    union     {
+typedef struct xtCan4550SidFilter_t {
+    union {
         uint32_t word;
         struct {
-            uint16_t sfid2 : 11;  //0 -10 Standard Filter ID 2
-            uint8_t reserved : 5; //11-15
-            uint16_t sfid1 : 11;  //16-26 Standard Filter ID 1
-            uint8_t sfec : 3;     //27-29 Standard Filter Element Configuration
-            uint8_t sft : 2;      //30-31 Standard Filter Type
+            uint16_t sfid2 : 11;  // 0 -10 Standard Filter ID 2
+            uint8_t reserved : 5; // 11-15
+            uint16_t sfid1 : 11;  // 16-26 Standard Filter ID 1
+            uint8_t sfec : 3;     // 27-29 Standard Filter Element Configuration
+            uint8_t sft : 2;      // 30-31 Standard Filter Type
         };
     };
-}__attribute__((packed))  tCan4550SidFilter_t;
+} __attribute__((packed)) tCan4550SidFilter_t;
 
 /**
  * @brief Defines the number of MRAM elements and the size of the elements
@@ -472,7 +469,6 @@ typedef struct {
     //! @brief extended id number of filter elements: the number of 29-bit filters the user would like
     //! \n valid range is: 0 to 64
     uint8_t xid_num_elements : 7;
-
 
     /************************
      *  rx fifo elements    *
@@ -514,7 +510,6 @@ typedef struct {
     //! @brief tx buffers element size: the number of bytes for the tx buffers (data payload)
     uint8_t tx_buffer_element_size : 3;
 
-}__attribute__((packed)) TCAN4x5x_MRAM_Config;
-
+} __attribute__((packed)) TCAN4x5x_MRAM_Config;
 
 #endif /* TCAN4550_TYPES_H */

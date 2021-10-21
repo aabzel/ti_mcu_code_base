@@ -7,7 +7,6 @@ extern "C" {
 
 #include "cli_manager.h"
 
-
 bool tcan4550_set_lock_command(int32_t argc, char* argv[]);
 bool tcan4550_set_mode_command(int32_t argc, char* argv[]);
 bool tcan4550_diag_hl_command(int32_t argc, char* argv[]);

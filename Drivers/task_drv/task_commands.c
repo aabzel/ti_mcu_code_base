@@ -4,9 +4,11 @@
 
 #include "base_cmd.h"
 #include "clocks.h"
+#include "convert.h"
 #include "data_utils.h"
 #include "diag_page_nums.h"
 #include "diag_report.h"
+#include "log.h"
 #include "sys.h"
 #include "sys_tick.h"
 #include "task_info.h"
@@ -43,7 +45,7 @@ bool diag_page_tasks(ostream_t* stream) {
     oprintf(stream, "total_time %llu ms" CRLF, total_time_ms);
     static const table_col_t cols[] = {{4, "id"}, {11, "Task name"}, {8, "Calls/s"},   {7, "CPU[%]"},
                                        {11, "Tavg[us]"},  {11, "Tmin[us]"}, {11, "Tmax[us]"},
-                                       {11, "Rmin[us]"},  {11, "Rmax[us]"}, {11, "RTtot[us]"}};
+                                       {11, "Rmin[us]"},  {11, "Rmax[us]"}, {11, "RTtot[us]"},{6, "stat"}};
     float cpu_use = 0.0f;
     table_header(stream, cols, ARRAY_SIZE(cols));
     for(id = 0; id < t_cnt  ; id++) {
@@ -51,15 +53,20 @@ bool diag_page_tasks(ostream_t* stream) {
             cpu_use = (((float)task_data[id].run_time_total) * 100.0f) / ((float)total_run_time_us);
             oprintf(stream, TABLE_LEFT " %2u " TABLE_SEPARATOR, id);
             oprintf(stream,
-                     "%10s " TABLE_SEPARATOR "%8" PRIu32 TABLE_SEPARATOR "%7.3f" TABLE_SEPARATOR
-                               "%12" PRIu32 TABLE_SEPARATOR,
-                               task_data[id].name, (uint32_t)((task_data[id].start_count * 1000) / total_time_ms), cpu_use,
+                     "%10s " TABLE_SEPARATOR
+                     "%8" PRIu32 TABLE_SEPARATOR
+                     "%7.3f" TABLE_SEPARATOR
+                               "%11" PRIu32 TABLE_SEPARATOR,
+                               task_data[id].name,
+                               (uint32_t)((task_data[id].start_count * 1000) / total_time_ms),
+                               cpu_use,
                     (uint32_t)((total_time_ms * 1000) / task_data[id].start_count));
             oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].start_period_min);
             oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].start_period_max);
             oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].run_time_min);
             oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].run_time_max);
             oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].run_time_total);
+            oprintf(stream, "  %2u  " TABLE_SEPARATOR, task_data[id].on);
             oprintf(stream, CRLF);
         }
     }
@@ -69,6 +76,34 @@ bool diag_page_tasks(ostream_t* stream) {
                     "Tmax - Maximum task execution period" CRLF);
 
     return true;
+}
+
+bool cmd_task_ctrl(int32_t argc, char* argv[]){
+    bool res = false;
+    bool task_state = true;
+    uint16_t task_id = 0;
+    if(1<=argc){
+        res = try_str2uint16(argv[0], &task_id);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to extract task_id %s", argv[0]);
+        }
+    }
+    if(2<=argc){
+        res = try_str2bool(argv[1], &task_state);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to extract task_state %s", argv[1]);
+        }
+    }
+    if(res){
+        uint16_t cnt=task_cnt();
+        if(task_id<cnt){
+           task_data[task_id].on = task_state;
+           LOG_INFO(SYS, "task %s %s", task_data[task_id].name, (true==task_state)?"on":"off");
+        }
+    }else{
+        LOG_ERROR(SYS, "Unable control task");
+    }
+    return res;
 }
 
 bool cmd_task_report(int32_t argc, char* argv[]) {

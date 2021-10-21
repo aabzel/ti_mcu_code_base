@@ -16,8 +16,11 @@
 
 bool tcan4550_diag_hl_command(int32_t argc, char* argv[]){
     bool res = true;
-    io_printf("cur_mode %s"CRLF,  mode2str(CanPhy.cur.mode));
+    io_printf("connected %u"CRLF,  CanPhy.cur.connected);
+    io_printf("cur_mode %s"CRLF,  can_mode2str(CanPhy.cur.mode));
+    io_printf("bit rate %f"CRLF,  CanPhy.cur.bit_rate);
     io_printf("lock %s"CRLF,  (true==CanPhy.cur.lock)?"locked":"unlocked");
+    io_printf("WDT %sable"CRLF,  (true==CanPhy.cur.wdt)?"En":"Dis");
     return res;
 }
 
@@ -58,7 +61,16 @@ bool tcan4550_diag_ll_command(int32_t argc, char* argv[]){
 
 bool tcan4550_init_command(int32_t argc, char* argv[]){
     bool res = false;
-    res=tcan4550_init();
+    if(0==argc){
+        res = tcan4550_init();
+        if (res) {
+            LOG_INFO(CAN, "init OK");
+        }else{
+            LOG_ERROR(CAN, "init err");
+        }
+    } else {
+        LOG_ERROR(CAN, "Usage: ci");
+    }
     return res;
 }
 
@@ -116,7 +128,7 @@ bool tcan4550_set_lock_command(int32_t argc, char* argv[]){
 
 bool tcan4550_set_mode_command(int32_t argc, char* argv[]){
     bool res = false;
-    uint16_t dev_mode=0;
+    uint8_t dev_mode=0;
 
     if(1<=argc){
         res = try_str2uint8(argv[0], &dev_mode);
@@ -126,9 +138,9 @@ bool tcan4550_set_mode_command(int32_t argc, char* argv[]){
     }
 
     if (res && (1==argc)) {
-        res =  tcan4550_set_mode((DevMode_t) dev_mode);
+        res =  tcan4550_set_mode((CanDevMode_t) dev_mode);
         if (res) {
-            LOG_INFO(CAN, "OK %s",mode2str(dev_mode));
+            LOG_INFO(CAN, "OK %s",can_mode2str(dev_mode));
         }else{
             LOG_ERROR(CAN, "err");
         }

@@ -9,6 +9,26 @@
 #define MAX_NUM_EXT_ID_FIL 64
 #define MAX_NUM_RX_FIFO_0_EL 64
 
+//*****************************************************************************
+// DLC Value Defines: Used for RX and TX elements. The DLC[3:0] bit field
+//*****************************************************************************
+#define MCAN_DLC_0B                                 0x00000000
+#define MCAN_DLC_1B                                 0x00000001
+#define MCAN_DLC_2B                                 0x00000002
+#define MCAN_DLC_3B                                 0x00000003
+#define MCAN_DLC_4B                                 0x00000004
+#define MCAN_DLC_5B                                 0x00000005
+#define MCAN_DLC_6B                                 0x00000006
+#define MCAN_DLC_7B                                 0x00000007
+#define MCAN_DLC_8B                                 0x00000008
+#define MCAN_DLC_12B                                0x00000009
+#define MCAN_DLC_16B                                0x0000000A
+#define MCAN_DLC_20B                                0x0000000B
+#define MCAN_DLC_24B                                0x0000000C
+#define MCAN_DLC_32B                                0x0000000D
+#define MCAN_DLC_48B                                0x0000000E
+#define MCAN_DLC_64B                                0x0000000F
+
 typedef enum eClkRef_t {
     CLK_REF_20MHZ = 0,
     CLK_REF_40MHZ = 1,
@@ -21,7 +41,7 @@ typedef enum eMode_t {
     MODE_NORMAL = 2,
     MODE_RESERVED = 3,
     MODE_UNDEF = 4,
-} DevMode_t;
+} CanDevMode_t;
 
 
 typedef enum eFiFo0OpMode_t {

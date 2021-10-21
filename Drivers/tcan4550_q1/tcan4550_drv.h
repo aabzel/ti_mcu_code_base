@@ -20,19 +20,19 @@ extern "C" {
 #define OP_CODE_WRITE 0x61
 
 typedef struct {
-    uint32_t bit_rate;
+    float bit_rate;
     bool lock;
-    DevMode_t mode;
-}Can4550State_t;
+    bool connected;
+    bool wdt;
+    CanDevMode_t mode;
+} Can4550State_t;
 
 typedef struct {
     uint32_t tx_frame_cnt;
     uint32_t rx_frame_cnt;
     Can4550State_t set;
     Can4550State_t cur;
-}Can4550_t;
-
-
+} Can4550_t;
 
 typedef struct xHeaderCom_t {
     uint8_t op_code;
@@ -54,7 +54,7 @@ bool is_tcan4550_connected(void);
 bool is_tcan4550_protected_reg_locked(tCanRegCCctrl_t* reg);
 bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t* reg);
 bool tcan4550_init(void);
-bool tcan4550_set_mode(DevMode_t dev_mode);
+bool tcan4550_set_mode(CanDevMode_t dev_mode);
 bool tcan4550_set_lock(bool state);
 bool tcan4550_proc(void);
 bool tcan4550_reset(void);
@@ -72,10 +72,10 @@ bool tcan4550_read_reg(uint16_t address, uint32_t* out_reg);
 bool tcan4550_write_reg(uint16_t address, uint32_t reg_val);
 bool tcan4550_write_reg_lazy(uint16_t address, uint32_t reg_val);
 
+float tcan4550_get_bit_rate(void);
 const char* tcan4550_get_reg_name(uint16_t addr);
 uint16_t tcan4550_get_reg_cnt(void);
-DevMode_t tcan4550_get_mode(void);
-uint32_t tcan4550_get_bit_rate(void);
+CanDevMode_t tcan4550_get_mode(void);
 
 #ifdef __cplusplus
 }

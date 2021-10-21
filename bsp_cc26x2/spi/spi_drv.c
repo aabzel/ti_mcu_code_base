@@ -83,8 +83,14 @@ const SPI_Config SPI_config[SPI_CNT] = {
 };
 
 #ifdef HAS_SPI_INT
-static void SPI0_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { SpiInstance[0].it_cnt++; }
-static void SPI1_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) { SpiInstance[1].it_cnt++; }
+static void SPI0_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) {
+    SpiInstance[0].it_cnt++;
+    SpiInstance[0].it_done = true;
+}
+static void SPI1_CallBack(SPI_Handle handle, SPI_Transaction* objTransaction) {
+    SpiInstance[1].it_cnt++;
+    SpiInstance[1].it_done = true;
+}
 
 static SPI_CallbackFxn spiCallbackFunctions[SPI_CNT] = {
     SPI0_CallBack,
@@ -101,6 +107,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SP
     strncpy(SpiInstance[spi_num].name, spi_name, SPI_NAME_SZ_BYTE);
     SpiInstance[spi_num].rx_byte_cnt = 0;
     SpiInstance[spi_num].tx_byte_cnt = 0;
+    SpiInstance[spi_num].it_done = true;
 
     SpiInstance[spi_num].SpiParams.bitRate = bit_rate;
     SpiInstance[spi_num].SpiParams.dataSize = 8; //(bits)
@@ -154,11 +161,30 @@ static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
     return res;
 }
 
-bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
+
+bool spi_wait_tx_done(SpiName_t spi_num) {
+    bool res = false;
+    uint32_t cnt = 0;
+    while(1) {
+        if(true==SpiInstance[spi_num].it_done) {
+            res = true;
+            break;
+        }
+        cnt++;
+        if(1500000 < cnt) {
+            res = false;
+            break;
+        }
+    }
+    return res;
+}
+
+bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
     if(true == SpiInstance[spi_num].init_done) {
         SPI_Transaction masterTransaction;
         uint32_t init_it_cnt = 0;
+
         masterTransaction.arg = NULL;
         masterTransaction.count = tx_array_len;
         masterTransaction.rxBuf = NULL;
@@ -167,7 +193,9 @@ bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_arr
         if(spi_num < SPI_CNT) {
             init_it_cnt = SpiInstance[spi_num].it_cnt;
         }
+        res = spi_wait_tx_done(spi_num);
 
+        SpiInstance[spi_num].it_done = false;
         switch(spi_num) {
         case 0:
             res = SPI_transfer(SpiInstance[0].SpiHandle, &masterTransaction);
@@ -189,7 +217,49 @@ bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_arr
     return res;
 }
 
-bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
+
+ bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
+    bool res = false;
+    if(spi_num < SPI_CNT){
+
+        if(true == SpiInstance[spi_num].init_done) {
+            SPI_Transaction masterTransaction;
+
+            masterTransaction.arg = NULL;
+            masterTransaction.count = tx_array_len;
+            masterTransaction.rxBuf = NULL;
+            masterTransaction.txBuf = (void*)tx_array;
+
+            spi_wait_tx_done( spi_num);
+            SpiInstance[spi_num].it_done = false;
+            switch(spi_num) {
+            case 0:
+                res = SPI_transfer(SpiInstance[0].SpiHandle, &masterTransaction);
+                break;
+            case 1:
+                res = SPI_transfer(SpiInstance[1].SpiHandle, &masterTransaction);
+                break;
+            default:
+                res = false;
+                break;
+            }
+            if(res) {
+                SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
+            }
+        } /*true==init_done*/
+    }
+    return res;
+}
+
+bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
+    bool res = false;
+
+    res = spi_wait_write_wait(spi_num, tx_array, tx_array_len);
+    //res = spi_wait_write(spi_num, tx_array, tx_array_len);
+    return res;
+}
+
+static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
     if(true == SpiInstance[spi_num].init_done) {
         SPI_Transaction masterTransaction;
@@ -202,6 +272,8 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
         if(spi_num < SPI_CNT) {
             init_it_cnt = SpiInstance[spi_num].it_cnt;
         }
+        spi_wait_tx_done(spi_num);
+        SpiInstance[spi_num].it_done = false;
 
         switch(spi_num) {
         case SPI0_INX:
@@ -223,6 +295,13 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     }
     return res;
 }
+
+bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
+    bool res = false;
+    res = spi_wait_read_wait(spi_num,  rx_array, rx_array_len) ;
+    return res;
+}
+
 
 uint32_t spi_get_clock(SpiName_t spi_num) {
     uint32_t spi_bit_rate = 0xFF;

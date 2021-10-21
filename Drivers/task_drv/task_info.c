@@ -102,7 +102,9 @@ static bool _measure_task_interval(task_data_t* taskItem, uint64_t interval_us, 
 bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_func)(void),
                            uint64_t loop_start_time_us) {
     bool res = false;
-    res = _measure_task_interval(&task_data[task_id], interval_us, task_func, loop_start_time_us);
+    if(task_data[task_id].on){
+        res = _measure_task_interval(&task_data[task_id], interval_us, task_func, loop_start_time_us);
+    }
     return res;
 }
 
@@ -122,6 +124,7 @@ bool task_init(void) {
         task_data[id].run_time_max = 0;
         task_data[id].start_period_min = UINT64_MAX;
         task_data[id].start_period_max = 0;
+        task_data[id].on=true;
     }
     total_time0_us = get_time_us();
     total_time_ms0 = get_time_ms64();

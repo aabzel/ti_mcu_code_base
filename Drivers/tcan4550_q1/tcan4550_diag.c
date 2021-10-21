@@ -20,7 +20,7 @@ static char* clk_ref2str(uint8_t code) {
     return name;
 }
 
-char* mode2str(uint8_t code) {
+char* can_mode2str(uint8_t code) {
     char* name = "undf";
     switch(code) {
     case MODE_SLEEP:
@@ -80,15 +80,66 @@ bool tcan4550_parse_reg_dev_id1(uint32_t reg_val) {
 
 bool tcan4550_parse_reg_status(uint32_t reg_val) {
     bool res = false;
-    tCanRegStatus_t reg;
+    tCanRegStatus_t reg={0};
     memcpy(&reg, &reg_val, 4);
     io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_STATUS, tcan4550_get_reg_name(ADDR_STATUS), reg_val,
               utoa_bin32(reg_val));
-    io_printf("bit %u: internal_access_active %u" CRLF, 3, reg.internal_access_active);
-    io_printf("bit %u: internal_error_interrupt %u" CRLF, 2, reg.internal_error_interrupt);
-    io_printf("bit %u: spi_error_interrupt %u" CRLF, 1, reg.spi_error_interrupt);
-    io_printf("bit %u: interrupt %u" CRLF, 0, reg.inter);
+    if(reg.internal_read_error){
+      io_printf("bit %u: Internal read received an error response %u" CRLF, 29, reg.internal_read_error );
+    }
+    if(reg.internal_write_error){
+      io_printf("bit %u: Internal write received an error response %u" CRLF, 28, reg.internal_write_error );
+    }
+    if(reg.internal_error_log_write ){
+      io_printf("bit %u: Entry written to the Internal error log %u" CRLF, 27, reg.internal_error_log_write );
+    }
+    if(reg.read_fifo_underflow){
+      io_printf("bit %u: Read FIFO underflow after 1 or more read data words returned %u" CRLF, 26, reg.read_fifo_underflow );
+    }
+    if(reg.read_fifo_empty ){
+      io_printf("bit %u: Read FIFO empty for first read data word to return %u" CRLF, 25, reg.read_fifo_empty );
+    }
+    if(reg.write_fifo_overflow){
+      io_printf("bit %u: Write/command FIFO overflow %u" CRLF, 24, reg.write_fifo_overflow );
+    }
+    if(reg.spi_end_error ){
+      io_printf("bit %u: SPI transfer did not end on a byte boundary %u" CRLF, 21, reg.spi_end_error );
+    }
+    if(reg.invalid_command ){
+      io_printf("bit %u: Invalid SPI command received %u" CRLF, 20, reg.invalid_command );
+    }
+    if(reg.write_overflow){
+      io_printf("bit %u: SPI write sequence had continue requests after the data transfer was completed %u" CRLF, 19, reg.write_overflow );
+    }
+    if(reg.write_underflow ){
+      io_printf("bit %u: SPI write sequence ended with less data transferred then requested %u" CRLF, 18, reg.write_underflow );
+    }
+    if(reg.read_overflow ){
+      io_printf("bit %u: SPI read sequence had continue requests after the data transfer was completed %u" CRLF, 17, reg.read_overflow );
+    }
+    if(reg.read_underflow){
+      io_printf("bit %u: SPI read sequence ended with less data transferred then requested %u" CRLF, 16, reg.read_underflow);
+    }
+    if(reg.write_fifo_available ){
+      io_printf("bit %u: write fifo empty entries is greater than or equal to the write_fifo_threshold %u" CRLF, 5, reg.write_fifo_available );
+    }
+    if(reg.read_fifo_available ){
+      io_printf("bit %u: Read fifo entries is greater than or equal to the read_fifo_threshold %u" CRLF, 4, reg.read_fifo_available );
+    }
+    if(reg.internal_access_active){
+      io_printf("bit %u: Internal Multiple transfer mode access in progress %u" CRLF, 3, reg.internal_access_active);
+    }
+    if(reg.internal_error_interrupt){
+      io_printf("bit %u: Unmasked Internal error set %u" CRLF, 2, reg.internal_error_interrupt);
+    }
+    if(reg.spi_error_interrupt){
+      io_printf("bit %u: Unmasked SPI error set %u" CRLF, 1, reg.spi_error_interrupt);
+    }
+    if(reg.inter){
+      io_printf("bit %u: interrupt %u" CRLF, 0, reg.inter);
+    }
     return res;
+
 }
 
 bool tcan4550_parse_reg_mode_op_cfg(uint32_t reg_val) {
@@ -101,7 +152,7 @@ bool tcan4550_parse_reg_mode_op_cfg(uint32_t reg_val) {
     io_printf("bit %u-%u: wd_timer %u" CRLF, 28, 29, reg.wd_timer);
     io_printf("bit %u: clk_ref %u %s" CRLF, 27, reg.clk_ref, clk_ref2str(reg.clk_ref));
     io_printf("bit %u-%u: rsvd %u" CRLF, 24, 26, reg.rsvd4);
-    io_printf("bit %u%u: gpo2_config %u" CRLF, 22, 23, reg.gpo2_config);//NC
+    io_printf("bit %u%u: gpo2_config %u" CRLF, 22, 23, reg.gpo2_config); // NC
     io_printf("bit %u: test_mode_en %u" CRLF, 21, reg.test_mode_en);
     io_printf("bit %u: rsvd %u" CRLF, 20, reg.rsvd3);
     io_printf("bit %u: nwkrq_voltage %u" CRLF, 19, reg.nwkrq_voltage);
@@ -110,10 +161,10 @@ bool tcan4550_parse_reg_mode_op_cfg(uint32_t reg_val) {
     io_printf("bit %u-%u: gpio1_config %u" CRLF, 14, 15, reg.gpio1_config);
     io_printf("bit %u: fail_safe_en %u" CRLF, 13, reg.fail_safe_en);
     io_printf("bit %u: rsvd %u" CRLF, 12, reg.rsvd2);
-    io_printf("bit %u-%u: gpio1_gpo_config %u" CRLF, 10, 11, reg.gpio1_gpo_config);//NC
+    io_printf("bit %u-%u: gpio1_gpo_config %u" CRLF, 10, 11, reg.gpio1_gpo_config); // NC
     io_printf("bit %u: inh_dis %u" CRLF, 9, reg.inh_dis);
     io_printf("bit %u: nwkrq_config %u" CRLF, 8, reg.nwkrq_config);
-    io_printf("bit %u-%u: mode_sel %u %s" CRLF, 6, 7, reg.mode_sel, mode2str(reg.mode_sel));
+    io_printf("bit %u-%u: mode_sel %u %s" CRLF, 6, 7, reg.mode_sel, can_mode2str(reg.mode_sel));
     io_printf("bit %u-%u: rsvd %u" CRLF, 4, 5, reg.rsvd1);
     io_printf("bit %u: wd_en %u" CRLF, 3, reg.wd_en);
     io_printf("bit %u: device_reset %u" CRLF, 2, reg.device_reset);

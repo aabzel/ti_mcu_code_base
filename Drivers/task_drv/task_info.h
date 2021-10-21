@@ -14,6 +14,7 @@ extern uint64_t total_time_ms0;
 
 typedef struct task_data_tag {
     bool init;
+    bool on;
     const char* const name;
     uint64_t run_time_total; /*us*/
     uint64_t start_count;

@@ -329,7 +329,7 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
         }
         uint32_t iter = 0U;
         replace_char(read_command, '_', ' ');
-        for(iter = 0; iter < num_of_try; iter++) {
+        for(iter = 1; iter <= num_of_try; iter++) {
             io_printf(CRLF"%03u/%u: execute command [%s]" CRLF, iter, num_of_try, read_command);
             strncpy(temp_command, read_command, sizeof(temp_command));
             process_shell_cmd(temp_command);

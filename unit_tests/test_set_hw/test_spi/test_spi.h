@@ -9,10 +9,12 @@ extern "C" {
 
 bool test_spi_write(void) ;
 bool test_spi_read(void) ;
+bool test_spi_wait_write(void) ;
 
 
 #define TEST_SUIT_SPI              \
     {"spi_write", test_spi_write}, \
+    {"spi_wait_write", test_spi_wait_write}, \
     {"spi_read", test_spi_read},
 
 #ifdef __cplusplus

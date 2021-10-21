@@ -14,7 +14,7 @@ extern "C" {
 
 #include "spi_common.h"
 
-#define SPI0_BIT_RATE_HZ 4000000 /*sx1262 CAN*/
+#define SPI0_BIT_RATE_HZ 3000000 /*sx1262 CAN*/
 #define SPI1_BIT_RATE_HZ 100000
 
 /* SPI Board */
@@ -35,9 +35,12 @@ typedef enum eSpiName_t {
 extern SpiInstance_t SpiInstance[SPI_CNT];
 
 bool spi_init(void);
+bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) ;
+bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) ;
 bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len);
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t array_len);
 uint32_t spi_get_clock(SpiName_t spi_num);
+bool spi_wait_tx_done(SpiName_t spi_num);
 uint8_t spi_get_phase(SpiName_t spi_num);
 uint8_t spi_get_polarity(SpiName_t spi_num);
 uint8_t spi_get_data_size(SpiName_t spi_num);

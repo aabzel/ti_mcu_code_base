@@ -11,6 +11,7 @@
   TASK(HEAL_MON)                                                               \
   TASK(NMEA)                                                                   \
   TASK(RF)                                                                     \
+  TASK(TCAN4550)                                                               \
   TASK(UART)                                                                   \
   TASK(UART0_FWD)                                                              \
   TASK(UART1_FWD)                                                              \
