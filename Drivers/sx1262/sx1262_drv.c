@@ -172,22 +172,26 @@ bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val) {
     res = sx1262_send_opcode(OPCODE_WRITE_REGISTER, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
-#define CONNECTION_SYNC_WORD 0x0012345678abcdef
+
 bool sx1262_is_connected(void) {
     bool res = false;
     uint64_t read_sync_word = 0;
-    uint64_t orig_sync_word = 0;
 
-    res = sx1262_get_sync_word(&orig_sync_word);
+    RadioPacketType_t packet_type=PACKET_TYPE_UNDEF;
+    res = sx1262_get_packet_type(&packet_type);
+    if(res){
+        if(packet_type != PACKET_TYPE_UNDEF){
+            res = true;
+        }
+    }
 
-    res = sx1262_set_sync_word(CONNECTION_SYNC_WORD) && res;
-    res = sx1262_get_sync_word(&read_sync_word) && res;
-    if((CONNECTION_SYNC_WORD == read_sync_word) && (true == res)) {
+    res = sx1262_get_sync_word(&read_sync_word) ;
+    if((SYNC_WORD == read_sync_word) && (true == res)) {
         res = true;
-        res = sx1262_set_sync_word(orig_sync_word);
     } else {
         res = false;
     }
+
     return res;
 }
 
@@ -240,7 +244,7 @@ bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
     bool res = false;
-    if((tx_array_len + OPCODE_SIZE) < 2 * FIFO_SIZE) {
+    if((tx_array_len + OPCODE_SIZE) < (2 * FIFO_SIZE)) {
         res = true;
         /*VLA prohibited here because heap can meet stack in unpredictable time*/
         static uint8_t tempTxArray[2 * FIFO_SIZE];
@@ -1217,163 +1221,170 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
  * */
 bool sx1262_process(void) {
     bool res = false;
-    Sx1262_t tempSx1262Instance = {0};
-    memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
 
-    if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
-        Sx1262Instance.busy_cnt = 0;
-        res = sx1262_init();
-    }
+    res = sx1262_is_connected();
+    if(res) {
 
-    uint32_t cur_time_stamp_ms = get_time_ms32();
-    uint32_t tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
-    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == Sx1262Instance.tx_done)) {
-        Array_t txNode = {.size = 0, .pArr = NULL};
-        res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &txNode);
-        if((true == res)) {
-            if((0 < txNode.size) && (txNode.pArr)) {
-                res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
+        Sx1262_t tempSx1262Instance = {0};
+        memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
+
+        if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
+            Sx1262Instance.busy_cnt = 0;
+            res = sx1262_init();
+        }
+
+        uint32_t cur_time_stamp_ms = get_time_ms32();
+        uint32_t tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
+        if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == Sx1262Instance.tx_done)) {
+            Array_t txNode = {.size = 0, .pArr = NULL};
+            res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &txNode);
+            if((true == res)) {
+                if((0 < txNode.size) && (txNode.pArr)) {
+                    res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
+                    if(res) {
+                        LoRaInterface.tx_ok_cnt++;
+                    }
+                }
+                if(txNode.pArr) {
+                    free(txNode.pArr);
+                }
+            }
+        }
+
+        res = sx1262_get_status(&tempSx1262Instance.dev_status);
+        if(res) {
+            res = true;
+            Sx1262Instance.dev_status = tempSx1262Instance.dev_status;
+
+            Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
+            uint8_t rx_payload[RX_SIZE] = {0};
+            memset(rx_payload, 0x00, sizeof(rx_payload));
+            uint8_t rx_size = 0;
+            switch(Sx1262Instance.com_stat) {
+            case COM_STAT_DATA_AVAIL: {
+                Sx1262Instance.rx_done_cnt++;
+                res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
                 if(res) {
-                    LoRaInterface.tx_ok_cnt++;
+                    if(Sx1262Instance.debug) {
+                        LOG_INFO(LORA, "rx %u byte", rx_size);
+                        res = print_mem(rx_payload, rx_size, true, true);
+                    }
+                    res = lora_proc_payload(rx_payload, rx_size);
                 }
-            }
-            if(txNode.pArr) {
-                free(txNode.pArr);
-            }
-        }
-    }
-
-    res = sx1262_get_status(&tempSx1262Instance.dev_status);
-    if(res) {
-        res = true;
-        Sx1262Instance.dev_status = tempSx1262Instance.dev_status;
-
-        Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
-        uint8_t rx_payload[RX_SIZE] = {0};
-        memset(rx_payload, 0x00, sizeof(rx_payload));
-        uint8_t rx_size = 0;
-        switch(Sx1262Instance.com_stat) {
-        case COM_STAT_DATA_AVAIL: {
-            Sx1262Instance.rx_done_cnt++;
-            res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
-            if(res) {
+            } break;
+            case COM_STAT_COM_TIMEOUT:
+                LOG_WARNING(LORA, "time out");
+                res = false;
+                break;
+            case COM_STAT_COM_PROC_ERR:
+                /*Too frequent call*/
+                // LOG_ERROR(LORA,"Error");
+                res = false;
+                break;
+            case COM_STAT_EXE_ERR:
+                LOG_ERROR(LORA, "Failure to execute command"); /**/
+                res = false;
+                break;
+            case COM_STAT_COM_TX_DONE:
                 if(Sx1262Instance.debug) {
-                    LOG_INFO(LORA, "rx %u byte", rx_size);
-                    res = print_mem(rx_payload, rx_size, true, true);
+                    LOG_INFO(LORA, "TX done");
                 }
-                res = lora_proc_payload(rx_payload, rx_size);
+                Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
+                Sx1262Instance.tx_done = true;
+                Sx1262Instance.tx_done_cnt++;
+                LoRaInterface.tx_done_cnt++;
+                res = sx1262_start_rx(0xFFFFFF);
+                break;
+            default:
+                res = false;
+                break;
             }
-        } break;
-        case COM_STAT_COM_TIMEOUT:
-            LOG_WARNING(LORA, "time out");
-            res = false;
-            break;
-        case COM_STAT_COM_PROC_ERR:
-            /*Too frequent call*/
-            // LOG_ERROR(LORA,"Error");
-            res = false;
-            break;
-        case COM_STAT_EXE_ERR:
-            LOG_ERROR(LORA, "Failure to execute command"); /**/
-            res = false;
-            break;
-        case COM_STAT_COM_TX_DONE:
-            if(Sx1262Instance.debug) {
-                LOG_INFO(LORA, "TX done");
-            }
-            Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
-            Sx1262Instance.tx_done = true;
-            Sx1262Instance.tx_done_cnt++;
-            LoRaInterface.tx_done_cnt++;
-            res = sx1262_start_rx(0xFFFFFF);
-            break;
-        default:
-            res = false;
-            break;
+            Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
+
+            res = sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
+
+            res = sx1262_reset_stats();
         }
-        Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
 
-        res = sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
-
-        res = sx1262_reset_stats();
-    }
-
-    tempSx1262Instance.rx_payload_len = 0;
-    tempSx1262Instance.rx_buffer_pointer = 0;
-    res = sx1262_get_rxbuff_status(&tempSx1262Instance.rx_payload_len, &tempSx1262Instance.rx_buffer_pointer);
-    if(res) {
-        Sx1262Instance.rx_payload_len = tempSx1262Instance.rx_payload_len;
-        Sx1262Instance.rx_buffer_pointer = tempSx1262Instance.rx_buffer_pointer;
-    }
+        tempSx1262Instance.rx_payload_len = 0;
+        tempSx1262Instance.rx_buffer_pointer = 0;
+        res = sx1262_get_rxbuff_status(&tempSx1262Instance.rx_payload_len, &tempSx1262Instance.rx_buffer_pointer);
+        if(res) {
+            Sx1262Instance.rx_payload_len = tempSx1262Instance.rx_payload_len;
+            Sx1262Instance.rx_buffer_pointer = tempSx1262Instance.rx_buffer_pointer;
+        }
 #ifdef HAS_SX1262_POLL
 
-    tempSx1262Instance.rx_status = 0;
-    tempSx1262Instance.rssi_sync = 0;
-    tempSx1262Instance.rssi_avg = 0;
-    tempSx1262Instance.rssi_pkt = 0;
-    tempSx1262Instance.snr_pkt = 0;
-    tempSx1262Instance.signal_rssi_pkt = 0;
-    res = sx1262_get_packet_status(&tempSx1262Instance.rx_status, &tempSx1262Instance.rssi_sync,
-                                   &tempSx1262Instance.rssi_avg, &tempSx1262Instance.rssi_pkt,
-                                   &tempSx1262Instance.snr_pkt, &tempSx1262Instance.signal_rssi_pkt);
-    if(res) {
-        Sx1262Instance.rx_status = tempSx1262Instance.rx_status;
-        Sx1262Instance.rssi_sync = tempSx1262Instance.rssi_sync;
-        Sx1262Instance.rssi_avg = tempSx1262Instance.rssi_avg;
-        Sx1262Instance.rssi_pkt = tempSx1262Instance.rssi_pkt;
-        Sx1262Instance.snr_pkt = tempSx1262Instance.snr_pkt;
-        Sx1262Instance.signal_rssi_pkt = tempSx1262Instance.signal_rssi_pkt;
-    }
+        tempSx1262Instance.rx_status = 0;
+        tempSx1262Instance.rssi_sync = 0;
+        tempSx1262Instance.rssi_avg = 0;
+        tempSx1262Instance.rssi_pkt = 0;
+        tempSx1262Instance.snr_pkt = 0;
+        tempSx1262Instance.signal_rssi_pkt = 0;
+        res = sx1262_get_packet_status(&tempSx1262Instance.rx_status, &tempSx1262Instance.rssi_sync,
+                                       &tempSx1262Instance.rssi_avg, &tempSx1262Instance.rssi_pkt,
+                                       &tempSx1262Instance.snr_pkt, &tempSx1262Instance.signal_rssi_pkt);
+        if(res) {
+            Sx1262Instance.rx_status = tempSx1262Instance.rx_status;
+            Sx1262Instance.rssi_sync = tempSx1262Instance.rssi_sync;
+            Sx1262Instance.rssi_avg = tempSx1262Instance.rssi_avg;
+            Sx1262Instance.rssi_pkt = tempSx1262Instance.rssi_pkt;
+            Sx1262Instance.snr_pkt = tempSx1262Instance.snr_pkt;
+            Sx1262Instance.signal_rssi_pkt = tempSx1262Instance.signal_rssi_pkt;
+        }
 
-    tempSx1262Instance.rssi_inst = 0;
-    res = sx1262_get_rssi_inst(&tempSx1262Instance.rssi_inst);
-    if(res) {
-        Sx1262Instance.rssi_inst = tempSx1262Instance.rssi_inst;
-    }
+        tempSx1262Instance.rssi_inst = 0;
+        res = sx1262_get_rssi_inst(&tempSx1262Instance.rssi_inst);
+        if(res) {
+            Sx1262Instance.rssi_inst = tempSx1262Instance.rssi_inst;
+        }
 
-    memset(&tempSx1262Instance.gfsk, 0x0, sizeof(tempSx1262Instance.gfsk));
-    memset(&tempSx1262Instance.lora, 0x0, sizeof(tempSx1262Instance.lora));
-    res = sx1262_get_statistic(&tempSx1262Instance.gfsk, &tempSx1262Instance.lora);
-    if(res) {
-        Sx1262Instance.gfsk = tempSx1262Instance.gfsk;
-        Sx1262Instance.lora = tempSx1262Instance.lora;
-    }
+        memset(&tempSx1262Instance.gfsk, 0x0, sizeof(tempSx1262Instance.gfsk));
+        memset(&tempSx1262Instance.lora, 0x0, sizeof(tempSx1262Instance.lora));
+        res = sx1262_get_statistic(&tempSx1262Instance.gfsk, &tempSx1262Instance.lora);
+        if(res) {
+            Sx1262Instance.gfsk = tempSx1262Instance.gfsk;
+            Sx1262Instance.lora = tempSx1262Instance.lora;
+        }
 
-    tempSx1262Instance.op_error = 0;
-    res = sx1262_get_dev_err(&tempSx1262Instance.op_error);
-    if(res) {
-        // proc_dev_err(op_error);
-        Sx1262Instance.op_error = tempSx1262Instance.op_error;
-    }
+        tempSx1262Instance.op_error = 0;
+        res = sx1262_get_dev_err(&tempSx1262Instance.op_error);
+        if(res) {
+            // proc_dev_err(op_error);
+            Sx1262Instance.op_error = tempSx1262Instance.op_error;
+        }
 #endif /*HAS_SX1262_POLL*/
 
-    tempSx1262Instance.irq_stat = 0;
-    res = sx1262_get_irq_status(&tempSx1262Instance.irq_stat);
-    if(res) {
-        Sx1262Instance.irq_stat = tempSx1262Instance.irq_stat;
-        sx1262_proc_irq_status(tempSx1262Instance.irq_stat);
-    }
+        tempSx1262Instance.irq_stat = 0;
+        res = sx1262_get_irq_status(&tempSx1262Instance.irq_stat);
+        if(res) {
+            Sx1262Instance.irq_stat = tempSx1262Instance.irq_stat;
+            sx1262_proc_irq_status(tempSx1262Instance.irq_stat);
+        }
 
-    tempSx1262Instance.get_sync_word = 0;
-    res = sx1262_get_sync_word(&tempSx1262Instance.get_sync_word);
-    if(res) {
-        Sx1262Instance.get_sync_word = tempSx1262Instance.get_sync_word;
-    }
+        tempSx1262Instance.get_sync_word = 0;
+        res = sx1262_get_sync_word(&tempSx1262Instance.get_sync_word);
+        if(res) {
+            Sx1262Instance.get_sync_word = tempSx1262Instance.get_sync_word;
+        }
 
-    Sx1262Instance.wire_int = (uint8_t)GPIO_readDio(DIO_SX1262_INT);
-    Sx1262Instance.wire_busy = (uint8_t)GPIO_readDio(DIO_SX1262_BUSY);
-    Sx1262Instance.wire_nss = (uint8_t)GPIO_readDio(DIO_SX1262_SS);
-    Sx1262Instance.wire_rst = (uint8_t)GPIO_readDio(DIO_SX1262_RST);
+        Sx1262Instance.wire_int = (uint8_t)GPIO_readDio(DIO_SX1262_INT);
+        Sx1262Instance.wire_busy = (uint8_t)GPIO_readDio(DIO_SX1262_BUSY);
+        Sx1262Instance.wire_nss = (uint8_t)GPIO_readDio(DIO_SX1262_SS);
+        Sx1262Instance.wire_rst = (uint8_t)GPIO_readDio(DIO_SX1262_RST);
 
-    tempSx1262Instance.packet_type = PACKET_TYPE_UNDEF;
-    res = sx1262_get_packet_type(&tempSx1262Instance.packet_type);
-    if(res) {
-        Sx1262Instance.packet_type = tempSx1262Instance.packet_type;
-    }
-    tempSx1262Instance.rand_num = 0;
-    res = sx1262_get_rand(&tempSx1262Instance.rand_num);
-    if(res) {
-        Sx1262Instance.rand_num = tempSx1262Instance.rand_num;
+        tempSx1262Instance.packet_type = PACKET_TYPE_UNDEF;
+        res = sx1262_get_packet_type(&tempSx1262Instance.packet_type);
+        if(res) {
+            Sx1262Instance.packet_type = tempSx1262Instance.packet_type;
+        }
+        tempSx1262Instance.rand_num = 0;
+        res = sx1262_get_rand(&tempSx1262Instance.rand_num);
+        if(res) {
+            Sx1262Instance.rand_num = tempSx1262Instance.rand_num;
+        }
+    } else {
+        LOG_ERROR(LORA, "SX1262 SPI link lost");
     }
 
     return res;

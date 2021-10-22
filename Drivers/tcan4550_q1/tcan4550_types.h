@@ -5,44 +5,44 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-//0x1044 Protocol Status Register
+// 0x1044 Protocol Status Register
 
-//0x1050 Interrupt Register
+// 0x1050 Interrupt Register
 typedef struct xCanRegInt_t {
     union {
         uint32_t word;
         struct {
-            uint8_t rf0n :1; /*0 Rx FIFO 0 New Message*/
-            uint8_t rf0w :1; /*1 Rx FIFO 0 Watermark Reached*/
-            uint8_t rf0f :1; /*2 Rx FIFO 0 Full*/
-            uint8_t rf0l :1; /*3 Rx FIFO 0 Message Lost*/
-            uint8_t rf1n :1; /*4 Rx FIFO 1 New Message*/
-            uint8_t rf1w :1; /*5 Rx FIFO 1 Watermark Reached*/
-            uint8_t rf1f :1; /*6 Rx FIFO 1 Full*/
-            uint8_t rf1l :1; /*7 Rx FIFO 1 Message Lost*/
-            uint8_t hpm  :1; /*8 High Priority Message*/
-            uint8_t tc   :1; /*9 Transmission Completed*/
-            uint8_t tcf  :1; /*10 Transmission Cancellation Finished*/
-            uint8_t tfe  :1; /*11 Tx FIFO Empty*/
-            uint8_t tefn :1; /*12 Tx Event FIFO New Entry*/
-            uint8_t tefw :1; /*13 Tx Event FIFO Watermark Reached*/
-            uint8_t teff :1; /*14 Tx Event FIFO Full*/
-            uint8_t tefl :1; /*15 Tx Event FIFO Element Lost*/
-            uint8_t tsw  :1; /*16 Timestamp Wraparound*/
-            uint8_t mrf  :1; /*17 Message RAM Access Failure*/
-            uint8_t too  :1; /*18 Timeout Occurred*/
-            uint8_t drx  :1; /*19 Message stored to Dedicated Rx Buffer*/
-            uint8_t bec  :1; /*20 Bit Error Corrected*/
-            uint8_t beu  :1; /*21 Bit Error Uncorrected*/
-            uint8_t elo  :1; /*22 ELO: Error Logging Overflow*/
-            uint8_t ep   :1; /*23 Error Passive*/
-            uint8_t ew   :1; /*24 Warning Status*/
-            uint8_t bo   :1; /*25 Bus_Off Status*/
-            uint8_t wdi  :1; /*26 Watchdog Interrupt*/
-            uint8_t pea  :1; /*27 Protocol Error in Arbitration Phase*/
-            uint8_t ped  :1; /*28 Protocol Error in Data Phase*/
-            uint8_t ara  :1; /*29 Access to Reserved Address*/
-            uint8_t rsvd :2; /*30*/
+            uint8_t rf0n : 1; /*0 Rx FIFO 0 New Message*/
+            uint8_t rf0w : 1; /*1 Rx FIFO 0 Watermark Reached*/
+            uint8_t rf0f : 1; /*2 Rx FIFO 0 Full*/
+            uint8_t rf0l : 1; /*3 Rx FIFO 0 Message Lost*/
+            uint8_t rf1n : 1; /*4 Rx FIFO 1 New Message*/
+            uint8_t rf1w : 1; /*5 Rx FIFO 1 Watermark Reached*/
+            uint8_t rf1f : 1; /*6 Rx FIFO 1 Full*/
+            uint8_t rf1l : 1; /*7 Rx FIFO 1 Message Lost*/
+            uint8_t hpm : 1;  /*8 High Priority Message*/
+            uint8_t tc : 1;   /*9 Transmission Completed*/
+            uint8_t tcf : 1;  /*10 Transmission Cancellation Finished*/
+            uint8_t tfe : 1;  /*11 Tx FIFO Empty*/
+            uint8_t tefn : 1; /*12 Tx Event FIFO New Entry*/
+            uint8_t tefw : 1; /*13 Tx Event FIFO Watermark Reached*/
+            uint8_t teff : 1; /*14 Tx Event FIFO Full*/
+            uint8_t tefl : 1; /*15 Tx Event FIFO Element Lost*/
+            uint8_t tsw : 1;  /*16 Timestamp Wraparound*/
+            uint8_t mrf : 1;  /*17 Message RAM Access Failure*/
+            uint8_t too : 1;  /*18 Timeout Occurred*/
+            uint8_t drx : 1;  /*19 Message stored to Dedicated Rx Buffer*/
+            uint8_t bec : 1;  /*20 Bit Error Corrected*/
+            uint8_t beu : 1;  /*21 Bit Error Uncorrected*/
+            uint8_t elo : 1;  /*22 ELO: Error Logging Overflow*/
+            uint8_t ep : 1;   /*23 Error Passive*/
+            uint8_t ew : 1;   /*24 Warning Status*/
+            uint8_t bo : 1;   /*25 Bus_Off Status*/
+            uint8_t wdi : 1;  /*26 Watchdog Interrupt*/
+            uint8_t pea : 1;  /*27 Protocol Error in Arbitration Phase*/
+            uint8_t ped : 1;  /*28 Protocol Error in Data Phase*/
+            uint8_t ara : 1;  /*29 Access to Reserved Address*/
+            uint8_t rsvd : 2; /*30*/
         };
     };
 } __attribute__((packed)) tCanRegInt_t;
@@ -227,27 +227,31 @@ typedef struct xtCanRegStatus_t {
     union {
         uint32_t word;
         struct {
-            uint8_t inter : 1;                     //0     Value of interrupt input level (active high)
-            uint8_t spi_error_interrupt : 1;       //1     Unmasked SPI error set
-            uint8_t internal_error_interrupt : 1;  //2     Unmasked Internal error set
-            uint8_t internal_access_active : 1;    //3     Internal Multiple transfer mode access in progress
-            uint8_t read_fifo_available : 1;       //4     Read fifo entries is greater than or equal to the read_fifo_threshold
-            uint8_t write_fifo_available : 1;      //5     write fifo empty entries is greater than or equal to the write_fifo_threshold
-            uint16_t rsvd1 : 10;                   //6-15  Reserved
-            uint8_t read_underflow : 1;            //16    SPI read sequence ended with less data transferred then requested
-            uint8_t read_overflow : 1;             //17    SPI read sequence had continue requests after the data transfer was completed
-            uint8_t write_underflow : 1;           //18    SPI write sequence ended with less data transferred then requested
-            uint8_t write_overflow : 1;            //19    SPI write sequence had continue requests after the data transfer was completed
-            uint8_t invalid_command : 1;           //20    Invalid SPI command received
-            uint8_t spi_end_error : 1;             //21    SPI transfer did not end on a byte boundary
-            uint8_t rsvd2 : 2;                     //22-23 Reserved
-            uint8_t write_fifo_overflow : 1;       //24    Write/command FIFO overflow
-            uint8_t read_fifo_empty : 1;           //25    Read FIFO empty for first read data word to return
-            uint8_t read_fifo_underflow : 1;       //26    Read FIFO underflow after 1 or more read data words returned
-            uint8_t internal_error_log_write : 1;  //27    Entry written to the Internal error log
-            uint8_t internal_write_error : 1;      //28    Internal write received an error response
-            uint8_t internal_read_error : 1;       //29    Internal read received an error response
-            uint8_t rsvd3 : 2;                     //30-31 Reserved
+            uint8_t inter : 1;                    // 0     Value of interrupt input level (active high)
+            uint8_t spi_error_interrupt : 1;      // 1     Unmasked SPI error set
+            uint8_t internal_error_interrupt : 1; // 2     Unmasked Internal error set
+            uint8_t internal_access_active : 1;   // 3     Internal Multiple transfer mode access in progress
+            uint8_t
+                read_fifo_available : 1; // 4     Read fifo entries is greater than or equal to the read_fifo_threshold
+            uint8_t write_fifo_available : 1; // 5     write fifo empty entries is greater than or equal to the
+                                              // write_fifo_threshold
+            uint16_t rsvd1 : 10;        // 6-15  Reserved
+            uint8_t read_underflow : 1; // 16    SPI read sequence ended with less data transferred then requested
+            uint8_t read_overflow : 1;  // 17    SPI read sequence had continue requests after the data transfer was
+                                       // completed
+            uint8_t write_underflow : 1; // 18    SPI write sequence ended with less data transferred then requested
+            uint8_t write_overflow : 1;  // 19    SPI write sequence had continue requests after the data transfer was
+                                        // completed
+            uint8_t invalid_command : 1;          // 20    Invalid SPI command received
+            uint8_t spi_end_error : 1;            // 21    SPI transfer did not end on a byte boundary
+            uint8_t rsvd2 : 2;                    // 22-23 Reserved
+            uint8_t write_fifo_overflow : 1;      // 24    Write/command FIFO overflow
+            uint8_t read_fifo_empty : 1;          // 25    Read FIFO empty for first read data word to return
+            uint8_t read_fifo_underflow : 1;      // 26    Read FIFO underflow after 1 or more read data words returned
+            uint8_t internal_error_log_write : 1; // 27    Entry written to the Internal error log
+            uint8_t internal_write_error : 1;     // 28    Internal write received an error response
+            uint8_t internal_read_error : 1;      // 29    Internal read received an error response
+            uint8_t rsvd3 : 2;                    // 30-31 Reserved
         };
     };
 } __attribute__((packed)) tCanRegStatus_t;

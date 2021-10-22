@@ -7,6 +7,7 @@
   TASK(FLASH_FS)                                                               \
   TASK(GPIO_PWM)                                                               \
   TASK(LED)                                                                    \
+  TASK(HEAL_MON)                                                               \
   TASK(UART0_FWD)                                                              \
   TASK(UART)
 

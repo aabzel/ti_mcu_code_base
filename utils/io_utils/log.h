@@ -53,6 +53,7 @@ typedef enum eLog_facility_t {
   DIAG,
   I2C,
   HMOM,
+  TEST,
   LG_FLASH,
   FLASH_FS,
   LORA,

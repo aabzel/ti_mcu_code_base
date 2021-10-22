@@ -7,14 +7,31 @@ extern "C" {
 
 #include <stdbool.h>
 
-bool test_uart1_read(void);
-bool test_uart1_write(void);
+#ifdef HAS_UART0
 bool test_uart0_read(void);
 bool test_uart0_write(void);
 
-#define TEST_SUIT_UART                                                                                                 \
-    {"uart0_write", test_uart0_write}, {"uart0_read", test_uart0_read}, {"uart1_write", test_uart1_write},             \
-        {"uart1_read", test_uart1_read},
+#define TEST_SUIT_UART0                 \
+    {"uart0_write", test_uart0_write},  \
+    {"uart0_read", test_uart0_read},
+#else
+#define TEST_SUIT_UART0
+#endif
+
+#ifdef HAS_UART1
+bool test_uart1_read(void);
+bool test_uart1_write(void);
+
+#define TEST_SUIT_UART1                     \
+    {"uart1_write", test_uart1_write},      \
+    {"uart1_read", test_uart1_read},
+#else
+#define TEST_SUIT_UART1
+#endif
+
+#define TEST_SUIT_UART \
+    TEST_SUIT_UART0 \
+    TEST_SUIT_UART1
 
 #ifdef __cplusplus
 }

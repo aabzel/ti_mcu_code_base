@@ -12,7 +12,7 @@ struct generic_writer_s;
 
 typedef struct generic_writer_s {
   ostream_t s;
-  fifo_index_t in_transmit; // tx byte cnt
+  uint16_t in_transmit; // tx byte cnt
   int64_t lost_char_count;
   int64_t total_char_count;
   int64_t error_count;

@@ -161,12 +161,11 @@ static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
     return res;
 }
 
-
 bool spi_wait_tx_done(SpiName_t spi_num) {
     bool res = false;
     uint32_t cnt = 0;
     while(1) {
-        if(true==SpiInstance[spi_num].it_done) {
+        if(true == SpiInstance[spi_num].it_done) {
             res = true;
             break;
         }
@@ -217,10 +216,9 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
     return res;
 }
 
-
- bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
+bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
-    if(spi_num < SPI_CNT){
+    if(spi_num < SPI_CNT) {
 
         if(true == SpiInstance[spi_num].init_done) {
             SPI_Transaction masterTransaction;
@@ -230,7 +228,7 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
             masterTransaction.rxBuf = NULL;
             masterTransaction.txBuf = (void*)tx_array;
 
-            spi_wait_tx_done( spi_num);
+            spi_wait_tx_done(spi_num);
             SpiInstance[spi_num].it_done = false;
             switch(spi_num) {
             case 0:
@@ -255,7 +253,7 @@ bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_arr
     bool res = false;
 
     res = spi_wait_write_wait(spi_num, tx_array, tx_array_len);
-    //res = spi_wait_write(spi_num, tx_array, tx_array_len);
+    // res = spi_wait_write(spi_num, tx_array, tx_array_len);
     return res;
 }
 
@@ -298,10 +296,9 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
 
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
-    res = spi_wait_read_wait(spi_num,  rx_array, rx_array_len) ;
+    res = spi_wait_read_wait(spi_num, rx_array, rx_array_len);
     return res;
 }
-
 
 uint32_t spi_get_clock(SpiName_t spi_num) {
     uint32_t spi_bit_rate = 0xFF;

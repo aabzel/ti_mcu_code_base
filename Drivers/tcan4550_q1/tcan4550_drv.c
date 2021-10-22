@@ -18,20 +18,13 @@
 const uint64_t exp_dev_id = 0x343535305443414E;
 
 const Tcan4550Reg_t tCan4550RegLUT[] = {
-    {ADDR_IR, "IntReg"},
-    {ADDR_IE, "IntEn"},
-    {ADDR_IF, "IntFlgs"},
-    {ADDR_MCAN_NBTP, "BitTiming"},
-    {ADDR_DEV_CONFIG, "DevCfg"},
-    {ADDR_DEVICE_ID0, "DevId0"},
-    {ADDR_DEVICE_ID1, "DevId1"},
-    {ADDR_SPI_2_REV, "SPIrev"},
-    {ADDR_STATUS, "Status"},
-    {ADDR_CREL, "CREL"},
-    {ADDR_MCAN_CCCR, "CcCtrl"},
-    {ADDR_MCAN_TXBAR,"TxBufRqst"},
-    {ADDR_MCAN_TXBC, "TxBufCfg"},
-    {ADDR_MCAN_TXESC,"TxBufElSzCfg"},
+    {ADDR_IR, "IntReg"},          {ADDR_IE, "IntEn"},
+    {ADDR_IF, "IntFlgs"},         {ADDR_MCAN_NBTP, "BitTiming"},
+    {ADDR_DEV_CONFIG, "DevCfg"},  {ADDR_DEVICE_ID0, "DevId0"},
+    {ADDR_DEVICE_ID1, "DevId1"},  {ADDR_SPI_2_REV, "SPIrev"},
+    {ADDR_STATUS, "Status"},      {ADDR_CREL, "CREL"},
+    {ADDR_MCAN_CCCR, "CcCtrl"},   {ADDR_MCAN_TXBAR, "TxBufRqst"},
+    {ADDR_MCAN_TXBC, "TxBufCfg"}, {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
 };
 
 Can4550_t CanPhy;
@@ -133,7 +126,6 @@ bool is_tcan4550_connected(void) {
     return res;
 }
 
-
 bool tcan4550_reset(void) {
     bool res = true;
     /*see page 25 in spec 8.3.8 RST Pin*/
@@ -144,7 +136,6 @@ bool tcan4550_reset(void) {
     delay_ms(1);
     return res;
 }
-
 
 bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words) {
     bool res = true;
@@ -283,7 +274,7 @@ uint8_t dlc_2_bytes(uint8_t dlc_code) {
 
 bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* data_payload) {
     bool res = false;
-    tCanRegTxBufCfg_t read_reg={0};
+    tCanRegTxBufCfg_t read_reg = {0};
     read_reg.word = 0;
     uint8_t element_size = 0;
     uint16_t start_address = 0;
@@ -340,7 +331,7 @@ bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* 
         tcan4550_send_spi_burst(reg_w1.word);
 
         element_size = dlc_2_bytes(header->dlc & 0x0F); // Returns the number of data bytes
-        Type32Union_t un32={0};
+        Type32Union_t un32 = {0};
         un32.u32 = 0;
         uint16_t i = 0;
         for(i = 0; i < element_size; i += 4) {
@@ -558,9 +549,8 @@ bool tcan4550_tx_buff_content(uint8_t buf_index) {
     bool res = false;
     if(buf_index < 31U) {
         uint32_t write_value = 0;
-            write_value |= 1U << buf_index;
-            res = tcan4550_write_reg(ADDR_MCAN_TXBAR, write_value);
-
+        write_value |= 1U << buf_index;
+        res = tcan4550_write_reg(ADDR_MCAN_TXBAR, write_value);
     }
     return res;
 }
@@ -573,13 +563,13 @@ bool tcan4550_send(uint16_t id, uint64_t data) {
         tCanTxHeader_t header;
         memset(&header, 0x00, sizeof(header));
         header.dlc = MCAN_DLC_8B;
-        header.id = id;//CAN ID to send
-        header.fdf = 0;// CAN FD Format flag
-        header.brs = 0;//Bit rate switch used flag
-        header.efc = 0;//Event FIFO Control flag, to store tx events or not
-        header.mm  = 0;//Message Marker, used if @c EFC is set to 1
-        header.rtr = 0;//Remote Transmission Request flag
-        header.xtd = 0;//Extended Identifier flag
+        header.id = id; // CAN ID to send
+        header.fdf = 0; // CAN FD Format flag
+        header.brs = 0; // Bit rate switch used flag
+        header.efc = 0; // Event FIFO Control flag, to store tx events or not
+        header.mm = 0;  // Message Marker, used if @c EFC is set to 1
+        header.rtr = 0; // Remote Transmission Request flag
+        header.xtd = 0; // Extended Identifier flag
 
         res = tcan4550_write_tx_buff(0, &header, (uint8_t*)&data);
         if(res) {
@@ -797,15 +787,15 @@ bool tcan4550_write_sid_filter(uint8_t filter_index, tCan4550SidFilter_t* filter
     return res;
 }
 
-bool tcan4550_configure_cccr_register( tCanRegCCctrl_t *CrtlReg ){
+bool tcan4550_configure_cccr_register(tCanRegCCctrl_t* CrtlReg) {
     bool res = true;
 
-    tCanRegCCctrl_t newCrtlReg={0};
+    tCanRegCCctrl_t newCrtlReg = {0};
     newCrtlReg.word = CrtlReg->word;
     newCrtlReg.csa = 0;
     newCrtlReg.cce = 1;
     newCrtlReg.init = 1;
-    res =  tcan4550_write_reg(ADDR_MCAN_CCCR, newCrtlReg.word);
+    res = tcan4550_write_reg(ADDR_MCAN_CCCR, newCrtlReg.word);
     return res;
 }
 
@@ -825,7 +815,7 @@ bool tcan4550_init(void) {
         ie.word = 0;
         res = tcan4550_configure_interrupt(&ie) && res;
 
-        tCanRegIntFl_t dev_ir={0};
+        tCanRegIntFl_t dev_ir = {0};
         dev_ir.word = 0;
         res = tcan4550_read_interrupt(&dev_ir) && res;
         if(res) {
@@ -834,17 +824,17 @@ bool tcan4550_init(void) {
             }
         }
 
-        tCanRegBitTime_t reg_bit_time={0};
+        tCanRegBitTime_t reg_bit_time = {0};
         reg_bit_time.word = 0;
         reg_bit_time.nbrp = 2;
         reg_bit_time.ntseg1 = 32;
         reg_bit_time.ntseg2 = 8;
 
-        tCanRegDataBitTime_t data_time={0};
+        tCanRegDataBitTime_t data_time = {0};
         data_time.word = 0;
         data_time.dtseg1 = 15;
         data_time.dtseg2 = 5;
-        data_time.dbrp = 2;
+        data_time.dbrp = 1;
 
         tCanRegGloFiltCfg_t gfc;
         gfc.word = 0;
@@ -856,13 +846,6 @@ bool tcan4550_init(void) {
         tCanRegCCctrl_t CrtlReg = {0};
         CrtlReg.fdoe = 0; // CAN FD mode enable
         CrtlReg.brse = 0; // CAN FD Bit rate switch enable
-
-        res = tcan4550_protected_registers_unlock() && res;
-        res = tcan4550_configure_cccr_register(&CrtlReg)&& res;
-        res = tcan4550_configure_global_filter(&gfc) && res;
-        res = tcan4550_configure_timing_simple(&reg_bit_time) && res;
-        res = tcan4550_configure_data_timing_simple(&data_time) && res; // Setup CAN FD timing
-        res = tcan4550_clear_mram() && res;
 
         /* ************************************************************************
          * In the next configuration block, we will set the MCAN core up to have:
@@ -876,25 +859,32 @@ bool tcan4550_init(void) {
          *   - 2 Transmit buffers supporting up to 64 bytes of data payload
          */
         TCAN4x5x_MRAM_Config MramConfig = {0};
-        MramConfig.sid_num_elements =
-            1; // Standard ID number of elements, you MUST have a filter written to MRAM for each element defined
-        MramConfig.xid_num_elements =
-            1; // Extended ID number of elements, you MUST have a filter written to MRAM for each element defined
-        MramConfig.rx0_num_elements = 5;                       // RX0 Number of elements
-        MramConfig.rx0_element_size = MRAM_64_Byte_Data;       // RX0 data payload size
-        MramConfig.rx1_num_elements = 0;                       // RX1 number of elements
-        MramConfig.rx1_element_size = MRAM_64_Byte_Data;       // RX1 data payload size
-        MramConfig.rx_buf_num_elements = 0;                    // RX buffer number of elements
-        MramConfig.rx_buf_element_size = MRAM_64_Byte_Data;    // RX buffer data payload size
-        MramConfig.tx_event_fifo_num_elements = 0;             // TX Event FIFO number of elements
-        MramConfig.tx_buffer_num_elements = 2;                 // TX buffer number of elements
-        MramConfig.tx_buffer_element_size = MRAM_64_Byte_Data; // TX buffer data payload size
+        // Standard ID number of elements, you MUST have a filter written to MRAM for each element defined
+        MramConfig.sid_num_elements = 1;
+        // Extended ID number of elements, you MUST have a filter written to MRAM for each element defined
+        MramConfig.xid_num_elements = 1;
+        MramConfig.rx0_num_elements = 5;                      // RX0 Number of elements
+        MramConfig.rx0_element_size = MRAM_8_Byte_Data;       // RX0 data payload size
+        MramConfig.rx1_num_elements = 0;                      // RX1 number of elements
+        MramConfig.rx1_element_size = MRAM_8_Byte_Data;       // RX1 data payload size
+        MramConfig.rx_buf_num_elements = 0;                   // RX buffer number of elements
+        MramConfig.rx_buf_element_size = MRAM_64_Byte_Data;   // RX buffer data payload size
+        MramConfig.tx_event_fifo_num_elements = 0;            // TX Event FIFO number of elements
+        MramConfig.tx_buffer_num_elements = 2;                // TX buffer number of elements
+        MramConfig.tx_buffer_element_size = MRAM_8_Byte_Data; // TX buffer data payload size
+
+        res = tcan4550_protected_registers_unlock() && res;
+        res = tcan4550_configure_cccr_register(&CrtlReg) && res;
+        res = tcan4550_configure_global_filter(&gfc) && res;
+        res = tcan4550_configure_timing_simple(&reg_bit_time) && res;
+        res = tcan4550_configure_data_timing_simple(&data_time) && res; // Setup CAN FD timing
+        res = tcan4550_clear_mram() && res;
 
         res = tcan4550_mram_cfg(&MramConfig) && res;
 #ifndef HAS_DEBUG
         res = tcan4550_protected_registers_lock() && res;
 #endif
-        tCanRegIntEn_t mcan_ie={0};
+        tCanRegIntEn_t mcan_ie = {0};
         mcan_ie.word = 0;
         mcan_ie.rf0ne = 1;
         mcan_ie.tce = 1;
@@ -950,7 +940,7 @@ float tcan4550_get_bit_rate(void) {
     }
     return bit_rate;
 }
-bool tcan4550_poll_interrupts(void){
+bool tcan4550_poll_interrupts(void) {
     bool res = false;
     tCanRegIntFl_t reg = {0};
     res = tcan4550_read_reg(ADDR_IF, &reg.word);
@@ -963,17 +953,17 @@ bool tcan4550_poll_interrupts(void){
         }
         if(reg.spierr) {
             LOG_WARNING(CAN, "SPI Error");
-            //TODO Explore SPI error
-            tCanRegStatus_t stat_reg={0};
+            // TODO Explore SPI error
+            tCanRegStatus_t stat_reg = {0};
             res = tcan4550_read_reg(ADDR_SPI_STATUS, &stat_reg.word);
-            if(res){
-               res = tcan4550_parse_reg_status(  stat_reg.word);
+            if(res) {
+                res = tcan4550_parse_reg_status(stat_reg.word);
             }
             res = tcan4550_clear_spi_err();
         }
         if(reg.canerr) {
             LOG_WARNING(CAN, "CAN Error");
-            tCanRegIntFl_t clr_reg={0};
+            tCanRegIntFl_t clr_reg = {0};
             clr_reg.word = 0;
             clr_reg.canerr = 1;
             res = tcan4550_write_reg(ADDR_IF, clr_reg.word);
@@ -989,7 +979,7 @@ bool tcan4550_poll_interrupts(void){
         }
         if(reg.canslnt) {
             LOG_WARNING(CAN, "CAN Silent");
-            tCanRegIntFl_t clr_reg={0};
+            tCanRegIntFl_t clr_reg = {0};
             clr_reg.word = 0;
             clr_reg.canslnt = 1;
             res = tcan4550_write_reg(ADDR_IF, clr_reg.word);
@@ -1023,19 +1013,19 @@ bool tcan4550_poll_interrupts(void){
             LOG_WARNING(CAN, "Under Voltage VSUP and UVCCOUT");
         }
         if(reg.sms) {
-            LOG_WARNING(CAN,"Sleep Mode Status");
+            LOG_WARNING(CAN, "Sleep Mode Status");
         }
         if(reg.canbusnom) {
             LOG_WARNING(CAN, "CAN Bus normal");
         }
     }
-    tCanRegInt_t IntReg={0};
-    res = tcan4550_read_reg(ADDR_MCAN_IR,&IntReg.word);
-    if (res) {
-        if (IntReg.word) {
-            LOG_WARNING(CAN,"IntReg 0x%08x",IntReg.word);
-            if(IntReg.pea){
-                LOG_WARNING(CAN,"Protocol Error in Arbitration Phase");
+    tCanRegInt_t IntReg = {0};
+    res = tcan4550_read_reg(ADDR_MCAN_IR, &IntReg.word);
+    if(res) {
+        if(IntReg.word) {
+            LOG_WARNING(CAN, "IntReg 0x%08x", IntReg.word);
+            if(IntReg.pea) {
+                LOG_WARNING(CAN, "Protocol Error in Arbitration Phase");
             }
 
             res = tcan4550_write_reg(ADDR_MCAN_IR, IntReg.word);
@@ -1050,31 +1040,30 @@ bool tcan4550_proc(void) {
     static CanDevMode_t prev_mode = MODE_UNDEF;
     tCanRegCCctrl_t ctrl_reg;
     CanPhy.cur.connected = is_tcan4550_connected();
-    if(false==CanPhy.cur.connected ){
-        LOG_ERROR(CAN, "SPI link error");
-    }
-
-    CanPhy.cur.lock = is_tcan4550_protected_reg_locked(&ctrl_reg);
-    tCanRegModeOpPinCfg_t ModeOpPinCfg = {0};
-    ModeOpPinCfg.word = 0;
-    res = tcan4550_read_reg(ADDR_DEV_CONFIG, &ModeOpPinCfg.word);
-    if(res) {
-        if(ModeOpPinCfg.wd_en) {
-            CanPhy.cur.wdt = true;
-        } else {
-            CanPhy.cur.wdt = false;
+    if(false == CanPhy.cur.connected) {
+        LOG_ERROR(CAN, "TCAN4550 SPI link lost");
+    }else{
+        CanPhy.cur.lock = is_tcan4550_protected_reg_locked(&ctrl_reg);
+        tCanRegModeOpPinCfg_t ModeOpPinCfg = {0};
+        ModeOpPinCfg.word = 0;
+        res = tcan4550_read_reg(ADDR_DEV_CONFIG, &ModeOpPinCfg.word);
+        if(res) {
+            if(ModeOpPinCfg.wd_en) {
+                CanPhy.cur.wdt = true;
+            } else {
+                CanPhy.cur.wdt = false;
+            }
         }
+        CanPhy.cur.bit_rate = tcan4550_get_bit_rate();
+        CanPhy.cur.mode = tcan4550_get_mode();
+        if(prev_mode != CanPhy.cur.mode) {
+            LOG_INFO(CAN, "new mode %s", can_mode2str(CanPhy.cur.mode));
+        }
+
+        res = tcan4550_poll_interrupts();
+
+        prev_mode = CanPhy.cur.mode;
     }
-    CanPhy.cur.bit_rate = tcan4550_get_bit_rate();
-    CanPhy.cur.mode = tcan4550_get_mode();
-    if(prev_mode != CanPhy.cur.mode) {
-        LOG_INFO(CAN, "new mode %s", can_mode2str(CanPhy.cur.mode));
-    }
-
-    res = tcan4550_poll_interrupts();
-
-
-    prev_mode = CanPhy.cur.mode;
 
     return res;
 }

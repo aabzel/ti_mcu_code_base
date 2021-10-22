@@ -35,8 +35,8 @@ typedef enum eSpiName_t {
 extern SpiInstance_t SpiInstance[SPI_CNT];
 
 bool spi_init(void);
-bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) ;
-bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) ;
+bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len);
+bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len);
 bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len);
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t array_len);
 uint32_t spi_get_clock(SpiName_t spi_num);
