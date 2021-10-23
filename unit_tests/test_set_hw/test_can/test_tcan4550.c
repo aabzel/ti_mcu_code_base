@@ -95,7 +95,7 @@ static bool test_can_address(uint16_t addr) {
 
 bool test_can_mram(void){
     uint16_t addr=0;
-    for(addr=ADDR_MRAM; addr<=(ADDR_MRAM+MRAM_SIZE-4); addr+=3){
+    for(addr=ADDR_MRAM; addr<=(ADDR_MRAM+MRAM_SZ-4); addr+=5){
         EXPECT_TRUE( test_can_address(  addr ));
     }
     return true;

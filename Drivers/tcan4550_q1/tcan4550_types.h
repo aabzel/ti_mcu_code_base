@@ -436,18 +436,7 @@ typedef struct xTCanTxHeader_t {
     uint8_t mm : 8;       // Message Marker, used if @c EFC is set to 1
 } tCanTxHeader_t;
 
-// Tx Event FIFO
-typedef struct xW0_t {
-    union {
-        uint32_t word;
-        struct {
-            uint32_t id : 29; // Identifier
-            uint8_t rtr : 1;  // Remote Transmission Request
-            uint8_t xtd : 1;  // Extended Identifier
-            uint8_t esi : 1;  // Error State Indicator
-        };
-    };
-} __attribute__((packed)) W0_t;
+
 
 // 0x10AC Rx Buffer Configuration
 typedef struct xRxBufCgf_t {
@@ -489,20 +478,7 @@ typedef struct xTxEventFifoCgf_t {
     };
 } __attribute__((packed)) tCanRegTxEventFifoCgf_t;
 
-typedef struct xTxBuffW1_t {
-    union {
-        uint32_t word;
-        struct {
-            uint16_t res1;    // 0-15
-            uint8_t dlc : 4;  // 16-19 Data Length Code
-            uint8_t brs : 1;  // 20 Bit Rate Switch
-            uint8_t fdf : 1;  // 21 FD Format
-            uint8_t res2 : 1; // 22
-            uint8_t efc : 1;  // 23 event fifo control
-            uint8_t mm;       // 24-31  message marker
-        };
-    };
-} __attribute__((packed)) TxBuffW1_t;
+
 
 /**
  * @brief Standard ID filter struct
@@ -577,5 +553,34 @@ typedef struct {
     uint8_t tx_buffer_element_size : 3;
 
 } __attribute__((packed)) TCAN4550_MRAM_Config;
+
+
+// Tx Event FIFO and Tx Buffers
+typedef struct xW0_t {
+    union {
+        uint32_t word;
+        struct {
+            uint32_t id : 29; //bit 0-28 Identifier
+            uint8_t rtr : 1;  //bit 29 Remote Transmission Request
+            uint8_t xtd : 1;  //bit 30 Extended Identifier
+            uint8_t esi : 1;  //bit 31 Error State Indicator
+        };
+    };
+} __attribute__((packed)) W0_t;
+
+typedef struct xTxBuffW1_t {
+    union {
+        uint32_t word;
+        struct {
+            uint16_t res1;    //bits 0-15 reserved
+            uint8_t dlc : 4;  //bits 16-19 Data Length Code
+            uint8_t brs : 1;  //bit 20 Bit Rate Switch
+            uint8_t fdf : 1;  //bit 21 FD Format
+            uint8_t res2 : 1; //bit 22 reserved
+            uint8_t efc : 1;  //bit 23 event fifo control
+            uint8_t mm;       //bits 24-31  message marker
+        };
+    };
+} __attribute__((packed)) TxBuffW1_t;
 
 #endif /* TCAN4550_TYPES_H */

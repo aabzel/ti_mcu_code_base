@@ -185,8 +185,8 @@ bool tcan4550_ti_send(uint16_t id, uint64_t data64) {
         MCAN_DLC_8B; // Set the DLC to be equal to or less than the data payload (it is ok to pass a 64 byte data array
                      // into the WriteTXFIFO function if your DLC is 8 bytes, only the first 8 bytes will be read)
     header.ID = id;  // Set the ID
-    header.FDF = 1;  // CAN FD frame enabled
-    header.BRS = 1;  // Bit rate switch enabled
+    header.FDF = 0;  // CAN FD frame enabled
+    header.BRS = 0;  // Bit rate switch enabled
     header.EFC = 0;
     header.MM = 0;
     header.RTR = 0;

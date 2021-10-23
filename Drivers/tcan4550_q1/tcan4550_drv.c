@@ -219,7 +219,7 @@ bool tcan4550_write_reg_lazy(uint16_t address, uint32_t reg_val) {
 bool tcan4550_clear_mram(void) {
     bool res = true;
     uint16_t curAddr = ADDR_MRAM;
-    for(curAddr = ADDR_MRAM; curAddr < (ADDR_MRAM + MRAM_SIZE - 4); curAddr += 4) {
+    for(curAddr = ADDR_MRAM; curAddr < (ADDR_MRAM + MRAM_SZ - 4); curAddr += 4) {
         res = tcan4550_write_reg(curAddr, 0) && res;
     }
     return res;
@@ -265,8 +265,10 @@ bool tcan4550_set_mode(CanDevMode_t dev_mode) {
  * @param inputESCValue is the value from an element size configuration register
  * @return The number of bytes of data (8-64 bytes)
  */
-static const uint8_t lookUpTable[8] = {8, 12, 16, 20, 24, 32, 48, 64};
-uint8_t txrxesc_2data_bytes(uint8_t code) { return lookUpTable[code & 0x07]; }
+uint8_t txrxesc_2data_bytes(uint8_t code) {
+    static const uint8_t lookUpTable[8] = {8, 12, 16, 20, 24, 32, 48, 64};
+    return lookUpTable[code & 0x07];
+}
 
 /**
  * @brief Converts the CAN message DLC hex value to the number of bytes it corresponds to
@@ -274,8 +276,8 @@ uint8_t txrxesc_2data_bytes(uint8_t code) { return lookUpTable[code & 0x07]; }
  * @param inputDLC is the DLC value from/to a CAN message struct
  * @return The number of bytes of data (0-64 bytes)
  */
-static const uint8_t dlcLUT_9[7] = {12, 16, 20, 24, 32, 48, 64};
 uint8_t dlc_2_bytes(uint8_t dlc_code) {
+    static const uint8_t dlcLUT_9[7] = {12, 16, 20, 24, 32, 48, 64};
     uint8_t size = 0;
     if(dlc_code < 9) {
         size = dlc_code;
@@ -316,7 +318,7 @@ bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* 
         start_address += ((uint32_t)element_size * buf_index);
         // Convert it to words for easier reading by dividing by 4, and only look at data payload
         element_size = (dlc_2_bytes(header->dlc & 0x0F) + 8) >> 2;
-        if(0 < dlc_2_bytes(header->dlc & 0x0F) % 4) { // If we don't have a whole word worth of data...
+        if(0 < (dlc_2_bytes(header->dlc & 0x0F) % 4)) { // If we don't have a whole word worth of data...
             // We need to round up to the nearest word (by default it truncates).
             // Can be done by simply adding another word.
             element_size += 1;
@@ -324,7 +326,7 @@ bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* 
         tcan4550_chip_select(true);
         delay_ms(1);
         res = tcan4550_send_spi_header(OP_CODE_WRITE, start_address, element_size);
-        W0_t reg_w0;
+        W0_t reg_w0 = {0};
         reg_w0.word = 0;
         reg_w0.esi = header->esi;
         reg_w0.xtd = header->xtd;
@@ -541,7 +543,7 @@ bool tcan4550_mram_cfg(TCAN4550_MRAM_Config* MramConfig) {
     // TX Buffer
     res = tcan4550_mram_tx_buff_cfg(MramConfig, &start_address) && res;
 
-    if((ADDR_MRAM + MRAM_SIZE) < (start_address - 1)) {
+    if((ADDR_MRAM + MRAM_SZ) < (start_address - 1)) {
         res = false;
     }
 
@@ -564,7 +566,7 @@ bool tcan4550_tx_buff_content(uint8_t buf_index) {
     bool res = false;
     if(buf_index < 31U) {
         uint32_t write_value = 0;
-        write_value |= 1U << buf_index;
+        write_value = 1U << buf_index;
         res = tcan4550_write_reg(ADDR_MCAN_TXBAR, write_value);
     }
     return res;
@@ -572,11 +574,10 @@ bool tcan4550_tx_buff_content(uint8_t buf_index) {
 
 bool tcan4550_send(uint16_t id, uint64_t data) {
     bool res = false;
-    res = tcan4550_set_lock(false);
-    if(true == res) {
+
         res = false;
-        tCanTxHeader_t header;
-        memset(&header, 0x00, sizeof(header));
+        tCanTxHeader_t header={0};
+        //memset(&header, 0x00, sizeof(header));
         header.dlc = MCAN_DLC_8B;
         header.id = id; // CAN ID to send
         header.fdf = 0; // CAN FD Format flag
@@ -590,7 +591,7 @@ bool tcan4550_send(uint16_t id, uint64_t data) {
         if(res) {
             res = tcan4550_tx_buff_content(0);
         }
-    }
+
     return res;
 }
 
@@ -1058,6 +1059,11 @@ bool tcan4550_poll_interrupts(void) {
     if(res) {
         clear_bits = IntReg.word;
 
+        if(IntReg.rf0f) {
+            IntReg.rf0f = 0;
+            LOG_WARNING(CAN, "Rx FIFO 0 Full");
+        }
+
         if(IntReg.ped) {
             IntReg.ped = 0;
             LOG_ERROR(CAN, "Protocol Error in Data Phase");
@@ -1084,7 +1090,9 @@ bool tcan4550_poll_interrupts(void) {
         }
         if(IntReg.tsw) {
             IntReg.tsw = 0;
+#ifdef HAS_TCAN_DEBUG
             LOG_DEBUG(CAN, "Timestamp Wraparound");
+#endif
         }
         if(IntReg.rf0n) {
             IntReg.rf0n = 0;
@@ -1104,7 +1112,7 @@ bool tcan4550_poll_interrupts(void) {
             }
         }
         if(IntReg.word) {
-            LOG_WARNING(CAN, "IntReg 0x%08x", IntReg.word);
+            LOG_ERROR(CAN, "UnProcessed Interrupt 0x%08x", IntReg.word);
         }
 
         if(clear_bits) {

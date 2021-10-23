@@ -13,7 +13,7 @@ extern "C" {
 #include "tcan4550_types.h"
 
 #define CAN_XTAL_HZ 40000000
-#define MRAM_SIZE 2048U /*Byte*/
+#define MRAM_SZ 2048U /*Byte*/
 
 //#define DEVICE_ID "TCAN4550"
 #define OP_CODE_READ 0x41

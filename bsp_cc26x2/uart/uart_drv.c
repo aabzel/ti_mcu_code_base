@@ -217,7 +217,7 @@ bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len,
         while(init_tx_cnt == huart[uart_num].tx_cnt) {
             up_time_cur_ms = get_time_ms32();
             duration_ms = up_time_cur_ms - up_time_start_ms;
-            if((10 * (tx_duration_ms + 1)) < duration_ms) { /*TODO find val*/
+            if((5 * (tx_duration_ms + 1)) < duration_ms) { /*TODO find val*/
                 res = false;
                 huart[uart_num].error_cnt++;
                 break;

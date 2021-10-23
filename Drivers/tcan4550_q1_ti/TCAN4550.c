@@ -153,7 +153,7 @@ TCAN4x5x_MCAN_DisableProtectedRegisters(void)
 bool
 TCAN4x5x_MCAN_ConfigureCCCRRegister(TCAN4x5x_MCAN_CCCR_Config *cccrConfig)
 {
-    uint32_t value, readValue;
+    uint32_t value;
 
 
     value = cccrConfig->word;
@@ -165,6 +165,7 @@ TCAN4x5x_MCAN_ConfigureCCCRRegister(TCAN4x5x_MCAN_CCCR_Config *cccrConfig)
 
     AHB_WRITE_32(REG_MCAN_CCCR, value);
 #ifdef TCAN4x5x_MCAN_VERIFY_CONFIGURATION_WRITES
+    uint32_t readValue;
     readValue = AHB_READ_32(REG_MCAN_CCCR);
 
     // Need to do these bitwise ANDs to make this work for clock stop requests and not trigger a false failure when comparing read back value
@@ -550,13 +551,14 @@ TCAN4x5x_MCAN_ConfigureNominalTiming_Raw(TCAN4x5x_MCAN_Nominal_Timing_Raw *nomTi
 bool
 TCAN4x5x_MCAN_ConfigureGlobalFilter(TCAN4x5x_MCAN_Global_Filter_Configuration *gfc)
 {
-    uint32_t writeValue, readValue;
+    uint32_t writeValue;
 
 
     writeValue = (gfc->word & REG_BITS_MCAN_GFC_MASK);
     AHB_WRITE_32(REG_MCAN_GFC, writeValue);
 
 #ifdef TCAN4x5x_MCAN_VERIFY_CONFIGURATION_WRITES
+    uint32_t readValue;
     readValue = AHB_READ_32(REG_MCAN_GFC);
 
     // Need to do these bitwise ANDs to make this work for clock stop requests and not trigger a false failure when comparing read back value

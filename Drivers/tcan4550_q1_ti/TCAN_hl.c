@@ -130,8 +130,8 @@ Init_CAN(void)
 
 	/* Configure the MCAN core settings */
 	TCAN4x5x_MCAN_CCCR_Config cccrConfig = {0};					// Remember to initialize to 0, or you'll get random garbage!
-	cccrConfig.FDOE = 1;										// CAN FD mode enable
-	cccrConfig.BRSE = 1;										// CAN FD Bit rate switch enable
+	cccrConfig.FDOE = 0;										// CAN FD mode enable
+	cccrConfig.BRSE = 0;										// CAN FD Bit rate switch enable
 	cccrConfig.DAR = 1;                                         //Automatic Retransmission Disabled
 
 	/* Configure the default CAN packet filtering settings */

@@ -46,13 +46,13 @@
 #include "TCAN4x5x_Data_Structs.h"
 
 //! If TCAN4x5x_MCAN_CACHE_CONFIGURATION is defined, then the read and write to MRAM functions will cache certain values to reduce the number of SPI reads necessary to send or receive a packet
-#define TCAN4x5x_MCAN_CACHE_CONFIGURATION
+//#define TCAN4x5x_MCAN_CACHE_CONFIGURATION
 
 //! If TCAN4x5x_MCAN_VERIFY_CONFIGURATION_WRITES is defined, then each MCAN configuration write will be read and verified for correctness
-#define TCAN4x5x_MCAN_VERIFY_CONFIGURATION_WRITES
+//#define TCAN4x5x_MCAN_VERIFY_CONFIGURATION_WRITES
 
 //! If TCAN4x5x_DEVICE_VERIFY_CONFIGURATION_WRITES is defined, then each device configuration write will be read and verified for correctness
-#define TCAN4x5x_DEVICE_VERIFY_CONFIGURATION_WRITES
+//#define TCAN4x5x_DEVICE_VERIFY_CONFIGURATION_WRITES
 
 
 // Defines for caching the configuration values to save on reads and writes
