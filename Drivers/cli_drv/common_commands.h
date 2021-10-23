@@ -35,8 +35,10 @@
 
 #ifdef HAS_TCAN4550
 #include "tcan4550_commands.h"
+#include "tcan4550_ti_commands.h"
 #else
 #define TCAN4550_COMMANDS
+#define TCAN4550_TI_TI_COMMANDS
 #endif
 
 #ifdef HAS_RTC
@@ -106,6 +108,7 @@
     CLOCK_COMMANDS                                                                                                     \
     DAC_COMMANDS                                                                                                       \
     TCAN4550_COMMANDS                                                                                                  \
+    TCAN4550_TI_TI_COMMANDS                                                                                            \
     FLASH_COMMANDS                                                                                                     \
     GPIO_COMMANDS                                                                                                      \
     GPIO_PWM_COMMANDS                                                                                                  \

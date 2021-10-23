@@ -11,6 +11,7 @@ extern "C" {
 #include "tcan4550_types.h"
 
 char* can_mode2str(uint8_t code);
+const char* lec2str (uint8_t lec);
 
 bool tcan4550_parse_reg_revision(uint32_t reg_val);
 bool tcan4550_parse_reg_dev_id0(uint32_t reg_val);

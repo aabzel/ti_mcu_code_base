@@ -67,7 +67,7 @@
 #define ADDR_MCAN_TOCC								0x1028
 #define ADDR_MCAN_TOCV								0x102C
 #define ADDR_MCAN_ECR								0x1040
-#define ADDR_MCAN_PSR								0x1044
+#define ADDR_MCAN_PSR								0x1044 //Protocol Status Register
 #define ADDR_MCAN_TDCR								0x1048
 #define ADDR_MCAN_IR								0x1050 //Interrupt Register
 #define ADDR_IR                                     0x1050

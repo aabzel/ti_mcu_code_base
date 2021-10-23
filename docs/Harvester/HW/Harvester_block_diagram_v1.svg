@@ -1478,10 +1478,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="15.999999"
-     inkscape:cx="334.96877"
-     inkscape:cy="278.31251"
+     inkscape:cx="412.79455"
+     inkscape:cy="304.45599"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer8"
+     inkscape:current-layer="layer9"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1533,7 +1533,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -3386,6 +3386,18 @@
        height="2.0343597"
        x="85.469856"
        y="69.757172" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#008000;fill-opacity:1;stroke:none;stroke-width:0.264583;"
+       x="-84.040154"
+       y="105.08502"
+       id="text2415"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan2413"
+         x="-84.040154"
+         y="105.08502"
+         style="font-size:1.05833px;stroke-width:0.264583;fill:#008000;">PS_RS232</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -5686,6 +5698,18 @@
          x="-82.55542"
          y="98.289314"
          style="font-size:0.682038px;fill:#00e6ff;fill-opacity:1;stroke-width:0.255765">active low</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#00e6ff;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       x="-82.828194"
+       y="106.46795"
+       id="text5563-2"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan5561-4"
+         x="-82.828194"
+         y="106.46795"
+         style="font-size:0.682038px;fill:#008000;fill-opacity:1;stroke-width:0.255765">active Hi</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

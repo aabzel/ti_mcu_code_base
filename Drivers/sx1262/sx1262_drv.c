@@ -177,21 +177,47 @@ bool sx1262_is_connected(void) {
     bool res = false;
     uint64_t read_sync_word = 0;
 
-    RadioPacketType_t packet_type=PACKET_TYPE_UNDEF;
+    RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
     res = sx1262_get_packet_type(&packet_type);
-    if(res){
-        if(packet_type != PACKET_TYPE_UNDEF){
+    if(res) {
+        if(packet_type != PACKET_TYPE_UNDEF) {
             res = true;
         }
     }
 
-    res = sx1262_get_sync_word(&read_sync_word) ;
+    res = sx1262_get_sync_word(&read_sync_word);
     if((SYNC_WORD == read_sync_word) && (true == res)) {
         res = true;
     } else {
         res = false;
     }
 
+    return res;
+}
+
+static bool check_sync_word(uint64_t sync_word) {
+    bool res=false;
+    uint64_t read_sync_word = 0;
+    res = sx1262_set_sync_word(sync_word);
+    if (res) {
+        res = sx1262_get_sync_word(&read_sync_word);
+        if (res) {
+            if(sync_word == read_sync_word){
+                res = true;
+            }
+        }
+    }
+    return true;
+}
+
+bool sx1262_is_exist(void) {
+    bool res = false;
+    res = check_sync_word(0x0012345678abcdef);
+    if( true == res) {
+        res = true;
+    } else {
+        res = false;
+    }
     return res;
 }
 
@@ -847,7 +873,7 @@ bool sx1262_init(void) {
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
 
-    res = sx1262_is_connected() && res;
+    res = sx1262_is_exist() && res;
     if(true == res) {
         res = sx1262_wakeup() && res;
 

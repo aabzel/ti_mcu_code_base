@@ -65,6 +65,7 @@ bool test_can_types(void) {
     EXPECT_EQ(4, sizeof(tCanRegGloFiltCfg_t));
     EXPECT_EQ(4, sizeof(tCanRegStdIdFiltCfg_t));
     EXPECT_EQ(4, sizeof(tCanRegRxBufFiFoElemSzCgf_t));
+    EXPECT_EQ(4, sizeof(tCanRegProtStat_t));
     EXPECT_EQ(4, sizeof(tCanRegExtIdFiltCfg_t));
     EXPECT_EQ(4, sizeof(tCanRegRxFifo0Cfg_t));
     EXPECT_EQ(4, sizeof(tCanRegTxEventFifoCgf_t));

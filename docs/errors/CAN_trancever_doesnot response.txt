@@ -1,3 +1,6 @@
+
+
+
 Can not read registers of TCAN4550.
 
 Внешнее питание 12V есть?

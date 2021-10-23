@@ -32,7 +32,8 @@
 #endif
 
 #ifdef HAS_TCAN4550
-#include "tcan4550_drv.h"
+#include "TCAN_hl.h"
+//#include "tcan4550_drv.h"
 #endif /*HAS_TCAN4550*/
 
 #ifdef HAS_I2C
@@ -148,8 +149,9 @@ bool hw_init(void) {
   res = try_init(spi_init(),"SPI") && res;
 #endif /*HAS_SPI*/
 
-  #ifdef HAS_TCAN4550
-  res = try_init(tcan4550_init(),"tcan4550") && res;
+#ifdef HAS_TCAN4550
+  Init_CAN();
+  //res = try_init(tcan4550_init(),"tcan4550") && res;
 #endif /*HAS_TCAN4550*/
 
 #ifdef HAS_I2C

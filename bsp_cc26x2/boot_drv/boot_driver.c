@@ -143,6 +143,21 @@ bool boot_launch_app(void) {
     return res;
 }
 
+bool boot_jump_to_boot(void) {
+    bool res = false;
+    uint8_t boot_cmd = BOOT_CMD_STAY_ON;
+    res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
+    if(false == res) {
+        LOG_ERROR(BOOT, "Error set boot cmd");
+    }
+
+    res = reboot();
+    if(false == res) {
+        LOG_ERROR(BOOT, "Error reboot");
+    }
+    return res;
+}
+
 /*Application Hang on protection*/
 bool boot_init(void) {
     uint16_t real_len = 0;

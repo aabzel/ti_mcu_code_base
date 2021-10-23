@@ -6,6 +6,26 @@
 #include <stdint.h>
 
 // 0x1044 Protocol Status Register
+typedef struct xtCanRegProtStat_t {
+    union {
+        uint32_t word;
+        struct {
+            uint8_t lec    :3;/*0-2   Last Error Code*/
+            uint8_t act    :2;/*3-4   Activity*/
+            uint8_t ep     :1;/*5     Error Passive*/
+            uint8_t ew     :1;/*6     Warning Status*/
+            uint8_t bo     :1;/*7     Bus_Off Status*/
+            uint8_t dlec   :3;/*8-10  Data Phase Last Error Code*/
+            uint8_t resi   :1;/*11    ESI flag of last received CAN FD Message*/
+            uint8_t rbrs   :1;/*12    BRS flag of last received CAN FD Message*/
+            uint8_t rfdf   :1;/*13    Received a CAN FD Message*/
+            uint8_t pxe    :1;/*14    Protocol Exception Event*/
+            uint8_t rsvd1  :1;/*15    Reserved*/
+            uint8_t tdcv   :7;/*16-22 Transmitter Delay Compensation Value*/
+            uint16_t rsvd2 :9;/*23-31 Reserved*/
+        };
+    };
+} __attribute__((packed)) tCanRegProtStat_t ;
 
 // 0x1050 Interrupt Register
 typedef struct xCanRegInt_t {
@@ -235,16 +255,16 @@ typedef struct xtCanRegStatus_t {
                 read_fifo_available : 1; // 4     Read fifo entries is greater than or equal to the read_fifo_threshold
             uint8_t write_fifo_available : 1; // 5     write fifo empty entries is greater than or equal to the
                                               // write_fifo_threshold
-            uint16_t rsvd1 : 10;        // 6-15  Reserved
-            uint8_t read_underflow : 1; // 16    SPI read sequence ended with less data transferred then requested
-            uint8_t read_overflow : 1;  // 17    SPI read sequence had continue requests after the data transfer was
-                                       // completed
+            uint16_t rsvd1 : 10;              // 6-15  Reserved
+            uint8_t read_underflow : 1;       // 16    SPI read sequence ended with less data transferred then requested
+            uint8_t read_overflow : 1;   // 17    SPI read sequence had continue requests after the data transfer was
+                                         // completed
             uint8_t write_underflow : 1; // 18    SPI write sequence ended with less data transferred then requested
             uint8_t write_overflow : 1;  // 19    SPI write sequence had continue requests after the data transfer was
-                                        // completed
-            uint8_t invalid_command : 1;          // 20    Invalid SPI command received
-            uint8_t spi_end_error : 1;            // 21    SPI transfer did not end on a byte boundary
-            uint8_t rsvd2 : 2;                    // 22-23 Reserved
+                                         // completed
+            uint8_t invalid_command : 1; // 20    Invalid SPI command received
+            uint8_t spi_end_error : 1;   // 21    SPI transfer did not end on a byte boundary
+            uint8_t rsvd2 : 2;           // 22-23 Reserved
             uint8_t write_fifo_overflow : 1;      // 24    Write/command FIFO overflow
             uint8_t read_fifo_empty : 1;          // 25    Read FIFO empty for first read data word to return
             uint8_t read_fifo_underflow : 1;      // 26    Read FIFO underflow after 1 or more read data words returned
@@ -556,6 +576,6 @@ typedef struct {
     //! @brief tx buffers element size: the number of bytes for the tx buffers (data payload)
     uint8_t tx_buffer_element_size : 3;
 
-} __attribute__((packed)) TCAN4x5x_MRAM_Config;
+} __attribute__((packed)) TCAN4550_MRAM_Config;
 
 #endif /* TCAN4550_TYPES_H */

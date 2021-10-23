@@ -21,6 +21,7 @@ bool tcan4550_diag_hl_command(int32_t argc, char* argv[]){
     io_printf("bit rate %f"CRLF,  CanPhy.cur.bit_rate);
     io_printf("lock %s"CRLF,  (true==CanPhy.cur.lock)?"locked":"unlocked");
     io_printf("WDT %sable"CRLF,  (true==CanPhy.cur.wdt)?"En":"Dis");
+    io_printf("LEC %s"CRLF,  lec2str(CanPhy.cur.lec));
     return res;
 }
 

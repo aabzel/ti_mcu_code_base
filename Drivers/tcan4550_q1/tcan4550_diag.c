@@ -7,6 +7,41 @@
 #include "io_utils.h"
 #include "tcan4550_drv.h"
 
+
+const char* lec2str (uint8_t lec){
+    char* name = "undf";
+    switch(lec) {
+    case LEC_NO_ERROR:
+        name = "noError";
+        break;
+    case LEC_STUFF_ERROR:
+        name = "StuffError";
+        break;
+    case LEC_FORM_ERROR:
+        name = "FormError";
+        break;
+    case LEC_ACK_ERROR:
+        name = "AckError";
+        break;
+    case LEC_BIT1_ERROR:
+        name = "Bit1Error";
+        break;
+    case LEC_BIT0_ERROR:
+        name = "Bit0_Error";
+        break;
+    case LEC_CRC_ERROR:
+        name = "CrcError";
+        break;
+    case LEC_NO_CHANGE:
+        name = "NoChange";
+        break;
+    default :
+        name = "undef";
+        break;
+    }
+    return name;
+}
+
 static char* clk_ref2str(uint8_t code) {
     char* name = "undf";
     switch(code) {

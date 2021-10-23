@@ -24,6 +24,7 @@ bool boot_init(void);
 bool boot_erase_app(void);
 bool boot_jump_to_code(uint32_t flash_addr);
 bool boot_try_app(void);
+bool boot_jump_to_boot(void);
 bool boot_launch_app(void);
 
 #ifdef HAS_GENERIC

@@ -133,3 +133,19 @@ bool bool_launch_app_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+
+bool boot_jump_boot_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = boot_jump_to_boot();
+        if(res) {
+            LOG_ERROR(BOOT, "OK");
+        } else {
+            LOG_ERROR(BOOT, "Unable jump boot");
+        }
+
+    } else {
+        LOG_ERROR(BOOT, "Usage: jb");
+    }
+    return res;
+}
