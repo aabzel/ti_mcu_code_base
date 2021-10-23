@@ -57,6 +57,7 @@
 #include "TCAN_hl.h"
 #include "TCAN4550.h"
 #include "tcan4550_drv.h"
+#include "log.h"
 
 volatile uint8_t TCAN_Int_Cnt = 0;					// A variable used to keep track of interrupts the MCAN Interrupt pin
 
@@ -101,6 +102,7 @@ bool tcan_proc(void){
 void
 Init_CAN(void)
 {
+    set_log_level(CAN, LOG_LEVEL_NOTICE  ) ;
     tcan4550_reset();
 
     TCAN4x5x_Device_ClearSPIERR();                              // Clear any SPI ERR flags that might be set as a result of our pin mux changing during MCU startup
@@ -130,6 +132,7 @@ Init_CAN(void)
 	TCAN4x5x_MCAN_CCCR_Config cccrConfig = {0};					// Remember to initialize to 0, or you'll get random garbage!
 	cccrConfig.FDOE = 1;										// CAN FD mode enable
 	cccrConfig.BRSE = 1;										// CAN FD Bit rate switch enable
+	cccrConfig.DAR = 1;                                         //Automatic Retransmission Disabled
 
 	/* Configure the default CAN packet filtering settings */
 	TCAN4x5x_MCAN_Global_Filter_Configuration gfc = {0};

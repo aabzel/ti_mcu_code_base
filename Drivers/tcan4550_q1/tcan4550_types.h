@@ -10,22 +10,22 @@ typedef struct xtCanRegProtStat_t {
     union {
         uint32_t word;
         struct {
-            uint8_t lec    :3;/*0-2   Last Error Code*/
-            uint8_t act    :2;/*3-4   Activity*/
-            uint8_t ep     :1;/*5     Error Passive*/
-            uint8_t ew     :1;/*6     Warning Status*/
-            uint8_t bo     :1;/*7     Bus_Off Status*/
-            uint8_t dlec   :3;/*8-10  Data Phase Last Error Code*/
-            uint8_t resi   :1;/*11    ESI flag of last received CAN FD Message*/
-            uint8_t rbrs   :1;/*12    BRS flag of last received CAN FD Message*/
-            uint8_t rfdf   :1;/*13    Received a CAN FD Message*/
-            uint8_t pxe    :1;/*14    Protocol Exception Event*/
-            uint8_t rsvd1  :1;/*15    Reserved*/
-            uint8_t tdcv   :7;/*16-22 Transmitter Delay Compensation Value*/
-            uint16_t rsvd2 :9;/*23-31 Reserved*/
+            uint8_t lec : 3;    /*0-2   Last Error Code*/
+            uint8_t act : 2;    /*3-4   Activity*/
+            uint8_t ep : 1;     /*5     Error Passive*/
+            uint8_t ew : 1;     /*6     Warning Status*/
+            uint8_t bo : 1;     /*7     Bus_Off Status*/
+            uint8_t dlec : 3;   /*8-10  Data Phase Last Error Code*/
+            uint8_t resi : 1;   /*11    ESI flag of last received CAN FD Message*/
+            uint8_t rbrs : 1;   /*12    BRS flag of last received CAN FD Message*/
+            uint8_t rfdf : 1;   /*13    Received a CAN FD Message*/
+            uint8_t pxe : 1;    /*14    Protocol Exception Event*/
+            uint8_t rsvd1 : 1;  /*15    Reserved*/
+            uint8_t tdcv : 7;   /*16-22 Transmitter Delay Compensation Value*/
+            uint16_t rsvd2 : 9; /*23-31 Reserved*/
         };
     };
-} __attribute__((packed)) tCanRegProtStat_t ;
+} __attribute__((packed)) tCanRegProtStat_t;
 
 // 0x1050 Interrupt Register
 typedef struct xCanRegInt_t {

@@ -7,8 +7,7 @@
 #include "io_utils.h"
 #include "tcan4550_drv.h"
 
-
-const char* lec2str (uint8_t lec){
+const char* lec2str(uint8_t lec) {
     char* name = "undf";
     switch(lec) {
     case LEC_NO_ERROR:
@@ -35,7 +34,7 @@ const char* lec2str (uint8_t lec){
     case LEC_NO_CHANGE:
         name = "NoChange";
         break;
-    default :
+    default:
         name = "undef";
         break;
     }
@@ -259,5 +258,23 @@ bool tcan4550_parse_reg_bit_timing(uint32_t reg_val) {
     can_bit_period = tq * ((float)(reg.ntseg1 + reg.ntseg2));
     can_bit_rate = 1.0f / can_bit_period;
     io_printf("Can Bit Rate: %f Bit/s" CRLF, can_bit_rate);
+    return res;
+}
+
+bool tcan4550_parse_reg_proto_state(uint32_t reg_val) {
+    bool res = false;
+    tCanRegProtStat_t ProtoState = {0};
+    memcpy(&ProtoState.word, &reg_val, 4);
+    io_printf("bit %u-%u: Transmitter Delay Compensation Value [%u]" CRLF, 16, 22, ProtoState.tdcv);
+    io_printf("bit %u: Protocol Exception Event [%u]" CRLF, 14, ProtoState.pxe);
+    io_printf("bit %u:Received a CAN FD Message [%u]" CRLF, 13, ProtoState.rfdf);
+    io_printf("bit %u:BRS flag of last received CAN FD Message [%u]" CRLF, 12, ProtoState.rbrs);
+    io_printf("bit %u:ESI flag of last received CAN FD Message [%u]" CRLF, 11, ProtoState.resi);
+    io_printf("bit %u-%u: Data Phase Last Error Code [%u]" CRLF, 8, 10, ProtoState.dlec);
+    io_printf("bit %u:Bus_Off Status [%u]" CRLF, 7, ProtoState.bo);
+    io_printf("bit %u:Warning Status [%u]" CRLF, 6, ProtoState.ew);
+    io_printf("bit %u:Error Passive [%u]" CRLF, 5, ProtoState.ep);
+    io_printf("bit %u-%u: Activity [%u]" CRLF, 3, 4, ProtoState.act);
+    io_printf("bit %u-%u: Last Error Code [%u] %s" CRLF, 0, 2, ProtoState.lec, lec2str(ProtoState.lec));
     return res;
 }

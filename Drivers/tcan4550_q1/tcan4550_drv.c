@@ -18,13 +18,21 @@
 const uint64_t exp_dev_id = 0x343535305443414E;
 
 const Tcan4550Reg_t tCan4550RegLUT[] = {
-    {ADDR_IR, "IntReg"},          {ADDR_MCAN_PSR, "ProtStat"},  {ADDR_IE, "IntEn"},
-    {ADDR_IF, "IntFlgs"},         {ADDR_MCAN_NBTP, "BitTiming"},
-    {ADDR_DEV_CONFIG, "DevCfg"},  {ADDR_DEVICE_ID0, "DevId0"},
-    {ADDR_DEVICE_ID1, "DevId1"},  {ADDR_SPI_2_REV, "SPIrev"},
-    {ADDR_STATUS, "Status"},      {ADDR_CREL, "CREL"},
-    {ADDR_MCAN_CCCR, "CcCtrl"},   {ADDR_MCAN_TXBAR, "TxBufRqst"},
-    {ADDR_MCAN_TXBC, "TxBufCfg"}, {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
+    {ADDR_IR, "IntReg"},
+    {ADDR_MCAN_PSR, "ProtStat"},
+    {ADDR_IE, "IntEn"},
+    {ADDR_IF, "IntFlgs"},
+    {ADDR_MCAN_NBTP, "BitTiming"},
+    {ADDR_DEV_CONFIG, "DevCfg"},
+    {ADDR_DEVICE_ID0, "DevId0"},
+    {ADDR_DEVICE_ID1, "DevId1"},
+    {ADDR_SPI_2_REV, "SPIrev"},
+    {ADDR_STATUS, "Status"},
+    {ADDR_CREL, "CREL"},
+    {ADDR_MCAN_CCCR, "CcCtrl"},
+    {ADDR_MCAN_TXBAR, "TxBufRqst"},
+    {ADDR_MCAN_TXBC, "TxBufCfg"},
+    {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
 };
 
 Can4550_t CanPhy;
@@ -139,7 +147,7 @@ bool tcan4550_reset(void) {
 
 bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words) {
     bool res = true;
-    uint8_t tx_array[4]={0};
+    uint8_t tx_array[4] = {0};
     res = init_spi_header((HeaderCom_t*)tx_array, opcode, address, words);
     res = spi_write(SPI0_INX, tx_array, sizeof(tx_array)) && res;
     return res;
@@ -949,7 +957,7 @@ float tcan4550_get_bit_rate(void) {
 }
 bool tcan4550_poll_interrupts(void) {
     bool res = false;
-    uint32_t clear_bits=0;
+    uint32_t clear_bits = 0;
     tCanRegIntFl_t reg = {0};
     res = tcan4550_read_reg(ADDR_IF, &reg.word);
     if(res) {
@@ -959,7 +967,7 @@ bool tcan4550_poll_interrupts(void) {
             LOG_WARNING(CAN, "Global Voltage, Temp or WDTO");
         }
         if(reg.m_can_int) {
-            reg.m_can_int=0;
+            reg.m_can_int = 0;
             LOG_WARNING(CAN, "M_CAN global INT");
         }
         if(reg.spierr) {
@@ -974,11 +982,11 @@ bool tcan4550_poll_interrupts(void) {
             res = tcan4550_clear_spi_err();
         }
         if(reg.canerr) {
-            reg.canerr=0;
+            reg.canerr = 0;
             LOG_WARNING(CAN, "CAN Error");
         }
         if(reg.wkrq) {
-            reg.wkrq = 0 ;
+            reg.wkrq = 0;
             LOG_WARNING(CAN, "Wake Request");
         }
         if(reg.globalerr) {
@@ -1017,27 +1025,27 @@ bool tcan4550_poll_interrupts(void) {
             LOG_WARNING(CAN, "Thermal Shutdown ");
         }
         if(reg.pwron) {
-            reg.pwron=0;
+            reg.pwron = 0;
             LOG_WARNING(CAN, "Power ON");
         }
         if(reg.uvio) {
-            reg.uvio=0;
+            reg.uvio = 0;
             LOG_WARNING(CAN, "Under Voltage VIO");
         }
         if(reg.uvsup) {
-            reg.uvsup=0;
+            reg.uvsup = 0;
             LOG_WARNING(CAN, "Under Voltage VSUP and UVCCOUT");
         }
         if(reg.sms) {
-            reg.sms=0;
+            reg.sms = 0;
             LOG_WARNING(CAN, "Sleep Mode Status");
         }
         if(reg.canbusnom) {
-            reg.canbusnom=0;
+            reg.canbusnom = 0;
             LOG_WARNING(CAN, "CAN Bus normal");
         }
 
-        if(reg.word){
+        if(reg.word) {
             LOG_WARNING(CAN, "IntReg 0x%08x", reg.word);
         }
 
@@ -1050,49 +1058,58 @@ bool tcan4550_poll_interrupts(void) {
     if(res) {
         clear_bits = IntReg.word;
 
-        if(IntReg.ped){
+        if(IntReg.ped) {
             IntReg.ped = 0;
             LOG_ERROR(CAN, "Protocol Error in Data Phase");
+            tCanRegProtStat_t ProtoState = {0};
+            res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
+            if(res) {
+                tcan4550_parse_reg_proto_state(ProtoState.word);
+            }
         }
 
-        if(IntReg.bo){
+        if(IntReg.bo) {
             IntReg.bo = 0;
             LOG_WARNING(CAN, "Bus_Off Status");
         }
 
-        if(IntReg.ew){
+        if(IntReg.ew) {
             IntReg.ew = 0;
             LOG_WARNING(CAN, "Warning Status");
         }
 
-        if(IntReg.ep){
+        if(IntReg.ep) {
             IntReg.ep = 0;
             LOG_ERROR(CAN, "Error Passive");
         }
-        if(IntReg.tsw){
+        if(IntReg.tsw) {
             IntReg.tsw = 0;
-            LOG_WARNING(CAN, "Timestamp Wraparound");
+            LOG_DEBUG(CAN, "Timestamp Wraparound");
         }
-        if(IntReg.rf0n){
-            IntReg.rf0n=0;
+        if(IntReg.rf0n) {
+            IntReg.rf0n = 0;
             LOG_INFO(CAN, "Rx FIFO 0 New Message");
         }
-        if(IntReg.hpm){
-            IntReg.hpm=0;
+        if(IntReg.hpm) {
+            IntReg.hpm = 0;
             LOG_INFO(CAN, "High Priority Message");
         }
         if(IntReg.pea) {
-              IntReg.pea=0;
-              LOG_ERROR(CAN, "Protocol Error in Arbitration Phase");
+            IntReg.pea = 0;
+            LOG_ERROR(CAN, "Protocol Error in Arbitration Phase");
+            tCanRegProtStat_t ProtoState = {0};
+            res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
+            if(res) {
+                tcan4550_parse_reg_proto_state(ProtoState.word);
+            }
         }
-        if(IntReg.word){
+        if(IntReg.word) {
             LOG_WARNING(CAN, "IntReg 0x%08x", IntReg.word);
         }
 
         if(clear_bits) {
             res = tcan4550_write_reg(ADDR_MCAN_IR, clear_bits);
         }
-
     }
 
     return res;
@@ -1105,11 +1122,11 @@ bool tcan4550_proc(void) {
     if(false == CanPhy.cur.connected) {
         LOG_ERROR(CAN, "TCAN4550 SPI link lost");
     } else {
-        tCanRegCCctrl_t ctrl_reg={0};
-        tCanRegProtStat_t proto_stat={0};
-        res =  tcan4550_read_reg( ADDR_MCAN_PSR, &proto_stat.word);
-        if(res){
-            CanPhy.cur.lec = (LastErrorCode_t) proto_stat.lec;
+        tCanRegCCctrl_t ctrl_reg = {0};
+        tCanRegProtStat_t proto_stat = {0};
+        res = tcan4550_read_reg(ADDR_MCAN_PSR, &proto_stat.word);
+        if(res) {
+            CanPhy.cur.lec = (LastErrorCode_t)proto_stat.lec;
         }
 
         CanPhy.cur.lock = is_tcan4550_protected_reg_locked(&ctrl_reg);

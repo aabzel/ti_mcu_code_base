@@ -196,13 +196,13 @@ bool sx1262_is_connected(void) {
 }
 
 static bool check_sync_word(uint64_t sync_word) {
-    bool res=false;
+    bool res = false;
     uint64_t read_sync_word = 0;
     res = sx1262_set_sync_word(sync_word);
-    if (res) {
+    if(res) {
         res = sx1262_get_sync_word(&read_sync_word);
-        if (res) {
-            if(sync_word == read_sync_word){
+        if(res) {
+            if(sync_word == read_sync_word) {
                 res = true;
             }
         }
@@ -213,7 +213,7 @@ static bool check_sync_word(uint64_t sync_word) {
 bool sx1262_is_exist(void) {
     bool res = false;
     res = check_sync_word(0x0012345678abcdef);
-    if( true == res) {
+    if(true == res) {
         res = true;
     } else {
         res = false;
