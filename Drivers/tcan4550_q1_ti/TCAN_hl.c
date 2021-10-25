@@ -103,6 +103,7 @@ void
 Init_CAN(void)
 {
     set_log_level(CAN, LOG_LEVEL_NOTICE  ) ;
+    CanPhy.cur.int_cnt = 0;
     tcan4550_reset();
 
     TCAN4x5x_Device_ClearSPIERR();                              // Clear any SPI ERR flags that might be set as a result of our pin mux changing during MCU startup

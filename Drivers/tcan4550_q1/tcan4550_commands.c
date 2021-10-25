@@ -1,6 +1,5 @@
 
 #include "tcan4550_commands.h"
-
 #include <stdio.h>
 
 #include "convert.h"
@@ -10,6 +9,7 @@
 #include "str_utils.h"
 #include "tcan4550_diag.h"
 #include "tcan4550_drv.h"
+#include "TCAN4550.h"
 #include "table_utils.h"
 #include "data_utils.h"
 
@@ -17,11 +17,52 @@
 bool tcan4550_diag_hl_command(int32_t argc, char* argv[]){
     bool res = true;
     io_printf("connected %u"CRLF,  CanPhy.cur.connected);
-    io_printf("cur_mode %s"CRLF,  can_mode2str(CanPhy.cur.mode));
+    io_printf("WDT %sable"CRLF,  (true==CanPhy.cur.wdt)?"En":"Dis");
+    io_printf("int cnt %u"CRLF,  CanPhy.cur.int_cnt);
+    io_printf("cur mode %s"CRLF,  can_mode2str(CanPhy.cur.mode));
     io_printf("bit rate %f"CRLF,  CanPhy.cur.bit_rate);
     io_printf("lock %s"CRLF,  (true==CanPhy.cur.lock)?"locked":"unlocked");
-    io_printf("WDT %sable"CRLF,  (true==CanPhy.cur.wdt)?"En":"Dis");
     io_printf("LEC %s"CRLF,  lec2str(CanPhy.cur.lec));
+    return res;
+}
+
+bool tcan4550_fifo_diag_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if (0==argc) {
+        res = true;
+        tCanRegFiFo0Stat_t fifo0={0};
+        tCanRegFiFo1Stat_t fifo1={0};
+        res = tcan4550_read_reg(ADDR_MCAN_RXF0S, &fifo0.word)&&res;
+        res = tcan4550_read_reg(ADDR_MCAN_RXF1S, &fifo1.word)&&res;
+            static const table_col_t cols[] = {{5, "No"},
+                                               {5, "Fill"},
+                                               {5, "get"},
+                                               {5, "put"},
+                                               {5, "Full"},
+                                               {5, "lost"}
+                                               };
+            table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        if(res){
+            io_printf(TSEP);
+            io_printf("  0  " TSEP);
+            io_printf(" %2u  " TSEP, fifo0.f0fl);
+            io_printf(" %2u  " TSEP, fifo0.f0gi);
+            io_printf(" %2u  " TSEP, fifo0.f0pi);
+            io_printf(" %2u  " TSEP, fifo0.f0f);
+            io_printf(" %2u  " TSEP, fifo0.rf0l);
+            io_printf(CRLF);
+            io_printf(TSEP);
+            io_printf("  1  " TSEP);
+            io_printf(" %2u  " TSEP, fifo1.f1fl);
+            io_printf(" %2u  " TSEP, fifo1.f1gi);
+            io_printf(" %2u  " TSEP, fifo1.f1pi);
+            io_printf(" %2u  " TSEP, fifo1.f1f);
+            io_printf(" %2u  " TSEP, fifo1.rf1l);
+            io_printf(CRLF);
+        }
+            table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    }
+
     return res;
 }
 
@@ -311,6 +352,38 @@ bool tcan4550_send_frame_command(int32_t argc, char* argv[]){
             LOG_INFO(CAN, "send id: 0x%06x data: 0x%llx ok", id, data64);
         } else {
             LOG_ERROR(CAN, "Unable to send frame");
+        }
+    }
+    return res;
+}
+
+
+bool tcan4550_get_fifos_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint8_t fifo_num =0;
+    if(0==argc){
+        res = true;
+    }
+    if(1<=argc) {
+        res = try_str2uint8(argv[0], &fifo_num);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract fifo_num %s", argv[0]);
+        }
+    }
+    if(2<argc){
+        LOG_ERROR(CAN, "Usage: cfg num");
+    }
+
+    if(res){
+        TCAN4x5x_MCAN_RX_Header MsgHeader = {0};        // Initialize to 0 or you'll get garbage
+        uint8_t num_bytes = 0;                           // Used since the ReadNextFIFO function will return how many bytes of data were read
+        uint8_t dataPayload[64] = {0};                  // Used to store the received data
+
+        num_bytes = TCAN4x5x_MCAN_ReadNextFIFO( (TCAN4x5x_MCAN_FIFO_Enum)fifo_num, &MsgHeader, dataPayload);   // This will read the next element in the RX FIFO 0
+        if(num_bytes ){
+            LOG_INFO(CAN, "Rx ID %u 0x%x",MsgHeader.ID, MsgHeader.ID);
+            print_mem(dataPayload,num_bytes,true,true);
+            res = true;
         }
     }
     return res;

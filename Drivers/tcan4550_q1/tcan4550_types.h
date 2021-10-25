@@ -5,6 +5,43 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// 0x10A4 Rx FIFO 0 Status
+typedef struct xtCanRegFiFo0Stat_t {
+    union {
+        uint32_t word;
+        struct {
+            uint8_t f0fl : 7;  /*0-6 Rx FIFO 0 Fill Level*/
+            uint8_t rsvd1 : 1; /*7 Reserved*/
+            uint8_t f0gi : 6;  /*8-13 Rx FIFO 0 Get Index*/
+            uint8_t rsvd2 : 1; /*14-15 Reserved*/
+            uint8_t f0pi : 6;  /*16-21 Rx FIFO 0 Put Index*/
+            uint8_t rsvd3 : 2; /*22-23 Reserved*/
+            uint8_t f0f : 1;   /*24 Rx FIFO 0 Full*/
+            uint8_t rf0l : 1;  /*25 Rx FIFO 0 Message Lost*/
+            uint8_t rsvd4 : 6; /*26-31 Reserved*/
+        };
+    };
+} __attribute__((packed)) tCanRegFiFo0Stat_t;
+
+// 0x10B4 Rx FIFO 1 Status
+typedef struct xtCanRegFiFo1Stat_t {
+    union {
+        uint32_t word;
+        struct {
+            uint8_t f1fl : 7;  /*0-6    Rx FIFO 1 Fill Level*/
+            uint8_t rsvd1 : 1; /*7      Reserved*/
+            uint8_t f1gi : 6;  /*8-13   Rx FIFO 1 Get Index */
+            uint8_t rsvd2 : 2; /*14-15  Reserved*/
+            uint8_t f1pi : 6;  /*16-21  Rx FIFO 1 Put Index*/
+            uint8_t rsvd3 : 1; /*22     Reserved*/
+            uint8_t f1f : 1;   /*24     Rx FIFO 1 Full*/
+            uint8_t rf1l : 1;  /*25     Rx FIFO 1 Message Lost*/
+            uint8_t rsvd4 : 4; /*26-29  Reserved*/
+            uint8_t dms : 2;   /*30-31  Rx FIFO 1 Message Lost*/
+        };
+    };
+} __attribute__((packed)) tCanRegFiFo1Stat_t;
+
 // 0x1044 Protocol Status Register
 typedef struct xtCanRegProtStat_t {
     union {
@@ -436,8 +473,6 @@ typedef struct xTCanTxHeader_t {
     uint8_t mm : 8;       // Message Marker, used if @c EFC is set to 1
 } tCanTxHeader_t;
 
-
-
 // 0x10AC Rx Buffer Configuration
 typedef struct xRxBufCgf_t {
     union {
@@ -477,8 +512,6 @@ typedef struct xTxEventFifoCgf_t {
         };
     };
 } __attribute__((packed)) tCanRegTxEventFifoCgf_t;
-
-
 
 /**
  * @brief Standard ID filter struct
@@ -554,16 +587,15 @@ typedef struct {
 
 } __attribute__((packed)) TCAN4550_MRAM_Config;
 
-
 // Tx Event FIFO and Tx Buffers
 typedef struct xW0_t {
     union {
         uint32_t word;
         struct {
-            uint32_t id : 29; //bit 0-28 Identifier
-            uint8_t rtr : 1;  //bit 29 Remote Transmission Request
-            uint8_t xtd : 1;  //bit 30 Extended Identifier
-            uint8_t esi : 1;  //bit 31 Error State Indicator
+            uint32_t id : 29; // bit 0-28 Identifier
+            uint8_t rtr : 1;  // bit 29 Remote Transmission Request
+            uint8_t xtd : 1;  // bit 30 Extended Identifier
+            uint8_t esi : 1;  // bit 31 Error State Indicator
         };
     };
 } __attribute__((packed)) W0_t;
@@ -572,13 +604,13 @@ typedef struct xTxBuffW1_t {
     union {
         uint32_t word;
         struct {
-            uint16_t res1;    //bits 0-15 reserved
-            uint8_t dlc : 4;  //bits 16-19 Data Length Code
-            uint8_t brs : 1;  //bit 20 Bit Rate Switch
-            uint8_t fdf : 1;  //bit 21 FD Format
-            uint8_t res2 : 1; //bit 22 reserved
-            uint8_t efc : 1;  //bit 23 event fifo control
-            uint8_t mm;       //bits 24-31  message marker
+            uint16_t res1;    // bits 0-15 reserved
+            uint8_t dlc : 4;  // bits 16-19 Data Length Code
+            uint8_t brs : 1;  // bit 20 Bit Rate Switch
+            uint8_t fdf : 1;  // bit 21 FD Format
+            uint8_t res2 : 1; // bit 22 reserved
+            uint8_t efc : 1;  // bit 23 event fifo control
+            uint8_t mm;       // bits 24-31  message marker
         };
     };
 } __attribute__((packed)) TxBuffW1_t;

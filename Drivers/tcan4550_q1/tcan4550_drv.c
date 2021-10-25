@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "TCAN4550.h"
 #include "bit_utils.h"
 #include "byte_utils.h"
 #include "clocks.h"
@@ -18,21 +19,12 @@
 const uint64_t exp_dev_id = 0x343535305443414E;
 
 const Tcan4550Reg_t tCan4550RegLUT[] = {
-    {ADDR_IR, "IntReg"},
-    {ADDR_MCAN_PSR, "ProtStat"},
-    {ADDR_IE, "IntEn"},
-    {ADDR_IF, "IntFlgs"},
-    {ADDR_MCAN_NBTP, "BitTiming"},
-    {ADDR_DEV_CONFIG, "DevCfg"},
-    {ADDR_DEVICE_ID0, "DevId0"},
-    {ADDR_DEVICE_ID1, "DevId1"},
-    {ADDR_SPI_2_REV, "SPIrev"},
-    {ADDR_STATUS, "Status"},
-    {ADDR_CREL, "CREL"},
-    {ADDR_MCAN_CCCR, "CcCtrl"},
-    {ADDR_MCAN_TXBAR, "TxBufRqst"},
-    {ADDR_MCAN_TXBC, "TxBufCfg"},
-    {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
+    {ADDR_IR, "IntReg"},           {ADDR_MCAN_PSR, "ProtStat"},       {ADDR_IE, "IntEn"},
+    {ADDR_IF, "IntFlgs"},          {ADDR_MCAN_RXF0S, "FiFo0Stat"},    {ADDR_MCAN_RXF1S, "FiFo1Stat"},
+    {ADDR_MCAN_NBTP, "BitTiming"}, {ADDR_DEV_CONFIG, "DevCfg"},       {ADDR_DEVICE_ID0, "DevId0"},
+    {ADDR_DEVICE_ID1, "DevId1"},   {ADDR_SPI_2_REV, "SPIrev"},        {ADDR_STATUS, "Status"},
+    {ADDR_CREL, "CREL"},           {ADDR_MCAN_CCCR, "CcCtrl"},        {ADDR_MCAN_TXBAR, "TxBufRqst"},
+    {ADDR_MCAN_TXBC, "TxBufCfg"},  {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
 };
 
 Can4550_t CanPhy;
@@ -47,6 +39,11 @@ const char* tcan4550_get_reg_name(uint16_t addr) {
         }
     }
     return reg_name;
+}
+
+bool tcan4550_int_isr(void) {
+    CanPhy.cur.int_cnt++;
+    return true;
 }
 
 uint16_t tcan4550_get_reg_cnt(void) {
@@ -575,22 +572,22 @@ bool tcan4550_tx_buff_content(uint8_t buf_index) {
 bool tcan4550_send(uint16_t id, uint64_t data) {
     bool res = false;
 
-        res = false;
-        tCanTxHeader_t header={0};
-        //memset(&header, 0x00, sizeof(header));
-        header.dlc = MCAN_DLC_8B;
-        header.id = id; // CAN ID to send
-        header.fdf = 0; // CAN FD Format flag
-        header.brs = 0; // Bit rate switch used flag
-        header.efc = 0; // Event FIFO Control flag, to store tx events or not
-        header.mm = 0;  // Message Marker, used if @c EFC is set to 1
-        header.rtr = 0; // Remote Transmission Request flag
-        header.xtd = 0; // Extended Identifier flag
+    res = false;
+    tCanTxHeader_t header = {0};
+    // memset(&header, 0x00, sizeof(header));
+    header.dlc = MCAN_DLC_8B;
+    header.id = id; // CAN ID to send
+    header.fdf = 0; // CAN FD Format flag
+    header.brs = 0; // Bit rate switch used flag
+    header.efc = 0; // Event FIFO Control flag, to store tx events or not
+    header.mm = 0;  // Message Marker, used if @c EFC is set to 1
+    header.rtr = 0; // Remote Transmission Request flag
+    header.xtd = 0; // Extended Identifier flag
 
-        res = tcan4550_write_tx_buff(0, &header, (uint8_t*)&data);
-        if(res) {
-            res = tcan4550_tx_buff_content(0);
-        }
+    res = tcan4550_write_tx_buff(0, &header, (uint8_t*)&data);
+    if(res) {
+        res = tcan4550_tx_buff_content(0);
+    }
 
     return res;
 }
@@ -819,6 +816,7 @@ bool tcan4550_init(void) {
     bool res = true;
     LOG_INFO(CAN, "init");
 
+    CanPhy.cur.int_cnt = 0;
     GPIO_writeDio(DIO_CAN_SS, 1);
     GPIO_writeDio(DIO_CAN_RST, 1);
 
@@ -956,7 +954,91 @@ float tcan4550_get_bit_rate(void) {
     }
     return bit_rate;
 }
-bool tcan4550_poll_interrupts(void) {
+
+static bool tcan4550_poll_can_interrupts(void) {
+    bool res = false;
+    uint32_t clear_bits = 0;
+    tCanRegInt_t IntReg = {0};
+    res = tcan4550_read_reg(ADDR_MCAN_IR, &IntReg.word);
+    if(res) {
+        clear_bits = IntReg.word;
+
+        if(IntReg.rf0n) {
+            IntReg.rf0n = 0;
+            LOG_INFO(CAN, "Rx FIFO 0 New Message");
+            TCAN4x5x_MCAN_RX_Header MsgHeader = {0}; // Initialize to 0 or you'll get garbage
+            uint8_t num_bytes = 0; // Used since the ReadNextFIFO function will return how many bytes of data were read
+            uint8_t dataPayload[64] = {0}; // Used to store the received data
+
+            num_bytes = TCAN4x5x_MCAN_ReadNextFIFO(RXFIFO0, &MsgHeader,
+                                                   dataPayload); // This will read the next element in the RX FIFO 0
+            if(num_bytes) {
+                LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
+                print_mem(dataPayload, num_bytes, true, true);
+                res = true;
+            }
+        }
+        if(IntReg.rf0f) {
+            IntReg.rf0f = 0;
+            LOG_WARNING(CAN, "Rx FIFO 0 Full");
+        }
+
+        if(IntReg.ped) {
+            IntReg.ped = 0;
+            LOG_ERROR(CAN, "Protocol Error in Data Phase");
+            tCanRegProtStat_t ProtoState = {0};
+            res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
+            if(res) {
+                tcan4550_parse_reg_proto_state(ProtoState.word);
+            }
+        }
+
+        if(IntReg.bo) {
+            IntReg.bo = 0;
+            LOG_WARNING(CAN, "Bus_Off Status");
+        }
+
+        if(IntReg.ew) {
+            IntReg.ew = 0;
+            LOG_WARNING(CAN, "Warning Status");
+        }
+
+        if(IntReg.ep) {
+            IntReg.ep = 0;
+            LOG_ERROR(CAN, "Error Passive");
+        }
+        if(IntReg.tsw) {
+            IntReg.tsw = 0;
+#ifdef HAS_TCAN_DEBUG
+            LOG_DEBUG(CAN, "Timestamp Wraparound");
+#endif
+        }
+        if(IntReg.hpm) {
+            IntReg.hpm = 0;
+            LOG_INFO(CAN, "High Priority Message");
+        }
+        if(IntReg.pea) {
+            IntReg.pea = 0;
+            LOG_ERROR(CAN, "Protocol Error in Arbitration Phase");
+            tCanRegProtStat_t ProtoState = {0};
+            res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
+            if(res) {
+                tcan4550_parse_reg_proto_state(ProtoState.word);
+            }
+        }
+        if(IntReg.word) {
+            LOG_ERROR(CAN, "UnProcessed Interrupt 0x%08x", IntReg.word);
+        }
+
+        if(clear_bits) {
+            res = tcan4550_write_reg(ADDR_MCAN_IR, clear_bits);
+        }
+    }
+
+    return res;
+}
+
+static bool tcan4550_poll_dev_interrupts(void) {
     bool res = false;
     uint32_t clear_bits = 0;
     tCanRegIntFl_t reg = {0};
@@ -1054,72 +1136,14 @@ bool tcan4550_poll_interrupts(void) {
             res = tcan4550_write_reg(ADDR_IF, clear_bits);
         }
     }
-    tCanRegInt_t IntReg = {0};
-    res = tcan4550_read_reg(ADDR_MCAN_IR, &IntReg.word);
-    if(res) {
-        clear_bits = IntReg.word;
 
-        if(IntReg.rf0f) {
-            IntReg.rf0f = 0;
-            LOG_WARNING(CAN, "Rx FIFO 0 Full");
-        }
+    return res;
+}
 
-        if(IntReg.ped) {
-            IntReg.ped = 0;
-            LOG_ERROR(CAN, "Protocol Error in Data Phase");
-            tCanRegProtStat_t ProtoState = {0};
-            res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
-            if(res) {
-                tcan4550_parse_reg_proto_state(ProtoState.word);
-            }
-        }
-
-        if(IntReg.bo) {
-            IntReg.bo = 0;
-            LOG_WARNING(CAN, "Bus_Off Status");
-        }
-
-        if(IntReg.ew) {
-            IntReg.ew = 0;
-            LOG_WARNING(CAN, "Warning Status");
-        }
-
-        if(IntReg.ep) {
-            IntReg.ep = 0;
-            LOG_ERROR(CAN, "Error Passive");
-        }
-        if(IntReg.tsw) {
-            IntReg.tsw = 0;
-#ifdef HAS_TCAN_DEBUG
-            LOG_DEBUG(CAN, "Timestamp Wraparound");
-#endif
-        }
-        if(IntReg.rf0n) {
-            IntReg.rf0n = 0;
-            LOG_INFO(CAN, "Rx FIFO 0 New Message");
-        }
-        if(IntReg.hpm) {
-            IntReg.hpm = 0;
-            LOG_INFO(CAN, "High Priority Message");
-        }
-        if(IntReg.pea) {
-            IntReg.pea = 0;
-            LOG_ERROR(CAN, "Protocol Error in Arbitration Phase");
-            tCanRegProtStat_t ProtoState = {0};
-            res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
-            if(res) {
-                tcan4550_parse_reg_proto_state(ProtoState.word);
-            }
-        }
-        if(IntReg.word) {
-            LOG_ERROR(CAN, "UnProcessed Interrupt 0x%08x", IntReg.word);
-        }
-
-        if(clear_bits) {
-            res = tcan4550_write_reg(ADDR_MCAN_IR, clear_bits);
-        }
-    }
-
+bool tcan4550_poll_interrupts(void) {
+    bool res = true;
+    res = tcan4550_poll_dev_interrupts() && res;
+    res = tcan4550_poll_can_interrupts() && res;
     return res;
 }
 
@@ -1155,9 +1179,47 @@ bool tcan4550_proc(void) {
         }
 
         res = tcan4550_poll_interrupts();
-
+        uint8_t fifo_num = 0;
+        uint8_t elements = 0;
+        uint8_t frame = 0;
+        uint8_t dataPayload[64] = {0};
+        for(fifo_num = 0; fifo_num < RX_FIFO_CNT; fifo_num++) {
+            elements = tcan4550_get_fifo_cnt(fifo_num);
+            frame = 0;
+            for(frame = 0; frame < elements; frame++) {
+                TCAN4x5x_MCAN_RX_Header MsgHeader = {0};
+                uint8_t num_bytes = 0;
+                num_bytes = TCAN4x5x_MCAN_ReadNextFIFO(fifo_num, &MsgHeader,
+                                                       dataPayload); // This will read the next element in the RX FIFO 0
+                if(num_bytes) {
+                    LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
+                    print_mem(dataPayload, num_bytes, true, true);
+                    res = true;
+                }
+            }
+        }
         prev_mode = CanPhy.cur.mode;
     }
 
     return res;
+}
+
+uint8_t tcan4550_get_fifo_cnt(uint8_t fifo_num) {
+    uint8_t size = 0;
+    bool res = false;
+    if(0 == fifo_num) {
+        tCanRegFiFo0Stat_t fifo0 = {0};
+        res = tcan4550_read_reg(ADDR_MCAN_RXF0S, &fifo0.word);
+        if(res) {
+            size = fifo0.f0fl;
+        }
+    } else if(0 == fifo_num) {
+        tCanRegFiFo1Stat_t fifo1 = {0};
+        res = tcan4550_read_reg(ADDR_MCAN_RXF1S, &fifo1.word);
+        if(res) {
+            size = fifo1.f1fl;
+        }
+    } else {
+    }
+    return size;
 }

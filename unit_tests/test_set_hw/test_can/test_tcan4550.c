@@ -52,11 +52,12 @@ bool test_can_read_word(void) {
 }
 
 bool test_can_types(void) {
-
     EXPECT_EQ(4, sizeof(tCanRegRev_t));
     EXPECT_EQ(4, sizeof(tCanRegStatus_t));
     EXPECT_EQ(4, sizeof(tCanRegModeOpPinCfg_t));
     EXPECT_EQ(4, sizeof(tCanRegTxBufCfg_t));
+    EXPECT_EQ(4, sizeof(tCanRegFiFo0Stat_t));
+    EXPECT_EQ(4, sizeof(tCanRegFiFo1Stat_t));
     EXPECT_EQ(4, sizeof(tCanRegTxBufElmSzCfg_t));
     EXPECT_EQ(4, sizeof(tCanRegCCctrl_t));
     EXPECT_EQ(4, sizeof(tCanRegIntEn_t));

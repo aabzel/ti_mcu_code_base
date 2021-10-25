@@ -17,8 +17,8 @@
 
 const GPIOCC26XX_Config GPIOCC26XX_config = {.pinConfigs = (GPIO_PinConfig*)gpioPinConfigs,
                                              .callbacks = (GPIO_CallbackFxn*)gpioCallbackFunctions,
-                                             .numberOfPinConfigs = 4,
-                                             .numberOfCallbacks = 4,
+                                             .numberOfPinConfigs = GPIO_COUNT,
+                                             .numberOfCallbacks = GPIO_COUNT,
                                              .intPriority = (~0)};
 
 const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {.intPriority = (~0), .swiPriority = 0};
@@ -98,9 +98,13 @@ bool gpio_init(void) {
 #ifdef HAS_RS232
         GPIO_setConfig(CONF_GPIO_PS_RS232, gpio_get_cfg_dio(DIO_PS_RS232));
 #endif /*HAS_RS232*/
+
 #ifdef HAS_TCAN4550
         GPIO_setConfig(CONF_GPIO_CAN_CS, gpio_get_cfg_dio(DIO_CAN_SS));
         GPIO_setConfig(CONF_GPIO_CAN_RST, gpio_get_cfg_dio(DIO_CAN_RST));
+        GPIO_setConfig(CONF_GPIO_CAN_INT, gpio_get_cfg_dio(DIO_CAN_INT));
+        GPIO_setCallback(CONF_GPIO_CAN_INT, dio8_fall_call_back);
+        GPIO_enableInt(CONF_GPIO_CAN_INT);
 #endif /* HAS_TCAN4550 */
 
 #ifdef HAS_ZED_F9P

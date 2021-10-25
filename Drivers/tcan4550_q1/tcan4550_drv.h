@@ -26,6 +26,7 @@ typedef struct {
     bool wdt;
     CanDevMode_t mode;
     LastErrorCode_t lec;
+    uint32_t int_cnt;
 } Can4550State_t;
 
 typedef struct {
@@ -71,12 +72,13 @@ bool tcan4550_write_sid_filter(uint8_t filter_index, tCan4550SidFilter_t* filter
 bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words);
 bool tcan4550_write_reg(uint16_t address, uint32_t reg_val);
 bool tcan4550_write_reg_lazy(uint16_t address, uint32_t reg_val);
-
+bool tcan4550_int_isr(void);
 float tcan4550_get_bit_rate(void);
 const char* tcan4550_get_reg_name(uint16_t addr);
 uint16_t tcan4550_get_reg_cnt(void);
 uint32_t tcan4550_read_spi_burst(void);
 CanDevMode_t tcan4550_get_mode(void);
+uint8_t tcan4550_get_fifo_cnt(uint8_t fifo_num);
 
 #ifdef __cplusplus
 }

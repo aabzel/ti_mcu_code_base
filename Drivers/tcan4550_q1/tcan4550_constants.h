@@ -35,6 +35,12 @@ typedef enum eClkRef_t {
     CLK_REF_UNDEF = 1,
 } ClkRef_t;
 
+typedef enum {
+    RX_FIFO0=0,
+    RX_FIFO1=1,
+    RX_FIFO_CNT=2
+}TCAN4550_MCAN_FIFO_Enum_t;
+
 typedef enum eMode_t {
     MODE_SLEEP = 0,
     MODE_STANDBY = 1,

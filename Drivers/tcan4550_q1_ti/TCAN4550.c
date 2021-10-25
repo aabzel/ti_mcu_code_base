@@ -591,7 +591,6 @@ TCAN4x5x_MRAM_Configure(TCAN4x5x_MRAM_Config *MRAMConfig)
 {
     uint16_t startAddress = 0x0000;         // Used to hold the start and end addresses for each section as we write them into the appropriate registers
     uint32_t registerValue = 0;             // Used to create the 32-bit word to write to each register
-    uint32_t readValue = 0;
     uint8_t MRAMValue;
 
 
@@ -611,6 +610,7 @@ TCAN4x5x_MRAM_Configure(TCAN4x5x_MRAM_Config *MRAMConfig)
     TCAN4x5x_MCAN_CACHE[TCAN4x5x_MCAN_CACHE_SIDFC] = registerValue;
 #endif
 #ifdef TCAN4x5x_MCAN_VERIFY_CONFIGURATION_WRITES
+    uint32_t readValue = 0;
     // Verify content of register
     readValue = AHB_READ_32(REG_MCAN_SIDFC);
     if (readValue != registerValue)

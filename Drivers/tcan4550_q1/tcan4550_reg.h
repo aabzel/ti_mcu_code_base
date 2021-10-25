@@ -82,11 +82,11 @@
 #define ADDR_MCAN_NDAT1								0x1098
 #define ADDR_MCAN_NDAT2								0x109C
 #define ADDR_MCAN_RXF0C								0x10A0 // Rx FIFO 0 Configuration
-#define ADDR_MCAN_RXF0S								0x10A4
-#define ADDR_MCAN_RXF0A								0x10A8
+#define ADDR_MCAN_RXF0S								0x10A4 // Rx FIFO 0 Status
+#define ADDR_MCAN_RXF0A								0x10A8 //
 #define ADDR_MCAN_RXBC								0x10AC //
 #define ADDR_MCAN_RXF1C								0x10B0 // Rx FIFO 1 Configuration
-#define ADDR_MCAN_RXF1S								0x10B4
+#define ADDR_MCAN_RXF1S								0x10B4 //
 #define ADDR_MCAN_RXF1A								0x10B8
 #define ADDR_MCAN_RXESC								0x10BC // Rx Buffer/FIFO Element Size Configuration
 #define ADDR_MCAN_TXBC								0x10C0 // Tx Buffer Configuration

@@ -3,11 +3,12 @@
 
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
+#include <stdint.h>
 
 #include "sys_config.h"
 
 #define DIO_CNT 27
-#define GPIO_COUNT 16U
+#define GPIO_COUNT 17U
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {
@@ -24,6 +25,7 @@ typedef struct xPin_t {
 #define CONF_GPIO_BATT_SCL 13
 #define CONF_GPIO_BATT_SDA 14
 #define CONF_GPIO_CAN_RST 15
+#define CONF_GPIO_CAN_INT 16
 #define CONF_GPIO_LED_0 0
 #define CONF_GPIO_LED_1 1
 #define CONF_GPIO_LEN 12
@@ -43,5 +45,7 @@ extern const Pin_t PinTable[DIO_CNT];
 extern GPIO_PinConfig gpioPinConfigs[GPIO_COUNT];
 extern PIN_Config BoardGpioInitTable[GPIO_COUNT + 1];
 extern GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT];
+
+void dio8_fall_call_back(uint_least8_t index);
 
 #endif /* BOARD_LAYOUT_H  */
