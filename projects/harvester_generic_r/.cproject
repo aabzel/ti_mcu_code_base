@@ -72,6 +72,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/tcan4550_q1"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/tcan4550_q1_ti"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards/harvester_v1"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2"/>

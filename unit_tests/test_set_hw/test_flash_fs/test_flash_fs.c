@@ -29,6 +29,7 @@ bool test_flash_fs_set_get_const(void) {
     EXPECT_TRUE(mm_get(data_id, (unsigned char*)&read_value, sizeof(read_value), &read_value_len));
     EXPECT_EQ(2, read_value_len);
     EXPECT_EQ(write_value, read_value);
+    wait_in_loop_ms(100) ;
     return true;
 }
 
@@ -44,6 +45,8 @@ bool test_flash_fs_inval(void) {
     EXPECT_EQ(write_value, read_value);
 
     EXPECT_TRUE(mm_invalidate(data_id));
+    wait_in_loop_ms(200) ;
+
     EXPECT_FALSE(mm_get(data_id, (unsigned char*)&read_value, sizeof(read_value), &read_value_len));
     return true;
 }
@@ -54,7 +57,9 @@ bool test_flash_fs_set_get_set(void) {
     uint16_t write_value = 34;
     uint16_t read_value = 0;
     uint16_t read_value_len = 0;
-    wait_in_loop_ms(10) ;
+
+    wait_in_loop_ms(100) ;
+
     EXPECT_TRUE(mm_set(data_id, (unsigned char*)&write_value, sizeof(write_value)));
 
     EXPECT_TRUE(mm_get(data_id, (unsigned char*)&read_value, sizeof(read_value), &read_value_len));
@@ -69,6 +74,7 @@ bool test_flash_fs_set_get_set(void) {
     EXPECT_TRUE(mm_get(data_id, (unsigned char*)&read_value, sizeof(read_value), &read_value_len));
     EXPECT_EQ(2, read_value_len);
     EXPECT_EQ(write_value, read_value);
+    wait_in_loop_ms(100) ;
     return true;
 }
 
@@ -104,6 +110,6 @@ bool test_flash_fs_toggle(void) {
 
     new_file_cnt = mm_cnt_files(read_mm_page_start, read_mm_page_len, &spare_cnt);
     EXPECT_EQ(new_file_cnt, origin_file_cnt);
-
+    wait_in_loop_ms(100) ;
     return true;
 }

@@ -14,8 +14,8 @@ bool test_flash_fs_toggle(void);
 
 #define TEST_SUIT_FLASH_FS             \
     {"flash_fs_set_get_const", test_flash_fs_set_get_const}, \
-    {"flash_fs_inval", test_flash_fs_inval}, \
     {"flash_fs_set_get_set", test_flash_fs_set_get_set}, \
+    {"flash_fs_inval", test_flash_fs_inval}, \
     {"flash_fs_toggle", test_flash_fs_toggle},
 
 #ifdef __cplusplus

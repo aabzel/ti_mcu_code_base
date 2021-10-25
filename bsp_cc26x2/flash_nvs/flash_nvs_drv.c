@@ -81,7 +81,7 @@ bool flash_nvs_write(uint32_t flas_addr, uint8_t* array, uint32_t array_len) {
         size_t offset = flas_addr - NVS_FLASH_START;
         NVS_unlock(nvsHandle);
         ret = NVS_write(nvsHandle, offset, (void*)array, (size_t)array_len, NVS_WRITE_POST_VERIFY);
-        if(NVS_STATUS_SUCCESS == ret) {
+        if(NVS_STATUS_SUCCESS == ret) {// Error -1
             res = true;
         }
         NVS_lock(nvsHandle, 0);

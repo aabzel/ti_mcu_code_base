@@ -555,6 +555,7 @@ bool mm_invalidate(uint16_t data_id) {
     if(res) {
         /* invalidate field */
         res = mm_flash_zero((uint32_t)item, sizeof(mmItem_t) + item->length);
+        /*TODO measure duration*/
     }
 
     return res;
