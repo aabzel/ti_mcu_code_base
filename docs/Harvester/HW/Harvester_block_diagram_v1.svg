@@ -1477,9 +1477,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.9999999"
-     inkscape:cx="771.75005"
-     inkscape:cy="434.00003"
+     inkscape:zoom="3.9999998"
+     inkscape:cx="821.62505"
+     inkscape:cy="518.50003"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -1528,6 +1528,18 @@
        position="213.74882,130.76794"
        orientation="1,0"
        id="guide3570" />
+    <sodipodi:guide
+       position="131.11539,112.67503"
+       orientation="1,0"
+       id="guide5914" />
+    <sodipodi:guide
+       position="143.63569,109.19374"
+       orientation="1,0"
+       id="guide6072" />
+    <sodipodi:guide
+       position="143.63569,82.487369"
+       orientation="0,-1"
+       id="guide6329" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -1537,7 +1549,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1759,9 +1770,9 @@
        d="M 72.469333,154.88939 H 77.60093"
        id="path1032" />
     <rect
-       style="opacity:0.998;fill:#00ffff;stroke:#000000;stroke-width:0.278633"
+       style="opacity:0.998;fill:#00ffff;stroke:#000000;stroke-width:0.320822"
        id="rect1034"
-       width="9.443903"
+       width="12.520295"
        height="5.4579887"
        x="131.11539"
        y="97.324966" />
@@ -1771,23 +1782,24 @@
        id="path1054" />
     <path
        style="fill:none;stroke:#950012;stroke-width:0.483334;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker4481)"
-       d="m 140.62987,100.04789 h 30.51722 l -0.0504,-31.05948"
+       d="m 143.63569,100.04789 27.5114,0 -0.0504,-31.05948"
        id="path1064"
        sodipodi:nodetypes="ccc" />
     <rect
-       style="opacity:0.998;fill:#00ffff;stroke:#000000;stroke-width:0.283857"
+       style="opacity:0.998;fill:#00ffff;stroke:#000000;stroke-width:0.320831"
        id="rect1034-4"
-       width="9.8007593"
+       width="12.520308"
        height="5.4583263"
-       x="135.96085"
+       x="131.11539"
        y="124.80586" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.179364px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker10763)"
-       d="m 124.44835,127.81088 h 11.24858"
-       id="path1094" />
+       d="m 124.44835,127.81088 6.66704,0"
+       id="path1094"
+       sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.135853px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 145.85767,128.22796 38.251,0.17558 9.85552,-7.52269 32.78843,-0.0577"
+       style="fill:none;stroke:#800000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker3674)"
+       d="m 143.63569,127.51263 40.34118,0 9.98732,-6.63178 32.78843,-0.0577"
        id="path1096"
        sodipodi:nodetypes="cccc" />
     <text
@@ -2388,10 +2400,10 @@
          y="135.34689"
          style="font-size:3.4102px;stroke-width:0.255765">3...18V</tspan></text>
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 221.18976,140 5.56286,-0.35992 v -18.81693 h 19.91306"
+       style="fill:none;stroke:#800000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker3016);marker-start:url(#marker3674)"
+       d="m 221.18976,140 5.56286,-0.35992 v -18.81693"
        id="path8157"
-       sodipodi:nodetypes="cccc" />
+       sodipodi:nodetypes="ccc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.7051px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
@@ -2404,13 +2416,13 @@
          y="124.47691"
          style="font-size:1.7051px;stroke-width:0.255765">BATT+</tspan></text>
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker8167)"
-       d="m 226.67829,120.88085 -32.7141,0 -0.0472,-4.09256"
+       style="fill:none;stroke:#800000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker8167)"
+       d="m 247.1835,120.88085 -53.21931,0 -0.0472,-4.09256"
        id="path8163"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker9423)"
-       d="m 183.97687,128.31337 0.007,11.68663 4.55438,0"
+       style="fill:none;stroke:#800000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker9423)"
+       d="M 183.97687,127.51263 183.98387,140 h 4.55438"
        id="path8517"
        sodipodi:nodetypes="ccc" />
     <text
@@ -4003,17 +4015,17 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.54869px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0387176"
-       x="136.76791"
-       y="127.05648"
+       x="132.37132"
+       y="126.84601"
        id="text1042-7"><tspan
          sodipodi:role="line"
-         x="136.76791"
-         y="127.05648"
+         x="132.37132"
+         y="126.84601"
          style="stroke-width:0.0387176"
          id="tspan1046-3">volt 1/1.47 </tspan><tspan
          sodipodi:role="line"
-         x="136.76791"
-         y="128.99236"
+         x="132.37132"
+         y="128.78186"
          style="stroke-width:0.0387176"
          id="tspan1052-1">divider</tspan></text>
     <text
@@ -4267,8 +4279,9 @@
        y="122.6347" />
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 160.32821,126.7162 v 1.6309"
-       id="path9411" />
+       d="m 160.32821,126.7162 v 0.79643"
+       id="path9411"
+       sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.72815px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
