@@ -46,8 +46,8 @@ bool proc_led(void) {
     //   t val = pwm_sample_calc(cur_time_ms, greenLed.period_ms, greenLed.duty, greenLed.phase_ms);
     res = gpio_set_state(DIO_LED_GREEN, green_val);
 
-    uint8_t red_led_val = 0;
 #ifdef HAS_HEALTH_MONITOR
+    uint8_t red_led_val = 0;
     if(HealthMon.init_error) {
         //freq = 1000.0f / ((float)redLed.period_ms) ;
         red_led_val = pwm_sample_calc_num(cur_time_ms,

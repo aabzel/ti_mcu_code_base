@@ -150,7 +150,7 @@ bool hw_init(void) {
 #endif /*HAS_SPI*/
 
 #ifdef HAS_TCAN4550
-  Init_CAN();
+  res = try_init(init_tcan(),"tcan4550") && res;
   //res = try_init(tcan4550_init(),"tcan4550") && res;
 #endif /*HAS_TCAN4550*/
 

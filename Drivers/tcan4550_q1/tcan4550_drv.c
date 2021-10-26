@@ -1189,7 +1189,7 @@ bool tcan4550_proc(void) {
             for(frame = 0; frame < elements; frame++) {
                 TCAN4x5x_MCAN_RX_Header MsgHeader = {0};
                 uint8_t num_bytes = 0;
-                num_bytes = TCAN4x5x_MCAN_ReadNextFIFO(fifo_num, &MsgHeader,
+                num_bytes = TCAN4x5x_MCAN_ReadNextFIFO((TCAN4x5x_MCAN_FIFO_Enum)fifo_num, &MsgHeader,
                                                        dataPayload); // This will read the next element in the RX FIFO 0
                 if(num_bytes) {
                     LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
