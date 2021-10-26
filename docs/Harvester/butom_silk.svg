@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="458.04104"
-     inkscape:cy="538.66384"
+     inkscape:zoom="11.2"
+     inkscape:cx="126.5625"
+     inkscape:cy="351.16071"
      inkscape:document-units="mm"
      inkscape:current-layer="layer6"
      inkscape:document-rotation="0"
@@ -683,5 +683,27 @@
          style="font-size:0.977516px;fill:#ffff00;stroke-width:0.104734"
          x="156.54228"
          y="75.695671">CAN_INT_N</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.57285px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0393213"
+       x="27.694035"
+       y="90.300743"
+       id="text1157"><tspan
+         sodipodi:role="line"
+         id="tspan1155"
+         style="fill:#ffff00;stroke-width:0.0393213"
+         x="27.694035"
+         y="90.300743">TP54</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.889899px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.222475"
+       x="27.779467"
+       y="91.116943"
+       id="text4617"><tspan
+         sodipodi:role="line"
+         id="tspan4615"
+         style="font-size:0.889899px;fill:#ffff00;stroke-width:0.222475"
+         x="27.779467"
+         y="91.116943">LoRa_INT</tspan></text>
   </g>
 </svg>

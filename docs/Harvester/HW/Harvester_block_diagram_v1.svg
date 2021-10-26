@@ -1477,9 +1477,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.9999998"
-     inkscape:cx="821.62505"
-     inkscape:cy="518.50003"
+     inkscape:zoom="11.313708"
+     inkscape:cx="267.94929"
+     inkscape:cy="304.76304"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -2310,7 +2310,7 @@
          y="86.90889"
          style="font-size:0.682038px;stroke-width:0.255765">LoRa_INT</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1378-0)"
+       style="fill:none;stroke:#000000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1378-0);marker-start:url(#marker5807)"
        d="M 78.04322,87.182767 45.17167,87.20671 45.12391,75.698993"
        id="path1386-7"
        sodipodi:nodetypes="ccc" />

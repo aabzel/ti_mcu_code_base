@@ -1,5 +1,4 @@
 #include "tcan4550_drv.h"
-
 #include <gpio.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -11,6 +10,7 @@
 #include "clocks.h"
 #include "data_utils.h"
 #include "debug_info.h"
+#include "float_utils.h"
 #include "log.h"
 #include "spi_drv.h"
 #include "sys_config.h"
@@ -838,11 +838,7 @@ bool tcan4550_init(void) {
             }
         }
 
-        tCanRegBitTime_t reg_bit_time = {0};
-        reg_bit_time.word = 0;
-        reg_bit_time.nbrp = 2;
-        reg_bit_time.ntseg1 = 32;
-        reg_bit_time.ntseg2 = 8;
+        res = tcan4550_set_bit_rate(CAN_BAUD_RATE_DFLT)&&res;
 
         tCanRegDataBitTime_t data_time = {0};
         data_time.word = 0;
@@ -850,7 +846,7 @@ bool tcan4550_init(void) {
         data_time.dtseg2 = 5;
         data_time.dbrp = 1;
 
-        tCanRegGloFiltCfg_t gfc;
+        tCanRegGloFiltCfg_t gfc = {0};
         gfc.word = 0;
         gfc.rrfe = 1;
         gfc.rrfs = 1;
@@ -890,7 +886,7 @@ bool tcan4550_init(void) {
         res = tcan4550_protected_registers_unlock() && res;
         res = tcan4550_configure_cccr_register(&CrtlReg) && res;
         res = tcan4550_configure_global_filter(&gfc) && res;
-        res = tcan4550_configure_timing_simple(&reg_bit_time) && res;
+
         res = tcan4550_configure_data_timing_simple(&data_time) && res; // Setup CAN FD timing
         res = tcan4550_clear_mram() && res;
 
@@ -937,22 +933,65 @@ bool tcan4550_init(void) {
     return res;
 }
 
-float tcan4550_get_bit_rate(void) {
-    bool res = false;
-    float bit_rate = 0;
-
+static uint32_t tcan4550_calc_bit_rate(tCanRegBitTime_t reg) {
+    uint32_t bit_rate = 0;
     float tq = 0.0f;
     float can_bit_period = 0.0f;
+
+    tq = ((float)(reg.nbrp + 1U)) * (1.0f / ((float)CAN_XTAL_HZ));
+    can_bit_period = tq * ( (float) ((reg.ntseg1 + 2U) + (reg.ntseg2 + 1U)));
+    bit_rate = (uint32_t) (1.0f / can_bit_period);
+
+    return bit_rate;
+}
+
+uint32_t tcan4550_get_bit_rate(void) {
+    bool res = false;
+    uint32_t bit_rate = 0;
     tCanRegBitTime_t reg = {0};
     res = tcan4550_read_reg(ADDR_MCAN_NBTP, &reg.word);
     if(res) {
-        if(reg.nbrp && (reg.ntseg1 + reg.ntseg2)) {
-            tq = ((float)reg.nbrp) * (1.0f / ((float)CAN_XTAL_HZ));
-            can_bit_period = tq * ((float)(reg.ntseg1 + reg.ntseg2));
-            bit_rate = (1.0f / can_bit_period);
-        }
+        bit_rate = tcan4550_calc_bit_rate(reg);
     }
     return bit_rate;
+}
+
+bool tcan4550_set_bit_rate(uint32_t des_bit_rate) {
+    bool res = false;
+    uint32_t calc_bit_rate = 0;
+    tCanRegBitTime_t reg = {0};
+    reg.nbrp = 0;
+    reg.ntseg1 = 30;
+    reg.ntseg2 = 7;
+    reg.nsjw = reg.ntseg2;
+    uint32_t  nearest_bit_rate =0;
+    uint32_t min_abs_diff = 0xFFFFFFFF;
+    uint32_t cur_abs_diff = 0xFFFFFFFF;
+    uint16_t bit_rate_prescaler = 0;
+    for(bit_rate_prescaler = 0; bit_rate_prescaler <= 0x1FF; bit_rate_prescaler++) {
+        reg.nbrp = bit_rate_prescaler;
+        calc_bit_rate = tcan4550_calc_bit_rate(reg);
+        if(calc_bit_rate==des_bit_rate) {
+            LOG_INFO(CAN, "bit rate %u", calc_bit_rate);
+            res = true;
+            break;
+        }
+        cur_abs_diff = abs(calc_bit_rate - des_bit_rate);
+        if(cur_abs_diff < min_abs_diff) {
+            min_abs_diff = cur_abs_diff;
+            nearest_bit_rate = calc_bit_rate;
+        }
+    }
+    if(res) {
+        res = tcan4550_set_lock(false);
+        if(res) {
+            res = tcan4550_write_reg(ADDR_MCAN_NBTP, reg.word);
+            res = tcan4550_set_lock(true) && res;
+        }
+    } else {
+        LOG_ERROR(CAN, "Unreal bit rate %u %u", des_bit_rate, nearest_bit_rate);
+    }
+    return res;
 }
 
 static bool tcan4550_poll_can_interrupts(void) {

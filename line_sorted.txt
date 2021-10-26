@@ -1,6 +1,7 @@
-bool test_gpio_write_batt_scl(void);
-bool test_gpio_write_batt_sda(void);
-bool test_gpio_write_gnss_rxd(void);
-bool test_gpio_write_mosi(void);
-bool test_gpio_write_pwr_mux_ctrl(void);
-bool test_gpio_write_sclk(void);
+bool tcan4550_ti_clear_mram_command(int32_t argc, char* argv[]);
+bool tcan4550_ti_init_command(int32_t argc, char* argv[]);
+bool tcan4550_ti_read_command(int32_t argc, char* argv[]);
+bool tcan4550_ti_read_reg_command(int32_t argc, char* argv[]);
+bool tcan4550_ti_send_frame_command(int32_t argc, char* argv[]);
+bool tcan4550_ti_set_mode_command(int32_t argc, char* argv[]);
+bool tcan4550_ti_write_reg_command(int32_t argc, char* argv[]);

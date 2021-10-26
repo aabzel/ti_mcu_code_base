@@ -17,17 +17,16 @@
 bool tcan4550_ti_init_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
-        Init_CAN();
-        LOG_INFO(CAN, "init OK");
+        res = init_tcan();
+        if(res) {
+            LOG_INFO(CAN, "init OK");
+        } else {
+            LOG_ERROR(CAN, "init fail");
+        }
 
     } else {
         LOG_ERROR(CAN, "Usage: ci");
     }
-    return res;
-}
-
-bool tcan4550_ti_int_diag_command(int32_t argc, char* argv[]) {
-    bool res = false;
     return res;
 }
 
@@ -103,38 +102,6 @@ bool tcan4550_ti_read_command(int32_t argc, char* argv[]) {
         } else {
             LOG_ERROR(CAN, "read error");
         }
-    }
-    return res;
-}
-
-static bool tcan4550_ti_reg_map_diag(char* key_word1, char* key_word2) {
-    bool res = false;
-    return res;
-}
-
-bool tcan4550_ti_reg_map_command(int32_t argc, char* argv[]) {
-    bool res = false;
-    char keyWord1[20] = "";
-    char keyWord2[20] = "";
-    if(0 <= argc) {
-        strncpy(keyWord1, "", sizeof(keyWord1));
-        strncpy(keyWord2, "", sizeof(keyWord2));
-        res = true;
-    }
-    if(1 <= argc) {
-        strncpy(keyWord1, argv[0], sizeof(keyWord1));
-        res = true;
-    }
-    if(2 <= argc) {
-        strncpy(keyWord2, argv[1], sizeof(keyWord2));
-        res = true;
-    }
-
-    if(2 < argc) {
-        LOG_ERROR(SYS, "Usage: cm keyWord1 keyWord2");
-    }
-    if(true == res) {
-        res = tcan4550_ti_reg_map_diag(keyWord1, keyWord2);
     }
     return res;
 }

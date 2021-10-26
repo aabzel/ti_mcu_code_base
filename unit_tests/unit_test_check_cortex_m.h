@@ -51,6 +51,20 @@
         }                                                                                                              \
     } while(0);
 
+
+#define EXPECT_EQ_FLOAT(val1, val2, DELTA)                                                                                      \
+    do {                                                                                                               \
+        /*int val1 = vala; */                                                                                          \
+        /*int val2 = val2; */                                                                                          \
+        if(val2<(val1-DELTA)) {                                                                                        \
+            LOG_ERROR(SYS, "%s():Line: %d in val2: %f too low", __FUNCTION__, __LINE__, val2, val1);                   \
+            return false;                                                                                              \
+        } else if((val1+DELTA)<val2){                                                                                  \
+            LOG_ERROR(SYS, "%s():Line: %d in val2: %f too big", __FUNCTION__, __LINE__, val2, val1);                   \
+            return false;                                                                                              \
+        }                                                                                                              \
+    } while(0);
+
 #define EXPECT_EQ_U64(val1, val2)                                                                                      \
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \

@@ -47,5 +47,6 @@ extern PIN_Config BoardGpioInitTable[GPIO_COUNT + 1];
 extern GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT];
 
 void dio8_fall_call_back(uint_least8_t index);
+void dio28_fall_call_back(uint_least8_t index);
 
 #endif /* BOARD_LAYOUT_H  */

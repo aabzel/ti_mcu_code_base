@@ -7,7 +7,7 @@ extern "C" {
 
 #include "cli_manager.h"
 
-
+bool tcan4550_set_rate_command(int32_t argc, char* argv[]);
 bool tcan4550_get_fifos_command(int32_t argc, char* argv[]);
 bool tcan4550_set_lock_command(int32_t argc, char* argv[]);
 bool tcan4550_set_mode_command(int32_t argc, char* argv[]);
@@ -29,6 +29,7 @@ bool tcan4550_fifo_diag_command(int32_t argc, char* argv[]);
         SHELL_CMD("tcan4550_send", "cs", tcan4550_send_frame_command, "TCAN4550 send"),                                 \
         SHELL_CMD("tcan4550_diag_ll", "cdl", tcan4550_diag_ll_command, "TCAN4550 diag low level"),                      \
         SHELL_CMD("tcan4550_set_mode", "csm", tcan4550_set_mode_command, "TCAN4550 set mode"),                      \
+        SHELL_CMD("tcan4550_set_rate", "csr", tcan4550_set_rate_command, "TCAN4550 set rate"),                      \
         SHELL_CMD("tcan4550_set_lock", "csl", tcan4550_set_lock_command, "TCAN4550 set lock"),                      \
         SHELL_CMD("tcan4550_diag_hl", "cdh", tcan4550_diag_hl_command, "TCAN4550 diag hight level"),                    \
         SHELL_CMD("tcan4550_init", "ci", tcan4550_init_command, "TCAN4550 init"),                                       \

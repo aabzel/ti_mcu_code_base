@@ -3,6 +3,7 @@
 #include <string.h>
 #include <gpio.h>
 
+#include "TCAN_hl.h"
 #include "tcan4550_diag.h"
 #include "tcan4550_drv.h"
 #include "unit_test_check.h"
@@ -82,6 +83,33 @@ bool test_can_types(void) {
     return true;
 }
 
+static bool test_can_set_bitrate_one(uint32_t bit_rate){
+    uint32_t read_bit_rate = 0.0;
+    EXPECT_TRUE( tcan4550_set_bit_rate(  bit_rate));
+    read_bit_rate = tcan4550_get_bit_rate();
+    EXPECT_EQ(bit_rate,read_bit_rate);
+    return true;
+}
+
+bool test_can_rate(void){
+    uint32_t orig_bit_rate;
+    orig_bit_rate = tcan4550_get_bit_rate();
+    LOG_INFO(CAN,"Orig bit rate %u",orig_bit_rate );
+    EXPECT_TRUE(test_can_set_bitrate_one(10000));
+    EXPECT_TRUE(test_can_set_bitrate_one(20000));
+    EXPECT_TRUE(test_can_set_bitrate_one(50000));
+    EXPECT_TRUE(test_can_set_bitrate_one(125000));
+    EXPECT_TRUE(test_can_set_bitrate_one(250000));
+    EXPECT_TRUE(test_can_set_bitrate_one(500000));
+#ifdef SET_800K_UNDEF_BUG
+    EXPECT_TRUE(test_can_set_bitrate_one(800000));
+#endif
+    EXPECT_TRUE(test_can_set_bitrate_one(1000000));
+    LOG_WARNING(CAN,"Set default bit rate %u",CAN_BAUD_RATE_DFLT );
+    EXPECT_TRUE( tcan4550_set_bit_rate(  CAN_BAUD_RATE_DFLT));
+    return true;
+}
+
 static bool test_can_address(uint16_t addr) {
     uint32_t orig_reg=0;
     EXPECT_TRUE( tcan4550_read_reg(addr, &orig_reg)) ;
@@ -105,6 +133,7 @@ bool test_can_mram(void){
 bool test_can_send(void){
     uint16_t id= 0x123;
     uint64_t data64 = 0x112233445566;
+    EXPECT_TRUE( init_tcan());
     EXPECT_TRUE( tcan4550_send(id, data64));
     return true;
 }

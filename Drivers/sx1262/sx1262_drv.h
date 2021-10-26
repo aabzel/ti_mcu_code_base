@@ -224,6 +224,7 @@ typedef struct xSx1262IrqCnt_t {
 typedef struct xSx1262_t {
     uint64_t set_sync_word;
     uint64_t get_sync_word;
+    uint32_t int_cnt;
     uint32_t rf_frequency_hz;
     uint32_t data_aval_cnt;
     uint32_t tx_done_time_stamp_ms;
@@ -279,13 +280,12 @@ bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora);
 bool sx1262_get_status(uint8_t* out_status);
 bool sx1262_get_sync_word(uint64_t* sync_word);
 bool sx1262_init(void);
+bool sx1262_int_isr(Sx1262_t* sx1262Instance);
 bool sx1262_is_connected(void);
 bool sx1262_process(void);
 bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val);
 bool sx1262_reset(void);
 bool sx1262_reset_stats(void);
-
-// void sx1262_set_TxParams( int8_t power, RadioRampTimes_t rampTime );
 bool sx1262_clear_dev_error(void);
 bool sx1262_clear_fifo(void);
 bool sx1262_clear_irq(uint16_t clear_irq_param);

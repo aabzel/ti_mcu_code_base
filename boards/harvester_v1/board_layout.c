@@ -9,6 +9,10 @@
 #include "tcan4550_drv.h"
 #endif
 
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
+#endif
+
 /*line order does not  matters!*/
 const Pin_t PinTable[DIO_CNT] = {
  {DIO_BATT_ADC,       38,  0, "BATT_ADC", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
@@ -91,7 +95,7 @@ GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
 /*3*/   NULL, /* PWR_MUX_CTRL */
 /*4*/   NULL, /* LoRa CS*/
 /*5*/   NULL, /* LoRa Reset*/
-/*6*/   NULL, /* LoRa int*/
+/*6*/   dio28_fall_call_back, /* LoRa int*/
 /*7*/   NULL, /* LoRa Busy*/
 /*8*/   NULL,
 /*9*/   NULL,
@@ -104,6 +108,11 @@ GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
 /*16*/  dio8_fall_call_back,
 };
 
+void dio28_fall_call_back(uint_least8_t index) {
+#ifdef HAS_SX1262
+    sx1262_int_isr(&Sx1262Instance);
+#endif
+}
 
 void dio8_fall_call_back(uint_least8_t index) {
 #ifdef HAS_TCAN4550

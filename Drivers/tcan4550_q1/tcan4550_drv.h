@@ -12,7 +12,8 @@ extern "C" {
 #include "tcan4550_reg.h"
 #include "tcan4550_types.h"
 
-#define CAN_XTAL_HZ 40000000
+#define CAN_BAUD_RATE_DFLT 250000U /*Bit/s*/
+#define CAN_XTAL_HZ 40000000U
 #define MRAM_SZ 2048U /*Byte*/
 
 //#define DEVICE_ID "TCAN4550"
@@ -20,7 +21,7 @@ extern "C" {
 #define OP_CODE_WRITE 0x61
 
 typedef struct {
-    float bit_rate;
+    uint32_t bit_rate;
     bool lock;
     bool connected;
     bool wdt;
@@ -57,6 +58,7 @@ bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t* reg);
 bool tcan4550_init(void);
 bool tcan4550_set_mode(CanDevMode_t dev_mode);
 bool tcan4550_set_lock(bool state);
+bool tcan4550_set_bit_rate(uint32_t des_bit_rate);
 bool tcan4550_proc(void);
 bool tcan4550_reset(void);
 bool tcan4550_send(uint16_t id, uint64_t data);
@@ -73,7 +75,7 @@ bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words);
 bool tcan4550_write_reg(uint16_t address, uint32_t reg_val);
 bool tcan4550_write_reg_lazy(uint16_t address, uint32_t reg_val);
 bool tcan4550_int_isr(void);
-float tcan4550_get_bit_rate(void);
+uint32_t tcan4550_get_bit_rate(void);
 const char* tcan4550_get_reg_name(uint16_t addr);
 uint16_t tcan4550_get_reg_cnt(void);
 uint32_t tcan4550_read_spi_burst(void);

@@ -87,7 +87,7 @@ bool init_tcan(void){
 
 	/* Configure the CAN bus speeds */
 	TCAN4x5x_MCAN_Nominal_Timing_Simple TCANNomTiming = {0};	// 500k arbitration with a 40 MHz crystal ((40E6 / 2) / (32 + 8) = 500E3)
-	TCANNomTiming.NominalBitRatePrescaler = 2;
+	TCANNomTiming.NominalBitRatePrescaler = 4;
 	TCANNomTiming.NominalTqBeforeSamplePoint = 32;
 	TCANNomTiming.NominalTqAfterSamplePoint = 8;
 

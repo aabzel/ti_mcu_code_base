@@ -20,7 +20,7 @@ bool tcan4550_diag_hl_command(int32_t argc, char* argv[]){
     io_printf("WDT %sable"CRLF,  (true==CanPhy.cur.wdt)?"En":"Dis");
     io_printf("int cnt %u"CRLF,  CanPhy.cur.int_cnt);
     io_printf("cur mode %s"CRLF,  can_mode2str(CanPhy.cur.mode));
-    io_printf("bit rate %f"CRLF,  CanPhy.cur.bit_rate);
+    io_printf("bit rate %u bit/s"CRLF,  CanPhy.cur.bit_rate);
     io_printf("lock %s"CRLF,  (true==CanPhy.cur.lock)?"locked":"unlocked");
     io_printf("LEC %s"CRLF,  lec2str(CanPhy.cur.lec));
     return res;
@@ -384,6 +384,27 @@ bool tcan4550_get_fifos_command(int32_t argc, char* argv[]){
             LOG_INFO(CAN, "Rx ID %u 0x%x",MsgHeader.ID, MsgHeader.ID);
             print_mem(dataPayload,num_bytes,true,true);
             res = true;
+        }
+    }
+    return res;
+}
+
+
+bool tcan4550_set_rate_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint32_t bit_rate = 250000;
+    if(1<=argc) {
+        res = try_str2uint32(argv[0], &bit_rate);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract bit rate %s", argv[0]);
+        }
+    }
+    if (res) {
+        res= tcan4550_set_bit_rate( bit_rate) ;
+        if (res) {
+            LOG_INFO(CAN, "Bit rate %f set OK",bit_rate);
+        } else {
+            LOG_ERROR(CAN, "Unable to set bit rate %f set",bit_rate);
         }
     }
     return res;
