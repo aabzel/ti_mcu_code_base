@@ -1,7 +1,18 @@
-bool tcan4550_ti_clear_mram_command(int32_t argc, char* argv[]);
-bool tcan4550_ti_init_command(int32_t argc, char* argv[]);
-bool tcan4550_ti_read_command(int32_t argc, char* argv[]);
-bool tcan4550_ti_read_reg_command(int32_t argc, char* argv[]);
-bool tcan4550_ti_send_frame_command(int32_t argc, char* argv[]);
-bool tcan4550_ti_set_mode_command(int32_t argc, char* argv[]);
-bool tcan4550_ti_write_reg_command(int32_t argc, char* argv[]);
+
+bool tcan4550_clear_mram_command(int32_t argc, char* argv[]);
+bool tcan4550_diag_hl_command(int32_t argc, char* argv[]);
+bool tcan4550_diag_ll_command(int32_t argc, char* argv[]);
+bool tcan4550_diag_mram_command(int32_t argc, char* argv[]);
+bool tcan4550_fifo_diag_command(int32_t argc, char* argv[]);
+bool tcan4550_get_fifos_command(int32_t argc, char* argv[]);
+bool tcan4550_init_command(int32_t argc, char* argv[]);
+bool tcan4550_int_diag_command(int32_t argc, char* argv[]);
+bool tcan4550_read_command(int32_t argc, char* argv[]);
+bool tcan4550_read_reg_command(int32_t argc, char* argv[]);
+bool tcan4550_reg_map_command(int32_t argc, char* argv[]);
+bool tcan4550_reset_command(int32_t argc, char* argv[]);
+bool tcan4550_send_frame_command(int32_t argc, char* argv[]);
+bool tcan4550_set_lock_command(int32_t argc, char* argv[]);
+bool tcan4550_set_mode_command(int32_t argc, char* argv[]);
+bool tcan4550_set_rate_command(int32_t argc, char* argv[]);
+bool tcan4550_write_reg_command(int32_t argc, char* argv[]);

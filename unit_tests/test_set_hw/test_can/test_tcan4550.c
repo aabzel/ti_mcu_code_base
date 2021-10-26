@@ -7,6 +7,7 @@
 #include "tcan4550_diag.h"
 #include "tcan4550_drv.h"
 #include "unit_test_check.h"
+#include "tcan4550_reg.h"
 
 bool test_can_detect(void) {
     EXPECT_TRUE( is_tcan4550_connected());
@@ -38,10 +39,10 @@ static bool test_can_write_one(uint16_t addr, uint32_t write_val) {
 
 
 bool test_can_write(void) {
-    EXPECT_TRUE(test_can_write_one(ADDR_READ_WRITE_TEST,0x55555555));
-    EXPECT_TRUE(test_can_write_one(ADDR_READ_WRITE_TEST,0xAAAAAAAA));
-    EXPECT_TRUE(test_can_write_one(ADDR_READ_WRITE_TEST,0x12345678));
-    EXPECT_TRUE(test_can_write_one(ADDR_READ_WRITE_TEST,0x87654321));
+    EXPECT_TRUE(test_can_write_one(ADDR_TEST_REGISTERS,0x55555555));
+    EXPECT_TRUE(test_can_write_one(ADDR_TEST_REGISTERS,0xAAAAAAAA));
+    EXPECT_TRUE(test_can_write_one(ADDR_TEST_REGISTERS,0x12345678));
+    EXPECT_TRUE(test_can_write_one(ADDR_TEST_REGISTERS,0x87654321));
     return true;
 }
 
@@ -79,6 +80,21 @@ bool test_can_types(void) {
     EXPECT_EQ(4, sizeof(TxBuffW1_t));
     EXPECT_EQ(4, sizeof(HeaderCom_t));
     EXPECT_EQ(4, sizeof(W0_t));
+
+    uint8_t i=0;
+    for(i=0;i<8;i++){
+        EXPECT_EQ(i,bytes_2_dlc(i));
+    }
+    EXPECT_EQ(9,bytes_2_dlc(9));
+    EXPECT_EQ(15,bytes_2_dlc(100));
+    EXPECT_EQ(15,bytes_2_dlc(64));
+    EXPECT_EQ(11,bytes_2_dlc(20));
+
+    for(i=0;i<8;i++){
+        EXPECT_EQ(    i, dlc_2_bytes(bytes_2_dlc(i)));
+    }
+
+
 
     return true;
 }
@@ -130,10 +146,24 @@ bool test_can_mram(void){
     return true;
 }
 
-bool test_can_send(void){
-    uint16_t id= 0x123;
+bool test_can_send_std(void){
+    uint32_t id= 0x123;
     uint64_t data64 = 0x112233445566;
     EXPECT_TRUE( init_tcan());
-    EXPECT_TRUE( tcan4550_send(id, data64));
+    EXPECT_TRUE( tcan4550_send_std(id, data64,1));
+    EXPECT_TRUE( tcan4550_send_std(id, data64,2));
+    EXPECT_TRUE( tcan4550_send_std(id, data64,4));
+    EXPECT_TRUE( tcan4550_send_std(id, data64,8));
+    return true;
+}
+
+bool test_can_send_ext(void){
+    uint32_t id= 0x123;
+    uint64_t data64 = 0x112233445566;
+    EXPECT_TRUE( init_tcan());
+    EXPECT_TRUE( tcan4550_send_ext(id, data64,1));
+    EXPECT_TRUE( tcan4550_send_ext(id, data64,2));
+    EXPECT_TRUE( tcan4550_send_ext(id, data64,4));
+    EXPECT_TRUE( tcan4550_send_ext(id, data64,8));
     return true;
 }

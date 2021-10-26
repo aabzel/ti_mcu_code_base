@@ -19,13 +19,66 @@
 const uint64_t exp_dev_id = 0x343535305443414E;
 
 const Tcan4550Reg_t tCan4550RegLUT[] = {
-    {ADDR_IR, "IntReg"},           {ADDR_MCAN_PSR, "ProtStat"},       {ADDR_IE, "IntEn"},
-    {ADDR_IF, "IntFlgs"},          {ADDR_MCAN_RXF0S, "FiFo0Stat"},    {ADDR_MCAN_RXF1S, "FiFo1Stat"},
-    {ADDR_MCAN_NBTP, "BitTiming"}, {ADDR_DEV_CONFIG, "DevCfg"},       {ADDR_DEVICE_ID0, "DevId0"},
-    {ADDR_DEVICE_ID1, "DevId1"},   {ADDR_SPI_2_REV, "SPIrev"},        {ADDR_STATUS, "Status"},
-    {ADDR_CREL, "CREL"},           {ADDR_MCAN_CCCR, "CcCtrl"},        {ADDR_MCAN_TXBAR, "TxBufRqst"},
-    {ADDR_MCAN_TXBC, "TxBufCfg"},  {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
+    {ADDR_MCAN_PSR, "ProtStat"},
+    {ADDR_IE, "IntEn"},
+    {ADDR_IF, "IntFlgs"},
+    {ADDR_MIF ,"CANIntFlags"},
+    {ADDR_TEST_REGISTERS, "rwTest"},
+    {ADDR_MCAN_TEST,"Test"},
+    {ADDR_MCAN_CREL, "CoreRelease"},
+    {ADDR_MCAN_RXF0S, "FiFo0Stat"},
+    {ADDR_MCAN_RXF1S, "FiFo1Stat"},
+    {ADDR_MCAN_NBTP, "BitTiming"},
+    {ADDR_DEV_CONFIG, "DevCfg"},
+    {ADDR_DEVICE_ID0, "DevId0"},
+    {ADDR_DEVICE_ID1, "DevId1"},
+    {ADDR_SPI_2_REV, "SPIrev"},
+    {ADDR_SPI_STATUS, "Status"},
+    {ADDR_MCAN_CCCR, "CcCtrl"},
+    {ADDR_MCAN_TXBAR, "TxBufRqst"},
+    {ADDR_MCAN_TXBC, "TxBufCfg"},
+    {ADDR_MCAN_TXESC, "TxBufElSzCfg"},
+    {ADDR_MCAN_ENDN,"Endian"},
+    {ADDR_MCAN_DBTP,"DatBitTimPscr"},
+    {ADDR_MCAN_RWD ,"RAMWtd"},
+    {ADDR_MCAN_TSCC,"TimStmpCntCfg"},
+    {ADDR_MCAN_TSCV,"TimStmpCntVal"},
+    {ADDR_MCAN_CUST,""},
+    {ADDR_TIMESTAMP_PRESCALER,"TimeStampPscr"},
+     {ADDR_MCAN_TOCC,""},
+     {ADDR_MCAN_TOCV,"TimOutCntVal"},
+     {ADDR_MCAN_ECR ,""},
+     {ADDR_MCAN_TDCR,""},
+     {ADDR_MCAN_IR ,"IntRegister"},
+     {ADDR_MCAN_IE ,"IntEnable"},
+     {ADDR_MCAN_ILS,"IntLineSel"},
+     {ADDR_MCAN_ILE,"IntLineEn"},
+     {ADDR_MCAN_GFC,"GlobalFilterCfg"},
+     {ADDR_MCAN_SIDFC,"StdIDFilterCfg"},
+     {ADDR_MCAN_XIDFC,"ExtIDFiltCfg"},
+     {ADDR_MCAN_XIDAM,""},
+     {ADDR_MCAN_HPMS ,""},
+     {ADDR_MCAN_NDAT1,""},
+     {ADDR_MCAN_NDAT2,""},
+     {ADDR_MCAN_RXF0C,"RxFIFO0Cfg"},
+     {ADDR_MCAN_RXF0A,""},
+     {ADDR_MCAN_RXBC ,"RxBufferCnfg"},
+     {ADDR_MCAN_RXF1C,"RxFIFO1Cfg"},
+     {ADDR_MCAN_RXF1A,""},
+     {ADDR_MCAN_RXESC,"RxBuffIFOElmSzCfg"},
+     {ADDR_MCAN_TXFQS,""},
+     {ADDR_MCAN_TXBRP,""},
+     {ADDR_MCAN_TXBCR,""},
+     {ADDR_MCAN_TXBTO,""},
+     {ADDR_MCAN_TXBCF,""},
+     {ADDR_MCAN_TXBTIE,""},
+     {ADDR_MCAN_TXBCIE,""},
+     {ADDR_MCAN_TXEFC,"TxEvFIFOCfg"},
+     {ADDR_MCAN_TXEFS,""},
+     {ADDR_MCAN_TXEFA,""},
 };
+
+
 
 Can4550_t CanPhy;
 
@@ -284,6 +337,32 @@ uint8_t dlc_2_bytes(uint8_t dlc_code) {
         size = 0;
     }
     return size;
+}
+
+uint8_t bytes_2_dlc(uint8_t len){
+    uint8_t dlc = 0;
+    if(len<9){
+        dlc  = len;
+    }else{
+       if ( (8<len) && (len<=12)){
+           dlc  = 9;
+       }else if ( (12<len) && (len<=16)){
+           dlc  = 10;
+       }else if ( (16<len) && (len<=20)){
+           dlc  = 11;
+       }else if ( (20<len) && (len<=24)){
+           dlc  = 12;
+       }else if ( (24<len) && (len<=32)){
+           dlc  = 13;
+       }else if ( (32<len) && (len<=48)){
+           dlc  = 14;
+       }else if ( (48<len) && (len<=64)){
+           dlc  = 15;
+       }else {
+           dlc  = 15;
+       }
+    }
+    return dlc;
 }
 
 bool tcan4550_write_tx_buff(uint8_t buf_index, tCanTxHeader_t* header, uint8_t* data_payload) {
@@ -569,13 +648,15 @@ bool tcan4550_tx_buff_content(uint8_t buf_index) {
     return res;
 }
 
-bool tcan4550_send(uint16_t id, uint64_t data) {
+
+
+bool tcan4550_send_std(uint32_t id, uint64_t data, uint8_t len) {
     bool res = false;
 
     res = false;
     tCanTxHeader_t header = {0};
     // memset(&header, 0x00, sizeof(header));
-    header.dlc = MCAN_DLC_8B;
+    header.dlc =  bytes_2_dlc(uint8_limiter(len,8));
     header.id = id; // CAN ID to send
     header.fdf = 0; // CAN FD Format flag
     header.brs = 0; // Bit rate switch used flag
@@ -583,6 +664,28 @@ bool tcan4550_send(uint16_t id, uint64_t data) {
     header.mm = 0;  // Message Marker, used if @c EFC is set to 1
     header.rtr = 0; // Remote Transmission Request flag
     header.xtd = 0; // Extended Identifier flag
+
+    res = tcan4550_write_tx_buff(0, &header, (uint8_t*)&data);
+    if(res) {
+        res = tcan4550_tx_buff_content(0);
+    }
+
+    return res;
+}
+
+bool tcan4550_send_ext(uint32_t id, uint64_t data, uint8_t len) {
+    bool res = false;
+    res = false;
+    tCanTxHeader_t header = {0};
+    // memset(&header, 0x00, sizeof(header));
+    header.dlc =  bytes_2_dlc(uint8_limiter(len,8));
+    header.id = id; // CAN ID to send
+    header.fdf = 0; // CAN FD Format flag
+    header.brs = 0; // Bit rate switch used flag
+    header.efc = 0; // Event FIFO Control flag, to store tx events or not
+    header.mm = 0;  // Message Marker, used if @c EFC is set to 1
+    header.rtr = 0; // Remote Transmission Request flag
+    header.xtd = 1; // Extended Identifier flag
 
     res = tcan4550_write_tx_buff(0, &header, (uint8_t*)&data);
     if(res) {
@@ -838,7 +941,7 @@ bool tcan4550_init(void) {
             }
         }
 
-        res = tcan4550_set_bit_rate(CAN_BAUD_RATE_DFLT)&&res;
+        res = tcan4550_set_bit_rate(CAN_BAUD_RATE_DFLT) && res;
 
         tCanRegDataBitTime_t data_time = {0};
         data_time.word = 0;
@@ -939,8 +1042,8 @@ static uint32_t tcan4550_calc_bit_rate(tCanRegBitTime_t reg) {
     float can_bit_period = 0.0f;
 
     tq = ((float)(reg.nbrp + 1U)) * (1.0f / ((float)CAN_XTAL_HZ));
-    can_bit_period = tq * ( (float) ((reg.ntseg1 + 2U) + (reg.ntseg2 + 1U)));
-    bit_rate = (uint32_t) (1.0f / can_bit_period);
+    can_bit_period = tq * ((float)((reg.ntseg1 + 2U) + (reg.ntseg2 + 1U)));
+    bit_rate = (uint32_t)(1.0f / can_bit_period);
 
     return bit_rate;
 }
@@ -964,14 +1067,14 @@ bool tcan4550_set_bit_rate(uint32_t des_bit_rate) {
     reg.ntseg1 = 30;
     reg.ntseg2 = 7;
     reg.nsjw = reg.ntseg2;
-    uint32_t  nearest_bit_rate =0;
+    uint32_t nearest_bit_rate = 0;
     uint32_t min_abs_diff = 0xFFFFFFFF;
     uint32_t cur_abs_diff = 0xFFFFFFFF;
     uint16_t bit_rate_prescaler = 0;
     for(bit_rate_prescaler = 0; bit_rate_prescaler <= 0x1FF; bit_rate_prescaler++) {
         reg.nbrp = bit_rate_prescaler;
         calc_bit_rate = tcan4550_calc_bit_rate(reg);
-        if(calc_bit_rate==des_bit_rate) {
+        if(calc_bit_rate == des_bit_rate) {
             LOG_INFO(CAN, "bit rate %u", calc_bit_rate);
             res = true;
             break;

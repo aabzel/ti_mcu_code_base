@@ -12,7 +12,8 @@ bool test_can_read_word(void);
 bool test_can_detect(void);
 bool test_can_rate(void);
 bool test_can_types(void);
-bool test_can_send(void);
+bool test_can_send_std(void);
+bool test_can_send_ext(void);
 bool test_can_mram(void);
 bool test_can_lock(void);
 
@@ -25,7 +26,9 @@ bool test_can_lock(void);
     {"can_read_word", test_can_read_word},\
     {"can_write", test_can_write},        \
     {"can_mram", test_can_mram},          \
-    {"can_send", test_can_send},
+    {"can_send_std", test_can_send_std},  \
+    {"can_send_ext", test_can_send_ext},
+
 
 #ifdef __cplusplus
 }

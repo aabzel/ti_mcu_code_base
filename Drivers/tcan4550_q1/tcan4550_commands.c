@@ -83,7 +83,7 @@ bool tcan4550_diag_ll_command(int32_t argc, char* argv[]){
     res = tcan4550_parse_reg_revision(out_reg);
 
     out_reg = 0;
-    res = tcan4550_read_reg(ADDR_STATUS, &out_reg);
+    res = tcan4550_read_reg(ADDR_SPI_STATUS, &out_reg);
     res = tcan4550_parse_reg_status(out_reg);
 
     out_reg = 0;
@@ -329,8 +329,9 @@ bool tcan4550_clear_mram_command(int32_t argc, char* argv[]){
 }
 //cs 0x55 0x1122334455667788
 
-bool tcan4550_send_frame_command(int32_t argc, char* argv[]){
+bool tcan4550_send_std_frame_command(int32_t argc, char* argv[]){
     bool res = false;
+    uint8_t len = 8;
     uint16_t id= 0;
     uint64_t data64 = 0;
     if(1<=argc) {
@@ -346,16 +347,60 @@ bool tcan4550_send_frame_command(int32_t argc, char* argv[]){
         }
     }
 
+    if(3<=argc){
+        res = try_str2uint8(argv[2], &len);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract len %s", argv[2]);
+        }
+    }
+
     if (res) {
-        res = tcan4550_send(id, data64);
+        res = tcan4550_send_std(id, data64, len);
         if (res) {
-            LOG_INFO(CAN, "send id: 0x%06x data: 0x%llx ok", id, data64);
+            LOG_INFO(CAN, "send std id: 0x%06x data: 0x%llx %u byte  ok", id, data64, len);
         } else {
             LOG_ERROR(CAN, "Unable to send frame");
         }
     }
     return res;
 }
+
+bool tcan4550_send_ext_frame_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint8_t len = 8;
+    uint16_t id= 0;
+    uint64_t data64 = 0;
+    if(1<=argc) {
+        res = try_str2uint16(argv[0], &id);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract id %s", argv[0]);
+        }
+    }
+    if(2<=argc){
+        res = try_str2uint64(argv[1], &data64);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract data %s", argv[1]);
+        }
+    }
+
+    if(3<=argc){
+        res = try_str2uint8(argv[2], &len);
+        if(false == res) {
+            LOG_ERROR(CAN, "Unable to extract len %s", argv[2]);
+        }
+    }
+
+    if (res) {
+        res = tcan4550_send_ext(id, data64, len);
+        if (res) {
+            LOG_INFO(CAN, "send ext id: 0x%06x data: 0x%llx %u byte ok", id, data64, len);
+        } else {
+            LOG_ERROR(CAN, "Unable to send frame");
+        }
+    }
+    return res;
+}
+
 
 
 bool tcan4550_get_fifos_command(int32_t argc, char* argv[]){
@@ -392,6 +437,7 @@ bool tcan4550_get_fifos_command(int32_t argc, char* argv[]){
 
 bool tcan4550_set_rate_command(int32_t argc, char* argv[]){
     bool res = false;
+
     uint32_t bit_rate = 250000;
     if(1<=argc) {
         res = try_str2uint32(argv[0], &bit_rate);
@@ -406,6 +452,36 @@ bool tcan4550_set_rate_command(int32_t argc, char* argv[]){
         } else {
             LOG_ERROR(CAN, "Unable to set bit rate %f set",bit_rate);
         }
+    }
+    return res;
+}
+
+
+bool tcan4550_diag_mram_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(0==argc){
+        res = true;
+        uint16_t addr = 0;
+        uint32_t read_reg = 0;
+        for(addr = ADDR_MRAM; addr<=(ADDR_MRAM+MRAM_SZ-4); addr+=4){
+            res = tcan4550_read_reg(addr, &read_reg)&&res ;
+            if(res){
+                if(0==read_reg){
+                    io_printf(".");
+                }else{
+                    io_printf("x");
+                }
+            }
+            if(0==(addr%(4*32))){
+                io_printf(CRLF);
+            }
+        }
+        if (res) {
+            LOG_INFO(CAN, "OK");
+        } else {
+            LOG_ERROR(CAN, "error");
+        }
+        io_printf(CRLF);
     }
     return res;
 }

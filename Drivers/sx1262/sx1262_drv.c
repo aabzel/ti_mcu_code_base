@@ -737,7 +737,7 @@ bool sx1262_wakeup(void) {
 
 static bool sx1262_init_gpio(void) {
     bool res = true;
-    GPIO_setConfig(CONF_GPIO_LORA_RST,gpio_get_cfg_dio(DIO_SX1262_RST));
+    GPIO_setConfig(CONF_GPIO_LORA_RST, gpio_get_cfg_dio(DIO_SX1262_RST));
     GPIO_setConfig(CONF_GPIO_LORA_CS, gpio_get_cfg_dio(DIO_SX1262_SS));
     GPIO_setConfig(CONF_GPIO_LORA_BSY, gpio_get_cfg_dio(DIO_SX1262_BUSY));
     GPIO_setConfig(CONF_GPIO_LORA_INT, gpio_get_cfg_dio(DIO_SX1262_INT));
@@ -762,12 +762,11 @@ bool sx1262_reset(void) {
     return res;
 }
 
-bool sx1262_int_isr(Sx1262_t* sx1262Instance){
+bool sx1262_int_isr(Sx1262_t* sx1262Instance) {
     bool res = false;
-    if(sx1262Instance){
+    if(sx1262Instance) {
         res = true;
         sx1262Instance->int_cnt++;
-
     }
 
     return res;

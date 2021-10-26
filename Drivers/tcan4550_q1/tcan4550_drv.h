@@ -52,6 +52,10 @@ extern const uint64_t exp_dev_id;
 
 extern Can4550_t CanPhy;
 extern const Tcan4550Reg_t tCan4550RegLUT[];
+
+uint8_t dlc_2_bytes(uint8_t dlc_code);
+uint8_t bytes_2_dlc(uint8_t len);
+
 bool is_tcan4550_connected(void);
 bool is_tcan4550_protected_reg_locked(tCanRegCCctrl_t* reg);
 bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t* reg);
@@ -61,7 +65,8 @@ bool tcan4550_set_lock(bool state);
 bool tcan4550_set_bit_rate(uint32_t des_bit_rate);
 bool tcan4550_proc(void);
 bool tcan4550_reset(void);
-bool tcan4550_send(uint16_t id, uint64_t data);
+bool tcan4550_send_std(uint32_t id, uint64_t data, uint8_t len);
+bool tcan4550_send_ext(uint32_t id, uint64_t data, uint8_t len);
 bool tcan4550_send_spi_burst(uint32_t word);
 bool tcan4550_clear_mram(void);
 bool tcan4550_chip_select(bool state);

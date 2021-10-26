@@ -116,7 +116,7 @@ bool tcan4550_parse_reg_status(uint32_t reg_val) {
     bool res = false;
     tCanRegStatus_t reg = {0};
     memcpy(&reg, &reg_val, 4);
-    io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_STATUS, tcan4550_get_reg_name(ADDR_STATUS), reg_val,
+    io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_SPI_STATUS, tcan4550_get_reg_name(ADDR_SPI_STATUS), reg_val,
               utoa_bin32(reg_val));
     if(reg.internal_read_error) {
         io_printf("bit %u: Internal read received an error response %u" CRLF, 29, reg.internal_read_error);
