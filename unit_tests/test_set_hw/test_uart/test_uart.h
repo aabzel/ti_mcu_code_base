@@ -8,6 +8,7 @@ extern "C" {
 #include <stdbool.h>
 
 #ifdef HAS_UART0
+
 bool test_uart0_read(void);
 bool test_uart0_write(void);
 

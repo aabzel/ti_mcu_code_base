@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <stddef.h>
 
+#include "clocks.h"
 #include "convert.h"
 #include "io_utils.h"
 #include "log.h"
@@ -33,7 +34,7 @@ void unit_test_init(void) {
 
 const unit_test_info_t* get_unit_test(uint32_t test_index) {
     const unit_test_info_t* res;
-    if (get_unit_test_count() <= test_index) {
+    if(get_unit_test_count() <= test_index) {
         res = NULL;
     } else {
         res = &test_list[test_index];
@@ -43,9 +44,9 @@ const unit_test_info_t* get_unit_test(uint32_t test_index) {
 
 void dump_unit_test_all(void) {
     uint32_t index;
-    for (index = 0U; index < get_unit_test_count(); index++) {
+    for(index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
-        if (ui != NULL) {
+        if(ui != NULL) {
 #ifdef HAS_CLI
             io_puts(ui->name);
             io_puts(".");
@@ -61,10 +62,10 @@ void dump_unit_test_key(const char* key) {
 #ifdef HAS_CLI
     LOG_INFO(SYS, "%s() key %s", __FUNCTION__, key);
 #endif /*HAS_CLI*/
-    for (index = 0U; index < get_unit_test_count(); index++) {
+    for(index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
-        if (ui != NULL) {
-            if (NULL != str_case_str(ui->name, key)) {
+        if(ui != NULL) {
+            if(NULL != str_case_str(ui->name, key)) {
 #ifdef HAS_CLI
                 io_puts(ui->name);
                 io_puts(".");
@@ -83,10 +84,10 @@ static uint32_t unit_test_run_key(const char* key) {
     LOG_INFO(SYS, "%s() key %s", __FUNCTION__, key);
 #endif /*HAS_CLI*/
     uint32_t count = 0U;
-    for (index = 0U; index < get_unit_test_count(); index++) {
+    for(index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
-        if ((ui != NULL) && (NULL!=ui->name)) {
-            if (NULL != str_case_str(ui->name, key)) {
+        if((ui != NULL) && (NULL != ui->name)) {
+            if(NULL != str_case_str(ui->name, key)) {
                 count += unit_test_run(index);
             }
         }
@@ -97,14 +98,13 @@ static uint32_t unit_test_run_key(const char* key) {
 static uint32_t unit_test_run_name(const char* name) {
     uint32_t index;
     uint32_t count = 0U;
-    for (index = 0U; index < get_unit_test_count(); index++) {
+    for(index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
-        if (ui != NULL) {
-            if (0 == strcmp(name, ui->name)) {
+        if(ui != NULL) {
+            if(0 == strcmp(name, ui->name)) {
                 count += unit_test_run(index);
             }
         }
-
     }
     return count;
 }
@@ -113,10 +113,10 @@ static uint32_t unit_test_run_prefix(const char* prefix) {
     uint32_t index;
     uint32_t count = 0U;
     size_t len = strlen(prefix);
-    for (index = 0U; index < get_unit_test_count(); index++) {
+    for(index = 0U; index < get_unit_test_count(); index++) {
         const unit_test_info_t* ui = get_unit_test(index);
-        if (ui != NULL) {
-            if (0 == strncmp(ui->name, prefix, len)) {
+        if(ui != NULL) {
+            if(0 == strncmp(ui->name, prefix, len)) {
                 count += unit_test_run(index);
             }
         }
@@ -127,13 +127,14 @@ static uint32_t unit_test_run_prefix(const char* prefix) {
 static uint32_t unit_test_run_range(uint32_t from_index, uint32_t to_index) {
     uint32_t index;
     uint32_t count = 0U;
-    for (index = from_index; index <= to_index; index++) {
+    for(index = from_index; index <= to_index; index++) {
         count += unit_test_run(index);
     }
     return count;
 }
 
-void unit_tests_run(const char* key) {
+bool unit_tests_run(const char* key) {
+    bool res = false;
 #ifdef HAS_CLI
     io_printf("%s() key %s" CRLF, __FUNCTION__, key);
 #endif /*HAS_CLI*/
@@ -144,71 +145,76 @@ void unit_tests_run(const char* key) {
 
     (void)strncpy(test_name, key, sizeof(test_name));
     test_name[sizeof(test_name) - 1U] = '\0';
-
-    if (0U == count) {
-        if (0 == strcmp(test_name, "*")) {
+    uint32_t start_time_ms = get_time_ms32();
+    if(0U == count) {
+        if(0 == strcmp(test_name, "*")) {
             count = unit_test_run_range(0U, get_unit_test_count() - 1U);
         }
     }
 
-    if (0U == count) {
-        if (strchr(test_name, (int16_t)'+') != NULL) {
+    if(0U == count) {
+        if(strchr(test_name, (int16_t)'+') != NULL) {
             char* p = strchr(test_name, (int16_t)'+');
             *p = '\0';
             count = unit_test_run_key(test_name);
         }
     }
-    if (0U == count) {
-        if (strchr(test_name, (int32_t)'*') != NULL) {
+    if(0U == count) {
+        if(strchr(test_name, (int32_t)'*') != NULL) {
             char* p = strchr(test_name, (int32_t)'*');
             *p = '\0';
             count = unit_test_run_prefix(test_name);
         }
     }
 
-    if (0U == count) {
-        uint32_t number=0;
-        if (true == try_str2uint32(test_name, &number)) {
+    if(0U == count) {
+        uint32_t number = 0;
+        if(true == try_str2uint32(test_name, &number)) {
             count = unit_test_run(number - 1U);
         }
     }
-    if (0U == count) {
+    if(0U == count) {
         count = unit_test_run_name(test_name);
     }
-    if (0U == count) {
-        if (strchr(test_name, (int32_t)'-') != NULL) {
+    if(0U == count) {
+        if(strchr(test_name, (int32_t)'-') != NULL) {
             bool ok = true;
-            uint32_t from_number=0, to_number=0;
+            uint32_t from_number = 0, to_number = 0;
             char* p = strchr(test_name, (int32_t)'-');
             *p = '\0';
             p++;
-            if (true != try_str2uint32(test_name, &from_number)) {
+            if(true != try_str2uint32(test_name, &from_number)) {
                 ok = false;
 #ifdef HAS_CLI
                 LOG_ERROR(SYS, "Invalid \"from\" test number %s", test_name);
 #endif /*HAS_CLI*/
             }
-            if (true != try_str2uint32(p, &to_number)) {
+            if(true != try_str2uint32(p, &to_number)) {
                 ok = false;
 #ifdef HAS_CLI
                 LOG_ERROR(SYS, "Invalid \"to\" test number %s", p);
 #endif /*HAS_CLI*/
             }
-            if (true == ok) {
+            if(true == ok) {
                 count = unit_test_run_range(from_number - 1U, to_number - 1U);
             }
         }
     }
-    if (0U == count) {
+    uint32_t end_time_ms = get_time_ms32();
+    uint32_t duration_ms = 0;
+    duration_ms = end_time_ms - start_time_ms;
+    LOG_INFO(TEST, "Test duration %u ms =%u s= %u min" CRLF, duration_ms, MS_2_S(duration_ms), MS_2_MIN(duration_ms));
+    if(0U == count) {
 #ifdef HAS_CLI
         io_printf(VT_SETCOLOR_RED "Test %s not found!" CRLF, key);
         io_puts("!ERRTEST" VT_SETCOLOR_NORMAL CRLF);
 #endif /*HAS_CLI*/
     }
 #ifdef HAS_CLI
-    if (count > 1U) {
+    if(1U < count) {
         failed_tests_print();
     }
     io_flush();
 #endif /*HAS_CLI*/
+    return res;
 }

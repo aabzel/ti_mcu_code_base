@@ -21,10 +21,10 @@ bool test_uart0_write(void) {
 
 bool test_uart0_read(void) {
     uint8_t byte=0xFF;
-    EXPECT_TRUE(uart_read(0, &byte, 1));
+    EXPECT_FALSE(uart_read(0, &byte, 1));
     return true;
 }
-#endif
+#endif /*HAS_UART0*/
 
 #ifdef HAS_UART1
 bool test_uart1_write(void) {
@@ -37,7 +37,7 @@ bool test_uart1_write(void) {
 }
 bool test_uart1_read(void) {
     uint8_t byte=0xFF;
-    EXPECT_TRUE(uart_read(1, &byte, 1));
+    EXPECT_FALSE(uart_read(1, &byte, 1));
     return true;
 }
 #endif

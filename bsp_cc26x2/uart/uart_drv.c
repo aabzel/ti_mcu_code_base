@@ -257,7 +257,7 @@ bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     if(uart_num < UART_COUNT) {
         int_fast32_t ret = 0;
         ret = UART_read(huart[uart_num].uart_h, out_array, array_len);
-        if(0 <= ret) {
+        if(0 == ret) {
             res = true;
         }
     }

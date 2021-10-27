@@ -91,6 +91,10 @@ bool gpio_init(void) {
     } else {
         res = true;
         GPIO_init();
+#ifdef HAS_IO_BANG
+        res = io_bang_gpio_init();
+#endif
+
 #ifdef HAS_LED
         GPIO_setConfig(CONF_GPIO_LED_0, gpio_get_cfg_dio(DIO_LED_RED));
         GPIO_setConfig(CONF_GPIO_LED_1, gpio_get_cfg_dio(DIO_LED_GREEN));
@@ -303,8 +307,16 @@ uint8_t get_aux_num(uint8_t io_pin) {
 }
 
 bool gpio_toggle(uint8_t dio_number) {
+    bool res = false;
+    uint8_t orig_logic_level = 0;
+    uint8_t new_logic_level = 0;
+    gpio_get_state(dio_number, &orig_logic_level);
     GPIO_toggleDio((uint32_t)dio_number);
-    return true;
+    gpio_get_state(dio_number, &new_logic_level);
+    if(orig_logic_level != new_logic_level) {
+        res = true;
+    }
+    return res;
 }
 
 uint32_t gpio_get_alter_fun(uint8_t dio_pin) {

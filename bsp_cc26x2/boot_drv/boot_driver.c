@@ -136,6 +136,13 @@ bool boot_launch_app(void) {
     if(false == res) {
         LOG_ERROR(BOOT, "Error reset boot cnt");
     }
+
+    uint32_t start_addr = DFLT_APP_START_ADDR;
+    res = mm_set(PAR_ID_APP_START, (uint8_t*)&start_addr, sizeof(start_addr));
+    if(false == res) {
+        LOG_ERROR(BOOT, "Error set start addr");
+    }
+
     res = reboot();
     if(false == res) {
         LOG_ERROR(BOOT, "Error reboot");

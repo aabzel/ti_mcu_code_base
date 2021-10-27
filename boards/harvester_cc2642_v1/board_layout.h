@@ -49,4 +49,6 @@ extern GPIO_PinConfig gpioPinConfigs[GPIO_COUNT];
 extern PIN_Config BoardGpioInitTable[GPIO_COUNT + 1];
 extern GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT];
 
+bool io_bang_gpio_init(void);
+
 #endif /* BOARD_LAYOUT_H  */

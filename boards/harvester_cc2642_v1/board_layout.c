@@ -48,7 +48,7 @@ GPIO_PinConfig gpioPinConfigs[GPIO_COUNT] = {
 /*6*/    DIO_SX1262_INT |   GPIO_CFG_IN_NOPULL,                                          /*LoRa int*/
 /*7*/    DIO_SX1262_BUSY |  GPIO_CFG_IN_NOPULL,                                          /*LoRa Busy*/
 /*8*/    DIO_CAN_SS |       GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /*CAN chip select*/
-/*9*/    DIO_GNSS_RST_N   |    GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* RST_N_GNSS */
+/*9*/    DIO_GNSS_RST_N  |  GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* RST_N_GNSS */
 /*10*/   DIO_GNSS_INT |        GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /* GNSS_INT */
 /*11*/   DIO_GNSS_SAFEBOOT_N | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH, /* GNSS_SAFEBOOT_N */
 /*12*/   DIO_LEN |             GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, /* LEN */
@@ -111,7 +111,24 @@ GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
 /*16*/  NULL,
 /*17*/  NULL,
 /*18*/  NULL,
-NULL,
-NULL,
-/*21*/ NULL
+/*19*/  NULL,
+/*20*/  NULL,
+/*21*/  NULL
 };
+
+
+bool io_bang_gpio_init(void){
+    GPIO_setConfig(CONF_GPIO_SCLK, gpio_get_cfg_dio(DIO_SCLK));
+    GPIO_setConfig(CONF_GPIO_MOSI, gpio_get_cfg_dio(DIO_MOSI));
+    GPIO_setConfig(CONF_GPIO_PS_RS232, gpio_get_cfg_dio(DIO_PS_RS232));
+    GPIO_setConfig(CONF_GPIO_GNSS_RXD, gpio_get_cfg_dio(DIO_GNSS_RXD));
+    GPIO_setConfig(CONF_GPIO_PWR_MUX_CTRL, gpio_get_cfg_dio(DIO_PWR_MUX_CTRL));
+    GPIO_setConfig(CONF_GPIO_BATT_SCL , gpio_get_cfg_dio(DIO_GNSS_RXD));
+    GPIO_setConfig(CONF_GPIO_BATT_SDA, gpio_get_cfg_dio(DIO_BATT_SDA));
+    GPIO_setConfig(CONF_GPIO_GNSS_RST_N, gpio_get_cfg_dio(DIO_GNSS_RST_N));
+
+    GPIO_writeDio(DIO_GNSS_RST_N, 1);
+    GPIO_writeDio(DIO_SCLK, 0);
+    GPIO_writeDio(DIO_MOSI, 0);
+    return true;
+}
