@@ -14,6 +14,7 @@
 #include "bit_utils.h"
 #include "board_layout.h"
 #include "data_utils.h"
+#include "none_blocking_pause.h"
 
 const GPIOCC26XX_Config GPIOCC26XX_config = {.pinConfigs = (GPIO_PinConfig*)gpioPinConfigs,
                                              .callbacks = (GPIO_CallbackFxn*)gpioCallbackFunctions,
@@ -111,12 +112,6 @@ bool gpio_init(void) {
         GPIO_enableInt(CONF_GPIO_CAN_INT);
 #endif /* HAS_TCAN4550 */
 
-#ifdef HAS_ZED_F9P
-        GPIO_setConfig(CONF_GPIO_GNSS_RST_N, gpio_get_cfg_dio(DIO_GNSS_RST_N));
-        GPIO_setConfig(CONF_GPIO_GNSS_INT, gpio_get_cfg_dio(DIO_GNSS_INT));
-        GPIO_setConfig(CONF_GPIO_GNSS_SAFEBOOT_N, gpio_get_cfg_dio(DIO_GNSS_SAFEBOOT_N));
-#endif /* HAS_ZED_F9P */
-
 #ifdef HAS_BOOTLOADER
         GPIO_setConfig(CONF_GPIO_GNSS_RST_N, gpio_get_cfg_dio(DIO_GNSS_RST_N));
 #endif /* HAS_BOOTLOADER */
@@ -163,8 +158,13 @@ bool gpio_init(void) {
 #endif /* HAS_TCAN4550 */
 
 #ifdef HAS_ZED_F9P
+        GPIO_setConfig(CONF_GPIO_GNSS_RST_N, gpio_get_cfg_dio(DIO_GNSS_RST_N));
+        GPIO_setConfig(CONF_GPIO_GNSS_INT, gpio_get_cfg_dio(DIO_GNSS_INT));
+        GPIO_setConfig(CONF_GPIO_GNSS_SAFEBOOT_N, gpio_get_cfg_dio(DIO_GNSS_SAFEBOOT_N));
         GPIO_writeDio(DIO_GNSS_SAFEBOOT_N, 1);
         GPIO_writeDio(DIO_GNSS_RST_N, 0);
+        res = gpio_set_dir(DIO_GNSS_INT, GPIO_DIR_INOUT) && res;
+        GPIO_writeDio(DIO_GNSS_INT, 1);
 #endif /* HAS_ZED_F9P */
 
 #ifdef HAS_BOOTLOADER
@@ -172,7 +172,6 @@ bool gpio_init(void) {
 #endif /* HAS_BOOTLOADER */
 
 #ifdef HAS_HARVESTER
-        GPIO_writeDio(DIO_GNSS_INT, 1);
         GPIO_writeDio(DIO_LEN, 0);
         GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
 #endif /*HAS_HARVESTER*/
@@ -312,6 +311,7 @@ bool gpio_toggle(uint8_t dio_number) {
     uint8_t new_logic_level = 0;
     gpio_get_state(dio_number, &orig_logic_level);
     GPIO_toggleDio((uint32_t)dio_number);
+    wait_in_loop_ms(200);
     gpio_get_state(dio_number, &new_logic_level);
     if(orig_logic_level != new_logic_level) {
         res = true;
@@ -358,8 +358,8 @@ bool gpio_set_dir(uint8_t dio_pin, DioDir_t des_dir) {
             GPIO_setOutputEnableDio((uint32_t)dio_pin, GPIO_OUTPUT_ENABLE);
             res = true;
         } else if(GPIO_DIR_INOUT == des_dir) {
+            IOCIOInputSet((uint32_t)dio_pin, IOC_INPUT_ENABLE);
             GPIO_setOutputEnableDio((uint32_t)dio_pin, GPIO_OUTPUT_ENABLE);
-            res = true;
         } else {
             IOCIOInputSet((uint32_t)dio_pin, IOC_INPUT_DISABLE);
             GPIO_setOutputEnableDio((uint32_t)dio_pin, GPIO_OUTPUT_DISABLE);

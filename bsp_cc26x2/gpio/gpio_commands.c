@@ -175,14 +175,50 @@ bool gpio_toggle_command(int32_t argc, char* argv[]) {
         if(true == res) {
             res = gpio_toggle(dio_num);
             if(false == res) {
-                LOG_ERROR(SYS, "Unable to toggle gpio");
+                LOG_ERROR(SYS, "Unable to toggle gpio %u %s", dio_num, gpio_get_name(dio_num));
             } else {
-                io_printf("pin %u toggled" CRLF, dio_num);
+                LOG_INFO(SYS, "pin %u %s toggle OK" CRLF, dio_num, gpio_get_name(dio_num));
             }
         }
     } else {
         LOG_ERROR(SYS, "Usage: gt dio_num gpio_pin");
         LOG_INFO(SYS, "gpio_pin 0....15 ");
+    }
+    return res;
+}
+
+bool gpio_set_dir_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    uint8_t dio_num = 0;
+    DioDir_t dio_dir = GPIO_DIR_UNDEF;
+    if(1 <= argc) {
+
+        res = try_str2uint8(argv[0], &dio_num);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to extract dio_num %s", argv[0]);
+        }
+    }
+
+    if(2 <= argc) {
+        res = try_str2uint8(argv[1], &dio_dir);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to extract dio_dir %s", argv[1]);
+        }else{
+            io_printf("Des dir %s"CRLF, gpio_dir2str(dio_dir));
+        }
+    }
+
+    if(2 < argc) {
+        LOG_ERROR(SYS, "Usage: gsd dio_num dir");
+    }
+
+    if(res) {
+        res = gpio_set_dir(dio_num, dio_dir);
+        if(false == res) {
+            LOG_ERROR(SYS, "error %u %s", dio_num, gpio_get_name(dio_num));
+        } else {
+            LOG_INFO(SYS, "pin %u dir %u %s" , dio_num, dio_dir, gpio_get_name(dio_num));
+        }
     }
     return res;
 }
@@ -203,9 +239,14 @@ bool gpio_get_dir_command(int32_t argc, char* argv[]) {
         if(true == res) {
             dio_dir = gpio_get_dir(dio_num);
             if(false == res) {
-                LOG_ERROR(SYS, "error");
+                LOG_ERROR(SYS, "error %u %s", dio_num, gpio_get_name(dio_num));
             } else {
-                io_printf("pin %u dir %u" CRLF, dio_num, dio_dir);
+                LOG_INFO(SYS, "DIO_%u (%s) dir [%u] %s " CRLF,
+                         dio_num,
+                         gpio_get_name(dio_num),
+                         dio_dir,
+                         gpio_dir2str(dio_dir)
+                         );
             }
         }
     } else {
@@ -221,11 +262,9 @@ bool gpio_set_pull_command(int32_t argc, char* argv[]) {
     if(2 == argc) {
         res = true;
 
-        if(true == res) {
-            res = try_str2uint8(argv[0], &dio);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract dio %s", argv[0]);
-            }
+        res = try_str2uint8(argv[0], &dio);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to extract dio %s", argv[0]);
         }
 
         if(true == res) {

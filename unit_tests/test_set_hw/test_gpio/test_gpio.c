@@ -10,11 +10,12 @@
 #include "unit_test_check.h"
 
 static bool test_gpio_pin_lev(uint8_t dio_number, uint8_t des_logic_level) {
-    uint8_t cur_logic_level;
+    uint8_t cur_logic_level=0xFF;
     EXPECT_TRUE(gpio_set_state(dio_number, des_logic_level));
-    delay_ms(200);
+    delay_ms(300);
     EXPECT_TRUE(gpio_get_state(dio_number, &cur_logic_level));
     EXPECT_EQ(des_logic_level, cur_logic_level);
+    LOG_INFO(TEST, "set DIO_%2u %s to %u OK!", dio_number, gpio_get_name(dio_number), des_logic_level);
     return true;
 }
 

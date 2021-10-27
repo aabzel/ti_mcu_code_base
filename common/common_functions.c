@@ -72,7 +72,7 @@
 
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
-#endif
+#endif /*HAS_WDT*/
 
 bool sys_init(void) {
     bool res = true;

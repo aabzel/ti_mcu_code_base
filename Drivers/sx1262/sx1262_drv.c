@@ -1425,7 +1425,7 @@ bool sx1262_process(void) {
         }
     } else {
         LOG_ERROR(LORA, "SX1262 SPI link lost");
-        res=sx1262_init();
+        res = sx1262_init();
     }
 
     return res;
