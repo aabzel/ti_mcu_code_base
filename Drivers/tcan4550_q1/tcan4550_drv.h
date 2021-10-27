@@ -27,7 +27,7 @@ typedef struct {
     bool wdt;
     CanDevMode_t mode;
     LastErrorCode_t lec;
-    uint32_t int_cnt;
+    volatile uint32_t int_cnt;
 } Can4550State_t;
 
 typedef struct {

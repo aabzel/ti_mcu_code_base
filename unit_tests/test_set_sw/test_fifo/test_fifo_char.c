@@ -14,8 +14,6 @@ bool test_fifo_2(void) {
     printf("\n%s():", __FUNCTION__);
 #endif
     Fifo_array_t FifiObj;
-    char peek_ch = '0';
-    char outChar = '0';
     char FiFoHeap[6] = "";
     EXPECT_TRUE(fifo_init(&FifiObj, FiFoHeap, sizeof(FiFoHeap)));
     EXPECT_EQ(0, fifo_get_count(&FifiObj));

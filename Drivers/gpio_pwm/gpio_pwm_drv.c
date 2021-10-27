@@ -12,7 +12,8 @@ static bool gpio_pwm_init_done = false;
 
 bool gpio_pwm_init(void) {
     bool res = false;
-    for(uint16_t i = 0; i < NUM_OF_PWM_DIO; i++) {
+    uint16_t i =0;
+    for(i = 0; i < NUM_OF_PWM_DIO; i++) {
         GpioPwmDioTable[i].dio = 0xFF;
         GpioPwmDioTable[i].duty_cycle = 0xFF;
         GpioPwmDioTable[i].frequency = -10.0;
@@ -28,14 +29,16 @@ bool gpio_pwm_init(void) {
 bool gpio_pwm_add(uint8_t dio, uint32_t period_ms, uint8_t in_duty, int32_t phase_ms, GpioPwmDioStates_t in_state) {
     bool res = false;
     uint16_t spot_index = 0;
-    for(uint16_t i = 0U; i < NUM_OF_PWM_DIO; i++) {
+    uint16_t i=0;
+    for( i = 0U; i < NUM_OF_PWM_DIO; i++) {
         if(GpioPwmDioTable[i].dio == dio) {
             spot_index = i;
             res = true;
         }
     }
     if(false == res) {
-        for(uint16_t i = 0; i < NUM_OF_PWM_DIO; i++) {
+        uint16_t i =0;
+        for(i = 0; i < NUM_OF_PWM_DIO; i++) {
             if(DIO_SPARE == GpioPwmDioTable[i].satus) {
                 spot_index = i;
                 GpioPwmDioTable[i].dio = dio;
@@ -67,7 +70,8 @@ static bool gpio_pwm_proc_one(uint8_t dio, uint8_t des_duty_cycle, uint32_t peri
 bool gpio_pwm_proc(void) {
     bool res = false;
     if(true == gpio_pwm_init_done) {
-        for(uint16_t i = 0U; i < NUM_OF_PWM_DIO; i++) {
+        uint16_t i =0;
+        for(i = 0U; i < NUM_OF_PWM_DIO; i++) {
             if(DIO_ON == GpioPwmDioTable[i].satus) {
                 res = gpio_pwm_proc_one(GpioPwmDioTable[i].dio, GpioPwmDioTable[i].duty_cycle,
                                         GpioPwmDioTable[i].period_ms, GpioPwmDioTable[i].phase_ms);

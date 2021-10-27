@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "TCAN4550.h"
+#include "TCAN_hl.h"
 #include "bit_utils.h"
 #include "byte_utils.h"
 #include "clocks.h"

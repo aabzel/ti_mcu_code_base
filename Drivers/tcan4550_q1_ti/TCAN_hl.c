@@ -1,59 +1,3 @@
-/*
- * Author: Texas Instruments
- * Date: 4/25/2019
- *
- * Description: A basic version of code to set up and receive a packet.
- *  - This is designed to work with the EVM the BOOSTXL-CANFD-LIN Rev 1.0 Boosterpack
- *  - It assumes TCAN4550 Oscillator of 40 MHz
- *  - Sets CAN arbitration rate at 500 kBaud
- *  - Sets CAN FD data phase for 2 MBaud
- *  - The interrupt pin is used for signal a received message, rather than polling
- *
- *   Pressing S1 will transmit a CAN message. S1 is on the MSP430FR6989 launchpad to the left.
- *
- *  Pinout
- *   - P1.4 SPI Clock / SCLK
- *   - P1.6 MOSI / SDI
- *   - P1.7 MISO / SDO
- *   - P2.5 SPI Chip Select / nCS
- *
- *   - P2.3 MCAN Interrupt 1 / nINT
- *   - Ground wire is important
- *
- *
- *
- * Copyright (c) 2019 Texas Instruments Incorporated.  All rights reserved.
- * Software License Agreement
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the
- * distribution.
- *
- * Neither the name of Texas Instruments Incorporated nor the names of
- * its contributors may be used to endorse or promote products derived
- * from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 #include "TCAN_hl.h"
 
 #include <stdbool.h>
@@ -62,11 +6,6 @@
 #include "tcan4550_drv.h"
 #include "log.h"
 
-volatile uint8_t TCAN_Int_Cnt = 0;					// A variable used to keep track of interrupts the MCAN Interrupt pin
-
-/*
- * Configure the TCAN4550
- */
 bool init_tcan(void){
     bool res = true;
     set_log_level(CAN, LOG_LEVEL_NOTICE  ) ;
