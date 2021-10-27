@@ -36,6 +36,7 @@ bool is_flash_spare(uint32_t flash_addr, uint32_t size);
 bool is_flash_addr(uint32_t flash_addr);
 bool flash_find_spare_region(uint32_t* out_addr, uint32_t size);
 uint32_t flash_page2addr(uint8_t page);
+uint32_t flash_get_first_spare_page(void);
 /*
  * API
  erase 8kbyte flash block

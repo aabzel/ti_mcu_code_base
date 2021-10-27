@@ -616,3 +616,12 @@ uint8_t addr2page_num(uint32_t mm_page_start) {
     }
     return page_num;
 }
+
+bool is_flash_fs_addr(uint32_t addr){
+    bool res = false;
+    if( (NVS_FLASH_START <= addr) &&
+        (addr <= NVS_FLASH_END)){
+        res = true;
+    }
+    return res;
+}

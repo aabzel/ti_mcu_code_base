@@ -12,7 +12,7 @@
  * The last flash memory sector must contain a Customer Configuration section (CCFG)
  * that is used by boot ROM and TI provided drivers to configure the device.*/
 #define NVS_FLASH_START ((NOR_FLASH_END-NVS_SIZE)-FLASH_SECTOR_SIZE)
-
+#define NVS_FLASH_END   (NVS_FLASH_START+NVS_SIZE-1)
 /* page 1 */
 #define MEMORY_MANAGER1_OFFSET	NVS_FLASH_START
 #define MEMORY_MANAGER1_LENGTH	FLASH_FS_PAGE_SIZE

@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 
-#define FLASH_ADDR_TEST 0x00048000
+#define FLASH_ADDR_TEST 0x0004c000 /*TODO*/
 
 bool test_flash_write(void);
 

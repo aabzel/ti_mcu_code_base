@@ -170,6 +170,21 @@ bool is_flash_spare(uint32_t flash_addr, uint32_t size) {
     return res;
 }
 
+uint32_t flash_get_first_spare_page(void){
+    bool res = false;
+    uint32_t spare_flash_addr = 0xFFFFFFFF;
+    uint32_t flash_addr = NOR_FLASH_BASE;
+    for(flash_addr = NOR_FLASH_BASE;
+            flash_addr < NOR_FLASH_SIZE;
+            flash_addr += FLASH_SECTOR_SIZE) {
+        res = is_flash_spare(  flash_addr, FLASH_SECTOR_SIZE );
+        if(res){
+            spare_flash_addr = flash_addr;
+        }
+    }
+    return spare_flash_addr;
+}
+
 /*
  * find the first address of spare continuous block of given size
  * returns the start address

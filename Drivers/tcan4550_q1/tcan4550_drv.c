@@ -1291,6 +1291,7 @@ bool tcan4550_proc(void) {
     CanPhy.cur.connected = is_tcan4550_connected();
     if(false == CanPhy.cur.connected) {
         LOG_ERROR(CAN, "TCAN4550 SPI link lost");
+        res=init_tcan();
     } else {
         tCanRegCCctrl_t ctrl_reg = {0};
         tCanRegProtStat_t proto_stat = {0};

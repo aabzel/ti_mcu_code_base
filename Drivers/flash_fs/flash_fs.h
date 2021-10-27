@@ -56,5 +56,6 @@ bool mm_turn_page(void);
 uint32_t mm_cnt_files(uint32_t start_page_addr, uint32_t page_len, uint32_t* spare_cnt);
 uint32_t mm_get_remaining_space(void);
 uint8_t addr2page_num(uint32_t mm_page_start);
+bool is_flash_fs_addr(uint32_t addr);
 
 #endif /* MEMORY_MANAGER_NOR_FLASH_H */
