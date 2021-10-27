@@ -8,22 +8,24 @@
 #include "gpio_drv.h"
 #include "sys_config.h"
 
-bool bq25171_q1_init(void){
+
+bool bq25171_q1_charge_enable(bool state){
     bool res = false;
-    res = bq25171_q1_charge_enable(false);
-    res = gpio_set_pull_mode(  DIO_GNSS_INT, PULL_AIR) && res;
-    res = gpio_set_dir( DIO_GNSS_INT, GPIO_DIR_NONE) && res;
+    if(true==state){
+        /*Active Low Charge Enable pin*/
+        res = gpio_set_state(  DIO_GNSS_INT, 0);
+    } else if(false==state){
+        res = gpio_set_state(  DIO_GNSS_INT, 1);
+    }
     return res;
 }
 
-bool bq25171_q1_charge_enable(bool state){
-    if(true==state){
-        /*Active Low Charge Enable pin*/
-        GPIO_writeDio(DIO_GNSS_INT, 0);
-    } else if(false==state){
-        GPIO_writeDio(DIO_GNSS_INT, 1);
-    }
-    return true;
+bool bq25171_q1_init(void){
+    bool res = false;
+    res = gpio_set_pull_mode(DIO_GNSS_INT, PULL_AIR) && res;
+    res = gpio_set_dir( DIO_GNSS_INT, GPIO_DIR_INOUT) && res;
+    res = bq25171_q1_charge_enable(false);
+    return res;
 }
 
 ChargingStatus_t bq25171_q1_get_status(void){

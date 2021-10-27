@@ -99,9 +99,13 @@ bool gpio_init(void) {
 #ifdef HAS_LED
         GPIO_setConfig(CONF_GPIO_LED_0, gpio_get_cfg_dio(DIO_LED_RED));
         GPIO_setConfig(CONF_GPIO_LED_1, gpio_get_cfg_dio(DIO_LED_GREEN));
+        GPIO_writeDio(DIO_LED_RED, 0);
+        GPIO_writeDio(DIO_LED_GREEN, 0);
 #endif /*HAS_LED*/
+
 #ifdef HAS_RS232
         GPIO_setConfig(CONF_GPIO_PS_RS232, gpio_get_cfg_dio(DIO_PS_RS232));
+        GPIO_writeDio(DIO_PS_RS232, 1);
 #endif /*HAS_RS232*/
 
 #ifdef HAS_TCAN4550
@@ -110,10 +114,13 @@ bool gpio_init(void) {
         GPIO_setConfig(CONF_GPIO_CAN_INT, gpio_get_cfg_dio(DIO_CAN_INT));
         GPIO_setCallback(CONF_GPIO_CAN_INT, dio8_fall_call_back);
         GPIO_enableInt(CONF_GPIO_CAN_INT);
+        GPIO_writeDio(DIO_CAN_SS, 1);
+        GPIO_writeDio(DIO_CAN_RST, 1);
 #endif /* HAS_TCAN4550 */
 
 #ifdef HAS_BOOTLOADER
         GPIO_setConfig(CONF_GPIO_GNSS_RST_N, gpio_get_cfg_dio(DIO_GNSS_RST_N));
+        GPIO_writeDio(DIO_GNSS_RST_N, 1);
 #endif /* HAS_BOOTLOADER */
 
 #ifdef HAS_HARVESTER
@@ -121,41 +128,23 @@ bool gpio_init(void) {
         GPIO_setConfig(CONF_GPIO_LEN, gpio_get_cfg_dio(DIO_LEN));
         GPIO_setConfig(CONF_GPIO_BATT_SCL, gpio_get_cfg_dio(DIO_BATT_SCL));
         GPIO_setConfig(CONF_GPIO_BATT_SDA, gpio_get_cfg_dio(DIO_BATT_SDA));
+        GPIO_writeDio(DIO_LEN, 0);
+        GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
 #endif /*HAS_HARVESTER*/
 
 #ifdef LAUNCHXL_CC26X2R1
-        GPIO_setConfig(CONFIG_GPIO_BUTTON_0, gpio_get_cfg_dio(DIO_BUTTON_0));
-
         GPIO_setConfig(CONFIG_GPIO_LOOP_SENSOR, gpio_get_cfg_dio(DIO_LOOP_SENSOR));
-        /* Install Button callback */
+
+        GPIO_setConfig(CONFIG_GPIO_BUTTON_0, gpio_get_cfg_dio(DIO_BUTTON_0));
         GPIO_setCallback(CONFIG_GPIO_BUTTON_0, gpioButtonFxn0);
-        /* Enable interrupts */
         GPIO_enableInt(CONFIG_GPIO_BUTTON_0);
 
-        /*
-         *  If more than one input pin is available for your device, interrupts
-         *  will be enabled on CONFIG_GPIO_BUTTON1.
-         */
         if(CONFIG_GPIO_BUTTON_0 != CONFIG_GPIO_BUTTON_1) {
-            /* Configure BUTTON1 pin */
             GPIO_setConfig(CONFIG_GPIO_BUTTON_1, gpio_get_cfg_dio(DIO_BUTTON_1));
-
-            /* Install Button callback */
             GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);
             GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
         }
 #endif
-#ifdef HAS_LED
-        GPIO_writeDio(DIO_LED_RED, 0);
-        GPIO_writeDio(DIO_LED_GREEN, 0);
-#endif /*HAS_LED*/
-#ifdef HAS_RS232
-        GPIO_writeDio(DIO_PS_RS232, 1);
-#endif /*HAS_RS232*/
-#ifdef HAS_TCAN4550
-        GPIO_writeDio(DIO_CAN_SS, 1);
-        GPIO_writeDio(DIO_CAN_RST, 1);
-#endif /* HAS_TCAN4550 */
 
 #ifdef HAS_ZED_F9P
         GPIO_setConfig(CONF_GPIO_GNSS_RST_N, gpio_get_cfg_dio(DIO_GNSS_RST_N));
@@ -163,18 +152,8 @@ bool gpio_init(void) {
         GPIO_setConfig(CONF_GPIO_GNSS_SAFEBOOT_N, gpio_get_cfg_dio(DIO_GNSS_SAFEBOOT_N));
         GPIO_writeDio(DIO_GNSS_SAFEBOOT_N, 1);
         GPIO_writeDio(DIO_GNSS_RST_N, 0);
-        res = gpio_set_dir(DIO_GNSS_INT, GPIO_DIR_INOUT) && res;
         GPIO_writeDio(DIO_GNSS_INT, 1);
 #endif /* HAS_ZED_F9P */
-
-#ifdef HAS_BOOTLOADER
-        GPIO_writeDio(DIO_GNSS_RST_N, 1);
-#endif /* HAS_BOOTLOADER */
-
-#ifdef HAS_HARVESTER
-        GPIO_writeDio(DIO_LEN, 0);
-        GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
-#endif /*HAS_HARVESTER*/
     }
     return res;
 }

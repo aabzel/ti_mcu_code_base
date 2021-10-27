@@ -25,7 +25,7 @@ bool gpio_toggle_command(int32_t argc, char* argv[]);
         SHELL_CMD("gpio_pull", "gp", gpio_set_pull_command, "GPIO set pull"),                                          \
         SHELL_CMD("gpio_in", "gis", gpio_set_in_mode_command, "GPIO set in mode"),                                     \
         SHELL_CMD("gpio_get", "gg", gpio_get_command, "GPIO get"),                                                     \
-        SHELL_CMD("gpio_dirr", "ggd", gpio_get_dir_command, "GPIO dir"),                                                \
+        SHELL_CMD("gpio_dirr", "ggd", gpio_get_dir_command, "GPIO dir"),                                               \
         SHELL_CMD("gpio_set_dirr", "gsd", gpio_set_dir_command, "GPIO set dir"),                                       \
         SHELL_CMD("gpio_set", "gs", gpio_set_command, "GPIO set"),
 

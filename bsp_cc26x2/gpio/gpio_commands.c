@@ -203,8 +203,8 @@ bool gpio_set_dir_command(int32_t argc, char* argv[]) {
         res = try_str2uint8(argv[1], &dio_dir);
         if(false == res) {
             LOG_ERROR(SYS, "Unable to extract dio_dir %s", argv[1]);
-        }else{
-            io_printf("Des dir %s"CRLF, gpio_dir2str(dio_dir));
+        } else {
+            io_printf("Des dir %s" CRLF, gpio_dir2str(dio_dir));
         }
     }
 
@@ -217,7 +217,7 @@ bool gpio_set_dir_command(int32_t argc, char* argv[]) {
         if(false == res) {
             LOG_ERROR(SYS, "error %u %s", dio_num, gpio_get_name(dio_num));
         } else {
-            LOG_INFO(SYS, "pin %u dir %u %s" , dio_num, dio_dir, gpio_get_name(dio_num));
+            LOG_INFO(SYS, "pin %u dir %u %s", dio_num, dio_dir, gpio_get_name(dio_num));
         }
     }
     return res;
@@ -241,12 +241,8 @@ bool gpio_get_dir_command(int32_t argc, char* argv[]) {
             if(false == res) {
                 LOG_ERROR(SYS, "error %u %s", dio_num, gpio_get_name(dio_num));
             } else {
-                LOG_INFO(SYS, "DIO_%u (%s) dir [%u] %s " CRLF,
-                         dio_num,
-                         gpio_get_name(dio_num),
-                         dio_dir,
-                         gpio_dir2str(dio_dir)
-                         );
+                LOG_INFO(SYS, "DIO_%u (%s) dir [%u] %s " CRLF, dio_num, gpio_get_name(dio_num), dio_dir,
+                         gpio_dir2str(dio_dir));
             }
         }
     } else {
