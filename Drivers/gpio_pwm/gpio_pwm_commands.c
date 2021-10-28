@@ -18,7 +18,7 @@ bool gpio_pwm_diag_command(int32_t argc, char* argv[]) {
         static const table_col_t cols[] = {{5, "dio"},  {7, "gpio"},     {5, "pin"},   {5, "state"},
                                            {9, "freq"}, {9, "periodMs"}, {7, "duty%"}, {8, "phaseMs"}};
         table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
-        uint16_t i =0;
+        uint16_t i = 0;
         for(i = 0; i < NUM_OF_PWM_DIO; i++) {
             if(DIO_SPARE != GpioPwmDioTable[i].satus) {
                 io_printf(TABLE_SEPARATOR " %3u ", GpioPwmDioTable[i].dio);
