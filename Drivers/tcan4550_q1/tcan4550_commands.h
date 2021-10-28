@@ -8,6 +8,7 @@ extern "C" {
 #include "cli_manager.h"
 
 bool tcan4550_clear_mram_command(int32_t argc, char* argv[]);
+bool tcan4550_deinit_command(int32_t argc, char* argv[]);
 bool tcan4550_diag_hl_command(int32_t argc, char* argv[]);
 bool tcan4550_diag_ll_command(int32_t argc, char* argv[]);
 bool tcan4550_diag_mram_command(int32_t argc, char* argv[]);
@@ -26,8 +27,6 @@ bool tcan4550_set_mode_command(int32_t argc, char* argv[]);
 bool tcan4550_set_rate_command(int32_t argc, char* argv[]);
 bool tcan4550_write_reg_command(int32_t argc, char* argv[]);
 
-
-
 #define TCAN4550_COMMANDS                                                                                               \
         SHELL_CMD("tcan4550_send_std", "css", tcan4550_send_std_frame_command, "TCAN4550 send std frame"),                  \
         SHELL_CMD("tcan4550_send_ext", "cse", tcan4550_send_ext_frame_command, "TCAN4550 send ext frame"),                  \
@@ -38,6 +37,7 @@ bool tcan4550_write_reg_command(int32_t argc, char* argv[]);
         SHELL_CMD("tcan4550_diag_hl", "cdh", tcan4550_diag_hl_command, "TCAN4550 diag hight level"),                \
         SHELL_CMD("tcan4550_diag_ram", "cdr", tcan4550_diag_mram_command, "TCAN4550 diag MRAM"),                    \
         SHELL_CMD("tcan4550_init", "ci", tcan4550_init_command, "TCAN4550 init"),                                       \
+        SHELL_CMD("tcan4550_deinit", "cdi", tcan4550_deinit_command, "TCAN4550 deinit"),                                       \
         SHELL_CMD("tcan4550_fifo_diag", "cfd", tcan4550_fifo_diag_command, "TCAN4550 FIFO diag"),                       \
         SHELL_CMD("tcan4550_fifo_get", "cfg", tcan4550_get_fifos_command, "TCAN4550 get from fifos"),                   \
         SHELL_CMD("tcan4550_reg_map", "cm", tcan4550_reg_map_command, "TCAN4550 reg map"),                              \

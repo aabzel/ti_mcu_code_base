@@ -89,6 +89,12 @@ typedef struct xVtg_t {
     char posMode;  /*Mode indicator*/
 } vtg_t;
 
+
+typedef struct  xPbux_t{
+    uint8_t msg_id;
+    struct tm time;
+}pbux_t;
+
 typedef struct xSatellite_t {
     uint16_t svid; /*Satellite ID*/
     uint8_t elv;   /*Elevation (<= 90)*/
@@ -114,6 +120,7 @@ typedef struct xNmeaData_t {
     gga_t gga; /*Global positioning system fix data*/
     gsa_t gsa; /*GNSS DOP and active satellites*/
     gsv_t gsv; /*GNSS satellites in view*/
+    pbux_t pbux; /*Proprietary NMEA messages for u-blox positioning receivers*/
     // rlm_t rlm; /*Return link message (RLM) */
     // ths_t ths; /*True heading and status*/
     // txt_t txt; /*Text transmission*/
@@ -141,6 +148,7 @@ bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg);
 bool gnss_parse_gga(char* nmea_msg, gga_t* gga);
 bool gnss_parse_gsa(char* nmea_msg, gsa_t* gsa);
 bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx);
+bool gnss_parse_pbux_pos(char* nmea_msg,pbux_t *const pbux);
 bool gnss_parse_gll(char* nmea_msg, gll_t* gll);
 bool nmea_proc_message(void);
 

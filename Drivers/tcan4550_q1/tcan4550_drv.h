@@ -60,6 +60,7 @@ bool is_tcan4550_connected(void);
 bool is_tcan4550_protected_reg_locked(tCanRegCCctrl_t* reg);
 bool is_tcan4550_protected_reg_unlock(tCanRegCCctrl_t* reg);
 bool tcan4550_init(void);
+bool tcan4550_deinit(void);
 bool tcan4550_set_mode(CanDevMode_t dev_mode);
 bool tcan4550_set_lock(bool state);
 bool tcan4550_set_bit_rate(uint32_t des_bit_rate);

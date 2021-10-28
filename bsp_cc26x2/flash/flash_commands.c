@@ -51,7 +51,7 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
         if(is_print) {
             io_printf(TSEP " %3u ", num);
             io_printf("%s", line_str);
-            wait_in_loop_ms(4);
+            wait_in_loop_ms(2);
             num++;
         }
     }

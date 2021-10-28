@@ -93,7 +93,33 @@ static bool test_nmea_checksum(void){
     return true;
 }
 
+const char msg_pubx[] = "$PUBX,00,001417.00,0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21";
+static bool test_nmea_proto_pubx(void) {
+    pbux_t pbux= {0};
+    EXPECT_TRUE( gnss_parse_pbux_pos((char*)msg_pubx, &pbux));
+    EXPECT_EQ(0,pbux.msg_id);//00,001417.00,0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
+    EXPECT_EQ(17,pbux.time.tm_sec);//001417.00,0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
+    EXPECT_EQ(14,pbux.time.tm_min);
+    EXPECT_EQ(0,pbux.time.tm_hour);
+#if 0
+    EXPECT_NEAR(0000.0,pbux.latitude,0.000001);//0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
+    EXPECT_NEAR(0000.0,pbux.longitude,0.000001);//00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
+    EXPECT_EQ('N',pbux.ns_indicator);//N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
+    EXPECT_EQ('E',pbux.ee_indicator);//E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
+    EXPECT_NEAR(0.0,vtg.altitude,0.00001);//
+    EXPECT_STR_EQ("NF",pbux.nav_status);//
+    EXPECT_NEAR(5303356, pbux.horizontal_accuracy_estimate,0.3);//
+    EXPECT_NEAR(3750039, pbux.vertical_accuracy_estimate,0.3);//
+    EXPECT_NEAR(0.0,pbux.speed_over_ground,0.4);//km/h
+    EXPECT_NEAR(0.0, pbux.Course_over_ground,0.3);//deg
+    EXPECT_NEAR(0.0, pbux.Vertical_velocity,0.3);//m/s
+    EXPECT_EQ('A',pbux.posMode);
+#endif
+    return true;
+}
+
 bool test_nmea_proto(void) {
+  EXPECT_TRUE(test_nmea_proto_pubx());
   EXPECT_TRUE(test_nmea_checksum());
   EXPECT_TRUE(test_nmea_proto_gnrmc());
   EXPECT_TRUE(test_nmea_proto_gnvtg());

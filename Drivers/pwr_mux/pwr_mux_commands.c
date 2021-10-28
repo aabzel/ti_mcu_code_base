@@ -3,9 +3,13 @@
 #include <inttypes.h>
 
 #include "convert.h"
-#include "pwr_mux_drv.h"
+#include "gpio_drv.h"
 #include "log.h"
 #include "io_utils.h"
+#include "pwr_mux_drv.h"
+#include "sys_config.h"
+#include "task_info.h"
+#include "tcan4550_drv.h"
  
 bool pwr_mux_set_command(int32_t argc, char* argv[]){
     bool res = false;
@@ -43,5 +47,29 @@ bool pwr_mux_diag_command(int32_t argc, char* argv[]){
     return res;
 }
 
+bool pwr_set_save_mode_command(int32_t argc, char *argv[]) {
+    bool res = false;
+    bool state = false;
+    if(1 == argc) {
+        res = try_str2bool(argv[0], &state);
+        if(false == res) {
+            LOG_ERROR(PWR, "Unable to extract state %s", argv[0]);
+        }
+    }
+    if(res){
+        if (true==state) {
+            LOG_INFO(PWR, "Enter power save mode");
+            res = tcan4550_deinit() && res;
+            task_data[TASK_ID_TCAN4550].on = false;
+            res = gpio_set_state(DIO_PS_RS232 , 0)&& res;
+        } else {
+            LOG_INFO(PWR, "Enter power normal mode");
+            res = gpio_set_state(DIO_PS_RS232 , 1);
+            task_data[TASK_ID_TCAN4550].on = true;
+        }
+    }
+
+    return res;
+}
 
 

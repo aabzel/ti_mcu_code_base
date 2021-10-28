@@ -10,11 +10,11 @@ extern "C" {
 
 #include "base_cmd.h"
 
+bool pwr_set_save_mode_command(int32_t argc, char *argv[]);
 bool health_monitor_command(int32_t argc, char *argv[]);
 
 #define HEALTH_MONITOR_COMMANDS                      \
   SHELL_CMD("health_mon", "hm", health_monitor_command, "Health monitor"),
-
 #ifdef __cplusplus
 }
 #endif

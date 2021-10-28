@@ -1,4 +1,5 @@
 #include "tcan4550_drv.h"
+
 #include <gpio.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -1030,6 +1031,13 @@ bool tcan4550_init(void) {
         // Resets all MCAN interrupts (does NOT include any SPIERR interrupts)
         res = tcan4550_write_reg(ADDR_MCAN_IR, 0xFFFFFFFF) && res;
     }
+    return res;
+}
+
+bool tcan4550_deinit(void){
+    bool res = true;
+    LOG_WARNING(CAN, "deinit");
+    res = tcan4550_set_mode(MODE_SLEEP) && res;
     return res;
 }
 

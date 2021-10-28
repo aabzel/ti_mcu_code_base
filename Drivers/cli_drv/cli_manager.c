@@ -110,18 +110,18 @@ bool cli_init(void) {
 
 #ifndef X86_64
 bool cli_process(void) {
-    static uint8_t rx_byte=0;
+//    static uint8_t rx_byte=0;
     if(true == huart[UART_NUM_CLI].rx_int) {
         huart[UART_NUM_CLI].rx_int = false;
         huart[UART_NUM_CLI].rx_it_proc_done = true;
     }
 
     bool res = false;
-    static bool entry = false;
-    if(false == entry) {
+    //static bool entry = false;
+    //if(false == entry) {
         /* recursive protection from test which call during execution */
         if(true == cli_init_done) {
-            entry = true;
+         //   entry = true;
             cli_task_cnt++;
             if(true == huart[UART_NUM_CLI].tx_int) {
                 dbg_o.f_transmit(&dbg_o);
@@ -129,9 +129,9 @@ bool cli_process(void) {
             }
             uart_string_reader_proccess(&cmd_reader);
             res = true;
-            entry = false;
+          //  entry = false;
         }
-    }
+    //}
     return res;
 }
 #endif

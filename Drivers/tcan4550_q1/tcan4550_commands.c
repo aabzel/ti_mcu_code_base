@@ -116,6 +116,21 @@ bool tcan4550_init_command(int32_t argc, char* argv[]){
     return res;
 }
 
+bool tcan4550_deinit_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(0==argc){
+        res = tcan4550_deinit();
+        if (res) {
+            LOG_INFO(CAN, "deinit OK");
+        }else{
+            LOG_ERROR(CAN, "deinit err");
+        }
+    } else {
+        LOG_ERROR(CAN, "Usage: cdi");
+    }
+    return res;
+}
+
 bool tcan4550_int_diag_command(int32_t argc, char* argv[]){
     bool res = false;
     return res;

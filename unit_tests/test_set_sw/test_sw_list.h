@@ -102,7 +102,6 @@ bool test_uspec_behavior(void);
     TEST_SUIT_FIFO_CHAR                                                                                                \
     TEST_SUIT_FIFO_ARRAY                                                                                               \
     TEST_SUIT_RTCM3_PROTO                                                                                              \
-    TEST_SUIT_UTILS_TIME                                                                                               \
     TEST_SUIT_SYSTEM                                                                                                   \
     TEST_SUIT_NMEA_PROTO                                                                                               \
     TEST_SUIT_STRING_UTILS                                                                                             \
