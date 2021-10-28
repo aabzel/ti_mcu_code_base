@@ -153,8 +153,8 @@
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262"/>
-									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
+									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
