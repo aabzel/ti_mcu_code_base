@@ -76,6 +76,7 @@ char* can_mode2str(uint8_t code) {
 bool tcan4550_parse_reg_revision(uint32_t reg_val) {
     bool res = false;
     tCanRegRev_t reg;
+    io_printf(CRLF);
     memcpy(&reg, &reg_val, 4);
     io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_SPI_2_REV, tcan4550_get_reg_name(ADDR_SPI_2_REV), reg_val,
               utoa_bin32(reg_val));
@@ -90,6 +91,7 @@ bool tcan4550_parse_reg_dev_id0(uint32_t reg_val) {
     bool res = false;
     Type32Union_t un32;
     un32.u32 = reg_val;
+    io_printf(CRLF);
     io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_DEVICE_ID0, tcan4550_get_reg_name(ADDR_DEVICE_ID0), reg_val,
               utoa_bin32(reg_val));
     io_printf("bit %u-%u: %c" CRLF, 24, 31, un32.u8[0]);
@@ -103,6 +105,7 @@ bool tcan4550_parse_reg_dev_id1(uint32_t reg_val) {
     bool res = false;
     Type32Union_t un32;
     un32.u32 = reg_val;
+    io_printf(CRLF);
     io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_DEVICE_ID1, tcan4550_get_reg_name(ADDR_DEVICE_ID1), reg_val,
               utoa_bin32(reg_val));
     io_printf("bit %u-%u: %c" CRLF, 24, 31, un32.u8[0]);
@@ -116,6 +119,7 @@ bool tcan4550_parse_reg_status(uint32_t reg_val) {
     bool res = false;
     tCanRegStatus_t reg = {0};
     memcpy(&reg, &reg_val, 4);
+    io_printf(CRLF);
     io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_SPI_STATUS, tcan4550_get_reg_name(ADDR_SPI_STATUS), reg_val,
               utoa_bin32(reg_val));
     if(reg.internal_read_error) {
@@ -186,6 +190,7 @@ bool tcan4550_parse_reg_mode_op_cfg(uint32_t reg_val) {
     bool res = false;
     tCanRegModeOpPinCfg_t reg;
     memcpy(&reg, &reg_val, 4);
+    io_printf(CRLF);
     io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_DEV_CONFIG, tcan4550_get_reg_name(ADDR_DEV_CONFIG), reg_val,
               utoa_bin32(reg_val));
     io_printf("bit %u-%u: wake_config %u" CRLF, 30, 31, reg.wake_config);
@@ -248,6 +253,7 @@ bool tcan4550_parse_reg_bit_timing(uint32_t reg_val) {
     float can_bit_period = 0.0f;
     float can_bit_rate = 0.0f;
     memcpy(&reg, &reg_val, 4);
+    io_printf(CRLF);
     io_printf("Addr 0x%04X %s 0x%08x 0b%s" CRLF, ADDR_MCAN_NBTP, tcan4550_get_reg_name(ADDR_MCAN_NBTP), reg_val,
               utoa_bin32(reg_val));
     io_printf("bit %u-%u: Nominal Time Segment After Sample Point %u" CRLF, 0, 6, reg.ntseg2);
@@ -264,6 +270,7 @@ bool tcan4550_parse_reg_bit_timing(uint32_t reg_val) {
 bool tcan4550_parse_reg_proto_state(uint32_t reg_val) {
     bool res = false;
     tCanRegProtStat_t ProtoState = {0};
+    io_printf(CRLF);
     memcpy(&ProtoState.word, &reg_val, 4);
     io_printf("bit %u-%u: Transmitter Delay Compensation Value [%u]" CRLF, 16, 22, ProtoState.tdcv);
     io_printf("bit %u: Protocol Exception Event [%u]" CRLF, 14, ProtoState.pxe);

@@ -3,7 +3,9 @@
 #include <inttypes.h>
 #include <stddef.h>
 
+#ifdef HAS_MCU
 #include "clocks.h"
+#endif /*HAS_MCU*/
 #include "convert.h"
 #include "io_utils.h"
 #include "log.h"
@@ -145,7 +147,9 @@ bool unit_tests_run(const char* key) {
 
     (void)strncpy(test_name, key, sizeof(test_name));
     test_name[sizeof(test_name) - 1U] = '\0';
+#ifdef HAS_MCU
     uint32_t start_time_ms = get_time_ms32();
+#endif
     if(0U == count) {
         if(0 == strcmp(test_name, "*")) {
             count = unit_test_run_range(0U, get_unit_test_count() - 1U);
@@ -200,10 +204,12 @@ bool unit_tests_run(const char* key) {
             }
         }
     }
+#ifdef HAS_MCU
     uint32_t end_time_ms = get_time_ms32();
     uint32_t duration_ms = 0;
     duration_ms = end_time_ms - start_time_ms;
     LOG_INFO(TEST, "Test duration %u ms =%u s= %u min" CRLF, duration_ms, MS_2_S(duration_ms), MS_2_MIN(duration_ms));
+#endif
     if(0U == count) {
 #ifdef HAS_CLI
         io_printf(VT_SETCOLOR_RED "Test %s not found!" CRLF, key);

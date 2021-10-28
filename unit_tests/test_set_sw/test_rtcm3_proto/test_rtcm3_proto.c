@@ -40,6 +40,8 @@ bool test_rtcm3_types(void) {
 #endif
     EXPECT_EQ(3, sizeof(Rtcm3Header_t));
     EXPECT_EQ(2, sizeof(Rtcm3Len_t));
+#ifndef X86_64
     EXPECT_EQ(1, sizeof(Rtcm3ProtState_t));
+#endif
     return true;
 }
