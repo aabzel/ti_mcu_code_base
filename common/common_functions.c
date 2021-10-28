@@ -91,7 +91,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_LED*/
 
 #ifdef HAS_CLI
-    measure_task_interval(TASK_ID_CLI, 2000, cli_process, loop_start_time_us);
+    measure_task_interval(TASK_ID_CLI, 1000, cli_process, loop_start_time_us);
 #endif /*HAS_CLI*/
 
 #ifdef HAS_GENERIC

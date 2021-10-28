@@ -117,7 +117,7 @@ static uint32_t baudRateLuTable[UART_COUNT] = {
     UART1_BAUD_RATE
 #endif
 };
-
+static uint8_t rx0_byte=0;
 static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[0].rx_cnt++;
     huart[0].rx_it_proc_done = false;
@@ -143,6 +143,10 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
             }
         }
 #endif /*HAS_UART0_FWD*/
+#ifdef HAS_CLI
+        uart_string_reader_rx_callback(&cmd_reader, (char)huart[0].rx_byte_it);
+        uart_read(0, &rx0_byte, 1);
+#endif /*HAS_CLI*/
     } else {
         huart[0].error_cnt++;
     }

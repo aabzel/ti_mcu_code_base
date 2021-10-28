@@ -113,10 +113,6 @@ bool cli_process(void) {
     static uint8_t rx_byte=0;
     if(true == huart[UART_NUM_CLI].rx_int) {
         huart[UART_NUM_CLI].rx_int = false;
-#ifndef USE_HAL_DRIVER
-        uart_string_reader_rx_callback(&cmd_reader, (char)huart[UART_NUM_CLI].rx_byte_it);
-        uart_read(UART_NUM_CLI, &rx_byte, 1);
-#endif /*USE_HAL_DRIVER*/
         huart[UART_NUM_CLI].rx_it_proc_done = true;
     }
 
