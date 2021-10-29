@@ -6,12 +6,14 @@
 #include <time.h>
 
 #define NUM_OF_PARSED_SAT 5
-#define NMEA_MSG_SIZE 80U
+#define NMEA_MSG_SIZE 100U
 
 typedef struct xNmeaProtocol_t {
     uint16_t pos;
     uint32_t msg_cnt;
     uint32_t crc_err_cnt;
+    uint32_t err_cnt;
+    uint32_t crc_read_cnt;
     uint32_t crc_ok_cnt;
     uint32_t overflow;
     uint32_t proc_msg_cnt;
@@ -150,6 +152,7 @@ bool gnss_parse_gsa(char* nmea_msg, gsa_t* gsa);
 bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx);
 bool gnss_parse_pbux_pos(char* nmea_msg,pbux_t *const pbux);
 bool gnss_parse_gll(char* nmea_msg, gll_t* gll);
+#if 0
 bool nmea_proc_message(void);
-
+#endif
 #endif /* NMEA_PARSER_H */

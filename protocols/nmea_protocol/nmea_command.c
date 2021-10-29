@@ -13,9 +13,11 @@
 
 static bool nmea_diag(void) {
     io_printf("msg_cnt     : %u" CRLF, NmeaProto.msg_cnt);
-    io_printf("crc err cnt : %u" CRLF, NmeaProto.crc_err_cnt);
+    io_printf("crc read cnt: %u" CRLF, NmeaProto.crc_read_cnt);
     io_printf("crc ok cnt  : %u" CRLF, NmeaProto.crc_ok_cnt);
+    io_printf("crc err cnt : %u" CRLF, NmeaProto.crc_err_cnt);
     io_printf("proc_msg_cnt: %u" CRLF, NmeaProto.proc_msg_cnt);
+    io_printf("err cnt : %u" CRLF, NmeaProto.err_cnt);
     io_printf("msg: [%s]" CRLF, NmeaProto.fix_message);
     return true;
 }

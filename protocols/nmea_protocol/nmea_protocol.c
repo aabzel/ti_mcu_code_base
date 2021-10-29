@@ -290,11 +290,30 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
     bool res = false;
     uint8_t read_crc = 0;
     uint16_t len = strlen(nmea_msg) - 4;
-    char* ptr = strchr(nmea_msg, '*') + 1;
-    res = try_strl2uint8_hex(ptr, 2, &read_crc);
-    if(true == res) {
+    if(len<NMEA_MSG_SIZE){
+        res = true;
+    }else{
+        NmeaProto.err_cnt++;
         res = false;
-        uint8_t calc_crc;
+    }
+    if(res){
+        uint32_t crc_pos = 0;
+        char* crc_ptr = strchr(nmea_msg, '*') + 1;
+        if(crc_ptr ){
+            crc_pos = (uint32_t) (crc_ptr-nmea_msg);
+            if(crc_pos <NMEA_MSG_SIZE){
+                res = try_strl2uint8_hex(crc_ptr, 2, &read_crc);
+            }else{
+                NmeaProto.err_cnt++;
+            }
+        }else{
+            NmeaProto.err_cnt++;
+        }
+    }
+    if(true == res) {
+        NmeaProto.crc_read_cnt++;
+        res = false;
+        uint8_t calc_crc = 0;
         calc_crc = nmea_calc_checksum(&nmea_msg[1], len);
         if(read_crc == calc_crc) {
             res = false;
@@ -304,6 +323,7 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
             } else if(!strncmp(nmea_msg + 3, "RMC", 3)) {
                 res = gnss_parse_rmc(nmea_msg, &gps_ctx->rmc);
             } else if(!strncmp(nmea_msg + 3, "GLL", 3)) {
+                //here lat and lon
                 res = gnss_parse_gll(nmea_msg, &gps_ctx->gll);
             } else if(!strncmp(nmea_msg + 3, "GSV", 3)) {
                 res = gnss_parse_gsv(nmea_msg, &gps_ctx->gsv);
@@ -332,13 +352,19 @@ bool nmea_proc_byte(uint8_t rx_byte) {
     }
     // static uint8_t prev_rx_byte = 0;
     if(('\n' == rx_byte) || ('\r' == rx_byte)) {
-        if(0 < NmeaProto.pos) {
-            // memset(NmeaProto.fix_message, 0x00, NMEA_MSG_SIZE);
+        if((0 < NmeaProto.pos) && (NmeaProto.pos < NMEA_MSG_SIZE)) {
+            memset(NmeaProto.fix_message, 0x00, NMEA_MSG_SIZE);
             memcpy(NmeaProto.fix_message, NmeaProto.message, NmeaProto.pos);
             memset(NmeaProto.message, 0x00, NMEA_MSG_SIZE);
             NmeaProto.msg_cnt++;
             NmeaProto.pos = 0;
             NmeaProto.got_massege = true;
+            res = nmea_parse(NmeaProto.fix_message, &NmeaData);
+            if(true == res) {
+                NmeaProto.proc_msg_cnt++;
+            }
+            memset(NmeaProto.fix_message, 0x00, NMEA_MSG_SIZE);
+            NmeaProto.got_massege = false;
             res = true;
         }
     } else {
@@ -355,7 +381,7 @@ bool nmea_proc_byte(uint8_t rx_byte) {
     //  prev_rx_byte = rx_byte;
     return res;
 }
-
+#if 0
 bool nmea_proc_message(void) {
     bool res = false;
     if(NmeaProto.got_massege) {
@@ -368,3 +394,4 @@ bool nmea_proc_message(void) {
     }
     return res;
 }
+#endif

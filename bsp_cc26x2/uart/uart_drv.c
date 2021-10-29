@@ -315,7 +315,7 @@ bool proc_uart(uint8_t uart_index) {
                 loop = false;
             }
             cnt++;
-            if(((UART_FIFO_RX_SIZE * 3) / 2) < cnt) {
+            if(((UART_FIFO_RX_SIZE * 4) / 2) < cnt) {
                 loop = false;
             }
         } /*while(loop) */
