@@ -24,6 +24,7 @@ bool is_floats_equal(float valA, float valB);
 float float_limiter(float in_value, float up_limit);
 float float_limiter_down_up(float in_value, float down_limit, float up_limit);
 float float_max(float x1, float x2);
+double double_max(double x1, double x2);
 float float_min(float x1, float x2);
 
 #ifdef __cplusplus

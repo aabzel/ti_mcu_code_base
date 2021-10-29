@@ -112,13 +112,34 @@ extern "C" {
 #define TRNG_COMMANDS
 #endif
 
+
+
+#ifdef HAS_TBFP
+#include "tbfp_commands.h"
+#else
+#define TBFP_COMMANDS
+#endif
+
+#ifdef HAS_TELEMATIC
+#include "telematic_commands.h"
+#else
+#define TELEMATIC_COMMANDS
+#endif
+
+
+
+
 #ifdef HAS_RTCM3
 #include "rtcm3_commands.h"
 #else
 #define RTCM3_COMMANDS
 #endif
 
-
+#ifdef HAS_ZED_F9P
+#include "zed_f9p_commands.h"
+#else
+#define ZED_F9P_COMMANDS
+#endif
 
 #define SHELL_COMMANDS                                                                                                 \
     BMP180_COMMANDS                                                                                                    \
@@ -129,6 +150,8 @@ extern "C" {
     FLASH_FS_COMMANDS                                                                                                  \
     FLASH_NVS_COMMANDS                                                                                                 \
     HEALTH_MONITOR_COMMANDS                                                                                            \
+    TELEMATIC_COMMANDS                                                 \
+    TBFP_COMMANDS \
     LED_COMMANDS                                                                                                       \
     LOG_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
@@ -140,7 +163,8 @@ extern "C" {
     RTCM3_COMMANDS    \
     SX1262_COMMANDS                                                                                                    \
     TRNG_COMMANDS                                                                                                      \
-    UBLOX_COMMANDS
+    UBLOX_COMMANDS                 \
+    ZED_F9P_COMMANDS
 
 
 #ifdef __cplusplus

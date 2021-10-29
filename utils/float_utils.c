@@ -67,6 +67,15 @@ float float_max(float x1, float x2) {
     return out_val;
 }
 
+
+double double_max(double x1, double x2){
+    double out_val = x1;
+    if(x1 < x2) {
+        out_val = x2;
+    }
+    return out_val;
+}
+
 float float_min(float x1, float x2) {
     float out_val = x1;
     if(x2 < x1) {

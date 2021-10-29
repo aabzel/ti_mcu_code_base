@@ -5,8 +5,15 @@
 #include <stdint.h>
 #include <time.h>
 
+#ifdef HAS_MCU
+#include "clocks.h"
+#endif
+
+#include "gnss_utils.h"
+
 #define NUM_OF_PARSED_SAT 5
 #define NMEA_MSG_SIZE 100U
+#define NMEA_PERIOD_US S_2_US(2)
 
 typedef struct xNmeaProtocol_t {
     uint16_t pos;
@@ -24,16 +31,14 @@ typedef struct xNmeaProtocol_t {
 
 /* Recommended minimum specific GPS/Transit data */
 typedef struct xRmc_t {
-    uint32_t utc; /* UTC hour in hhmmss format */
+    uint32_t cnt;
     struct tm time_date;
     char data_valid;    /* validity - A-ok, V-invalid */
-    double lat;         /* Latitude (degrees) */
+    GnssCoordinate_t coordinate;
     char lat_dir;       /* Latitude direction */
-    double lon;         /* Longitude (degrees) */
     char lon_dir;       /* Longitude direction */
     double speed_knots; /* Speed over ground (knots) */
     double true_course; /* Course Made Good, True */
-    uint32_t date;      /* date in ddmmaa format */
     double mv;          /* Magnetic variation */
     char mv_ew;         /* Magnetic variation direction */
     char pos_mode;      /* A = autonom, D=DGPS, E=DR */
@@ -42,10 +47,11 @@ typedef struct xRmc_t {
 
 /* Global Positioning System Fix Data */
 typedef struct xGga_t {
+    uint32_t cnt;
     uint32_t utc;            /* UTC hour in hhmmss format */
-    double lat;              /* Latitude (degrees) */
+    struct tm time_date;
+    GnssCoordinate_t coordinate;
     char lat_dir;            /* Latitude direction */
-    double lon;              /* Longitude (degrees) */
     char lon_dir;            /* Longitude direction */
     uint16_t quality;        /*Quality indicator for position fix*/
     uint16_t nb_sat;         /*Number of satellites used*/
@@ -60,13 +66,13 @@ typedef struct xGga_t {
 
 /* Latitude and longitude, with time of position fix and status */
 typedef struct xGll_t {
-    double lat;    /* Latitude (degrees and minutes) */
+    struct tm time_date;
     char lat_dir;  /* North/South indicator */
-    double lon;    /* Longitude (degrees and minutes) */
+    GnssCoordinate_t coordinate;
     char lon_dir;  /* Longitude direction East/West indicator */
-    uint32_t time; /* UTC time.hhmmss.ss */
     char status;   /*Data validity status*/
     char pos_mode; /*Positioning mode, see position fix flags description*/
+    uint32_t cnt;
 } gll_t;
 
 typedef struct xGsa_t {
@@ -76,6 +82,7 @@ typedef struct xGsa_t {
     double HDOP;      /* Horizontal dilution of precision */
     double VDOP;      /* Vertical dilution of precision */
     uint8_t systemId; /* NMEA-defined GNSS system ID*/
+    uint32_t cnt;
 } gsa_t;
 
 /*Course over ground and ground speed*/
@@ -89,12 +96,14 @@ typedef struct xVtg_t {
     char sognUnit; /*Speed over ground units: N (knots, fixed field)*/
     char sogkUnit; /*Speed over ground units: K*/
     char posMode;  /*Mode indicator*/
+    uint32_t cnt;
 } vtg_t;
 
 
 typedef struct  xPbux_t{
     uint8_t msg_id;
-    struct tm time;
+    struct tm time_date;
+    uint32_t cnt;
 }pbux_t;
 
 typedef struct xSatellite_t {
@@ -111,6 +120,7 @@ typedef struct xGsv_t {
     uint8_t signalId; /*NMEA-defined GNSS signal ID*/
     Satellite_t sat[NUM_OF_PARSED_SAT];
     uint16_t numSV; /*Number of known satellites in view regarding both the talker ID and the signalId*/
+    uint32_t cnt;
 } gsv_t;
 
 /* GNSS context. Used to keep last GNSS infos from GNSS module msgs*/
@@ -152,7 +162,5 @@ bool gnss_parse_gsa(char* nmea_msg, gsa_t* gsa);
 bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx);
 bool gnss_parse_pbux_pos(char* nmea_msg,pbux_t *const pbux);
 bool gnss_parse_gll(char* nmea_msg, gll_t* gll);
-#if 0
-bool nmea_proc_message(void);
-#endif
+bool nmea_proc(void);
 #endif /* NMEA_PARSER_H */

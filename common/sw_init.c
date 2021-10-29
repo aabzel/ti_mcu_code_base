@@ -42,6 +42,10 @@
 #include "rtcm3_protocol.h"
 #endif /*HAS_RTCM3*/
 
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif
+
 #ifdef HAS_NMEA
 #include "nmea_protocol.h"
 #endif
@@ -82,6 +86,10 @@ bool sw_init(void) {
 #ifdef HAS_NMEA
     res = try_init(nmea_init(), "NMEA") && res;
 #endif
+
+#ifdef HAS_TBFP
+    res = try_init(tbfp_protocol_init(&TbfpPorotocol), "TBFP") && res;
+#endif /*HAS_TBFP*/
 
 #ifdef HAS_RTCM3
     res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_UART_ID], RT_UART_ID, true), "RTCM3_UART") && res;

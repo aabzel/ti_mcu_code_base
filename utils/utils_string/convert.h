@@ -63,7 +63,7 @@ bool try_str2bool(const char bool_str[], bool* bool_value);
 bool try_str2float(const char float_str[], float* float_value);
 bool try_str2double(const char double_str[], double* double_value);
 
-bool try_strl2double(const char double_str[], int32_t u8l_hex_str_len, double_t* double_value);
+bool try_strl2double(const char double_str[], int32_t u8l_hex_str_len, double* double_value);
 
 bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, uint32_t* out_array_len);
 
@@ -72,7 +72,7 @@ const char* ltoa64_(int64_t s64_data, char s64_stringified[], uint8_t s64_base, 
 const char* utoa_bin8(uint8_t u8_bin_data);
 const char* utoa32_(uint32_t u32_data, char u32_stringified[], uint8_t u32_base, uint32_t* u32_len);
 const char* utoa64_(uint64_t u64_data, char u64_stringified[], uint8_t u64_base, uint32_t* u64_len);
-void dtoa_(double_t double_data_, int32_t double_precision_, char double_stringified_[]);
+void dtoa_(double double_data_, int32_t double_precision_, char double_stringified_[]);
 void ftoa_(float_t float_data_, int32_t float_precision_, char float_stringified_[]);
 
 uint32_t base64_encode(const uint8_t encode_data[], uint32_t encode_data_size, char encode_result[]);
@@ -94,7 +94,7 @@ uint16_t float_to_uint16(float val);
 
 uint32_t assemble_uint32(uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4);
 
-const char* rx_dtoa(double_t d);
+const char* rx_dtoa(double d);
 const char* rx_ftoa(float_t float_v);
 
 const char* bool2name(bool val);

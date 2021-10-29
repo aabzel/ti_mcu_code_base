@@ -16,7 +16,7 @@ static bool get_str_len(const char char_str[], int32_t* str_len);
 static bool is_hex_digit(const char character);
 static bool is_true(const char* true_str_to_check);
 static bool is_false(const char* false_str_to_check);
-static void dtoa_normal(double_t double_data, int32_t double_precision, char double_stringified[]);
+static void dtoa_normal(double double_data, int32_t double_precision, char double_stringified[]);
 // static void ftoa_normal(float_t float_data, int32_t float_precision, char float_stringified[]);
 
 static const float_t rounders[(MAX_PRECISION + 1U)] = {
@@ -625,7 +625,7 @@ static bool rx_strtod(const char str[], const char** endptr, double* result) {
 
             while(isdigit((int32_t)(str[str_index])) > 0) {
                 (void)try_dec_char_to_u8((uint8_t)str[str_index], &temp_value);
-                number = (number * 10.0) + (double_t)temp_value;
+                number = (number * 10.0) + (double)temp_value;
                 str_index++;
                 num_digits++;
                 num_decimals++;
@@ -689,7 +689,7 @@ static bool rx_strtod(const char str[], const char** endptr, double* result) {
 
             if(strtod_success == true) {
                 /* Scale the result */
-                double_t p10 = 10.0;
+                double p10 = 10.0;
                 s32_number = exponent;
                 if(s32_number < 0) {
                     s32_number = -s32_number;
@@ -771,7 +771,7 @@ bool try_str2double(const char double_str[], double* double_value) {
     return double_success;
 }
 
-bool try_strl2double(const char double_str[], int32_t str_len, double_t* double_value) {
+bool try_strl2double(const char double_str[], int32_t str_len, double* double_value) {
     bool double_success = false;
     char tempStr[30] = "";
     memset(tempStr, 0x00, sizeof(tempStr));
@@ -936,11 +936,11 @@ const char* utoa64_(uint64_t u64_data, char u64_stringified[], uint8_t u64_base,
     return u64_stringified;
 }
 
-static void dtoa_normal(double_t double_data, int32_t double_precision, char double_stringified[]) {
+static void dtoa_normal(double double_data, int32_t double_precision, char double_stringified[]) {
     uint32_t double_result_str_index = 0U;
     bool double_auto_precision = false;
     char double_number_to_char;
-    double_t double_d = double_data;
+    double double_d = double_data;
     int32_t d_precision = double_precision;
     if(double_d < 0.0) {
         double_stringified[double_result_str_index] = '-';
@@ -982,7 +982,7 @@ static void dtoa_normal(double_t double_data, int32_t double_precision, char dou
     } else {
         uint64_t double_int_part = (uint64_t)double_d;
         uint32_t double_int_part_len = 0U;
-        double_d -= (double_t)double_int_part;
+        double_d -= (double)double_int_part;
         (void)utoa64_(double_int_part, &double_stringified[double_result_str_index], 10U, &double_int_part_len);
         double_result_str_index += double_int_part_len;
         double_stringified[double_result_str_index] = '.';
@@ -995,7 +995,7 @@ static void dtoa_normal(double_t double_data, int32_t double_precision, char dou
             double_number_to_char = (char)('0' + double_int_part);
             double_stringified[double_result_str_index] = double_number_to_char;
             double_result_str_index++;
-            double_d -= (double_t)double_int_part;
+            double_d -= (double)double_int_part;
         }
 
         if(double_auto_precision == true) {
@@ -1011,7 +1011,7 @@ static void dtoa_normal(double_t double_data, int32_t double_precision, char dou
     }
 }
 
-void dtoa_(double_t double_data_, int32_t double_precision_, char out_double_stringified_[]) {
+void dtoa_(double double_data_, int32_t double_precision_, char out_double_stringified_[]) {
     dtoa_normal(double_data_, double_precision_, out_double_stringified_);
 #if((!defined(DeviceFamily_CC26X2)) && (!defined(STM32F413xx)) && !defined(X86_64))
     switch(__fpclassifyl(double_data_)) {
@@ -1337,7 +1337,7 @@ const char* ltoa_hex64(int64_t s64_hex_data) {
     return ltoa64_(s64_hex_data, ltoa_hex64_str, 16U, NULL);
 }
 
-const char* rx_dtoa(double_t d) {
+const char* rx_dtoa(double d) {
     static char dtoa_str[(((MAX_INT64_STR_LEN_10 + MAX_PRECISION) + 1U) + 1U)];
     dtoa_(d, -1, dtoa_str);
     return dtoa_str;

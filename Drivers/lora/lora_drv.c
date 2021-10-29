@@ -9,6 +9,9 @@
 
 #include "array.h"
 #include "cli_manager.h"
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif
 #include "core_driver.h"
 #include "data_utils.h"
 #include "fifo_array.h"
@@ -59,6 +62,9 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
         res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf) + 1, 0);
     }
     res = rtcm3_lora_rx_proc(rx_payload, rx_size);
+#ifdef HAS_TBFP
+    res = tbfp_proc(rx_payload, rx_size);
+#endif
     return res;
 }
 

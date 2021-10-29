@@ -79,7 +79,12 @@
 
 #ifdef HAS_BLE
 #include "ble_drv.h"
-#endif
+#endif /*HAS_BLE*/
+
+#ifdef HAS_ZED_F9P
+#include "zed_f9p_drv.h"
+#endif/*HAS_ZED_F9P*/
+
 
 #ifdef HAS_SX1262
 #include "sx1262_drv.h"
@@ -87,7 +92,7 @@
 
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
-#endif
+#endif/*HAS_WDT*/
 
 bool hw_init(void) {
   bool res = true;
@@ -103,6 +108,8 @@ bool hw_init(void) {
 #ifdef HAS_TEMP
   Temperature_init();
 #endif /*HAS_TEMP*/
+
+
 
 #ifdef NORTOS  
   SysTickInit();
@@ -169,6 +176,10 @@ bool hw_init(void) {
 #ifdef HAS_BLE
   res = try_init(ble_init(),"BLE") && res;
 #endif /*HAS_BLE*/
+
+#ifdef HAS_ZED_F9P
+  res = try_init(zed_f9p_init(),"zedf9p") && res;
+#endif /*HAS_ZED_F9P*/
 
 #ifdef HAS_SX1262
   res = try_init(sx1262_init(),"sx1262") && res;

@@ -1,5 +1,6 @@
 #include "test_nmea_proto.h"
 
+#include "gnss_utils.h"
 #include "nmea_protocol.h"
 #include "unit_test_check.h"
 
@@ -9,14 +10,20 @@ const char msg_gnrmc[] = "$GNRMC,072316.27,A,5551.84825,N,03725.60995,E,0.010,,2
 static bool test_nmea_proto_gnrmc(void) {
    rmc_t rmc= {0};
    EXPECT_TRUE( gnss_parse_rmc((char*)msg_gnrmc, &rmc));
-   EXPECT_EQ(72316,rmc.utc);
+   EXPECT_EQ(7,rmc.time_date.tm_hour);
+   EXPECT_EQ(23,rmc.time_date.tm_min);
+   EXPECT_EQ(16,rmc.time_date.tm_sec);
    EXPECT_EQ('A',rmc.data_valid);
-   EXPECT_NEAR(5551.84825l,rmc.lat,1e-6);
+   EXPECT_NEAR(5551.84825l,rmc.coordinate.latitude,1e-6);
    EXPECT_EQ('N',rmc.lat_dir);
-   EXPECT_NEAR(3725.60995l,rmc.lon,0.00001f);
+   EXPECT_NEAR(3725.60995l,rmc.coordinate.longitude,0.00001f);
    EXPECT_EQ('E',rmc.lon_dir);
    EXPECT_NEAR(0.010l,rmc.speed_knots,0.00001f);
-   EXPECT_EQ(290721,rmc.date);
+
+   EXPECT_EQ(29,rmc.time_date.tm_mday);
+   EXPECT_EQ(7,rmc.time_date.tm_mon);
+   EXPECT_EQ(2021,rmc.time_date.tm_year);
+
    EXPECT_NEAR(11.73l, rmc.mv, 0.00001f);
    EXPECT_EQ('E',rmc.mv_ew);
    EXPECT_EQ('A',rmc.pos_mode);
@@ -28,10 +35,12 @@ const char msg_gnrgga[] = "$GNGGA,140212.00,5540.70555,N,03737.93437,E,1,12,0.58
 static bool test_nmea_proto_gngga(void) {
    gga_t gga= {0};
    EXPECT_TRUE( gnss_parse_gga((char*)msg_gnrgga, &gga));
-   EXPECT_EQ(140212,gga.utc);
-   EXPECT_NEAR(5540.70555,gga.lat,0.000001);
+   EXPECT_EQ(14,gga.time_date.tm_hour);
+   EXPECT_EQ(2,gga.time_date.tm_min);
+   EXPECT_EQ(12,gga.time_date.tm_sec);
+   EXPECT_NEAR(5540.70555,gga.coordinate.latitude,0.000001);
    EXPECT_EQ('N',gga.lat_dir);
-   EXPECT_NEAR(03737.93437,gga.lon,0.00001);
+   EXPECT_NEAR(03737.93437,gga.coordinate.longitude,0.00001);
    EXPECT_EQ('E',gga.lon_dir);
    EXPECT_EQ(1,gga.quality);
    EXPECT_EQ(12,gga.nb_sat);
@@ -48,10 +57,12 @@ const char msg_gnrgll[] = "$GNGLL,5540.70584,N,03737.93404,E,140125.00,A,A*74";
 static bool test_nmea_proto_gngll(void) {
     gll_t gll= {0};
     EXPECT_TRUE( gnss_parse_gll((char*)msg_gnrgll, &gll));
-    EXPECT_EQ(140125,gll.time);
-    EXPECT_NEAR(5540.70584,gll.lat,0.000001);
+    EXPECT_EQ(14,gll.time_date.tm_hour);
+    EXPECT_EQ(1,gll.time_date.tm_min);
+    EXPECT_EQ(25,gll.time_date.tm_sec);
+    EXPECT_NEAR(5540.70584,gll.coordinate.latitude,0.000001);
     EXPECT_EQ('N',gll.lat_dir);
-    EXPECT_NEAR(03737.93404,gll.lon,0.00001);
+    EXPECT_NEAR(03737.93404,gll.coordinate.longitude,0.00001);
     EXPECT_EQ('E',gll.lon_dir);
     EXPECT_EQ('A',gll.status);
     EXPECT_EQ('A',gll.pos_mode);
@@ -98,9 +109,9 @@ static bool test_nmea_proto_pubx(void) {
     pbux_t pbux= {0};
     EXPECT_TRUE( gnss_parse_pbux_pos((char*)msg_pubx, &pbux));
     EXPECT_EQ(0,pbux.msg_id);//00,001417.00,0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
-    EXPECT_EQ(17,pbux.time.tm_sec);//001417.00,0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
-    EXPECT_EQ(14,pbux.time.tm_min);
-    EXPECT_EQ(0,pbux.time.tm_hour);
+    EXPECT_EQ(17,pbux.time_date.tm_sec);//001417.00,0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
+    EXPECT_EQ(14,pbux.time_date.tm_min);
+    EXPECT_EQ(0,pbux.time_date.tm_hour);
 #if 0
     EXPECT_NEAR(0000.0,pbux.latitude,0.000001);//0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
     EXPECT_NEAR(0000.0,pbux.longitude,0.000001);//00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21
@@ -119,6 +130,8 @@ static bool test_nmea_proto_pubx(void) {
 }
 
 bool test_nmea_proto(void) {
+  EXPECT_EQ(16, sizeof(GnssCoordinate_t));
+
   EXPECT_TRUE(test_nmea_proto_pubx());
   EXPECT_TRUE(test_nmea_checksum());
   EXPECT_TRUE(test_nmea_proto_gnrmc());

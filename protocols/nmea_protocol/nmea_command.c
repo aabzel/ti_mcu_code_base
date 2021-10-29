@@ -5,6 +5,7 @@
 
 #include "convert.h"
 #include "data_utils.h"
+#include "gnss_diag.h"
 #include "io_utils.h"
 #include "log.h"
 #include "table_utils.h"
@@ -22,21 +23,11 @@ static bool nmea_diag(void) {
     return true;
 }
 
-static bool print_time_date(struct tm *time_date){
-    bool res = false;
-    if(NULL!=time_date){
-        io_printf("time: %02u:%02u:%02u" CRLF, time_date->tm_hour, time_date->tm_min, time_date->tm_sec);
-        io_printf("date: %u/%u/%u" CRLF, time_date->tm_mday, time_date->tm_mon, time_date->tm_year);
-    }
-    return res;
-}
 
 static bool nmea_data(void) {
-    io_printf("utc: %u" CRLF, NmeaData.rmc.utc);
-    io_printf("date: %u" CRLF, NmeaData.rmc.date);
-    print_time_date( &NmeaData.rmc.time_date);
-    io_printf(" %f %f" CRLF, NmeaData.rmc.lat , NmeaData.rmc.lon);
-    io_printf(" %f %f" CRLF, NmeaData.gga.lat , NmeaData.gga.lon);
+    print_time_date(&NmeaData.rmc.time_date);
+    print_coordinate(NmeaData.rmc.coordinate);
+    print_coordinate(NmeaData.gga.coordinate);
     io_printf("speed_knots : %f" CRLF, NmeaData.rmc.speed_knots);
     io_printf("height: %f" CRLF, NmeaData.gga.height);
     io_printf("nb_sat: %u" CRLF, NmeaData.gga.nb_sat);
