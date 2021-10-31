@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="297mm"
    height="210mm"
    viewBox="0 0 297 210"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="Harvester_block_diagram_v1.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="Harvester_block_diagram_v1.svg">
   <defs
      id="defs2">
     <marker
@@ -1491,93 +1491,33 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9999996"
-     inkscape:cx="213.56251"
-     inkscape:cy="340.37501"
+     inkscape:zoom="1.4142135"
+     inkscape:cx="480.4565"
+     inkscape:cy="403.76889"
      inkscape:document-units="mm"
      inkscape:current-layer="layer5"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="-11"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:pagecheckerboard="0">
     <sodipodi:guide
-       position="0,0"
-       orientation="210.0,0"
-       id="guide11306" />
-    <sodipodi:guide
        position="148.5,0"
        orientation="210.0,0"
-       id="guide11308" />
-    <sodipodi:guide
-       position="297,0"
-       orientation="210.0,0"
-       id="guide11310" />
-    <sodipodi:guide
-       position="0,0"
-       orientation="0,297.0"
-       id="guide11312" />
+       id="guide1213" />
     <sodipodi:guide
        position="0,70"
        orientation="0,297.0"
-       id="guide11314" />
+       id="guide1215" />
     <sodipodi:guide
-       position="48.549512,140.251"
+       position="0,140"
        orientation="0,297.0"
-       id="guide11316" />
-    <sodipodi:guide
-       position="0,210"
-       orientation="0,297.0"
-       id="guide11318" />
-    <sodipodi:guide
-       position="49.410941,136.97499"
-       orientation="0,-1"
-       id="guide16134" />
-    <sodipodi:guide
-       position="213.74882,130.76794"
-       orientation="1,0"
-       id="guide3570" />
-    <sodipodi:guide
-       position="131.11539,112.67503"
-       orientation="1,0"
-       id="guide5914" />
-    <sodipodi:guide
-       position="143.63569,109.19374"
-       orientation="1,0"
-       id="guide6072" />
-    <sodipodi:guide
-       position="143.63569,82.487369"
-       orientation="0,-1"
-       id="guide6329" />
-    <sodipodi:guide
-       position="190.96303,93.219524"
-       orientation="0,-1"
-       id="guide5424" />
-    <sodipodi:guide
-       position="193.50965,112.26952"
-       orientation="0,-1"
-       id="guide5426" />
-    <sodipodi:guide
-       position="201.21564,96.196087"
-       orientation="0,-1"
-       id="guide5447" />
-    <sodipodi:guide
-       position="197.14767,112.26952"
-       orientation="0,-1"
-       id="guide5449" />
-    <sodipodi:guide
-       position="197.1146,109.22682"
-       orientation="0,-1"
-       id="guide5451" />
-    <sodipodi:guide
-       position="222.96294,102.84496"
-       orientation="0,-1"
-       id="guide5898" />
+       id="guide1217" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">

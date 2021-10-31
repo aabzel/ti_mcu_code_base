@@ -49,6 +49,7 @@ extern "C" {
 #endif
 
 #ifdef HAS_TEST_SUIT_NMEA_PROTO
+#include "test_gnss_utils.h"
 #include "test_nmea_proto.h"
 #else
 #define TEST_SUIT_NMEA_PROTO
@@ -90,10 +91,11 @@ bool test_array(void);
 bool test_uspec_behavior(void);
 
 #define TEST_SUIT_SW                                                                                                   \
-    TEST_SUIT_UTILS_DATA                                                                                               \
-    TEST_SUIT_UTILS_FLOAT                                                                                              \
     TEST_SUIT_UTILS_BIT                                                                                                \
     TEST_SUIT_UTILS_BYTE                                                                                               \
+    TEST_SUIT_UTILS_DATA                                                                                               \
+    TEST_SUIT_UTILS_FLOAT                                                                                              \
+    TEST_SUIT_UTILS_GNSS                                                                                               \
     TEST_SUIT_CONVERT                                                                                                  \
     TEST_SUIT_UTILS_TIME                                                                                               \
     TEST_SUIT_CLI                                                                                                      \

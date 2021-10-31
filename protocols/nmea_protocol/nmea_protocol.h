@@ -33,7 +33,7 @@ typedef struct xNmeaProtocol_t {
 typedef struct xRmc_t {
     uint32_t cnt;
     struct tm time_date;
-    char data_valid;    /* validity - A-ok, V-invalid */
+    char data_valid; /* validity - A-ok, V-invalid */
     GnssCoordinate_t coordinate;
     char lat_dir;       /* Latitude direction */
     char lon_dir;       /* Longitude direction */
@@ -48,7 +48,7 @@ typedef struct xRmc_t {
 /* Global Positioning System Fix Data */
 typedef struct xGga_t {
     uint32_t cnt;
-    uint32_t utc;            /* UTC hour in hhmmss format */
+    uint32_t utc; /* UTC hour in hhmmss format */
     struct tm time_date;
     GnssCoordinate_t coordinate;
     char lat_dir;            /* Latitude direction */
@@ -67,7 +67,7 @@ typedef struct xGga_t {
 /* Latitude and longitude, with time of position fix and status */
 typedef struct xGll_t {
     struct tm time_date;
-    char lat_dir;  /* North/South indicator */
+    char lat_dir; /* North/South indicator */
     GnssCoordinate_t coordinate;
     char lon_dir;  /* Longitude direction East/West indicator */
     char status;   /*Data validity status*/
@@ -99,12 +99,11 @@ typedef struct xVtg_t {
     uint32_t cnt;
 } vtg_t;
 
-
-typedef struct  xPbux_t{
+typedef struct xPbux_t {
     uint8_t msg_id;
     struct tm time_date;
     uint32_t cnt;
-}pbux_t;
+} pbux_t;
 
 typedef struct xSatellite_t {
     uint16_t svid; /*Satellite ID*/
@@ -126,12 +125,12 @@ typedef struct xGsv_t {
 /* GNSS context. Used to keep last GNSS infos from GNSS module msgs*/
 typedef struct xNmeaData_t {
     uint8_t is_initialized;
-    rmc_t rmc; /*Recommended minimum data*/
-    gll_t gll; /*Latitude and longitude, with time of position fix and status*/
-    vtg_t vtg; /*Course over ground and ground speed*/
-    gga_t gga; /*Global positioning system fix data*/
-    gsa_t gsa; /*GNSS DOP and active satellites*/
-    gsv_t gsv; /*GNSS satellites in view*/
+    rmc_t rmc;   /*Recommended minimum data*/
+    gll_t gll;   /*Latitude and longitude, with time of position fix and status*/
+    vtg_t vtg;   /*Course over ground and ground speed*/
+    gga_t gga;   /*Global positioning system fix data*/
+    gsa_t gsa;   /*GNSS DOP and active satellites*/
+    gsv_t gsv;   /*GNSS satellites in view*/
     pbux_t pbux; /*Proprietary NMEA messages for u-blox positioning receivers*/
     // rlm_t rlm; /*Return link message (RLM) */
     // ths_t ths; /*True heading and status*/
@@ -160,7 +159,7 @@ bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg);
 bool gnss_parse_gga(char* nmea_msg, gga_t* gga);
 bool gnss_parse_gsa(char* nmea_msg, gsa_t* gsa);
 bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx);
-bool gnss_parse_pbux_pos(char* nmea_msg,pbux_t *const pbux);
+bool gnss_parse_pbux_pos(char* nmea_msg, pbux_t* const pbux);
 bool gnss_parse_gll(char* nmea_msg, gll_t* gll);
 bool nmea_proc(void);
 #endif /* NMEA_PARSER_H */

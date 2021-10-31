@@ -1034,7 +1034,7 @@ bool tcan4550_init(void) {
     return res;
 }
 
-bool tcan4550_deinit(void){
+bool tcan4550_deinit(void) {
     bool res = true;
     LOG_WARNING(CAN, "deinit");
     res = tcan4550_set_mode(MODE_SLEEP) && res;

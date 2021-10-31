@@ -38,7 +38,7 @@ OPT += -DHAS_TEST_SUIT_UBLOX_PROTO
 OPT += -DHAS_TEST_SUIT_NMEA_PROTO
 
 #files to link:
-LFLAGS= -static
+LFLAGS= -static -lm
 
 EXECUTABLE=test_code_base
 

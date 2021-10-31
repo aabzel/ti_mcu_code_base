@@ -117,7 +117,7 @@ static uint32_t baudRateLuTable[UART_COUNT] = {
     UART1_BAUD_RATE
 #endif
 };
-static uint8_t rx0_byte=0;
+static uint8_t rx0_byte = 0;
 static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[0].rx_cnt++;
     huart[0].rx_it_proc_done = false;
