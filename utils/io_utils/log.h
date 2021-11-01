@@ -65,6 +65,7 @@ typedef enum eLog_facility_t {
   RF,
   RNG,
   SYS,
+  UBX,
   UART,
   ALL_FACILITY
 } log_facility_t;

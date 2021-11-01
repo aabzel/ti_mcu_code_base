@@ -159,6 +159,9 @@ const char *facility2str(log_facility_t facility) {
   case UART:
     facility_str = "UART";
     break;
+  case UBX:
+    facility_str = "UBX";
+    break;
   case TIM:
     facility_str = "TIM";
     break;

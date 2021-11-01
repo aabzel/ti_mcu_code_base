@@ -96,6 +96,7 @@ bool sx1262_chip_select(bool state) {
 
 Sx1262_t Sx1262Instance;
 
+#ifdef HAS_SX1262_DEBUG
 const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
                                              {0x06B9, "WhiteningInitValLSB"},
                                              {0x06BC, "CRCMSBInitVal0"},
@@ -122,6 +123,7 @@ const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
                                              {0x08E7, "OCPConfig"},
                                              {0x0911, "XTAtrim"},
                                              {0x0912, "XTBtrim"}};
+#endif /*HAS_SX1262_DEBUG*/
 
 bool sx1262_wait_on_busy(uint32_t time_out_ms) {
     uint32_t start_ms = 0U;

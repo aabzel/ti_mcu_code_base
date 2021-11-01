@@ -8,7 +8,16 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef HAS_MCU
+#include "clocks.h"
+#endif
 #include "data_utils.h"
+#include "gnss_utils.h"
+#include "ubx_protocol.h"
+
+#ifdef HAS_MCU
+#define UBX_PERIOD_MS S_2_US(4)
+#endif
 
 /*UBX data types*/
 typedef enum eUbxType_t {
@@ -44,8 +53,8 @@ typedef struct xVariable_t{
 
 /*Variables that matter for the application*/
 typedef struct xNavInfo_t {
-    int32_t latitude;
-    int32_t longitude;
+    GnssCoordinate_t coordinate;
+    uint8_t id[5];
     int32_t hmsl;
     uint32_t h_acc;
     uint32_t v_acc;
@@ -56,15 +65,15 @@ typedef struct xNavInfo_t {
     uint32_t acc_pitch;
     uint32_t acc_heading;
     /*velocity*/
-} xNavInfo_t;
+} NavInfo_t;
 
-extern xNavInfo_t NavInfo;
+extern NavInfo_t NavInfo;
 extern keyValItem_t keyValTable[UBX_KEY_CNT];
 
+bool ubx_proc(void);
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
-bool ubx_proc_frame(void);
 bool ubx_driver_init(void);
-
+bool ubx_proc_frame(UbloxPorotocol_t* inst);
 #ifdef __cplusplus
 }
 #endif

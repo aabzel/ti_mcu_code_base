@@ -4,8 +4,10 @@
 #include <string.h>
 
 #include "io_utils.h"
+#include "log.h"
 #include "uart_drv.h"
 #include "ubx_protocol.h"
+#include "ubx_types.h"
 
 #ifndef HAS_UART
 #error "Ublox driver requires UART driver"
@@ -13,7 +15,7 @@
 
 keyValItem_t keyValTable[UBX_KEY_CNT] = {{0x30210001, 0x00, UBX_U2}};
 
-xNavInfo_t NavInfo;
+NavInfo_t NavInfo;
 
 bool ubx_driver_init(void) {
     memset(&NavInfo, 0x00, sizeof(NavInfo));
@@ -79,50 +81,67 @@ static bool ubx_proc_cfg_frame(void) {
 
 static bool ubx_proc_nav_att_frame(uint8_t* frame) {
     bool res = false;
-    if(0x00 == frame[UBX_INDEX_PAYLOAD + 4]) {
-        memcpy(&NavInfo.roll, &frame[UBX_INDEX_PAYLOAD + 8], 4);
-        memcpy(&NavInfo.pitch, &frame[UBX_INDEX_PAYLOAD + 12], 4);
-        memcpy(&NavInfo.heading, &frame[UBX_INDEX_PAYLOAD + 16], 4);
+    if(0x00 == frame[4]) {
+        memcpy(&NavInfo.roll, &frame[8], 4);
+        memcpy(&NavInfo.pitch, &frame[12], 4);
+        memcpy(&NavInfo.heading, &frame[16], 4);
 
-        memcpy(&NavInfo.acc_roll, &frame[UBX_INDEX_PAYLOAD + 20], 4);
-        memcpy(&NavInfo.acc_pitch, &frame[UBX_INDEX_PAYLOAD + 24], 4);
-        memcpy(&NavInfo.acc_heading, &frame[UBX_INDEX_PAYLOAD + 28], 4);
+        memcpy(&NavInfo.acc_roll, &frame[20], 4);
+        memcpy(&NavInfo.acc_pitch, &frame[24], 4);
+        memcpy(&NavInfo.acc_heading, &frame[28], 4);
         res = true;
     }
     return res;
 }
 
-static bool ubx_proc_nav_hpposllh_frame(uint8_t* frame) {
+static bool ubx_proc_nav_posllh_frame(uint8_t* payload, uint16_t len) {
     bool res = false;
-    if(0x00 == frame[UBX_INDEX_PAYLOAD]) {
+    if(28 <= len) {
         res = true;
-        uint32_t itow = 0;
-        memcpy(&itow, &frame[UBX_INDEX_PAYLOAD + 4], 4);
-        memcpy(&NavInfo.longitude, &frame[UBX_INDEX_PAYLOAD + 8], 4);
-        memcpy(&NavInfo.latitude, &frame[UBX_INDEX_PAYLOAD + 12], 4);
-        memcpy(&NavInfo.hmsl, &frame[UBX_INDEX_PAYLOAD + 20], 4);
-        memcpy(&NavInfo.h_acc, &frame[UBX_INDEX_PAYLOAD + 28], 4);
-        memcpy(&NavInfo.v_acc, &frame[UBX_INDEX_PAYLOAD + 32], 4);
-#ifdef HAS_UBX_DIAG
-        io_printf("itow: %u ms" CRLF, itow);
-        io_printf("hmsl: %u mm %u sm %u m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 10, NavInfo.hmsl / 1000);
-        io_printf(" %d %d " CRLF "%f %f" CRLF, NavInfo.latitude, NavInfo.longitude, 1e-7 * ((double)NavInfo.latitude),
-                  1e-7 * ((double)NavInfo.longitude));
-#endif /*HAS_UBX_DIAG*/
+        NavPosllh_t data = {0};
+        memcpy(&data, payload, sizeof(NavPosllh_t));
+        NavInfo.coordinate.latitude = ((double)data.lat) * ((double)1e-7);
+        NavInfo.coordinate.longitude = ((double)data.lon) * ((double)1e-7);
+        NavInfo.h_acc = data.hAcc;
+        NavInfo.v_acc = data.vAcc;
+        NavInfo.hmsl = data.hMSL;
+        io_printf("itow: %u ms" CRLF, data.iTOW);
     }
+
     return res;
 }
 
-static bool ubx_proc_nav_frame(uint8_t* frame) {
+static bool ubx_proc_nav_hpposllh_frame(uint8_t* payload, uint16_t len) {
     bool res = false;
-    switch(frame[UBX_INDEX_ID]) {
-    case UBX_NAV_HPPOSLLH:
-        res = ubx_proc_nav_hpposllh_frame(frame);
+    if(36 <= len) {
+        res = true;
+        NavHpPosllh_t data;
+        memcpy(&data, payload, sizeof(NavHpPosllh_t));
+        NavInfo.coordinate.latitude = ((double)data.lat) * ((double)1e-7);
+        NavInfo.coordinate.longitude = ((double)data.lon) * ((double)1e-7);
+        NavInfo.h_acc = data.hAcc;
+        NavInfo.v_acc = data.vAcc;
+        NavInfo.hmsl = data.hMSL;
+    }
+
+    return res;
+}
+
+static bool ubx_proc_nav_frame(uint8_t* frame, uint16_t len) {
+    bool res = false;
+    uint8_t id = frame[UBX_INDEX_ID];
+    switch(id) {
+    case UBX_ID_NAV_POSLLH:
+        res = ubx_proc_nav_posllh_frame(frame + UBX_INDEX_PAYLOAD, len);
         break;
-    case UBX_NAV_ATT:
-        res = ubx_proc_nav_att_frame(frame);
+    case UBX_ID_NAV_HPPOSLLH:
+        res = ubx_proc_nav_hpposllh_frame(frame + UBX_INDEX_PAYLOAD, len);
+        break;
+    case UBX_ID_NAV_ATT:
+        res = ubx_proc_nav_att_frame(frame + UBX_INDEX_PAYLOAD);
         break;
     default:
+        LOG_ERROR(UBX, "Undef index 0x%x", id);
         break;
     }
     return res;
@@ -143,46 +162,93 @@ static bool ubx_proc_ack_frame(void) {
     return res;
 }
 
-bool ubx_proc_frame(void) {
+bool ubx_proc_sec_uniqid_frame(uint8_t* payload, uint16_t len) {
     bool res = false;
-    if(true == UbloxPorotocol.unproc_frame) {
-        uint8_t in_class = UbloxPorotocol.fix_frame[UBX_INDEX_CLS];
-#ifdef HAS_UBX_DIAG
-        ubx_print_frame(UbloxPorotocol.fix_frame);
-#endif /*HAS_UBX_DIAG*/
-        ubx_update_stat(in_class);
-        switch(in_class) {
-        case UBX_CLA_NAV:
-            res = ubx_proc_nav_frame(UbloxPorotocol.fix_frame);
-            break;
-        case UBX_CLA_RXM:
-            break;
-        case UBX_CLA_INF:
-            break;
-        case UBX_CLA_ACK:
-            res = ubx_proc_ack_frame();
-            break;
-        case UBX_CLA_CFG:
-            res = ubx_proc_cfg_frame();
-            break;
-        case UBX_CLA_UPD:
-            break;
-        case UBX_CLA_MON:
-            break;
-        case UBX_CLA_TIM:
-            break;
-        case UBX_CLA_ESF:
-            break;
-        case UBX_CLA_MGA:
-            break;
-        case UBX_CLA_SEC:
-            break;
-        default:
-            break;
-        }
-        memset(UbloxPorotocol.fix_frame, 0x00, UBX_RX_FRAME_SIZE);
-        UbloxPorotocol.unproc_frame = false;
-        ubx_reset_rx();
+    if(9 <= len) {
+        SecUniqId_t data = {0};
+        memcpy(&data, payload, sizeof(SecUniqId_t));
+        memcpy(NavInfo.id, data.UniqueChipId, 5);
+        res = true;
+    }
+    return res;
+}
+
+static bool ubx_proc_sec_frame(uint8_t* frame, uint16_t len) {
+    bool res = false;
+    uint8_t id = frame[UBX_INDEX_ID];
+    switch(id) {
+    case UBX_ID_SEC_UNIQID:
+        res = ubx_proc_sec_uniqid_frame(frame + UBX_INDEX_PAYLOAD, len);
+        break;
+    default:
+        LOG_ERROR(UBX, "Undef SEC id 0x%x", id);
+        break;
+    }
+    return res;
+}
+
+bool ubx_proc_frame(UbloxPorotocol_t* inst) {
+    bool res = false;
+
+    uint8_t in_class = inst->fix_frame[UBX_INDEX_CLS];
+    if(inst->diag) {
+        ubx_print_frame(inst->fix_frame);
+    }
+    ubx_update_stat(in_class);
+    switch(in_class) {
+    case UBX_CLA_NAV:
+        res = ubx_proc_nav_frame(inst->fix_frame, inst->exp_len);
+        break;
+    case UBX_CLA_RXM:
+        break;
+    case UBX_CLA_INF:
+        break;
+    case UBX_CLA_ACK:
+        res = ubx_proc_ack_frame();
+        break;
+    case UBX_CLA_CFG:
+        res = ubx_proc_cfg_frame();
+        break;
+    case UBX_CLA_UPD:
+        break;
+    case UBX_CLA_MON:
+        break;
+    case UBX_CLA_TIM:
+        break;
+    case UBX_CLA_ESF:
+        break;
+    case UBX_CLA_MGA:
+        break;
+    case UBX_CLA_SEC:
+        res = ubx_proc_sec_frame(inst->fix_frame, inst->exp_len);
+        break;
+    default:
+        LOG_ERROR(UBX, "Undef %u 0x%x", in_class, in_class);
+        break;
+    }
+    memset(inst->fix_frame, 0x00, UBX_RX_FRAME_SIZE);
+    ubx_reset_rx();
+
+    return res;
+}
+
+static const UbxHeader_t pollLut[] = {
+    {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
+    {UBX_CLA_NAV, UBX_ID_NAV_ATT},
+    {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
+    {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
+};
+
+bool ubx_proc(void) {
+    bool res = false;
+    static uint16_t i = 0;
+    res = ubx_send_message(pollLut[i].class, pollLut[i].id, NULL, 0);
+    if(false == res) {
+        LOG_ERROR(UBX, "Send Class:0x%02x  ID:0x%02x Error ", pollLut[i].class, pollLut[i].id);
+    }
+    i++;
+    if(ARRAY_SIZE(pollLut) < i) {
+        i = 0;
     }
     return res;
 }

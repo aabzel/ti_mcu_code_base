@@ -37,8 +37,16 @@ extern "C" {
 #define UBX_CLA_MGA 0x13
 #define UBX_CLA_SEC 0x27
 
-#define UBX_NAV_HPPOSLLH 0x14
-#define UBX_NAV_ATT 0x05
+#define UBX_ID_NAV_CLK 0x22
+#define UBX_ID_NAV_STATUS 0x03
+#define UBX_ID_NAV_POSLLH 0x02
+#define UBX_ID_NAV_HPPOSLLH 0x14
+#define UBX_ID_NAV_ATT 0x05
+
+#define UBX_ID_MON_VER 0x04
+#define UBX_ID_MON_HW 0x09
+
+#define UBX_ID_SEC_UNIQID 0x03
 
 #define UBX_CLA_CNT 15
 
@@ -69,7 +77,13 @@ typedef struct xUbloxPorotocol_t {
     uint8_t rx_frame[UBX_RX_FRAME_SIZE];
     uint8_t fix_frame[UBX_RX_FRAME_SIZE];
     bool unproc_frame;
+    bool diag;
 } UbloxPorotocol_t;
+
+typedef struct xUbxHeader_t {
+    uint8_t class;
+    uint8_t id;
+} UbxHeader_t;
 
 typedef struct xStatClass_t {
     uint8_t class_val;

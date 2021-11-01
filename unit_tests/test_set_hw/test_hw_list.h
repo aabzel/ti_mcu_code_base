@@ -15,7 +15,7 @@ extern "C" {
 #define TEST_SUIT_FLASH
 #endif
 
-#ifdef HAS_FLASH_FS
+#ifdef HAS_TEST_FLASH_FS
 #include "test_flash_fs.h"
 #else
 #define TEST_SUIT_FLASH_FS
@@ -53,10 +53,16 @@ extern "C" {
 #define TEST_SUIT_UART
 #endif
 
-#ifdef HAS_SX1262
+#ifdef HAS_TEST_SX1262
 #include "test_sx1262.h"
 #else
 #define TEST_SUIT_SX1262
+#endif
+
+#ifdef HAS_ZED_F9P
+#include "test_zed_f9p.h"
+#else
+#define TEST_SUIT_ZED_F9P
 #endif
 
 
@@ -69,6 +75,7 @@ bool test_clock_ms(void);
 	TEST_SUIT_FLASH    \
 	TEST_SUIT_UART \
 	TEST_SUIT_GPIO \
+	TEST_SUIT_ZED_F9P \
 	TEST_SUIT_TCAN4550 \
 	TEST_SUIT_FLASH_FS \
     TEST_SUIT_SPI \

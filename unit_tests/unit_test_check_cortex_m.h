@@ -160,7 +160,7 @@
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
-        if((val2) < (val1)) {                                                                                          \
+        if((val2) <= (val1)) {                                                                                          \
             LOG_ERROR(SYS, "%s():Line: %d in val1: %llu val2: %llu id: %u", __FUNCTION__, __LINE__, val1, val2, id);   \
             LOG_ERROR(SYS, "%s():Line: %d in val1: 0x%llx val2: 0x%llx id: %u", __FUNCTION__, __LINE__, val1, val2,    \
                       id);                                                                                             \

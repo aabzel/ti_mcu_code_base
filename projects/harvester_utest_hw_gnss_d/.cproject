@@ -102,6 +102,17 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/tbfp_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/rtcm3_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_can"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash_fs"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_gpio"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_params"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_spi"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_sx1262"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_uart"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_zed_f9p"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
@@ -132,6 +143,7 @@
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
+									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_MCU"/>
@@ -158,6 +170,8 @@
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
 									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
+									<listOptionValue builtIn="false" value="HAS_UBX_DEBUG"/>
+									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="HAS_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
@@ -283,9 +297,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_ublox_proto — копия"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_crc — копия"/>
-						<entry excluding="Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|unit_tests|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="unit_tests/test_set_hw/test_flash_fs|unit_tests/test_set_hw/test_sx1262|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|unit_tests/test_set_sw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -300,7 +312,7 @@
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/harvester_generic_d"/>
+			<resource resourceType="PROJECT" workspacePath="/harvester_utest_hw_gnss_d"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>

@@ -1,9 +1,12 @@
+#include "ubx_protocol.h"
+
 #include <string.h>
 
 #include "data_utils.h"
 #include "debug_info.h"
 #include "io_utils.h"
-#include "ubx_protocol.h"
+#include "log.h"
+#include "ublox_driver.h"
 
 UbloxPorotocol_t UbloxPorotocol = {0};
 StatClass_t tableRxClass[UBX_CLA_CNT] = {0};
@@ -17,6 +20,7 @@ bool ubx_reset_rx(void) {
 
 bool ublox_protocol_init(void) {
     ubx_reset_rx();
+    UbloxPorotocol.diag = false;
     UbloxPorotocol.rx_pkt_cnt = 0;
     UbloxPorotocol.ack_cnt = 0;
 #ifdef HAS_DEBUG
@@ -148,6 +152,14 @@ static bool proc_ublox_wait_crc(uint8_t rx_byte) {
             UbloxPorotocol.rx_pkt_cnt++;
             memcpy(UbloxPorotocol.fix_frame, UbloxPorotocol.rx_frame, UBX_RX_FRAME_SIZE);
             UbloxPorotocol.unproc_frame = true;
+#ifdef HAS_MCU
+            LOG_INFO(UBX, "Rx frame class id: 0x%02x 0x%02x len %u", UbloxPorotocol.fix_frame[UBX_INDEX_CLS],
+                     UbloxPorotocol.fix_frame[UBX_INDEX_ID], len);
+            res = ubx_proc_frame(&UbloxPorotocol);
+            if(res) {
+                LOG_INFO(UBX, "Rx proc done");
+            }
+#endif /*HAS_MCU*/
             ubx_reset_rx();
             res = true;
         } else {

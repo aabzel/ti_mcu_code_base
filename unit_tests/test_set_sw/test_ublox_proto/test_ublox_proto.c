@@ -2,6 +2,7 @@
 
 #include "array.h"
 #include "ubx_protocol.h"
+#include "ubx_types.h"
 #include "unit_test_check.h"
 
 const uint8_t ubx_baud_115200_message[28] = {
@@ -56,6 +57,24 @@ bool test_ublox_proto_err_len(void) {
    return true;
 }
   
+
+
+bool test_ublox_proto_types(void) {
+   uint8_t i=0;
+#ifdef X86_64
+   printf("\n%s()",__FUNCTION__);
+#endif
+   EXPECT_EQ(9, sizeof(SecUniqId_t));
+   EXPECT_EQ(28, sizeof(NavPosllh_t));
+   EXPECT_EQ(36, sizeof(NavHpPosllh_t));
+
+   return true;
+}
+
+
+
+
+
   
 
 

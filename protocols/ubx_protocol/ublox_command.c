@@ -5,6 +5,7 @@
 
 #include "convert.h"
 #include "data_utils.h"
+#include "gnss_diag.h"
 #include "io_utils.h"
 #include "log.h"
 #include "table_utils.h"
@@ -13,15 +14,20 @@
 #include "writer_generic.h"
 
 static bool ubx_diag(void) {
+
     io_printf("rx pkt cnt: %u" CRLF, UbloxPorotocol.rx_pkt_cnt);
-    io_printf("crc cnt   : %u" CRLF, UbloxPorotocol.crc_err_cnt);
-    io_printf("rx state  : %u" CRLF, UbloxPorotocol.rx_state);
-    io_printf("ack cnt   : %u" CRLF, UbloxPorotocol.ack_cnt);
-#ifdef HAS_DEBUG
+    io_printf("crc cnt: %u" CRLF, UbloxPorotocol.crc_err_cnt);
+    io_printf("rx state: %u" CRLF, UbloxPorotocol.rx_state);
+    io_printf("ack cnt: %u" CRLF, UbloxPorotocol.ack_cnt);
+    io_printf("diag: %u" CRLF, UbloxPorotocol.diag);
+#ifdef HAS_UBX_DEBUG
     io_printf("sync cnt: %u" CRLF, UbloxPorotocol.sync_cnt);
     io_printf("min len: %u" CRLF, UbloxPorotocol.min_len);
     io_printf("max len: %u" CRLF, UbloxPorotocol.max_len);
 #endif
+    io_printf("chip id:");
+    print_mem(NavInfo.id, 5, false, true);
+
     uint8_t i = 0;
 
     table_col_t cols[] = {{7, "class"}, {8, "rx_cnt"}};
@@ -64,10 +70,21 @@ static bool ubx_key_val_diag(void) {
 
 bool ubx_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
+    if(1 <= argc) {
+        res = try_str2bool(argv[0], &UbloxPorotocol.diag);
+        if(false == res) {
+            LOG_ERROR(UBX, "Unable to extract diag");
+        }
+    }
     if(0 == argc) {
+        res = true;
+    }
+
+    if(1 < argc) {
+        LOG_ERROR(UBX, "Usage: ubd");
+    }
+    if(res) {
         res = ubx_diag();
-    } else {
-        LOG_ERROR(SYS, "Usage: ubd");
     }
     return res;
 }
@@ -77,7 +94,7 @@ bool ubx_print_key_val_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         res = ubx_key_val_diag();
     } else {
-        LOG_ERROR(SYS, "Usage: ubk");
+        LOG_ERROR(UBX, "Usage: ubk");
     }
     return res;
 }
@@ -90,7 +107,7 @@ bool ubx_get_key_command(int32_t argc, char* argv[]) {
         if(true == res) {
             res = try_str2uint32(argv[0], &key_id);
             if(false == res) {
-                LOG_ERROR(UART, "Unable to extract Class %s", argv[0]);
+                LOG_ERROR(UBX, "Unable to extract Class %s", argv[0]);
             }
         }
 
@@ -99,12 +116,12 @@ bool ubx_get_key_command(int32_t argc, char* argv[]) {
             memcpy(&payload[4], &key_id, 4);
             res = ubx_send_message(0x06, 0x8b, payload, 8);
             if(false == res) {
-                LOG_ERROR(SYS, "Unable to send to Ublox");
+                LOG_ERROR(UBX, "Unable to send to Ublox");
             }
         }
 
     } else {
-        LOG_ERROR(SYS, "Usage: ubg key_id");
+        LOG_ERROR(UBX, "Usage: ubg key_id");
     }
     return res;
 }
@@ -121,13 +138,13 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
         if(true == res) {
             res = try_str2uint8(argv[0], &class_num);
             if(false == res) {
-                LOG_ERROR(UART, "Unable to extract Class %s", argv[0]);
+                LOG_ERROR(UBX, "Unable to extract Class %s", argv[0]);
             }
         }
         if(true == res) {
             res = try_str2uint8(argv[1], &id);
             if(false == res) {
-                LOG_ERROR(UART, "Unable to extract ID %s", argv[1]);
+                LOG_ERROR(UBX, "Unable to extract ID %s", argv[1]);
             }
         }
     }
@@ -136,7 +153,7 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
         if(true == res) {
             res = try_str2array(argv[2], payload, sizeof(payload), &payload_len);
             if(false == res) {
-                LOG_ERROR(UART, "Unable to extract array %s", argv[2]);
+                LOG_ERROR(UBX, "Unable to extract array %s", argv[2]);
             }
         }
     }
@@ -144,23 +161,22 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
     if(true == res) {
         res = ubx_send_message(class_num, id, payload, payload_len);
         if(false == res) {
-            LOG_ERROR(SYS, "Unable to send to Ublox");
+            LOG_ERROR(UBX, "Unable to send to Ublox");
         } else {
-            LOG_INFO(SYS, "Send OK");
+            LOG_INFO(UBX, "Send OK");
         }
     } else {
-        LOG_ERROR(SYS, "Usage: ubs class id payload");
+        LOG_ERROR(UBX, "Usage: ubs class id payload");
     }
 
     return res;
 }
-
+#ifdef HAS_UBX_DEBUG
 static bool ubx_nav(void) {
-    io_printf("%u ", NavInfo.latitude);
-    io_printf("%u" CRLF, NavInfo.longitude);
-    io_printf("hmsl: %u mm %u m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 1000);
-    io_printf("h_acc: %u %f mm" CRLF, NavInfo.h_acc, 0.1f * ((double)NavInfo.h_acc));
-    io_printf("v_acc: %u %f mm" CRLF, NavInfo.v_acc, 0.1f * ((double)NavInfo.v_acc));
+    bool res = print_coordinate(NavInfo.coordinate);
+    io_printf("hmsl: %d mm %d m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 1000);
+    io_printf("h_acc: %u mm" CRLF, NavInfo.h_acc);
+    io_printf("v_acc: %u mm" CRLF, NavInfo.v_acc);
     io_printf("roll %d %f deg" CRLF, NavInfo.roll, 1e-5 * ((double)NavInfo.roll));
     io_printf("pitch %d %f deg" CRLF, NavInfo.pitch, 1e-5 * ((double)NavInfo.pitch));
     io_printf("heading %d %f deg" CRLF, NavInfo.heading, 1e-5 * ((double)NavInfo.heading));
@@ -169,15 +185,18 @@ static bool ubx_nav(void) {
     io_printf("acc_pitch %d %f deg" CRLF, NavInfo.acc_pitch, 1e-5 * ((double)NavInfo.acc_pitch));
     io_printf("acc_heading %d %f deg" CRLF, NavInfo.acc_heading, 1e-5 * ((double)NavInfo.acc_heading));
 
-    return true;
+    return res;
 }
+#endif
 
 bool ubx_nav_command(int32_t argc, char* argv[]) {
     bool res = false;
+#ifdef HAS_UBX_DEBUG
     if(0 == argc) {
         res = ubx_nav();
     } else {
-        LOG_ERROR(SYS, "Usage: ubn");
+        LOG_ERROR(UBX, "Usage: ubn");
     }
+#endif
     return res;
 }

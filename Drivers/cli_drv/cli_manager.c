@@ -193,9 +193,12 @@ bool process_shell_cmd(char* cmd_line) {
         while(NULL != cmd->handler) {
             if((cmd->long_name && __strcasecmp(cmd->long_name, shell_argv[0]) == 0) ||
                (cmd->short_name && __strcasecmp(cmd->short_name, shell_argv[0]) == 0)) {
-                cmd->handler(shell_argc - 1, shell_argv + 1);
+                res = cmd->handler(shell_argc - 1, shell_argv + 1);
+                if(false==res){
+                    LOG_ERROR(SYS, "cmd error");
+                }
                 shell_prompt();
-                res = true;
+                //res = true;
                 break;
 
             }
