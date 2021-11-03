@@ -162,6 +162,9 @@ const char *facility2str(log_facility_t facility) {
   case UBX:
     facility_str = "UBX";
     break;
+  case ZED_F9P:
+    facility_str = "ZED_F9P";
+    break;
   case TIM:
     facility_str = "TIM";
     break;

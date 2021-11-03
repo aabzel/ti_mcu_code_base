@@ -228,7 +228,7 @@ bool tcan4550_read_command(int32_t argc, char* argv[]){
     if(true == res) {
         res = tcan4550_read( address, len, data, sizeof(data));
         if(res){
-            print_mem(data,sizeof(data),true,true);
+            print_mem(data,sizeof(data), true,true,true);
         }else{
             LOG_ERROR(CAN, "read error");
         }
@@ -442,7 +442,7 @@ bool tcan4550_get_fifos_command(int32_t argc, char* argv[]){
         num_bytes = TCAN4x5x_MCAN_ReadNextFIFO( (TCAN4x5x_MCAN_FIFO_Enum)fifo_num, &MsgHeader, dataPayload);   // This will read the next element in the RX FIFO 0
         if(num_bytes ){
             LOG_INFO(CAN, "Rx ID %u 0x%x",MsgHeader.ID, MsgHeader.ID);
-            print_mem(dataPayload,num_bytes,true,true);
+            print_mem(dataPayload,num_bytes, true,true,true);
             res = true;
         }
     }

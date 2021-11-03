@@ -1,7 +1,7 @@
 /**
  * @brief Definitions of Memory Manager methods
  *
- * This file contains definitions of Memory Manager  methods and constants
+ * This file contains definitions of Memory Manager methods and constants
  *
  */
 

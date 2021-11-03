@@ -194,8 +194,8 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     return res;
 }
 
-bool print_bin(uint8_t* buff, uint16_t size, uint16_t indent) {
-    uint16_t i = 0;
+bool print_bin(uint8_t* buff, uint32_t size, uint16_t indent) {
+    uint32_t i = 0;
     bool res = false;
     res = print_indent(indent);
     for(i = 0; i < size; i++) {
@@ -204,18 +204,17 @@ bool print_bin(uint8_t* buff, uint16_t size, uint16_t indent) {
     return res;
 }
 
-bool print_mem(uint8_t* addr, uint32_t len, bool is_ascii, bool new_line) {
+bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new_line) {
     bool res = false;
     uint32_t pos = 0;
     uint32_t print_len = 0;
-    int32_t rem;
-    uint8_t hexLine[16 * 2 + 1] = {0};
-    memset(hexLine, 0x00, sizeof(hexLine));
+    int32_t rem = 0;
     if(16 < len) {
         for(pos = 0; pos < (len - 16); pos += 16) {
             res = true;
-            hex2ascii(&addr[pos], 16, hexLine, (uint32_t)sizeof(hexLine));
-            io_printf("%s", hexLine);
+            if(is_bin) {
+                print_bin(&addr[pos], 16, 0);
+            }
             if(is_ascii) {
                 print_ascii_line((char*)&addr[pos], 16, 4);
             }
@@ -226,11 +225,11 @@ bool print_mem(uint8_t* addr, uint32_t len, bool is_ascii, bool new_line) {
     rem = len - print_len;
 
     if(0 < rem) {
-        memset(hexLine, 0x00, sizeof(hexLine));
         res = true;
         pos = len / 16;
-        hex2ascii(&addr[print_len], rem, hexLine, sizeof(hexLine));
-        io_printf("%s", hexLine);
+        if(is_bin) {
+            print_bin(&addr[print_len], rem, 0);
+        }
         if(is_ascii) {
             print_ascii_line((char*)&addr[print_len], rem, 2 * (16 - rem) + 4);
         }

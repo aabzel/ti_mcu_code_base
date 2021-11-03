@@ -5,6 +5,7 @@
 
 #include "convert.h"
 #include "data_utils.h"
+#include "debug_info.h"
 #include "gnss_diag.h"
 #include "io_utils.h"
 #include "log.h"
@@ -15,6 +16,7 @@
 
 static bool ubx_diag(void) {
 
+    io_printf("tx pkt cnt: %u" CRLF, UbloxPorotocol.tx_pkt_cnt);
     io_printf("rx pkt cnt: %u" CRLF, UbloxPorotocol.rx_pkt_cnt);
     io_printf("crc cnt: %u" CRLF, UbloxPorotocol.crc_err_cnt);
     io_printf("rx state: %u" CRLF, UbloxPorotocol.rx_state);
@@ -26,7 +28,7 @@ static bool ubx_diag(void) {
     io_printf("max len: %u" CRLF, UbloxPorotocol.max_len);
 #endif
     io_printf("chip id:");
-    print_mem(NavInfo.id, 5, false, true);
+    print_mem(NavInfo.id, 5, true, false, true);
 
     uint8_t i = 0;
 
@@ -174,6 +176,8 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
 #ifdef HAS_UBX_DEBUG
 static bool ubx_nav(void) {
     bool res = print_coordinate(NavInfo.coordinate);
+    res = print_velocity(NavInfo.velocity) && res;
+    res = print_time_date(&NavInfo.date_time) && res;
     io_printf("hmsl: %d mm %d m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 1000);
     io_printf("h_acc: %u mm" CRLF, NavInfo.h_acc);
     io_printf("v_acc: %u mm" CRLF, NavInfo.v_acc);
@@ -181,9 +185,9 @@ static bool ubx_nav(void) {
     io_printf("pitch %d %f deg" CRLF, NavInfo.pitch, 1e-5 * ((double)NavInfo.pitch));
     io_printf("heading %d %f deg" CRLF, NavInfo.heading, 1e-5 * ((double)NavInfo.heading));
 
-    io_printf("acc_roll %d %f deg" CRLF, NavInfo.acc_roll, 1e-5 * ((double)NavInfo.acc_roll));
-    io_printf("acc_pitch %d %f deg" CRLF, NavInfo.acc_pitch, 1e-5 * ((double)NavInfo.acc_pitch));
-    io_printf("acc_heading %d %f deg" CRLF, NavInfo.acc_heading, 1e-5 * ((double)NavInfo.acc_heading));
+    io_printf("accRoll %d %f deg" CRLF, NavInfo.acc_roll, 1e-5 * ((double)NavInfo.acc_roll));
+    io_printf("accPitch %d %f deg" CRLF, NavInfo.acc_pitch, 1e-5 * ((double)NavInfo.acc_pitch));
+    io_printf("accHeading %d %f deg" CRLF, NavInfo.acc_heading, 1e-5 * ((double)NavInfo.acc_heading));
 
     return res;
 }

@@ -33,7 +33,12 @@ bool lora_sent_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
+        res = false;
+        (void)tx_array_len;
+        (void)timeout_s;
+#ifdef HAS_SX1262
         res = sx1262_start_tx(tx_array, tx_array_len, timeout_s);
+#endif
     }
 
     return res;

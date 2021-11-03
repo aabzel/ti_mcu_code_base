@@ -2,11 +2,12 @@
 #define TASK_CONFIG_H
 
 #include "task_config_base.h"
-#include "task_config_harvester.h"
-
 
 #define TASKS               \
   TASKS_BASE                \
-  TASKS_HARVESTER
+  TASK(NMEA)                \
+  TASK(UBX)                 \
+  TASK(ZED_F9P)
+
 
 #endif /* TASK_CONFIG_H */

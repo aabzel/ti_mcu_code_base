@@ -177,11 +177,11 @@ bool parse_irq_stat(uint16_t irq_stat) {
 bool printf_pack_stat(PaketStat_t* pack_stat, char* name) {
     bool res = false;
     if(pack_stat && name) {
-        res = true;
         io_printf("%s:crc_error %u pkt" CRLF, name, pack_stat->nb_pkt_crc_error);
         io_printf("%s:header_err %u pkt" CRLF, name, pack_stat->nb_pkt_header_err);
         io_printf("%s:length_error %u pkt" CRLF, name, pack_stat->nb_pkt_length_error);
         io_printf("%s:received %u pkt" CRLF, name, pack_stat->nb_pkt_received);
+        res = true;
     }
     return res;
 }

@@ -37,11 +37,14 @@ extern "C" {
 #define UBX_CLA_MGA 0x13
 #define UBX_CLA_SEC 0x27
 
-#define UBX_ID_NAV_CLK 0x22
-#define UBX_ID_NAV_STATUS 0x03
 #define UBX_ID_NAV_POSLLH 0x02
-#define UBX_ID_NAV_HPPOSLLH 0x14
+#define UBX_ID_NAV_STATUS 0x03
 #define UBX_ID_NAV_ATT 0x05
+#define UBX_ID_NAV_VELECEF 0x11
+#define UBX_ID_NAV_VELNED 0x12
+#define UBX_ID_NAV_HPPOSLLH 0x14
+#define UBX_ID_NAV_TIMEUTC 0x21
+#define UBX_ID_NAV_CLK 0x22
 
 #define UBX_ID_MON_VER 0x04
 #define UBX_ID_MON_HW 0x09
@@ -62,7 +65,9 @@ typedef enum eUbxProtState_t {
 } UbxProtState_t;
 
 typedef struct xUbloxPorotocol_t {
+    uint32_t rx_time_stamp;
     uint32_t rx_pkt_cnt;
+    uint32_t tx_pkt_cnt;
     uint32_t crc_err_cnt;
     uint32_t load_len;
     uint16_t exp_len;

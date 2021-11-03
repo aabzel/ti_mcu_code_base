@@ -62,6 +62,7 @@ typedef enum eLog_facility_t {
   SPI,
   PARAM,
   PWR,
+  ZED_F9P,
   RF,
   RNG,
   SYS,

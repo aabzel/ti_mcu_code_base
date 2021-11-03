@@ -227,7 +227,12 @@ typedef struct xSx1262_t {
     uint32_t int_cnt;
     uint32_t rf_frequency_hz;
     uint32_t data_aval_cnt;
+#ifdef HAS_SX1262_BIT_RATE
+    uint32_t tx_start_time_stamp_ms;
     uint32_t tx_done_time_stamp_ms;
+    uint32_t tx_last_size;
+    float tx_real_bit_rate;
+#endif /*HAS_SX1262_BIT_RATE*/
     uint32_t busy_cnt;
     uint32_t rand_num;
     uint16_t op_error;

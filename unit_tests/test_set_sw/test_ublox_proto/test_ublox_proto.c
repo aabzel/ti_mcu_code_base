@@ -67,6 +67,9 @@ bool test_ublox_proto_types(void) {
    EXPECT_EQ(9, sizeof(SecUniqId_t));
    EXPECT_EQ(28, sizeof(NavPosllh_t));
    EXPECT_EQ(36, sizeof(NavHpPosllh_t));
+   EXPECT_EQ(20, sizeof(NavTimeUtc_t));
+   EXPECT_EQ(1, sizeof(TimeUtcValidityFlags_t));
+   EXPECT_EQ(36, sizeof(NavVelNed_t));
 
    return true;
 }

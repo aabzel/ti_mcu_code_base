@@ -8,7 +8,9 @@
 
 #include "boot_driver.h"
 #include "data_utils.h"
+#ifdef HAS_FLASH_FS
 #include "flash_fs.h"
+#endif
 #include "log.h"
 #include "param_types.h"
 #ifdef HAS_SX1262
@@ -33,6 +35,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},    /*Flash Addr*/
     {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},  /*loRa output power*/
     {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},          /*Power Source*/
+    {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},       /*Time Zone*/
 };
 
 bool param_init(void) {
@@ -109,7 +112,7 @@ bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* ou
             break;
         case INT16:
             if(2 == value_len) {
-                Type16Union_t un16;
+                Type16Union_t un16 = {0};
                 memcpy(&un16, value, sizeof(Type16Union_t));
                 snprintf(out_str, str_size, "%" PRId16, un16.s16);
                 res = true;

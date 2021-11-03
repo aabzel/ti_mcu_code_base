@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <time.h>
 
 #ifdef HAS_MCU
 #include "clocks.h"
@@ -16,7 +17,8 @@ extern "C" {
 #include "ubx_protocol.h"
 
 #ifdef HAS_MCU
-#define UBX_PERIOD_MS S_2_US(4)
+#define UBX_PERIOD_US S_2_US(3)
+#define UBX_RX_TIME_OUT_MS S_2_MS(15)
 #endif
 
 /*UBX data types*/
@@ -53,7 +55,9 @@ typedef struct xVariable_t{
 
 /*Variables that matter for the application*/
 typedef struct xNavInfo_t {
+    struct tm date_time;
     GnssCoordinate_t coordinate;
+    GnssVelocity_t velocity;
     uint8_t id[5];
     int32_t hmsl;
     uint32_t h_acc;
@@ -64,6 +68,7 @@ typedef struct xNavInfo_t {
     uint32_t acc_roll;
     uint32_t acc_pitch;
     uint32_t acc_heading;
+
     /*velocity*/
 } NavInfo_t;
 

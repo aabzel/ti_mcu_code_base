@@ -9,17 +9,22 @@
 #include "ubx_protocol.h"
 #include "ubx_types.h"
 
+#ifndef HAS_MCU
+#include "clocks.h"
+#endif /*HAS_MCU*/
+
 #ifndef HAS_UART
 #error "Ublox driver requires UART driver"
 #endif
 
 keyValItem_t keyValTable[UBX_KEY_CNT] = {{0x30210001, 0x00, UBX_U2}};
 
-NavInfo_t NavInfo;
+NavInfo_t NavInfo = {0};
 
 bool ubx_driver_init(void) {
     memset(&NavInfo, 0x00, sizeof(NavInfo));
-    return true;
+    bool res = set_log_level(UBX, LOG_LEVEL_NOTICE);
+    return res;
 }
 
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len) {
@@ -39,7 +44,10 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
     crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
     memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
     if(true == res) {
-        uart_send(1, tx_array, tx_array_len, true);
+        res = uart_send(1, tx_array, tx_array_len, true);
+        if (res) {
+            UbloxPorotocol.tx_pkt_cnt++;
+        }
     }
     return res;
 }
@@ -105,7 +113,7 @@ static bool ubx_proc_nav_posllh_frame(uint8_t* payload, uint16_t len) {
         NavInfo.h_acc = data.hAcc;
         NavInfo.v_acc = data.vAcc;
         NavInfo.hmsl = data.hMSL;
-        io_printf("itow: %u ms" CRLF, data.iTOW);
+        // io_printf("itow: %u ms" CRLF, data.iTOW);
     }
 
     return res;
@@ -127,10 +135,55 @@ static bool ubx_proc_nav_hpposllh_frame(uint8_t* payload, uint16_t len) {
     return res;
 }
 
+static bool ubx_proc_nav_timeutc_frame(uint8_t* payload, uint16_t len) {
+    bool res = false;
+    if(20 <= len) {
+        res = true;
+        NavTimeUtc_t data = {0};
+        memcpy(&data, payload, sizeof(NavTimeUtc_t));
+        NavInfo.date_time.tm_hour = data.hour;
+        NavInfo.date_time.tm_min = data.min;
+        NavInfo.date_time.tm_sec = data.sec;
+
+        NavInfo.date_time.tm_mday = data.day;
+        NavInfo.date_time.tm_mon = data.month;
+        NavInfo.date_time.tm_year = data.year;
+        // io_printf("valid: %u" CRLF, data.ValidityFlags.byte);
+    }
+    return res;
+}
+
+static bool ubx_proc_nav_velned_frame(uint8_t* payload, uint16_t len) {
+    bool res = false;
+    if(36 <= len) {
+        NavVelNed_t data = {0};
+        memcpy(&data, payload, sizeof(NavVelNed_t));
+        NavInfo.velocity.speed_ground = (double)data.speed_ground;
+        NavInfo.velocity.velocity_north = (double)data.vel_north;
+        NavInfo.velocity.velocity_east = (double)data.vel_east;
+        NavInfo.velocity.velocity_down = (double)data.vel_down;
+        NavInfo.velocity.heading = ((double)1e-5) * ((double)data.heading);
+        NavInfo.velocity.speed = (double)data.speed;
+        NavInfo.velocity.speed_ground = (double)data.speed_ground;
+        NavInfo.velocity.accuracy_speed = (double)data.speed_acc;
+        NavInfo.velocity.accuracy_course = ((double)1e-5) * ((double)data.course_acc);
+        res = true;
+    }
+    return res;
+}
+
 static bool ubx_proc_nav_frame(uint8_t* frame, uint16_t len) {
     bool res = false;
     uint8_t id = frame[UBX_INDEX_ID];
     switch(id) {
+    case UBX_ID_NAV_VELNED:
+        res = ubx_proc_nav_velned_frame(frame + UBX_INDEX_PAYLOAD, len);
+        break;
+
+    case UBX_ID_NAV_TIMEUTC:
+        res = ubx_proc_nav_timeutc_frame(frame + UBX_INDEX_PAYLOAD, len);
+        break;
+
     case UBX_ID_NAV_POSLLH:
         res = ubx_proc_nav_posllh_frame(frame + UBX_INDEX_PAYLOAD, len);
         break;
@@ -189,7 +242,6 @@ static bool ubx_proc_sec_frame(uint8_t* frame, uint16_t len) {
 
 bool ubx_proc_frame(UbloxPorotocol_t* inst) {
     bool res = false;
-
     uint8_t in_class = inst->fix_frame[UBX_INDEX_CLS];
     if(inst->diag) {
         ubx_print_frame(inst->fix_frame);
@@ -233,10 +285,8 @@ bool ubx_proc_frame(UbloxPorotocol_t* inst) {
 }
 
 static const UbxHeader_t pollLut[] = {
-    {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
-    {UBX_CLA_NAV, UBX_ID_NAV_ATT},
-    {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
-    {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
+    {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC}, {UBX_CLA_NAV, UBX_ID_NAV_VELNED},   {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
+    {UBX_CLA_NAV, UBX_ID_NAV_ATT},     {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH}, {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
 };
 
 bool ubx_proc(void) {
@@ -244,11 +294,20 @@ bool ubx_proc(void) {
     static uint16_t i = 0;
     res = ubx_send_message(pollLut[i].class, pollLut[i].id, NULL, 0);
     if(false == res) {
-        LOG_ERROR(UBX, "Send Class:0x%02x  ID:0x%02x Error ", pollLut[i].class, pollLut[i].id);
+        LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", pollLut[i].class, pollLut[i].id);
+    } else {
+        LOG_DEBUG(UBX, "Send Class:0x%02x ID:0x%02x OK", pollLut[i].class, pollLut[i].id);
     }
     i++;
     if(ARRAY_SIZE(pollLut) < i) {
         i = 0;
+    }
+    uint32_t cur_time = get_time_ms32();
+    uint32_t time_diff = 0;
+    time_diff = cur_time - UbloxPorotocol.rx_time_stamp;
+    if(UBX_RX_TIME_OUT_MS < time_diff) {
+        LOG_ERROR(UBX, "UBX proto link lost %f s",MS_2_S(time_diff));
+        res = false;
     }
     return res;
 }

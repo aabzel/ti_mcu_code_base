@@ -71,8 +71,10 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/telematic"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/tcan4550_q1"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/tcan4550_q1_ti"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/zed_f9p"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards/harvester_v1"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2"/>
@@ -95,6 +97,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/tbfp_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/rtcm3_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
@@ -142,6 +145,8 @@
 									<listOptionValue builtIn="false" value="HAS_SX1262"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
+									<listOptionValue builtIn="false" value="HAS_TBFP"/>
+									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>

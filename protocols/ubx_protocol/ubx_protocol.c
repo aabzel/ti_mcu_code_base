@@ -4,6 +4,9 @@
 
 #include "data_utils.h"
 #include "debug_info.h"
+#ifdef HAS_MCU
+#include "clocks.h"
+#endif
 #include "io_utils.h"
 #include "log.h"
 #include "ublox_driver.h"
@@ -153,11 +156,12 @@ static bool proc_ublox_wait_crc(uint8_t rx_byte) {
             memcpy(UbloxPorotocol.fix_frame, UbloxPorotocol.rx_frame, UBX_RX_FRAME_SIZE);
             UbloxPorotocol.unproc_frame = true;
 #ifdef HAS_MCU
-            LOG_INFO(UBX, "Rx frame class id: 0x%02x 0x%02x len %u", UbloxPorotocol.fix_frame[UBX_INDEX_CLS],
-                     UbloxPorotocol.fix_frame[UBX_INDEX_ID], len);
+            UbloxPorotocol.rx_time_stamp = get_time_ms32();
+            LOG_DEBUG(UBX, "Rx frame class id: 0x%02x 0x%02x len %u", UbloxPorotocol.fix_frame[UBX_INDEX_CLS],
+                      UbloxPorotocol.fix_frame[UBX_INDEX_ID], len);
             res = ubx_proc_frame(&UbloxPorotocol);
             if(res) {
-                LOG_INFO(UBX, "Rx proc done");
+                LOG_DEBUG(UBX, "Rx proc done");
             }
 #endif /*HAS_MCU*/
             ubx_reset_rx();

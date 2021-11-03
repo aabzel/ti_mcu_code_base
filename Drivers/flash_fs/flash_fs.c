@@ -467,16 +467,16 @@ bool mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
  *
  *    @param    data_id - data identifier to be located
  *    @param    file_address - pointer where location of the variable will be written
- *    @param    fileLen - pointer to variable that will contain length of the variable
+ *    @param    file_len - pointer to variable that will contain length of the variable
 
  */
-bool mm_get_address(uint16_t data_id, uint8_t** file_address, uint16_t* fileLen) {
+bool mm_get_address(uint16_t data_id, uint8_t** file_address, uint16_t* file_len) {
     mmItem_t *item = NULL, *empty = NULL;
     bool res = false;
     uint32_t rem_space = 0;
 
     /* ensure that input parameters are valid */
-    if(data_id == MM_INVALID_ID || file_address == NULL || fileLen == NULL) {
+    if(data_id == MM_INVALID_ID || file_address == NULL || file_len == NULL) {
         res = false;
     } else {
         res = true;
@@ -490,7 +490,7 @@ bool mm_get_address(uint16_t data_id, uint8_t** file_address, uint16_t* fileLen)
     if(res) {
         /* return parameters */
         *file_address = (uint8_t*)item + sizeof(mmItem_t);
-        *fileLen = item->length;
+        *file_len = item->length;
     }
     return res;
 }
@@ -501,16 +501,16 @@ bool mm_get_address(uint16_t data_id, uint8_t** file_address, uint16_t* fileLen)
  *    @param    data_id - data identifier to be read
  *    @param    file - pointer where data should be stored
  *    @param    maxValueLen - maximum number of bytes that could be stored within file
- *    @param    fileLen - actual number of bytes stored within file
+ *    @param    file_len - actual number of bytes stored within file
 
  */
-bool mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* fileLen) {
+bool mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* file_len) {
     mmItem_t *item = NULL, *empty = NULL;
     bool res = false;
     uint32_t rem_space = 0;
 
     /* ensure that input parameters are valid */
-    if((MM_INVALID_ID == data_id) || (NULL == file) || (NULL == fileLen) || (0 == maxValueLen)) {
+    if((MM_INVALID_ID == data_id) || (NULL == file) || (NULL == file_len) || (0 == maxValueLen)) {
         res = false;
     } else {
         res = true;
@@ -531,7 +531,7 @@ bool mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* fil
         /* copy data */
         memcpy(file, (uint8_t*)item + sizeof(mmItem_t), item->length);
         /* return parameters */
-        *fileLen = item->length;
+        *file_len = item->length;
     }
     return res;
 }
@@ -584,8 +584,8 @@ bool flash_fs_init(void) {
         LOG_INFO(FLASH_FS, "start: 0x%08x len %u", mm_page_start, mm_page_len);
     }
     uint16_t reboot_cnt = 0;
-    uint16_t fileLen = 0;
-    res = mm_get(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt), &fileLen);
+    uint16_t file_len = 0;
+    res = mm_get(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt), &file_len);
     if(res) {
         reboot_cnt++;
         LOG_INFO(FLASH_FS, "reboot cnt: %u", reboot_cnt);

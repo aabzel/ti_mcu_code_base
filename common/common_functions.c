@@ -132,7 +132,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif
 
 #ifdef HAS_UBLOX
-    measure_task_interval(TASK_ID_UBX, UBX_PERIOD_MS, ubx_proc, loop_start_time_us);
+    measure_task_interval(TASK_ID_UBX, UBX_PERIOD_US, ubx_proc, loop_start_time_us);
 #endif /*HAS_UBLOX*/
 
 #ifdef HAS_RF
@@ -140,7 +140,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_RF*/
 
 #ifdef HAS_SX1262
-    measure_task_interval(TASK_ID_LORA, 3000, sx1262_process, loop_start_time_us);
+    measure_task_interval(TASK_ID_LORA, 2000, sx1262_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
 
 #ifdef HAS_NMEA

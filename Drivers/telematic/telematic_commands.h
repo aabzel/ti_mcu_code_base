@@ -11,9 +11,12 @@ extern "C" {
 #include "ostream.h"
 
 bool ping_command(int32_t argc, char* argv[]);
+bool chat_command(int32_t argc, char* argv[]);
 
-#define TELEMATIC_COMMANDS                                                                                                   \
-    SHELL_CMD("ping", "ping", ping_command, "ZED F9P diag"),
+
+#define TELEMATIC_COMMANDS                           \
+    SHELL_CMD("ping", "ping", ping_command, "ping"), \
+    SHELL_CMD("chat", "chat", chat_command, "chat"),
 
 
 #ifdef __cplusplus

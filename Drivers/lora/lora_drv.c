@@ -19,7 +19,9 @@
 #include "none_blocking_pause.h"
 #include "rtcm3_protocol.h"
 #include "str_utils.h"
+#ifdef HAS_SX1262
 #include "sx1262_drv.h"
+#endif
 
 #define LORA_TX_LEN 10
 
@@ -56,10 +58,12 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
 
     substr = strstr((char*)rx_payload, PING_PREFIX);
     if(NULL != substr) {
-        uint8_t tx_buf[TX_SIZE] = {0};
+        uint8_t tx_buf[256] = {0};
         uint64_t ble_mac = get_ble_mac();
         snprintf((char*)tx_buf, sizeof(tx_buf), "MAC:0x%" PRIx64, ble_mac);
+#ifdef HAS_SX1262
         res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf) + 1, 0);
+#endif
     }
     res = rtcm3_lora_rx_proc(rx_payload, rx_size);
 #ifdef HAS_TBFP

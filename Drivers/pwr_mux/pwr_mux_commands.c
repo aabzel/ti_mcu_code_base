@@ -59,13 +59,17 @@ bool pwr_set_save_mode_command(int32_t argc, char *argv[]) {
     if(res){
         if (true==state) {
             LOG_INFO(PWR, "Enter power save mode");
+#ifdef HAS_TCAN4550
             res = tcan4550_deinit() && res;
             task_data[TASK_ID_TCAN4550].on = false;
+#endif
             res = gpio_set_state(DIO_PS_RS232 , 0)&& res;
         } else {
             LOG_INFO(PWR, "Enter power normal mode");
             res = gpio_set_state(DIO_PS_RS232 , 1);
+#ifdef HAS_TCAN4550
             task_data[TASK_ID_TCAN4550].on = true;
+#endif
         }
     }
 
