@@ -4,6 +4,6 @@
 #include "auto_version.h"
 
 #define VERSION_GENERATION 3
-#define CONFIG_NAME "uTestHw"
+#define CONFIG_NAME "uTestLoRa"
 
 #endif /*VERSION_H*/
