@@ -18,11 +18,15 @@ bool tbfp_print_ping_frame(TbfPingFrame_t *pingFrame){
         io_printf("MAC: 0x%" PRIX64 CRLF, pingFrame->mac);
         struct tm * time_date =  gmtime(&pingFrame->time_stamp);
         if (time_date) {
+#ifdef HAS_GNSS
             res =  print_time_date(time_date )&&res;
+#endif
         } else {
             res = false;
         }
+#ifdef HAS_GNSS
         res = print_coordinate(pingFrame->coordinate)&&res;
+#endif
     }else{
         res = false;
     }

@@ -17,7 +17,9 @@
 #include "fifo_array.h"
 #include "log.h"
 #include "none_blocking_pause.h"
+#ifdef HAS_RTCM3
 #include "rtcm3_protocol.h"
+#endif
 #include "str_utils.h"
 #ifdef HAS_SX1262
 #include "sx1262_drv.h"
@@ -28,6 +30,7 @@
 static Array_t ArrLoRaTxNode[LORA_TX_LEN];
 LoRaIf_t LoRaInterface;
 
+#ifdef HAS_RTCM3
 bool rtcm3_lora_rx_proc(uint8_t* const payload, uint32_t size) {
     bool res = false;
     if((NULL != payload) && (0 < size)) {
@@ -44,6 +47,7 @@ bool rtcm3_lora_rx_proc(uint8_t* const payload, uint32_t size) {
 
     return res;
 }
+#endif
 
 bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
     bool res = false;
@@ -65,7 +69,9 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
         res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf) + 1, 0);
 #endif
     }
+#ifdef HAS_RTCM3
     res = rtcm3_lora_rx_proc(rx_payload, rx_size);
+#endif
 #ifdef HAS_TBFP
     res = tbfp_proc(rx_payload, rx_size);
 #endif
@@ -82,7 +88,7 @@ bool lora_init(void) {
 
 bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
     bool res = false;
-    if((NULL != tx_payload) && (len <= RTCM3_RX_FRAME_SIZE)) {
+    if((NULL != tx_payload) && (len <= LORA_MAX_FRAME_SIZE)) {
         uint8_t* data = memdup((uint8_t*)tx_payload, len);
         if(data) {
             Array_t txNode = {.size = 0, .pArr = NULL};

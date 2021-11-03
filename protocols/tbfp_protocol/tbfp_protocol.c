@@ -17,7 +17,9 @@
 #include "io_utils.h"
 #include "log.h"
 #include "tbfp_diag.h"
+#ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
+#endif
 
 TbfpPorotocol_t TbfpPorotocol = {0};
 
@@ -104,8 +106,10 @@ bool tbfp_send_ping(uint8_t frame_id) {
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
     pingFrame.mac = get_ble_mac();
+#ifdef HAS_ZED_F9K
     pingFrame.time_stamp = mktime(&ZedF9P.time_date);
     pingFrame.coordinate = ZedF9P.coordinate_cur;
+#endif
     res = tbfp_compose_ping(frame, &tx_frame_len, &pingFrame);
     if(res) {
         res = lora_send_queue(frame, tx_frame_len);
@@ -124,7 +128,10 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len) {
         if(FRAME_ID_PING == pingFrame.id) {
             res = tbfp_send_ping(FRAME_ID_PONG);
         }
-        double cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
+        double cur_dist  = 0;
+#ifdef HAS_ZED_F9K
+        cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
+#endif
         LOG_INFO(LORA, "link distance %f m", cur_dist);
 #ifdef HAS_LORA
         LoRaInterface.max_distance = double_max(LoRaInterface.max_distance, cur_dist);

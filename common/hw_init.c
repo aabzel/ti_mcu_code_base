@@ -109,8 +109,6 @@ bool hw_init(void) {
   Temperature_init();
 #endif /*HAS_TEMP*/
 
-
-
 #ifdef NORTOS  
   SysTickInit();
 #endif /*NORTOS*/
@@ -130,7 +128,6 @@ bool hw_init(void) {
 #ifdef HAS_WDT
   res = try_init(watchdog_init(),"WDT") && res;
 #endif /*HAS_WDT*/
-
 
 #ifdef HAS_TIM
   res = try_init(tim_init(),"TIM") && res;

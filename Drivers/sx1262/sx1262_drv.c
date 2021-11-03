@@ -25,7 +25,9 @@ speed up to 16 MHz
 #include "lora_drv.h"
 #endif
 #include "none_blocking_pause.h"
+#ifdef HAS_RTCM3
 #include "rtcm3_protocol.h"
+#endif
 #include "spi_drv.h"
 #include "sx1262_diag.h"
 #include "sys_config.h"
@@ -1307,13 +1309,13 @@ static inline bool sx1262_poll_status(void) {
             uint32_t tx_duration_ms = Sx1262Instance.tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
             Sx1262Instance.tx_real_bit_rate =
                 (1000.0f * ((float)tx_duration_ms)) / ((float)(Sx1262Instance.tx_last_size * 8));
-#endif
+#endif /*HAS_SX1262_BIT_RATE*/
             if(Sx1262Instance.debug) {
 #ifdef HAS_SX1262_BIT_RATE
                 LOG_INFO(LORA, "TX done %f bit/s", Sx1262Instance.tx_real_bit_rate);
 #else
                 LOG_INFO(LORA, "TX done");
-#endif
+#endif /*HAS_SX1262_BIT_RATE*/
             }
             Sx1262Instance.tx_done = true;
             Sx1262Instance.tx_done_cnt++;
@@ -1431,9 +1433,10 @@ bool sx1262_process(void) {
             Sx1262Instance.busy_cnt = 0;
             res = sx1262_init();
         }
-
+        uint32_t tx_time_diff_ms = 2*DFLT_TX_PAUSE_MS;
         uint32_t cur_time_stamp_ms = get_time_ms32();
-        uint32_t tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
+        tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
+
         if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == Sx1262Instance.tx_done)) {
             Array_t txNode = {.size = 0, .pArr = NULL};
             res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &txNode);

@@ -11,7 +11,9 @@
 #include "log.h"
 #include "lora_drv.h"
 #include "tbfp_protocol.h"
+#ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
+#endif
 
 bool ping_command(int32_t argc, char* argv[]){
     bool res = false;
@@ -50,7 +52,7 @@ bool chat_command(int32_t argc, char* argv[]){
     if(true == res) {
         res = tbfp_send_chat(tx_array, tx_array_len);
         if(res) {
-            LOG_INFO(SYS, "ok");
+            LOG_INFO(SYS, "ok [%s]",tx_array);
             res = print_mem(tx_array,tx_array_len,false,true,true);
         } else {
             LOG_ERROR(SYS, "chat error");

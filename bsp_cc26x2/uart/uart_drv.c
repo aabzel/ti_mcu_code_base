@@ -453,9 +453,9 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name) {
 
 bool uart_init(void) {
     bool res = true;
-#if(defined(HAS_UART1) && defined(HAS_GENERIC) && defined(HAS_UBLOX))
+#ifdef HAS_UART1
     res = init_uart_ll(1, "ZedF9P") && res;
-#endif /*HAS_UART1 HAS_GENERIC HAS_UBLOX*/
+#endif /*HAS_UART1*/
 #ifdef HAS_UART0
     res = init_uart_ll(0, "CLI") && res;
 #endif /*HAS_UART0*/

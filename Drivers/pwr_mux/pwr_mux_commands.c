@@ -9,7 +9,9 @@
 #include "pwr_mux_drv.h"
 #include "sys_config.h"
 #include "task_info.h"
+#ifdef HAS_TCAN4550
 #include "tcan4550_drv.h"
+#endif
  
 bool pwr_mux_set_command(int32_t argc, char* argv[]){
     bool res = false;
