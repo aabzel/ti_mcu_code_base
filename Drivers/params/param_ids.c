@@ -36,7 +36,8 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},  /*loRa output power*/
     {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},          /*Power Source*/
     {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},       /*Time Zone*/
-    {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"},       /*Max Link Distance*/
+    {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"},    /*Max Link Distance*/
+    {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},       /*Max LoRa bit/rate*/
 
 };
 

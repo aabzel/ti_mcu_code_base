@@ -782,8 +782,21 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
     sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
     sx1262Instance->mod_params.spreading_factor = DFLT_SF;
+#ifdef HAS_SX1262_BIT_RATE
+    sx1262Instance->tx_max_bit_rate = 0.0;
+#endif
+
 #ifdef HAS_FLASH_FS
     uint16_t file_len = 0;
+#ifdef HAS_SX1262_BIT_RATE
+    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&sx1262Instance->tx_max_bit_rate,
+                 sizeof(sx1262Instance->tx_max_bit_rate), &file_len);
+    if(res && (4==file_len)){
+        LOG_INFO(LORA, "load max bit rate %f bit/s", sx1262Instance->tx_max_bit_rate);
+    }else{
+        res = false;
+    }
+#endif
     res = mm_get(PAR_ID_LORA_CR, (uint8_t*)&sx1262Instance->mod_params.coding_rate,
                  sizeof(sx1262Instance->mod_params.coding_rate), &file_len);
     if((true == res) && (1 == file_len)) {
@@ -1312,6 +1325,14 @@ static inline bool sx1262_poll_status(void) {
             tx_duration_ms = Sx1262Instance.tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
             Sx1262Instance.tx_real_bit_rate =
                 (1000.0f * ((float)tx_duration_ms)) / ((float)(Sx1262Instance.tx_last_size * 8));
+            if(Sx1262Instance.tx_max_bit_rate < Sx1262Instance.tx_real_bit_rate){
+                Sx1262Instance.tx_max_bit_rate = Sx1262Instance.tx_real_bit_rate;
+                res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*) &Sx1262Instance.tx_max_bit_rate, sizeof(float));
+                if(false==res){
+                    LOG_ERROR(LORA, "UpdtMaxLoRaBitRateErr");
+                }
+                /*TODO: Save to Flash*/
+            }
 #endif /*HAS_SX1262_BIT_RATE*/
             if(Sx1262Instance.debug) {
 #ifdef HAS_SX1262_BIT_RATE

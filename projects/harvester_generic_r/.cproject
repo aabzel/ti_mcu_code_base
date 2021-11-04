@@ -156,6 +156,7 @@
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
 									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
+									<listOptionValue builtIn="false" value="HAS_UBX_PTOTO"/>
 									<listOptionValue builtIn="false" value="HAS_WDT"/>
 									<listOptionValue builtIn="false" value="HAS_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
