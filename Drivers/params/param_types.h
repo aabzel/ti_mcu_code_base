@@ -13,6 +13,7 @@ typedef enum wParamType_t {
     INT64,
     STRING,
     FLOAT,
+    DOUBLE,
     UNDEF,
 } ParamType_t;
 

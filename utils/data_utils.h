@@ -26,6 +26,7 @@ extern "C" {
 typedef union uType64Union_t {
     uint64_t u64;
     int64_t s64;
+    double d64;
     uint32_t u32[2];
     int32_t s32[2];
     float f32[2];

@@ -13,7 +13,9 @@
 #include "tbfp_protocol.h"
 #endif
 #include "core_driver.h"
+#include "flash_fs.h"
 #include "data_utils.h"
+#include "param_ids.h"
 #include "fifo_array.h"
 #include "log.h"
 #include "none_blocking_pause.h"
@@ -80,6 +82,15 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
 
 bool lora_init(void) {
     bool res = false;
+    uint16_t value_len = 0;
+    res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*) &LoRaInterface.max_distance, 8, &value_len);
+    if(false==res){
+        LoRaInterface.max_distance =0.0;
+        res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*) &LoRaInterface.max_distance, sizeof(double));
+        if(false==res){
+            LOG_ERROR(PARAM, "SetDfltMaxLinkDistError");
+        }
+    }
     LoRaInterface.tx_ok_cnt = 0;
     LoRaInterface.tx_done_cnt = 0;
     res = fifo_arr_init(&LoRaInterface.FiFoLoRaTx, &ArrLoRaTxNode[0], ARRAY_SIZE(ArrLoRaTxNode));

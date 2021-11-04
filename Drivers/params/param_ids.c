@@ -36,6 +36,8 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},  /*loRa output power*/
     {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},          /*Power Source*/
     {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},       /*Time Zone*/
+    {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"},       /*Max Link Distance*/
+
 };
 
 bool param_init(void) {
@@ -168,7 +170,15 @@ bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* ou
             if(4 == value_len) {
                 Type32Union_t un32;
                 memcpy(&un32, value, sizeof(Type32Union_t));
-                snprintf(out_str, str_size, "%f", un32.f32);
+                snprintf(out_str, str_size, "%.1f", un32.f32);
+                res = true;
+            }
+            break;
+        case DOUBLE:
+            if(8 == value_len) {
+                Type64Union_t un64;
+                memcpy(&un64, value, sizeof(Type64Union_t));
+                snprintf(out_str, str_size, "%.1f", un64.d64);
                 res = true;
             }
             break;

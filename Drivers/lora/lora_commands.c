@@ -77,6 +77,8 @@ bool lora_diag_command(int32_t argc, char* argv[]){
         io_printf("err cnt: %u"CRLF, LoRaInterface.err_cnt);
         io_printf("tx ok cnt: %u"CRLF, LoRaInterface.tx_ok_cnt);
         io_printf("tx done cnt: %u"CRLF, LoRaInterface.tx_done_cnt);
+        io_printf("max_distance: %f m"CRLF, LoRaInterface.max_distance);
+
     } else {
         LOG_INFO(LORA,"ld");
     }

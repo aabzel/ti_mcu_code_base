@@ -23,13 +23,16 @@ bool health_monotor_proc(void) {
 #ifdef HAS_ADC
     float vKl30 = 0.0;
     vKl30 = adc_get_value_by_dio(DIO_KL30_ADC, true);
-    if(vKl30 < KL30_UNDERVOL_THRESHOLD_V) {
+    if(vKl30 < KL30_UNDERVOL_ERRPR_THRESHOLD_V) {
         LOG_ERROR(HMOM, "vKl30 %f too low", vKl30);
         res = false;
     } else {
+        if(vKl30 < KL30_UNDERVOL_WARNING_THRESHOLD_V){
+            LOG_WARNING(HMOM, "vKl30 %f low", vKl30);
+        }
         res = true;
     }
-#endif
+#endif /*HAS_ADC*/
 
     return res;
 }

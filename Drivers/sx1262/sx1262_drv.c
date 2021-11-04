@@ -951,6 +951,10 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
         /* res = sx1262_clear_fifo() && res;*/
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
+    } else {
+        res = false;
+    }
+    if(res) {
         // res = sx1262_write_buffer(offset, tx_buf, tx_buf_len) && res;
         Sx1262Instance.tx_done = false;
 #ifdef HAS_SX1262_BIT_RATE
@@ -958,8 +962,6 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
         Sx1262Instance.tx_start_time_stamp_ms = get_time_ms32();
 #endif /*HAS_SX1262_BIT_RATE*/
         res = sx1262_set_tx(timeout_s) && res;
-    } else {
-        res = false;
     }
     return res;
 }
@@ -1278,6 +1280,7 @@ static inline bool sx1262_poll_status(void) {
         uint8_t rx_payload[RX_SIZE] = {0};
         memset(rx_payload, 0x00, sizeof(rx_payload));
         uint8_t rx_size = 0;
+        uint32_t tx_duration_ms = 0 ;
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.rx_done_cnt++;
@@ -1306,7 +1309,7 @@ static inline bool sx1262_poll_status(void) {
         case COM_STAT_COM_TX_DONE:
 #ifdef HAS_SX1262_BIT_RATE
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
-            uint32_t tx_duration_ms = Sx1262Instance.tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
+            tx_duration_ms = Sx1262Instance.tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
             Sx1262Instance.tx_real_bit_rate =
                 (1000.0f * ((float)tx_duration_ms)) / ((float)(Sx1262Instance.tx_last_size * 8));
 #endif /*HAS_SX1262_BIT_RATE*/

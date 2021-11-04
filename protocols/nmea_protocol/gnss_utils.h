@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <time.h>
 
 
 typedef struct xGnssCoordinate_t{
@@ -26,8 +27,11 @@ typedef struct xGnssVelocity_t{
     double accuracy_course;
 } GnssVelocity_t;
 
+bool is_valid_time_date(struct tm *date_time);
+bool is_valid_gnss_coordinates(GnssCoordinate_t dot);
 double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2);
-
+double gnss_encoding_2_degrees(double in_ddmm_mmmmm);
+GnssCoordinate_t encode_gnss_coordinates(GnssCoordinate_t dot_ddmm);
 #ifdef __cplusplus
 }
 #endif

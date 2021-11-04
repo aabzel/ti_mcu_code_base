@@ -26,8 +26,16 @@ static bool nmea_diag(void) {
 
 static bool nmea_data(void) {
     print_time_date(&NmeaData.rmc.time_date);
-    print_coordinate(NmeaData.rmc.coordinate);
-    print_coordinate(NmeaData.gga.coordinate);
+    io_printf("RCM" CRLF);
+    print_coordinate(NmeaData.rmc.coordinate_ddmm);
+    NmeaData.rmc.coordinate_dd = encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
+    print_coordinate(NmeaData.rmc.coordinate_dd);
+
+    io_printf("GGA" CRLF);
+    print_coordinate(NmeaData.gga.coordinate_ddmm);
+    NmeaData.gga.coordinate_dd = encode_gnss_coordinates(NmeaData.gga.coordinate_ddmm);
+    print_coordinate(NmeaData.gga.coordinate_dd);
+
     io_printf("speed_knots : %f" CRLF, NmeaData.rmc.speed_knots);
     io_printf("height: %f" CRLF, NmeaData.gga.height);
     io_printf("nb_sat: %u" CRLF, NmeaData.gga.nb_sat);

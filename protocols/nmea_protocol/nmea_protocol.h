@@ -13,7 +13,7 @@
 
 #define NUM_OF_PARSED_SAT 5
 #define NMEA_MSG_SIZE 100U
-#define NMEA_PERIOD_US S_2_US(2)
+#define NMEA_PERIOD_US S_2_US(1.5)
 
 typedef struct xNmeaProtocol_t {
     uint16_t pos;
@@ -34,7 +34,8 @@ typedef struct xRmc_t {
     uint32_t cnt;
     struct tm time_date;
     char data_valid; /* validity - A-ok, V-invalid */
-    GnssCoordinate_t coordinate;
+    GnssCoordinate_t coordinate_ddmm;
+    GnssCoordinate_t coordinate_dd;
     char lat_dir;       /* Latitude direction */
     char lon_dir;       /* Longitude direction */
     double speed_knots; /* Speed over ground (knots) */
@@ -50,7 +51,8 @@ typedef struct xGga_t {
     uint32_t cnt;
     uint32_t utc; /* UTC hour in hhmmss format */
     struct tm time_date;
-    GnssCoordinate_t coordinate;
+    GnssCoordinate_t coordinate_ddmm;
+    GnssCoordinate_t coordinate_dd;
     char lat_dir;            /* Latitude direction */
     char lon_dir;            /* Longitude direction */
     uint16_t quality;        /*Quality indicator for position fix*/
@@ -146,6 +148,9 @@ typedef struct xNmeaData_t {
     // gpq_t Poll a standard message (Talker ID GP)
     // gbq_t Poll a standard message (Talker ID GB)
     // gbs_t GNSS satellite fault detection
+    struct tm time_date;
+    GnssCoordinate_t coordinate_dd;
+    double height;           /*Altitude above mean sea level*/
 } NmeaData_t;
 
 extern NmeaProtocol_t NmeaProto;

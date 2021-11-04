@@ -42,14 +42,14 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
             char valStr[40] = "";
             memset(valStr, 0x00, sizeof(valStr));
             uint16_t i = 0, num = 1;
-            static const table_col_t cols[] = {{5, "No"},  {5, "id"},   {12, "name"},
+            static const table_col_t cols[] = {{5, "No"},  {5, "id"},   {14, "name"},
                                                {5, "len"}, {12, "val"}, {17, "name"}};
             table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
             char temp_str[120] = "";
             for(i = 0; i < PARAM_CNT; i++) {
                 strcpy(temp_str, TSEP);
                 snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].id);
-                snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, ParamArray[i].name);
+                snprintf(temp_str, sizeof(temp_str), "%s %12s " TSEP, temp_str, ParamArray[i].name);
                 snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].len);
                 uint16_t value_len = 0;
                 uint8_t value[ParamArray[i].len];
@@ -160,7 +160,16 @@ bool cmd_param_set(int32_t argc, char* argv[]) {
                 }
                 break;
             case FLOAT:
-                res = try_str2float(argv[1], (float_t*)wrData);
+                res = try_str2float(argv[1], (float*)wrData);
+                if(res){
+                    write_len = 4;
+                }
+                break;
+            case DOUBLE:
+                res = try_str2double(argv[1], (double*)wrData);
+                if(res){
+                    write_len = 8;
+                }
                 break;
             default:
                 res = false;

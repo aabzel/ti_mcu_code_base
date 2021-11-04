@@ -7,7 +7,7 @@
 
 #include "gnss_utils.h"
 
-#define ZED_F9P_PERIOD_US S_2_US(3)
+#define ZED_F9P_PERIOD_US S_2_US(1.0)
 
 typedef struct xZedF9P_t {
     struct tm time_date;

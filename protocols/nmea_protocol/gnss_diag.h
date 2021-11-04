@@ -11,6 +11,7 @@ extern "C" {
 
 #include "gnss_utils.h"
 
+
 bool print_time_date(struct tm* time_date);
 bool print_coordinate(GnssCoordinate_t coordinate);
 bool print_velocity(GnssVelocity_t velocity);

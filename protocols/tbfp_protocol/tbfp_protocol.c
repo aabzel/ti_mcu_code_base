@@ -12,6 +12,12 @@
 #include "crc8_sae_j1850.h"
 #include "data_utils.h"
 #include "debug_info.h"
+#ifdef HAS_FLASH_FS
+#include "flash_fs.h"
+#endif
+#ifdef HAS_PARAM
+#include "param_ids.h"
+#endif
 #include "float_utils.h"
 #include "gnss_utils.h"
 #include "io_utils.h"
@@ -106,7 +112,8 @@ bool tbfp_send_ping(uint8_t frame_id) {
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
     pingFrame.mac = get_ble_mac();
-#ifdef HAS_ZED_F9K
+    memset(&pingFrame.coordinate,0xFF,sizeof(GnssCoordinate_t));
+#ifdef HAS_ZED_F9P
     pingFrame.time_stamp = mktime(&ZedF9P.time_date);
     pingFrame.coordinate = ZedF9P.coordinate_cur;
 #endif
@@ -129,13 +136,27 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len) {
             res = tbfp_send_ping(FRAME_ID_PONG);
         }
         double cur_dist  = 0;
-#ifdef HAS_ZED_F9K
-        cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
-#endif
-        LOG_INFO(LORA, "link distance %f m", cur_dist);
+#ifdef HAS_ZED_F9P
+        if(is_valid_gnss_coordinates(pingFrame.coordinate)) {
+            cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
+            LOG_INFO(LORA, "link distance %f m", cur_dist);
+        }else {
+            LOG_ERROR(LORA, "InvalidGNSSCoordinate");
+        }
+#endif /*HAS_ZED_F9P*/
+
 #ifdef HAS_LORA
-        LoRaInterface.max_distance = double_max(LoRaInterface.max_distance, cur_dist);
-#endif
+        if(LoRaInterface.max_distance < cur_dist) {
+#if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
+            res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*) &cur_dist, sizeof(double));
+            if(false==res){
+                LOG_ERROR(LORA, "UpdateMaxDist");
+            }
+#endif /*HAS_PARAM && HAS_FLASH_FS*/
+            LoRaInterface.max_distance = cur_dist;
+        }
+
+#endif /*HAS_LORA*/
     }
     return res;
 }
