@@ -73,11 +73,3 @@ bool test_ublox_proto_types(void) {
 
    return true;
 }
-
-
-
-
-
-  
-
-

@@ -194,7 +194,7 @@ bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
         cur_pos = (uint32_t)(ptr - nmea_msg);
         if(cur_pos < NMEA_MSG_SIZE) {
             // 5540.70588,N,03737.93396,E,140121.00,A,A*70
-            res = try_strl2double(ptr, 10, &gll->coordinate.latitude) && res;
+            res = try_strl2double(ptr, 10, &gll->coordinate_ddmm.latitude) && res;
         }
 
         ptr = strchr(ptr, ',') + 1;
@@ -208,7 +208,7 @@ bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
         cur_pos = (uint32_t)(ptr - nmea_msg);
         if((cur_pos < NMEA_MSG_SIZE) && (ptr)) {
             // 03737.93396,E,140121.00,A,A*70
-            res = try_strl2double(ptr, 11, &gll->coordinate.longitude) && res;
+            res = try_strl2double(ptr, 11, &gll->coordinate_ddmm.longitude) && res;
         }
 
         ptr = strchr(ptr, ',') + 1;

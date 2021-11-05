@@ -17,7 +17,8 @@ CC = gcc
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
-CFLAGS  += -g
+CFLAGS += -g 
+CFLAGS += -m32
 #CFLAGS += -Og
 CFLAGS  += -O0
 #CFLAGS  += -Wall

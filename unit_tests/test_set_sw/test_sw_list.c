@@ -111,11 +111,7 @@ typedef struct xSomeType_t {
 bool test_types(void) {
     EXPECT_EQ(1, sizeof(char));
     EXPECT_EQ(4, sizeof(float));
-#ifdef X86_64
-    EXPECT_EQ(8, sizeof(size_t));
-#else
     EXPECT_EQ(4, sizeof(size_t));
-#endif
     EXPECT_EQ(4, sizeof(unsigned));
     EXPECT_EQ(1, sizeof(uint8_t));
     EXPECT_EQ(8, sizeof(uint64_t));

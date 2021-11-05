@@ -50,7 +50,7 @@ typedef union uTimeUtcValidityFlags_t{
         uint8_t valid_tow :1;       /*Valid Time of Week*/
         uint8_t valid_wkn:1;        /*Valid Week Number*/
         uint8_t valid_utc:1;        /*Valid UTC Time*/
-        uint8_t utc_standard:7;     /*UTC standard identifier*/
+        uint8_t utc_standard:4;     /*UTC standard identifier*/
     };
 }TimeUtcValidityFlags_t;
 

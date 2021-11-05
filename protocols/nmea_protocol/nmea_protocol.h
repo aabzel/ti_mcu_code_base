@@ -70,7 +70,7 @@ typedef struct xGga_t {
 typedef struct xGll_t {
     struct tm time_date;
     char lat_dir; /* North/South indicator */
-    GnssCoordinate_t coordinate;
+    GnssCoordinate_t coordinate_ddmm;
     char lon_dir;  /* Longitude direction East/West indicator */
     char status;   /*Data validity status*/
     char pos_mode; /*Positioning mode, see position fix flags description*/

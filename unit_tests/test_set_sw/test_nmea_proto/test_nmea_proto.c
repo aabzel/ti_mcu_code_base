@@ -14,9 +14,9 @@ static bool test_nmea_proto_gnrmc(void) {
    EXPECT_EQ(23,rmc.time_date.tm_min);
    EXPECT_EQ(16,rmc.time_date.tm_sec);
    EXPECT_EQ('A',rmc.data_valid);
-   EXPECT_NEAR(5551.84825l,rmc.coordinate.latitude,1e-6);
+   EXPECT_NEAR(5551.84825l,rmc.coordinate_ddmm.latitude,1e-6);
    EXPECT_EQ('N',rmc.lat_dir);
-   EXPECT_NEAR(3725.60995l,rmc.coordinate.longitude,0.00001f);
+   EXPECT_NEAR(3725.60995l,rmc.coordinate_ddmm.longitude,0.00001f);
    EXPECT_EQ('E',rmc.lon_dir);
    EXPECT_NEAR(0.010l,rmc.speed_knots,0.00001f);
 
@@ -38,9 +38,9 @@ static bool test_nmea_proto_gngga(void) {
    EXPECT_EQ(14,gga.time_date.tm_hour);
    EXPECT_EQ(2,gga.time_date.tm_min);
    EXPECT_EQ(12,gga.time_date.tm_sec);
-   EXPECT_NEAR(5540.70555,gga.coordinate.latitude,0.000001);
+   EXPECT_NEAR(5540.70555,gga.coordinate_ddmm.latitude,0.000001);
    EXPECT_EQ('N',gga.lat_dir);
-   EXPECT_NEAR(03737.93437,gga.coordinate.longitude,0.00001);
+   EXPECT_NEAR(03737.93437,gga.coordinate_ddmm.longitude,0.00001);
    EXPECT_EQ('E',gga.lon_dir);
    EXPECT_EQ(1,gga.quality);
    EXPECT_EQ(12,gga.nb_sat);
@@ -60,9 +60,9 @@ static bool test_nmea_proto_gngll(void) {
     EXPECT_EQ(14,gll.time_date.tm_hour);
     EXPECT_EQ(1,gll.time_date.tm_min);
     EXPECT_EQ(25,gll.time_date.tm_sec);
-    EXPECT_NEAR(5540.70584,gll.coordinate.latitude,0.000001);
+    EXPECT_NEAR(5540.70584,gll.coordinate_ddmm.latitude,0.000001);
     EXPECT_EQ('N',gll.lat_dir);
-    EXPECT_NEAR(03737.93404,gll.coordinate.longitude,0.00001);
+    EXPECT_NEAR(03737.93404,gll.coordinate_ddmm.longitude,0.00001);
     EXPECT_EQ('E',gll.lon_dir);
     EXPECT_EQ('A',gll.status);
     EXPECT_EQ('A',gll.pos_mode);
