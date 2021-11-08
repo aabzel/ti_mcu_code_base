@@ -14,6 +14,7 @@
 #include "uart_common.h"
 #include "uart_drv.h"
 #include "uart_string_reader.h"
+#include "writer_config.h"
 
 bool diag_page_uarts(ostream_t* stream) {
     LOG_NOTICE(SYS, "%s()", __FUNCTION__);
@@ -45,7 +46,7 @@ bool cmd_uarts(int32_t argc, char* argv[]) {
     (void)argv;
     bool res = false;
     if(0 == argc) {
-        res = diag_page_uarts(DBG_STREAM);
+        res = diag_page_uarts(DBG_UART_STREAM);
     } else if(0 < argc) {
         res = false;
         LOG_ERROR(UART, "Usage: u");

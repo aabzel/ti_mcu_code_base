@@ -11,6 +11,7 @@
 #include "rtcm3_protocol.h"
 #include "table_utils.h"
 #include "writer_generic.h"
+#include "writer_config.h"
 
 static const char* interfacefRtcmLuTable[RTCM_IF_CNT] = {"UART", "LoRa"};
 

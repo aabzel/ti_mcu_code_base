@@ -12,6 +12,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool adc_trig_command(int32_t argc, char* argv[]) {
     AUXADCGenManualTrigger();

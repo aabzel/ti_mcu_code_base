@@ -22,6 +22,7 @@
 #include "uart_drv.h"
 #include "version.h"
 #include "writer_generic.h"
+#include "writer_config.h"
 
 extern int main(void);
 static bool stack_dir(int32_t* main_local_addr) {
@@ -124,7 +125,7 @@ bool print_version_s(ostream_t* stream) {
 
 bool print_version(void) {
     bool res = false;
-    res = print_version_s(DBG_STREAM);
+    res = print_version_s(DBG_UART_STREAM);
     return res;
 }
 

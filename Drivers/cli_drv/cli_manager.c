@@ -18,6 +18,7 @@
 #include "uart_drv.h"
 #include "uart_string_reader.h"
 #include "writer_generic.h"
+#include "writer_config.h"
 #endif
 
 #include "str_utils.h"
@@ -100,6 +101,7 @@ bool cli_init(void) {
         memset(prev_cmd, 0x00,sizeof(prev_cmd));
 #endif
         cli_set_echo(true);
+        res = writer_init();
         cli_init_done = true;
         res = true;
     }

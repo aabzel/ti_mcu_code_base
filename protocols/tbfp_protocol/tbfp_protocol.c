@@ -28,6 +28,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "tbfp_diag.h"
+#include "writer_config.h"
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
 #endif
@@ -193,8 +194,10 @@ static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len){
     if((NULL != payload) && (0 < len) && (FRAME_ID_CMD==payload[0])) {
         res = false;
 #ifdef HAS_CLI
-        payload[len]=0x00;
+        curWriterPtr = &dbg_lora_o;
+        payload[len] = 0x00;
         res = process_shell_cmd((char*)&payload[1]);
+        curWriterPtr = &dbg_o;
 #endif
     }
     return res;

@@ -13,6 +13,7 @@
 #include "param_types.h"
 #include "str_utils.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool cmd_param_diag(int32_t argc, char* argv[]) {
     bool res = false;

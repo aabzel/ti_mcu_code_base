@@ -11,6 +11,7 @@
 #include "log.h"
 #include "spi_drv.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool spi_diag_command(int32_t argc, char* argv[]) {
     bool res = false;

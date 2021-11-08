@@ -17,6 +17,7 @@
 #include "ostream.h"
 #include "str_utils.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 static bool gpio_diag(char* key_word1, char* key_word2) {
     bool res = false;

@@ -11,6 +11,7 @@
 #include "tbfp_protocol.h"
 #include "table_utils.h"
 #include "writer_generic.h"
+#include "writer_config.h"
 
 static bool tbfp_diag(void) {
     bool res = false;

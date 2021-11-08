@@ -18,6 +18,7 @@
 #include "none_blocking_pause.h"
 #include "str_utils.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 static bool diag_flash_prot(char* key_word1, char* key_word2) {
     bool res = false;

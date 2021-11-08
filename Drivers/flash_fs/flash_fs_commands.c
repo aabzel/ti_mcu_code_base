@@ -17,6 +17,7 @@
 #include "flash_fs_ll.h"
 #include "io_utils.h"
 #include "log.h"
+#include "writer_config.h"
 #include "memory_layout.h"
 #include "none_blocking_pause.h"
 #include "str_utils.h"

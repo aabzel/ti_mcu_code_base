@@ -14,7 +14,7 @@
 #include "task_info.h"
 #include "table_utils.h"
 #include "writer_generic.h"
-
+#include "writer_config.h"
 
 bool diag_page_tasks(ostream_t* stream) {
     stream = &dbg_o.s;
@@ -110,7 +110,7 @@ bool cmd_task_report(int32_t argc, char* argv[]) {
     (void)(argc);
     (void)(argv);
     bool res = false;
-    res = diag_page_tasks(DBG_STREAM);
+    res = diag_page_tasks(DBG_UART_STREAM);
     return res;
 }
 

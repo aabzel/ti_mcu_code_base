@@ -18,6 +18,7 @@
 #include "sx1262_diag.h"
 #include "sx1262_drv.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool sx1262_diag_command(int32_t argc, char* argv[]) {
     bool res = false;

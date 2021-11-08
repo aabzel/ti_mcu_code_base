@@ -24,6 +24,7 @@
 #include "read_mem.h"
 #include "sys_config.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 static bool boot_scan_app(void) {
     bool res = false;
