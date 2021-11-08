@@ -1,0 +1,66 @@
+
+
+Есть модуль 
+ZED-F9P
+Sticker: H9200308871
+
+
+обновил прошивку модуля бинарником
+JUJU_ROX_100_LAP120.4d9105397754a60a15d06ca37b384e9e_F9P.bin
+
+После этого модуль перестал выдавать NMEA протокол 
+
+Text Console ничего не показывает
+
+При старте ZED-F9P посылает в USB UART1 13 пакетов
+
+??:??:??  $GNTXT,01,01,02,u-blox AG - www.u-blox.com*4E
+??:??:??  $GNTXT,01,01,02,HW UBX 9 00190000*12
+??:??:??  $GNTXT,01,01,02,EXT CORE 1.00 (a4f107)*3A
+??:??:??  $GNTXT,01,01,02,ROM BASE 0x118B2060*20
+??:??:??  $GNTXT,01,01,02,FWVER=LAP 1.20*5E
+??:??:??  $GNTXT,01,01,02,PROTVER=30.20*19
+??:??:??  $GNTXT,01,01,02,MOD=ZED-F9P*71
+??:??:??  $GNTXT,01,01,02,GPS;GLO;GAL;BDS*77
+??:??:??  $GNTXT,01,01,02,SBAS;QZSS*60
+??:??:??  $GNTXT,01,01,02,ANTSUPERV=*22
+??:??:??  $GNTXT,01,01,02,ANTSTATUS=DONTKNOW*2D
+??:??:??  $GNTXT,01,01,02,PF=FDB79*36
+??:??:??  $GNTXT,01,01,02,INCOMPATIBLE HARDWARE -> NO GNSS OPERATION*22
+
+
+Что тут можно предпринять чтобы модуль ZED-F9P стал выдавать GNSS координаты?
+
+
+
+
+There is a module ZED-F9P. Sticker: H9200308871
+
+I updated the module firmware with a binary via u-center.exe and fw file
+JUJU_ROX_100_LAP120.4d9105397754a60a15d06ca37b384e9e_F9P.bin
+
+After ZED-F9P firmware update, the module terminated to outputting the NMEA protocol
+
+After power on the u-center  Text Console shows nothing
+
+But just at startup, updated ZED-F9P sends 13 packets to USB and UART1
+
+??: ??: ?? $ GNTXT, 01.01.02, u-blox AG - www.u-blox.com * 4E
+??: ??: ?? $ GNTXT, 01.01.02, HW UBX 9 00190000 * 12
+??: ??: ?? $ GNTXT, 01.01.02, EXT CORE 1.00 (a4f107) * 3A
+??: ??: ?? $ GNTXT, 01.01.02, ROM BASE 0x118B2060 * 20
+??: ??: ?? $ GNTXT, 01.01.02, FWVER = LAP 1.20 * 5E
+??: ??: ?? $ GNTXT, 01.01.02, PROTVER = 30.20 * 19
+??: ??: ?? $ GNTXT, 01.01.02, MOD = ZED-F9P * 71
+??: ??: ?? $ GNTXT, 01.01.02, GPS; GLO; GAL; BDS * 77
+??: ??: ?? $ GNTXT, 01.01.02, SBAS; QZSS * 60
+??: ??: ?? $ GNTXT, 01.01.02, ANTSUPERV = * 22
+??: ??: ?? $ GNTXT, 01.01.02, ANTSTATUS = DONTKNOW * 2D
+??: ??: ?? $ GNTXT, 01.01.02, PF = FDB79 * 36
+??: ??: ?? $ GNTXT, 01.01.02, INCOMPATIBLE HARDWARE -> NO GNSS OPERATION * 22
+
+
+What can be done here so for  ZED-F9P module to start transmitting GNSS coordinates with NMEA and UBX?
+
+
+
