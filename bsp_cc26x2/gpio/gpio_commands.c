@@ -27,7 +27,7 @@ static bool gpio_diag(char* key_word1, char* key_word2) {
                                        {7, "level"}, {5, "irq"},     {6, "edge"}, {6, "pull"}, {13, "type"},
                                        {4, "ev"},    {10, "AltFun"}, {12, "name"}};
     uint16_t num = 0;
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     uint8_t logic_level = 0xFF;
 
     uint8_t i = 0;
@@ -60,7 +60,7 @@ static bool gpio_diag(char* key_word1, char* key_word2) {
         }
     }
 
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     return res;
 }

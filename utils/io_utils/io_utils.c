@@ -54,7 +54,7 @@ void io_putstrln(const char *str) {
 void wait_for_printf(void) {
   if (huart[UART_NUM_CLI].init_done) {
     while (!writer_half_clean(curWriterPtr)) {
-      int32_t j;
+     // int32_t j;
       //for (j = 0; j < 100000; j++) {
       //}
     }
