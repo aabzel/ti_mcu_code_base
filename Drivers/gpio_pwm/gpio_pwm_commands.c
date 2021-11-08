@@ -17,7 +17,7 @@ bool gpio_pwm_diag_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         static const table_col_t cols[] = {{5, "dio"},  {7, "gpio"},     {5, "pin"},   {5, "state"},
                                            {9, "freq"}, {9, "periodMs"}, {7, "duty%"}, {8, "phaseMs"}};
-        table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         uint16_t i = 0;
         for(i = 0; i < NUM_OF_PWM_DIO; i++) {
             if(DIO_SPARE != GpioPwmDioTable[i].satus) {
@@ -34,7 +34,7 @@ bool gpio_pwm_diag_command(int32_t argc, char* argv[]) {
                 io_printf(CRLF);
             }
         }
-        table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     } else {
         LOG_ERROR(SYS, "syntax: dad");
     }

@@ -183,7 +183,7 @@ static bool tbfp_proc_chat(uint8_t* payload, uint16_t len) {
     bool res = false;
     if((NULL != payload) && (0 < len)) {
         res = true;
-        res = print_mem(&payload[1], len - 1, false, true, true);
+        res = print_mem(&payload[1], len - 1, false, true, true, true);
     }
     return res;
 }

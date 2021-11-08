@@ -29,12 +29,12 @@ static bool ubx_diag(void) {
     io_printf("max len: %u" CRLF, UbloxPorotocol.max_len);
 #endif
     io_printf("chip id:");
-    print_mem(NavInfo.id, 5, true, false, true);
+    print_mem(NavInfo.id, 5, true, false, true, true);
 
     uint8_t i = 0;
 
     table_col_t cols[] = {{7, "class"}, {8, "rx_cnt"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(i = 0; i < ARRAY_SIZE(tableRxClass); i++) {
         if(tableRxClass[i].class_val) {
             io_printf(TSEP "  0x%02x " TSEP, tableRxClass[i].class_val);
@@ -42,7 +42,7 @@ static bool ubx_diag(void) {
             io_printf(CRLF);
         }
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return true;
 }
 
@@ -59,7 +59,7 @@ static char* ubx_print_key_val(uint16_t i) {
 static bool ubx_key_val_diag(void) {
     uint8_t i = 0;
     table_col_t cols[] = {{7, "key"}, {8, "val"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(i = 0; i < ARRAY_SIZE(keyValTable); i++) {
         if(keyValTable[i].key_id) {
             io_printf(TSEP "  0x%08x " TSEP, keyValTable[i].key_id);
@@ -67,7 +67,7 @@ static bool ubx_key_val_diag(void) {
             io_printf(CRLF);
         }
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return true;
 }
 

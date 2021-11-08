@@ -35,7 +35,7 @@ static bool boot_scan_app(void) {
     uint32_t address = 0;
     uint32_t num = 1;
     static const table_col_t cols[] = {{7, "No"}, {12, "address"}, {12, "stack"}, {12, "resetH"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     for(address = NOR_FLASH_BASE; address < (NOR_FLASH_END - 8); address += 4) {
         top_stack_val = read_addr_32bit(address);
@@ -53,7 +53,7 @@ static bool boot_scan_app(void) {
             res = true;
         }
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
 }
 

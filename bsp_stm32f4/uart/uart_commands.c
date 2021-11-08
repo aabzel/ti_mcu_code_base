@@ -19,7 +19,7 @@ bool diag_page_uarts(ostream_t* stream) {
         {16, "Name"}, {17, "Total chars"}, {13, "Lost chars"}, {11, "Strings"}, {11, "Errors"},
     };
 
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     io_printf(TABLE_LEFT "%15s " TABLE_SEPARATOR "%16" PRId64 " " TABLE_SEPARATOR "%12" PRId64 " " TABLE_SEPARATOR
                          "%10" PRId64 " " TABLE_SEPARATOR "%10" PRId64 " " TABLE_RIGHT CRLF,
               "cmd_reader", cmd_reader.total_char_count, cmd_reader.lost_char_count, cmd_reader.total_string_count,
@@ -30,7 +30,7 @@ bool diag_page_uarts(ostream_t* stream) {
     io_printf("%12d " T_SEP, dbg_o.lost_char_count);
     io_printf("%10d " T_SEP CRLF, dbg_o.error_count);
 
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     io_printf("rx %u byte " CRLF, huart[0].rx_byte_cnt);
     io_printf("tx %u byte " CRLF, huart[0].tx_byte_cnt);
@@ -44,7 +44,7 @@ bool cmd_uarts(int32_t argc, char* argv[]) {
         LOG_ERROR(UART, "Usage: uarts: help");
         return dump_cmd_result(false);
     }
-    return diag_page_uarts(&dbg_o.s);
+    return diag_page_uarts(&(curWriterPtr->s));
 }
 
 // us 8 byte
@@ -125,7 +125,7 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
     uint16_t fraction = 0;
     uint8_t uart_num = 0;
     uint8_t over_sampling = 0;
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
         io_printf(TSEP);
         io_printf(" %02u  " TSEP, uart_num);
@@ -143,6 +143,6 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
         io_printf(" %7s  " TSEP, huart[uart_num].name);
         io_printf(CRLF);
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return false;
 }

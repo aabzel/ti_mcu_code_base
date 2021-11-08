@@ -54,7 +54,7 @@ bool ubx_print_frame(uint8_t* frame) {
     io_printf("0x%02x " CRLF, frame[UBX_INDEX_ID]);
     uint16_t* len = NULL;
     len = (uint16_t*)&frame[UBX_INDEX_LEN];
-    print_mem(&frame[UBX_INDEX_PAYLOAD], *len, true, false, false);
+    print_mem(&frame[UBX_INDEX_PAYLOAD], *len, true, false, false, true);
     io_printf(CRLF);
     return res;
 }

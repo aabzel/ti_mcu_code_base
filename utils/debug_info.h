@@ -52,11 +52,10 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent);
 bool print_16bit_types(void* val);
 bool print_bit_hint(uint16_t offset, uint32_t bitness);
 bool print_bit_representation(uint32_t val);
-bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new_line);
+bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new_line, bool is_packed);
 bool print_bin(uint8_t* buff, uint32_t size, uint16_t indent);
 bool print_vector_table(uint32_t vectors_table_base);
 bool print_version(void);
-bool print_version_s(ostream_t* stream);
 void print_sys_info(void);
 bool parse_stack(void);
 

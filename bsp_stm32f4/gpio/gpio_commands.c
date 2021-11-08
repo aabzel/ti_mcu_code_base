@@ -101,7 +101,7 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
     {10, "AltFun"}, 
 	{12, "name"}};
     uint16_t num = 0;
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     uint8_t io_pin = 0;
     char temp_str[120];
@@ -116,7 +116,7 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
         }
     }
 
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     return res;
 }

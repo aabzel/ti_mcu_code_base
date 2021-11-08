@@ -99,7 +99,7 @@ bool flash_nvs_read_command(int32_t argc, char* argv[]) {
                 LOG_ERROR(NVS, "NVS_read error");
                 io_printf("ret: %u" CRLF, ret);
             } else {
-                print_mem(nvs_buffer, buffer_size, true, true, true);
+                print_mem(nvs_buffer, buffer_size, true, true, true, true);
             }
         }
     } else {

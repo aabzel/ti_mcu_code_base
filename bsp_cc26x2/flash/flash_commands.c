@@ -31,7 +31,7 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
     float usage_pec = 0.0f;
     static const table_col_t cols[] = {{5, "num"},   {11, "Start"}, {11, "End"}, {7, "WrSta"},
                                        {7, "WrSta"}, {7, "cont"},   {8, "Use"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(flash_addr = 0; flash_addr < NOR_FLASH_SIZE; flash_addr += FLASH_SECTOR_SIZE) {
         strcpy(line_str, TSEP);
         snprintf(line_str, sizeof(line_str), "%s 0x%08x" TSEP, line_str, flash_addr);
@@ -56,7 +56,7 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
             num++;
         }
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     return res;
 }

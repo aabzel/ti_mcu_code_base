@@ -22,7 +22,7 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
         uint32_t val = 0, load = 0, match = 0;
         uint32_t prescaler = 0;
         float calc_period = 0.0f;
-        table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         for(tim_base_id = 0; tim_base_id < ARRAY_SIZE(TimBaseLut); tim_base_id++) {
 
             for(part = 0; part < 2; part++) {
@@ -47,7 +47,7 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
             }
         }
 
-        table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     } else {
         LOG_ERROR(TIM, "Usage: tdl");
     }
@@ -62,7 +62,7 @@ bool tim_diag_command(int32_t argc, char* argv[]) {
         const table_col_t cols[] = {{5, "num"}, {14, "Val"}, {14, "rVal"}};
         uint8_t tim_num = 0;
         uint32_t val = 0, fRval = 0;
-        table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         for(tim_num = 0; tim_num < ARRAY_SIZE(TimerItem); tim_num++) {
             if(TimerItem[tim_num].hTimer) {
                 fRval = GPTimerCC26XX_getFreeRunValue(TimerItem[tim_num].hTimer);
@@ -74,7 +74,7 @@ bool tim_diag_command(int32_t argc, char* argv[]) {
                 io_printf(CRLF);
             }
         }
-        table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     } else {
         LOG_ERROR(TIM, "Usage: td");
     }

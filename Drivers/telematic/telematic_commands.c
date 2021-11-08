@@ -90,7 +90,7 @@ bool chat_command(int32_t argc, char* argv[]){
         res = tbfp_send_chat(tx_array, tx_array_len);
         if(res) {
             LOG_INFO(SYS, "ok [%s]",tx_array);
-            res = print_mem(tx_array,tx_array_len,false,true,true);
+            res = print_mem(tx_array,tx_array_len,false,true,true,false);
         } else {
             LOG_ERROR(SYS, "chat error");
         }

@@ -17,7 +17,7 @@
 #include "writer_config.h"
 
 bool diag_page_tasks(ostream_t* stream) {
-    stream = &dbg_o.s;
+    stream = &(curWriterPtr->s);
     uint64_t total_time_us = 0;
     uint64_t total_time_ms = 0;
     uint64_t total_run_time_us = 0;

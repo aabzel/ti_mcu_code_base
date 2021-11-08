@@ -56,76 +56,64 @@ bool is_little_endian(void) {
     return bint.u8[0] == 4;
 }
 
-static bool print_fw_type(ostream_t* stream) {
+static bool print_fw_type(void) {
     bool res = false;
-    if(stream) {
-        oprintf(stream, "config: %s " CRLF, CONFIG_NAME);
+    io_printf( "config: %s " CRLF, CONFIG_NAME);
 #ifdef HAS_BOOTLOADER
-        oputs(stream, "Bootloader ");
+    io_printf(  "Bootloader ");
 #endif /*HAS_BOOTLOADER*/
 
 #ifdef HAS_GENERIC
-        oputs(stream, "Generic ");
+    io_printf(  "Generic ");
 #endif /*HAS_GENERIC*/
 
 #ifdef HAS_RELEASE
-        oputs(stream, "Release" CRLF);
+    io_printf(  "Release" CRLF);
 #endif /*HAS_RELEASE*/
 
 #ifdef HAS_DEBUG
-        oputs(stream, "Debug" CRLF);
+    io_printf(  "Debug" CRLF);
 #endif /*HAS_DEBUG*/
-        res = true;
-    }
-    return res;
-}
-
-bool print_version_s(ostream_t* stream) {
-    bool res = false;
-    if(stream) {
-        res = false;
-        print_fw_type(stream);
-        uint32_t all_flash_crc = 0;
-        oprintf(stream, "Date     : %s " CRLF, __DATE__);
-        oprintf(stream, "Time     : %s " CRLF, __TIME__);
-        oprintf(stream, "TimeStamp: %s " CRLF, __TIMESTAMP__);
-        oprintf(stream, "Cstd     : %u " CRLF, __STDC__);
-        oprintf(stream, "STDC_VER : %u " CRLF, __STDC_VERSION__);
-        //  oprintf(stream, "__TI_COMPILER_VERSION__     : %s " CRLF, __TI_COMPILER_VERSION__);
-        oprintf(stream, "board    : %s " CRLF, BOARD_NAME);
-        oprintf(stream, "MCU: %s" CRLF, MCU_NAME);
-#ifndef USE_HAL_DRIVER
-        uint32_t cpi_id = cpu_get_id();
-#endif /*USE_HAL_DRIVER*/
-        oprintf(stream, "branch   : %s " CRLF, GIT_BRANCH);
-        oprintf(stream, "last commit: %s" CRLF, GIT_LAST_COMMIT_HASH);
-#ifdef HAS_FLASH
-        all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
-#endif /*HAS_FLASH*/
-        oprintf(stream, "FlashCRC32: 0x%08X" CRLF, all_flash_crc);
-        oprintf(stream, "main(): 0x%08p" CRLF, main);
-#ifdef __TI_COMPILER_VERSION__
-        oprintf(stream, "TI compiler ver %u " CRLF, __TI_COMPILER_VERSION__);
-#endif
-
-#ifdef __GNUC__
-        oputs(stream, "GCC" CRLF);
-#endif /**/
-
-#ifndef USE_HAL_DRIVER
-        oprintf(stream, "Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
-        uint64_t ble_mac = get_ble_mac();
-        oprintf(stream, "MAC: 0x%" PRIX64 CRLF, ble_mac);
-#endif /*USE_HAL_DRIVER*/
-        oputs(stream, "by TG: @aabdev" CRLF);
-        oputs(stream, CRLF);
-    }
+    res = true;
     return res;
 }
 
 bool print_version(void) {
-    bool res = false;
-    res = print_version_s(DBG_UART_STREAM);
+    bool res = true;
+    print_fw_type();
+    uint32_t all_flash_crc = 0;
+    io_printf( "Date: %s" CRLF, __DATE__);
+    io_printf( "Time: %s" CRLF, __TIME__);
+    io_printf( "TimeStamp: %s" CRLF, __TIMESTAMP__);
+    io_printf( "Cstd: %u" CRLF, __STDC__);
+    io_printf( "StdCver: %u" CRLF, __STDC_VERSION__);
+    io_printf( "board: %s" CRLF, BOARD_NAME);
+    io_printf( "MCU: %s" CRLF, MCU_NAME);
+#ifndef USE_HAL_DRIVER
+    uint32_t cpi_id = cpu_get_id();
+#endif /*USE_HAL_DRIVER*/
+    io_printf( "branch: %s" CRLF, GIT_BRANCH);
+    io_printf( "lastCommit: %s" CRLF, GIT_LAST_COMMIT_HASH);
+#ifdef HAS_FLASH
+    all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
+#endif /*HAS_FLASH*/
+    io_printf( "FlashCRC32: 0x%08X" CRLF, all_flash_crc);
+    io_printf( "main(): 0x%08p" CRLF, main);
+#ifdef __TI_COMPILER_VERSION__
+    io_printf( "TIcompilerVer %u" CRLF, __TI_COMPILER_VERSION__);
+#endif
+
+#ifdef __GNUC__
+    io_printf( "GCC" CRLF);
+#endif /**/
+
+#ifndef USE_HAL_DRIVER
+    io_printf("Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
+    uint64_t ble_mac = get_ble_mac();
+    io_printf("MAC: 0x%" PRIX64 CRLF, ble_mac);
+#endif /*USE_HAL_DRIVER*/
+    io_printf("TG: @aabdev" CRLF);
+
     return res;
 }
 
@@ -144,8 +132,8 @@ bool print_u16_un(U16_bit_t un) {
     io_printf("un 0x%04x 0b_%s" CRLF, un.u16, utoa_bin16(un.u16));
     io_printf("s16: %d " CRLF, un.s16);
     io_printf("u16: %u " CRLF, un.u16);
-    io_printf(" u8: %u %u" CRLF, un.u8[0], un.u8[1]);
-    io_printf(" s8: %d %d" CRLF, un.s8[0], un.s8[1]);
+    io_printf("u8: %u %u" CRLF, un.u8[0], un.u8[1]);
+    io_printf("s8: %d %d" CRLF, un.s8[0], un.s8[1]);
     return true;
 }
 
@@ -177,8 +165,9 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     uint16_t i = 0;
     bool res = false;
     res = print_indent(indent);
-    io_printf(ASCII_SEP);
+   // io_printf(ASCII_SEP);
     for(i = 0; i < size; i++) {
+#ifdef HAS_REPLACE_FORMATTER_CHARACTERS
         if(0x08 == buff[i]) {
             io_printf("[BS]");
         } else if(0x00 == buff[i]) {
@@ -190,8 +179,11 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
         } else {
             io_printf("%c", buff[i]);
         }
+#else
+        io_printf("%c", buff[i]);
+#endif
     }
-    io_printf(ASCII_SEP);
+    //io_printf(ASCII_SEP);
     return res;
 }
 
@@ -205,7 +197,7 @@ bool print_bin(uint8_t* buff, uint32_t size, uint16_t indent) {
     return res;
 }
 
-bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new_line) {
+bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new_line, bool is_packed) {
     bool res = false;
     uint32_t pos = 0;
     uint32_t print_len = 0;
@@ -220,7 +212,9 @@ bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new
                 print_ascii_line((char*)&addr[pos], 16, 4);
             }
             print_len += 16;
-            io_printf(CRLF);
+            if(is_packed){
+                io_printf(CRLF);
+            }
         }
     }
     rem = len - print_len;
@@ -368,20 +362,20 @@ bool print_bit_representation(uint32_t val) {
         cols[bit_index].name = "";
     }
     io_printf("value: %u" CRLF "value: 0x%x " CRLF, val, val);
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     io_printf(TSEP);
     for(bit_index = 31; 0 <= bit_index; bit_index--) {
         io_printf("%2u" TSEP, bit_index);
     }
     io_printf(CRLF);
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     io_printf(TSEP);
 
     for(bit_index = 31; 0 <= bit_index; bit_index--) {
         io_printf("%2u" TSEP, (1 << bit_index) == (val & (1 << bit_index)));
     }
     io_printf(CRLF);
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     io_printf(CRLF);
     return res;
 }

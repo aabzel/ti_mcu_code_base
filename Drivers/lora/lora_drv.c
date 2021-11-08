@@ -27,10 +27,8 @@
 #include "sx1262_drv.h"
 #endif
 
-#define LORA_TX_LEN 10
-
-static Array_t ArrLoRaTxNode[LORA_TX_LEN];
-LoRaIf_t LoRaInterface;
+static Array_t ArrLoRaTxNode[LORA_TX_QUEUE_SIZE];
+LoRaIf_t LoRaInterface={0};
 
 #ifdef HAS_RTCM3
 bool rtcm3_lora_rx_proc(uint8_t* const payload, uint32_t size) {
@@ -53,30 +51,12 @@ bool rtcm3_lora_rx_proc(uint8_t* const payload, uint32_t size) {
 
 bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
     bool res = false;
-    char* substr = NULL;
-    uint16_t offset = strlen(CMD_PREFIX);
-    substr = strstr((const char*)rx_payload, (const char*)CMD_PREFIX);
-    if(NULL != substr) {
-        char* cli_cmd = substr + strlen(CMD_PREFIX);
-        LOG_DEBUG(LORA, "cmd [%s]", cli_cmd);
-        res = process_shell_cmd(cli_cmd);
-    }
-
-    substr = strstr((char*)rx_payload, PING_PREFIX);
-    if(NULL != substr) {
-        uint8_t tx_buf[256] = {0};
-        uint64_t ble_mac = get_ble_mac();
-        snprintf((char*)tx_buf, sizeof(tx_buf), "MAC:0x%" PRIx64, ble_mac);
-#ifdef HAS_SX1262
-        res = sx1262_start_tx(tx_buf, strlen((const char*)tx_buf) + 1, 0);
-#endif
-    }
 #ifdef HAS_RTCM3
     res = rtcm3_lora_rx_proc(rx_payload, rx_size);
-#endif
+#endif /*HAS_RTCM3*/
 #ifdef HAS_TBFP
     res = tbfp_proc(rx_payload, rx_size);
-#endif
+#endif /*HAS_TBFP*/
     return res;
 }
 
@@ -107,7 +87,7 @@ bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
             txNode.pArr = (uint8_t*)data;
             res = fifo_arr_push(&LoRaInterface.FiFoLoRaTx, txNode);
             if(false == res) {
-                LoRaInterface.err_cnt++;
+                LoRaInterface.ovfl_err_cnt++;
             }
         } else {
             LoRaInterface.err_cnt++;

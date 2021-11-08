@@ -40,15 +40,15 @@ bool lora_sent_queue_command(int32_t argc, char* argv[]){
     return res;
 }
 
-
 bool lora_diag_command(int32_t argc, char* argv[]){
     bool res = false;
     if(0==argc){
+        io_printf("overflow err cnt: %u"CRLF, LoRaInterface.ovfl_err_cnt);
         io_printf("err cnt: %u"CRLF, LoRaInterface.err_cnt);
         io_printf("tx ok cnt: %u"CRLF, LoRaInterface.tx_ok_cnt);
         io_printf("tx done cnt: %u"CRLF, LoRaInterface.tx_done_cnt);
         io_printf("max_distance: %f m"CRLF, LoRaInterface.max_distance);
-
+        res = true;
     } else {
         LOG_INFO(LORA,"ld");
     }

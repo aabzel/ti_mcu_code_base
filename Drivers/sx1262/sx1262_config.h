@@ -7,7 +7,7 @@ extern "C" {
 
 #include "lora_defs.h"
 
-#define DFLT_TX_PAUSE_MS 10U
+#define DFLT_TX_PAUSE_MS 8U
 #define DFLT_FREQ_MHZ 868000000UL
 #define DFLT_LORA_BW LORA_BW_500
 #define DFLT_SF SF5

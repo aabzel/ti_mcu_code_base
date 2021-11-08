@@ -23,7 +23,7 @@ static bool tbfp_diag(void) {
                                        {9, "ErCnt"},
                                        {9, "minLen"},
                                        {9, "maxLen"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
         io_printf(TSEP);
         io_printf(" %7u " TSEP, TbfpPorotocol.rx_pkt_cnt);
@@ -40,7 +40,7 @@ static bool tbfp_diag(void) {
 #endif /*HAS_DEBUG*/
         res = true;
 
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
 }
 

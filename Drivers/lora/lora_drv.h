@@ -7,13 +7,14 @@
 
 #include "fifo_array.h"
 
+#define LORA_TX_QUEUE_SIZE 60
 #define LORA_MAX_FRAME_SIZE 256U
 
 extern FifoArray_t FiFoLoRaTx;
 
-
 typedef struct xLoRaIf_t {
     uint32_t err_cnt;
+    uint32_t ovfl_err_cnt;
     uint32_t tx_ok_cnt;
     uint32_t tx_done_cnt;
     FifoArray_t FiFoLoRaTx;
