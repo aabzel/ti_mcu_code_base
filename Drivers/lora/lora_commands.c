@@ -7,7 +7,10 @@
 #include "io_utils.h"
 #include "log.h"
 #include "lora_drv.h"
+
+#ifdef HAS_SX1262
 #include "sx1262_drv.h"
+#endif
 
 bool lora_sent_command(int32_t argc, char* argv[]) {
     bool res = false;
