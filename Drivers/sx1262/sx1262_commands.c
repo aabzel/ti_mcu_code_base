@@ -384,7 +384,7 @@ bool sx1262_tx_command(int32_t argc, char* argv[]) {
         res = true;
         res = try_str2uint32(argv[1], &timeout_s);
         if(false == res) {
-            LOG_ERROR(LORA, "Unable to extract offset %s", argv[1]);
+            LOG_ERROR(LORA, "Unable to extract timeout %s", argv[1]);
         }
     }
 

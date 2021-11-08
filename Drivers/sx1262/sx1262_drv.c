@@ -1303,7 +1303,9 @@ static inline bool sx1262_poll_status(void) {
                     LOG_INFO(LORA, "rx %u byte", rx_size);
                     res = print_mem(rx_payload, rx_size, true, true, true);
                 }
+#ifdef HAS_LORA
                 res = lora_proc_payload(rx_payload, rx_size);
+#endif /*HAS_LORA*/
             }
         } break;
         case COM_STAT_COM_TIMEOUT:

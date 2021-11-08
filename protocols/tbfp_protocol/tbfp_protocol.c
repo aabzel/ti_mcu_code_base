@@ -8,6 +8,9 @@
 #include "lora_drv.h"
 #endif
 #include "byte_utils.h"
+#ifdef HAS_CLI
+#include "cli_manager.h"
+#endif
 #include "core_driver.h"
 #include "crc8_sae_j1850.h"
 #include "data_utils.h"
@@ -15,6 +18,8 @@
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
 #endif
+
+
 #ifdef HAS_PARAM
 #include "param_ids.h"
 #endif
@@ -87,14 +92,14 @@ bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_
     return res;
 }
 
-bool tbfp_send_chat(uint8_t* tx_array, uint32_t len) {
+static bool tbfp_send_text(uint8_t payload_id,uint8_t* tx_array, uint32_t len ){
     bool res = false;
     if(tx_array && (0 < len)) {
         uint8_t frame[256] = "";
         uint32_t frame_len = TBFP_SIZE_HEADER + TBFP_SIZE_ID + len;
         res = tbfp_make_header(frame, len + TBFP_SIZE_ID);
         if(res) {
-            frame[TBFP_INDEX_PAYLOAD] = FRAME_ID_CHAT;
+            frame[TBFP_INDEX_PAYLOAD] = payload_id;
             memcpy(&frame[TBFP_INDEX_PAYLOAD + 1], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
             if(res) {
@@ -102,6 +107,18 @@ bool tbfp_send_chat(uint8_t* tx_array, uint32_t len) {
             }
         }
     }
+    return res;
+}
+
+bool tbfp_send_chat(uint8_t* tx_array, uint32_t len) {
+    bool res = false;
+    res = tbfp_send_text(FRAME_ID_CHAT,tx_array,len);
+    return res;
+}
+
+bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len) {
+    bool res = false;
+    res = tbfp_send_text(FRAME_ID_CMD,tx_array,len);
     return res;
 }
 
@@ -170,6 +187,19 @@ static bool tbfp_proc_chat(uint8_t* payload, uint16_t len) {
     return res;
 }
 
+
+static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len){
+    bool res = false;
+    if((NULL != payload) && (0 < len) && (FRAME_ID_CMD==payload[0])) {
+        res = false;
+#ifdef HAS_CLI
+        payload[len]=0x00;
+        res = process_shell_cmd((char*)&payload[1]);
+#endif
+    }
+    return res;
+}
+
 bool tbfp_proc_payload(uint8_t* payload, uint16_t len) {
     bool res = false;
     switch(payload[0]) {
@@ -179,6 +209,9 @@ bool tbfp_proc_payload(uint8_t* payload, uint16_t len) {
     case FRAME_ID_PONG:
     case FRAME_ID_PING:
         res = tbfp_proc_ping(payload, len);
+        break;
+    case FRAME_ID_CMD:
+        res = tbfp_proc_cmd(payload, len);
         break;
     default:
         res = false;

@@ -13,9 +13,10 @@ extern "C" {
 #include "gnss_utils.h"
 
 typedef enum xFrameId_t {
-    FRAME_ID_CHAT = 0x43,
-    FRAME_ID_PING = 0x50,
-    FRAME_ID_PONG = 0x90,
+    FRAME_ID_CMD  = 0x44,/*D*/
+    FRAME_ID_CHAT = 0x43,/*C*/
+    FRAME_ID_PING = 0x50,/*P*/
+    FRAME_ID_PONG = 0x90,/**/
 } FrameId_t;
 
 #define TBFP_PREAMBLE 0xA5
@@ -55,6 +56,7 @@ typedef struct xTbfpPorotocol_t {
 
 extern TbfpPorotocol_t TbfpPorotocol;
 
+bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len);
 bool tbfp_send_chat(uint8_t* tx_array, uint32_t len);
 bool tbfp_send_ping(uint8_t frame_id);
 bool tbfp_protocol_init(TbfpPorotocol_t* instance);
