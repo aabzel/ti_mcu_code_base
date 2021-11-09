@@ -12,6 +12,7 @@ int main(int argc, char* argv[]) {
     int ret = 0;
     bool res = false;
     printf("test code base!\n");
+    printf("STDC_VER : %u \n", __STDC_VERSION__);
 
     uint32_t cnt = get_test_list_cnt();
     printf("number of tests: %u\n", cnt);

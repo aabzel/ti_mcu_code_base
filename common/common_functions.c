@@ -166,7 +166,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*NORTOS*/
 
 #ifdef NORTOS
-void common_main_loop(void) {
+_Noreturn void common_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
     uint64_t loop_start_time_us = 0;
 #ifdef HAS_DEBUG
