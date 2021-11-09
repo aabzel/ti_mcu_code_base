@@ -5,5 +5,5 @@ If exist "*.exe" (
 )
 
 make 
-rem sleep 30
+ 
 

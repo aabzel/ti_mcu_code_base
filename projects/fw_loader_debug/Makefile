@@ -1,8 +1,8 @@
 MK_PATH:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 #@echo $(error MK_PATH= $(MK_PATH))
-PROJECT_ROOT:= $(MK_PATH)../
-
-INCDIR			+= -I$(PROJECT_ROOT)
+PROJECT_ROOT:= $(MK_PATH)../../
+#@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
+INCDIR += -I$(PROJECT_ROOT)
 
 BUILDDIR := $(PROJECT_ROOT)/Build
 
@@ -17,7 +17,8 @@ CC = gcc
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
-CFLAGS  += -g
+CFLAGS += -g
+CFLAGS += -m32
 #CFLAGS += -Og
 CFLAGS  += -O0
 #CFLAGS  += -Wall
@@ -29,25 +30,24 @@ OPT += -DHAS_UTESTS
 OPT += -DX86_64
          
 #files to link:
-LFLAGS= -static
-  
+LFLAGS= -static -lm
+
 EXECUTABLE=fw_loader_d
 
-include $(PROJECT_ROOT)utils/utils_file/utils_file.mk
+include $(PROJECT_ROOT)utils/win_utils/win_utils.mk
 include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
-include $(PROJECT_ROOT)utils/utils_string/string_utils.mk
-include $(PROJECT_ROOT)win_utils/win_utils.mk
+include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 #include $(PROJECT_ROOT)tests/tests.mk
-SOURCES += main.c
+SOURCES_C += main.c
 # the name to use for both the target source file, and the output file:
 #include $(PROJECT_ROOT)system_explore/system_explore.mk
 
 
-#@echo $(error SOURCES= $(SOURCES))
+#@echo $(error SOURCES_C= $(SOURCES_C))
 INCDIR := $(subst /cygdrive/c/,C:/, $(INCDIR))
 #@echo $(error INCDIR= $(INCDIR))
-OBJ := $(patsubst %.c, %.o, $(SOURCES))
+OBJ := $(patsubst %.c, %.o, $(SOURCES_C))
 OBJ := $(subst /cygdrive/c/,C:/, $(OBJ))
 #@echo $(error OBJ= $(OBJ))
 

@@ -17,7 +17,7 @@ CC = gcc
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
-CFLAGS += -g 
+CFLAGS += -g
 CFLAGS += -m32
 #CFLAGS += -Og
 CFLAGS  += -O0
@@ -50,7 +50,7 @@ include $(PROJECT_ROOT)utils/utils_file/utils_file.mk
 include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)unit_tests/unit_test.mk
-include $(PROJECT_ROOT)utils/utils_string/string_utils.mk
+include $(PROJECT_ROOT)utils/utils_string/utils_string.mk
 #include $(PROJECT_ROOT)tests/tests.mk
 SOURCES_C += main.c
 # the name to use for both the target source file, and the output file:

@@ -1,15 +1,16 @@
 #ifndef FLOAT_UTILS_H
 #define FLOAT_UTILS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 #include <stdint.h>
 
 #define F_EPSILON 1E-10f
 #define D_EPSILON 1E-10
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define CALC_PRECENT(numerator, denominator) (100.0f * ((float)numerator / (float)denominator))
 

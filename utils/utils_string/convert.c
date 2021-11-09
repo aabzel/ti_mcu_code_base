@@ -59,6 +59,38 @@ bool try_str2int64(const char s64_str[], int64_t* s64_value) {
     return res;
 }
 
+bool is_hex_str(const char str_to_check[], int32_t str_to_check_len, uint8_t* const out_shift) {
+    bool is_hex_str_result = false;
+    int32_t validHexCnt = 0;
+    uint8_t out_shift_loc = 0U;
+    if((NULL != str_to_check) && (NULL != out_shift)) {
+        bool is_dec_str_res = is_dec_str(str_to_check, str_to_check_len);
+        if(false == is_dec_str_res) {
+            bool len_check_passed = (str_to_check_len > 2);
+            if(true == len_check_passed) {
+                if(((char)'0' == str_to_check[0]) &&
+                   (((char)'x' == str_to_check[1]) || ((char)'X' == str_to_check[1]))) {
+                    out_shift_loc = 2U;
+                } else {
+                    out_shift_loc = 0U;
+                }
+
+                int32_t i = 0;
+                for(i = ((int32_t)out_shift_loc); i < str_to_check_len; i++) {
+                    if(true == is_hex_digit(str_to_check[i])) {
+                        validHexCnt++;
+                    }
+                }
+                if((str_to_check_len - ((int32_t)out_shift_loc)) == validHexCnt) {
+                    (*out_shift) = out_shift_loc;
+                    is_hex_str_result = true;
+                }
+            }
+        }
+    }
+    return is_hex_str_result;
+}
+
 bool try_strl2uint64(const char u64l_str[], int32_t u64l_str_len, uint64_t* u64l_value) {
     bool u64l_success = true;
     bool u64l_str_not_empty = true;
@@ -1473,37 +1505,7 @@ bool is_dec_str(const char str_to_check[], int32_t str_to_check_len) {
     return is_dec_str_result;
 }
 
-bool is_hex_str(const char str_to_check[], int32_t str_to_check_len, uint8_t* const out_shift) {
-    bool is_hex_str_result = false;
-    int32_t validHexCnt = 0;
-    uint8_t out_shift_loc = 0U;
-    if((NULL != str_to_check) && (NULL != out_shift)) {
-        bool is_dec_str_res = is_dec_str(str_to_check, str_to_check_len);
-        if(false == is_dec_str_res) {
-            bool len_check_passed = (str_to_check_len > 2);
-            if(true == len_check_passed) {
-                if(((char)'0' == str_to_check[0]) &&
-                   (((char)'x' == str_to_check[1]) || ((char)'X' == str_to_check[1]))) {
-                    out_shift_loc = 2U;
-                } else {
-                    out_shift_loc = 0U;
-                }
 
-                int32_t i = 0;
-                for(i = ((int32_t)out_shift_loc); i < str_to_check_len; i++) {
-                    if(true == is_hex_digit(str_to_check[i])) {
-                        validHexCnt++;
-                    }
-                }
-                if((str_to_check_len - ((int32_t)out_shift_loc)) == validHexCnt) {
-                    (*out_shift) = out_shift_loc;
-                    is_hex_str_result = true;
-                }
-            }
-        }
-    }
-    return is_hex_str_result;
-}
 
 static bool is_hex_digit(const char character) {
     bool res = false;

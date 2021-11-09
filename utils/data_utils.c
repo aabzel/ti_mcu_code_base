@@ -88,7 +88,7 @@ int8_t two_complement_to_decimal(uint8_t in_code, int significant_bits) {
     int sum = 0;
     int i = 0;
     for(i = significant_bits - 1; 0 <= i; i--) {
-        if((i == (significant_bits - 1)) && ((1 << i) == (1 << i) & in_code)) {
+        if((i == (significant_bits - 1)) && ((1 << i) == ((1 << i) & in_code))) {
             sum = power * -1;
         } else {
             if(in_code & (1 << i)) {
@@ -128,12 +128,12 @@ bool try_alloc_on_stack(int n, uint8_t pat, uint16_t* real_size) {
     bool res = false;
     uint8_t array[n];
     *real_size = sizeof(array);
-    if(array) {
-        memset(array, pat, n);
-        if(is_arr_pat(array, n, pat)) {
-            res = true;
-        }
+
+    memset(array, pat, n);
+    if(is_arr_pat(array, n, pat)) {
+         res = true;
     }
+
     return res;
 }
 
