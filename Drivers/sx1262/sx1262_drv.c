@@ -1309,7 +1309,9 @@ static inline bool sx1262_poll_status(void) {
         uint8_t rx_payload[RX_SIZE] = {0};
         memset(rx_payload, 0x00, sizeof(rx_payload));
         uint8_t rx_size = 0;
+#ifdef HAS_SX1262_BIT_RATE
         uint32_t tx_duration_ms = 0 ;
+#endif /*HAS_SX1262_BIT_RATE*/
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.rx_done_cnt++;
@@ -1337,7 +1339,7 @@ static inline bool sx1262_poll_status(void) {
             LOG_ERROR(LORA, "Failure to execute command"); /**/
             res = false;
             break;
-        case COM_STAT_COM_TX_DONE:
+        case COM_STAT_COM_TX_DONE:{
 #ifdef HAS_SX1262_BIT_RATE
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
             tx_duration_ms = Sx1262Instance.tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
@@ -1363,7 +1365,7 @@ static inline bool sx1262_poll_status(void) {
             Sx1262Instance.tx_done_cnt++;
             LoRaInterface.tx_done_cnt++;
             res = sx1262_start_rx(0xFFFFFF);
-            break;
+        }break;
         default:
             res = false;
             break;

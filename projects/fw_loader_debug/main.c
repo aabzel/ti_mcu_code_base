@@ -61,7 +61,7 @@ static bool parse_fw_version(void) {
 int main(int argc, char* argv[]) {
     int ret = 0;
     bool res = false;
-    printf("Loader!\n");
+    printf("Firmware loader:\n");
     if(argc < 3) {
         printf("Lack of firmware");
         ret = 1;
@@ -94,6 +94,11 @@ int main(int argc, char* argv[]) {
         uint8_t* pFirmwareArray = NULL;
         uint32_t firmware_size = 0;
         res = file_load_to_array(argv[3], &pFirmwareArray, &firmware_size);
+        if (res) {
+            printf("\n Load firmware from file to RAM ok");
+        }else{
+            printf("\n[e] Unable to Load firmware from file to RAM");
+        }
     }
 
     if(res) {

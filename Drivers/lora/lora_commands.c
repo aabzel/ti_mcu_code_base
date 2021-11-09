@@ -13,7 +13,6 @@
 #endif
 
 
-
 bool lora_sent_queue_command(int32_t argc, char* argv[]){
     bool res = false;
     uint8_t tx_array[TX_SIZE] = CMD_PREFIX;

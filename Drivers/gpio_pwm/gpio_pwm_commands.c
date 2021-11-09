@@ -10,6 +10,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool gpio_pwm_diag_command(int32_t argc, char* argv[]) {
     bool res = false;

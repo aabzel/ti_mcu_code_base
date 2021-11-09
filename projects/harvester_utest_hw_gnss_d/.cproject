@@ -145,7 +145,6 @@
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
-									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_MCU"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
@@ -156,8 +155,6 @@
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP"/>
-									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
@@ -167,6 +164,7 @@
 									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
 									<listOptionValue builtIn="false" value="HAS_UBX_DEBUG"/>
+									<listOptionValue builtIn="false" value="HAS_UBX_PTOTO"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="HAS_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
@@ -293,7 +291,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="Drivers/tcan4550_q1|Drivers/tcan4550_q1_ti|Drivers/sx1262|unit_tests/test_set_hw/test_flash_fs|unit_tests/test_set_hw/test_sx1262|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|unit_tests/test_set_sw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Drivers/telematic|Drivers/lora|unit_tests/test_set_hw/test_can|protocols/j1939|protocols/tbfp_protocol|utils/io_utils/writer_lora.c|utils/win_utils|utils/utils_files|Drivers/tcan4550_q1|Drivers/tcan4550_q1_ti|Drivers/sx1262|unit_tests/test_set_hw/test_flash_fs|unit_tests/test_set_hw/test_sx1262|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|unit_tests/test_set_sw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

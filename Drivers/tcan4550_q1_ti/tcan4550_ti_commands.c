@@ -98,7 +98,7 @@ bool tcan4550_ti_read_command(int32_t argc, char* argv[]) {
     if(true == res) {
 
         if(res) {
-            print_mem(data, sizeof(data), true, true, true);
+            print_mem(data, sizeof(data), true, true, true, true);
         } else {
             LOG_ERROR(CAN, "read error");
         }
