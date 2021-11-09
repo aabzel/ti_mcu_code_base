@@ -58,6 +58,7 @@ bool print_vector_table(uint32_t vectors_table_base);
 bool print_version(void);
 void print_sys_info(void);
 bool parse_stack(void);
+bool print_indent(uint16_t indent);
 
 #ifdef __cplusplus
 }

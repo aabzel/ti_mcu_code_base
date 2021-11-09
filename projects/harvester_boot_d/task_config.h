@@ -1,11 +1,9 @@
 #ifndef TASK_CONFIG_H
 #define TASK_CONFIG_H
 
+#include "task_config_boot.h"
+
 #define TASKS    \
-  TASK(CLI)      \
-  TASK(FLASH_FS) \
-  TASK(HEAL_MON)      \
-  TASK(LED)      \
-  TASK(UART)  
+  TASKS_BOOT
 
 #endif /* TASK_CONFIG_H */

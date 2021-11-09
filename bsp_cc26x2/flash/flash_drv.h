@@ -25,6 +25,7 @@
 
 #define FLASH_WR_TIME_MS 20
 
+#ifdef HAS_MCU
 bool flash_init(void);
 bool flash_wr(uint32_t addr, uint8_t* array, uint32_t array_len);
 bool flash_erase_pages(uint8_t page_start, uint8_t page_end);
@@ -37,6 +38,7 @@ bool is_flash_addr(uint32_t flash_addr);
 bool flash_find_spare_region(uint32_t* out_addr, uint32_t size);
 uint32_t flash_page2addr(uint8_t page);
 uint32_t flash_get_first_spare_page(void);
+#endif /*HAS_MCU*/
 /*
  * API
  erase 8kbyte flash block

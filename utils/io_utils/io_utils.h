@@ -24,7 +24,6 @@ typedef void (*print_callback_t)(const char* str);
 void io_printf(const char *format, ...);
 bool flush_printf(void);
 bool is_printf_clean(void);
-bool print_indent(uint16_t indent);
 void io_putchar(char ch);
 void io_putstr(const char *str);
 void io_putstrln(const char *str);

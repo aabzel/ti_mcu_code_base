@@ -20,6 +20,7 @@
 #include "table_utils.h"
 #include "writer_config.h"
 
+
 static bool diag_flash_prot(char* key_word1, char* key_word2) {
     bool res = false;
     uint32_t flash_addr = NOR_FLASH_BASE, num = 0;
@@ -158,6 +159,7 @@ bool flash_erase_command(int32_t argc, char* argv[]) {
 
 bool flash_read_command(int32_t argc, char* argv[]) {
     bool res = false;
+    uint8_t rx_array[256]={0};
     if(2 == argc) {
         res = true;
         uint32_t offset = 0;
@@ -165,20 +167,34 @@ bool flash_read_command(int32_t argc, char* argv[]) {
         if(res) {
             res = try_str2uint32(argv[0], &offset);
             if(false == res) {
-                LOG_ERROR(NVS, "Unable to parse offset %s", argv[0]);
+                LOG_ERROR(LG_FLASH, "Unable to parse offset %s", argv[0]);
             }
         }
         if(res) {
             res = try_str2uint32(argv[1], &buffer_size);
             if(false == res) {
-                LOG_ERROR(NVS, "Unable to parse buffer_size %s", argv[1]);
+                LOG_ERROR(LG_FLASH, "Unable to parse buffer_size %s", argv[1]);
             }
         }
 
         if(true == res) {
+            if (buffer_size <= sizeof(rx_array)) {
+                res = flash_read( offset, rx_array, buffer_size);
+                if (res) {
+                    LOG_INFO(LG_FLASH, "OK");
+                    uint16_t crc16_calc = calc_crc16_ccitt_false(rx_array, buffer_size);
+                    io_printf(" 0x");
+                    print_mem(rx_array,buffer_size,true,false, false, false);
+                    io_printf(" 0x%04x" CRLF, crc16_calc);
+                } else {
+                    LOG_ERROR(LG_FLASH, "read error");
+                }
+            } else {
+                LOG_ERROR(LG_FLASH, "Too big chunk");
+            }
         }
     } else {
-        LOG_ERROR(NVS, "Usage: fr offset buffer_size");
+        LOG_ERROR(LG_FLASH, "Usage: fr offset buffer_size");
     }
     return res;
 }

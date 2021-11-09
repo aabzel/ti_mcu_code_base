@@ -33,7 +33,7 @@ typedef struct xConnection_t {
 extern xSerialConnection_t deviceList[MAX_COM_NUM];
 extern HANDLE hComm;
 
-bool init_serial(char* com_name, uint16_t baud_rate);
+bool init_serial(char* com_name, uint32_t baud_rate);
 bool is_serial_known(uint64_t inSerial);
 const char* dev_id_name(deciceId_t deviceID);
 bool scan_serial(void);

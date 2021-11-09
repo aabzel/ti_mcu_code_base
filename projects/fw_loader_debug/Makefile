@@ -25,6 +25,7 @@ CFLAGS  += -O0
 #CFLAGS  +=-pedantic
 #CFLAGS += -ftime-report
 
+HAS_X86_64=Y
 #OPT += -DSORT_LIST
 OPT += -DHAS_UTESTS
 OPT += -DX86_64
@@ -34,6 +35,7 @@ LFLAGS= -static -lm
 
 EXECUTABLE=fw_loader_d
 
+include $(PROJECT_ROOT)code_base.mk
 include $(PROJECT_ROOT)utils/win_utils/win_utils.mk
 include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk

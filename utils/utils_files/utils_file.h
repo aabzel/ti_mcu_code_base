@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
- 
 uint32_t file_get_size(char* file_name);
 bool file_load_to_array(char* file_name, uint8_t** out_buff, uint32_t* out_size) ;
  

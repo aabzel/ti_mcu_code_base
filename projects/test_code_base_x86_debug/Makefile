@@ -14,6 +14,8 @@ OBJDIR := $(SRC_PATH)obj
 #CC = clang
 CC = gcc
 
+HAS_X86_64=Y
+HAS_TEST_CLI=Y
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
@@ -37,6 +39,7 @@ OPT += -DHAS_TEST_SUIT_CONVERT
 OPT += -DHAS_TEST_SUIT_CRC
 OPT += -DHAS_TEST_SUIT_UBLOX_PROTO
 OPT += -DHAS_TEST_SUIT_NMEA_PROTO
+OPT += -DHAS_STRING_UTILS_TEST_SUIT
 
 #files to link:
 LFLAGS= -static -lm
@@ -46,11 +49,10 @@ EXECUTABLE=test_code_base
 include $(PROJECT_ROOT)common/common.mk
 include $(PROJECT_ROOT)Drivers/drivers.mk
 include $(PROJECT_ROOT)protocols/protocols.mk
-include $(PROJECT_ROOT)utils/utils_file/utils_file.mk
+include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)unit_tests/unit_test.mk
-include $(PROJECT_ROOT)utils/utils_string/utils_string.mk
 #include $(PROJECT_ROOT)tests/tests.mk
 SOURCES_C += main.c
 # the name to use for both the target source file, and the output file:

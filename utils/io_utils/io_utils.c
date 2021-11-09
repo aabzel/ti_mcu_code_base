@@ -78,14 +78,4 @@ bool flush_printf(void) {
 
 ostream_t *get_console_stream(void) { return &curWriterPtr->s; }
 
-bool print_indent(uint16_t indent){
-    bool res = false;
-    uint16_t i = 0;
-    if ((0 < indent) && (indent < 80)) {
-        res = true;
-        for(i=0;i<indent;i++){
-            io_printf(" ");
-        }
-    }
-    return res;
-}
+

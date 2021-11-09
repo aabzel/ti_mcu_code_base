@@ -11,7 +11,7 @@ HANDLE hComm;
 
 xSerialConnection_t deviceList[MAX_COM_NUM];
 
-static bool com_set_params(HANDLE hComm, uint16_t baud_rate) {
+static bool com_set_params(HANDLE hComm, uint32_t baud_rate) {
     bool res = false;
     // Initializing DCB structure
     DCB dcbSerialParams = {0};
@@ -44,7 +44,9 @@ static bool com_set_timeout(HANDLE hComm) {
 }
 
 bool com_send_str(HANDLE hComm, char* txBuffer, uint32_t txBuffLen) {
-    printf("%s() %s", __FUNCTION__, txBuffer);
+#ifdef HAS_COM_PORT_DEBUG
+    printf("%s() send [%s]", __FUNCTION__, txBuffer);
+#endif
     bool res = false;
     BOOL status;
     DWORD dNoOfBytesWritten = 0;
@@ -155,7 +157,7 @@ static bool print_new_dev_in_file(char* file_name, uint8_t comPortNum, uint64_t 
     return res;
 }
 
-bool init_serial(char* com_name, uint16_t baud_rate) {
+bool init_serial(char* com_name, uint32_t baud_rate) {
     bool res = false;
 
 #if DEBUG_SERIAL

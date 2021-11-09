@@ -3,26 +3,33 @@
 #include <inttypes.h>
 #include <string.h>
 
-#include "boot_cfg.h"
 #include "byte_utils.h"
 #include "convert.h"
-#ifndef USE_HAL_DRIVER
-#include "core_driver.h"
-#endif
 #include "crc32.h"
 #include "data_utils.h"
-#include "device_id.h"
+#include "io_utils.h"
+
+#ifdef HAS_MCU
 #ifdef HAS_FLASH
 #include "flash_drv.h"
 #endif
-#include "io_utils.h"
-#include "oprintf.h"
+#ifndef USE_HAL_DRIVER
+#include "core_driver.h"
+#endif
+#include "boot_cfg.h"
+#include "device_id.h"
 #include "sys_config.h"
+#include "oprintf.h"
 #include "table_utils.h"
-#include "uart_drv.h"
 #include "version.h"
+#include "uart_drv.h"
 #include "writer_generic.h"
 #include "writer_config.h"
+#endif
+
+#ifdef X86_64
+#define io_printf printf
+#endif
 
 extern int main(void);
 static bool stack_dir(int32_t* main_local_addr) {
@@ -56,6 +63,7 @@ bool is_little_endian(void) {
     return bint.u8[0] == 4;
 }
 
+#ifdef HAS_MCU
 static bool print_fw_type(void) {
     bool res = false;
     io_printf( "config: %s " CRLF, CONFIG_NAME);
@@ -77,7 +85,9 @@ static bool print_fw_type(void) {
     res = true;
     return res;
 }
+#endif
 
+#ifdef HAS_MCU
 bool print_version(void) {
     bool res = true;
     print_fw_type();
@@ -116,7 +126,9 @@ bool print_version(void) {
 
     return res;
 }
+#endif
 
+#ifdef HAS_MCU
 void print_sys_info(void) {
     uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
     io_printf("Boot top of stack: 0x%x " CRLF, *((uint32_t*)(0x00000000)));
@@ -126,6 +138,7 @@ void print_sys_info(void) {
     io_printf("addr of main() 0x08%p" CRLF, main);
     explore_stack_dir();
 }
+#endif
 
 /*platform spesific data type calculator */
 bool print_u16_un(U16_bit_t un) {
@@ -150,6 +163,7 @@ bool print_16bit_types(void* val) {
     return true;
 }
 
+#ifdef HAS_MCU
 bool print_vector_table(uint32_t vectors_table_base) {
     uint32_t* addres = 0;
     uint32_t offset = 0, num = 0;
@@ -160,6 +174,8 @@ bool print_vector_table(uint32_t vectors_table_base) {
     }
     return true;
 }
+#endif
+
 #define ASCII_SEP "|"
 bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     uint16_t i = 0;
@@ -186,6 +202,19 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     //io_printf(ASCII_SEP);
     return res;
 }
+
+bool print_indent(uint16_t indent){
+    bool res = false;
+    uint16_t i = 0;
+    if ((0 < indent) && (indent < 80)) {
+        res = true;
+        for(i=0;i<indent;i++){
+            io_printf(" ");
+        }
+    }
+    return res;
+}
+
 
 bool print_bin(uint8_t* buff, uint32_t size, uint16_t indent) {
     uint32_t i = 0;
@@ -272,6 +301,7 @@ bool print_mem2(uint8_t* addr, uint32_t len, bool new_line) {
     return res;
 }
 
+#ifdef HAS_MCU
 bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint32_t end_addr) {
     bool res = false;
     uint32_t cnt = 0;
@@ -309,6 +339,7 @@ bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint
     }
     return res;
 }
+#endif
 
 bool print_offset(uint16_t offset) {
     bool res = false;
@@ -353,6 +384,7 @@ bool print_bit_hint(uint16_t offset, uint32_t bitness) {
     return res;
 }
 
+#ifdef HAS_MCU
 bool print_bit_representation(uint32_t val) {
     bool res = true;
     int32_t bit_index = 0;
@@ -379,7 +411,9 @@ bool print_bit_representation(uint32_t val) {
     io_printf(CRLF);
     return res;
 }
+#endif
 
+#ifdef HAS_MCU
 static bool print_text_addresses(uint32_t cur_stack_val, uint32_t top_stack_val) {
     bool res = false;
     bool out_res = false;
@@ -398,7 +432,9 @@ static bool print_text_addresses(uint32_t cur_stack_val, uint32_t top_stack_val)
     }
     return out_res;
 }
+#endif
 
+#ifdef HAS_MCU
 bool parse_stack(void) {
     bool res = false;
     uint32_t cur_stack_val = (uint32_t)&res;
@@ -410,3 +446,4 @@ bool parse_stack(void) {
 
     return res;
 }
+#endif

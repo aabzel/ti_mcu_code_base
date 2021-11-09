@@ -1695,3 +1695,28 @@ bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, 
 
     return res;
 }
+
+bool try_strl2array(char* in_str_array, uint32_t len_str_in, uint8_t* out_array, uint16_t array_size, uint32_t* out_array_len) {
+    bool res = false;
+    uint8_t out_shift = 0;
+    res = is_hex_str(in_str_array, len_str_in, &out_shift);
+    if(true == res) {
+        if(0 == (len_str_in % 2)) {
+            uint32_t i;
+            for(i = 0; i < (len_str_in / 2); i++) {
+                res = try_strl2uint8_hex(&in_str_array[out_shift + i * 2], 2, &out_array[i]);
+                if(true == res) {
+                    (*out_array_len)++;
+                } else {
+                    break;
+                }
+            }
+            if(0U < (*out_array_len)) {
+                res = true;
+            }
+        }
+    }
+
+    return res;
+}
+
