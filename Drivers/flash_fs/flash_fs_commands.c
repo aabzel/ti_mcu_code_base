@@ -17,6 +17,7 @@
 #include "flash_fs_ll.h"
 #include "io_utils.h"
 #include "log.h"
+#include "writer_config.h"
 #include "memory_layout.h"
 #include "none_blocking_pause.h"
 #include "str_utils.h"
@@ -80,13 +81,13 @@ bool cmd_flash_fs_get(int32_t argc, char* argv[]) {
             if(false == res) {
                 LOG_ERROR(FLASH_FS, "mm_get error");
             } else {
-                print_mem((uint8_t*)array, (uint16_t)file_len, true, true, false);
+                print_mem((uint8_t*)array, (uint16_t)file_len, true, true, false, true);
                 io_printf(CRLF);
             }
         }
     } else if(0 == argc) {
         static const table_col_t cols[] = {{7, "id"}, {12, "addr"}, {5, "data"}};
-        table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
         for(file_id = 0; file_id < 0xFFFF; file_id++) {
             file_len = 0;
@@ -103,7 +104,7 @@ bool cmd_flash_fs_get(int32_t argc, char* argv[]) {
                 res = true;
             }
         }
-        table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     } else {
         LOG_ERROR(FLASH_FS, "Usage: ffg");
     }
@@ -273,7 +274,7 @@ static bool flash_fs_scan(uint32_t start_page_addr, uint32_t page_len, char* key
     LOG_INFO(FLASH_FS, "Page 0x%08x...0x%08x", start_page_addr, start_page_addr + page_len);
     uint8_t* payload = NULL;
     static const table_col_t cols[] = {{5, "num"}, {7, "id"}, {7, "len"}, {6, "crc"}, {12, "addr"}, {5, "data"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     uint8_t data[50] = "";
     for(cur_offset = start_page_addr; cur_offset <= (start_page_addr + page_len - MIN_FILE_LEN); cur_offset++) {
         /* reference item */
@@ -327,7 +328,7 @@ static bool flash_fs_scan(uint32_t start_page_addr, uint32_t page_len, char* key
             num++;
         }
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     if(0 < file_cnt) {
         out_res = true;
     }

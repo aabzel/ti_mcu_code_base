@@ -21,9 +21,6 @@ typedef struct generic_writer_s {
   volatile void *instance;
 } generic_writer_t;
 
-extern generic_writer_t dbg_o;
-
-#define DBG_STREAM (&dbg_o.s)
 
 void writer_tx_callback(generic_writer_t *s);
 void writer_error_callback(generic_writer_t *s);

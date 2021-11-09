@@ -16,7 +16,7 @@ bool spi_diag_command(int32_t argc, char* argv[]) {
     static const table_col_t cols[] = {{5, "No"},   {10, "clk"}, {5, "pha"}, {5, "plo"},
                                        {5, "bits"}, {8, "tx"},   {8, "rx"},  {10, "name"}};
     char temp_str[120];
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(spi_num = 0; spi_num < SPI_CNT; spi_num++) {
         strcpy(temp_str, TSEP);
         snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, spi_num);
@@ -30,7 +30,7 @@ bool spi_diag_command(int32_t argc, char* argv[]) {
         snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
         io_printf("%s", temp_str);
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     return res;
 }
@@ -40,7 +40,7 @@ bool spi_diag_int_command(int32_t argc, char* argv[]) {
     uint8_t spi_num = 0;
     static const table_col_t cols[] = {{5, "No"}, {4, "rx"}, {4, "tx"}, {6, "rxTo"}, {6, "RxOrun"}, {10, "name"}};
     char temp_str[120];
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(spi_num = 0; spi_num < SPI_CNT; spi_num++) {
         strcpy(temp_str, TSEP);
         snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, spi_num);
@@ -54,7 +54,7 @@ bool spi_diag_int_command(int32_t argc, char* argv[]) {
         snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
         io_printf("%s", temp_str);
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     return res;
 }

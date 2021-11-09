@@ -11,6 +11,7 @@
 #include "rtcm3_protocol.h"
 #include "table_utils.h"
 #include "writer_generic.h"
+#include "writer_config.h"
 
 static const char* interfacefRtcmLuTable[RTCM_IF_CNT] = {"UART", "LoRa"};
 
@@ -26,7 +27,7 @@ static bool rtcm3_diag(void) {
                                        {9, "ErCnt"},
                                        {9, "minLen"},
                                        {9, "maxLen"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = 0; interface < RTCM_IF_CNT; interface++) {
         io_printf(TSEP);
         io_printf(" %4s " TSEP, interfacefRtcmLuTable[interface]);
@@ -47,7 +48,7 @@ static bool rtcm3_diag(void) {
 #endif /*HAS_DEBUG*/
         res = true;
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
 }
 

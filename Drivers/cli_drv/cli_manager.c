@@ -18,6 +18,7 @@
 #include "uart_drv.h"
 #include "uart_string_reader.h"
 #include "writer_generic.h"
+#include "writer_config.h"
 #endif
 
 #include "str_utils.h"
@@ -100,6 +101,7 @@ bool cli_init(void) {
         memset(prev_cmd, 0x00,sizeof(prev_cmd));
 #endif
         cli_set_echo(true);
+        res = writer_init();
         cli_init_done = true;
         res = true;
     }
@@ -233,7 +235,7 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
     }
     io_putstr(CRLF);
     static const table_col_t cols[] = {{5, "num"}, {10, "short"}, {20, "long command"}, {13, "Description"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     while(cmd->handler) {
         if(is_print_cmd(cmd, sub_name1, sub_name2)) {
             io_printf( TSEP );
@@ -249,7 +251,7 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
         }
         cmd++;
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 }
 #endif
 

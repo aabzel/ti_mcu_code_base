@@ -12,6 +12,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool adc_trig_command(int32_t argc, char* argv[]) {
     AUXADCGenManualTrigger();
@@ -150,7 +151,7 @@ bool adc_all_command(int32_t argc, char* argv[]) {
                                            {10, "popValue"}, {10, "getValue"}, {11, "microvolts"},
                                            {11, "volts"},    {11, "Scaled"},   {7, "name"}};
 
-        table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         for(i = 0; i < ARRAY_SIZE(AdcItemsLUT); i++) {
             if(0xFF != AdcItemsLUT[i].adc_channel) {
                 microvolts = AUXADCValueToMicrovolts(AUXADC_FIXED_REF_VOLTAGE_NORMAL, AdcCodes[i]);
@@ -166,7 +167,7 @@ bool adc_all_command(int32_t argc, char* argv[]) {
                 io_printf(CRLF);
             }
         }
-        table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+        table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     } else {
         LOG_ERROR(ADC, "Usage: ain");
     }

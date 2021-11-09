@@ -13,6 +13,7 @@
 #include "gfsk_defs.h"
 #include "lora_defs.h"
 #include "sx1262_config.h"
+#include "sx1262_op_codes.h"
 
 #define PACK_SIZE_BYTES 16
 
@@ -28,49 +29,6 @@
 #define SX1262_REG_CNT 26U
 #define OPCODE_SIZE 1
 #define MHZ_TO_FRF 1048576 /* ((float)XTAL_FREQ_HZ))*10000000.0f)*/
-
-/*Operational Modes Commands*/
-#define OPCODE_RESET_STATS 0x00
-#define OPCODE_CLEAR_IRQ_STATUS 0x02
-#define OPCODE_CLEAR_DEVICE_ERRORS 0x07
-#define OPCODE_SET_DIO_IRQ_PARAMS 0x08
-#define OPCODE_WRITE_REGISTER 0x0D
-#define OPCODE_WRITE_BUFFER 0x0E
-#define OPCODE_GET_STATS 0x10
-#define OPCODE_GET_PACKET_TYPE 0x11
-#define OPCODE_GET_IRQ_STATUS 0x12
-#define OPCODE_GET_RX_BUFFER_STATUS 0x13
-#define OPCODE_GET_PACKET_STATUS 0x14
-#define OPCODE_GET_RSSIINST 0x15
-#define OPCODE_GET_DEVICE_ERRORS 0x17
-#define OPCODE_READ_REGISTER 0x1D
-#define OPCODE_READ_BUFFER 0x1E
-#define OPCODE_SET_STANDBY 0x80
-#define OPCODE_SET_RX 0x82
-#define OPCODE_SET_TX 0x83
-#define OPCODE_SET_SLEEP 0x84
-#define OPCODE_SET_RF_FREQUENCY 0x86
-#define OPCODE_SET_CAD_PARAM 0x88
-#define OPCODE_CALIBRATE 0x89
-#define OPCODE_SET_PACKET_TYPE 0x8A
-#define OPCODE_SET_MODULATION_PARAMS 0x8b
-#define OPCODE_SET_PACKET_PARAMS 0x8C
-#define OPCODE_SET_TX_PARAMS 0x8E
-#define OPCODE_SET_BUFFER_BASE_ADDR 0x8F
-#define OPCODE_SET_FALLBACK_MODE 0x93
-#define OPCODE_SET_RX_DUTY_CYCLE 0x94
-#define OPCODE_SET_PA_CONFIG 0x95
-#define OPCODE_SET_REGULATOR_MODE 0x96
-#define OPCODE_SET_DIO3_AS_TCXO_CTRL 0x97
-#define OPCODE_CALIBRATE_IMAGE 0x98
-#define OPCODE_SET_DIO2_AS_RFSWITCH 0x9d
-#define OPCODE_STOP_TIMER_ON_PREAMBLE 0x9f
-#define OPCODE_SET_LORA_SYMBOL_TIMEOUT 0xa0
-#define OPCODE_GET_STATUS 0xC0
-#define OPCODE_SET_FS 0xc1
-#define OPCODE_SET_CAD 0xc5
-#define OPCODE_SET_TX_CARRIER 0xd1
-#define OPCODE_SET_TX_PREAMBLE 0xd2
 
 /* Regiser Name       Address*/
 #define SYNC_WORD_0 0x06C0
@@ -258,6 +216,9 @@ typedef struct xSx1262_t {
     int8_t rssi_inst;
     bool tx_done;
     bool debug;
+    bool show_bin;
+    bool show_ascii;
+    bool is_packet;
     uint32_t rx_done_cnt;
     uint32_t tx_done_cnt;
     ChipMode_t chip_mode;

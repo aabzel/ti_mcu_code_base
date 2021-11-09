@@ -93,7 +93,6 @@ extern "C" {
 #define SX1262_COMMANDS
 #endif
 
-
 #ifdef HAS_PARAM
 #include "param_commands.h"
 #else
@@ -112,8 +111,6 @@ extern "C" {
 #define TRNG_COMMANDS
 #endif
 
-
-
 #ifdef HAS_TBFP
 #include "tbfp_commands.h"
 #else
@@ -125,9 +122,6 @@ extern "C" {
 #else
 #define TELEMATIC_COMMANDS
 #endif
-
-
-
 
 #ifdef HAS_RTCM3
 #include "rtcm3_commands.h"

@@ -1,0 +1,15 @@
+#ifndef SRC_LORA_WRITER_H
+#define SRC_LORA_WRITER_H
+
+#include <stdbool.h>
+
+#include "writer_generic.h"
+
+#define LORA_TX_ARRAY_SIZE 255U
+
+extern generic_writer_t dbg_lora_o;
+#define DBG_LORA_STREAM (&dbg_lora_o.s)
+
+bool lora_writer_transmit(struct generic_writer_s* s);
+
+#endif /* SRC_LORA_WRITER_H */

@@ -13,6 +13,7 @@
 #include "param_types.h"
 #include "str_utils.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool cmd_param_diag(int32_t argc, char* argv[]) {
     bool res = false;
@@ -44,7 +45,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
             uint16_t i = 0, num = 1;
             static const table_col_t cols[] = {{5, "No"},  {5, "id"},   {14, "name"},
                                                {5, "len"}, {12, "val"}, {17, "name"}};
-            table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+            table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
             char temp_str[120] = "";
             for(i = 0; i < PARAM_CNT; i++) {
                 strcpy(temp_str, TSEP);
@@ -73,7 +74,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                     num++;
                 }
             }
-            table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+            table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         }
     } else {
         LOG_ERROR(PARAM, "Usage: pg");

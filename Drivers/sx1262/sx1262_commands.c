@@ -18,6 +18,7 @@
 #include "sx1262_diag.h"
 #include "sx1262_drv.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool sx1262_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -27,7 +28,25 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
             LOG_ERROR(LORA, "Unable to extract debug %s", argv[0]);
         }
     }
-    if(0 <= argc) {
+    if(2 <= argc) {
+        res = try_str2bool(argv[1], &Sx1262Instance.show_bin);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract show_bin %s", argv[1]);
+        }
+    }
+    if(3 <= argc) {
+        res = try_str2bool(argv[2], &Sx1262Instance.show_ascii);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract show_ascii %s", argv[2]);
+        }
+    }
+    if(4 <= argc) {
+        res = try_str2bool(argv[3], &Sx1262Instance.is_packet);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract is_packet %s", argv[3]);
+        }
+    }
+    if((0 <= argc) && (argc<=4)) {
         res = true;
         LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
         LOG_INFO(LORA, "packet type: %s", pack_type2str(Sx1262Instance.packet_type));
@@ -41,6 +60,9 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("RssiPkt: %u" CRLF, Sx1262Instance.rssi_pkt);
         io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
         io_printf("debug: %u" CRLF, Sx1262Instance.debug);
+        io_printf("showBin: %u" CRLF, Sx1262Instance.show_bin);
+        io_printf("showAscii: %u" CRLF, Sx1262Instance.show_ascii);
+        io_printf("isPacket: %u" CRLF, Sx1262Instance.is_packet);
         io_printf("RssiAvg: %u" CRLF, Sx1262Instance.rssi_avg);
         io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
         io_printf("status: %u" CRLF, Sx1262Instance.status);
@@ -63,7 +85,11 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         //  res = print_int_diag(&Sx1262Instance.irq_cnt);
         // printf_pack_stat(&Sx1262Instance.gfsk, "GFSK");
     } else {
-        LOG_ERROR(LORA, "Usage: sxd");
+        res = false;
+    }
+
+    if(false==res){
+        LOG_ERROR(LORA, "Usage: sxd debug bin hex");
     }
     return res;
 }
@@ -93,6 +119,7 @@ bool sx1262_int_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
+        io_printf("IntCnt: %u"CRLF,Sx1262Instance.int_cnt);
         res = print_int_diag(&Sx1262Instance.irq_cnt);
         if(false == res) {
             LOG_INFO(LORA, "lack IRQ");
@@ -293,7 +320,7 @@ bool sx1262_send_opcode_command(int32_t argc, char* argv[]) {
         if(true == res) {
             res = sx1262_send_opcode(op_code, tx_array, tx_array_len, rx_array, rx_array_len);
             if(res) {
-                print_mem(rx_array, rx_array_len, true, true, true);
+                print_mem(rx_array, rx_array_len, true, true, true, true);
                 LOG_INFO(LORA, "OK");
             } else {
                 LOG_ERROR(LORA, "Error");
@@ -313,7 +340,7 @@ static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
     uint8_t i = 0, cnt = 0, num = 0;
     uint8_t reg_val = 0xFF;
     const table_col_t cols[] = {{5, "num"}, {8, "addr"}, {6, "Val"}, {12, "Val"}, {23, "name"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     char temp_str[120];
     for(i = 0; i < SX1262_REG_CNT; i++) {
         res = sx1262_read_reg(RegMap[i].addr, &reg_val);
@@ -332,7 +359,7 @@ static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
             num++;
         }
     }
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     if(SX1262_REG_CNT == cnt) {
         res = true;
     }
@@ -384,7 +411,7 @@ bool sx1262_tx_command(int32_t argc, char* argv[]) {
         res = true;
         res = try_str2uint32(argv[1], &timeout_s);
         if(false == res) {
-            LOG_ERROR(LORA, "Unable to extract offset %s", argv[1]);
+            LOG_ERROR(LORA, "Unable to extract timeout %s", argv[1]);
         }
     }
 
@@ -394,7 +421,7 @@ bool sx1262_tx_command(int32_t argc, char* argv[]) {
     }
     if(true == res) {
         LOG_INFO(LORA, "LoRa tx");
-        print_mem(tx_array, tx_array_len, true, true, true);
+        print_mem(tx_array, tx_array_len, true, true, true, true);
         res = sx1262_start_tx(tx_array, tx_array_len, timeout_s);
         if(res) {
             LOG_INFO(LORA, "TX OK");
@@ -474,7 +501,7 @@ bool sx1262_read_fifo_command(int32_t argc, char* argv[]) {
     if(res) {
         res = sx1262_read_buffer(offset, rx_array, payload_len);
         if(res) {
-            print_mem(rx_array, payload_len, true, true, true);
+            print_mem(rx_array, payload_len, true, true, true, true);
             LOG_INFO(LORA, "read buff OK");
         } else {
             LOG_ERROR(LORA, "read buff Error");
@@ -630,7 +657,7 @@ bool sx1262_read_rx_payload_command(int32_t argc, char* argv[]) {
         res = sx1262_get_rx_payload(rx_payload, &rx_size, sizeof(rx_payload));
         if(res) {
             LOG_INFO(LORA, "load %u byte", rx_size);
-            print_mem(rx_payload, rx_size, true, true, true);
+            print_mem(rx_payload, rx_size, true, true, true, true);
         } else {
             LOG_ERROR(LORA, "Error");
         }

@@ -5,9 +5,7 @@
 
 #define TASKS               \
   TASKS_BASE                \
-  TASK(LORA)                \
-  TASK(NMEA)                \
-  TASK(UBX)                 \
-  TASK(ZED_F9P)
+  TASK(TCAN4550)
+
 
 #endif /* TASK_CONFIG_H */

@@ -41,7 +41,7 @@ bool tcan4550_fifo_diag_command(int32_t argc, char* argv[]){
                                                {5, "Full"},
                                                {5, "lost"}
                                                };
-            table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+            table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         if(res){
             io_printf(TSEP);
             io_printf("  0  " TSEP);
@@ -60,7 +60,7 @@ bool tcan4550_fifo_diag_command(int32_t argc, char* argv[]){
             io_printf(" %2u  " TSEP, fifo1.rf1l);
             io_printf(CRLF);
         }
-            table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+            table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     }
 
     return res;
@@ -245,7 +245,7 @@ static bool tcan4550_reg_map_diag(char* key_word1, char* key_word2){
                                        {8, "addr"},
                                        {12, "value,hex"},
                                        {41, "reg value,bin"}};
-    table_header(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     uint16_t num = 0,i=0;
     char temp_str[200];
     for(i=0;i<reg_cnt;i++){
@@ -265,7 +265,7 @@ static bool tcan4550_reg_map_diag(char* key_word1, char* key_word2){
         }
     }
 
-    table_row_bottom(&dbg_o.s, cols, ARRAY_SIZE(cols));
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
 }
 

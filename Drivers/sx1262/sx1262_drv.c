@@ -434,7 +434,7 @@ bool sx1262_set_packet_params(PacketParam_t* packParam) {
 */
 bool sx1262_reset_stats(void) {
     bool res = false;
-    uint8_t tx_array[6];
+    uint8_t tx_array[6]={0};
     memset(tx_array, 0x00, sizeof(tx_array));
     res = sx1262_send_opcode(OPCODE_RESET_STATS, tx_array, sizeof(tx_array), NULL, 0);
     return res;
@@ -888,8 +888,26 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     return res;
 }
 
+static bool sx1262_set_tx_len(uint8_t payload_length) {
+    bool res = false;
+    Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
+    Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
+    Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
+    Sx1262Instance.packet_param.proto.lora.payload_length = payload_length;
+    Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
+    Sx1262Instance.packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
+
+    res = sx1262_set_packet_params(&Sx1262Instance.packet_param) ;
+    return res;
+}
+
 bool sx1262_init(void) {
     bool res = true;
+#ifdef HAS_DEBUG
+    set_log_level(LORA, LOG_LEVEL_DEBUG);
+#else
+    set_log_level(LORA, LOG_LEVEL_INFO);
+#endif
     LOG_INFO(LORA, "Init SX1262");
     static uint8_t call_cnt = 0;
     if(0 == call_cnt) {
@@ -898,6 +916,8 @@ bool sx1262_init(void) {
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
     Sx1262Instance.debug = true;
+    Sx1262Instance.show_bin = false;
+    Sx1262Instance.show_ascii = true;
     res = sx1262_load_params(&Sx1262Instance) && res;
     GPIO_writeDio(DIO_SX1262_SS, 1);
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);
@@ -924,13 +944,7 @@ bool sx1262_init(void) {
 
         res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
 
-        Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
-        Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
-        Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
-        Sx1262Instance.packet_param.proto.lora.payload_length = 255;
-        Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
-        Sx1262Instance.packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
-        res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
+        res = sx1262_set_tx_len(255) && res;
 
         res = sx1262_conf_tx() && res;
         res = sx1262_conf_rx() && res;
@@ -962,8 +976,10 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
     bool res = true;
     if((NULL != tx_buf) && (0 < tx_buf_len) && (tx_buf_len <= TX_SIZE)) {
         /* res = sx1262_clear_fifo() && res;*/
+        //sx1262_set_tx_len(tx_buf_len); /*Error*/
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
+        LOG_DEBUG(LORA,"TxLen: %u", tx_buf_len);
     } else {
         res = false;
     }
@@ -1301,9 +1317,11 @@ static inline bool sx1262_poll_status(void) {
             if(res) {
                 if(Sx1262Instance.debug) {
                     LOG_INFO(LORA, "rx %u byte", rx_size);
-                    res = print_mem(rx_payload, rx_size, true, true, true);
+                    res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true, Sx1262Instance.is_packet);
                 }
+#ifdef HAS_LORA
                 res = lora_proc_payload(rx_payload, rx_size);
+#endif /*HAS_LORA*/
             }
         } break;
         case COM_STAT_COM_TIMEOUT:
@@ -1452,7 +1470,6 @@ bool sx1262_process(void) {
 
     res = sx1262_is_connected();
     if(res) {
-
         if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
             Sx1262Instance.busy_cnt = 0;
             res = sx1262_init();
@@ -1469,6 +1486,8 @@ bool sx1262_process(void) {
                     res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
                     if(res) {
                         LoRaInterface.tx_ok_cnt++;
+                    }else{
+                        LoRaInterface.err_cnt++;
                     }
                 }
                 if(txNode.pArr) {
