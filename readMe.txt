@@ -20,4 +20,4 @@ Links
 https://blog.radiotech.kz/radio/launchxl-cc26x2r1-podgotovka-rabochego-okruzheniya-v-linux/
 https://e2e.ti.com/support/wireless-connectivity/sub-1-ghz-group/sub-1-ghz/f/sub-1-ghz-forum/734222/launchxl-cc1312r1-adding-second-uart
 http://microsin.net/adminstuff/others/u-blox-7-ubx-protocol-part-3.html
-
+https://dev.to/gamegods3/how-to-install-gcc-in-windows-10-the-easier-way-422j

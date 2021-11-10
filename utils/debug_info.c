@@ -28,6 +28,7 @@
 #endif
 
 #ifdef X86_64
+#include <stdio.h>
 #define io_printf printf
 #endif
 

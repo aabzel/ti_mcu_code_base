@@ -1,7 +1,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <windows.h>
+//#include <unistd.h>
 
 #include "boot_driver.h"
 #include "byte_utils.h"

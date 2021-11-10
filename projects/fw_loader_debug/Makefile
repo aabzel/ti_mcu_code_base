@@ -12,7 +12,7 @@ SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
 OBJDIR := $(SRC_PATH)obj
 # the compiler to use
 #CC = clang
-CC = gcc
+CC = C:\MinGW\bin\gcc.exe
 
 # compiler flags:
 #  -g    adds debugging information to the executable file
