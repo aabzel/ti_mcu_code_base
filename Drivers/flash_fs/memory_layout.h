@@ -6,7 +6,7 @@
 
 #define FLASH_FS_PAGE_SIZE  (2*FLASH_SECTOR_SIZE)
 #define NVS_SIZE (2*FLASH_FS_PAGE_SIZE) /*Must be double multiple of FLASH_SECTOR_SIZE*/
-
+#define NVS_SIZE_PAGES (NVS_SIZE/FLASH_SECTOR_SIZE)
 /* We should not touch the last flash memory sector.
  *
  * The last flash memory sector must contain a Customer Configuration section (CCFG)

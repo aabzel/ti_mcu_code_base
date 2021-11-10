@@ -50,3 +50,30 @@ bool array_rand(uint8_t* arr, uint32_t size){
     }
     return res;
 }
+
+#ifdef HAS_LOADER
+bool is_array_equal(uint8_t* array1,
+                    uint8_t* array2,
+                    size_t size,
+                    uint32_t* match,
+                    uint32_t* diff){
+#ifdef X86_64
+    printf("\n%s():", __FUNCTION__);
+#endif
+	bool res = false;
+	if(array1 && array2 && match && diff) {
+     	uint32_t i=0;
+    	for (i=0; i<size; i++) {
+    		if(array1[i]==array2[i]){
+    			*match++;
+    		} else {
+    			*diff++;
+    		}		
+    	}
+    	if(*match==size){
+    		res = true;
+    	}
+	}
+	return res;
+}
+#endif

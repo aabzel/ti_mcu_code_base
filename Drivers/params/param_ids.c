@@ -29,15 +29,15 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
     {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
     {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
-    {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},        /*1-stay in boot 0-launch App*/
-    {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},        /*num*/
-    {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"}, /*Flash Addr*/
-    {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},    /*Flash Addr*/
-    {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},  /*loRa output power*/
-    {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},          /*Power Source*/
-    {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},       /*Time Zone*/
-    {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"},    /*Max Link Distance*/
-    {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},       /*Max LoRa bit/rate*/
+    {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},                /*1-stay in boot 0-launch App*/
+    {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},                /*num*/
+    {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},         /*Flash Addr*/
+    {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},            /*Flash Addr*/
+    {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},          /*loRa output power*/
+    {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
+    {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
+    {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
+    {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},    /*Max LoRa bit/rate*/
 
 };
 

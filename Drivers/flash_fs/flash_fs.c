@@ -132,10 +132,16 @@ uint32_t mm_cnt_files(uint32_t start_page_addr, uint32_t page_len, uint32_t* spa
         }
         item = (mmItem_t*)cur_offset;
 
-        if(item->id == (MASK_16BIT ^ item->nid)) {
-            res = true;
-        } else {
+        if(NULL==item){
             res = false;
+        }
+
+        if(res){
+            if(item->id == (MASK_16BIT ^ item->nid)) {
+                res = true;
+            } else {
+                res = false;
+            }
         }
 
         if(res) {

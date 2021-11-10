@@ -25,7 +25,7 @@ static const uint8_t crc8_lut[256] = {
 
 uint8_t crc8_autosar_calc_continue(uint8_t crc_in, const void* in_buf, uint32_t len) {
     uint8_t crc8 = crc_in ^ CRC8_XOR;
-    if(in_buf != NULL) {
+    if(in_buf) {
         const uint8_t* data = (const uint8_t*)in_buf;
         while(len) {
             crc8 = crc8_lut[crc8 ^ *data];
@@ -39,5 +39,9 @@ uint8_t crc8_autosar_calc_continue(uint8_t crc_in, const void* in_buf, uint32_t 
 }
 
 uint8_t crc8_autosar_calc(const void* in_buf, uint32_t len) {
-    return crc8_autosar_calc_continue(CRC8_AUTOSAR_SEED ^ CRC8_XOR, in_buf, len);
+    uint8_t crc8 = 0;
+    if(in_buf && (0<len)){
+        crc8 = crc8_autosar_calc_continue(CRC8_AUTOSAR_SEED ^ CRC8_XOR, in_buf, len);
+    }
+    return crc8;
 }

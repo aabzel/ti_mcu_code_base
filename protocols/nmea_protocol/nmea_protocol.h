@@ -150,7 +150,7 @@ typedef struct xNmeaData_t {
     // gbs_t GNSS satellite fault detection
     struct tm time_date;
     GnssCoordinate_t coordinate_dd;
-    double height;           /*Altitude above mean sea level*/
+    double height; /*Altitude above mean sea level*/
 } NmeaData_t;
 
 extern NmeaProtocol_t NmeaProto;

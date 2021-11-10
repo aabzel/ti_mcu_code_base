@@ -434,7 +434,7 @@ bool sx1262_set_packet_params(PacketParam_t* packParam) {
 */
 bool sx1262_reset_stats(void) {
     bool res = false;
-    uint8_t tx_array[6]={0};
+    uint8_t tx_array[6] = {0};
     memset(tx_array, 0x00, sizeof(tx_array));
     res = sx1262_send_opcode(OPCODE_RESET_STATS, tx_array, sizeof(tx_array), NULL, 0);
     return res;
@@ -791,9 +791,9 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #ifdef HAS_SX1262_BIT_RATE
     res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&sx1262Instance->tx_max_bit_rate,
                  sizeof(sx1262Instance->tx_max_bit_rate), &file_len);
-    if(res && (4==file_len)){
+    if(res && (4 == file_len)) {
         LOG_INFO(LORA, "load max bit rate %f bit/s", sx1262Instance->tx_max_bit_rate);
-    }else{
+    } else {
         res = false;
     }
 #endif
@@ -897,7 +897,7 @@ static bool sx1262_set_tx_len(uint8_t payload_length) {
     Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
     Sx1262Instance.packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
 
-    res = sx1262_set_packet_params(&Sx1262Instance.packet_param) ;
+    res = sx1262_set_packet_params(&Sx1262Instance.packet_param);
     return res;
 }
 
@@ -976,10 +976,10 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
     bool res = true;
     if((NULL != tx_buf) && (0 < tx_buf_len) && (tx_buf_len <= TX_SIZE)) {
         /* res = sx1262_clear_fifo() && res;*/
-        //sx1262_set_tx_len(tx_buf_len); /*Error*/
+        // sx1262_set_tx_len(tx_buf_len); /*Error*/
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
-        LOG_DEBUG(LORA,"TxLen: %u", tx_buf_len);
+        LOG_DEBUG(LORA, "TxLen: %u", tx_buf_len);
     } else {
         res = false;
     }
@@ -1310,7 +1310,7 @@ static inline bool sx1262_poll_status(void) {
         memset(rx_payload, 0x00, sizeof(rx_payload));
         uint8_t rx_size = 0;
 #ifdef HAS_SX1262_BIT_RATE
-        uint32_t tx_duration_ms = 0 ;
+        uint32_t tx_duration_ms = 0;
 #endif /*HAS_SX1262_BIT_RATE*/
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
@@ -1319,7 +1319,8 @@ static inline bool sx1262_poll_status(void) {
             if(res) {
                 if(Sx1262Instance.debug) {
                     LOG_INFO(LORA, "rx %u byte", rx_size);
-                    res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true, Sx1262Instance.is_packet);
+                    res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true,
+                                    Sx1262Instance.is_packet);
                 }
 #ifdef HAS_LORA
                 res = lora_proc_payload(rx_payload, rx_size);
@@ -1339,16 +1340,16 @@ static inline bool sx1262_poll_status(void) {
             LOG_ERROR(LORA, "Failure to execute command"); /**/
             res = false;
             break;
-        case COM_STAT_COM_TX_DONE:{
+        case COM_STAT_COM_TX_DONE: {
 #ifdef HAS_SX1262_BIT_RATE
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
             tx_duration_ms = Sx1262Instance.tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
             Sx1262Instance.tx_real_bit_rate =
                 (1000.0f * ((float)tx_duration_ms)) / ((float)(Sx1262Instance.tx_last_size * 8));
-            if(Sx1262Instance.tx_max_bit_rate < Sx1262Instance.tx_real_bit_rate){
+            if(Sx1262Instance.tx_max_bit_rate < Sx1262Instance.tx_real_bit_rate) {
                 Sx1262Instance.tx_max_bit_rate = Sx1262Instance.tx_real_bit_rate;
-                res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*) &Sx1262Instance.tx_max_bit_rate, sizeof(float));
-                if(false==res){
+                res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(float));
+                if(false == res) {
                     LOG_ERROR(LORA, "UpdtMaxLoRaBitRateErr");
                 }
                 /*TODO: Save to Flash*/
@@ -1365,7 +1366,7 @@ static inline bool sx1262_poll_status(void) {
             Sx1262Instance.tx_done_cnt++;
             LoRaInterface.tx_done_cnt++;
             res = sx1262_start_rx(0xFFFFFF);
-        }break;
+        } break;
         default:
             res = false;
             break;
@@ -1476,7 +1477,7 @@ bool sx1262_process(void) {
             Sx1262Instance.busy_cnt = 0;
             res = sx1262_init();
         }
-        uint32_t tx_time_diff_ms = 2*DFLT_TX_PAUSE_MS;
+        uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
         uint32_t cur_time_stamp_ms = get_time_ms32();
         tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
 
@@ -1488,7 +1489,7 @@ bool sx1262_process(void) {
                     res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
                     if(res) {
                         LoRaInterface.tx_ok_cnt++;
-                    }else{
+                    } else {
                         LoRaInterface.err_cnt++;
                     }
                 }

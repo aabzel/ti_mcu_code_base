@@ -46,7 +46,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
             LOG_ERROR(LORA, "Unable to extract is_packet %s", argv[3]);
         }
     }
-    if((0 <= argc) && (argc<=4)) {
+    if((0 <= argc) && (argc <= 4)) {
         res = true;
         LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
         LOG_INFO(LORA, "packet type: %s", pack_type2str(Sx1262Instance.packet_type));
@@ -88,7 +88,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         res = false;
     }
 
-    if(false==res){
+    if(false == res) {
         LOG_ERROR(LORA, "Usage: sxd debug bin hex");
     }
     return res;
@@ -119,7 +119,7 @@ bool sx1262_int_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        io_printf("IntCnt: %u"CRLF,Sx1262Instance.int_cnt);
+        io_printf("IntCnt: %u" CRLF, Sx1262Instance.int_cnt);
         res = print_int_diag(&Sx1262Instance.irq_cnt);
         if(false == res) {
             LOG_INFO(LORA, "lack IRQ");

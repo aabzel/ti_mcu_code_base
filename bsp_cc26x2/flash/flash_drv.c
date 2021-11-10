@@ -95,26 +95,30 @@ bool flash_wr(uint32_t flash_addr, uint8_t* wr_array, uint32_t array_len) {
     return res;
 }
 
+bool is_errased(uint32_t addr, uint32_t size) {
+    bool res = false;
+    res = is_arr_pat((uint8_t*)addr, size, 0xFF);
+    return res;
+}
+
 bool flash_erase_sector(uint32_t sector_address) {
     bool res = false;
-    if((0 == (sector_address % FLASH_SECTOR_SIZE)) || (0 == sector_address)) {
-        VIMSModeSet(VIMS_BASE, VIMS_MODE_OFF);
-        VIMSLineBufDisable(VIMS_BASE);
-        uint32_t ret = FlashSectorErase(sector_address);
-        if(FAPI_STATUS_SUCCESS == ret) {
-            res = true;
+    res = is_errased(sector_address, FLASH_SECTOR_SIZE);
+    if(false==res){
+        if((0 == (sector_address % FLASH_SECTOR_SIZE)) || (0 == sector_address)) {
+            VIMSModeSet(VIMS_BASE, VIMS_MODE_OFF);
+            VIMSLineBufDisable(VIMS_BASE);
+            uint32_t ret = FlashSectorErase(sector_address);
+            if(FAPI_STATUS_SUCCESS == ret) {
+                res = true;
+            }
+            // VIMSLineBufEnable(VIMS_BASE);
+            // VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
         }
-        // VIMSLineBufEnable(VIMS_BASE);
-        // VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
     }
     return res;
 }
 
-bool is_errased(uint32_t addr, uint32_t size) {
-    bool res = false;
-    res = is_arr_pat((uint8_t*)addr, size, 0xff);
-    return res;
-}
 
 bool is_flash_addr(uint32_t flash_addr) {
     bool res = false;

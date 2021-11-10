@@ -131,7 +131,7 @@ bool try_alloc_on_stack(int n, uint8_t pat, uint16_t* real_size) {
 
     memset(array, pat, n);
     if(is_arr_pat(array, n, pat)) {
-         res = true;
+        res = true;
     }
 
     return res;

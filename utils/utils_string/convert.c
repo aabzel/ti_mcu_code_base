@@ -1505,8 +1505,6 @@ bool is_dec_str(const char str_to_check[], int32_t str_to_check_len) {
     return is_dec_str_result;
 }
 
-
-
 static bool is_hex_digit(const char character) {
     bool res = false;
     if((('A' <= character) && (character <= 'F')) || (('a' <= character) && (character <= 'f')) ||
@@ -1696,7 +1694,8 @@ bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, 
     return res;
 }
 
-bool try_strl2array(char* in_str_array, uint32_t len_str_in, uint8_t* out_array, uint16_t array_size, uint32_t* out_array_len) {
+bool try_strl2array(char* in_str_array, uint32_t len_str_in, uint8_t* out_array, uint16_t array_size,
+                    uint32_t* out_array_len) {
     bool res = false;
     uint8_t out_shift = 0;
     res = is_hex_str(in_str_array, len_str_in, &out_shift);
@@ -1719,4 +1718,3 @@ bool try_strl2array(char* in_str_array, uint32_t len_str_in, uint8_t* out_array,
 
     return res;
 }
-

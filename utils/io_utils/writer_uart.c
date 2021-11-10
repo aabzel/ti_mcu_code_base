@@ -8,8 +8,6 @@
 
 #define MAX_UART_BLOCK 100U
 
-
-
 static char dbg_o_data[UART_TX_ARRAY_SIZE];
 generic_writer_t dbg_o = {
     .s = {writer_putc, writer_puts},
@@ -17,16 +15,11 @@ generic_writer_t dbg_o = {
     .lost_char_count = 0,
     .total_char_count = 0,
     .error_count = 0,
-    .fifo = {.fifoState={.size=sizeof(dbg_o_data),
-                         .start=0,
-                         .end=0,
-                         .count=0,
-                         .errors=0},
-             .array=dbg_o_data,
-             .initDone=true},
+    .fifo = {.fifoState = {.size = sizeof(dbg_o_data), .start = 0, .end = 0, .count = 0, .errors = 0},
+             .array = dbg_o_data,
+             .initDone = true},
     .f_transmit = uart_writer_transmit,
 };
-
 
 bool uart_writer_transmit(struct generic_writer_s* writer) {
     bool res = false;

@@ -10,7 +10,6 @@
 NmeaProtocol_t NmeaProto;
 NmeaData_t NmeaData;
 
-
 bool nmea_init(void) {
     memset(&NmeaData, 0x00, sizeof(NmeaData));
     memset(&NmeaProto, 0x00, sizeof(NmeaProto));
@@ -458,15 +457,15 @@ bool nmea_proc_byte(uint8_t rx_byte) {
 
 bool nmea_proc(void) {
     bool res = false;
-    static uint32_t prev_rmc_cnt = 0 ;
-    static uint32_t prev_gga_cnt = 0 ;
+    static uint32_t prev_rmc_cnt = 0;
+    static uint32_t prev_gga_cnt = 0;
 
-    if(prev_rmc_cnt <NmeaData.rmc.cnt) {
+    if(prev_rmc_cnt < NmeaData.rmc.cnt) {
         NmeaData.coordinate_dd = encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
         res = true;
     }
 
-    if(prev_gga_cnt <NmeaData.gga.cnt) {
+    if(prev_gga_cnt < NmeaData.gga.cnt) {
         NmeaData.coordinate_dd = encode_gnss_coordinates(NmeaData.gga.coordinate_ddmm);
         res = true;
     }

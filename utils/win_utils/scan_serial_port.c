@@ -43,25 +43,30 @@ static bool com_set_timeout(HANDLE hComm) {
     return res;
 }
 
-bool com_send_str(HANDLE hComm, char* txBuffer, uint32_t txBuffLen) {
+bool com_send_str(HANDLE hComm, char* txBuffer, uint32_t tx_buff_len) {
 #ifdef HAS_COM_PORT_DEBUG
     printf("%s() send [%s]", __FUNCTION__, txBuffer);
 #endif
     bool res = false;
     BOOL status;
     DWORD dNoOfBytesWritten = 0;
-    status = WriteFile(hComm, txBuffer, (DWORD)txBuffLen, &dNoOfBytesWritten, NULL);
-    if(dNoOfBytesWritten == txBuffLen) {
+    status = WriteFile(hComm, txBuffer, (DWORD)tx_buff_len, &dNoOfBytesWritten, NULL);
+    if(dNoOfBytesWritten == tx_buff_len) {
         if(status) {
             res = true;
         }
     }
-
+#ifdef HAS_COM_PORT_DEBUG
+    printf("%s() end", __FUNCTION__);
+#endif
     return res;
 }
 
 static bool com_receive_remain(HANDLE hComm, uint32_t* outRealRxArrayLen) {
     bool res = false;
+#ifdef HAS_COM_PORT_DEBUG
+    printf("%s():", __FUNCTION__);
+#endif
     if(NULL != outRealRxArrayLen) {
         *outRealRxArrayLen = 0;
         char tempChar;
@@ -94,19 +99,26 @@ static bool com_receive_remain(HANDLE hComm, uint32_t* outRealRxArrayLen) {
 
 bool com_receive_str(HANDLE hComm, char* outRxArray, uint32_t capasityRxArray, uint32_t* outRealRxArrayLen) {
     bool res = false;
+#ifdef HAS_COM_PORT_DEBUG
+    printf("%s():", __FUNCTION__);
+#endif
     if((0 < capasityRxArray) && (NULL != outRxArray)) {
         *outRealRxArrayLen = 0;
         char tempChar;
         DWORD numberBytesRead;
         uint32_t BytesReadCnt = 0;
         bool loopRun = true;
+        uint32_t  ret= 0;
         while(loopRun) {
-            ReadFile(hComm,            // Handle of the Serial port
+            ret = ReadFile(hComm,            // Handle of the Serial port
                      &tempChar,        // Temporary character
                      sizeof(tempChar), // Size of TempChar
                      &numberBytesRead, // Number of bytes read
                      NULL);
-#if DEDUG_RX_CHAR
+            if(0==ret){
+                loopRun = false;
+            }
+#ifdef DEDUG_RX_CHAR
             printf("%c", tempChar);
 #endif
             if(0 < numberBytesRead) {
@@ -123,6 +135,9 @@ bool com_receive_str(HANDLE hComm, char* outRxArray, uint32_t capasityRxArray, u
             res = true;
         }
     }
+#ifdef HAS_COM_PORT_DEBUG
+    printf("%s(): end", __FUNCTION__);
+#endif
     return res;
 }
 

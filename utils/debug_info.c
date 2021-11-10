@@ -18,13 +18,13 @@
 #endif
 #include "boot_cfg.h"
 #include "device_id.h"
-#include "sys_config.h"
 #include "oprintf.h"
+#include "sys_config.h"
 #include "table_utils.h"
-#include "version.h"
 #include "uart_drv.h"
-#include "writer_generic.h"
+#include "version.h"
 #include "writer_config.h"
+#include "writer_generic.h"
 #endif
 
 #ifdef X86_64
@@ -67,21 +67,21 @@ bool is_little_endian(void) {
 #ifdef HAS_MCU
 static bool print_fw_type(void) {
     bool res = false;
-    io_printf( "config: %s " CRLF, CONFIG_NAME);
+    io_printf("config: %s " CRLF, CONFIG_NAME);
 #ifdef HAS_BOOTLOADER
-    io_printf(  "Bootloader ");
+    io_printf("Bootloader ");
 #endif /*HAS_BOOTLOADER*/
 
 #ifdef HAS_GENERIC
-    io_printf(  "Generic ");
+    io_printf("Generic ");
 #endif /*HAS_GENERIC*/
 
 #ifdef HAS_RELEASE
-    io_printf(  "Release" CRLF);
+    io_printf("Release" CRLF);
 #endif /*HAS_RELEASE*/
 
 #ifdef HAS_DEBUG
-    io_printf(  "Debug" CRLF);
+    io_printf("Debug" CRLF);
 #endif /*HAS_DEBUG*/
     res = true;
     return res;
@@ -93,29 +93,29 @@ bool print_version(void) {
     bool res = true;
     print_fw_type();
     uint32_t all_flash_crc = 0;
-    io_printf( "Date: %s" CRLF, __DATE__);
-    io_printf( "Time: %s" CRLF, __TIME__);
-    io_printf( "TimeStamp: %s" CRLF, __TIMESTAMP__);
-    io_printf( "Cstd: %u" CRLF, __STDC__);
-    io_printf( "StdCver: %u" CRLF, __STDC_VERSION__);
-    io_printf( "board: %s" CRLF, BOARD_NAME);
-    io_printf( "MCU: %s" CRLF, MCU_NAME);
+    io_printf("Date: %s" CRLF, __DATE__);
+    io_printf("Time: %s" CRLF, __TIME__);
+    io_printf("TimeStamp: %s" CRLF, __TIMESTAMP__);
+    io_printf("Cstd: %u" CRLF, __STDC__);
+    io_printf("StdCver: %u" CRLF, __STDC_VERSION__);
+    io_printf("board: %s" CRLF, BOARD_NAME);
+    io_printf("MCU: %s" CRLF, MCU_NAME);
 #ifndef USE_HAL_DRIVER
     uint32_t cpi_id = cpu_get_id();
 #endif /*USE_HAL_DRIVER*/
-    io_printf( "branch: %s" CRLF, GIT_BRANCH);
-    io_printf( "lastCommit: %s" CRLF, GIT_LAST_COMMIT_HASH);
+    io_printf("branch: %s" CRLF, GIT_BRANCH);
+    io_printf("lastCommit: %s" CRLF, GIT_LAST_COMMIT_HASH);
 #ifdef HAS_FLASH
     all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
 #endif /*HAS_FLASH*/
-    io_printf( "FlashCRC32: 0x%08X" CRLF, all_flash_crc);
-    io_printf( "main(): 0x%08p" CRLF, main);
+    io_printf("FlashCRC32: 0x%08X" CRLF, all_flash_crc);
+    io_printf("main(): 0x%08p" CRLF, main);
 #ifdef __TI_COMPILER_VERSION__
-    io_printf( "TIcompilerVer %u" CRLF, __TI_COMPILER_VERSION__);
+    io_printf("TIcompilerVer %u" CRLF, __TI_COMPILER_VERSION__);
 #endif
 
 #ifdef __GNUC__
-    io_printf( "GCC" CRLF);
+    io_printf("GCC" CRLF);
 #endif /**/
 
 #ifndef USE_HAL_DRIVER
@@ -182,7 +182,7 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
     uint16_t i = 0;
     bool res = false;
     res = print_indent(indent);
-   // io_printf(ASCII_SEP);
+    // io_printf(ASCII_SEP);
     for(i = 0; i < size; i++) {
 #ifdef HAS_REPLACE_FORMATTER_CHARACTERS
         if(0x08 == buff[i]) {
@@ -200,22 +200,21 @@ bool print_ascii_line(char* buff, uint16_t size, uint16_t indent) {
         io_printf("%c", buff[i]);
 #endif
     }
-    //io_printf(ASCII_SEP);
+    // io_printf(ASCII_SEP);
     return res;
 }
 
-bool print_indent(uint16_t indent){
+bool print_indent(uint16_t indent) {
     bool res = false;
     uint16_t i = 0;
-    if ((0 < indent) && (indent < 80)) {
+    if((0 < indent) && (indent < 80)) {
         res = true;
-        for(i=0;i<indent;i++){
+        for(i = 0; i < indent; i++) {
             io_printf(" ");
         }
     }
     return res;
 }
-
 
 bool print_bin(uint8_t* buff, uint32_t size, uint16_t indent) {
     uint32_t i = 0;
@@ -227,7 +226,8 @@ bool print_bin(uint8_t* buff, uint32_t size, uint16_t indent) {
     return res;
 }
 
-bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new_line, bool is_packed) {
+bool print_mem(uint8_t* addr, uint32_t len, bool is_bin,
+               bool is_ascii, bool new_line, bool is_packed) {
     bool res = false;
     uint32_t pos = 0;
     uint32_t print_len = 0;
@@ -242,7 +242,7 @@ bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new
                 print_ascii_line((char*)&addr[pos], 16, 4);
             }
             print_len += 16;
-            if(is_packed){
+            if(is_packed) {
                 io_printf(CRLF);
             }
         }

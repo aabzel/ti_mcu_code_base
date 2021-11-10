@@ -11,7 +11,6 @@ extern "C" {
 #define F_EPSILON 1E-10f
 #define D_EPSILON 1E-10
 
-
 #define CALC_PRECENT(numerator, denominator) (100.0f * ((float)numerator / (float)denominator))
 
 /*on STM32 float values distorted when passed by value*/

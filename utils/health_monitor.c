@@ -27,7 +27,7 @@ bool health_monotor_proc(void) {
         LOG_ERROR(HMOM, "vKl30 %f too low", vKl30);
         res = false;
     } else {
-        if(vKl30 < KL30_UNDERVOL_WARNING_THRESHOLD_V){
+        if(vKl30 < KL30_UNDERVOL_WARNING_THRESHOLD_V) {
             LOG_WARNING(HMOM, "vKl30 %f low", vKl30);
         }
         res = true;

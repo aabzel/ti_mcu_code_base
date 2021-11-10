@@ -162,13 +162,13 @@ bool cmd_param_set(int32_t argc, char* argv[]) {
                 break;
             case FLOAT:
                 res = try_str2float(argv[1], (float*)wrData);
-                if(res){
+                if(res) {
                     write_len = 4;
                 }
                 break;
             case DOUBLE:
                 res = try_str2double(argv[1], (double*)wrData);
-                if(res){
+                if(res) {
                     write_len = 8;
                 }
                 break;

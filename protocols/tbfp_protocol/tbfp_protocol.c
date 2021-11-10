@@ -19,7 +19,6 @@
 #include "flash_fs.h"
 #endif
 
-
 #ifdef HAS_PARAM
 #include "param_ids.h"
 #endif
@@ -93,7 +92,7 @@ bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_
     return res;
 }
 
-static bool tbfp_send_text(uint8_t payload_id,uint8_t* tx_array, uint32_t len ){
+static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len) {
     bool res = false;
     if(tx_array && (0 < len)) {
         uint8_t frame[256] = "";
@@ -113,13 +112,13 @@ static bool tbfp_send_text(uint8_t payload_id,uint8_t* tx_array, uint32_t len ){
 
 bool tbfp_send_chat(uint8_t* tx_array, uint32_t len) {
     bool res = false;
-    res = tbfp_send_text(FRAME_ID_CHAT,tx_array,len);
+    res = tbfp_send_text(FRAME_ID_CHAT, tx_array, len);
     return res;
 }
 
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len) {
     bool res = false;
-    res = tbfp_send_text(FRAME_ID_CMD,tx_array,len);
+    res = tbfp_send_text(FRAME_ID_CMD, tx_array, len);
     return res;
 }
 
@@ -130,7 +129,7 @@ bool tbfp_send_ping(uint8_t frame_id) {
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
     pingFrame.mac = get_ble_mac();
-    memset(&pingFrame.coordinate,0xFF,sizeof(GnssCoordinate_t));
+    memset(&pingFrame.coordinate, 0xFF, sizeof(GnssCoordinate_t));
 #ifdef HAS_ZED_F9P
     pingFrame.time_stamp = mktime(&ZedF9P.time_date);
     pingFrame.coordinate = ZedF9P.coordinate_cur;
@@ -153,12 +152,12 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len) {
         if(FRAME_ID_PING == pingFrame.id) {
             res = tbfp_send_ping(FRAME_ID_PONG);
         }
-        double cur_dist  = 0;
+        double cur_dist = 0;
 #ifdef HAS_ZED_F9P
         if(is_valid_gnss_coordinates(pingFrame.coordinate)) {
             cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
             LOG_INFO(LORA, "link distance %f m", cur_dist);
-        }else {
+        } else {
             LOG_ERROR(LORA, "InvalidGNSSCoordinate");
         }
 #endif /*HAS_ZED_F9P*/
@@ -166,8 +165,8 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len) {
 #ifdef HAS_LORA
         if(LoRaInterface.max_distance < cur_dist) {
 #if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
-            res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*) &cur_dist, sizeof(double));
-            if(false==res){
+            res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&cur_dist, sizeof(double));
+            if(false == res) {
                 LOG_ERROR(LORA, "UpdateMaxDist");
             }
 #endif /*HAS_PARAM && HAS_FLASH_FS*/
@@ -188,10 +187,9 @@ static bool tbfp_proc_chat(uint8_t* payload, uint16_t len) {
     return res;
 }
 
-
-static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len){
+static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len) {
     bool res = false;
-    if((NULL != payload) && (0 < len) && (FRAME_ID_CMD==payload[0])) {
+    if((NULL != payload) && (0 < len) && (FRAME_ID_CMD == payload[0])) {
         res = false;
 #ifdef HAS_CLI
         curWriterPtr = &dbg_lora_o;

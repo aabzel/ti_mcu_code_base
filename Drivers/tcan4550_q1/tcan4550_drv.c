@@ -1122,7 +1122,7 @@ static bool tcan4550_poll_can_interrupts(void) {
                                                    dataPayload); // This will read the next element in the RX FIFO 0
             if(num_bytes) {
                 LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
-                print_mem(dataPayload, num_bytes, true, true, true,true);
+                print_mem(dataPayload, num_bytes, true, true, true, true);
                 res = true;
             }
         }
@@ -1342,7 +1342,7 @@ bool tcan4550_proc(void) {
                                                        dataPayload); // This will read the next element in the RX FIFO 0
                 if(num_bytes) {
                     LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
-                    print_mem(dataPayload, num_bytes, true, true, true,true);
+                    print_mem(dataPayload, num_bytes, true, true, true, true);
                     res = true;
                 }
             }

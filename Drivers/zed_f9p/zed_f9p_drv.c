@@ -29,7 +29,7 @@ extern ZedF9P_t ZedF9P = {0};
 bool zed_f9p_init(void) {
     bool res = true;
 
-    res= set_log_level(ZED_F9P, LOG_LEVEL_INFO);
+    res = set_log_level(ZED_F9P, LOG_LEVEL_INFO);
     ZedF9P.time_zone = 0;
 #if defined(HAS_FLASH_FS) && defined(HAS_PARAM)
     uint16_t file_len = 0;
@@ -58,8 +58,8 @@ bool zed_f9p_proc(void) {
     static bool first_gnss = true;
     static bool first_time = true;
     res = is_valid_time_date(&NavInfo.date_time);
-    if(res){
-        if(first_time){
+    if(res) {
+        if(first_time) {
             LOG_INFO(ZED_F9P, "Init time");
             print_time_date(&NavInfo.date_time);
             first_time = false;
@@ -70,31 +70,30 @@ bool zed_f9p_proc(void) {
     }
 
     res = is_valid_gnss_coordinates(NavInfo.coordinate);
-    if (res) {
-      if(first_gnss){
-          LOG_INFO(ZED_F9P, "Init GNSS");
-          print_coordinate(NavInfo.coordinate);
-          first_gnss = false;
-      }
-      ZedF9P.coordinate_cur = NavInfo.coordinate;
+    if(res) {
+        if(first_gnss) {
+            LOG_INFO(ZED_F9P, "Init GNSS");
+            print_coordinate(NavInfo.coordinate);
+            first_gnss = false;
+        }
+        ZedF9P.coordinate_cur = NavInfo.coordinate;
     } else {
         LOG_ERROR(ZED_F9P, "Invalid Ubx GNSS coordinate");
     }
 
     res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
-    if(res){
+    if(res) {
         ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
-    }else{
+    } else {
         LOG_ERROR(ZED_F9P, "Invalid GNSS cur coordinate");
     }
 
     res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
-    if (res) {
+    if(res) {
         ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
     } else {
         LOG_ERROR(ZED_F9P, "Invalid GNSS Nmea coordinate");
     }
-
 
     return res;
 }

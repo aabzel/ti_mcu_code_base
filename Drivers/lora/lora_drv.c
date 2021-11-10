@@ -13,12 +13,12 @@
 #include "tbfp_protocol.h"
 #endif
 #include "core_driver.h"
-#include "flash_fs.h"
 #include "data_utils.h"
-#include "param_ids.h"
 #include "fifo_array.h"
+#include "flash_fs.h"
 #include "log.h"
 #include "none_blocking_pause.h"
+#include "param_ids.h"
 #ifdef HAS_RTCM3
 #include "rtcm3_protocol.h"
 #endif
@@ -28,7 +28,7 @@
 #endif
 
 static Array_t ArrLoRaTxNode[LORA_TX_QUEUE_SIZE];
-LoRaIf_t LoRaInterface={0};
+LoRaIf_t LoRaInterface = {0};
 
 #ifdef HAS_RTCM3
 bool rtcm3_lora_rx_proc(uint8_t* const payload, uint32_t size) {
@@ -63,11 +63,11 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
 bool lora_init(void) {
     bool res = false;
     uint16_t value_len = 0;
-    res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*) &LoRaInterface.max_distance, 8, &value_len);
-    if(false==res){
-        LoRaInterface.max_distance =0.0;
-        res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*) &LoRaInterface.max_distance, sizeof(double));
-        if(false==res){
+    res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance, 8, &value_len);
+    if(false == res) {
+        LoRaInterface.max_distance = 0.0;
+        res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance, sizeof(double));
+        if(false == res) {
             LOG_ERROR(PARAM, "SetDfltMaxLinkDistError");
         }
     }

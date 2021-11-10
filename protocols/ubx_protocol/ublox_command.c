@@ -12,8 +12,8 @@
 #include "table_utils.h"
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
-#include "writer_generic.h"
 #include "writer_config.h"
+#include "writer_generic.h"
 
 static bool ubx_diag(void) {
 

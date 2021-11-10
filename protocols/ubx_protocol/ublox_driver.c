@@ -45,7 +45,7 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
     memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
     if(true == res) {
         res = uart_send(1, tx_array, tx_array_len, true);
-        if (res) {
+        if(res) {
             UbloxPorotocol.tx_pkt_cnt++;
         }
     }
@@ -306,7 +306,7 @@ bool ubx_proc(void) {
     uint32_t time_diff = 0;
     time_diff = cur_time - UbloxPorotocol.rx_time_stamp;
     if(UBX_RX_TIME_OUT_MS < time_diff) {
-        LOG_ERROR(UBX, "UBX proto link lost %f s",MS_2_S(time_diff));
+        LOG_ERROR(UBX, "UBX proto link lost %f s", MS_2_S(time_diff));
         res = false;
     }
     return res;

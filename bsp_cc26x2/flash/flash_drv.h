@@ -14,8 +14,9 @@
 /*Hardware related code start*/
 #define NOR_FLASH_BASE 0x00000000
 #define NOR_FLASH_SIZE (352 * K_BYTES)
-#define NOR_FLASH_END (NOR_FLASH_BASE + NOR_FLASH_SIZE)
 #define FLASH_SECTOR_SIZE (8 * K_BYTES)
+#define NOR_FLASH_END (NOR_FLASH_BASE + NOR_FLASH_SIZE)
+#define FLASH_PAGE_CNT (NOR_FLASH_SIZE/FLASH_SECTOR_SIZE)
 /*Hardware related code end*/
 
 #define CONFIG_NVSINTERNAL 0

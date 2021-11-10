@@ -17,11 +17,11 @@
 #include "flash_fs_ll.h"
 #include "io_utils.h"
 #include "log.h"
-#include "writer_config.h"
 #include "memory_layout.h"
 #include "none_blocking_pause.h"
 #include "str_utils.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool print_page_stat(FlashPageFs_t* page, uint8_t num) {
     bool res = false;
