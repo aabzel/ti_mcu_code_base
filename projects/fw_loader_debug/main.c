@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "array.h"
+#include "cli_wrappers.h"
 #include "convert.h"
 #include "fw_update.h"
 #include "io_utils.h"
@@ -49,7 +50,7 @@ int main(int argc, char* argv[]) {
     }
 
     if(res) {
-        res = parse_fw_version();
+        res = cli_wrp_parse_fw_version();
     }
 
     uint32_t new_firmware_size = 0;
@@ -72,10 +73,12 @@ int main(int argc, char* argv[]) {
         if(res) {
             printf("\n[i] firmware equal");
         } else {
-            printf("\n[i] firmware diffetent");
+            printf("\n[i] firmware different");
             res = loader_update_firmware(NewFirmwareArray, new_firmware_size);
-            if(res){
-                printf("\n[i] firmware updared.");
+            if(res) {
+                printf("\n[i] firmware updated!");
+            } else {
+                printf("\n[e] firmware update error!");
             }
         }
     }
@@ -94,7 +97,7 @@ int main(int argc, char* argv[]) {
 #endif
 
     if(target_connected) {
-        res = restore_target();
+        res = cli_wrp_restore_target();
         if(false == res) {
             printf("\n[e] Unable to restore target");
         }

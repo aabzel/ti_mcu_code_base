@@ -5,6 +5,14 @@
 #include "data_utils.h"
 #include "unit_test_check.h"
 
+bool test_bin2sacii(void){
+    uint8_t dataBin[2]={0x12,0xaf};
+    uint8_t BinAscii[100]="";
+    EXPECT_TRUE( hex2ascii(dataBin, sizeof(dataBin), BinAscii, sizeof(BinAscii)));
+    EXPECT_STREQ("12AF",BinAscii);
+    return true;
+}
+
 bool test_extract_digit(void) {
   EXPECT_EQ( 0,extract_digit(10256,6));
   EXPECT_EQ( 9,extract_digit(100389,0));

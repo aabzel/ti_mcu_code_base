@@ -42,6 +42,7 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
             snprintf(line_str, sizeof(line_str), "%s %5s " TSEP, line_str, "Prot");
         } else {
             snprintf(line_str, sizeof(line_str), "%s %5s " TSEP, line_str, "WrEn");
+            res = true;
         }
         snprintf(line_str, sizeof(line_str), "%s %6u" TSEP, line_str, prot);
         flash_scan((uint8_t*)flash_addr, FLASH_SECTOR_SIZE, &usage_pec, &spare, &busy);
@@ -203,8 +204,8 @@ bool flash_write_command(int32_t argc, char* argv[]) {
     uint16_t crc16_read = 0;
     uint32_t flash_address = 0;
     uint32_t count = 0;
-    uint8_t DataBuffer[256] = {0};
-    memset(DataBuffer, 0xFF, sizeof(DataBuffer));
+    uint8_t WrDataBuffer[256] = {0};
+    memset(WrDataBuffer, 0x00, sizeof(WrDataBuffer));
     if(1 <= argc) {
         res = try_str2uint32(argv[0], &flash_address);
         if(false == res) {
@@ -217,9 +218,9 @@ bool flash_write_command(int32_t argc, char* argv[]) {
         }
     }
     if(2 <= argc) {
-        res = try_str2array(argv[1], DataBuffer, sizeof(DataBuffer), &count);
+        res = try_str2array(argv[1], WrDataBuffer, sizeof(WrDataBuffer), &count);
         if(false == res) {
-            LOG_ERROR(LG_FLASH, "Unable to extract hex_string %s", argv[1]);
+            LOG_ERROR(LG_FLASH, "Unable to extract HexString %s", argv[1]);
         }
     }
 
@@ -228,7 +229,7 @@ bool flash_write_command(int32_t argc, char* argv[]) {
         if(false == res) {
             LOG_ERROR(LG_FLASH, "Unable to parse crc16_read %s", argv[2]);
         } else {
-            res = crc16_check(DataBuffer, count, crc16_read);
+            res = crc16_check(WrDataBuffer, count, crc16_read);
             if(false == res) {
                 LOG_ERROR(LG_FLASH, "crc16 error");
             }
@@ -236,19 +237,21 @@ bool flash_write_command(int32_t argc, char* argv[]) {
     }
 
     if(3 < argc) {
+        res = false;
+    }
+
+    if(res) {
+        res = flash_wr(flash_address, WrDataBuffer, count);
+        if(res) {
+            LOG_INFO(LG_FLASH, "Ok!");
+        } else {
+            LOG_ERROR(LG_FLASH, "FlashProgram error");
+        }
+    } else {
         LOG_ERROR(LG_FLASH, "Usage: fw sector_address hex_string crc16_read");
         LOG_INFO(LG_FLASH, "sector_address");
         LOG_INFO(LG_FLASH, "hex_string 0x[0...F]+");
         LOG_INFO(LG_FLASH, "crc16_read");
-    }
-
-    if(res) {
-        res = flash_wr(flash_address, DataBuffer, count);
-        if(res) {
-            LOG_ERROR(LG_FLASH, "FlashProgram ok");
-        } else {
-            LOG_ERROR(LG_FLASH, "FlashProgram error");
-        }
     }
     return res;
 }

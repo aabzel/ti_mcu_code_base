@@ -29,7 +29,7 @@ Text Console ничего не показывает
 ??:??:??  $GNTXT,01,01,02,INCOMPATIBLE HARDWARE -> NO GNSS OPERATION*22
 
 
-Что тут можно предпринять чтобы модуль ZED-F9P стал выдавать GNSS координаты?
+Что тут можно предпринять чтобы модуль H9200308871 ZED-F9P стал выдавать GNSS координаты?
 
 
 
@@ -62,5 +62,5 @@ But just at startup, updated ZED-F9P sends 13 packets to USB and UART1
 
 What can be done here so for  ZED-F9P module to start transmitting GNSS coordinates with NMEA and UBX?
 
-
+В итэлма есть Jira или RedMine для регистрирования конкретных багов и задач.
 

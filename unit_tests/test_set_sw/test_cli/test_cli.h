@@ -7,10 +7,12 @@ extern "C" {
 
 #include <stdbool.h>
 
-bool test_cli(void);
+bool test_cli1(void);
+bool test_cli2(void);
 
 #define TEST_SUIT_CLI \
-          {"cli", test_cli},
+          {"cli1", test_cli1}, \
+          {"cli2", test_cli2},
 
 #ifdef __cplusplus
 }

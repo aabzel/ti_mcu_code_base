@@ -226,8 +226,7 @@ bool print_bin(uint8_t* buff, uint32_t size, uint16_t indent) {
     return res;
 }
 
-bool print_mem(uint8_t* addr, uint32_t len, bool is_bin,
-               bool is_ascii, bool new_line, bool is_packed) {
+bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new_line, bool is_packed) {
     bool res = false;
     uint32_t pos = 0;
     uint32_t print_len = 0;

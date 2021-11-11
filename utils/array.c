@@ -4,7 +4,8 @@
 #include <stdint.h>
 #include <string.h>
 #ifdef X86_64
-#include<time.h>
+#include <time.h>
+#include <stdio.h>
 #endif
 #ifdef HAS_MCU
 #include "clocks.h"

@@ -6,6 +6,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+#ifdef X86_64
+#include <stdio.h>
+#endif
+
 static const char symbols[] = "FEDCBA9876543210123456789ABCDEF";
 
 static bool try_hex_char_to_u8(uint8_t hex_char, uint8_t* hex_char_to_u8_value);
@@ -79,6 +83,8 @@ bool is_hex_str(const char str_to_check[], int32_t str_to_check_len, uint8_t* co
                 for(i = ((int32_t)out_shift_loc); i < str_to_check_len; i++) {
                     if(true == is_hex_digit(str_to_check[i])) {
                         validHexCnt++;
+                    } else {
+                        break;
                     }
                 }
                 if((str_to_check_len - ((int32_t)out_shift_loc)) == validHexCnt) {
@@ -310,9 +316,7 @@ bool try_strl2int64_dec(const char s64_dec_str[], int32_t s64_dec_str_len, int64
 }
 
 /* STRING TO 32 BIT
- * ****************************************************************************
  */
-
 bool try_str2uint32(const char u32_str[], uint32_t* u32_value) {
     bool res = false;
     if((NULL != u32_str) && (NULL != u32_value)) {
@@ -1673,8 +1677,14 @@ bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, 
     bool res = false;
     uint8_t out_shift = 0;
     uint32_t len_str_in = strlen(in_str_array);
+#ifdef X86_64
+    printf("[d]len_str_in %u", len_str_in);
+#endif
     res = is_hex_str(in_str_array, len_str_in, &out_shift);
     if(true == res) {
+#ifdef X86_64
+        printf("[d]shift %u", out_shift);
+#endif
         if(0 == (len_str_in % 2)) {
             uint32_t i;
             for(i = 0; i < (len_str_in / 2); i++) {
@@ -1689,6 +1699,10 @@ bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, 
                 res = true;
             }
         }
+    } else {
+#ifdef X86_64
+        printf("[d] not a hex str [%s]", in_str_array);
+#endif
     }
 
     return res;

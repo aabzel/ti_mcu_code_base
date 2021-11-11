@@ -8,8 +8,11 @@ extern "C" {
 #include <stdbool.h>
 
 bool test_data_utils(void);
+bool test_bin2sacii(void);
 
-#define TEST_SUIT_UTILS_DATA {"data_utils", test_data_utils},
+#define TEST_SUIT_UTILS_DATA         \
+    {"data_utils", test_data_utils}, \
+    {"bin2sacii", test_bin2sacii},
 
 #ifdef __cplusplus
 }

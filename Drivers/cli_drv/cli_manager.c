@@ -31,6 +31,8 @@ bool cli_init_done = false;
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
 #endif
 
+uint32_t cli_cmd_len_max = 0;
+
 #ifdef HAS_CLI_CMD_HISTORY
 char prev_cmd[40]="";
 #endif
@@ -100,6 +102,7 @@ bool cli_init(void) {
 #ifdef HAS_CLI_CMD_HISTORY
         memset(prev_cmd, 0x00,sizeof(prev_cmd));
 #endif
+        cli_cmd_len_max = 0;
         cli_set_echo(true);
         res = writer_init();
         cli_init_done = true;
@@ -139,7 +142,10 @@ bool cli_process(void) {
 #endif
 
 
-
+/*
+ cmd_line must be in RAM
+ TODO: make cmd_line unchangeable
+ */
 bool cli_parse_args(char* cmd_line, int *argc, char** argv){
     bool res = false;
     int argc_loc=0;
@@ -171,11 +177,14 @@ bool process_shell_cmd(char* cmd_line) {
     bool res = false;
 #ifdef HAS_CLI_DEBUG
     io_printf("proc command [%s] %u" CRLF, cmd_line, strlen(cmd_line));
+    cli_cmd_len_max = rx_min32u(cli_cmd_len_max ,strlen(cmd_line));
 #endif /*HAS_CLI_DEBUG*/
 
 #ifdef HAS_CLI_CMD_HISTORY
     memset(prev_cmd, 0x00, sizeof(prev_cmd));
-    memcpy(prev_cmd, cmd_line, strlen(cmd_line));
+    if (strlen(cmd_line) < sizeof(prev_cmd)) {
+        memcpy(prev_cmd, cmd_line, strlen(cmd_line));
+    }
 #endif
     static int shell_argc = 0;
     static char* shell_argv[SHELL_MAX_ARG_COUNT];

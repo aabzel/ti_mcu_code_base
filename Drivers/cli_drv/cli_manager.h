@@ -17,10 +17,10 @@
 #define CLI_PERIOD_MS 300U
 #define CLI_UART CONFIG_UART_0
 #define SHELL_MAX_ARG_COUNT 12
-#define SHELL_MAX_CMD_LEN 40
+//#define SHELL_MAX_CMD_LEN 40
 
 #define CMD_PREFIX "cmd "
-#define PING_PREFIX "ping"
+//#define PING_PREFIX "ping"
 
 extern uint32_t cli_task_cnt;
 extern bool cli_init_done;

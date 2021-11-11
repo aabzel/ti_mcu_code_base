@@ -67,31 +67,34 @@ bool flash_scan(uint8_t* base, uint32_t size, float* usage_pec, uint32_t* spare,
 }
 
 bool flash_wr(uint32_t flash_addr, uint8_t* wr_array, uint32_t array_len) {
-    bool res = false, loop = true;
-    uint32_t ret = 0, cnt = 0;
-    VIMSModeSet(VIMS_BASE, VIMS_MODE_OFF);
-    VIMSLineBufDisable(VIMS_BASE);
-    ret = FlashProgram(wr_array, flash_addr, array_len);
-    if(FAPI_STATUS_SUCCESS == ret) {
-        res = true;
-        uint8_t readMem[array_len];
-        while(loop) {
-            flash_read(flash_addr, readMem, sizeof(readMem));
-            ret = memcmp(readMem, wr_array, array_len);
-            if(0 == ret) {
-                loop = false;
-                res = true;
-            }
-            wait_ms(FLASH_WR_TIME_MS);
-            cnt++;
-            if(1000 < cnt) {
-                loop = false;
-                res = false;
+    bool res = false;
+    if(array_len <= FLASH_WR_MAX_CHUNK_SIZE) {
+        uint32_t ret = 0, cnt = 0;
+        bool loop = true;
+        VIMSModeSet(VIMS_BASE, VIMS_MODE_OFF);
+        VIMSLineBufDisable(VIMS_BASE);
+        ret = FlashProgram(wr_array, flash_addr, array_len);
+        if(FAPI_STATUS_SUCCESS == ret) {
+            res = true;
+            uint8_t readMem[FLASH_WR_CHUNK_SIZE]; // error
+            while(loop) {
+                flash_read(flash_addr, readMem, sizeof(readMem));
+                ret = memcmp(readMem, wr_array, array_len);
+                if(0 == ret) {
+                    loop = false;
+                    res = true;
+                }
+                wait_ms(FLASH_WR_TIME_MS);
+                cnt++;
+                if(1000 < cnt) {
+                    loop = false;
+                    res = false;
+                }
             }
         }
+        // VIMSLineBufEnable(VIMS_BASE);
+        // VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
     }
-    // VIMSLineBufEnable(VIMS_BASE);
-    // VIMSModeSet(VIMS_BASE, VIMS_MODE_ENABLED);
     return res;
 }
 
@@ -104,7 +107,7 @@ bool is_errased(uint32_t addr, uint32_t size) {
 bool flash_erase_sector(uint32_t sector_address) {
     bool res = false;
     res = is_errased(sector_address, FLASH_SECTOR_SIZE);
-    if(false==res){
+    if(false == res) {
         if((0 == (sector_address % FLASH_SECTOR_SIZE)) || (0 == sector_address)) {
             VIMSModeSet(VIMS_BASE, VIMS_MODE_OFF);
             VIMSLineBufDisable(VIMS_BASE);
@@ -118,7 +121,6 @@ bool flash_erase_sector(uint32_t sector_address) {
     }
     return res;
 }
-
 
 bool is_flash_addr(uint32_t flash_addr) {
     bool res = false;

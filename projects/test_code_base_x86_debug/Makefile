@@ -12,7 +12,8 @@ SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
 OBJDIR := $(SRC_PATH)obj
 # the compiler to use
 #CC = clang
-CC = gcc
+CC = C:\MinGW\bin\gcc.exe
+#CC = C:\cygwin64\bin\gcc.exe
 
 HAS_X86_64=Y
 HAS_TEST_CLI=Y
@@ -21,6 +22,7 @@ HAS_TEST_CLI=Y
 #  -Wall turns on most, but not all, compiler warnings
 CFLAGS += -g
 CFLAGS += -m32
+CFLAGS += -std=c11
 #CFLAGS += -Og
 CFLAGS  += -O0
 #CFLAGS  += -Wall
@@ -32,6 +34,7 @@ OPT += -DHAS_UTESTS
 OPT += -DHAS_DEBUG
 OPT += -DX86_64
 OPT += -DHAS_SW_TESTS
+OPT += -DHAS_TEST_CLI
 OPT += -DHAS_TEST_SUIT_FIFO
 OPT += -DHAS_TEST_SUIT_UTILS
 OPT += -DHAS_TEST_SUIT_RTCM3_PROTO

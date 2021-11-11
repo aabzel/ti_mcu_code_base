@@ -40,7 +40,7 @@ uint8_t crc8_autosar_calc_continue(uint8_t crc_in, const void* in_buf, uint32_t 
 
 uint8_t crc8_autosar_calc(const void* in_buf, uint32_t len) {
     uint8_t crc8 = 0;
-    if(in_buf && (0<len)){
+    if(in_buf && (0 < len)) {
         crc8 = crc8_autosar_calc_continue(CRC8_AUTOSAR_SEED ^ CRC8_XOR, in_buf, len);
     }
     return crc8;

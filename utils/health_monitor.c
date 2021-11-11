@@ -6,11 +6,11 @@
 #ifdef HAS_ADC
 #include "adc_drv.h"
 #endif
+#include "cli_manager.h"
 #include "log.h"
 #include "sys_config.h"
 
 HealthMon_t HealthMon;
-
 bool health_monotor_init(void) {
     bool res = true;
     memset(&HealthMon, 0x00, sizeof(HealthMon));
@@ -33,6 +33,8 @@ bool health_monotor_proc(void) {
         res = true;
     }
 #endif /*HAS_ADC*/
-
+    if(false == cli_init_done) {
+        cli_init_done = true;
+    }
     return res;
 }

@@ -19,6 +19,7 @@ CC = C:\MinGW\bin\gcc.exe
 #  -Wall turns on most, but not all, compiler warnings
 CFLAGS += -g
 CFLAGS += -m32
+CFLAGS += -std=c11
 #CFLAGS += -Og
 CFLAGS  += -O0
 #CFLAGS  += -Wall
@@ -30,7 +31,7 @@ HAS_X86_64=Y
 OPT += -DHAS_UTESTS
 OPT += -DHAS_LOADER
 OPT += -DX86_64
-#OPT += -DHAS_FW_UPDATE_DEBUG
+OPT += -DHAS_FW_UPDATE_DEBUG
 #OPT += -DHAS_COM_PORT_DEBUG
 #OPT += -DDEDUG_RX_CHAR
 
@@ -46,6 +47,7 @@ include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 #include $(PROJECT_ROOT)tests/tests.mk
 SOURCES_C += main.c
+SOURCES_C += cli_wrappers.c
 SOURCES_C += fw_update.c
 # the name to use for both the target source file, and the output file:
 #include $(PROJECT_ROOT)system_explore/system_explore.mk

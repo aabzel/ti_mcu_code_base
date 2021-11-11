@@ -45,9 +45,11 @@ static bool com_set_timeout(HANDLE hComm) {
 
 bool com_send_str(HANDLE hComm, char* txBuffer, uint32_t tx_buff_len) {
 #ifdef HAS_COM_PORT_DEBUG
-    printf("%s() send [%s]", __FUNCTION__, txBuffer);
+    printf("\n%s() send [%s]", __FUNCTION__, txBuffer);
 #endif
     bool res = false;
+    uint32_t remain_len=0;
+    res = com_receive_remain(hComm, &remain_len);
     BOOL status;
     DWORD dNoOfBytesWritten = 0;
     status = WriteFile(hComm, txBuffer, (DWORD)tx_buff_len, &dNoOfBytesWritten, NULL);
@@ -57,18 +59,18 @@ bool com_send_str(HANDLE hComm, char* txBuffer, uint32_t tx_buff_len) {
         }
     }
 #ifdef HAS_COM_PORT_DEBUG
-    printf("%s() end", __FUNCTION__);
+    printf("\n%s() end", __FUNCTION__);
 #endif
     return res;
 }
 
-static bool com_receive_remain(HANDLE hComm, uint32_t* outRealRxArrayLen) {
+bool com_receive_remain(HANDLE hComm, uint32_t* remain_len) {
     bool res = false;
 #ifdef HAS_COM_PORT_DEBUG
-    printf("%s():", __FUNCTION__);
+    printf("\n%s():", __FUNCTION__);
 #endif
-    if(NULL != outRealRxArrayLen) {
-        *outRealRxArrayLen = 0;
+    if(NULL != remain_len) {
+        *remain_len = 0;
         char tempChar;
         DWORD numberBytesRead;
         uint32_t BytesReadCnt = 0;
@@ -90,20 +92,20 @@ static bool com_receive_remain(HANDLE hComm, uint32_t* outRealRxArrayLen) {
             BytesReadCnt++;
         };
         if(0 < BytesReadCnt) {
-            *outRealRxArrayLen = BytesReadCnt;
+            *remain_len = BytesReadCnt;
             res = true;
         }
     }
     return res;
 }
 
-bool com_receive_str(HANDLE hComm, char* outRxArray, uint32_t capasityRxArray, uint32_t* outRealRxArrayLen) {
+bool com_receive_str(HANDLE hComm, char* outRxArray, uint32_t capasityRxArray, uint32_t* remain_len) {
     bool res = false;
 #ifdef HAS_COM_PORT_DEBUG
-    printf("%s():", __FUNCTION__);
+    printf("\n%s():", __FUNCTION__);
 #endif
     if((0 < capasityRxArray) && (NULL != outRxArray)) {
-        *outRealRxArrayLen = 0;
+        *remain_len = 0;
         char tempChar;
         DWORD numberBytesRead;
         uint32_t BytesReadCnt = 0;
@@ -131,15 +133,70 @@ bool com_receive_str(HANDLE hComm, char* outRxArray, uint32_t capasityRxArray, u
             BytesReadCnt++;
         };
         if(0 < BytesReadCnt) {
-            *outRealRxArrayLen = BytesReadCnt;
+            *remain_len = BytesReadCnt;
             res = true;
         }
     }
 #ifdef HAS_COM_PORT_DEBUG
-    printf("%s(): end", __FUNCTION__);
+    printf("\n%s(): end", __FUNCTION__);
 #endif
     return res;
 }
+
+
+
+bool com_receive_str_timeout(HANDLE hComm, char* outRxArray, uint32_t capasityRxArray, uint32_t* remain_len, uint32_t time_out_ms) {
+    bool res = false;
+#ifdef HAS_COM_PORT_DEBUG
+    printf("\n%s():", __FUNCTION__);
+#endif
+    if((0 < capasityRxArray) && (NULL != outRxArray)) {
+        *remain_len = 0;
+        char tempChar;
+        DWORD numberBytesRead =0;
+        uint32_t BytesReadCnt = 0;
+        bool loopRun = true;
+        uint32_t  ret= 0;
+        struct timeval start, cur;
+        double diff_secs = 0;
+        gettimeofday(&start, NULL);
+        while(loopRun) {
+            gettimeofday(&cur, NULL);
+            diff_secs = (double)(cur.tv_usec - start.tv_usec) / 1000000 + (double)(cur.tv_sec - start.tv_sec);
+            if(time_out_ms<diff_secs*1000 ){
+                loopRun = false;
+            }
+            ret = ReadFile(hComm,            // Handle of the Serial port
+                     &tempChar,        // Temporary character
+                     sizeof(tempChar), // Size of TempChar
+                     &numberBytesRead, // Number of bytes read
+                     NULL);
+            if(0==ret){
+
+            }
+#ifdef DEDUG_RX_CHAR
+            printf("%c", tempChar);
+#endif
+            if(0 < numberBytesRead) {
+                if(BytesReadCnt < capasityRxArray) {
+                    outRxArray[BytesReadCnt] = tempChar; // Store Tempchar into buffer
+                }
+            } else {
+                loopRun = false;
+            }
+            BytesReadCnt++;
+        };
+        if(0 < BytesReadCnt) {
+            *remain_len = BytesReadCnt;
+            res = true;
+        }
+    }
+#ifdef HAS_COM_PORT_DEBUG
+    printf("\n%s(): end", __FUNCTION__);
+#endif
+    return res;
+}
+
 
 static uint64_t knownSerialTable[MAX_NUM_COM_DEV] = {0};
 
@@ -167,7 +224,7 @@ static bool print_new_dev_in_file(char* file_name, uint8_t comPortNum, uint64_t 
         fclose(client_log_p);
         res = true;
     } else {
-        printf("Unable to open file");
+        printf("[e] Unable to open file");
     }
     return res;
 }
@@ -187,16 +244,16 @@ bool init_serial(char* com_name, uint32_t baud_rate) {
                        0,                            // Non Overlapped I/O
                        NULL);                        // Null for Comm Devices
 #if DEBUG_SERIAL
-    printf("\n hComm [%p]", hComm);
+    printf("\n[i] hComm [%p]", hComm);
 #endif
     if(INVALID_HANDLE_VALUE == hComm) {
 #if DEBUG_SERIAL
-        printf("\nUnable to open serial port [%s]\n", com_name);
+        printf("\n[e] Unable to open serial port [%s]\n", com_name);
 #endif
         res = false;
     } else {
 #if DEBUG_SERIAL
-        printf("\n Open [%s] OK\n", com_name);
+        printf("\n[i] Open [%s] OK\n", com_name);
 #endif
         res = true;
 
@@ -210,7 +267,7 @@ bool init_serial(char* com_name, uint32_t baud_rate) {
 bool scan_serial(void) {
     bool res = false;
     clear_tui();
-    printf("\n Start new scan");
+    printf("\n[i] Start new scan");
     bool out_res = false;
     char com_name[20] = "";
     uint8_t comPortNum;

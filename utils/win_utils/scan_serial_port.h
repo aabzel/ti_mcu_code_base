@@ -33,15 +33,17 @@ typedef struct xConnection_t {
 extern xSerialConnection_t deviceList[MAX_COM_NUM];
 extern HANDLE hComm;
 
+bool com_receive_remain(HANDLE hComm, uint32_t* outRealRxArrayLen);
 bool init_serial(char* com_name, uint32_t baud_rate);
 bool is_serial_known(uint64_t inSerial);
-const char* dev_id_name(deciceId_t deviceID);
 bool scan_serial(void);
 bool print_device_list(void);
 bool com_send_str(HANDLE hComm, char* txBuffer, uint32_t txBuffLen);
-uint16_t parse_product(char* inStr, uint16_t inStrLen);
-char* parse_product_name(char* inStr, uint16_t inStrLen);
 bool com_receive_str(HANDLE hComm, char* outRxArray, uint32_t capasityRxArray, uint32_t* outRealRxArrayLen);
+bool com_receive_str_timeout(HANDLE hComm, char* outRxArray, uint32_t capasityRxArray, uint32_t* len, uint32_t time_out_ms);
+char* parse_product_name(char* inStr, uint16_t inStrLen);
+const char* dev_id_name(deciceId_t deviceID);
+uint16_t parse_product(char* inStr, uint16_t inStrLen);
 
 #ifdef __cplusplus
 }
