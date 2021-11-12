@@ -14,7 +14,7 @@ extern "C" {
 
 #include "spi_common.h"
 
-#define SPI0_BIT_RATE_HZ 1000000 /*sx1262 CAN*/
+#define SPI0_BIT_RATE_HZ 3000000 /*sx1262 CAN*/
 #define SPI1_BIT_RATE_HZ 100000
 
 /* SPI Board */

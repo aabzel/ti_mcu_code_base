@@ -69,6 +69,11 @@ bool pwr_src_init(void) {
     } else {
         LOG_WARNING(PWR, "Set default power source VCC 3.3V");
         res = pwr_src_set(PWR_SRC_VCC_3V3);
+        pwr_source = PWR_SRC_VCC_3V3;
+        res = mm_set(PAR_ID_PWR_SRC, (uint8_t*)&pwr_source, sizeof(pwr_source));
+        if ( false == res ) {
+            LOG_ERROR(PWR, "Unable to set dflt PwrSrc");
+        }
     }
 
     return res;

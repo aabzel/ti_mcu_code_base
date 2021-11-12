@@ -52,6 +52,7 @@ typedef enum eLog_facility_t {
   DAC,
   DIAG,
   I2C,
+  NMEA,
   HMOM,
   TEST,
   LG_FLASH,

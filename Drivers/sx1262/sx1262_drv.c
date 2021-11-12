@@ -1357,7 +1357,7 @@ static inline bool sx1262_poll_status(void) {
 #endif /*HAS_SX1262_BIT_RATE*/
             if(Sx1262Instance.debug) {
 #ifdef HAS_SX1262_BIT_RATE
-                LOG_INFO(LORA, "TX done %f bit/s", Sx1262Instance.tx_real_bit_rate);
+                LOG_INFO(LORA, "TX done %f bit/s duration: %u ms", Sx1262Instance.tx_real_bit_rate, tx_duration_ms);
 #else
                 LOG_INFO(LORA, "TX done");
 #endif /*HAS_SX1262_BIT_RATE*/
@@ -1485,15 +1485,15 @@ bool sx1262_process(void) {
             Array_t txNode = {.size = 0, .pArr = NULL};
             res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &txNode);
             if((true == res)) {
-                if((0 < txNode.size) && (txNode.pArr)) {
-                    res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
-                    if(res) {
-                        LoRaInterface.tx_ok_cnt++;
-                    } else {
-                        LoRaInterface.err_cnt++;
-                    }
-                }
                 if(txNode.pArr) {
+                    if(0 < txNode.size) {
+                        res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
+                        if(res) {
+                            LoRaInterface.tx_ok_cnt++;
+                        } else {
+                            LoRaInterface.err_cnt++;
+                        }
+                    }
                     free(txNode.pArr);
                 }
             }

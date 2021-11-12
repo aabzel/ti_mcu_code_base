@@ -76,7 +76,7 @@ bool flash_wr(uint32_t flash_addr, uint8_t* wr_array, uint32_t array_len) {
         ret = FlashProgram(wr_array, flash_addr, array_len);
         if(FAPI_STATUS_SUCCESS == ret) {
             res = true;
-            uint8_t readMem[FLASH_WR_CHUNK_SIZE]; // error
+            uint8_t readMem[FLASH_WR_MAX_CHUNK_SIZE]; /* error with VLA*/
             while(loop) {
                 flash_read(flash_addr, readMem, sizeof(readMem));
                 ret = memcmp(readMem, wr_array, array_len);

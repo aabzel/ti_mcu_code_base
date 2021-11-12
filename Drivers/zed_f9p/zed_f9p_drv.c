@@ -53,7 +53,7 @@ bool zed_f9p_init(void) {
 }
 
 bool zed_f9p_proc(void) {
-    /*is new GNSS sampless*/
+    /*is new GNSS samples*/
     bool res = false;
     static bool first_gnss = true;
     static bool first_time = true;

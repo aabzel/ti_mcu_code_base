@@ -1,3 +1,5 @@
+software architectural design:
+
 Code Base core for various microcontrollers (Cortex M).
 
 Code Base has been covered by unit tests.

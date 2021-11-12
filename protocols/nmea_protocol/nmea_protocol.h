@@ -14,6 +14,8 @@
 #define NUM_OF_PARSED_SAT 5
 #define NMEA_MSG_SIZE 100U
 #define NMEA_PERIOD_US S_2_US(1.5)
+#define NMEA_LACK_FRAME_WARNING_TIME_OUT_MS S_2_MS(3)
+#define NMEA_LACK_FRAME_ERROR_TIME_OUT_MS  S_2_MS(6)
 
 typedef struct xNmeaProtocol_t {
     uint16_t pos;
@@ -127,6 +129,7 @@ typedef struct xGsv_t {
 /* GNSS context. Used to keep last GNSS infos from GNSS module msgs*/
 typedef struct xNmeaData_t {
     uint8_t is_initialized;
+    uint32_t gnss_time_stamp;
     rmc_t rmc;   /*Recommended minimum data*/
     gll_t gll;   /*Latitude and longitude, with time of position fix and status*/
     vtg_t vtg;   /*Course over ground and ground speed*/
