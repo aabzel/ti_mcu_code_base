@@ -4,13 +4,15 @@
 #include <stdio.h>
 #endif
 
+#ifdef HAS_MCU
 #include "clocks.h"
-#include "convert.h"
 #include "log.h"
+#endif
+#include "convert.h"
 #include "time_utils.h"
 
-NmeaProtocol_t NmeaProto;
-NmeaData_t NmeaData;
+NmeaProtocol_t NmeaProto={0};
+NmeaData_t NmeaData={0};
 
 bool nmea_init(void) {
     memset(&NmeaData, 0x00, sizeof(NmeaData));
@@ -377,7 +379,9 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
 #endif
                 res = gnss_parse_rmc(nmea_msg, &gps_ctx->rmc);
                 if(res) {
+#ifdef HAS_MCU
                     gps_ctx->gnss_time_stamp =  get_time_ms32();
+#endif
                     gps_ctx->rmc.cnt++;
                 }
             } else if(!strncmp(nmea_msg + 3, "GLL", 3)) {
@@ -387,7 +391,9 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
                 /*here lat and lon*/
                 res = gnss_parse_gll(nmea_msg, &gps_ctx->gll);
                 if(res) {
+#ifdef HAS_MCU
                     gps_ctx->gnss_time_stamp = get_time_ms32();
+#endif
                     gps_ctx->gll.cnt++;
                 }
             } else if(!strncmp(nmea_msg + 3, "GSV", 3)) {
@@ -463,8 +469,10 @@ bool nmea_proc(void) {
     bool res = false;
     static uint32_t prev_rmc_cnt = 0;
     static uint32_t prev_gga_cnt = 0;
+#ifdef HAS_MCU
     uint32_t cur_time_ms = get_time_ms32();
     uint32_t lack_of_frame_time_out_ms = 0 ;
+#endif
     if(prev_rmc_cnt < NmeaData.rmc.cnt) {
         NmeaData.coordinate_dd = encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
         res = true;
@@ -475,6 +483,7 @@ bool nmea_proc(void) {
         res = true;
     }
     /*If new coordinates had not been received in the last 3 seconds, then FW would have erased the old ones*/
+#ifdef HAS_MCU
     lack_of_frame_time_out_ms=(cur_time_ms-NmeaData.gnss_time_stamp);
     if (NMEA_LACK_FRAME_WARNING_TIME_OUT_MS < lack_of_frame_time_out_ms) {
         LOG_WARNING(NMEA,"LackOfFrame");
@@ -484,6 +493,7 @@ bool nmea_proc(void) {
             NmeaData.coordinate_dd.longitude=0.0;
         }
     }
+#endif
 
     prev_gga_cnt = NmeaData.gga.cnt;
     prev_rmc_cnt = NmeaData.rmc.cnt;

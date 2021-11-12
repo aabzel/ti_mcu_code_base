@@ -5,17 +5,19 @@
 #include <stdint.h>
 #include <time.h>
 
+#include "gnss_utils.h"
 #ifdef HAS_MCU
 #include "clocks.h"
 #endif
-
-#include "gnss_utils.h"
-
-#define NUM_OF_PARSED_SAT 5
-#define NMEA_MSG_SIZE 100U
+#ifdef HAS_MCU
 #define NMEA_PERIOD_US S_2_US(1.5)
 #define NMEA_LACK_FRAME_WARNING_TIME_OUT_MS S_2_MS(3)
 #define NMEA_LACK_FRAME_ERROR_TIME_OUT_MS  S_2_MS(6)
+#endif
+
+
+#define NUM_OF_PARSED_SAT 5
+#define NMEA_MSG_SIZE 100U
 
 typedef struct xNmeaProtocol_t {
     uint16_t pos;
