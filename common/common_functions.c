@@ -61,6 +61,10 @@
 #include "sx1262_drv.h"
 #endif /*HAS_SX1262*/
 
+#ifdef HAS_LORA
+#include "lora_drv.h"
+#endif /*HAS_LORA*/
+
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
@@ -140,7 +144,11 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_RF*/
 
 #ifdef HAS_SX1262
-    measure_task_interval(TASK_ID_LORA, SX1262_PERIOD_US, sx1262_process, loop_start_time_us);
+    measure_task_interval(TASK_ID_SX1262, SX1262_PERIOD_US, sx1262_process, loop_start_time_us);
+#endif /*HAS_SX1262*/
+
+#ifdef HAS_LORA
+    measure_task_interval(TASK_ID_LORA, LORA_PERIOD_US, lora_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
 
 #ifdef HAS_NMEA

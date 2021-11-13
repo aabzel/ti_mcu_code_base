@@ -97,3 +97,11 @@ bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
     }
     return res;
 }
+
+
+bool lora_process(void){
+    bool res = false;
+    /*HeartBeat Lora Frame*/
+    res = tbfp_send_ping(FRAME_ID_PONG);
+    return res;
+}

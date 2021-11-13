@@ -125,6 +125,7 @@ bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len) {
 bool tbfp_send_ping(uint8_t frame_id) {
     bool res = false;
     uint8_t frame[256] = "";
+    memset(frame,0,sizeof(frame));
     uint32_t tx_frame_len = 0;
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
@@ -132,7 +133,16 @@ bool tbfp_send_ping(uint8_t frame_id) {
     memset(&pingFrame.coordinate, 0xFF, sizeof(GnssCoordinate_t));
 #ifdef HAS_ZED_F9P
     pingFrame.time_stamp = mktime(&ZedF9P.time_date);
-    pingFrame.coordinate = ZedF9P.coordinate_cur;
+
+    res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
+    if(res){
+        pingFrame.coordinate = ZedF9P.coordinate_cur;
+    }else{
+        /*invalid coordinate*/
+        pingFrame.coordinate.latitude = 360.0;
+        pingFrame.coordinate.longitude= 360.0;
+    }
+
 #endif
     res = tbfp_compose_ping(frame, &tx_frame_len, &pingFrame);
     if(res) {
@@ -163,7 +173,9 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len) {
 #endif /*HAS_ZED_F9P*/
 
 #ifdef HAS_LORA
-        if(LoRaInterface.max_distance < cur_dist) {
+        uint16_t file_len = 0;
+        res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance , sizeof(double),&file_len);
+        if((LoRaInterface.max_distance < cur_dist)&&(res) && (sizeof(double)==file_len)) {
 #if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
             res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&cur_dist, sizeof(double));
             if(false == res) {

@@ -69,17 +69,6 @@ bool zed_f9p_proc(void) {
         LOG_ERROR(ZED_F9P, "InvalidUbxTimeDate");
     }
 
-    res = is_valid_gnss_coordinates(NavInfo.coordinate);
-    if(res) {
-        if(first_gnss) {
-            LOG_INFO(ZED_F9P, "Init GNSS");
-            print_coordinate(NavInfo.coordinate);
-            first_gnss = false;
-        }
-        ZedF9P.coordinate_cur = NavInfo.coordinate;
-    } else {
-        LOG_ERROR(ZED_F9P, "Invalid Ubx GNSS coordinate");
-    }
 
     res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
     if(res) {
@@ -93,6 +82,18 @@ bool zed_f9p_proc(void) {
         ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
     } else {
         LOG_ERROR(ZED_F9P, "Invalid GNSS Nmea coordinate");
+        res = is_valid_gnss_coordinates(NavInfo.coordinate);
+        if(res) {
+            if(first_gnss) {
+                LOG_INFO(ZED_F9P, "Spot valid GNSS data");
+                print_coordinate(NavInfo.coordinate);
+                first_gnss = false;
+            }
+            ZedF9P.coordinate_cur = NavInfo.coordinate;
+        } else {
+            LOG_ERROR(ZED_F9P, "Invalid Ubx GNSS coordinate");
+        }
+
     }
 
     return res;

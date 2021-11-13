@@ -73,6 +73,13 @@ bool is_valid_gnss_coordinates(GnssCoordinate_t dot){
         if((-180.0<dot.longitude) && (dot.longitude<180.0)){
             res = true;
         }
+        GnssCoordinate_t valid_dot={55.750964,37.617135};
+        double distance = gnss_calc_distance_m(dot, valid_dot);
+        if(distance < 5057696.0){
+            res = true;
+        }else{
+            res = false;
+        }
     }
     return res ;
 }
