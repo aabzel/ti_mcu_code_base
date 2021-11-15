@@ -20,7 +20,6 @@
 /*TODO: Sort by index for bin search in future*/
 const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
-    {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"},      /*Hz*/
     {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
     {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
     {PAR_ID_LORA_BW, 1, UINT8, "BW"},               /*Hz*/
@@ -38,6 +37,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
     {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
     {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},    /*Max LoRa bit/rate*/
+    {PAR_ID_BASE_LOCATION,16,STRUCT,"BaseLocat"},
 
 };
 
@@ -82,7 +82,7 @@ ParamType_t param_get_type(Id_t id) {
     return ret_type;
 }
 
-/*Test it*/
+/*TODO: Test it*/
 bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* out_str, uint32_t str_size) {
     bool res = false;
     if((NULL != value) && (NULL != out_str) && (0 < value_len) && (0 < str_size)) {
@@ -167,6 +167,11 @@ bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* ou
                 res = true;
             }
             break;
+        case STRUCT:
+            if(strlen((char*)value) < str_size) {
+                res =  hex2ascii(value, value_len, out_str, str_size);
+            }
+            break;
         case FLOAT:
             if(4 == value_len) {
                 Type32Union_t un32;
@@ -210,4 +215,10 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
     }
 
     return name;
+}
+
+bool param_proc(void){
+    bool res = false;
+    /*Syn params between flash and RAM*/
+    return res;
 }

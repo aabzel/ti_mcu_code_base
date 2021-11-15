@@ -11,10 +11,12 @@
 
 typedef struct xZedF9P_t {
     struct tm time_date;
+    GnssCoordinate_t coordinate_base;/*Location of RTK base station*/
     GnssCoordinate_t coordinate_cur;
     GnssCoordinate_t coordinate_last;
     int8_t time_zone;
-    // time since update
+    //TODO: mode rover or base
+    //TODO:  time since update
     bool is_init;
 } ZedF9P_t;
 
@@ -22,5 +24,7 @@ extern ZedF9P_t ZedF9P;
 
 bool zed_f9p_init(void);
 bool zed_f9p_proc(void);
+bool zed_f9p_rover(void);
+bool zed_f9p_base(GnssCoordinate_t coordinate_base);
 
 #endif /* ZED_F9P_DRV_H  */

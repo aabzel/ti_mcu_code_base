@@ -7,6 +7,8 @@
 #include "gnss_diag.h"
 #include "io_utils.h"
 #include "log.h"
+#include "flash_fs.h"
+#include "param_ids.h"
 #include "zed_f9p_drv.h"
 
 bool zed_f9p_diag_command(int32_t argc, char* argv[]){
@@ -20,8 +22,54 @@ bool zed_f9p_diag_command(int32_t argc, char* argv[]){
         print_coordinate(ZedF9P.coordinate_last);
         res = true;
     } else {
-        LOG_ERROR(SYS, "Usage: zfd");
+        LOG_ERROR(ZED_F9P, "Usage: zfd");
     }
     return res;
 }
 
+bool zed_f9p_base_command(int32_t argc, char* argv[]){
+    bool res = false;
+    GnssCoordinate_t coordinate_base;
+    if(1<=argc){
+        res= try_str2double(argv[1], &coordinate_base.latitude);
+    }
+    if(2<=argc){
+        res= try_str2double(argv[2], &coordinate_base.longitude);
+    }
+    if (res) {
+        ZedF9P.coordinate_base = coordinate_base;
+#ifdef HAS_PARAM
+        res = mm_set(PAR_ID_BASE_LOCATION, (uint8_t*) &ZedF9P.coordinate_base, sizeof(GnssCoordinate_t));
+        if(false==res){
+            LOG_ERROR(ZED_F9P, "ParamSetError");
+        }
+#endif
+    }
+
+    if(res){
+        res=zed_f9p_base(ZedF9P.coordinate_base);
+        if(res){
+            LOG_INFO(ZED_F9P, "OK");
+        }
+    }
+
+    if(false==res){
+        LOG_ERROR(ZED_F9P, "Error");
+        LOG_ERROR(ZED_F9P, "Usage: zfb lat lon");
+    }
+    return res;
+}
+
+bool zed_f9p_rover_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(0==argc){
+        res = zed_f9p_rover();
+        if(res){
+            LOG_INFO(ZED_F9P, "OK");
+        }
+    }
+    if(false==res){
+        LOG_ERROR(ZED_F9P, "Usage: zfr");
+    }
+    return res;
+}

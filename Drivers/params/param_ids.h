@@ -4,9 +4,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "clocks.h"
 #include "param_types.h"
 
-#define PARAM_CNT 19
+#define PARAM_CNT 20
+#define PARAM_PERIOD_US S_2_US(3)
 
 typedef enum eId_t {
     PAR_ID_REBOOT_CNT = 1,
@@ -28,6 +30,7 @@ typedef enum eId_t {
     PAR_ID_TIME_ZONE = 17,      /*TimeZone*/
     PAR_ID_LORA_MAX_LINK_DIST = 18,
     PAR_ID_LORA_MAX_BIT_RATE = 19,
+    PAR_ID_BASE_LOCATION = 20,
     PAR_ID_TEST_START = 100,
     PAR_ID_TEST_END = 200,
     PAR_ID_CNT
@@ -47,5 +50,6 @@ bool param_init(void);
 ParamType_t param_get_type(Id_t id);
 bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* out_str, uint32_t str_size);
 const char* param_val2str(uint16_t id, uint8_t* value);
+bool param_proc(void);
 
 #endif /* PARAM_IDS_H  */

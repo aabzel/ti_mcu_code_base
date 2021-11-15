@@ -48,6 +48,10 @@
 #include "flash_fs.h"
 #endif /*HAS_FLASH_FS*/
 
+#ifdef HAS_PARAM
+#include "param_ids.h"
+#endif /*HAS_PARAM*/
+
 #ifdef HAS_RF
 #include "rf_drv.h"
 #endif /*HAS_RF*/
@@ -170,6 +174,11 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_HEALTH_MONITOR
     measure_task_interval(TASK_ID_HEAL_MON, HEAL_MON_PERIOD_US, health_monotor_proc, loop_start_time_us);
 #endif /*HAS_HEALTH_MONITOR*/
+
+#ifdef HAS_PARAM
+    measure_task_interval(TASK_ID_PARAM, PARAM_PERIOD_US, param_proc, loop_start_time_us);
+#endif /*HAS_PARAM*/
+
 }
 #endif /*NORTOS*/
 

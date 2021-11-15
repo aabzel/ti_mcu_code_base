@@ -14,6 +14,7 @@ typedef enum wParamType_t {
     STRING,
     FLOAT,
     DOUBLE,
+    STRUCT,
     UNDEF,
 } ParamType_t;
 

@@ -98,3 +98,23 @@ bool zed_f9p_proc(void) {
 
     return res;
 }
+
+bool zed_f9p_base(GnssCoordinate_t coordinate_base){
+    bool res = false;
+    /*
+      perform settings from here
+      https://www.youtube.com/watch?v=FpkUXmM7mrc
+
+      reset to dflt cfg
+     */
+    return res;
+}
+
+bool zed_f9p_rover(void){
+    bool res = false;
+    /*
+      perform settings from here
+      https://www.youtube.com/watch?v=FpkUXmM7mrc
+     */
+    return res;
+}

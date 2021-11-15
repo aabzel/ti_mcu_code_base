@@ -8,6 +8,7 @@
   TASK(FLASH_FS)                                                          \
   TASK(HEAL_MON)                                                          \
   TASK(LED)                                                               \
+  TASK(PARAM)                                                             \
   TASK(RF)                                                                \
   TASK(UART)                                                              \
   TASK(UART0_FWD)                                                         \
