@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "byte_utils.h"
+#include "debug_info.h"
 #include "io_utils.h"
 #include "log.h"
 #include "uart_drv.h"
@@ -16,8 +18,6 @@
 #ifndef HAS_UART
 #error "Ublox driver requires UART driver"
 #endif
-
-keyValItem_t keyValTable[UBX_KEY_CNT] = {{0x30210001, 0x00, UBX_U2}};
 
 NavInfo_t NavInfo = {0};
 
@@ -44,7 +44,7 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
     crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
     memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
     if(true == res) {
-        res = uart_send(1, tx_array, tx_array_len, true);
+        res = uart_send(UBX_UART_NUM, tx_array, tx_array_len, true);
         if(res) {
             UbloxPorotocol.tx_pkt_cnt++;
         }
@@ -53,25 +53,23 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
 }
 
 #define UBX_KEY_SIZE 4
-static bool ubx_config_data_parse(uint8_t* payload) {
-    uint32_t read_key = 0;
-    uint16_t i = 0;
+static bool ubx_config_data_parse(uint8_t* keys) {
+    uint16_t bytes = 0;
     bool res = false;
-    memcpy(&read_key, payload, UBX_KEY_SIZE);
-    for(i = 0; i < UBX_KEY_CNT; i++) {
-        if(read_key == keyValTable[i].key_id) {
-            if(UBX_U2 == keyValTable[i].type) {
-                memcpy(&keyValTable[i].u_value.u16, &payload[4], 2);
-                res = true;
-            }
-        }
-    }
+    ConfigurationKeyID_t keyId;
+    memcpy(&keyId.word, keys, UBX_KEY_SIZE);
+    bytes = ubx_key_len_2bytes(keyId.size);
+    LOG_INFO(UBX, "Key: 0x%08x len %u", keyId.word, bytes);
+    res = reverse_byte_order_array(&keys[4], bytes);
+    res = print_mem(&keys[4], bytes, true, false, true, false);
     return res;
 }
 
 static bool ubx_cfg_valget_parse(uint8_t* payload) {
     bool res = false;
-    if(0x01 == payload[0]) {
+    CfgValGetHeader_t Header = {0};
+    memcpy(&Header, payload, sizeof(CfgValGetHeader_t));
+    if(0x01 == Header.version) {
         res = ubx_config_data_parse(&payload[4]);
     }
     return res;
@@ -80,7 +78,7 @@ static bool ubx_cfg_valget_parse(uint8_t* payload) {
 static bool ubx_proc_cfg_frame(void) {
     bool res = false;
     switch(UbloxPorotocol.fix_frame[UBX_INDEX_ID]) {
-    case 0x8b:
+    case UBX_ID_CFG_GET_VAL:
         res = ubx_cfg_valget_parse(&UbloxPorotocol.fix_frame[UBX_INDEX_PAYLOAD]);
         break;
     }
@@ -204,6 +202,7 @@ static bool ubx_proc_ack_frame(void) {
     bool res = false;
     switch(UbloxPorotocol.fix_frame[UBX_INDEX_ID]) {
     case UBX_ACK_ACK:
+        LOG_NOTICE(UBX, "Ack");
         UbloxPorotocol.ack_cnt++;
         res = true;
         break;
@@ -288,6 +287,40 @@ static const UbxHeader_t pollLut[] = {
     {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC}, {UBX_CLA_NAV, UBX_ID_NAV_VELNED},   {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
     {UBX_CLA_NAV, UBX_ID_NAV_ATT},     {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH}, {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
 };
+
+bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers) {
+    bool res = false;
+    if (val && (0<val_len)) {
+        uint8_t payload[4 + 32];
+        memset(payload, 0 , sizeof(payload));
+        uint16_t payload_len = 0;
+        payload[0] = 0x00;   /*version*/
+        payload[1] = layers; /*layers*/
+        payload[2] = 0;
+        payload[3] = 0;
+        memcpy(&payload[4], &key_id, sizeof(key_id));
+        //uint8_t key_size = ubx_keyid_2len(key_id);
+        print_mem(val,val_len,true,false,true,true);
+        memcpy(&payload[8], val, val_len);
+        payload_len = 8 + val_len;
+        res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
+    }
+    return res;
+}
+
+bool ubx_cfg_get_val(uint32_t key_id, uint8_t layers) {
+    bool res = false;
+    uint8_t payload[4 + 32];
+    uint16_t payload_len = 0;
+    payload[0] = 0x00;   /*version*/
+    payload[1] = layers; /*layers*/
+    payload[2] = 0;
+    payload[3] = 0;
+    memcpy(&payload[4], &key_id, sizeof(key_id));
+    payload_len = 8;
+    res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_GET_VAL, payload, payload_len);
+    return res;
+}
 
 bool ubx_proc(void) {
     bool res = false;

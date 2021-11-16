@@ -27,18 +27,21 @@ static bool nmea_diag(void) {
 static bool nmea_data(void) {
     print_time_date(&NmeaData.rmc.time_date);
     io_printf("RCM" CRLF);
-    print_coordinate(NmeaData.rmc.coordinate_ddmm);
+    print_coordinate(NmeaData.rmc.coordinate_ddmm, true);
     NmeaData.rmc.coordinate_dd = encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
-    print_coordinate(NmeaData.rmc.coordinate_dd);
+    print_coordinate(NmeaData.rmc.coordinate_dd, true);
 
     io_printf("GGA" CRLF);
-    print_coordinate(NmeaData.gga.coordinate_ddmm);
+    print_coordinate(NmeaData.gga.coordinate_ddmm, true);
     NmeaData.gga.coordinate_dd = encode_gnss_coordinates(NmeaData.gga.coordinate_ddmm);
-    print_coordinate(NmeaData.gga.coordinate_dd);
+    print_coordinate(NmeaData.gga.coordinate_dd, true);
 
     io_printf("speed_knots : %f" CRLF, NmeaData.rmc.speed_knots);
     io_printf("height: %f" CRLF, NmeaData.gga.height);
     io_printf("nb_sat: %u" CRLF, NmeaData.gga.nb_sat);
+
+    io_printf("General" CRLF);
+    print_coordinate(NmeaData.coordinate_dd, true);
     return true;
 }
 

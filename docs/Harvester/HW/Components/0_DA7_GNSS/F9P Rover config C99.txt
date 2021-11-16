@@ -25,5 +25,5 @@ Flash CFG-USBOUTPROT-UBX   1                    # write value 1                 
 Flash CFG-USBOUTPROT-NMEA  1                    # write value 1                    to item id 10780002 in layer 2
   RAM CFG-USBOUTPROT-RTCM3X 0                    # write value 0                    to item id 10780004 in layer 0
 Flash CFG-USBOUTPROT-RTCM3X 0                    # write value 0                    to item id 10780004 in layer 2
-Flash CFG-UART1-BAUDRATE   0x70800              # write value 460800  0x70800      to item id 40520001 in layer 2
-  RAM CFG-UART1-BAUDRATE   0x70800              # write value 460800  0x70800      to item id 40520001 in layer 0
+Flash CFG-UART1-BAUDRATE   0x00009600              # write value 38400  0x00009600      to item id 40520001 in layer 2
+  RAM CFG-UART1-BAUDRATE   0x00009600              # write value 38400  0x00009600      to item id 40520001 in layer 0

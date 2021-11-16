@@ -42,6 +42,5 @@ Flash CFG-MSGOUT-RTCM_3X_TYPE1094_USB 0x1                  # write value 1  0x1 
 Flash CFG-MSGOUT-UBX_NAV_PVT_USB 0x1                  # write value 1  0x1               to item id 20910009 in layer 2
   RAM CFG-MSGOUT-UBX_NAV_SVIN_USB 0x1                  # write value 1  0x1               to item id 2091008b in layer 
 Flash CFG-MSGOUT-UBX_NAV_SVIN_USB 0x1                  # write value 1  0x1               to item id 2091008b in layer 
-Flash CFG-UART1-BAUDRATE   0x70800              # write value 460800  0x70800      to item id 40520001 in layer 2
-  RAM CFG-UART1-BAUDRATE   0x70800              # write value 460800  0x70800      to item id 40520001 in layer 0
-  
+Flash CFG-UART1-BAUDRATE   0x00009600              # write value 38400  0x00009600      to item id 40520001 in layer 2
+  RAM CFG-UART1-BAUDRATE   0x00009600              # write value 38400  0x00009600      to item id 40520001 in layer 0

@@ -1592,6 +1592,12 @@ const char* utoa_bin16(uint16_t u16_bin_data) {
     return outBitStr16;
 }
 
+const char* utoa_bin64(uint64_t u64_bin_data) {
+    static char outBitStr16[ ] = "mone";
+    /*TODO: Implement later*/
+    return outBitStr16;
+}
+
 const char* utoa_bin24(uint32_t u32_bin_data) {
     uint8_t cell24 = 0u;
     uint32_t mask24 = 0x00800000U;

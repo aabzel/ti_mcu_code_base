@@ -11,8 +11,8 @@
 #include "convert.h"
 #include "time_utils.h"
 
-NmeaProtocol_t NmeaProto={0};
-NmeaData_t NmeaData={0};
+NmeaProtocol_t NmeaProto = {0};
+NmeaData_t NmeaData = {0};
 
 bool nmea_init(void) {
     memset(&NmeaData, 0x00, sizeof(NmeaData));
@@ -380,7 +380,7 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
                 res = gnss_parse_rmc(nmea_msg, &gps_ctx->rmc);
                 if(res) {
 #ifdef HAS_MCU
-                    gps_ctx->gnss_time_stamp =  get_time_ms32();
+                    gps_ctx->gnss_time_stamp = get_time_ms32();
 #endif
                     gps_ctx->rmc.cnt++;
                 }
@@ -471,7 +471,7 @@ bool nmea_proc(void) {
     static uint32_t prev_gga_cnt = 0;
 #ifdef HAS_MCU
     uint32_t cur_time_ms = get_time_ms32();
-    uint32_t lack_of_frame_time_out_ms = 0 ;
+    uint32_t lack_of_frame_time_out_ms = 0;
 #endif
     if(prev_rmc_cnt < NmeaData.rmc.cnt) {
         NmeaData.coordinate_dd = encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
@@ -484,13 +484,13 @@ bool nmea_proc(void) {
     }
     /*If new coordinates had not been received in the last 3 seconds, then FW would have erased the old ones*/
 #ifdef HAS_MCU
-    lack_of_frame_time_out_ms=(cur_time_ms-NmeaData.gnss_time_stamp);
-    if (NMEA_LACK_FRAME_WARNING_TIME_OUT_MS < lack_of_frame_time_out_ms) {
-        LOG_WARNING(NMEA,"LackOfFrame");
-        if(NMEA_LACK_FRAME_ERROR_TIME_OUT_MS < lack_of_frame_time_out_ms){
-            LOG_ERROR(NMEA,"LackOfFrame");
-            NmeaData.coordinate_dd.latitude =0.0;
-            NmeaData.coordinate_dd.longitude=0.0;
+    lack_of_frame_time_out_ms = (cur_time_ms - NmeaData.gnss_time_stamp);
+    if(NMEA_LACK_FRAME_WARNING_TIME_OUT_MS < lack_of_frame_time_out_ms) {
+        LOG_WARNING(NMEA, "LackOfFrame");
+        if(NMEA_LACK_FRAME_ERROR_TIME_OUT_MS < lack_of_frame_time_out_ms) {
+            LOG_ERROR(NMEA, "LackOfFrame");
+            NmeaData.coordinate_dd.latitude = 0.0;
+            NmeaData.coordinate_dd.longitude = 0.0;
         }
     }
 #endif

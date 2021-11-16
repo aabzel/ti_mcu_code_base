@@ -178,7 +178,6 @@ void common_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_PARAM
     measure_task_interval(TASK_ID_PARAM, PARAM_PERIOD_US, param_proc, loop_start_time_us);
 #endif /*HAS_PARAM*/
-
 }
 #endif /*NORTOS*/
 

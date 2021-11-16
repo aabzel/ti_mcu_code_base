@@ -44,6 +44,19 @@ uint16_t reverse_byte_order_uint16(const uint16_t in2byteVal) {
   return swapped;
 }
 
+bool reverse_byte_order_array(uint8_t * in_out_array, uint32_t len) {
+  bool res = false;
+  if(in_out_array && (0<len)){
+      res = true;
+      uint32_t i =0;
+      for(i=0;i<len/2;i++) {
+          res=swap8(&in_out_array[i], &in_out_array[len-i-1]) && res;
+      }
+  }
+
+  return res;
+}
+
 uint16_t copy_and_rev16(const uint8_t *const array){
     uint16_t value16b=0;
     memcpy(&value16b,array,2);

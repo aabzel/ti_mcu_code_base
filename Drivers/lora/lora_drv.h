@@ -5,8 +5,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "fifo_array.h"
 #include "clocks.h"
+#include "fifo_array.h"
 
 #define LORA_TX_QUEUE_SIZE 60
 #define LORA_MAX_FRAME_SIZE 256U

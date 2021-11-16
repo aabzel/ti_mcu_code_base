@@ -76,6 +76,7 @@ int8_t two_complement_to_decimal(uint8_t in_code, int significant_bits);
 uint16_t max16u(uint16_t max16u_x1, uint16_t max16u_x2);
 uint16_t min16u(uint16_t min16u_x1, uint16_t min16u_x2);
 uint16_t swap16(uint16_t u16_num);
+bool swap8(uint8_t* u8_x, uint8_t* u8_y);
 uint32_t rx_max32u(uint32_t max32u_x1, uint32_t max32u_x2);
 uint32_t rx_min32u(uint32_t min32u_x1, uint32_t min32u_x2);
 uint32_t swap32(uint32_t u32_num);

@@ -151,6 +151,45 @@ bool print_u16_un(U16_bit_t un) {
     return true;
 }
 
+bool print_u64_un(U64_bit_t un) {
+    uint8_t i=0;
+    io_printf("un 0x%16x 0b_%s" CRLF, un.u64, utoa_bin64(un.u64));
+    io_printf("s64: %d "   CRLF, un.s64);
+    io_printf("u64: %llu " CRLF, un.u64);
+
+    for(i=0;i<2;i++){
+       io_printf("0x%08x " , un.u32[i]);
+    }
+    io_printf(CRLF);
+
+    for(i=0;i<2;i++){
+       io_printf("%d " , un.s32[i]);
+    }
+    io_printf(CRLF);
+
+
+    for(i=0;i<4;i++){
+       io_printf("0x%04x " , un.u16[i]);
+    }
+    io_printf(CRLF);
+
+    for(i=0;i<4;i++){
+       io_printf("%d " , un.s16[i]);
+    }
+    io_printf(CRLF);
+
+    for(i=0;i<8;i++){
+       io_printf("0x%02x ", un.u8[i]);
+    }
+    io_printf(CRLF);
+
+    for(i=0;i<8;i++){
+       io_printf("%d " , un.s8[i]);
+    }
+    io_printf(CRLF);
+    return true;
+}
+
 bool print_16bit_types(void* val) {
     U16_bit_t union16bit = {0};
     memcpy(&union16bit, val, 2);
@@ -161,6 +200,19 @@ bool print_16bit_types(void* val) {
 
     union16bit.u16 = reverse_byte_order_uint16(union16bit.u16);
     print_u16_un(union16bit);
+    return true;
+}
+
+bool print_64bit_types(void* val) {
+    U64_bit_t union64bit = {0};
+    memcpy(&union64bit.u64, val, 8);
+
+    print_u64_un(union64bit);
+
+    io_printf("Reverse bytes in %llu" CRLF, union64bit.u64);
+
+    union64bit.u64 = reverse_byte_order_uint64(union64bit.u64);
+    print_u64_un(union64bit);
     return true;
 }
 

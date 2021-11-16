@@ -12,8 +12,7 @@ https://www.youtube.com/watch?v=FpkUXmM7mrc&t=223s
 37.45090000
 
 
-Балкон 
-55.864110, 37.426825
+
 
 Конфигурация базовой станции:
 take ZED-F9P модуль

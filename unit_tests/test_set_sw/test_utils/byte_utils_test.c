@@ -1,10 +1,27 @@
 #include "byte_utils_test.h"
-
+#ifdef  X86_64
 #include <stdio.h>
-
+#endif
 #include "byte_utils.h"
 #include "data_utils.h"
 #include "unit_test_check.h"
+
+const uint8_t ExpAarray3[]={0x33,0x22,0x11};
+const uint8_t ExpAarray4[]={0x44,0x33,0x22,0x11};
+
+bool test_array_reverse(void){
+#ifdef  X86_64
+    printf("\n%s():",__FUNCTION__);
+#endif
+    uint8_t array3[3]={0x11, 0x22, 0x33};
+    EXPECT_TRUE(reverse_byte_order_array( array3, sizeof(array3)));
+    EXPECT_EQ_MEM(array3,ExpAarray3,3);
+
+    uint8_t array4[4]={0x11 ,0x22, 0x33, 0x44};
+    EXPECT_TRUE(reverse_byte_order_array( array4, sizeof(array4)));
+    EXPECT_EQ_MEM(array4,ExpAarray4, 4);
+    return true;
+}
 
 static bool test_reverse_byte_order64(void) {
   EXPECT_EQ(0x8877665544332211, reverse_byte_order_uint64(0x1122334455667788));

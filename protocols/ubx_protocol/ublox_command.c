@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "byte_utils.h"
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
@@ -45,7 +46,7 @@ static bool ubx_diag(void) {
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return true;
 }
-
+#if 0
 static char* ubx_print_key_val(uint16_t i) {
     static char buff[20] = "";
     if(i < UBX_KEY_CNT) {
@@ -55,7 +56,6 @@ static char* ubx_print_key_val(uint16_t i) {
     }
     return buff;
 }
-
 static bool ubx_key_val_diag(void) {
     uint8_t i = 0;
     table_col_t cols[] = {{7, "key"}, {8, "val"}};
@@ -70,6 +70,17 @@ static bool ubx_key_val_diag(void) {
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return true;
 }
+
+bool ubx_print_key_val_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = ubx_key_val_diag();
+    } else {
+        LOG_ERROR(UBX, "Usage: ubk");
+    }
+    return res;
+}
+#endif
 
 bool ubx_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -92,39 +103,31 @@ bool ubx_diag_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool ubx_print_key_val_command(int32_t argc, char* argv[]) {
-    bool res = false;
-    if(0 == argc) {
-        res = ubx_key_val_diag();
-    } else {
-        LOG_ERROR(UBX, "Usage: ubk");
-    }
-    return res;
-}
-
 bool ubx_get_key_command(int32_t argc, char* argv[]) {
     bool res = false;
-    if(1 == argc) {
-        res = true;
-        uint32_t key_id = 0;
-        if(true == res) {
-            res = try_str2uint32(argv[0], &key_id);
-            if(false == res) {
-                LOG_ERROR(UBX, "Unable to extract Class %s", argv[0]);
-            }
+    uint8_t layers = 0;
+    uint32_t key_id = 0;
+    if(1 <= argc) {
+        res = try_str2uint32(argv[0], &key_id);
+        if(false == res) {
+            LOG_ERROR(UBX, "Unable to extract key_id %s", argv[0]);
         }
-
-        if(true == res) {
-            uint8_t payload[10] = {0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x21, 0x30};
-            memcpy(&payload[4], &key_id, 4);
-            res = ubx_send_message(0x06, 0x8b, payload, 8);
-            if(false == res) {
-                LOG_ERROR(UBX, "Unable to send to Ublox");
-            }
+    }
+    if(2 <= argc) {
+        res = try_str2uint8(argv[1], &layers);
+        if(false == res) {
+            LOG_ERROR(UBX, "Unable to extract layers %s", argv[1]);
         }
+    }
 
-    } else {
+    if(2 < argc) {
         LOG_ERROR(UBX, "Usage: ubg key_id");
+    }
+    if(res) {
+        res = ubx_cfg_get_val(key_id, layers);
+        if(false == res) {
+            LOG_ERROR(UBX, "UbxCfgGetErr");
+        }
     }
     return res;
 }
@@ -176,7 +179,7 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
 }
 #ifdef HAS_UBX_DEBUG
 static bool ubx_nav(void) {
-    bool res = print_coordinate(NavInfo.coordinate);
+    bool res = print_coordinate(NavInfo.coordinate, true);
     res = print_velocity(NavInfo.velocity) && res;
     res = print_time_date(&NavInfo.date_time) && res;
     io_printf("hmsl: %d mm %d m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 1000);
@@ -203,5 +206,41 @@ bool ubx_nav_command(int32_t argc, char* argv[]) {
         LOG_ERROR(UBX, "Usage: ubn");
     }
 #endif
+    return res;
+}
+
+bool ubx_set_val_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    uint32_t key_id = 0;
+    uint8_t payload[10] = {0};
+    uint32_t val_len = 0U;
+    uint8_t layers = 0;
+    if(3 == argc) {
+        res = try_str2uint32(argv[0], &key_id);
+        if(false == res) {
+            LOG_ERROR(UBX, "Unable to extract key_id %s", argv[0]);
+        }
+        res = try_str2array(argv[1], payload, sizeof(payload), &val_len) && res;
+        if(false == res) {
+            LOG_ERROR(UBX, "Unable to extract value %s", argv[1]);
+        } else {
+            res = reverse_byte_order_array(payload, val_len) && res;
+        }
+        res = try_str2uint8(argv[2], &layers) && res;
+        if(false == res) {
+            LOG_ERROR(UBX, "Unable to extract layer %s", argv[2]);
+        }
+    } else {
+        LOG_ERROR(UBX, "Usage: ubsv keyID val layer");
+    }
+
+    if(res) {
+        res = ubx_cfg_set_val(key_id, payload, val_len, layers);
+        if(res) {
+            LOG_INFO(UBX, "key 0x%x len:%u set Ok!", key_id, val_len);
+        } else {
+            LOG_ERROR(UBX, "set error");
+        }
+    }
     return res;
 }

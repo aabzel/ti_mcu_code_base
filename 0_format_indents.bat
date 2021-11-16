@@ -5,6 +5,10 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\ubx_protocol\ubx_key_ids.h
+
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\zed_f9p\zed_f9p_commands.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\zed_f9p\zed_f9p_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\projects\fw_loader_debug\cli_wrappers.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\projects\fw_loader_debug\cli_wrappers.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\projects\fw_loader_debug\fw_update.c

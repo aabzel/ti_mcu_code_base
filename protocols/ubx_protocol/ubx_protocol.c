@@ -234,3 +234,35 @@ bool ubx_update_stat(uint8_t val_class) {
 
     return res;
 }
+
+/*see Page 176 */
+uint8_t ubx_key_len_2bytes(uint8_t code) {
+    uint8_t bytes = 0;
+    switch(code) {
+    case 1:
+    case 2:
+        bytes = 1;
+        break;
+    case 3:
+        bytes = 2;
+        break;
+    case 4:
+        bytes = 4;
+        break;
+    case 5:
+        bytes = 8;
+        break;
+    default:
+        bytes = 0;
+        break;
+    }
+    return bytes;
+}
+
+uint8_t ubx_keyid_2len(uint32_t key_id) {
+    uint8_t bytes = 0;
+    ConfigurationKeyID_t KeyId;
+    KeyId.word = key_id;
+    bytes = ubx_key_len_2bytes(KeyId.size);
+    return bytes;
+}

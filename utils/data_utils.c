@@ -70,6 +70,17 @@ uint16_t swap16(uint16_t u16_num) {
     return (((uint16_t)((u16_num) >> 8) & 0xffU) | ((uint16_t)((u16_num) << 8) & 0xff00U));
 }
 
+bool swap8(uint8_t* u8_x, uint8_t* u8_y) {
+    bool res = false;
+    if(u8_x && u8_y) {
+        uint8_t temp = *u8_x;
+        *u8_x = *u8_y;
+        *u8_y = temp;
+        res = true;
+    }
+    return res;
+}
+
 #define TEN_SPACES "          "
 const char* get_spaces_str(uint32_t spaces_length) {
     static char szSpaces[101] =

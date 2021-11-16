@@ -17,27 +17,34 @@
 #include "sx1262_diag.h"
 #endif
 
+#ifdef HAS_ZED_F9P
+#include "gnss_diag.h"
+#include "zed_f9p_diag.h"
+#endif /*HAS_ZED_F9P*/
+
 /*TODO: Sort by index for bin search in future*/
 const ParamItem_t ParamArray[PARAM_CNT] = {
-    {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
-    {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
-    {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
-    {PAR_ID_LORA_BW, 1, UINT8, "BW"},               /*Hz*/
-    {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
-    {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
-    {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
-    {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
-    {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
-    {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},                /*1-stay in boot 0-launch App*/
-    {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},                /*num*/
-    {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},         /*Flash Addr*/
-    {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},            /*Flash Addr*/
-    {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},          /*loRa output power*/
-    {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
-    {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
-    {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
-    {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},    /*Max LoRa bit/rate*/
-    {PAR_ID_BASE_LOCATION,16,STRUCT,"BaseLocat"},
+ /*1 */  {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
+ /*2 */  {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
+ /*3 */  {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
+ /*4 */  {PAR_ID_LORA_BW, 1, UINT8, "BW"},               /*Hz*/
+ /*5 */  {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
+ /*6 */  {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
+ /*7 */  {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
+ /*8 */  {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
+ /*9 */  {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
+ /*10*/   {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},                /*1-stay in boot 0-launch App*/
+ /*11*/   {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},                /*num*/
+ /*12*/   {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},         /*Flash Addr*/
+ /*13*/   {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},            /*Flash Addr*/
+ /*14*/   {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},          /*loRa output power*/
+ /*15*/   {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
+ /*16*/   {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
+ /*17*/   {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
+ /*18*/   {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},    /*Max LoRa bit/rate*/
+ /*19*/   {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
+ /*20*/   {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
+ /*21*/   {PAR_ID_BASE_ALT, 8,DOUBLE , "BaseAlt"},
 
 };
 
@@ -169,7 +176,7 @@ bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* ou
             break;
         case STRUCT:
             if(strlen((char*)value) < str_size) {
-                res =  hex2ascii(value, value_len, out_str, str_size);
+                res = hex2ascii(value, value_len, out_str, str_size);
             }
             break;
         case FLOAT:
@@ -209,15 +216,23 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
     if(PAR_ID_LORA_BW == id) {
         name = bandwidth2str((uint8_t)*value);
     }
-#endif
+#endif /*HAS_SX1262*/
     if(PAR_ID_BOOT_CMD == id) {
         name = boot_cmd2str((uint8_t)*value);
     }
 
+#ifdef HAS_ZED_F9P
+    if(PAR_ID_RTK_MODE== id) {
+        name = rtk_mode2str((uint8_t)*value);
+    }
+    if(PAR_ID_BASE_LOCATION== id) {
+        name = coordinate2str((GnssCoordinate_t *)value);
+    }
+#endif /*HAS_ZED_F9P*/
     return name;
 }
 
-bool param_proc(void){
+bool param_proc(void) {
     bool res = false;
     /*Syn params between flash and RAM*/
     return res;

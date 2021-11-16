@@ -454,6 +454,13 @@ bool cmd_calc(int32_t argc, char* argv[]) {
     bool res = false;
     if(1 == argc) {
         res = true;
+        uint64_t value64u = 0;
+        res = try_str2uint64(argv[0], &value64u);
+        if(true == res) {
+            io_printf("spot uint64 %llu" CRLF, value64u);
+            print_64bit_types((void*)&value64u);
+        }
+
         uint16_t value16u = 0;
         res = try_str2uint16(argv[0], &value16u);
         if(true == res) {
