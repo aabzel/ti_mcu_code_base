@@ -4,16 +4,16 @@
 [set]
   RAM CFG-UART1INPROT-NMEA 0                    # write value 0                    to item id 10730002 in layer 0
 Flash CFG-UART1INPROT-NMEA 0                    # write value 0                    to item id 10730002 in layer 2
-  RAM CFG-UART1INPROT-RTCM3X 0                    # write value 0                    to item id 10730004 in layer 0
-Flash CFG-UART1INPROT-RTCM3X 0                    # write value 0                    to item id 10730004 in layer 2
-  RAM CFG-UART1OUTPROT-UBX 0                    # write value 0                    to item id 10740001 in layer 0
-Flash CFG-UART1OUTPROT-UBX 0                    # write value 0                    to item id 10740001 in layer 2
-  RAM CFG-UART1OUTPROT-NMEA 0                    # write value 0                    to item id 10740002 in layer 0
-Flash CFG-UART1OUTPROT-NMEA 0                    # write value 0                    to item id 10740002 in layer 2
-  RAM CFG-UART1OUTPROT-RTCM3X 1                    # write value 1                    to item id 10740004 in layer 0
-Flash CFG-UART1OUTPROT-RTCM3X 1                    # write value 1                    to item id 10740004 in layer 2
-Flash CFG-UART1INPROT-UBX  0                    # write value 0                    to item id 10730001 in layer 2
-  RAM CFG-UART1INPROT-UBX  0                    # write value 0                    to item id 10730001 in layer 0
+  RAM CFG-UART1INPROT-RTCM3X 0                  # write value 0                    to item id 10730004 in layer 0
+Flash CFG-UART1INPROT-RTCM3X 0                  # write value 0                    to item id 10730004 in layer 2
+  RAM CFG-UART1OUTPROT-UBX 1                    # write value 1                    to item id 10740001 in layer 0
+Flash CFG-UART1OUTPROT-UBX 1                    # write value 1                    to item id 10740001 in layer 2
+  RAM CFG-UART1OUTPROT-NMEA 0                   # write value 0                    to item id 10740002 in layer 0
+Flash CFG-UART1OUTPROT-NMEA 0                   # write value 0                    to item id 10740002 in layer 2
+  RAM CFG-UART1OUTPROT-RTCM3X 1                 # write value 1                    to item id 10740004 in layer 0
+Flash CFG-UART1OUTPROT-RTCM3X 1                 # write value 1                    to item id 10740004 in layer 2
+Flash CFG-UART1INPROT-UBX  1                    # write value 1                    to item id 10730001 in layer 2
+  RAM CFG-UART1INPROT-UBX  1                    # write value 1                    to item id 10730001 in layer 0
   RAM CFG-MSGOUT-RTCM_3X_TYPE1005_UART1 0x1                  # write value 1  0x1               to item id 209102be in 
 Flash CFG-MSGOUT-RTCM_3X_TYPE1005_UART1 0x1                  # write value 1  0x1               to item id 209102be in 
   RAM CFG-MSGOUT-RTCM_3X_TYPE1074_UART1 0x1                  # write value 1  0x1               to item id 2091035f in 

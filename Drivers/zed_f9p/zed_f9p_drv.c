@@ -75,12 +75,13 @@ bool zed_f9p_proc(void) {
 }
 
 static const keyValItem_t BaseCfgLut[] = {
+ /*21*/  {CFG_UART1_BAUDRATE, 38400},
  /*1 */  {CFG_UART1INPROT_NMEA, 0},
  /*2 */  {CFG_UART1INPROT_RTCM3X, 0},
- /*3 */  {CFG_UART1OUTPROT_UBX, 0},
+ /*6 */  {CFG_UART1INPROT_UBX, 1},
  /*4 */  {CFG_UART1OUTPROT_NMEA, 0},
+ /*3 */  {CFG_UART1OUTPROT_UBX, 1},
  /*5 */  {CFG_UART1OUTPROT_RTCM3X, 1},
- /*6 */  {CFG_UART1INPROT_UBX, 0},
  /*7 */  {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1},
  /*8 */  {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1},
  /*9 */  {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1},
@@ -95,7 +96,6 @@ static const keyValItem_t BaseCfgLut[] = {
  /*18*/  {CFG_MSGOUT_RTCM_3X_TYPE1094_USB, 1},
  /*19*/  {CFG_MSGOUT_UBX_NAV_PVT_USB, 1},
  /*20*/  {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1},
- /*21*/  {CFG_UART1_BAUDRATE, 38400},
 };
 
 bool zed_f9p_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) {
@@ -116,7 +116,7 @@ bool zed_f9p_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) {
             res = ubx_cfg_set_val(BaseCfgLut[i].key_id,
                                   (uint8_t *)&BaseCfgLut[i].u_value.u8[0],
                                   ubx_keyid_2len(BaseCfgLut[i].key_id),
-                                  LAYER_MASK_RAM_FLASH) &&
+                                  LAYER_MASK_RAM) &&
               res;
             wait_in_loop_ms(700);
         }

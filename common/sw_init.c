@@ -66,6 +66,10 @@
 #include "pwr_mux_drv.h"
 #endif /*HAS_PWR_MUX*/
 
+#ifdef HAS_ZED_F9P
+#include "zed_f9p_drv.h"
+#endif/*HAS_ZED_F9P*/
+
 bool sw_init(void) {
     bool res = true;
 
@@ -91,15 +95,16 @@ bool sw_init(void) {
     res = try_init(tbfp_protocol_init(&TbfpPorotocol), "TBFP") && res;
 #endif /*HAS_TBFP*/
 
-#ifdef HAS_RTCM3
-    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_UART_ID], RT_UART_ID, true), "RTCM3_UART") && res;
-    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_LORA_ID], RT_LORA_ID, false), "RTCM3_LORA") && res;
-#endif /*HAS_RTCM3*/
 
 #ifdef HAS_UBLOX
     res = try_init(ublox_protocol_init(), "UBXProto") && res;
     res = try_init(ubx_driver_init(), "UBXdrv") && res;
 #endif /*HAS_UBLOX*/
+
+#ifdef HAS_RTCM3
+    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_UART_ID], RT_UART_ID, true), "RTCM3_UART") && res;
+    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_LORA_ID], RT_LORA_ID, false), "RTCM3_LORA") && res;
+#endif /*HAS_RTCM3*/
 
 #ifdef HAS_HEALTH_MONITOR
     res = try_init(health_monotor_init(), "HM") && res;
@@ -136,5 +141,9 @@ bool sw_init(void) {
 #ifdef HAS_GPIO_PWM
     res = try_init(gpio_pwm_init(), "GPIO_PWM") && res;
 #endif /*HAS_LORA*/
+
+#ifdef HAS_ZED_F9P
+  res = try_init(zed_f9p_init(),"zedf9p") && res;
+#endif /*HAS_ZED_F9P*/
     return res;
 }

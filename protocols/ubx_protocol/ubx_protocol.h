@@ -71,9 +71,9 @@ typedef enum eUbxProtState_t {
     UBX_RX_DONE = 7U
 } UbxProtState_t;
 
-#define LAYER_MASK_RAM (1 << 0)
-#define LAYER_MASK_BBR (1 << 1) /*Battery-backed RAM*/
-#define LAYER_MASK_FLASH (1 << 2)
+#define LAYER_MASK_RAM (1)
+#define LAYER_MASK_BBR (2) /*Battery-backed RAM*/
+#define LAYER_MASK_FLASH (4)
 #define LAYER_MASK_RAM_FLASH (LAYER_MASK_RAM & LAYER_MASK_FLASH)
 
 typedef struct xLayers_t {
