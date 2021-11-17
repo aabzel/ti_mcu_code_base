@@ -93,14 +93,15 @@ static bool log_leveles_diag(void) {
     if(&(curWriterPtr->s)){
         log_facility_t f = UNKNOWN_FACILITY;
         res = true;
-        static const table_col_t cols[] = {{4, "code"}, {10, "facility"},   {7, "level"},  {10, "level"}};
+        static const table_col_t cols[] = {{4, "code"}, {10, "facility"},   {5, "lev"},  {10, "level"}};
 
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         for(f = UNKNOWN_FACILITY+1; f < ALL_FACILITY; f++) {
-            io_printf(TSEP"%3u"TSEP , f );
-            io_printf(TSEP"%8s"TSEP , facility2str(f) );
-            io_printf(TSEP"%3d"TSEP , log_levels[f] );
-            io_printf(TSEP"%s%8s%s"TSEP , log_level_color(log_levels[f]),log_level_name_long(log_levels[f]), VT_SETCOLOR_NORMAL);
+            io_printf(TSEP);
+            io_printf("%3u "TSEP , f );
+            io_printf("%8s"TSEP , facility2str(f) );
+            io_printf("%3d"TSEP , log_levels[f] );
+            io_printf("%s%8s%s"TSEP , log_level_color(log_levels[f]),log_level_name_long(log_levels[f]), VT_SETCOLOR_NORMAL);
             io_printf(CRLF);
         }
 
