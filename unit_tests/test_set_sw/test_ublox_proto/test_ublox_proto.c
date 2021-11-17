@@ -66,9 +66,9 @@ bool test_ublox_proto_types(void) {
 #ifdef X86_64
    printf("\n%s()",__FUNCTION__);
 #endif
+   EXPECT_EQ(4, sizeof(ConfigurationKeyID_t));
    EXPECT_EQ(13, sizeof(UbxCfgCfg_t));
    EXPECT_EQ(40, sizeof(UbxCfgTmode3Data_t_t));
-   EXPECT_EQ(4, sizeof(ConfigurationKeyID_t));
    EXPECT_EQ(9, sizeof(SecUniqId_t));
    EXPECT_EQ(28, sizeof(NavPosllh_t));
    EXPECT_EQ(36, sizeof(NavHpPosllh_t));

@@ -126,7 +126,9 @@ void table_row_header(ostream_t *row_header_ostream,
 
 void table_header(ostream_t *header_ostream, const table_col_t header_cols[],
                   int16_t header_col_count) {
-  table_row_top(header_ostream, header_cols, header_col_count);
-  table_row_header(header_ostream, header_cols, header_col_count);
-  table_row_separator(header_ostream, header_cols, header_col_count);
+    if(header_ostream){
+      table_row_top(header_ostream, header_cols, header_col_count);
+      table_row_header(header_ostream, header_cols, header_col_count);
+      table_row_separator(header_ostream, header_cols, header_col_count);
+    }
 }

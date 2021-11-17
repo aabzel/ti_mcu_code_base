@@ -7,7 +7,7 @@
 #include "clocks.h"
 #include "param_types.h"
 
-#define PARAM_CNT 21
+#define PARAM_CNT 23U
 #define PARAM_PERIOD_US S_2_US(3)
 
 typedef enum eId_t {
@@ -33,6 +33,7 @@ typedef enum eId_t {
     PAR_ID_BASE_LOCATION = 20,
     PAR_ID_RTK_MODE = 21,
     PAR_ID_BASE_ALT = 22, /* Base station altitude above sea level*/
+    PAR_ID_GNSS_PERIOD = 23,
     PAR_ID_TEST_START = 100,
     PAR_ID_TEST_END = 200,
     PAR_ID_CNT

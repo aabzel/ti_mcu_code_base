@@ -24,7 +24,7 @@
 
 #define RC_FREQ_HZ 13000000U
 #define XTAL_FREQ_HZ 32000000U
-#define SX1262_PERIOD_US 600U
+#define SX1262_PERIOD_US 300U
 
 #define FREQ_DIV 33554432U // 0x02000000 ( double )pow( 2.0, 25.0 )
 #define SX1262_REG_CNT 26U
@@ -189,7 +189,6 @@ typedef struct xSx1262_t {
 #ifdef HAS_SX1262_BIT_RATE
     uint32_t tx_start_time_stamp_ms;
     uint32_t tx_last_size;
-    float tx_real_bit_rate;
     float tx_max_bit_rate;
 #endif /*HAS_SX1262_BIT_RATE*/
     uint32_t tx_done_time_stamp_ms;

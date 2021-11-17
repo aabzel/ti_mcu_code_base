@@ -979,7 +979,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
         // sx1262_set_tx_len(tx_buf_len); /*Error*/
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
-        LOG_DEBUG(LORA, "TxLen: %u", tx_buf_len);
+        LOG_DEBUG(LORA, "TxLen:%u", tx_buf_len);
     } else {
         res = false;
     }
@@ -1295,6 +1295,29 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     return res;
 }
 
+#ifdef HAS_SX1262_BIT_RATE
+static bool sx1262_calc_bit_rate(float* tx_real_bit_rate, uint32_t* tx_duration_ms) {
+    bool res = false;
+    float bit_rate = 0.0f;
+    uint32_t duration_ms = 0;
+    uint32_t tx_done_time_stamp_ms = get_time_ms32();
+    duration_ms = tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
+    bit_rate = ((float)(Sx1262Instance.tx_last_size * 8 * 1000)) / (((float)duration_ms));
+    if(Sx1262Instance.tx_max_bit_rate < bit_rate) {
+        Sx1262Instance.tx_max_bit_rate = bit_rate;
+        res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(float));
+        if(false == res) {
+            LOG_ERROR(LORA, "SaveMaxLoRaBitRateErr");
+        }
+    }
+    if(tx_real_bit_rate && tx_duration_ms) {
+        *tx_real_bit_rate = bit_rate;
+        *tx_duration_ms = duration_ms;
+    }
+    return res;
+}
+#endif /*HAS_SX1262_BIT_RATE*/
+
 static inline bool sx1262_poll_status(void) {
     bool res = false;
     Sx1262_t tempSx1262Instance = {0};
@@ -1309,9 +1332,7 @@ static inline bool sx1262_poll_status(void) {
         uint8_t rx_payload[RX_SIZE] = {0};
         memset(rx_payload, 0x00, sizeof(rx_payload));
         uint8_t rx_size = 0;
-#ifdef HAS_SX1262_BIT_RATE
-        uint32_t tx_duration_ms = 0;
-#endif /*HAS_SX1262_BIT_RATE*/
+
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.rx_done_cnt++;
@@ -1342,22 +1363,13 @@ static inline bool sx1262_poll_status(void) {
             break;
         case COM_STAT_COM_TX_DONE: {
 #ifdef HAS_SX1262_BIT_RATE
-            Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
-            tx_duration_ms = Sx1262Instance.tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
-            Sx1262Instance.tx_real_bit_rate =
-                (1000.0f * ((float)tx_duration_ms)) / ((float)(Sx1262Instance.tx_last_size * 8));
-            if(Sx1262Instance.tx_max_bit_rate < Sx1262Instance.tx_real_bit_rate) {
-                Sx1262Instance.tx_max_bit_rate = Sx1262Instance.tx_real_bit_rate;
-                res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(float));
-                if(false == res) {
-                    LOG_ERROR(LORA, "UpdtMaxLoRaBitRateErr");
-                }
-                /*TODO: Save to Flash*/
-            }
+            float tx_real_bit_rate = 0.0;
+            uint32_t tx_duration_ms = 0;
+            sx1262_calc_bit_rate(&tx_real_bit_rate, &tx_duration_ms);
 #endif /*HAS_SX1262_BIT_RATE*/
             if(Sx1262Instance.debug) {
 #ifdef HAS_SX1262_BIT_RATE
-                LOG_INFO(LORA, "TX done %f bit/s duration: %u ms", Sx1262Instance.tx_real_bit_rate, tx_duration_ms);
+                LOG_INFO(LORA, "TX done %f bit/s duration: %u ms", tx_real_bit_rate, tx_duration_ms);
 #else
                 LOG_INFO(LORA, "TX done");
 #endif /*HAS_SX1262_BIT_RATE*/

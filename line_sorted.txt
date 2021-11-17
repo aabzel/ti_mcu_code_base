@@ -1,12 +1,27 @@
-bool flash_erase_pages(uint8_t page_start, uint8_t page_end);
-bool flash_erase_sector(uint32_t sector_address);
-bool flash_find_spare_region(uint32_t* out_addr, uint32_t size);
-bool flash_init(void);
-bool flash_read(uint32_t in_flash_addr, uint8_t* rx_array, uint32_t array_len);
-bool flash_wr(uint32_t addr, uint8_t* array, uint32_t array_len);
-bool is_addr_protected(uint32_t flash_addr);
-bool is_errased(uint32_t addr, uint32_t size);
-bool is_flash_addr(uint32_t flash_addr);
-bool is_flash_spare(uint32_t flash_addr, uint32_t size);
-uint32_t flash_get_first_spare_page(void);
-uint32_t flash_page2addr(uint8_t page);
+#define CFG_MSGOUT_RTCM_3X_TYPE1005_UART1 0x209102be
+#define CFG_MSGOUT_RTCM_3X_TYPE1005_USB 0x209102c0
+#define CFG_MSGOUT_RTCM_3X_TYPE1074_UART1 0x2091035f
+#define CFG_MSGOUT_RTCM_3X_TYPE1074_USB 0x20910361
+#define CFG_MSGOUT_RTCM_3X_TYPE1084_UART1 0x20910364
+#define CFG_MSGOUT_RTCM_3X_TYPE1084_USB 0x20910366
+#define CFG_MSGOUT_RTCM_3X_TYPE1094_UART1 0x20910369
+#define CFG_MSGOUT_RTCM_3X_TYPE1094_USB 0x2091036b
+#define CFG_MSGOUT_RTCM_3X_TYPE1124_UART1 0x2091036e
+#define CFG_MSGOUT_RTCM_3X_TYPE1124_USB 0x20910370
+#define CFG_MSGOUT_RTCM_3X_TYPE1230_UART1 0x20910304
+#define CFG_MSGOUT_RTCM_3X_TYPE1230_USB 0x20910306
+#define CFG_MSGOUT_UBX_NAV_PVT_USB 0x20910009
+#define CFG_MSGOUT_UBX_NAV_SVIN_USB 0x2091008b
+#define CFG_UART1_BAUDRATE 0x40520001
+#define CFG_UART1INPROT_NMEA 0x10730002
+#define CFG_UART1INPROT_RTCM3X 0x10730004
+#define CFG_UART1INPROT_UBX 0x10730001
+#define CFG_UART1OUTPROT_NMEA 0x10740002
+#define CFG_UART1OUTPROT_RTCM3X 0x10740004
+#define CFG_UART1OUTPROT_RTCM3X 0x10740004
+#define CFG_UART1OUTPROT_UBX 0x10740001
+#define CFG_USBINPROT_NMEA 0x10770002
+#define CFG_USBINPROT_RTCM3X 0x10770004
+#define CFG_USBINPROT_UBX 0x10770001
+#define CFG_USBOUTPROT_RTCM3X 0x10780004
+#define CFG_USBOUTPROT_UBX 0x10780001

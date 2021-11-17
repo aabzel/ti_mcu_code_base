@@ -272,20 +272,16 @@ uint8_t ubx_keyid_2len(uint32_t key_id) {
 }
 
 #ifdef HAS_MCU
-bool ubx_wait_ack(uint32_t wait_pause_ms){
+bool ubx_wait_ack(uint32_t wait_pause_ms) {
     bool res = false, loop = true;
-    uint32_t start_ms = 0U;
-    uint32_t curr_ms = 0U;
+    uint32_t start_ms = 0U, curr_ms = 0U, ack_cnt_diff = 0;
     start_ms = get_time_ms32();
     uint32_t ack_cnt_init = UbloxPorotocol.ack_cnt;
-    uint32_t ack_cnt_diff = 0;
     uint64_t loop_start_time_us = 0;
-    while(loop){
-#ifdef HAS_DEBUG
-        iteration_cnt++;
-#endif
-        ack_cnt_diff = UbloxPorotocol.ack_cnt-ack_cnt_init;
-        if(0 < ack_cnt_diff){
+    while(loop) {
+
+        ack_cnt_diff = UbloxPorotocol.ack_cnt - ack_cnt_init;
+        if(0 < ack_cnt_diff) {
             res = true;
             loop = false;
         }
@@ -293,9 +289,9 @@ bool ubx_wait_ack(uint32_t wait_pause_ms){
         common_loop(loop_start_time_us);
 
         curr_ms = get_time_ms32();
-        if (wait_pause_ms < (curr_ms - start_ms)) {
-          res = false;
-          loop = false;
+        if(wait_pause_ms < (curr_ms - start_ms)) {
+            res = false;
+            loop = false;
         }
     }
     return res;

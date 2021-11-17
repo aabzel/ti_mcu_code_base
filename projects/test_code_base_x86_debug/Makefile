@@ -11,8 +11,8 @@ SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
 
 OBJDIR := $(SRC_PATH)obj
 # the compiler to use
-#CC = clang
-CC = C:\MinGW\bin\gcc.exe
+CC = clang
+#CC = C:\MinGW\bin\gcc.exe
 #CC = C:\cygwin64\bin\gcc.exe
 
 HAS_X86_64=Y

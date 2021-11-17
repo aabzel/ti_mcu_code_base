@@ -95,6 +95,9 @@ bool sys_init(void) {
 
 #ifdef NORTOS
 void common_loop(uint64_t loop_start_time_us) {
+#ifdef HAS_DEBUG
+    iteration_cnt++;
+#endif
     if(0u == loop_start_time_us) {
         return;
     }
@@ -191,7 +194,6 @@ _Noreturn void common_main_loop(void) {
     for(;;) {
         loop_start_time_us = get_time_us();
 #ifdef HAS_DEBUG
-        iteration_cnt++;
 #ifdef LAUNCHXL_CC26X2R1
         gpio_toggle(COM_LOOP_SENSOR_DIO_NO);
 #endif /*LAUNCHXL_CC26X2R1*/

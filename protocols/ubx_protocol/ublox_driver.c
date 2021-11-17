@@ -284,12 +284,8 @@ bool ubx_proc_frame(UbloxPorotocol_t* inst) {
 }
 
 static const UbxHeader_t pollLut[] = {
-    {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC},
-    {UBX_CLA_NAV, UBX_ID_NAV_VELNED},
-    {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
-    {UBX_CLA_NAV, UBX_ID_NAV_ATT},
-    {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
-    {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
+    {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC}, {UBX_CLA_NAV, UBX_ID_NAV_VELNED},   {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
+    {UBX_CLA_NAV, UBX_ID_NAV_ATT},     {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH}, {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
 };
 
 bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers) {
@@ -350,16 +346,33 @@ bool ubx_proc(void) {
 }
 
 bool ubx_reset_to_dflt(void) {
-    bool res=false;
+    bool res = false;
     UbxCfgCfg_t data = {0};
     /*UBX is a little-endian protocol*/
     data.clearMask = 0x0000FBFF;
     data.saveMask = 0x00000000;
     data.loadMask = 0x0000FFFF;
     data.deviceMask = 0x17;
-    print_mem((uint8_t* ) &data, sizeof(data), true, false, true, true);
+    print_mem((uint8_t*)&data, sizeof(data), true, false, true, true);
     res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_CFG, (uint8_t*)&data, sizeof(data));
+    if(res) {
+        res = ubx_wait_ack(1000);
+    }
     return res;
 }
 
-
+bool ubx_set_rate(uint16_t meas_rate_ms, uint16_t time_ref) {
+    bool res = false;
+    if(25 < meas_rate_ms) {
+        UbxCfgRate_t data;
+        data.meas_rate_ms = meas_rate_ms;
+        data.navRate = 1;
+        data.timeRef = time_ref;
+        print_mem((uint8_t*)&data, sizeof(data), true, false, true, true);
+        res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_RATE, (uint8_t*)&data, sizeof(data));
+        if(res) {
+            res = ubx_wait_ack(1000);
+        }
+    }
+    return res;
+}

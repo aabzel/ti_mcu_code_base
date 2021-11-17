@@ -8,6 +8,7 @@
 #include "ublox_driver.h"
 #include "task_info.h"
 #include "unit_test_check.h"
+#include "zed_f9p_drv.h"
 
 bool test_zed_f9p_mon_hw(void) {
     task_data[TASK_ID_UBX].on = false;
@@ -50,6 +51,12 @@ bool test_zed_f9p_nav_posllh(void) {
     EXPECT_TRUE( wait_in_loop_ms(S_2_MS(3)));
     EXPECT_GR(init_cnt,  UbloxPorotocol.rx_pkt_cnt, 0);
     task_data[TASK_ID_UBX].on = true;
+    return true;
+}
+
+bool test_zed_f9p_types(void){
+    EXPECT_EQ(1, sizeof(RTKmode_t));
+    EXPECT_EQ(1, sizeof(TimeSystem_t));
     return true;
 }
 

@@ -31,6 +31,9 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     bool res = false;
     GnssCoordinate_t coordinate_base;
     double altitude_sea_lev_m = 0.0;
+    if(0 == argc) {
+        res = zed_f9p_load_params();
+    }
     if(1 <= argc) {
         res = try_str2double(argv[0], &coordinate_base.latitude);
     }
@@ -40,7 +43,7 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     if(3 <= argc) {
         res = try_str2double(argv[2], &altitude_sea_lev_m);
     }
-    if(res) {
+    if((2 <= argc) && res) {
         ZedF9P.coordinate_base = coordinate_base;
 #ifdef HAS_PARAM
         res = mm_set(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t));

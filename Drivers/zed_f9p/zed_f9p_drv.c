@@ -14,14 +14,18 @@
 #include "nmea_protocol.h"
 #endif
 
+#ifdef HAS_RTCM3
+#include "rtcm3_protocol.h"
+#endif
+
 #ifdef HAS_PARAM
 #include "param_ids.h"
 #endif
 
 #ifdef HAS_UBX_PTOTO
-#include "ubx_protocol.h"
 #include "ublox_driver.h"
 #include "ubx_key_ids.h"
+#include "ubx_protocol.h"
 #endif
 
 #include "none_blocking_pause.h"
@@ -31,15 +35,15 @@
 
 extern ZedF9P_t ZedF9P = {0};
 
-static bool zed_f9p_proc_base(void){
+static bool zed_f9p_proc_base(void) {
     bool res = false;
-    if( task_data[TASK_ID_NMEA].on) {
+    if(task_data[TASK_ID_NMEA].on) {
         task_data[TASK_ID_NMEA].on = false;
     }
     return res;
 }
 
-static bool zed_f9p_proc_rover(void){
+static bool zed_f9p_proc_rover(void) {
     bool res = false;
     static bool first_gnss = true;
     static bool first_time = true;
@@ -86,9 +90,13 @@ bool zed_f9p_proc(void) {
     /*is new GNSS samples*/
     bool res = false;
 
-    switch(ZedF9P.rtk_mode){
-    case RTK_BASE: res=zed_f9p_proc_base(); break;
-    case RTK_ROVER:res=zed_f9p_proc_rover(); break;
+    switch(ZedF9P.rtk_mode) {
+    case RTK_BASE:
+        res = zed_f9p_proc_base();
+        break;
+    case RTK_ROVER:
+        res = zed_f9p_proc_rover();
+        break;
     default:
         res = false;
         break;
@@ -103,8 +111,8 @@ static const keyValItem_t BaseCfgLut[] = {
     /*2 */ {CFG_UART1INPROT_RTCM3X, 0},
     /*6 */ {CFG_UART1INPROT_UBX, 1},
     /*4 */ {CFG_UART1OUTPROT_NMEA, 0},
-    /*3 */ {CFG_UART1OUTPROT_UBX, 1},
     /*5 */ {CFG_UART1OUTPROT_RTCM3X, 1},
+    /*3 */ {CFG_UART1OUTPROT_UBX, 1},
     /*7 */ {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1},
     /*8 */ {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1},
     /*9 */ {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1},
@@ -125,7 +133,6 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
     bool res = false;
     res = is_valid_gnss_coordinates(coordinate_base);
     if(res) {
-
         /*
           perform settings from here
           https://www.youtube.com/watch?v=FpkUXmM7mrc
@@ -133,14 +140,24 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
           reset to dflt cfg
          */
         res = ubx_reset_to_dflt();
-
+        uint8_t cnt = 0;
         uint32_t i = 0;
         for(i = 0; i < ARRAY_SIZE(BaseCfgLut); i++) {
-            res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
-                                  ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM) &&
-                  res;
-            ubx_wait_ack(600);
-            //wait_in_loop_ms(600);
+            bool loop = true;
+            do {
+                cnt++;
+                res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
+                                      ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM) &&
+                      res;
+                res = ubx_wait_ack(600) && res;
+                if(res) {
+                    loop = false;
+                }
+                if(10 < cnt) {
+                    loop = false;
+                    res = false;
+                }
+            } while(loop);
         }
         /*Write base station antenna coordinates*/
         // UBX-CFG-TMODE3 (0x06 0x71)
@@ -157,9 +174,20 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         ZedF9P.rtk_mode = RTK_BASE;
         res = mm_set(PAR_ID_RTK_MODE, (uint8_t*)&ZedF9P.rtk_mode, 1);
         task_data[TASK_ID_NMEA].on = false;
+#ifdef HAS_RTCM3
+        Rtcm3Porotocol[RT_UART_ID].lora_fwd = true;
+#endif /*HAS_RTCM3*/
+    } else {
+        LOG_ERROR(ZED_F9P, "InvalBaseGNSScoordinate");
     }
     return res;
 }
+
+static const keyValItem_t RoverCfgLut[] = {
+    {CFG_UART1_BAUDRATE, 38400}, {CFG_UART1INPROT_UBX, 1},   {CFG_UART1INPROT_NMEA, 0},    {CFG_UART1INPROT_RTCM3X, 1},
+    {CFG_UART1OUTPROT_UBX, 1},   {CFG_UART1OUTPROT_NMEA, 1}, {CFG_UART1OUTPROT_RTCM3X, 0}, {CFG_USBINPROT_UBX, 1},
+    {CFG_USBINPROT_NMEA, 1},     {CFG_USBINPROT_RTCM3X, 1},  {CFG_USBOUTPROT_UBX, 1},      {CFG_USBOUTPROT_RTCM3X, 0},
+};
 
 bool zed_f9p_deploy_rover(void) {
     bool res = false;
@@ -167,13 +195,40 @@ bool zed_f9p_deploy_rover(void) {
       perform settings from here
       https://www.youtube.com/watch?v=FpkUXmM7mrc
      */
+    res = ubx_reset_to_dflt();
+
+    uint32_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(RoverCfgLut); i++) {
+        res = ubx_cfg_set_val(RoverCfgLut[i].key_id, (uint8_t*)&RoverCfgLut[i].u_value.u8[0],
+                              ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM) &&
+              res;
+        res = ubx_wait_ack(700) && res;
+    }
+    /*adjust output rate*/
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_UTC) && res;
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GPS) && res;
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GLONASS) && res;
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GALILEO) && res;
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_BEIDOU) && res;
+
     return res;
 }
 
-static bool zed_f9p_load_params(void){
+bool zed_f9p_load_params(void) {
     bool res = true;
 #if defined(HAS_FLASH_FS) && defined(HAS_PARAM)
     uint16_t file_len = 0;
+
+    res = mm_get(PAR_ID_GNSS_PERIOD, (uint8_t*)&ZedF9P.rate_ms, 2, &file_len);
+    if(res && (2 == file_len)) {
+        LOG_INFO(ZED_F9P, "GNSS period %u ms", ZedF9P.rate_ms);
+    } else {
+        LOG_ERROR(ZED_F9P, "GnssPerLoadErr");
+        ZedF9P.rate_ms = DFLT_GNSS_PER_MS;
+        res = mm_set(PAR_ID_GNSS_PERIOD, (uint8_t*)&ZedF9P.rate_ms, 2);
+    }
+
+    ZedF9P.time_zone = 0;
     res = mm_get(PAR_ID_TIME_ZONE, (uint8_t*)&ZedF9P.time_zone, 1, &file_len);
     if(res && (1 == file_len)) {
         ZedF9P.is_init = true;
@@ -189,7 +244,6 @@ static bool zed_f9p_load_params(void){
             LOG_ERROR(ZED_F9P, "SetDfltTimeZoneError");
         }
     }
-    ZedF9P.time_zone = 0;
     res = mm_get(PAR_ID_RTK_MODE, (uint8_t*)&ZedF9P.rtk_mode, 1, &file_len);
     if(res && (1 == file_len)) {
         LOG_INFO(ZED_F9P, "RTKmode:%u-%s", ZedF9P.rtk_mode, rtk_mode2str(ZedF9P.rtk_mode));
@@ -198,24 +252,23 @@ static bool zed_f9p_load_params(void){
         res = false;
     }
 
-    if(RTK_BASE == ZedF9P.rtk_mode) {
-        res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
-        if(res && (16 == file_len)) {
-            LOG_INFO(ZED_F9P, "RTKBaseLocLoadOk");
-            res = print_coordinate(ZedF9P.coordinate_base, true);
-        } else {
-            LOG_ERROR(ZED_F9P, "ReadBaseLocLoadErr");
-            res = false;
-        }
-
-        res = mm_get(PAR_ID_BASE_ALT, (uint8_t*)&ZedF9P.alt_base, sizeof(double), &file_len);
-        if(res && (8 == file_len)) {
-            LOG_INFO(ZED_F9P, "RTKBaseAlt: %f m", ZedF9P.alt_base);
-        } else {
-            LOG_ERROR(ZED_F9P, "ReadBaseAltLoadErr");
-            res = false;
-        }
+    res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
+    if(res && (16 == file_len)) {
+        LOG_INFO(ZED_F9P, "RTKBaseLocLoadOk");
+        res = print_coordinate(ZedF9P.coordinate_base, true);
+    } else {
+        LOG_ERROR(ZED_F9P, "ReadBaseLocLoadErr");
+        res = false;
     }
+
+    res = mm_get(PAR_ID_BASE_ALT, (uint8_t*)&ZedF9P.alt_base, sizeof(double), &file_len);
+    if(res && (8 == file_len)) {
+        LOG_INFO(ZED_F9P, "RTKBaseAlt: %f m", ZedF9P.alt_base);
+    } else {
+        LOG_ERROR(ZED_F9P, "ReadBaseAltLoadErr");
+        res = false;
+    }
+
 #endif /*HAS_FLASH_FS && HAS_PARAM*/
     return res;
 }
@@ -223,7 +276,7 @@ static bool zed_f9p_load_params(void){
 bool zed_f9p_init(void) {
     bool res = true;
     res = set_log_level(ZED_F9P, LOG_LEVEL_INFO);
-
+    ZedF9P.rate_ms = DFLT_GNSS_PER_MS;
     res = zed_f9p_load_params();
     if(res) {
         switch(ZedF9P.rtk_mode) {

@@ -83,7 +83,6 @@ typedef struct xNavInfo_t {
 } NavInfo_t;
 
 extern NavInfo_t NavInfo;
-
 bool ubx_proc(void);
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
 bool ubx_driver_init(void);
@@ -91,6 +90,7 @@ bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t la
 bool ubx_cfg_get_val(uint32_t key_id, uint8_t layers);
 bool ubx_proc_frame(UbloxPorotocol_t* inst);
 bool ubx_reset_to_dflt(void);
+bool ubx_set_rate(uint16_t meas_rate_ms, uint16_t time_ref);
 #ifdef __cplusplus
 }
 #endif
