@@ -11,10 +11,10 @@ extern "C" {
 
 #include "gnss_utils.h"
 
-bool print_coordinate(GnssCoordinate_t coordinate, bool one_line) ;
+bool print_coordinate(GnssCoordinate_t coordinate, bool one_line);
 bool print_time_date(struct tm* time_date);
 bool print_velocity(GnssVelocity_t velocity);
-char *coordinate2str(GnssCoordinate_t *value);
+char* coordinate2str(GnssCoordinate_t* value);
 
 #ifdef __cplusplus
 }

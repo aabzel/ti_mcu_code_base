@@ -152,39 +152,38 @@ bool print_u16_un(U16_bit_t un) {
 }
 
 bool print_u64_un(U64_bit_t un) {
-    uint8_t i=0;
+    uint8_t i = 0;
     io_printf("un 0x%16x 0b_%s" CRLF, un.u64, utoa_bin64(un.u64));
-    io_printf("s64: %d "   CRLF, un.s64);
+    io_printf("s64: %d " CRLF, un.s64);
     io_printf("u64: %llu " CRLF, un.u64);
 
-    for(i=0;i<2;i++){
-       io_printf("0x%08x " , un.u32[i]);
+    for(i = 0; i < 2; i++) {
+        io_printf("0x%08x ", un.u32[i]);
     }
     io_printf(CRLF);
 
-    for(i=0;i<2;i++){
-       io_printf("%d " , un.s32[i]);
+    for(i = 0; i < 2; i++) {
+        io_printf("%d ", un.s32[i]);
     }
     io_printf(CRLF);
 
-
-    for(i=0;i<4;i++){
-       io_printf("0x%04x " , un.u16[i]);
+    for(i = 0; i < 4; i++) {
+        io_printf("0x%04x ", un.u16[i]);
     }
     io_printf(CRLF);
 
-    for(i=0;i<4;i++){
-       io_printf("%d " , un.s16[i]);
+    for(i = 0; i < 4; i++) {
+        io_printf("%d ", un.s16[i]);
     }
     io_printf(CRLF);
 
-    for(i=0;i<8;i++){
-       io_printf("0x%02x ", un.u8[i]);
+    for(i = 0; i < 8; i++) {
+        io_printf("0x%02x ", un.u8[i]);
     }
     io_printf(CRLF);
 
-    for(i=0;i<8;i++){
-       io_printf("%d " , un.s8[i]);
+    for(i = 0; i < 8; i++) {
+        io_printf("%d ", un.s8[i]);
     }
     io_printf(CRLF);
     return true;

@@ -68,7 +68,7 @@
 
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
-#endif/*HAS_ZED_F9P*/
+#endif /*HAS_ZED_F9P*/
 
 bool sw_init(void) {
     bool res = true;
@@ -94,7 +94,6 @@ bool sw_init(void) {
 #ifdef HAS_TBFP
     res = try_init(tbfp_protocol_init(&TbfpPorotocol), "TBFP") && res;
 #endif /*HAS_TBFP*/
-
 
 #ifdef HAS_UBLOX
     res = try_init(ublox_protocol_init(), "UBXProto") && res;
@@ -143,7 +142,7 @@ bool sw_init(void) {
 #endif /*HAS_LORA*/
 
 #ifdef HAS_ZED_F9P
-  res = try_init(zed_f9p_init(),"zedf9p") && res;
+    res = try_init(zed_f9p_init(), "zedf9p") && res;
 #endif /*HAS_ZED_F9P*/
     return res;
 }

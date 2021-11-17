@@ -30,7 +30,7 @@ bool zed_f9p_diag_command(int32_t argc, char* argv[]) {
 bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     bool res = false;
     GnssCoordinate_t coordinate_base;
-    double altitude_sea_lev_m =0.0;
+    double altitude_sea_lev_m = 0.0;
     if(1 <= argc) {
         res = try_str2double(argv[0], &coordinate_base.latitude);
     }
@@ -51,7 +51,7 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        res = zed_f9p_base(ZedF9P.coordinate_base, altitude_sea_lev_m);
+        res = zed_f9p_deploy_base(ZedF9P.coordinate_base, altitude_sea_lev_m);
         if(res) {
             LOG_INFO(ZED_F9P, "RTKBaseStarted");
         }
@@ -67,7 +67,7 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
 bool zed_f9p_rover_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
-        res = zed_f9p_rover();
+        res = zed_f9p_deploy_rover();
         if(res) {
             LOG_INFO(ZED_F9P, "OK");
         }

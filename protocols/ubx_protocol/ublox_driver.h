@@ -22,11 +22,11 @@ extern "C" {
 #define UBX_RX_TIME_OUT_MS S_2_MS(15)
 #endif
 
-typedef enum eReceiverMode_t{
-  MODE_DISABLED = 0x00,
-  MODE_SURVEY_IN=0x01,
-  MODE_FIXED = 0x02,
-}ReceiverMode_t;
+typedef enum eReceiverMode_t {
+    MODE_DISABLED = 0x00,
+    MODE_SURVEY_IN = 0x01,
+    MODE_FIXED = 0x02,
+} ReceiverMode_t;
 
 /*UBX data types*/
 typedef enum eUbxType_t {
@@ -90,6 +90,7 @@ bool ubx_driver_init(void);
 bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers);
 bool ubx_cfg_get_val(uint32_t key_id, uint8_t layers);
 bool ubx_proc_frame(UbloxPorotocol_t* inst);
+bool ubx_reset_to_dflt(void);
 #ifdef __cplusplus
 }
 #endif

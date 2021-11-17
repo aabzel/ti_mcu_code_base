@@ -284,23 +284,27 @@ bool ubx_proc_frame(UbloxPorotocol_t* inst) {
 }
 
 static const UbxHeader_t pollLut[] = {
-    {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC}, {UBX_CLA_NAV, UBX_ID_NAV_VELNED},   {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
-    {UBX_CLA_NAV, UBX_ID_NAV_ATT},     {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH}, {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
+    {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC},
+    {UBX_CLA_NAV, UBX_ID_NAV_VELNED},
+    {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
+    {UBX_CLA_NAV, UBX_ID_NAV_ATT},
+    {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
+    {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
 };
 
 bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers) {
     bool res = false;
-    if (val && (0<val_len)) {
+    if(val && (0 < val_len)) {
         uint8_t payload[4 + 32];
-        memset(payload, 0 , sizeof(payload));
+        memset(payload, 0, sizeof(payload));
         uint16_t payload_len = 0;
         payload[0] = 0x00;   /*version*/
         payload[1] = layers; /*layers*/
         payload[2] = 0;
         payload[3] = 0;
         memcpy(&payload[4], &key_id, sizeof(key_id));
-        //uint8_t key_size = ubx_keyid_2len(key_id);
-        print_mem(val,val_len,true,false,true,true);
+        // uint8_t key_size = ubx_keyid_2len(key_id);
+        print_mem(val, val_len, true, false, true, true);
         memcpy(&payload[8], val, val_len);
         payload_len = 8 + val_len;
         res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
@@ -344,3 +348,18 @@ bool ubx_proc(void) {
     }
     return res;
 }
+
+bool ubx_reset_to_dflt(void) {
+    bool res=false;
+    UbxCfgCfg_t data = {0};
+    /*UBX is a little-endian protocol*/
+    data.clearMask = 0x0000FBFF;
+    data.saveMask = 0x00000000;
+    data.loadMask = 0x0000FFFF;
+    data.deviceMask = 0x17;
+    print_mem((uint8_t* ) &data, sizeof(data), true, false, true, true);
+    res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_CFG, (uint8_t*)&data, sizeof(data));
+    return res;
+}
+
+

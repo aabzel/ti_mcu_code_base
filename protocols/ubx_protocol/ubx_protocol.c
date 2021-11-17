@@ -1,3 +1,5 @@
+/*UBX is a little-endian protocol*/
+
 #include "ubx_protocol.h"
 
 #include <string.h>
@@ -6,6 +8,8 @@
 #include "debug_info.h"
 #ifdef HAS_MCU
 #include "clocks.h"
+#include "common_functions.h"
+#include "task_info.h"
 #endif
 #include "io_utils.h"
 #include "log.h"
@@ -266,3 +270,34 @@ uint8_t ubx_keyid_2len(uint32_t key_id) {
     bytes = ubx_key_len_2bytes(KeyId.size);
     return bytes;
 }
+
+#ifdef HAS_MCU
+bool ubx_wait_ack(uint32_t wait_pause_ms){
+    bool res = false, loop = true;
+    uint32_t start_ms = 0U;
+    uint32_t curr_ms = 0U;
+    start_ms = get_time_ms32();
+    uint32_t ack_cnt_init = UbloxPorotocol.ack_cnt;
+    uint32_t ack_cnt_diff = 0;
+    uint64_t loop_start_time_us = 0;
+    while(loop){
+#ifdef HAS_DEBUG
+        iteration_cnt++;
+#endif
+        ack_cnt_diff = UbloxPorotocol.ack_cnt-ack_cnt_init;
+        if(0 < ack_cnt_diff){
+            res = true;
+            loop = false;
+        }
+        loop_start_time_us = get_time_us();
+        common_loop(loop_start_time_us);
+
+        curr_ms = get_time_ms32();
+        if (wait_pause_ms < (curr_ms - start_ms)) {
+          res = false;
+          loop = false;
+        }
+    }
+    return res;
+}
+#endif

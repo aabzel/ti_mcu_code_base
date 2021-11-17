@@ -1,5 +1,9 @@
 #include "test_ublox_proto.h"
 
+#ifdef X86_64
+#include <stdio.h>
+#endif
+
 #include "array.h"
 #include "ubx_protocol.h"
 #include "ubx_types.h"
@@ -62,6 +66,7 @@ bool test_ublox_proto_types(void) {
 #ifdef X86_64
    printf("\n%s()",__FUNCTION__);
 #endif
+   EXPECT_EQ(13, sizeof(UbxCfgCfg_t));
    EXPECT_EQ(40, sizeof(UbxCfgTmode3Data_t_t));
    EXPECT_EQ(4, sizeof(ConfigurationKeyID_t));
    EXPECT_EQ(9, sizeof(SecUniqId_t));

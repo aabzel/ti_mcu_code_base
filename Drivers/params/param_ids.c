@@ -24,27 +24,27 @@
 
 /*TODO: Sort by index for bin search in future*/
 const ParamItem_t ParamArray[PARAM_CNT] = {
- /*1 */  {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
- /*2 */  {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
- /*3 */  {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
- /*4 */  {PAR_ID_LORA_BW, 1, UINT8, "BW"},               /*Hz*/
- /*5 */  {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
- /*6 */  {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
- /*7 */  {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
- /*8 */  {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
- /*9 */  {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
- /*10*/   {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},                /*1-stay in boot 0-launch App*/
- /*11*/   {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},                /*num*/
- /*12*/   {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},         /*Flash Addr*/
- /*13*/   {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},            /*Flash Addr*/
- /*14*/   {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},          /*loRa output power*/
- /*15*/   {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
- /*16*/   {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
- /*17*/   {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
- /*18*/   {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},    /*Max LoRa bit/rate*/
- /*19*/   {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
- /*20*/   {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
- /*21*/   {PAR_ID_BASE_ALT, 8,DOUBLE , "BaseAlt"},
+    /*1 */ {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
+    /*2 */ {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
+    /*3 */ {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
+    /*4 */ {PAR_ID_LORA_BW, 1, UINT8, "BW"},               /*Hz*/
+    /*5 */ {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
+    /*6 */ {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
+    /*7 */ {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
+    /*8 */ {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
+    /*9 */ {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
+    /*10*/ {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},                /*1-stay in boot 0-launch App*/
+    /*11*/ {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},                /*num*/
+    /*12*/ {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},         /*Flash Addr*/
+    /*13*/ {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},            /*Flash Addr*/
+    /*14*/ {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},          /*loRa output power*/
+    /*15*/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
+    /*16*/ {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
+    /*17*/ {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
+    /*18*/ {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},    /*Max LoRa bit/rate*/
+    /*19*/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
+    /*20*/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
+    /*21*/ {PAR_ID_BASE_ALT, 8, DOUBLE, "BaseAlt"},
 
 };
 
@@ -90,7 +90,7 @@ ParamType_t param_get_type(Id_t id) {
 }
 
 /*TODO: Test it*/
-bool raw_val_2str(uint8_t* value, uint16_t value_len, ParamType_t type, char* out_str, uint32_t str_size) {
+bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* out_str, uint32_t str_size) {
     bool res = false;
     if((NULL != value) && (NULL != out_str) && (0 < value_len) && (0 < str_size)) {
         switch(type) {
@@ -222,11 +222,11 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
     }
 
 #ifdef HAS_ZED_F9P
-    if(PAR_ID_RTK_MODE== id) {
+    if(PAR_ID_RTK_MODE == id) {
         name = rtk_mode2str((uint8_t)*value);
     }
-    if(PAR_ID_BASE_LOCATION== id) {
-        name = coordinate2str((GnssCoordinate_t *)value);
+    if(PAR_ID_BASE_LOCATION == id) {
+        name = coordinate2str((GnssCoordinate_t*)value);
     }
 #endif /*HAS_ZED_F9P*/
     return name;

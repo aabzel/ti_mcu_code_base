@@ -43,6 +43,8 @@ extern "C" {
 #define UBX_ID_CFG_GET_VAL 0x8B
 /*3.10.21 (0x06 0x71)*/
 #define UBX_ID_CFG_TMODE3 0x71
+/*3.10.2.1 Clear, save and load configurations*/
+#define UBX_ID_CFG_CFG 0x09
 
 #define UBX_ID_NAV_POSLLH 0x02
 #define UBX_ID_NAV_STATUS 0x03
@@ -90,22 +92,33 @@ typedef struct xLayers_t {
 
 /*3.10.21 UBX-CFG-TMODE3 (0x06 0x71)*/
 typedef struct xUbxCfgTmode3Data_t {
-    uint8_t version;      /*0  Message version (0x00 for this version)*/
-    uint8_t reserved0;    /*1  Reserved*/
-    uint8_t mode;         /*2  Receiver Mode:*/
-    uint8_t lla;          /*3  Position is given in LAT/LON/ALT (default is ECEF)*/
-    int32_t ecefXOrLat;   /*4  WGS84 ECEF X coordinate (or latitude) of the ARP position, depending on flags above*/
-    int32_t ecefYOrLon;   /*8  WGS84 ECEF Y coordinate (or longitude) of the ARP position, depending on flags above*/
-    int32_t ecefZOrAlt;   /*12 WGS84 ECEF Z coordinate (or altitude) of the ARP position, depending on flags above*/
-    int8_t ecefXOrLatHP;  /*16 High-precision WGS84 ECEF X coordinate (or latitude) of the ARP position, depending on flags above.*/
-    int8_t ecefYOrLonHP;  /*17 High-precision WGS84 ECEF Y coordinate (or longitude) of the ARP position, depending on flags above.*/
-    int8_t ecefZOrAltHP;  /*18 High-precision WGS84 ECEF Z coordinate (or altitude) of the ARP position, depending on flags above. Must be in the range -99..+99.*/
-    uint8_t reserved1;    /*19 Fixed position 3D accuracy*/
-    uint32_t fixedPosAcc; /*20 Fixed position 3D accuracy*/
-    uint32_t svinMinDur;  /*24 Survey-in minimum duration*/
-    uint32_t svinAccLimit;/*28 Survey-in position accuracy limit*/
-    uint8_t reserved2[8]; /*32 Fixed position 3D accuracy*/
-}UbxCfgTmode3Data_t_t;
+    uint8_t version;       /*0  Message version (0x00 for this version)*/
+    uint8_t reserved0;     /*1  Reserved*/
+    uint8_t mode;          /*2  Receiver Mode:*/
+    uint8_t lla;           /*3  Position is given in LAT/LON/ALT (default is ECEF)*/
+    int32_t ecefXOrLat;    /*4  WGS84 ECEF X coordinate (or latitude) of the ARP position, depending on flags above*/
+    int32_t ecefYOrLon;    /*8  WGS84 ECEF Y coordinate (or longitude) of the ARP position, depending on flags above*/
+    int32_t ecefZOrAlt;    /*12 WGS84 ECEF Z coordinate (or altitude) of the ARP position, depending on flags above*/
+    int8_t ecefXOrLatHP;   /*16 High-precision WGS84 ECEF X coordinate (or latitude) of the ARP position, depending on
+                              flags above.*/
+    int8_t ecefYOrLonHP;   /*17 High-precision WGS84 ECEF Y coordinate (or longitude) of the ARP position, depending on
+                              flags above.*/
+    int8_t ecefZOrAltHP;   /*18 High-precision WGS84 ECEF Z coordinate (or altitude) of the ARP position, depending on
+                              flags above. Must be in the range -99..+99.*/
+    uint8_t reserved1;     /*19 Fixed position 3D accuracy*/
+    uint32_t fixedPosAcc;  /*20 Fixed position 3D accuracy*/
+    uint32_t svinMinDur;   /*24 Survey-in minimum duration*/
+    uint32_t svinAccLimit; /*28 Survey-in position accuracy limit*/
+    uint8_t reserved2[8];  /*32 Fixed position 3D accuracy*/
+} UbxCfgTmode3Data_t_t;
+
+/*3.10.2 UBX-CFG-CFG (0x06 0x09)*/
+typedef struct xUbxCfgCfg_t {
+    uint32_t clearMask; /*Mask for configuration to clear*/
+    uint32_t saveMask;  /*Mask for configuration to save*/
+    uint32_t loadMask;  /*Mask for configuration to load*/
+    uint8_t deviceMask; /*deviceMask*/
+} UbxCfgCfg_t;
 
 typedef struct xConfigurationKeyID_t {
     union {
@@ -141,7 +154,7 @@ typedef struct xUbloxPorotocol_t {
     uint32_t sync_cnt;
 #endif
     uint16_t read_crc;
-    uint16_t ack_cnt;
+    volatile uint32_t ack_cnt;
     uint8_t rx_state;
     uint8_t rx_frame[UBX_RX_FRAME_SIZE];
     uint8_t fix_frame[UBX_RX_FRAME_SIZE];
@@ -171,6 +184,7 @@ bool ubx_print_frame(uint8_t* frame);
 uint16_t ubx_calc_crc16(uint8_t* array, uint16_t len);
 uint8_t ubx_key_len_2bytes(uint8_t code);
 uint8_t ubx_keyid_2len(uint32_t key_id);
+bool ubx_wait_ack(uint32_t wait_pause_ms);
 #ifdef __cplusplus
 }
 #endif

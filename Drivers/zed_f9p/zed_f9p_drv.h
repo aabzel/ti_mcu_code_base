@@ -30,7 +30,7 @@ extern ZedF9P_t ZedF9P;
 
 bool zed_f9p_init(void);
 bool zed_f9p_proc(void);
-bool zed_f9p_rover(void);
-bool zed_f9p_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) ;
+bool zed_f9p_deploy_rover(void);
+bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m);
 
 #endif /* ZED_F9P_DRV_H  */

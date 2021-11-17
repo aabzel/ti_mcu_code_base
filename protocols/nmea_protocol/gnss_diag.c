@@ -20,22 +20,21 @@ bool print_time_date(struct tm* time_date) {
 
 bool print_coordinate(GnssCoordinate_t coordinate, bool one_line) {
     bool res = true;
-    if(false==one_line){
-      io_printf("latitude : %f " CRLF, coordinate.latitude);
-      io_printf("longitude: %f " CRLF, coordinate.longitude);
+    if(false == one_line) {
+        io_printf("latitude : %f " CRLF, coordinate.latitude);
+        io_printf("longitude: %f " CRLF, coordinate.longitude);
     }
     io_printf(" %f %f" CRLF, coordinate.latitude, coordinate.longitude);
 
     return res;
 }
 
-char *coordinate2str(GnssCoordinate_t *value){
-    static char str[100]="";
-    if(value){
-        snprintf(str,sizeof(str),"%f %f",value->latitude,value->longitude);
+char* coordinate2str(GnssCoordinate_t* value) {
+    static char str[100] = "";
+    if(value) {
+        snprintf(str, sizeof(str), "%f %f", value->latitude, value->longitude);
     }
     return str;
-
 }
 
 bool print_velocity(GnssVelocity_t velocity) {

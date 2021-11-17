@@ -1593,7 +1593,7 @@ const char* utoa_bin16(uint16_t u16_bin_data) {
 }
 
 const char* utoa_bin64(uint64_t u64_bin_data) {
-    static char outBitStr16[ ] = "mone";
+    static char outBitStr16[] = "mone";
     /*TODO: Implement later*/
     return outBitStr16;
 }
