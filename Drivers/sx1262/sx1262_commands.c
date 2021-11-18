@@ -2,6 +2,7 @@
 
 #include <inttypes.h>
 #include <stdbool.h>
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -723,6 +724,71 @@ bool sx1262_statistic_command(int32_t argc, char* argv[]) {
         res = sx1262_statistic();
     } else {
         LOG_ERROR(LORA, "Usage: sxst");
+    }
+    return res;
+}
+
+bool sx1262_calc_diag(char *key_word1, char *key_word2){
+    bool res = false;
+    uint8_t sf=0, cr=0, bw=0;
+    static const table_col_t cols[] = {{5, "No"},
+                                       {7, "SF,Ch/s"},
+                                       {8, "BW,kHz"},
+                                       {5, "CR"} ,
+                                       {9, "bit/s"},
+                                       {9, "Byte/s"}  };
+    uint16_t num = 1;
+    float data_rate = 0.0f;
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    char temp_str[200];
+    for(sf=SF5;sf<=SF12;sf++) {
+        for(bw=0; bw<11; bw++) {
+            for(cr=LORA_CR_4_5;cr<=LORA_CR_4_8;cr++){
+                res=is_valid_bandwidth((BandWidth_t) bw);
+                if(res) {
+                    data_rate = lora_calc_data_rate(sf,bw,cr);
+                    strcpy(temp_str, TSEP);
+                    snprintf(temp_str, sizeof(temp_str), "%s %5u " TSEP, temp_str,(uint32_t) powf(2.0f,(float)sf));
+                    snprintf(temp_str, sizeof(temp_str), "%s %6.2f " TSEP, temp_str, ((float)bandwidth2num((BandWidth_t)bw))/1000.0f);
+                    snprintf(temp_str, sizeof(temp_str), "%s %3s " TSEP, temp_str, coding_rate2str((LoRaCodingRate_t)cr));
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate/8);
+                    snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
+                    if(is_contain(temp_str, key_word1, key_word2)) {
+                        io_printf(TSEP " %3u ", num);
+                        io_printf("%s", temp_str);
+                        num++;
+                    }
+                }
+            }
+        }
+    }
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    return res;
+}
+
+bool sx1262_calc_command(int32_t argc, char* argv[]){
+    bool res = false;
+    char keyWord1[20] = "";
+    char keyWord2[20] = "";
+    if(0 <= argc) {
+        strncpy(keyWord1, "", sizeof(keyWord1));
+        strncpy(keyWord2, "", sizeof(keyWord2));
+        res = true;
+    }
+    if(1 <= argc) {
+        strncpy(keyWord1, argv[0], sizeof(keyWord1));
+        res = true;
+    }
+    if(2 <= argc) {
+        strncpy(keyWord2, argv[1], sizeof(keyWord2));
+        res = true;
+    }
+
+    if(res){
+        res = sx1262_calc_diag(keyWord1, keyWord2);
+    }else{
+        LOG_ERROR(LORA, "Usage: sxc");
     }
     return res;
 }

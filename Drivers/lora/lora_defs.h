@@ -16,7 +16,7 @@ typedef enum eBandWidth_t {
     LORA_BW_125 = 0x04, /*125 kHz real  */
     LORA_BW_250 = 0x05, /*250 kHz real  */
     LORA_BW_500 = 0x06, /*500 kHz real  */
-    /*lack code 0x07*/
+    /*lack code 0x07!*/
 } BandWidth_t;
 
 /*Table 13-49: LoRa® ModParam3 - Coding Rate*/

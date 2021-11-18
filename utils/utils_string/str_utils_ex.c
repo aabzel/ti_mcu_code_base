@@ -9,6 +9,10 @@
 
 #include "convert.h"
 
+#ifdef HAS_MCU
+#error That code only for desktop builds
+#endif
+
 uint32_t count_substring(char* in_str, char* substr) {
     uint32_t match_cnt = 0u;
     int in_str_len = strlen(in_str);

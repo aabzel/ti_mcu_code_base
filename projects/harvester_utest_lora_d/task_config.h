@@ -5,6 +5,7 @@
 
 #define TASKS               \
   TASKS_BASE                \
-  TASK(LORA)
+  TASK(LORA)                \
+  TASK(SX1262)
 
 #endif /* TASK_CONFIG_H */

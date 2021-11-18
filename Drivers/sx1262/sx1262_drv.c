@@ -10,6 +10,9 @@ speed up to 16 MHz
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#ifdef HAS_DEBUG
+#include <math.h>
+#endif
 
 #include "bit_utils.h"
 #include "board_layout.h"
@@ -585,7 +588,7 @@ static bool is_valid_coding_rate(LoRaCodingRate_t coding_rate) {
     return res;
 }
 
-static bool is_valid_bandwidth(BandWidth_t bandwidth) {
+bool is_valid_bandwidth(BandWidth_t bandwidth) {
     bool res = false;
     switch(bandwidth) {
     case LORA_BW_7:
@@ -1525,3 +1528,12 @@ bool sx1262_process(void) {
 
     return res;
 }
+
+#ifdef HAS_DEBUG
+float lora_calc_data_rate(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code){
+    float data_rate =    0.0;
+    uint32_t bandwidth_hz=bandwidth2num(bw_code);
+    data_rate = ((float)(bandwidth_hz*sf_code*4))/((powf(2.0f, (float)sf_code))*((float)(4+cr_code)));
+    return data_rate ;
+}
+#endif

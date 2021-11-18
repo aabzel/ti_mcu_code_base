@@ -7,6 +7,10 @@ extern "C" {
 
 #include <stdbool.h>
 
+#ifdef HAS_MCU
+#error That code only for desktop builds
+#endif
+
 void clear_tui(void);
 
 

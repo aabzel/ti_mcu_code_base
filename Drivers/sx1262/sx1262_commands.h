@@ -10,6 +10,7 @@ extern "C" {
 
 #include "cli_manager.h"
 
+bool sx1262_calc_command(int32_t argc, char* argv[]);
 bool sx1262_test_command(int32_t argc, char* argv[]);
 bool sx1262_clear_err_command(int32_t argc, char* argv[]);
 bool sx1262_clear_fifo_command(int32_t argc, char* argv[]);
@@ -35,6 +36,7 @@ bool sx1262_write_reg_command(int32_t argc, char* argv[]);
 
 #define SX1262_COMMANDS                                                                                                \
     SHELL_CMD("sx1262_clr_err", "sxce", sx1262_clear_err_command, "SX1262 clear errors"),                              \
+        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                           \
         SHELL_CMD("sx1262_clr_fifo", "sxcf", sx1262_clear_fifo_command, "SX1262 clear FIFO"),                          \
         SHELL_CMD("sx1262_diag", "sxd", sx1262_diag_command, "SX1262 diag"),                                           \
         SHELL_CMD("sx1262_init", "sxi", sx1262_init_command, "SX1262 init"),                                           \

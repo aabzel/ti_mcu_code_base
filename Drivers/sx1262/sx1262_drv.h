@@ -234,6 +234,8 @@ extern Sx1262_t Sx1262Instance;
 
 extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 
+bool is_valid_bandwidth(BandWidth_t bandwidth);
+
 bool sx1262_get_dev_err(uint16_t* op_error);
 bool sx1262_get_irq_status(uint16_t* irq_stat);
 bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, uint8_t* RssiPkt, uint8_t* SnrPkt,
@@ -283,5 +285,7 @@ bool sx1262_wakeup(void);
 bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len);
 bool sx1262_read_buffer(int16_t offset, uint8_t* payload, uint16_t payload_len);
 bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val);
-
+#ifdef HAS_DEBUG
+float lora_calc_data_rate(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code);
+#endif
 #endif /* SX1262_DRV_H  */

@@ -11,6 +11,10 @@ extern "C" {
 #include <stdint.h>
 #include <windows.h>
 
+#ifdef HAS_MCU
+#error That code only for desktop builds
+#endif
+
 #define DEDUG_RX_TEXT 0
 #define MAX_COM_NUM 20
 #define DEBUG_FINE_VI_REQ 0

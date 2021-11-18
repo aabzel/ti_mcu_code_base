@@ -7,6 +7,10 @@
 #include "macro_utils.h"
 #include "utils_file.h"
 
+#ifdef HAS_MCU
+#error That code only for desktop builds
+#endif
+
 uint32_t file_get_size(char* file_name) {
     uint32_t fize_size = 0;
     FILE* p_file;
