@@ -7,16 +7,16 @@
 // BW Description Table 13-48: LoRa® ModParam2 - BW
 typedef enum eBandWidth_t {
     LORA_BW_7 = 0x00,   /*7.81 kHz real */
+    LORA_BW_10 = 0x08, /*10.42 kHz real*/
     LORA_BW_15 = 0x01,  /*15.63 kHz real*/
+    LORA_BW_20 = 0x09, /*20.83 kHz real*/
     LORA_BW_31 = 0x02,  /*31.25 kHz real*/
+    LORA_BW_41 = 0x0A,  /*41.67 kHz real*/
     LORA_BW_62 = 0x03,  /*62.50 kHz real*/
     LORA_BW_125 = 0x04, /*125 kHz real  */
     LORA_BW_250 = 0x05, /*250 kHz real  */
     LORA_BW_500 = 0x06, /*500 kHz real  */
     /*lack code 0x07*/
-    LORA_BW_10 = 0x08, /*10.42 kHz real*/
-    LORA_BW_20 = 0x09, /*20.83 kHz real*/
-    LORA_BW_41 = 0x0A  /*41.67 kHz real*/
 } BandWidth_t;
 
 /*Table 13-49: LoRa® ModParam3 - Coding Rate*/

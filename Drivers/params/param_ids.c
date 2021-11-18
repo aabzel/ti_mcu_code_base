@@ -178,7 +178,7 @@ bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* ou
             break;
         case STRUCT:
             if(strlen((char*)value) < str_size) {
-                res = hex2ascii(value, value_len, out_str, str_size);
+                res = hex2ascii(value, value_len, (uint8_t*)out_str, str_size);
             }
             break;
         case FLOAT:

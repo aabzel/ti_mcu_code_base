@@ -9,7 +9,6 @@ speed up to 16 MHz
 #include <gpio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "bit_utils.h"
@@ -343,7 +342,7 @@ bool sx1262_set_rf_frequency(uint32_t rf_frequency_hz, uint32_t freq_xtal_hz) {
 */
 bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
     bool res = false;
-    uint8_t tx_array[2];
+    uint8_t tx_array[2]={0};
     tx_array[0] = tx_base_addr;
     tx_array[1] = rx_base_addr;
     res = sx1262_send_opcode(OPCODE_SET_BUFFER_BASE_ADDR, tx_array, sizeof(tx_array), NULL, 0);
@@ -1296,13 +1295,15 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
 }
 
 #ifdef HAS_SX1262_BIT_RATE
-static bool sx1262_calc_bit_rate(float* tx_real_bit_rate, uint32_t* tx_duration_ms) {
+static bool sx1262_calc_bit_rate(uint32_t bytes  ,float* tx_real_bit_rate, uint32_t* tx_duration_ms) {
     bool res = false;
     float bit_rate = 0.0f;
     uint32_t duration_ms = 0;
     uint32_t tx_done_time_stamp_ms = get_time_ms32();
     duration_ms = tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
-    bit_rate = ((float)(Sx1262Instance.tx_last_size * 8 * 1000)) / (((float)duration_ms));
+    bit_rate = ((float)(bytes * 8 * 1000)) / (((float)duration_ms));
+    uint16_t file_len = 0 ;
+    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(float), &file_len);
     if(Sx1262Instance.tx_max_bit_rate < bit_rate) {
         Sx1262Instance.tx_max_bit_rate = bit_rate;
         res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(float));
@@ -1365,11 +1366,14 @@ static inline bool sx1262_poll_status(void) {
 #ifdef HAS_SX1262_BIT_RATE
             float tx_real_bit_rate = 0.0;
             uint32_t tx_duration_ms = 0;
-            sx1262_calc_bit_rate(&tx_real_bit_rate, &tx_duration_ms);
+            sx1262_calc_bit_rate(Sx1262Instance.tx_last_size, &tx_real_bit_rate, &tx_duration_ms);
 #endif /*HAS_SX1262_BIT_RATE*/
             if(Sx1262Instance.debug) {
 #ifdef HAS_SX1262_BIT_RATE
-                LOG_INFO(LORA, "TX done %f bit/s duration: %u ms", tx_real_bit_rate, tx_duration_ms);
+                LOG_INFO(LORA, "TX done %f bit/s=%f byte/s duration: %u ms for %u bytes", tx_real_bit_rate,
+                         tx_real_bit_rate/8,
+                         tx_duration_ms,
+                         Sx1262Instance.tx_last_size);
 #else
                 LOG_INFO(LORA, "TX done");
 #endif /*HAS_SX1262_BIT_RATE*/
@@ -1494,19 +1498,19 @@ bool sx1262_process(void) {
         tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
 
         if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == Sx1262Instance.tx_done)) {
-            Array_t txNode = {.size = 0, .pArr = NULL};
-            res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &txNode);
-            if((true == res)) {
-                if(txNode.pArr) {
-                    if(0 < txNode.size) {
-                        res = sx1262_start_tx(txNode.pArr, txNode.size, 0);
-                        if(res) {
-                            LoRaInterface.tx_ok_cnt++;
-                        } else {
-                            LoRaInterface.err_cnt++;
-                        }
+            uint8_t tx_buf[TX_SIZE] = {0};
+            memset(tx_buf, 0, sizeof(tx_buf));
+            uint32_t tx_len = 0;
+            /*Transmitt multiple RTCM3 packages in single LoRa frame*/
+            res = fifo_arr_pack_frame(tx_buf, sizeof(tx_buf), &LoRaInterface.FiFoLoRaTx, &tx_len);
+            if(res) {
+                if(0 < tx_len) {
+                    res = sx1262_start_tx(tx_buf, tx_len, 0);
+                    if(res) {
+                        LoRaInterface.tx_ok_cnt++;
+                    } else {
+                        LoRaInterface.err_cnt++;
                     }
-                    free(txNode.pArr);
                 }
             }
         }

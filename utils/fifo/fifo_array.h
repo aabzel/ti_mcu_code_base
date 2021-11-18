@@ -19,15 +19,16 @@ typedef struct xFifoArray_t {
     bool init_done;
 } FifoArray_t;
 
-bool fifo_arr_push(FifoArray_t* const instance, Array_t node);
-bool fifo_arr_pull(FifoArray_t* const instance, Array_t* const node);
-bool fifo_arr_peek(FifoArray_t* const instance, Array_t* const outChar);
+bool fifo_arr_del_first(FifoArray_t* const instance);
 bool fifo_arr_clean(FifoArray_t* instance);
+bool fifo_arr_init(FifoArray_t* const instance, Array_t* const heap, fifo_index_t capacity);
+bool fifo_arr_peek(FifoArray_t* const instance, Array_t* const outChar);
+bool fifo_arr_pull(FifoArray_t* const instance, Array_t* const node);
+bool fifo_arr_push(FifoArray_t* const instance, Array_t node);
+bool fifo_arr_reset(FifoArray_t* const instance);
+bool fifo_arr_pack_frame(uint8_t *tx_buf, uint32_t size, FifoArray_t* const instance, uint32_t *tx_len);
 fifo_index_t fifo_arr_get_count(FifoArray_t* const instance);
 fifo_index_t fifo_arr_get_size(FifoArray_t* const instance);
-bool fifo_arr_reset(FifoArray_t* const instance);
-bool fifo_arr_init(FifoArray_t* const instance, Array_t* const heap, fifo_index_t capacity);
-
 #ifdef __cplusplus
 }
 #endif

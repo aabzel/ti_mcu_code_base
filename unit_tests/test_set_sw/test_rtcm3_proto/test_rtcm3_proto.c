@@ -38,8 +38,8 @@ bool test_rtcm3_types(void) {
 #ifdef X86_64
     printf("\n%s():", __FUNCTION__);
 #endif
-    EXPECT_EQ(3, sizeof(Rtcm3Header_t));
     EXPECT_EQ(2, sizeof(Rtcm3Len_t));
+    EXPECT_EQ(3, sizeof(Rtcm3Header_t));
 #ifndef X86_64
     EXPECT_EQ(1, sizeof(Rtcm3ProtState_t));
 #endif

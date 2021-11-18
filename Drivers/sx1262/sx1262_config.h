@@ -9,10 +9,10 @@ extern "C" {
 
 #define DFLT_TX_PAUSE_MS 0U /*TODO Find least possible value*/
 #define DFLT_FREQ_MHZ 868000000UL
-#define DFLT_LORA_BW LORA_BW_500
-#define DFLT_SF SF5
+#define DFLT_LORA_BW LORA_BW_125
+#define DFLT_SF SF7
 #define DFLT_LORA_CR LORA_CR_4_8
-#define DFLT_OUT_POWER 22
+#define DFLT_OUT_POWER 22 /*dBm*/
 
 #define SX1262_SPI_NUM 0
 #define SYNC_WORD 0x1122334455667788

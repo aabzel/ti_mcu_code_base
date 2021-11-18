@@ -12,11 +12,6 @@
 #include "terminal_codes.h"
 #include "writer_config.h"
 
-static const char* log_level_name_long(log_level_t level);
-static log_facility_t str2facility(const char* str);
-static log_level_t str2level(const char* str);
-static void report_log_leveles(void);
-
 static const char* log_level_name_long(log_level_t level) {
     const char* result;
     switch(level) {
@@ -90,18 +85,19 @@ static log_level_t str2level(const char* str) {
 
 static bool log_leveles_diag(void) {
     bool res = false;
-    if(&(curWriterPtr->s)){
+    if(&(curWriterPtr->s)) {
         log_facility_t f = UNKNOWN_FACILITY;
         res = true;
-        static const table_col_t cols[] = {{4, "code"}, {10, "facility"},   {5, "lev"},  {10, "level"}};
+        static const table_col_t cols[] = {{4, "code"}, {10, "facility"}, {5, "lev"}, {10, "level"}};
 
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-        for(f = UNKNOWN_FACILITY+1; f < ALL_FACILITY; f++) {
+        for(f = UNKNOWN_FACILITY; f < ALL_FACILITY; f++) {
             io_printf(TSEP);
-            io_printf("%3u "TSEP , f );
-            io_printf("%8s"TSEP , facility2str(f) );
-            io_printf("%3d"TSEP , log_levels[f] );
-            io_printf("%s%8s%s"TSEP , log_level_color(log_levels[f]),log_level_name_long(log_levels[f]), VT_SETCOLOR_NORMAL);
+            io_printf("%3u " TSEP, f);
+            io_printf("%8s" TSEP, facility2str(f));
+            io_printf("%3d" TSEP, log_levels[f]);
+            io_printf("%s%8s%s" TSEP, log_level_color(log_levels[f]), log_level_name_long(log_levels[f]),
+                      VT_SETCOLOR_NORMAL);
             io_printf(CRLF);
         }
 
@@ -119,15 +115,15 @@ bool cmd_log_level(int32_t argc, char* argv[]) {
         res = log_leveles_diag();
     }
 
-    if (1<=argc) {
+    if(1 <= argc) {
         facility = str2facility(argv[0]);
-        if(UNKNOWN_FACILITY==facility) {
+        if(UNKNOWN_FACILITY == facility) {
             LOG_ERROR(SYS, "UnknownFacility %s", argv[0]);
             res = false;
         }
     }
 
-    if (2<=argc) {
+    if(2 <= argc) {
         level = str2level(argv[1]);
         if(LOG_LEVEL_UNKNOWN == level) {
             LOG_ERROR(SYS, "Unknown log level name %s", argv[1]);
@@ -135,11 +131,11 @@ bool cmd_log_level(int32_t argc, char* argv[]) {
         }
     }
 
-    if(res && (2==argc)) {
+    if(res && (2 == argc)) {
         res = set_log_level(facility, level);
     }
-    if(res && (1==argc)) {
-        if(ALL_FACILITY==facility ) {
+    if(res && (1 == argc)) {
+        if(ALL_FACILITY == facility) {
             log_leveles_diag();
         } else {
             io_printf("%s %s" CRLF, facility2str(facility), log_level_name_long(get_log_level(facility)));

@@ -9,6 +9,9 @@ rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\cli_drv\log_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\cli_drv\log_commands.h
 
+
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set_sw\test_fifo\test_fifo_array.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set_sw\test_fifo\test_fifo_array.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\zed_f9p\zed_f9p_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\zed_f9p\zed_f9p_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\projects\fw_loader_debug\cli_wrappers.c

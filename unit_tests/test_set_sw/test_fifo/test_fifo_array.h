@@ -9,10 +9,11 @@ extern "C" {
 
 bool test_fifo_array_types(void);
 bool test_fifo_array(void);
+bool test_fifo_array_packing(void);
 
-#define TEST_SUIT_FIFO_ARRAY                                                                                            \
-    {"fifo_array_types", test_fifo_array_types}, {"fifo_array", test_fifo_array},                              \
-
+#define TEST_SUIT_FIFO_ARRAY                                                                                           \
+    {"fifo_array_types", test_fifo_array_types}, {"fifo_array_pack", test_fifo_array_packing},                         \
+        {"fifo_array", test_fifo_array},
 
 #ifdef __cplusplus
 }
