@@ -229,3 +229,21 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
 
     return res;
 }
+
+bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Rtcm3IfCmt_t interface) {
+    bool res = false;
+    if((NULL != payload) && (0 < size)) {
+        uint32_t i = 0;
+        rtcm3_reset_rx(&Rtcm3Porotocol[interface]);
+        uint32_t init_rx_pkt_cnt = Rtcm3Porotocol[interface].rx_pkt_cnt;
+        for(i = 0; i < size; i++) {
+            res = rtcm3_proc_byte(&Rtcm3Porotocol[interface], payload[i]);
+        }
+        if(init_rx_pkt_cnt < Rtcm3Porotocol[interface].rx_pkt_cnt) {
+            res = true;
+        }
+    }
+
+    return res;
+}
+

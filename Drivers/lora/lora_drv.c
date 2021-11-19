@@ -30,29 +30,10 @@
 static Array_t ArrLoRaTxNode[LORA_TX_QUEUE_SIZE];
 LoRaIf_t LoRaInterface = {0};
 
-#ifdef HAS_RTCM3
-bool rtcm3_lora_rx_proc(uint8_t* const payload, uint32_t size) {
-    bool res = false;
-    if((NULL != payload) && (0 < size)) {
-        uint32_t i = 0;
-        rtcm3_reset_rx(&Rtcm3Porotocol[RT_LORA_ID]);
-        uint32_t init_rx_pkt_cnt = Rtcm3Porotocol[RT_LORA_ID].rx_pkt_cnt;
-        for(i = 0; i < size; i++) {
-            res = rtcm3_proc_byte(&Rtcm3Porotocol[RT_LORA_ID], payload[i]);
-        }
-        if(init_rx_pkt_cnt < Rtcm3Porotocol[RT_LORA_ID].rx_pkt_cnt) {
-            res = true;
-        }
-    }
-
-    return res;
-}
-#endif
-
 bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
     bool res = false;
 #ifdef HAS_RTCM3
-    res = rtcm3_lora_rx_proc(rx_payload, rx_size);
+    res = rtcm3_proc_array(rx_payload, rx_size, RT_LORA_ID);
 #endif /*HAS_RTCM3*/
 #ifdef HAS_TBFP
     res = tbfp_proc(rx_payload, rx_size);

@@ -3,6 +3,7 @@
 
 #define TASKS_HARVESTER                                                        \
   TASK(LORA)                                                                   \
+  TASK(SX1262)                                                                 \
   TASK(NMEA)                                                                   \
   TASK(TCAN4550)                                                               \
   TASK(UBX)                                                                    \

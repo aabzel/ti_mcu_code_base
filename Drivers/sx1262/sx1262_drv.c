@@ -19,6 +19,7 @@ speed up to 16 MHz
 #include "byte_utils.h"
 #include "clocks.h"
 #include "data_utils.h"
+#include "float_utils.h"
 #include "debug_info.h"
 #include "gpio_drv.h"
 #include "io_utils.h"
@@ -98,7 +99,7 @@ bool sx1262_chip_select(bool state) {
         }                                                                                                              \
     } while(0);
 
-Sx1262_t Sx1262Instance;
+Sx1262_t Sx1262Instance={0};
 
 #ifdef HAS_SX1262_DEBUG
 const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
@@ -417,8 +418,8 @@ bool sx1262_set_packet_params(PacketParam_t* packParam) {
     uint8_t tx_array[9];
     memset(tx_array, 0xFF, sizeof(tx_array));
     if(PACKET_TYPE_LORA == packParam->packet_type) {
-        packParam->proto.lora.preamble_length = reverse_byte_order_uint16(packParam->proto.lora.preamble_length);
-        memcpy(tx_array, &packParam->proto.lora.preamble_length, 2);
+        uint16_t preamble_length_be = reverse_byte_order_uint16(packParam->proto.lora.preamble_length);
+        memcpy(tx_array, &preamble_length_be, 2);
         tx_array[2] = packParam->proto.lora.header_type;
         tx_array[3] = packParam->proto.lora.payload_length;
         tx_array[4] = packParam->proto.lora.crc_type;
@@ -1532,8 +1533,36 @@ bool sx1262_process(void) {
 #ifdef HAS_DEBUG
 float lora_calc_data_rate(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code){
     float data_rate =    0.0;
-    uint32_t bandwidth_hz=bandwidth2num(bw_code);
+    uint32_t bandwidth_hz = bandwidth2num((BandWidth_t) bw_code);
     data_rate = ((float)(bandwidth_hz*sf_code*4))/((powf(2.0f, (float)sf_code))*((float)(4+cr_code)));
     return data_rate ;
+}
+
+/*
+ * de - Low Data Rate Optimize can
+ *           be enabled  (Value of DE = 1) or
+ *           disabled (Value of DE = 0)
+ * header  -    implicit or explicit, i.e. H of value
+ *                   0 indicates it is enabled and it is explicit mode where as H of value
+ *                   1 indicates it is disabled and it is implicit mode.
+ * n_preamble -  Number of symbols in preamble
+ * */
+float lora_calc_max_frame_tx_time(uint8_t sf_code,
+                                  uint8_t bw_code,
+                                  uint8_t cr_code,
+                                  uint16_t  n_preamble,
+                                  uint8_t  header,
+                                  uint8_t low_data_rate_opt,
+                                  float *Tsym ,
+                                  float *t_preamble){
+    float  t_frame = 0.0f;
+    float  t_payload = 0.0f;
+    uint16_t pl = 256;
+    *Tsym = powf(2.0f,(float)sf_code)/((float)bandwidth2num(bw_code));
+    *t_preamble = (((float)n_preamble)+4.25f)*(*Tsym);
+    float payloadSymbNb = 8.0f + float_max(((float)(cr_code+4))*ceilf(((float)(8*pl-4*sf_code+44+20*header))/((float)(4*(sf_code-2*low_data_rate_opt)))) , 0.0f);
+    t_payload = payloadSymbNb*(*Tsym);
+    t_frame = *t_preamble+t_payload;
+    return t_frame;
 }
 #endif

@@ -736,9 +736,13 @@ bool sx1262_calc_diag(char *key_word1, char *key_word2){
                                        {8, "BW,kHz"},
                                        {5, "CR"} ,
                                        {9, "bit/s"},
-                                       {9, "Byte/s"}  };
+                                       {9, "Byte/s"},
+                                       {9, "Tsym,s"},
+                                       {9, "Tpream,s"},
+                                       {9, "Tframe,s"}
+    };
     uint16_t num = 1;
-    float data_rate = 0.0f;
+    float data_rate = 0.0f,t_frame;
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     char temp_str[200];
     for(sf=SF5;sf<=SF12;sf++) {
@@ -747,12 +751,21 @@ bool sx1262_calc_diag(char *key_word1, char *key_word2){
                 res=is_valid_bandwidth((BandWidth_t) bw);
                 if(res) {
                     data_rate = lora_calc_data_rate(sf,bw,cr);
+                    float t_preamble = 0.0f;
+                    float Tsym =0.0;
+                    t_frame = lora_calc_max_frame_tx_time(sf,bw,cr,
+                                                          Sx1262Instance.packet_param.proto.lora.preamble_length,
+                                                          Sx1262Instance.packet_param.proto.lora.header_type,
+                                                          Sx1262Instance.mod_params.low_data_rate_optimization,&Tsym,&t_preamble);
                     strcpy(temp_str, TSEP);
                     snprintf(temp_str, sizeof(temp_str), "%s %5u " TSEP, temp_str,(uint32_t) powf(2.0f,(float)sf));
                     snprintf(temp_str, sizeof(temp_str), "%s %6.2f " TSEP, temp_str, ((float)bandwidth2num((BandWidth_t)bw))/1000.0f);
                     snprintf(temp_str, sizeof(temp_str), "%s %3s " TSEP, temp_str, coding_rate2str((LoRaCodingRate_t)cr));
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate);
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate/8);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, Tsym);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_preamble);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_frame);
                     snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
                     if(is_contain(temp_str, key_word1, key_word2)) {
                         io_printf(TSEP " %3u ", num);

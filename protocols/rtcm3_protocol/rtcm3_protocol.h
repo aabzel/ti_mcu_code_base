@@ -73,6 +73,7 @@ bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, uint8_t interface, bool lor
 bool rtcm3_proc_byte(Rtcm3Porotocol_t* instance, uint8_t rx_byte);
 bool rtcm3_reset_rx(Rtcm3Porotocol_t* instance);
 bool is_rtcm3_frame(uint8_t* arr, uint16_t len);
+bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Rtcm3IfCmt_t interface);
 
 #ifdef __cplusplus
 }
