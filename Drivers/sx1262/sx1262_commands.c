@@ -737,7 +737,7 @@ bool sx1262_calc_diag(char *key_word1, char *key_word2){
                                        {5, "CR"} ,
                                        {9, "bit/s"},
                                        {9, "Byte/s"},
-                                       {9, "Tsym,s"},
+                                       {9, "Tsym,ms"},
                                        {9, "Tpream,s"},
                                        {9, "Tframe,s"}
     };
@@ -763,7 +763,7 @@ bool sx1262_calc_diag(char *key_word1, char *key_word2){
                     snprintf(temp_str, sizeof(temp_str), "%s %3s " TSEP, temp_str, coding_rate2str((LoRaCodingRate_t)cr));
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate);
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate/8);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, Tsym);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, Tsym*1000.0f);
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_preamble);
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_frame);
                     snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);

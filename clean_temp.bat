@@ -1,4 +1,5 @@
 @echo off
+cls
 echo %0
 del /S *.o
 del /S *.d

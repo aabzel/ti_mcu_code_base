@@ -395,6 +395,14 @@ bool sx1262_start_rx(uint32_t timeout_s) {
 
     return res;
 }
+
+bool is_power_valid(int8_t power){
+    bool res = false;
+    if ((-7<=power) && (power<=22)) {
+        res = true;
+    }
+    return res;
+}
 /*
    SetTxParams
    Set output power and ramp time for the PA
@@ -403,7 +411,11 @@ bool sx1262_start_rx(uint32_t timeout_s) {
 */
 bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time) {
     bool res = false;
-    uint8_t tx_array[2];
+    res = is_power_valid(power);
+    if (false==res) {
+        power = DFLT_OUT_POWER;
+    }
+    uint8_t tx_array[2] = {0};
     tx_array[0] = (uint8_t)power;
     tx_array[1] = ramp_time;
     res = sx1262_send_opcode(OPCODE_SET_TX_PARAMS, tx_array, sizeof(tx_array), NULL, 0);
@@ -714,13 +726,58 @@ bool sx1262_set_payload(uint8_t* payload, uint8_t size) {
     return res;
 }
 
-bool sx1262_conf_tx(void) {
+static bool calc_power_param(uint8_t output_power_dbm, uint8_t *pa_duty_cycle, uint8_t *hp_max){
+    bool res = false;
+    switch(output_power_dbm){
+    case 22:
+        *pa_duty_cycle = 0x04;
+        *hp_max = 0x07;
+        res = true;
+        break;
+    case 20:
+        *pa_duty_cycle = 0x03;
+        *hp_max = 0x05;
+        res = true;
+        break;
+    case 17:
+        *pa_duty_cycle = 0x02;
+        *hp_max = 0x03;
+        res = true;
+        break;
+    case 14:
+        *pa_duty_cycle = 0x02;
+        *hp_max = 0x02;
+        res = true;
+        break;
+    default:
+        *pa_duty_cycle = 0x04;
+        *hp_max = 0x07;
+        res = false;
+        break;
+    }
+    return res;
+}
+
+bool sx1262_conf_tx(int8_t output_power_dbm) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
-    // char payload[128];
-    res = sx1262_set_pa_config(0x03, 0x05, DEV_SEL_SX1262, 0x01) && res;
-    res = sx1262_set_tx_params(22, SET_RAMP_10U) && res;
+    res = is_power_valid(output_power_dbm);
+    if (false==res) {
+        LOG_ERROR(LORA, "InvaOutPwr: %d dBm %6.3f W", output_power_dbm, dbm2watts(output_power_dbm));
+        output_power_dbm = DFLT_OUT_POWER;
+    }
+
+    uint8_t pa_duty_cycle = 0;
+    uint8_t hp_max = 0;
+    res = calc_power_param(output_power_dbm, &pa_duty_cycle, &hp_max);
+    if (res) {
+        LOG_INFO(LORA, "OutPwr: %d dBm %6.3f W", output_power_dbm, dbm2watts(output_power_dbm));
+    } else {
+        LOG_WARNING(LORA, "DfltOutPwr: %d dBm %6.3f W", DFLT_OUT_POWER, dbm2watts(DFLT_OUT_POWER));
+    }
+    res = sx1262_set_pa_config(pa_duty_cycle, hp_max, DEV_SEL_SX1262, 0x01) && res;
+    res = sx1262_set_tx_params(output_power_dbm, SET_RAMP_10U) && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
 
     return res;
@@ -777,6 +834,12 @@ bool sx1262_int_isr(Sx1262_t* sx1262Instance) {
     }
 
     return res;
+}
+
+float dbm2watts(int32_t dbm){
+    float watts=0.0f;
+    watts = powf(10.0f,((float)dbm)/10.0f)/1000.0f;
+    return watts;
 }
 
 bool sx1262_load_params(Sx1262_t* sx1262Instance) {
@@ -877,12 +940,12 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  &file_len);
     if((true == res) && (1 == file_len)) {
 #ifdef HAS_SX1262_DEBUG
-        LOG_INFO(LORA, "Set output power from params [%u] %d dBm", sx1262Instance->output_power,
-                 sx1262Instance->output_power);
+        LOG_INFO(LORA, "Set output power from params [%u] %d dBm %f W", sx1262Instance->output_power,
+                 sx1262Instance->output_power,dbm2watts(sx1262Instance->output_power));
 #endif
     } else {
 #ifdef HAS_SX1262_DEBUG
-        LOG_WARNING(LORA, "Set default output power [%u] %d dBm", DFLT_OUT_POWER, DFLT_OUT_POWER);
+        LOG_WARNING(LORA, "Set default output power [%u] %d dBm %f W", DFLT_OUT_POWER, DFLT_OUT_POWER, dbm2watts(DFLT_OUT_POWER));
 #endif
         sx1262Instance->output_power = DFLT_OUT_POWER;
     }
@@ -949,7 +1012,7 @@ bool sx1262_init(void) {
 
         res = sx1262_set_tx_len(255) && res;
 
-        res = sx1262_conf_tx() && res;
+        res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
         res = sx1262_conf_rx() && res;
 
         res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;

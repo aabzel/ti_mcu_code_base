@@ -206,9 +206,15 @@ bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* ou
 }
 
 const char* param_val2str(uint16_t id, uint8_t* value) {
-    const char* name = "---";
+    static char temp_name[100] = "---";
+    const char *name = "---";
 
 #ifdef HAS_SX1262
+    if(PAR_ID_LORA_OUT_POWER == id){
+        float watts = dbm2watts((uint32_t) *value);
+        snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
+        name = temp_name;
+    }
     if(PAR_ID_LORA_SF == id) {
         name = spreading_factor2str((uint8_t)*value);
     }

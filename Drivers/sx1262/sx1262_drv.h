@@ -234,7 +234,9 @@ extern Sx1262_t Sx1262Instance;
 
 extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 
+float dbm2watts(int32_t dbm);
 bool is_valid_bandwidth(BandWidth_t bandwidth);
+bool is_power_valid(int8_t power);
 
 bool sx1262_get_dev_err(uint16_t* op_error);
 bool sx1262_get_irq_status(uint16_t* irq_stat);
