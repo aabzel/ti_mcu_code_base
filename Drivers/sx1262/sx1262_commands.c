@@ -49,6 +49,21 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
     }
     if((0 <= argc) && (argc <= 4)) {
         res = true;
+#ifdef HAS_DEBUG
+        float data_rate = lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor,Sx1262Instance.mod_params.band_width,Sx1262Instance.mod_params.coding_rate);
+        float t_preamble = 0.0f;
+        float Tsym =0.0;
+        float t_frame = lora_calc_max_frame_tx_time(Sx1262Instance.mod_params.spreading_factor,
+                                                    Sx1262Instance.mod_params.band_width,
+                                                    Sx1262Instance.mod_params.coding_rate,
+                                                    Sx1262Instance.packet_param.proto.lora.preamble_length,
+                                                    Sx1262Instance.packet_param.proto.lora.header_type,
+                                                    Sx1262Instance.mod_params.low_data_rate_optimization,
+                                                    &Tsym,
+                                                    &t_preamble);
+        LOG_INFO(LORA, "data rate %f bit/s %f byte/s",data_rate,data_rate/8);
+        LOG_INFO(LORA, "Tframe %f s",t_frame);
+#endif
         LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
         LOG_INFO(LORA, "packet type: %s", pack_type2str(Sx1262Instance.packet_type));
         LOG_INFO(LORA, "rx_buffer_pointer: %u 0x%x", Sx1262Instance.rx_buffer_pointer,
@@ -82,7 +97,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("sx1262 %s selected" CRLF, (0 == Sx1262Instance.wire_nss) ? "" : "not");
         io_printf("sx1262 reset %s" CRLF, (0 == Sx1262Instance.wire_rst) ? "active" : "passive");
         io_printf("INT: %u" CRLF, Sx1262Instance.wire_int);
-        io_printf("sx1262 %s" CRLF, (1 == Sx1262Instance.wire_busy) ? "busy" : "idle");
+        LOG_DEBUG(LORA,"sx1262 %s" CRLF, (1 == Sx1262Instance.wire_busy) ? "busy" : "idle");
         //  res = print_int_diag(&Sx1262Instance.irq_cnt);
         // printf_pack_stat(&Sx1262Instance.gfsk, "GFSK");
     } else {
@@ -728,6 +743,7 @@ bool sx1262_statistic_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+#ifdef HAS_DEBUG
 bool sx1262_calc_diag(char *key_word1, char *key_word2){
     bool res = false;
     uint8_t sf=0, cr=0, bw=0;
@@ -805,3 +821,4 @@ bool sx1262_calc_command(int32_t argc, char* argv[]){
     }
     return res;
 }
+#endif

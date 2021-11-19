@@ -10,7 +10,6 @@ extern "C" {
 
 #include "cli_manager.h"
 
-bool sx1262_calc_command(int32_t argc, char* argv[]);
 bool sx1262_test_command(int32_t argc, char* argv[]);
 bool sx1262_clear_err_command(int32_t argc, char* argv[]);
 bool sx1262_clear_fifo_command(int32_t argc, char* argv[]);
@@ -34,9 +33,8 @@ bool sx1262_sleep_command(int32_t argc, char* argv[]);
 bool sx1262_tx_command(int32_t argc, char* argv[]);
 bool sx1262_write_reg_command(int32_t argc, char* argv[]);
 
-#define SX1262_COMMANDS                                                                                                \
+#define SX1262_COMMANDS_BASE                                                                                                \
     SHELL_CMD("sx1262_clr_err", "sxce", sx1262_clear_err_command, "SX1262 clear errors"),                              \
-        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                           \
         SHELL_CMD("sx1262_clr_fifo", "sxcf", sx1262_clear_fifo_command, "SX1262 clear FIFO"),                          \
         SHELL_CMD("sx1262_diag", "sxd", sx1262_diag_command, "SX1262 diag"),                                           \
         SHELL_CMD("sx1262_init", "sxi", sx1262_init_command, "SX1262 init"),                                           \
@@ -58,6 +56,18 @@ bool sx1262_write_reg_command(int32_t argc, char* argv[]);
         SHELL_CMD("sx1262_sleep", "sxs", sx1262_sleep_command, "SX1262 sleep"),                                        \
         SHELL_CMD("sx1262_sync", "sxssw", sx1262_set_sync_word_command, "SX1262 set sync word"),                       \
         SHELL_CMD("sx1262_tx", "sxt", sx1262_tx_command, "SX1262 transmit"),
+
+#ifdef HAS_DEBUG
+bool sx1262_calc_command(int32_t argc, char* argv[]);
+#define SX1262_COMMANDS_DEBUG                                                                                          \
+        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),
+#else
+#define SX1262_COMMANDS_DEBUG
+#endif
+
+#define SX1262_COMMANDS \
+     SX1262_COMMANDS_BASE \
+     SX1262_COMMANDS_DEBUG
 
 #ifdef __cplusplus
 }

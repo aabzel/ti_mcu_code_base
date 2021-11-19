@@ -26,3 +26,8 @@ https://dev.to/gamegods3/how-to-install-gcc-in-windows-10-the-easier-way-422j
 https://habr.com/ru/post/398229/
 dBm to Watt Conversion
 https://awt-global.com/wp3/resources/dbm-to-watt-conversion/
+How to calculate the data rate of LoRa?
+https://electronics.stackexchange.com/questions/277722/how-to-calculate-the-data-rate-of-lora
+
+Онлайн-калькулятор теоретически достижимой дальности связи
+https://r1ban.ru/calc/loss-calc-dist.htm
