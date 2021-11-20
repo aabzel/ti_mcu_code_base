@@ -22,11 +22,14 @@ static bool rtcm3_diag(void) {
                                        {9, "lostLoRa"},
                                        {9, "lostUart"},
                                        {9, "rxCnt"},
-                                       {9, "preCnt"},
                                        {9, "crcErCnt"},
+#ifdef HAS_DEBUG
+                                       {9, "preCnt"},
                                        {9, "ErCnt"},
                                        {9, "minLen"},
-                                       {9, "maxLen"}};
+                                       {9, "maxLen"},
+#endif /*HAS_DEBUG*/
+    };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = 0; interface < RTCM_IF_CNT; interface++) {
         io_printf(TSEP);
@@ -35,17 +38,14 @@ static bool rtcm3_diag(void) {
         io_printf(" %7u " TSEP,  Rtcm3Porotocol[interface].lora_lost_pkt_cnt);
         io_printf(" %7u " TSEP,  Rtcm3Porotocol[interface].uart_lost_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].rx_pkt_cnt);
+        io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].crc_err_cnt);
 #ifdef HAS_DEBUG
         io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].preamble_cnt);
-#endif /*HAS_DEBUG*/
-        io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].crc_err_cnt);
-
-#ifdef HAS_DEBUG
         io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].err_cnt);
         io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].min_len);
         io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].max_len);
-        io_printf(CRLF);
 #endif /*HAS_DEBUG*/
+        io_printf(CRLF);
         res = true;
     }
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));

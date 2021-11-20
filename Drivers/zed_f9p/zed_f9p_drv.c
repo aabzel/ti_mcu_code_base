@@ -28,9 +28,12 @@
 #include "ubx_protocol.h"
 #endif
 
+#include "cli_manager.h"
 #include "none_blocking_pause.h"
 #include "sys_config.h"
 #include "task_info.h"
+#include "uart_common.h"
+#include "writer_config.h"
 #include "zed_f9p_diag.h"
 
 extern ZedF9P_t ZedF9P = {0};
@@ -40,13 +43,53 @@ static bool zed_f9p_proc_base(void) {
     if(task_data[TASK_ID_NMEA].on) {
         task_data[TASK_ID_NMEA].on = false;
     }
+    if(task_data[TASK_ID_UBX].on) {
+        task_data[TASK_ID_UBX].on = false;
+    }
+
+    if(RTK_CH_RS232 == ZedF9P.channel) {
+        huart[UART_NUM_ZED_F9P].is_uart_fwd[UART_NUM_CLI] = true;
+        Rtcm3Porotocol[RT_UART_ID].lora_fwd = false;
+        res = cli_set_echo(false);
+        dbg_o.enable = false;  /*Disable CLI output*/
+    }
+
+    if(RTK_CH_LORA == ZedF9P.channel) {
+        Rtcm3Porotocol[RT_UART_ID].lora_fwd = true;
+        dbg_o.enable = true;
+    }
+
     return res;
 }
 
 static bool zed_f9p_proc_rover(void) {
+    bool res = true;
+    if(task_data[TASK_ID_UBX].on) {
+        task_data[TASK_ID_UBX].on = false;
+    }
+    task_data[TASK_ID_NMEA].on = true;
+    res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
+    if(res) {
+        ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
+    } else {
+        LOG_ERROR(ZED_F9P, "Invalid GNSS Nmea coordinate");
+    }
+
+    if(RTK_CH_RS232 == ZedF9P.channel) {
+        huart[UART_NUM_CLI].is_uart_fwd[UART_NUM_ZED_F9P] = true;
+        huart[UART_NUM_CLI].is_uart_fwd[UART_NUM_CLI] = false;
+        res = cli_set_echo(false);
+    }
+
+    return res;
+}
+
+static bool zed_f9p_proc_none(void) {
     bool res = false;
     static bool first_gnss = true;
     static bool first_time = true;
+    task_data[TASK_ID_NMEA].on = true;
+    task_data[TASK_ID_UBX].on = false;
     res = is_valid_time_date(&NavInfo.date_time);
     if(res) {
         if(first_time) {
@@ -89,14 +132,23 @@ static bool zed_f9p_proc_rover(void) {
 bool zed_f9p_proc(void) {
     /*is new GNSS samples*/
     bool res = false;
-
+    if(RTK_CH_LORA == ZedF9P.channel) {
+        Rtcm3Porotocol[RT_UART_ID].lora_fwd = true;
+    }
+    if(RTK_CH_RS232 == ZedF9P.channel) {
+        Rtcm3Porotocol[RT_UART_ID].lora_fwd = false;
+    }
     switch(ZedF9P.rtk_mode) {
-    case RTK_BASE:
+    case RTK_BASE: {
         res = zed_f9p_proc_base();
-        break;
-    case RTK_ROVER:
+    } break;
+
+    case RTK_ROVER: {
         res = zed_f9p_proc_rover();
-        break;
+    } break;
+    case RTK_NONE: {
+        res = zed_f9p_proc_none();
+    } break;
     default:
         res = false;
         break;
@@ -252,6 +304,14 @@ bool zed_f9p_load_params(void) {
         res = false;
     }
 
+    res = mm_get(PAR_ID_RTK_CHANNEL, (uint8_t*)&ZedF9P.channel, 1, &file_len);
+    if(res && (1 == file_len)) {
+        LOG_INFO(ZED_F9P, "RTKchannel:%u-%s", ZedF9P.channel, rtk_channel2str(ZedF9P.channel));
+    } else {
+        LOG_ERROR(ZED_F9P, "GetRTKchanErr");
+        res = false;
+    }
+
     res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
     if(res && (16 == file_len)) {
         LOG_INFO(ZED_F9P, "RTKBaseLocLoadOk");
@@ -277,6 +337,7 @@ bool zed_f9p_init(void) {
     bool res = true;
     res = set_log_level(ZED_F9P, LOG_LEVEL_INFO);
     ZedF9P.rate_ms = DFLT_GNSS_PER_MS;
+    ZedF9P.channel = RTK_CH_LORA;
     res = zed_f9p_load_params();
     if(res) {
         switch(ZedF9P.rtk_mode) {

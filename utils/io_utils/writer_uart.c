@@ -19,6 +19,7 @@ generic_writer_t dbg_o = {
              .array = dbg_o_data,
              .initDone = true},
     .f_transmit = uart_writer_transmit,
+    .enable = true,
 };
 
 bool uart_writer_transmit(struct generic_writer_s* writer) {
@@ -33,7 +34,9 @@ bool uart_writer_transmit(struct generic_writer_s* writer) {
         if(MAX_UART_BLOCK < writer->in_transmit) {
             writer->in_transmit = MAX_UART_BLOCK;
         }
-        res = uart_send(UART_NUM_CLI, (uint8_t*)data, writer->in_transmit, true); /*Error here*/
+        if(writer->enable){
+            res = uart_send(UART_NUM_CLI, (uint8_t*)data, writer->in_transmit, true); /*Error here*/
+        }
     }
     return res;
 }

@@ -45,6 +45,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},    /*Max LoRa bit/rate*/
     /**/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
     /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
+    /**/ {PAR_ID_RTK_CHANNEL, 1, UINT8, "RTKchannel"},
     /**/ {PAR_ID_GNSS_PERIOD, 2, UINT16, "GnssPer"},
     /**/ {PAR_ID_BASE_ALT, 8, DOUBLE, "BaseAlt"},
 
@@ -232,6 +233,9 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
 #ifdef HAS_ZED_F9P
     if(PAR_ID_RTK_MODE == id) {
         name = rtk_mode2str((uint8_t)*value);
+    }
+    if(PAR_ID_RTK_CHANNEL == id) {
+        name = rtk_channel2str((uint8_t)*value);
     }
     if(PAR_ID_BASE_LOCATION == id) {
         name = coordinate2str((GnssCoordinate_t*)value);

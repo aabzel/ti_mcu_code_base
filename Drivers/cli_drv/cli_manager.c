@@ -9,22 +9,23 @@
 #include "data_utils.h"
 #ifndef X86_64
 #include "base_cmd.h"
+#include "cli_commands.h"
 #include "io_utils.h"
 #include "log_commands.h"
 #include "none_blocking_pause.h"
-#include "cli_commands.h"
-#include "table_utils.h"
 #include "sys_config.h"
+#include "table_utils.h"
 #include "uart_drv.h"
 #include "uart_string_reader.h"
-#include "writer_generic.h"
 #include "writer_config.h"
+#include "writer_generic.h"
 #endif /*X86_64*/
 
 #include "str_utils.h"
 #include "uart_common.h"
 
 bool cli_echo = true;
+bool cli_output = true;
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
 #ifndef X86_64
@@ -34,7 +35,7 @@ static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
 uint32_t cli_cmd_len_max = 0;
 
 #ifdef HAS_CLI_CMD_HISTORY
-char prev_cmd[40]="";
+char prev_cmd[40] = "";
 #endif
 
 #ifndef X86_64
@@ -100,18 +101,18 @@ bool cli_init(void) {
         cli_init_done = false;
     } else {
 #ifdef HAS_CLI_CMD_HISTORY
-        memset(prev_cmd, 0x00,sizeof(prev_cmd));
+        memset(prev_cmd, 0x00, sizeof(prev_cmd));
 #endif
         cli_cmd_len_max = 0;
         cli_set_echo(true);
         res = writer_init();
+        cli_output = true;
         cli_init_done = true;
         res = true;
     }
     return res;
 }
 #endif
-
 
 #ifndef X86_64
 bool cli_process(void) {
@@ -136,21 +137,20 @@ bool cli_process(void) {
 }
 #endif
 
-
 /*
  cmd_line must be in RAM
  TODO: make cmd_line unchangeable
  */
-bool cli_parse_args(char* cmd_line, int *argc, char** argv){
+bool cli_parse_args(char* cmd_line, int* argc, char** argv) {
     bool res = false;
-    int argc_loc=0;
+    int argc_loc = 0;
     char* pRun = cmd_line;
-    while((argc_loc < SHELL_MAX_ARG_COUNT) && (0x00!=*pRun)) {
+    while((argc_loc < SHELL_MAX_ARG_COUNT) && (0x00 != *pRun)) {
         while(isspace((int)*pRun)) {
             pRun++;
         }
-        if('\0' !=*pRun ) {
-            argv[argc_loc] =( char*) pRun;
+        if('\0' != *pRun) {
+            argv[argc_loc] = (char*)pRun;
             argc_loc++;
             res = true;
             while(*pRun && !isspace((int)*pRun)) {
@@ -161,8 +161,8 @@ bool cli_parse_args(char* cmd_line, int *argc, char** argv){
                 pRun++;
             }
         }
-    }/*while*/
-    (*argc)=argc_loc;
+    } /*while*/
+    (*argc) = argc_loc;
 
     return res;
 }
@@ -172,12 +172,12 @@ bool process_shell_cmd(char* cmd_line) {
     bool res = false;
 #ifdef HAS_CLI_DEBUG
     io_printf("proc command [%s] %u" CRLF, cmd_line, strlen(cmd_line));
-    cli_cmd_len_max = rx_min32u(cli_cmd_len_max ,strlen(cmd_line));
+    cli_cmd_len_max = rx_min32u(cli_cmd_len_max, strlen(cmd_line));
 #endif /*HAS_CLI_DEBUG*/
 
 #ifdef HAS_CLI_CMD_HISTORY
     memset(prev_cmd, 0x00, sizeof(prev_cmd));
-    if (strlen(cmd_line) < sizeof(prev_cmd)) {
+    if(strlen(cmd_line) < sizeof(prev_cmd)) {
         memcpy(prev_cmd, cmd_line, strlen(cmd_line));
     }
 #endif
@@ -188,30 +188,29 @@ bool process_shell_cmd(char* cmd_line) {
     /*TODO: make a single function for argument parsing*/
     shell_argc = 0;
     memset(shell_argv, 0, sizeof(shell_argv));
-    cli_parse_args(cmd_line,&shell_argc, &shell_argv[0]);
+    cli_parse_args(cmd_line, &shell_argc, &shell_argv[0]);
 
-    if(0 == shell_argc ) {
+    if(0 == shell_argc) {
         shell_prompt();
         res = true;
     }
 
-    if(false==res){
+    if(false == res) {
         while(NULL != cmd->handler) {
             if((cmd->long_name && __strcasecmp(cmd->long_name, shell_argv[0]) == 0) ||
                (cmd->short_name && __strcasecmp(cmd->short_name, shell_argv[0]) == 0)) {
                 res = cmd->handler(shell_argc - 1, shell_argv + 1);
-                if(false==res){
+                if(false == res) {
                     LOG_ERROR(SYS, "cmd error");
                 }
                 shell_prompt();
-                //res = true;
+                // res = true;
                 break;
-
             }
             cmd++;
         }
     }
-    if(false==res){
+    if(false == res) {
         if(user_mode) {
             LOG_ERROR(SYS, "Unknown command [%s]", shell_argv[0]);
         } else {
@@ -228,7 +227,7 @@ bool process_shell_cmd(char* cmd_line) {
 
 #ifndef X86_64
 void help_dump_key(const char* sub_name1, const char* sub_name2) {
-    uint16_t num=1;
+    uint16_t num = 1;
     const shell_cmd_info_t* cmd = shell_commands;
     io_printf("Available commands:");
     if(sub_name1) {
@@ -242,14 +241,14 @@ void help_dump_key(const char* sub_name1, const char* sub_name2) {
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     while(cmd->handler) {
         if(is_print_cmd(cmd, sub_name1, sub_name2)) {
-            io_printf( TSEP );
+            io_printf(TSEP);
             io_printf(" %3u " TSEP, num);
             io_printf(" %8s " TSEP, cmd->short_name ? cmd->short_name : "");
             io_printf(" %18s " TSEP, cmd->long_name ? cmd->long_name : "");
             io_printf(" %s ", cmd->description ? cmd->description : "");
             io_printf(CRLF);
 #ifdef NORTOS
-            //wait_in_loop_ms(1);
+            // wait_in_loop_ms(1);
 #endif /*NORTOS*/
             num++;
         }
@@ -264,9 +263,7 @@ bool cli_set_echo(bool echo_val) {
     return true;
 }
 
-bool cli_get_echo(void) {
-    return cli_echo;
-}
+bool cli_get_echo(void) { return cli_echo; }
 
 bool cli_toggle_echo(void) {
     cli_echo = !cli_echo;
@@ -274,17 +271,15 @@ bool cli_toggle_echo(void) {
 }
 
 #ifdef HAS_CLI_CMD_HISTORY
-Arrow_t cli_arrows_parse(char cur_char){
+Arrow_t cli_arrows_parse(char cur_char) {
     Arrow_t arrow = ARROW_UNDEF;
-    static char prev_char=0;
-    static char prev_prev_char=0;
-    if((0x41==cur_char)&&
-       (0x5B==prev_char)&&
-       (0x1B==prev_prev_char)){
+    static char prev_char = 0;
+    static char prev_prev_char = 0;
+    if((0x41 == cur_char) && (0x5B == prev_char) && (0x1B == prev_prev_char)) {
         arrow = ARROW_UP;
     }
-    prev_prev_char=prev_char;
-    prev_char=cur_char;
+    prev_prev_char = prev_char;
+    prev_char = cur_char;
     return arrow;
 }
 #endif

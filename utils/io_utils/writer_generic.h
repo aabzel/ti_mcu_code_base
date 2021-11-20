@@ -19,6 +19,7 @@ typedef struct generic_writer_s {
     Fifo_array_t fifo;
     bool (*f_transmit)(struct generic_writer_s* writer);
     volatile void* instance;
+    bool enable;
 } generic_writer_t;
 
 void writer_tx_callback(generic_writer_t* s);

@@ -5,6 +5,8 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\cli_drv\cli_manager.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\cli_drv\cli_manager.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\io_utils\ostream.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\io_utils\ostream.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\fifo\fifo_index.c
@@ -54,8 +56,6 @@ rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\boot_drv\boot_driver.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\cli_drv\base_cmd.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\cli_drv\base_cmd.h
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\cli_drv\cli_manager.c
-%format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\cli_drv\cli_manager.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\cli_drv\common_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\cli_drv\shell_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\clocks\clock_commands.c

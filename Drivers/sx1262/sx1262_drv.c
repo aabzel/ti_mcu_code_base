@@ -972,7 +972,11 @@ bool sx1262_init(void) {
     bool res = true;
 #ifdef HAS_DEBUG
     set_log_level(LORA, LOG_LEVEL_DEBUG);
+    Sx1262Instance.debug = true;
+    Sx1262Instance.show_ascii = true;
 #else
+    Sx1262Instance.debug = false;
+    Sx1262Instance.show_bin = false;
     set_log_level(LORA, LOG_LEVEL_INFO);
 #endif
     LOG_INFO(LORA, "Init SX1262");
@@ -982,9 +986,6 @@ bool sx1262_init(void) {
     }
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
-    Sx1262Instance.debug = true;
-    Sx1262Instance.show_bin = false;
-    Sx1262Instance.show_ascii = true;
     res = sx1262_load_params(&Sx1262Instance) && res;
     GPIO_writeDio(DIO_SX1262_SS, 1);
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);

@@ -144,8 +144,8 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
             instance->rx_state = RTCM3_RX_DONE;
             instance->rx_pkt_cnt++;
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
-            /*Send RTCM3 frame to LoRa*/
 #ifdef HAS_LORA
+            /*Send RTCM3 frame to LoRa*/
             if((RT_UART_ID == instance->interface) && (true == instance->lora_fwd)) {
                 res = lora_send_queue(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE);
                 if(false == res) {
