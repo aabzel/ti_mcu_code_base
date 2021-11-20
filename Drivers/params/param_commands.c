@@ -67,10 +67,10 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
 
                 snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, valStr);
                 snprintf(temp_str, sizeof(temp_str), "%s %15s " TSEP, temp_str, param_val2str(ParamArray[i].id, value));
-                snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
+                snprintf(temp_str, sizeof(temp_str), "%s", temp_str);
                 if(is_contain(temp_str, keyWord1, keyWord2)) {
                     io_printf(TSEP " %3u ", num);
-                    io_printf("%s", temp_str);
+                    io_printf("%s" CRLF, temp_str);
                     num++;
                 }
             }

@@ -15,10 +15,13 @@ typedef struct xFifo_array_t {
     fifo_index_info_t fifoState;
     char* array;
     bool initDone;
+    uint32_t err_cnt;
 } Fifo_array_t;
 
 fifo_index_t fifo_get_count(Fifo_array_t* const instance);
 fifo_index_t fifo_get_size(Fifo_array_t* const instance);
+fifo_index_t fifo_get_spare(Fifo_array_t* const instance);
+
 bool fifo_clean(Fifo_array_t* instance);
 bool fifo_free(Fifo_array_t* fifo, fifo_index_t size);
 bool fifo_reset(Fifo_array_t* const instance);

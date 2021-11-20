@@ -1,5 +1,6 @@
 #include "fifo_char.h"
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -121,13 +122,24 @@ bool fifo_push_array(Fifo_array_t* instance, char* const inArr, fifo_index_t arr
 #ifdef DEBUG_FIFO_CHAR
     printf("\n\r%s [%s] size %d\n\r", __FUNCTION__, inArr, arr_len);
 #endif
-    if(res && (0u < arr_len)) {
-        uint16_t i;
+    if(res && (0u < arr_len)) {/*Spare exist*/
+        uint32_t spare = fifo_get_spare(instance);
+        if (arr_len <= spare ) {
+            res = true;
+        } else {
+            instance->err_cnt++;
+        }
+
+        uint16_t i=0;
         for(i = 0u; i < arr_len; i++) {
             if(true == res) {
                 res = fifo_push(instance, inArr[i]);
+                if(false==res){
+                    instance->err_cnt++;
+                }
             }
         }
+
 #ifdef DEBUG_FIFO_CHAR
         printf("\n\r%s filo len [%d]", __FUNCTION__, instance->fifoState.size);
 #endif
@@ -199,8 +211,14 @@ fifo_index_t fifo_get_count(Fifo_array_t* const instance) {
 
 fifo_index_t fifo_get_size(Fifo_array_t* const instance) {
     fifo_index_t ret;
-    ret = instance->fifoState.size;
+    ret = fifo_index_get_size(&(instance->fifoState));
     return ret;
+}
+
+fifo_index_t fifo_get_spare(Fifo_array_t* const instance) {
+    fifo_index_t spare;
+    spare  = fifo_index_get_spare(&instance->fifoState);
+    return spare;
 }
 
 bool fifo_free(Fifo_array_t* instance, fifo_index_t size) { return fifo_index_free(&instance->fifoState, size); }

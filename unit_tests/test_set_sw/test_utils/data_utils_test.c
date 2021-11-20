@@ -9,7 +9,7 @@ bool test_bin2sacii(void){
     uint8_t dataBin[2]={0x12,0xaf};
     uint8_t BinAscii[100]="";
     EXPECT_TRUE( hex2ascii(dataBin, sizeof(dataBin), BinAscii, sizeof(BinAscii)));
-    EXPECT_STREQ("12AF",BinAscii);
+    EXPECT_STREQ("12AF",(const char *)BinAscii);
     return true;
 }
 

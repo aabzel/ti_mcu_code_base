@@ -19,8 +19,8 @@ speed up to 16 MHz
 #include "byte_utils.h"
 #include "clocks.h"
 #include "data_utils.h"
-#include "float_utils.h"
 #include "debug_info.h"
+#include "float_utils.h"
 #include "gpio_drv.h"
 #include "io_utils.h"
 #include "log.h"
@@ -99,7 +99,7 @@ bool sx1262_chip_select(bool state) {
         }                                                                                                              \
     } while(0);
 
-Sx1262_t Sx1262Instance={0};
+Sx1262_t Sx1262Instance = {0};
 
 #ifdef HAS_SX1262_DEBUG
 const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
@@ -346,7 +346,7 @@ bool sx1262_set_rf_frequency(uint32_t rf_frequency_hz, uint32_t freq_xtal_hz) {
 */
 bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
     bool res = false;
-    uint8_t tx_array[2]={0};
+    uint8_t tx_array[2] = {0};
     tx_array[0] = tx_base_addr;
     tx_array[1] = rx_base_addr;
     res = sx1262_send_opcode(OPCODE_SET_BUFFER_BASE_ADDR, tx_array, sizeof(tx_array), NULL, 0);
@@ -396,9 +396,9 @@ bool sx1262_start_rx(uint32_t timeout_s) {
     return res;
 }
 
-bool is_power_valid(int8_t power){
+bool is_power_valid(int8_t power) {
     bool res = false;
-    if ((-7<=power) && (power<=22)) {
+    if((-7 <= power) && (power <= 22)) {
         res = true;
     }
     return res;
@@ -412,7 +412,7 @@ bool is_power_valid(int8_t power){
 bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time) {
     bool res = false;
     res = is_power_valid(power);
-    if (false==res) {
+    if(false == res) {
         power = DFLT_OUT_POWER;
     }
     uint8_t tx_array[2] = {0};
@@ -726,9 +726,9 @@ bool sx1262_set_payload(uint8_t* payload, uint8_t size) {
     return res;
 }
 
-static bool calc_power_param(uint8_t output_power_dbm, uint8_t *pa_duty_cycle, uint8_t *hp_max){
+static bool calc_power_param(uint8_t output_power_dbm, uint8_t* pa_duty_cycle, uint8_t* hp_max) {
     bool res = false;
-    switch(output_power_dbm){
+    switch(output_power_dbm) {
     case 22:
         *pa_duty_cycle = 0x04;
         *hp_max = 0x07;
@@ -763,7 +763,7 @@ bool sx1262_conf_tx(int8_t output_power_dbm) {
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
     res = is_power_valid(output_power_dbm);
-    if (false==res) {
+    if(false == res) {
         LOG_ERROR(LORA, "InvaOutPwr: %d dBm %6.3f W", output_power_dbm, dbm2watts(output_power_dbm));
         output_power_dbm = DFLT_OUT_POWER;
     }
@@ -771,7 +771,7 @@ bool sx1262_conf_tx(int8_t output_power_dbm) {
     uint8_t pa_duty_cycle = 0;
     uint8_t hp_max = 0;
     res = calc_power_param(output_power_dbm, &pa_duty_cycle, &hp_max);
-    if (res) {
+    if(res) {
         LOG_INFO(LORA, "OutPwr: %d dBm %6.3f W", output_power_dbm, dbm2watts(output_power_dbm));
     } else {
         LOG_WARNING(LORA, "DfltOutPwr: %d dBm %6.3f W", DFLT_OUT_POWER, dbm2watts(DFLT_OUT_POWER));
@@ -836,9 +836,9 @@ bool sx1262_int_isr(Sx1262_t* sx1262Instance) {
     return res;
 }
 
-float dbm2watts(int32_t dbm){
-    float watts=0.0f;
-    watts = powf(10.0f,((float)dbm)/10.0f)/1000.0f;
+float dbm2watts(int32_t dbm) {
+    float watts = 0.0f;
+    watts = powf(10.0f, ((float)dbm) / 10.0f) / 1000.0f;
     return watts;
 }
 
@@ -941,11 +941,12 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     if((true == res) && (1 == file_len)) {
 #ifdef HAS_SX1262_DEBUG
         LOG_INFO(LORA, "Set output power from params [%u] %d dBm %f W", sx1262Instance->output_power,
-                 sx1262Instance->output_power,dbm2watts(sx1262Instance->output_power));
+                 sx1262Instance->output_power, dbm2watts(sx1262Instance->output_power));
 #endif
     } else {
 #ifdef HAS_SX1262_DEBUG
-        LOG_WARNING(LORA, "Set default output power [%u] %d dBm %f W", DFLT_OUT_POWER, DFLT_OUT_POWER, dbm2watts(DFLT_OUT_POWER));
+        LOG_WARNING(LORA, "Set default output power [%u] %d dBm %f W", DFLT_OUT_POWER, DFLT_OUT_POWER,
+                    dbm2watts(DFLT_OUT_POWER));
 #endif
         sx1262Instance->output_power = DFLT_OUT_POWER;
     }
@@ -1362,14 +1363,14 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
 }
 
 #ifdef HAS_SX1262_BIT_RATE
-static bool sx1262_calc_bit_rate(uint32_t bytes  ,float* tx_real_bit_rate, uint32_t* tx_duration_ms) {
+static bool sx1262_calc_bit_rate(uint32_t bytes, float* tx_real_bit_rate, uint32_t* tx_duration_ms) {
     bool res = false;
     float bit_rate = 0.0f;
     uint32_t duration_ms = 0;
     uint32_t tx_done_time_stamp_ms = get_time_ms32();
     duration_ms = tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
     bit_rate = ((float)(bytes * 8 * 1000)) / (((float)duration_ms));
-    uint16_t file_len = 0 ;
+    uint16_t file_len = 0;
     res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(float), &file_len);
     if(Sx1262Instance.tx_max_bit_rate < bit_rate) {
         Sx1262Instance.tx_max_bit_rate = bit_rate;
@@ -1438,9 +1439,7 @@ static inline bool sx1262_poll_status(void) {
             if(Sx1262Instance.debug) {
 #ifdef HAS_SX1262_BIT_RATE
                 LOG_INFO(LORA, "TX done %f bit/s=%f byte/s duration: %u ms for %u bytes", tx_real_bit_rate,
-                         tx_real_bit_rate/8,
-                         tx_duration_ms,
-                         Sx1262Instance.tx_last_size);
+                         tx_real_bit_rate / 8, tx_duration_ms, Sx1262Instance.tx_last_size);
 #else
                 LOG_INFO(LORA, "TX done");
 #endif /*HAS_SX1262_BIT_RATE*/
@@ -1548,6 +1547,34 @@ static inline bool sx1262_sync_registers(void) {
     return res;
 }
 
+static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
+    bool res = false;
+    uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
+    uint32_t cur_time_stamp_ms = get_time_ms32();
+    tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
+
+    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done)) {
+        uint8_t tx_buf[TX_SIZE] = {0};
+        memset(tx_buf, 0, sizeof(tx_buf));
+        uint32_t tx_len = 0;
+        /*Transmitt multiple RTCM3 packages in single LoRa frame*/
+        res = fifo_arr_pack_frame(tx_buf, sizeof(tx_buf), &LoRaInterface.FiFoLoRaTx, &tx_len);
+        if(res) {
+            if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
+                res = sx1262_start_tx(tx_buf, tx_len, 0);
+                if(res) {
+                    LoRaInterface.tx_ok_cnt++;
+                } else {
+                    LoRaInterface.err_cnt++;
+                }
+            }
+        } else {
+            LoRaInterface.err_cnt++;
+        }
+    }
+    return res;
+}
+
 /* poll sx1262 registers. Move data from transceiver REG to MCU RAM.
  * verify transceiver and notify user if needed
  * */
@@ -1560,27 +1587,8 @@ bool sx1262_process(void) {
             Sx1262Instance.busy_cnt = 0;
             res = sx1262_init();
         }
-        uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
-        uint32_t cur_time_stamp_ms = get_time_ms32();
-        tx_time_diff_ms = cur_time_stamp_ms - Sx1262Instance.tx_done_time_stamp_ms;
+        res = sx1262_transmit_from_queue(&Sx1262Instance);
 
-        if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == Sx1262Instance.tx_done)) {
-            uint8_t tx_buf[TX_SIZE] = {0};
-            memset(tx_buf, 0, sizeof(tx_buf));
-            uint32_t tx_len = 0;
-            /*Transmitt multiple RTCM3 packages in single LoRa frame*/
-            res = fifo_arr_pack_frame(tx_buf, sizeof(tx_buf), &LoRaInterface.FiFoLoRaTx, &tx_len);
-            if(res) {
-                if(0 < tx_len) {
-                    res = sx1262_start_tx(tx_buf, tx_len, 0);
-                    if(res) {
-                        LoRaInterface.tx_ok_cnt++;
-                    } else {
-                        LoRaInterface.err_cnt++;
-                    }
-                }
-            }
-        }
         res = sx1262_poll_status();
 
         res = sx1262_sync_registers();
@@ -1594,11 +1602,11 @@ bool sx1262_process(void) {
 }
 
 #ifdef HAS_DEBUG
-float lora_calc_data_rate(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code){
-    float data_rate =    0.0;
-    uint32_t bandwidth_hz = bandwidth2num((BandWidth_t) bw_code);
-    data_rate = ((float)(bandwidth_hz*sf_code*4))/((powf(2.0f, (float)sf_code))*((float)(4+cr_code)));
-    return data_rate ;
+float lora_calc_data_rate(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code) {
+    float data_rate = 0.0;
+    uint32_t bandwidth_hz = bandwidth2num((BandWidth_t)bw_code);
+    data_rate = ((float)(bandwidth_hz * sf_code * 4)) / ((powf(2.0f, (float)sf_code)) * ((float)(4 + cr_code)));
+    return data_rate;
 }
 
 /*
@@ -1610,22 +1618,19 @@ float lora_calc_data_rate(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code){
  *                   1 indicates it is disabled and it is implicit mode.
  * n_preamble -  Number of symbols in preamble
  * */
-float lora_calc_max_frame_tx_time(uint8_t sf_code,
-                                  uint8_t bw_code,
-                                  uint8_t cr_code,
-                                  uint16_t  n_preamble,
-                                  uint8_t  header,
-                                  uint8_t low_data_rate_opt,
-                                  float *Tsym ,
-                                  float *t_preamble){
-    float  t_frame = 0.0f;
-    float  t_payload = 0.0f;
+float lora_calc_max_frame_tx_time(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code, uint16_t n_preamble,
+                                  uint8_t header, uint8_t low_data_rate_opt, float* Tsym, float* t_preamble) {
+    float t_frame = 0.0f;
+    float t_payload = 0.0f;
     uint16_t pl = 256;
-    *Tsym = powf(2.0f,(float)sf_code)/((float)bandwidth2num(bw_code));
-    *t_preamble = (((float)n_preamble)+4.25f)*(*Tsym);
-    float payloadSymbNb = 8.0f + float_max(((float)(cr_code+4))*ceilf(((float)(8*pl-4*sf_code+44+20*header))/((float)(4*(sf_code-2*low_data_rate_opt)))) , 0.0f);
-    t_payload = payloadSymbNb*(*Tsym);
-    t_frame = *t_preamble+t_payload;
+    *Tsym = powf(2.0f, (float)sf_code) / ((float)bandwidth2num((BandWidth_t)bw_code));
+    *t_preamble = (((float)n_preamble) + 4.25f) * (*Tsym);
+    float payloadSymbNb =
+        8.0f + float_max(((float)(cr_code + 4)) * ceilf(((float)(8 * pl - 4 * sf_code + 44 + 20 * header)) /
+                                                        ((float)(4 * (sf_code - 2 * low_data_rate_opt)))),
+                         0.0f);
+    t_payload = payloadSymbNb * (*Tsym);
+    t_frame = *t_preamble + t_payload;
     return t_frame;
 }
 #endif

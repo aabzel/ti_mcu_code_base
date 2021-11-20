@@ -11,8 +11,10 @@ extern "C" {
 
 bool test_uart0_read(void);
 bool test_uart0_write(void);
+bool test_uart0_write_string(void);
 
-#define TEST_SUIT_UART0 {"uart0_write", test_uart0_write}, {"uart0_read", test_uart0_read},
+#define TEST_SUIT_UART0                                                                                                \
+    {"uart0_write", test_uart0_write}, {"uart0_write_string", test_uart0_write_string}, {"uart0_read", test_uart0_read},
 #else
 #define TEST_SUIT_UART0
 #endif

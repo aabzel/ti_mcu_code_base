@@ -1,8 +1,8 @@
 #include "sx1262_commands.h"
 
 #include <inttypes.h>
-#include <stdbool.h>
 #include <math.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -50,19 +50,18 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
     if((0 <= argc) && (argc <= 4)) {
         res = true;
 #ifdef HAS_DEBUG
-        float data_rate = lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor,Sx1262Instance.mod_params.band_width,Sx1262Instance.mod_params.coding_rate);
+        float data_rate =
+            lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
+                                Sx1262Instance.mod_params.coding_rate);
         float t_preamble = 0.0f;
-        float Tsym =0.0;
-        float t_frame = lora_calc_max_frame_tx_time(Sx1262Instance.mod_params.spreading_factor,
-                                                    Sx1262Instance.mod_params.band_width,
-                                                    Sx1262Instance.mod_params.coding_rate,
-                                                    Sx1262Instance.packet_param.proto.lora.preamble_length,
-                                                    Sx1262Instance.packet_param.proto.lora.header_type,
-                                                    Sx1262Instance.mod_params.low_data_rate_optimization,
-                                                    &Tsym,
-                                                    &t_preamble);
-        LOG_INFO(LORA, "data rate %f bit/s %f byte/s",data_rate,data_rate/8);
-        LOG_INFO(LORA, "Tframe %f s",t_frame);
+        float Tsym = 0.0;
+        float t_frame = lora_calc_max_frame_tx_time(
+            Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
+            Sx1262Instance.mod_params.coding_rate, Sx1262Instance.packet_param.proto.lora.preamble_length,
+            Sx1262Instance.packet_param.proto.lora.header_type, Sx1262Instance.mod_params.low_data_rate_optimization,
+            &Tsym, &t_preamble);
+        LOG_INFO(LORA, "data rate %f bit/s %f byte/s", data_rate, data_rate / 8);
+        LOG_INFO(LORA, "Tframe %f s", t_frame);
 #endif
         LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
         LOG_INFO(LORA, "packet type: %s", pack_type2str(Sx1262Instance.packet_type));
@@ -97,7 +96,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("sx1262 %s selected" CRLF, (0 == Sx1262Instance.wire_nss) ? "" : "not");
         io_printf("sx1262 reset %s" CRLF, (0 == Sx1262Instance.wire_rst) ? "active" : "passive");
         io_printf("INT: %u" CRLF, Sx1262Instance.wire_int);
-        LOG_DEBUG(LORA,"sx1262 %s" CRLF, (1 == Sx1262Instance.wire_busy) ? "busy" : "idle");
+        LOG_DEBUG(LORA, "sx1262 %s" CRLF, (1 == Sx1262Instance.wire_busy) ? "busy" : "idle");
         //  res = print_int_diag(&Sx1262Instance.irq_cnt);
         // printf_pack_stat(&Sx1262Instance.gfsk, "GFSK");
     } else {
@@ -685,8 +684,14 @@ bool sx1262_read_rx_payload_command(int32_t argc, char* argv[]) {
 
 static bool sx1262_statistic(void) {
     bool res = true;
-    io_printf("tx done cnt: %u" CRLF, Sx1262Instance.tx_done_cnt);
-    io_printf("rx done cnt: %u" CRLF, Sx1262Instance.rx_done_cnt);
+    static uint32_t tx_done_cnt_prev = 0;
+    static uint32_t rx_done_cnt_prev = 0;
+    uint32_t tx_done_cnt_diff = Sx1262Instance.tx_done_cnt - tx_done_cnt_prev;
+    uint32_t rx_done_cnt_diff = Sx1262Instance.rx_done_cnt - rx_done_cnt_prev;
+    io_printf("tx done cnt: %u+%u" CRLF, Sx1262Instance.tx_done_cnt, tx_done_cnt_diff);
+    io_printf("rx done cnt: %u+%u" CRLF, Sx1262Instance.rx_done_cnt, rx_done_cnt_diff);
+    tx_done_cnt_prev = Sx1262Instance.tx_done_cnt;
+    rx_done_cnt_prev = Sx1262Instance.rx_done_cnt;
     return res;
 }
 
@@ -744,48 +749,42 @@ bool sx1262_statistic_command(int32_t argc, char* argv[]) {
 }
 
 #ifdef HAS_DEBUG
-bool sx1262_calc_diag(char *key_word1, char *key_word2){
+bool sx1262_calc_diag(char* key_word1, char* key_word2) {
     bool res = false;
-    uint8_t sf=0, cr=0, bw=0;
-    static const table_col_t cols[] = {{5, "No"},
-                                       {7, "SF,Ch/s"},
-                                       {8, "BW,kHz"},
-                                       {5, "CR"} ,
-                                       {9, "bit/s"},
-                                       {9, "Byte/s"},
-                                       {9, "Tsym,ms"},
-                                       {9, "Tpream,s"},
-                                       {9, "Tframe,s"}
-    };
+    uint8_t sf = 0, cr = 0, bw = 0;
+    static const table_col_t cols[] = {{5, "No"},     {7, "SF,Ch/s"}, {8, "BW,kHz"},   {5, "CR"},      {9, "bit/s"},
+                                       {9, "Byte/s"}, {9, "Tsym,ms"}, {9, "Tpream,s"}, {9, "Tframe,s"}};
     uint16_t num = 1;
-    float data_rate = 0.0f,t_frame;
+    float data_rate = 0.0f, t_frame;
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     char temp_str[200];
-    for(sf=SF5;sf<=SF12;sf++) {
-        for(bw=0; bw<11; bw++) {
-            for(cr=LORA_CR_4_5;cr<=LORA_CR_4_8;cr++){
-                res=is_valid_bandwidth((BandWidth_t) bw);
+    for(sf = SF5; sf <= SF12; sf++) {
+        for(bw = 0; bw < 11; bw++) {
+            for(cr = LORA_CR_4_5; cr <= LORA_CR_4_8; cr++) {
+                res = is_valid_bandwidth((BandWidth_t)bw);
                 if(res) {
-                    data_rate = lora_calc_data_rate(sf,bw,cr);
+                    data_rate = lora_calc_data_rate(sf, bw, cr);
                     float t_preamble = 0.0f;
-                    float Tsym =0.0;
-                    t_frame = lora_calc_max_frame_tx_time(sf,bw,cr,
-                                                          Sx1262Instance.packet_param.proto.lora.preamble_length,
-                                                          Sx1262Instance.packet_param.proto.lora.header_type,
-                                                          Sx1262Instance.mod_params.low_data_rate_optimization,&Tsym,&t_preamble);
+                    float Tsym = 0.0;
+                    t_frame = lora_calc_max_frame_tx_time(
+                        sf, bw, cr, Sx1262Instance.packet_param.proto.lora.preamble_length,
+                        Sx1262Instance.packet_param.proto.lora.header_type,
+                        Sx1262Instance.mod_params.low_data_rate_optimization, &Tsym, &t_preamble);
                     strcpy(temp_str, TSEP);
-                    snprintf(temp_str, sizeof(temp_str), "%s %5u " TSEP, temp_str,(uint32_t) powf(2.0f,(float)sf));
-                    snprintf(temp_str, sizeof(temp_str), "%s %6.2f " TSEP, temp_str, ((float)bandwidth2num((BandWidth_t)bw))/1000.0f);
-                    snprintf(temp_str, sizeof(temp_str), "%s %3s " TSEP, temp_str, coding_rate2str((LoRaCodingRate_t)cr));
+                    snprintf(temp_str, sizeof(temp_str), "%s %5u " TSEP, temp_str, (uint32_t)powf(2.0f, (float)sf));
+                    snprintf(temp_str, sizeof(temp_str), "%s %6.2f " TSEP, temp_str,
+                             ((float)bandwidth2num((BandWidth_t)bw)) / 1000.0f);
+                    snprintf(temp_str, sizeof(temp_str), "%s %3s " TSEP, temp_str,
+                             coding_rate2str((LoRaCodingRate_t)cr));
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate/8);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, Tsym*1000.0f);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate / 8);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, Tsym * 1000.0f);
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_preamble);
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_frame);
-                    snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
+                    snprintf(temp_str, sizeof(temp_str), "%s", temp_str);
                     if(is_contain(temp_str, key_word1, key_word2)) {
                         io_printf(TSEP " %3u ", num);
-                        io_printf("%s", temp_str);
+                        io_printf("%s" CRLF, temp_str);
                         num++;
                     }
                 }
@@ -796,7 +795,7 @@ bool sx1262_calc_diag(char *key_word1, char *key_word2){
     return res;
 }
 
-bool sx1262_calc_command(int32_t argc, char* argv[]){
+bool sx1262_calc_command(int32_t argc, char* argv[]) {
     bool res = false;
     char keyWord1[20] = "";
     char keyWord2[20] = "";
@@ -814,9 +813,9 @@ bool sx1262_calc_command(int32_t argc, char* argv[]){
         res = true;
     }
 
-    if(res){
+    if(res) {
         res = sx1262_calc_diag(keyWord1, keyWord2);
-    }else{
+    } else {
         LOG_ERROR(LORA, "Usage: sxc");
     }
     return res;

@@ -26,6 +26,7 @@
 
 typedef struct xUartHandle_t {
   volatile bool tx_int;
+  volatile bool in_progress;
   volatile bool rx_int;
   bool rx_it_proc_done;
   volatile uint8_t rx_byte;

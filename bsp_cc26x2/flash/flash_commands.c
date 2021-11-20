@@ -48,11 +48,11 @@ static bool diag_flash_prot(char* key_word1, char* key_word2) {
         flash_scan((uint8_t*)flash_addr, FLASH_SECTOR_SIZE, &usage_pec, &spare, &busy);
         snprintf(line_str, sizeof(line_str), "%s %6s" TSEP, line_str, (FLASH_SECTOR_SIZE == spare) ? "spare" : "busy");
         snprintf(line_str, sizeof(line_str), "%s %6.2f " TSEP, line_str, usage_pec);
-        snprintf(line_str, sizeof(line_str), "%s\r\n", line_str);
+        // snprintf(line_str, sizeof(line_str), "%s", line_str);
         is_print = is_contain(line_str, key_word1, key_word2);
         if(is_print) {
             io_printf(TSEP " %3u ", num);
-            io_printf("%s", line_str);
+            io_printf("%s\r\n", line_str);
             wait_in_loop_ms(2);
             num++;
         }

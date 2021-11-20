@@ -7,8 +7,8 @@
 
 #include "sys_config.h"
 
-#define UART_FIFO_TX_SIZE 256U
 #define UART_FIFO_RX_SIZE 512U
+#define UART_FIFO_TX_SIZE 256U
 
 #define UART_RX_ARRAY_SIZE 500U
 #define UART_RX_FIFO_ARRAY_SIZE 200U
@@ -16,12 +16,16 @@
 
 #define UART0_BAUD_RATE CLI_UART_BAUD_RATE /*CLI   */
 #define UART1_BAUD_RATE 38400U             /*UBlox*/
-
+#define UART_TX_TIME_OUT_MS 1000U
 #define CONFIG_TI_DRIVERS_UART_COUNT 1
 
 extern const uint_least8_t CONFIG_UART_0_CONST;
 
 extern const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT];
+
+#ifdef HAS_UNIT_TEST
+extern uint8_t VerifyUartTx[UART_COUNT][UART_FIFO_TX_SIZE];
+#endif
 
 #ifdef HAS_UART0_FWD
 bool proc_uart0_fwd(void);

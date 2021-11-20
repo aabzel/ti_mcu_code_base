@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <uart.h>
 
 #ifdef DeviceFamily_CC26X2
 #include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
@@ -59,6 +60,10 @@ static unsigned char uartCC26XXRingBuffer1[160];
 static volatile uint8_t rx_buff[UART_COUNT][UART_FIFO_RX_SIZE]; /*TODO Make variable array size for each UART*/
 static volatile uint8_t tx_buff[UART_COUNT][UART_FIFO_TX_SIZE];
 
+#ifdef HAS_UNIT_TEST
+uint8_t VerifyUartTx[UART_COUNT][UART_FIFO_TX_SIZE];
+#endif
+
 const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
 #ifdef HAS_UART0
     {.baseAddr = UART0_BASE,
@@ -73,7 +78,7 @@ const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[UART_COUNT] = {
      .ctsPin = PIN_UNASSIGNED,
      .rtsPin = PIN_UNASSIGNED,
      .txIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
-     .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_4_8,
+     .rxIntFifoThr = UARTCC26XX_FIFO_THRESHOLD_1_8,
      .errorFxn = NULL},
 #endif /*HAS_UART0*/
 #ifdef HAS_UART1
@@ -117,6 +122,7 @@ static uint32_t baudRateLuTable[UART_COUNT] = {
     UART1_BAUD_RATE
 #endif
 };
+
 static uint8_t rx0_byte = 0;
 static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[0].rx_cnt++;
@@ -179,6 +185,7 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
 
 #ifdef HAS_UART0
 static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
+    huart[0].in_progress = false;
     huart[0].tx_cnt++;
     huart[0].tx_int = true;
     huart[0].tx_cpl_cnt++;
@@ -187,6 +194,7 @@ static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
 
 #ifdef HAS_UART1
 static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
+    huart[1].in_progress = false;
     huart[1].tx_cnt++;
     huart[1].tx_int = true;
     huart[1].tx_cpl_cnt++;
@@ -205,9 +213,59 @@ bool is_uart_valid(uint8_t uart_num) {
     }
     return res;
 }
+/*TODO: Find out why uart_wait_send_ll does not work.*/
+static bool uart_wait_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
+    bool res = true;
+#ifdef HAS_UNIT_TEST
+    memcpy(&VerifyUartTx[uart_num][0], (uint8_t*)tx_buffer, len);
+#endif
+    uint32_t duration_ms = 0, cnt = 0;
+    uint32_t up_time_cur_ms = 0;
+    uint32_t up_time_start_ms = get_time_ms32(); //
+
+    while(true == UARTBusy((uint32_t)huart[uart_num].base_address)) {
+        cnt++;
+        up_time_cur_ms = get_time_ms32();
+        duration_ms = up_time_cur_ms - up_time_start_ms;
+        if(UART_TX_TIME_OUT_MS < duration_ms) {
+            res = false;
+            huart[uart_num].error_cnt++;
+            break;
+        }
+    }
+
+    while(true == huart[uart_num].in_progress) {
+        cnt++;
+        up_time_cur_ms = get_time_ms32();
+        duration_ms = up_time_cur_ms - up_time_start_ms;
+        if(UART_TX_TIME_OUT_MS < duration_ms) {
+            res = false;
+            huart[uart_num].error_cnt++;
+            break;
+        }
+    }
+    if(0 < cnt) {
+        res = true;
+    }
+    if(res) {
+        /*TODO Wait previous transfer*/
+        huart[uart_num].in_progress = true;
+        int_fast32_t ret = UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len); /*Error here*/
+        if(0 == ret) {
+            res = true;
+        } else {
+            res = false;
+        }
+    }
+
+    return res;
+}
 
 bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len, bool is_wait) {
     bool res = true;
+#ifdef HAS_UNIT_TEST
+    memcpy(&VerifyUartTx[uart_num][0], (uint8_t*)tx_buffer, len);
+#endif
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
     uint32_t baudrate = uart_get_baudrate(uart_num);
     uint32_t up_time_start_ms = get_time_ms32();
@@ -215,7 +273,14 @@ bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len,
     uint32_t duration_ms = 0;
     uint32_t tx_duration_ms = calc_uart_transfer_time_ms(baudrate, len);
     /*TODO Wait previous transfer*/
-    UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
+    huart[uart_num].in_progress = true;
+    int_fast32_t ret = UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
+    if(0 == ret) {
+        res = true;
+    } else {
+        res = false;
+    }
+
     /*TODO Calc needed time to wait*/
     if(is_wait) {
         while(init_tx_cnt == huart[uart_num].tx_cnt) {
@@ -233,6 +298,7 @@ bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len,
 
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wait) {
     bool res = false;
+    (void)is_wait;
     if(1 == uart_num) {
 #ifdef HAS_BOOTLOADER
         res = false;
@@ -241,6 +307,7 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wai
     }
     if(uart_num < UART_COUNT) {
         res = uart_send_wait_ll(uart_num, array, array_len, is_wait);
+        // res = uart_wait_send_ll(uart_num, array, array_len);
     }
     return res;
 }
@@ -411,7 +478,7 @@ static bool init_uart_ll(uint8_t uart_num, char* in_name) {
         snprintf(connectionHint, sizeof(connectionHint), "UART%u %u\n\r", uart_num, uart_get_baudrate(uart_num));
 #endif
         UART_init();
-
+        huart[uart_num].in_progress = false;
         UART_Params_init(&huart[uart_num].uartParams);
         huart[uart_num].uartParams.baudRate = uart_get_baudrate(uart_num);
         huart[uart_num].uartParams.writeMode = UART_MODE_CALLBACK;

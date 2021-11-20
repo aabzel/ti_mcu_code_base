@@ -246,4 +246,3 @@ bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Rtcm3IfCmt_t interf
 
     return res;
 }
-

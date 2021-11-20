@@ -19,7 +19,7 @@
 #include "uart_string_reader.h"
 #include "writer_generic.h"
 #include "writer_config.h"
-#endif
+#endif /*X86_64*/
 
 #include "str_utils.h"
 #include "uart_common.h"

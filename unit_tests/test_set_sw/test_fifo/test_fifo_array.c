@@ -32,19 +32,19 @@ bool test_fifo_array(void) {
     EXPECT_FALSE(fifo_arr_pull(&FiFoArr, &rdNode));
 
     Array_t wrNode;
-    wrNode.pArr = arr2;
+    wrNode.pArr = (uint8_t*)arr2;
     wrNode.size = 2;
     EXPECT_TRUE(fifo_arr_push(&FiFoArr, wrNode));
     EXPECT_TRUE(fifo_arr_peek(&FiFoArr, &peekNode));
     EXPECT_EQ(2, peekNode.size);
 
-    wrNode.pArr = arr3;
+    wrNode.pArr = (uint8_t*)arr3;
     wrNode.size = 3;
     EXPECT_TRUE(fifo_arr_push(&FiFoArr, wrNode));
     EXPECT_TRUE(fifo_arr_peek(&FiFoArr, &peekNode));
     EXPECT_EQ(2, peekNode.size);
 
-    wrNode.pArr = arr5;
+    wrNode.pArr = (uint8_t*)arr5;
     wrNode.size = 5;
     EXPECT_TRUE(fifo_arr_push(&FiFoArr, wrNode));
     EXPECT_TRUE(fifo_arr_peek(&FiFoArr, &peekNode));
@@ -89,17 +89,17 @@ bool test_fifo_array_packing(void) {
     uint8_t buf[10];
 
     FifoArray_t FiFoArr;
-    Array_t NodeHeap[40]={0};
+    Array_t NodeHeap[40] = {0};
     EXPECT_TRUE(fifo_arr_init(&FiFoArr, &NodeHeap[0], ARRAY_SIZE(NodeHeap)));
 
     Array_t wrNode;
-    wrNode.pArr = arr4;
+    wrNode.pArr = (uint8_t*)arr4;
     wrNode.size = 4;
     EXPECT_TRUE(fifo_arr_push(&FiFoArr, wrNode));
-    wrNode.pArr = arr5;
+    wrNode.pArr = (uint8_t*)arr5;
     wrNode.size = 5;
     EXPECT_TRUE(fifo_arr_push(&FiFoArr, wrNode));
-    uint32_t buff_len = 0 ;
+    uint32_t buff_len = 0;
     EXPECT_TRUE(fifo_arr_pack_frame(buf, sizeof(buf), &FiFoArr, &buff_len));
     EXPECT_EQ(9, buff_len);
     EXPECT_EQ_MEM(exp_arr_4_5, buf, 9);

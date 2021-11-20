@@ -65,6 +65,11 @@ extern "C" {
 #define TEST_SUIT_ZED_F9P
 #endif
 
+#ifdef HAS_TEST_SYSTEM
+#include "test_system.h"
+#else
+#define TEST_SYSTEM
+#endif
 
 bool test_clock_us(void);
 bool test_clock_ms(void);
@@ -73,6 +78,7 @@ bool test_clock_ms(void);
 #define TEST_SUIT_HW \
     TEST_SUIT_PARAM \
 	TEST_SUIT_FLASH    \
+	TEST_SYSTEM \
 	TEST_SUIT_UART \
 	TEST_SUIT_GPIO \
 	TEST_SUIT_ZED_F9P \

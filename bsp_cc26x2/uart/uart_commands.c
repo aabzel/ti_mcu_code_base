@@ -135,7 +135,7 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
             io_printf(TSEP);
-            io_printf(" %02u  " TSEP, uart_num);
+            io_printf(" %2u  " TSEP, uart_num);
             uart_error = UARTRxErrorGet(uartCC26XXHWAttrs[uart_num].baseAddr);
             baud_rate = uart_get_baudrate(uart_num);
             if(0 < baud_rate) {
@@ -143,8 +143,8 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
             } else {
                 io_printf("          " TSEP, baud_rate);
             }
-            io_printf(" %07u " TSEP, huart[uart_num].rx_cnt);
-            io_printf(" %07u " TSEP, huart[uart_num].tx_cnt);
+            io_printf(" %7u " TSEP, huart[uart_num].rx_cnt);
+            io_printf(" %7u " TSEP, huart[uart_num].tx_cnt);
 
             io_printf(" %4u  " TSEP, huart[uart_num].RxFifo.fifoState.count);
             io_printf(" %4u  " TSEP, huart[uart_num].TxFifo.fifoState.count);

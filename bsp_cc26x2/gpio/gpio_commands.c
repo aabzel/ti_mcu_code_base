@@ -31,11 +31,12 @@ static bool gpio_diag(char* key_word1, char* key_word2) {
     uint8_t logic_level = 0xFF;
 
     uint8_t i = 0;
-    char temp_str[200];
+    char temp_str[200] = "";
     DioDir_t gpio_dir;
     for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
         res = gpio_get_state(PinTable[i].dio, &logic_level);
         if(true == res) {
+            memset(temp_str, 0x0, sizeof(temp_str));
             strcpy(temp_str, TSEP);
             snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].dio);
             snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].aux_pin);
@@ -50,11 +51,10 @@ static bool gpio_diag(char* key_word1, char* key_word2) {
             snprintf(temp_str, sizeof(temp_str), "%s %1u  " TSEP, temp_str, GPIO_getEventDio(PinTable[i].dio));
             snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, get_gpio_alter_fun(PinTable[i].dio));
             snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, PinTable[i].name);
-            snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
 
             if(is_contain(temp_str, key_word1, key_word2)) {
                 io_printf(TSEP " %3u ", num);
-                io_printf("%s", temp_str);
+                io_printf("%s\r\n", temp_str);
                 num++;
             }
         }

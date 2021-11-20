@@ -33,7 +33,7 @@ bool sx1262_sleep_command(int32_t argc, char* argv[]);
 bool sx1262_tx_command(int32_t argc, char* argv[]);
 bool sx1262_write_reg_command(int32_t argc, char* argv[]);
 
-#define SX1262_COMMANDS_BASE                                                                                                \
+#define SX1262_COMMANDS_BASE                                                                                           \
     SHELL_CMD("sx1262_clr_err", "sxce", sx1262_clear_err_command, "SX1262 clear errors"),                              \
         SHELL_CMD("sx1262_clr_fifo", "sxcf", sx1262_clear_fifo_command, "SX1262 clear FIFO"),                          \
         SHELL_CMD("sx1262_diag", "sxd", sx1262_diag_command, "SX1262 diag"),                                           \
@@ -59,15 +59,14 @@ bool sx1262_write_reg_command(int32_t argc, char* argv[]);
 
 #ifdef HAS_DEBUG
 bool sx1262_calc_command(int32_t argc, char* argv[]);
-#define SX1262_COMMANDS_DEBUG                                                                                          \
-        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),
+#define SX1262_COMMANDS_DEBUG SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),
 #else
 #define SX1262_COMMANDS_DEBUG
 #endif
 
-#define SX1262_COMMANDS \
-     SX1262_COMMANDS_BASE \
-     SX1262_COMMANDS_DEBUG
+#define SX1262_COMMANDS                                                                                                \
+    SX1262_COMMANDS_BASE                                                                                               \
+    SX1262_COMMANDS_DEBUG
 
 #ifdef __cplusplus
 }

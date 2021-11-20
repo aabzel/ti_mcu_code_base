@@ -19,6 +19,20 @@ bool test_uart0_write(void) {
     return true;
 }
 
+bool test_uart0_write_string(void) {
+    char temp_str[200] = "";
+    uint32_t i=0;
+    memset(temp_str, 0x0, sizeof(temp_str));
+    for(i=0;i<96;i++){
+        temp_str[i] = '*';
+    }
+
+    io_printf("%1u", 2);
+    io_printf("%s"CRLF, temp_str);
+
+    return true;
+}
+
 bool test_uart0_read(void) {
     uint8_t byte=0xFF;
     EXPECT_FALSE(uart_read(0, &byte, 1));
