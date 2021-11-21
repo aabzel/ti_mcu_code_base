@@ -31,3 +31,7 @@ https://electronics.stackexchange.com/questions/277722/how-to-calculate-the-data
 
 Онлайн-калькулятор теоретически достижимой дальности связи
 https://r1ban.ru/calc/loss-calc-dist.htm
+
+
+RTL-SDR V3 - Улучшенная версия популярного SDR приёмника
+https://mysku.ru/blog/ebay/65825.html
