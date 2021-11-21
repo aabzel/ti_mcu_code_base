@@ -146,21 +146,33 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
 #ifdef HAS_LORA
             /*Send RTCM3 frame to LoRa*/
-            if((RT_UART_ID == instance->interface) && (true == instance->lora_fwd)) {
-                res = lora_send_queue(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE);
-                if(false == res) {
-                    instance->lora_lost_pkt_cnt++;
+            if(RT_UART1_ID == instance->interface ) {
+                if(true == instance->lora_fwd){
+                    res = lora_send_queue(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE);
+                    if(false == res) {
+                        instance->lora_lost_pkt_cnt++;
+                    }
+                }
+                if(true == instance->rs232_fwd){
+                    res = uart_send(UART_NUM_CLI, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
+                    if(false == res) {
+                        instance->uart_lost_pkt_cnt++;
+                    }
                 }
             }
 #endif /*HAS_LORA*/
+
 #ifdef HAS_UART1
-            if(RT_LORA_ID == instance->interface) {
+            if(( RT_LORA_ID == instance->interface) ||
+               (RT_RS232_ID == instance->interface)) {
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                 if(false == res) {
                     instance->uart_lost_pkt_cnt++;
                 }
             }
 #endif /*HAS_UART1*/
+
+
             rtcm3_reset_rx(instance);
         } else {
             instance->crc_err_cnt++;
@@ -230,7 +242,7 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
     return res;
 }
 
-bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Rtcm3IfCmt_t interface) {
+bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Rtcm3IfSrc_t interface) {
     bool res = false;
     if((NULL != payload) && (0 < size)) {
         uint32_t i = 0;

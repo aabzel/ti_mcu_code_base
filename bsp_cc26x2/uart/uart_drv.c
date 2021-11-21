@@ -126,8 +126,8 @@ static uint32_t baudRateLuTable[UART_COUNT] = {
 static uint8_t rx0_byte = 0;
 static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     huart[0].rx_cnt++;
-    huart[0].rx_it_proc_done = false;
     huart[0].rx_int = true;
+    huart[0].rx_it_proc_done = false;
     if((1 == size) && (NULL != rx_buf)) {
         bool res = false;
         huart[0].rx_byte_it = (uint8_t) * (rx_buf);
@@ -135,6 +135,7 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
         if(false == res) {
             huart[0].error_cnt++;
         }
+
 #ifdef HAS_UART0_FWD
         if(true == huart[0].is_uart_fwd[1]) {
             res = fifo_push(&huart[1].TxFifo, huart[0].rx_byte_it);
@@ -149,6 +150,7 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
             }
         }
 #endif /*HAS_UART0_FWD*/
+
 #ifdef HAS_CLI
         uart_string_reader_rx_callback(&cmd_reader, (char)huart[0].rx_byte_it);
         uart_read(0, &rx0_byte, 1);
@@ -157,12 +159,10 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
         huart[0].error_cnt++;
     }
 }
+
 #ifdef HAS_UART1
 static uint8_t ch1 = 0;
 static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
-    huart[1].rx_cnt++;
-    huart[1].rx_int = true;
-    huart[1].rx_it_proc_done = false;
     if(NULL != rx_buf) {
         huart[1].rx_byte = *(rx_buf);
         bool res = false;
@@ -179,6 +179,9 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
         }
 #endif /*HAS_UART1_FWD*/
     }
+    huart[1].rx_cnt++;
+    huart[1].rx_int = true;
+    huart[1].rx_it_proc_done = false;
     uart_read(1, &ch1, 1);
 }
 #endif /*HAS_UART1*/
@@ -356,19 +359,19 @@ uint32_t uart_get_baudrate(uint8_t uart_num) {
 bool proc_uart(uint8_t uart_index) {
     bool res = false;
 
+    uint8_t rx_byte = 0;
+    bool loop = true;
     // huart[uart_index].rx_int = false;
     if(1 == uart_index) {
 #ifdef HAS_UART1
-        uint8_t rx_byte = 0;
         res = true;
-        bool loop = true;
         uint32_t cnt = 0;
         while(loop) {
             res = fifo_pull(&huart[1].RxFifo, (char*)&rx_byte);
             if(true == res) {
                 loop = true;
 #ifdef HAS_RTCM3
-                rtcm3_proc_byte(&Rtcm3Porotocol[RT_UART_ID], rx_byte);
+                rtcm3_proc_byte(&Rtcm3Porotocol[RT_UART1_ID], rx_byte);
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_NMEA
@@ -389,6 +392,16 @@ bool proc_uart(uint8_t uart_index) {
         res = true;
 #endif /*HAS_UART1*/
     } else if(0 == uart_index) {
+        while(loop) {
+            res = fifo_pull(&huart[0].RxFifo, (char*)&rx_byte);
+            if(true == res) {
+#ifdef HAS_RTCM3
+                rtcm3_proc_byte(&Rtcm3Porotocol[RT_RS232_ID], rx_byte);
+#endif /*HAS_RTCM3*/
+            }else{
+                loop = false;
+            }
+        }
         res = true;
     } else {
         res = false;
@@ -431,6 +444,10 @@ bool proc_uarts(void) {
     if(uart_error) {
         res = uart_poll(1);
     }
+#endif /*HAS_UART1*/
+
+#ifdef HAS_UART0
+    res = proc_uart(0);
 #endif /*HAS_UART1*/
 
 #ifdef HAS_UART1

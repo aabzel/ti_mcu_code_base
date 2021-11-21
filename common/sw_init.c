@@ -101,8 +101,9 @@ bool sw_init(void) {
 #endif /*HAS_UBLOX*/
 
 #ifdef HAS_RTCM3
-    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_UART_ID], RT_UART_ID, true), "RTCM3_UART") && res;
+    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_UART1_ID], RT_UART1_ID, true), "RTCM3_UART1") && res;
     res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_LORA_ID], RT_LORA_ID, false), "RTCM3_LORA") && res;
+    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_RS232_ID], RT_RS232_ID, false), "RTCM3_RS232") && res;
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_HEALTH_MONITOR

@@ -48,15 +48,13 @@ static bool zed_f9p_proc_base(void) {
     }
 
     if(RTK_CH_RS232 == ZedF9P.channel) {
-        huart[UART_NUM_ZED_F9P].is_uart_fwd[UART_NUM_CLI] = true;
-        Rtcm3Porotocol[RT_UART_ID].lora_fwd = false;
-        res = cli_set_echo(false);
-        dbg_o.enable = false;  /*Disable CLI output*/
+        Rtcm3Porotocol[RT_UART1_ID].lora_fwd = false;
+        Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = true;
     }
 
     if(RTK_CH_LORA == ZedF9P.channel) {
-        Rtcm3Porotocol[RT_UART_ID].lora_fwd = true;
-        dbg_o.enable = true;
+        Rtcm3Porotocol[RT_UART1_ID].lora_fwd = true;
+        Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = false;
     }
 
     return res;
@@ -76,8 +74,6 @@ static bool zed_f9p_proc_rover(void) {
     }
 
     if(RTK_CH_RS232 == ZedF9P.channel) {
-        huart[UART_NUM_CLI].is_uart_fwd[UART_NUM_ZED_F9P] = true;
-        huart[UART_NUM_CLI].is_uart_fwd[UART_NUM_CLI] = false;
         res = cli_set_echo(false);
     }
 
@@ -132,12 +128,7 @@ static bool zed_f9p_proc_none(void) {
 bool zed_f9p_proc(void) {
     /*is new GNSS samples*/
     bool res = false;
-    if(RTK_CH_LORA == ZedF9P.channel) {
-        Rtcm3Porotocol[RT_UART_ID].lora_fwd = true;
-    }
-    if(RTK_CH_RS232 == ZedF9P.channel) {
-        Rtcm3Porotocol[RT_UART_ID].lora_fwd = false;
-    }
+
     switch(ZedF9P.rtk_mode) {
     case RTK_BASE: {
         res = zed_f9p_proc_base();
@@ -227,7 +218,15 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         res = mm_set(PAR_ID_RTK_MODE, (uint8_t*)&ZedF9P.rtk_mode, 1);
         task_data[TASK_ID_NMEA].on = false;
 #ifdef HAS_RTCM3
-        Rtcm3Porotocol[RT_UART_ID].lora_fwd = true;
+
+        if(RTK_CH_LORA == ZedF9P.channel) {
+            Rtcm3Porotocol[RT_UART1_ID].lora_fwd = true;
+            Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = false;
+        }
+        if(RTK_CH_RS232 == ZedF9P.channel) {
+            Rtcm3Porotocol[RT_UART1_ID].lora_fwd = false;
+            Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = true;
+        }
 #endif /*HAS_RTCM3*/
     } else {
         LOG_ERROR(ZED_F9P, "InvalBaseGNSScoordinate");
