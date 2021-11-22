@@ -7,6 +7,10 @@
 #include "str_utils.h"
 #include "win_utils.h"
 
+#ifdef HAS_MCU
+#error That code only for desktop builds
+#endif
+
 HANDLE hComm;
 
 xSerialConnection_t deviceList[MAX_COM_NUM];

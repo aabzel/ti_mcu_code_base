@@ -111,8 +111,12 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_spi"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_sx1262"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_system"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_uart"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_zed_f9p"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_crc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_rtcm3_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
@@ -147,12 +151,10 @@
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_MCU"/>
-									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
-									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
@@ -160,8 +162,6 @@
 									<listOptionValue builtIn="false" value="HAS_SX1262_BIT_RATE"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP"/>
-									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
@@ -170,9 +170,6 @@
 									<listOptionValue builtIn="false" value="HAS_UART0_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
 									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
-									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
-									<listOptionValue builtIn="false" value="HAS_UBX_DEBUG"/>
-									<listOptionValue builtIn="false" value="HAS_UBX_PTOTO"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="HAS_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
@@ -299,7 +296,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="unit_tests/test_set_hw/test_sx1262|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|unit_tests/test_set_sw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Drivers/telematic|protocols/nmea_protocol|protocols/rtcm3_protocol|protocols/tbfp_protocol|protocols/ubx_protocol|unit_tests/test_set_hw/test_can|unit_tests/test_set_hw/test_zed_f9p|unit_tests/test_set_sw|unit_tests/test_set_sw/test_sw_list.c|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw/test_system|unit_tests/test_set_sw/test_tbfp_proto|unit_tests/test_set_sw/test_fifo|unit_tests/test_set_sw/test_utils|unit_tests/test_set_sw/test_ublox_proto|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_nmea_proto|unit_tests/test_set_sw/test_cli|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|unit_tests/test_set_hw/test_sx1262|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

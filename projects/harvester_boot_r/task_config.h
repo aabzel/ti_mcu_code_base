@@ -5,6 +5,7 @@
   TASK(CLI)      \
   TASK(FLASH_FS) \
   TASK(LED)      \
+  TASK(PARAM)    \
   TASK(UART)     \
   TASK(WDT)
 

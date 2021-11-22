@@ -6,6 +6,7 @@
   TASK(FLASH_FS)                                                          \
   TASK(HEAL_MON)                                                          \
   TASK(LED)                                                               \
+  TASK(PARAM)                                                             \
   TASK(UART)                                                              \
 
 #endif /* TASK_CONFIG_BOOT_H */

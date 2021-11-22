@@ -5,6 +5,5 @@ NMEA_PROTO_DIR = $(PROJECT_ROOT)protocols/nmea_protocol
 INCDIR += -I$(NMEA_PROTO_DIR)
 
 SOURCES_C += $(NMEA_PROTO_DIR)/nmea_protocol.c
-SOURCES_C += $(NMEA_PROTO_DIR)/gnss_utils.c
 
 

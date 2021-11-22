@@ -141,9 +141,7 @@
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
-									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
-									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_MCU"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
@@ -151,27 +149,14 @@
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
 									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
-									<listOptionValue builtIn="false" value="HAS_SPI"/>
-									<listOptionValue builtIn="false" value="HAS_SPI0"/>
-									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
-									<listOptionValue builtIn="false" value="HAS_SX1262"/>
-									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
-									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
 									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
-									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
-									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
-									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
-									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART0"/>
-									<listOptionValue builtIn="false" value="HAS_UART0_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
-									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
-									<listOptionValue builtIn="false" value="HAS_UBLOX"/>
+									<listOptionValue builtIn="false" value="HAS_UBX_PTOTO"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
-									<listOptionValue builtIn="false" value="HAS_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.954922929" name="Target processor version (--silicon_version, -mv)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.7M4" valueType="enumerated"/>
@@ -320,7 +305,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="utils/io_utils/writer_lora.c|Drivers/zed_f9p|Drivers/lora|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/sx1262|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -5,7 +5,7 @@
 #include "sys_config.h"
 #include "unit_test_check.h"
 #include "rtcm3_protocol.h"
-#include "test_rtcm3_proto.h" /*To Save memory on targer*/
+#include "test_rtcm3_proto.h" /*To Save memory on targe*/
 #include "uart_drv.h"
  
 bool test_rtcm3_path(void) {

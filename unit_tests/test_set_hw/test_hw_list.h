@@ -9,7 +9,7 @@ extern "C" {
 #include <stdint.h>
 
 
-#ifdef HAS_FLASH
+#ifdef HAS_TEST_FLASH
 #include "test_flash.h"
 #else
 #define TEST_SUIT_FLASH
@@ -22,32 +22,32 @@ extern "C" {
 #endif
 
 
-#ifdef HAS_PARAM
+#ifdef HAS_TEST_PARAM
 #include "test_params.h"
 #else
 #define TEST_SUIT_PARAM
 #endif
 
 
-#ifdef HAS_TCAN4550
+#ifdef HAS_TEST_TCAN4550
 #include "test_tcan4550.h"
 #else
 #define TEST_SUIT_TCAN4550
 #endif
 
-#ifdef HAS_GPIO
+#ifdef HAS_TEST_GPIO
 #include "test_gpio.h"
 #else
 #define TEST_SUIT_GPIO
 #endif
 
-#ifdef HAS_SPI
+#ifdef HAS_TEST_SPI
 #include "test_spi.h"
 #else
 #define TEST_SUIT_SPI
 #endif
 
-#ifdef HAS_UART
+#ifdef HAS_TEST_UART
 #include "test_uart.h"
 #else
 #define TEST_SUIT_UART
@@ -59,7 +59,7 @@ extern "C" {
 #define TEST_SUIT_SX1262
 #endif
 
-#ifdef HAS_ZED_F9P
+#ifdef HAS_TEST_ZED_F9P
 #include "test_zed_f9p.h"
 #else
 #define TEST_SUIT_ZED_F9P

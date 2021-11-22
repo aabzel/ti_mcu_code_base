@@ -209,7 +209,7 @@ static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len) {
     bool res = false;
     if((NULL != payload) && (0 < len) && (FRAME_ID_CMD == payload[0])) {
         res = false;
-#ifdef HAS_CLI
+#if defined(HAS_CLI) && defined(HAS_LORA)
         curWriterPtr = &dbg_lora_o;
         payload[len] = 0x00;
         res = process_shell_cmd((char*)&payload[1]);

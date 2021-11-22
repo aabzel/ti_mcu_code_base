@@ -48,13 +48,17 @@ static bool zed_f9p_proc_base(void) {
     }
 
     if(RTK_CH_RS232 == ZedF9P.channel) {
+#ifdef HAS_RTCM3
         Rtcm3Porotocol[RT_UART1_ID].lora_fwd = false;
         Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = true;
+#endif
     }
 
     if(RTK_CH_LORA == ZedF9P.channel) {
+#ifdef HAS_RTCM3
         Rtcm3Porotocol[RT_UART1_ID].lora_fwd = true;
         Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = false;
+#endif
     }
 
     return res;
@@ -65,6 +69,7 @@ static bool zed_f9p_proc_rover(void) {
     if(task_data[TASK_ID_UBX].on) {
         task_data[TASK_ID_UBX].on = false;
     }
+#ifdef HAS_NMEA
     task_data[TASK_ID_NMEA].on = true;
     res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
     if(res) {
@@ -72,6 +77,7 @@ static bool zed_f9p_proc_rover(void) {
     } else {
         LOG_ERROR(ZED_F9P, "Invalid GNSS Nmea coordinate");
     }
+#endif
 
     if(RTK_CH_RS232 == ZedF9P.channel) {
         res = cli_set_echo(false);
@@ -82,14 +88,14 @@ static bool zed_f9p_proc_rover(void) {
 
 static bool zed_f9p_proc_none(void) {
     bool res = false;
-    static bool first_gnss = true;
-    static bool first_time = true;
     task_data[TASK_ID_NMEA].on = true;
     task_data[TASK_ID_UBX].on = false;
+#ifdef HAS_UBLOX
+    static bool first_time = true;
     res = is_valid_time_date(&NavInfo.date_time);
     if(res) {
         if(first_time) {
-            LOG_INFO(ZED_F9P, "Init time");
+            LOG_INFO(ZED_F9P, "SpotValidTime!");
             print_time_date(&NavInfo.date_time);
             first_time = false;
         }
@@ -97,23 +103,18 @@ static bool zed_f9p_proc_none(void) {
     } else {
         LOG_ERROR(ZED_F9P, "InvalidUbxTimeDate");
     }
-
-    res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
-    if(res) {
-        ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
-    } else {
-        LOG_ERROR(ZED_F9P, "Invalid GNSS cur coordinate");
-    }
-
+#endif
+#ifdef HAS_NMEA
+    static bool first_gnss = true;
     res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
     if(res) {
         ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
     } else {
-        LOG_ERROR(ZED_F9P, "Invalid GNSS Nmea coordinate");
+        LOG_ERROR(ZED_F9P, "InvalidGNSSNmeaDot");
         res = is_valid_gnss_coordinates(NavInfo.coordinate);
         if(res) {
             if(first_gnss) {
-                LOG_INFO(ZED_F9P, "Spot valid GNSS data");
+                LOG_INFO(ZED_F9P, "SpotValidGNSSData!");
                 print_coordinate(NavInfo.coordinate, true);
                 first_gnss = false;
             }
@@ -121,6 +122,13 @@ static bool zed_f9p_proc_none(void) {
         } else {
             LOG_ERROR(ZED_F9P, "Invalid Ubx GNSS coordinate");
         }
+    }
+#endif
+    res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
+    if(res) {
+        ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
+    } else {
+        LOG_ERROR(ZED_F9P, "Invalid GNSS cur coordinate");
     }
     return res;
 }
@@ -147,7 +155,7 @@ bool zed_f9p_proc(void) {
 
     return res;
 }
-
+#ifdef HAS_UBLOX
 static const keyValItem_t BaseCfgLut[] = {
     /*21*/ {CFG_UART1_BAUDRATE, 38400},
     /*1 */ {CFG_UART1INPROT_NMEA, 0},
@@ -171,11 +179,14 @@ static const keyValItem_t BaseCfgLut[] = {
     /*19*/ {CFG_MSGOUT_UBX_NAV_PVT_USB, 1},
     /*20*/ {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1},
 };
+#endif
 
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) {
     bool res = false;
     res = is_valid_gnss_coordinates(coordinate_base);
     if(res) {
+        res = false;
+#ifdef HAS_UBLOX
         /*
           perform settings from here
           https://www.youtube.com/watch?v=FpkUXmM7mrc
@@ -227,20 +238,23 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
             Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = true;
         }
 #endif /*HAS_RTCM3*/
+#endif
     } else {
         LOG_ERROR(ZED_F9P, "InvalBaseGNSScoordinate");
     }
     return res;
 }
-
+#ifdef HAS_UBLOX
 static const keyValItem_t RoverCfgLut[] = {
     {CFG_UART1_BAUDRATE, 38400}, {CFG_UART1INPROT_UBX, 1},   {CFG_UART1INPROT_NMEA, 0},    {CFG_UART1INPROT_RTCM3X, 1},
     {CFG_UART1OUTPROT_UBX, 1},   {CFG_UART1OUTPROT_NMEA, 1}, {CFG_UART1OUTPROT_RTCM3X, 0}, {CFG_USBINPROT_UBX, 1},
     {CFG_USBINPROT_NMEA, 1},     {CFG_USBINPROT_RTCM3X, 1},  {CFG_USBOUTPROT_UBX, 1},      {CFG_USBOUTPROT_RTCM3X, 0},
 };
+#endif
 
 bool zed_f9p_deploy_rover(void) {
     bool res = false;
+#ifdef HAS_UBLOX
     /*
       perform settings from here
       https://www.youtube.com/watch?v=FpkUXmM7mrc
@@ -260,7 +274,7 @@ bool zed_f9p_deploy_rover(void) {
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_GLONASS) && res;
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_GALILEO) && res;
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_BEIDOU) && res;
-
+#endif
     return res;
 }
 

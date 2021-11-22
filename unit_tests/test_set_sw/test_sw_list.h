@@ -55,7 +55,7 @@ extern "C" {
 #define TEST_SUIT_NMEA_PROTO
 #endif
 
-#ifdef HAS_STRING_UTILS_TEST_SUIT
+#ifdef HAS_TEST_SUIT_STRING_UTILS
 #include "test_string_utils.h"
 #else
 #define TEST_SUIT_STRING_UTILS
@@ -67,6 +67,12 @@ extern "C" {
 #define TEST_SUIT_RTCM3_PROTO
 #endif
 
+#ifdef HAS_TEST_SUIT_UTILS_GNSS
+#include "test_gnss_utils.h"
+#else
+#define TEST_SUIT_UTILS_GNSS
+#endif
+
 #ifdef HAS_TEST_SUIT_FIFO
 #include "test_fifo_array.h"
 #include "test_fifo_char.h"
@@ -76,6 +82,9 @@ extern "C" {
 #define TEST_SUIT_FIFO_CHAR
 #define TEST_SUIT_FIFO_INDEXER
 #endif
+
+
+
 
 #include "unit_test_check.h"
 
