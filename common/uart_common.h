@@ -24,6 +24,11 @@
 #include "uart_drv.h"
 #endif
 
+typedef struct xflowCnt_t{
+    uint32_t byte_rx;
+    uint32_t byte_tx;
+}flowCnt_t;
+
 typedef struct xUartHandle_t {
   volatile bool tx_int;
   volatile bool in_progress;
@@ -34,8 +39,10 @@ typedef struct xUartHandle_t {
   volatile uint8_t *rx_buff;
   uint8_t rx_byte_cnt;
   uint8_t tx_byte_cnt;
-  volatile uint32_t rx_cnt;
-  volatile uint32_t tx_cnt;
+  //volatile uint32_t rx_cnt;
+  //volatile uint32_t tx_cnt;
+  volatile flowCnt_t cnt;
+  flowCnt_t cnt_prev;
   uint32_t rx_buff_size;
   uint32_t error_cnt;
   volatile uint32_t tx_cpl_cnt;

@@ -215,7 +215,6 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
 
         ZedF9P.rtk_mode = RTK_BASE;
-        res = mm_set(PAR_ID_RTK_MODE, (uint8_t*)&ZedF9P.rtk_mode, 1);
         task_data[TASK_ID_NMEA].on = false;
 #ifdef HAS_RTCM3
 
@@ -340,6 +339,9 @@ bool zed_f9p_init(void) {
     res = zed_f9p_load_params();
     if(res) {
         switch(ZedF9P.rtk_mode) {
+        case RTK_NONE:
+            res = true;
+            break;
         case RTK_BASE:
             res = zed_f9p_deploy_base(ZedF9P.coordinate_base, ZedF9P.alt_base);
             break;

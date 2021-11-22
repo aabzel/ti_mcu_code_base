@@ -12,10 +12,10 @@
 
 bool test_uart0_write(void) {
     uint8_t array[2]={0};
-    uint32_t init_tx_cnt = huart[0].tx_cnt;
+    uint32_t init_tx_cnt = huart[0].cnt.byte_tx;
     memset(array,0xFF,sizeof(array));
     EXPECT_TRUE(uart_send(0, array, sizeof(array),true));
-    EXPECT_GR(init_tx_cnt, huart[0].tx_cnt,0);
+    EXPECT_GR(init_tx_cnt, huart[0].cnt.byte_tx,0);
     return true;
 }
 
@@ -42,11 +42,11 @@ bool test_uart0_read(void) {
 
 #ifdef HAS_UART1
 bool test_uart1_write(void) {
-    uint8_t array[2]={0};
-    uint32_t init_tx_cnt = huart[1].tx_cnt;
+    uint8_t array[2] = {0};
+    uint32_t init_tx_cnt = huart[1].cnt.byte_tx;
     memset(array,0xFF,sizeof(array));
     EXPECT_TRUE(uart_send(1, array, sizeof(array),true));
-    EXPECT_GR(init_tx_cnt, huart[1].tx_cnt,0);
+    EXPECT_GR(init_tx_cnt, huart[1].cnt.byte_tx, 0);
     return true;
 }
 bool test_uart1_read(void) {

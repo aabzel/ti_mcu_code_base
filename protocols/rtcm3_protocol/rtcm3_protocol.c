@@ -33,7 +33,7 @@ bool rtcm3_reset_rx(Rtcm3Porotocol_t* instance) {
     return true;
 }
 
-bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, uint8_t interface, bool lora_fwd) {
+bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, Rtcm3IfSrc_t interface, bool lora_fwd) {
     rtcm3_reset_rx(instance);
     memset(instance, 0x0, sizeof(Rtcm3Porotocol_t));
     memset(instance->fix_frame, 0x00, RTCM3_RX_FRAME_SIZE);

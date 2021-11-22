@@ -5,16 +5,19 @@
 #include "zed_f9p_drv.h"
 
 const char *rtk_mode2str(uint8_t rtk_code){
-    const char *name ="error";
+    const char *name ="undef";
     switch(rtk_code){
+    case RTK_NONE:
+        name ="Norm";
+        break;
     case RTK_BASE:
-        name ="base";
+        name ="Base";
         break;
     case RTK_ROVER:
-        name ="rover";
+        name ="Rover";
         break;
     default:
-        name ="undef";
+        name ="error";
         break;
     }
     return name;

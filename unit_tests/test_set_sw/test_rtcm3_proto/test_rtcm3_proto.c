@@ -27,13 +27,13 @@ bool test_rtcm3_proto_1(void) {
     EXPECT_TRUE(uart_deinit(1));
 #endif
     EXPECT_TRUE(is_rtcm3_frame((uint8_t*)rtcm3_message, sizeof(rtcm3_message)));
-    rtcm3_reset_rx(&Rtcm3Porotocol[RT_UART_ID]);
-    Rtcm3Porotocol[RT_UART_ID].rx_pkt_cnt = 0;
+    rtcm3_reset_rx(&Rtcm3Porotocol[RT_UART1_ID]);
+    Rtcm3Porotocol[RT_UART1_ID].rx_pkt_cnt = 0;
     for(i = 0; i < sizeof(rtcm3_message); i++) {
-        rtcm3_proc_byte(&Rtcm3Porotocol[RT_UART_ID], rtcm3_message[i]);
+        rtcm3_proc_byte(&Rtcm3Porotocol[RT_UART1_ID], rtcm3_message[i]);
     }
-    EXPECT_EQ(0, Rtcm3Porotocol[RT_UART_ID].load_len);
-    EXPECT_EQ(1, Rtcm3Porotocol[RT_UART_ID].rx_pkt_cnt);
+    EXPECT_EQ(0, Rtcm3Porotocol[RT_UART1_ID].load_len);
+    EXPECT_EQ(1, Rtcm3Porotocol[RT_UART1_ID].rx_pkt_cnt);
 
     return true;
 }

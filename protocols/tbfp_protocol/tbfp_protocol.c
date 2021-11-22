@@ -164,17 +164,23 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len) {
         }
         double cur_dist = 0;
 #ifdef HAS_ZED_F9P
-        if(is_valid_gnss_coordinates(pingFrame.coordinate)) {
-            cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
-            LOG_INFO(LORA, "link distance %f m", cur_dist);
-        } else {
-            LOG_ERROR(LORA, "InvalidGNSSCoordinate");
+        if(is_valid_gnss_coordinates(pingFrame.coordinate) ){
+            if( is_valid_gnss_coordinates(ZedF9P.coordinate_cur)) {
+                cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
+                LOG_INFO(LORA, "link distance %f m", cur_dist);
+            } else {
+                LOG_ERROR(LORA, "InvalidLocalGNSSDot");
+            }
+        }else{
+            LOG_ERROR(LORA, "InvalidRemoteGNSSDot");
         }
 #endif /*HAS_ZED_F9P*/
 
 #ifdef HAS_LORA
         uint16_t file_len = 0;
+#if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
         res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance, sizeof(double), &file_len);
+#endif /*HAS_PARAM && HAS_FLASH_FS*/
         if((LoRaInterface.max_distance < cur_dist) && (res) && (sizeof(double) == file_len)) {
 #if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
             res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&cur_dist, sizeof(double));

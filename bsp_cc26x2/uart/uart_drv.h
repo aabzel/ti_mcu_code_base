@@ -7,12 +7,11 @@
 
 #include "sys_config.h"
 
-#define UART_FIFO_RX_SIZE 512U
+#define UART_FIFO_RX_SIZE 1024U
 #define UART_FIFO_TX_SIZE 256U
 
-#define UART_RX_ARRAY_SIZE 500U
+
 #define UART_RX_FIFO_ARRAY_SIZE 200U
-#define UART_TX_ARRAY_SIZE 600U
 
 #define UART0_BAUD_RATE CLI_UART_BAUD_RATE /*CLI   */
 #define UART1_BAUD_RATE 38400U             /*UBlox*/

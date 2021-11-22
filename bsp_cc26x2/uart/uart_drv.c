@@ -125,7 +125,7 @@ static uint32_t baudRateLuTable[UART_COUNT] = {
 
 static uint8_t rx0_byte = 0;
 static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
-    huart[0].rx_cnt++;
+    huart[0].cnt.byte_rx++;
     huart[0].rx_int = true;
     huart[0].rx_it_proc_done = false;
     if((1 == size) && (NULL != rx_buf)) {
@@ -179,7 +179,7 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
         }
 #endif /*HAS_UART1_FWD*/
     }
-    huart[1].rx_cnt++;
+    huart[1].cnt.byte_rx++;
     huart[1].rx_int = true;
     huart[1].rx_it_proc_done = false;
     uart_read(1, &ch1, 1);
@@ -189,7 +189,7 @@ static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
 #ifdef HAS_UART0
 static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[0].in_progress = false;
-    huart[0].tx_cnt++;
+    huart[0].cnt.byte_tx++;
     huart[0].tx_int = true;
     huart[0].tx_cpl_cnt++;
 }
@@ -198,7 +198,7 @@ static void uart0WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
 #ifdef HAS_UART1
 static void uart1WriteCallback(UART_Handle handle, void* rxBuf, size_t size) {
     huart[1].in_progress = false;
-    huart[1].tx_cnt++;
+    huart[1].cnt.byte_tx++;
     huart[1].tx_int = true;
     huart[1].tx_cpl_cnt++;
 }
@@ -216,6 +216,7 @@ bool is_uart_valid(uint8_t uart_num) {
     }
     return res;
 }
+#ifdef HAS_UART_WAIT_SEND
 /*TODO: Find out why uart_wait_send_ll does not work.*/
 static bool uart_wait_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len) {
     bool res = true;
@@ -263,13 +264,14 @@ static bool uart_wait_send_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16
 
     return res;
 }
+#endif
 
 bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len, bool is_wait) {
     bool res = true;
 #ifdef HAS_UNIT_TEST
     memcpy(&VerifyUartTx[uart_num][0], (uint8_t*)tx_buffer, len);
 #endif
-    uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
+    uint32_t init_tx_cnt = huart[uart_num].cnt.byte_tx;
     uint32_t baudrate = uart_get_baudrate(uart_num);
     uint32_t up_time_start_ms = get_time_ms32();
     uint32_t up_time_cur_ms = 0;
@@ -286,7 +288,7 @@ bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len,
 
     /*TODO Calc needed time to wait*/
     if(is_wait) {
-        while(init_tx_cnt == huart[uart_num].tx_cnt) {
+        while(init_tx_cnt == huart[uart_num].cnt.byte_tx) {
             up_time_cur_ms = get_time_ms32();
             duration_ms = up_time_cur_ms - up_time_start_ms;
             if((5 * (tx_duration_ms + 1)) < duration_ms) { /*TODO find val*/

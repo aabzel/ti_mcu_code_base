@@ -5,6 +5,8 @@
 
 #include "writer_generic.h"
 
+#define UART_TX_ARRAY_SIZE 600U
+
 extern generic_writer_t dbg_o;
 #define DBG_UART_STREAM (&dbg_o.s)
 

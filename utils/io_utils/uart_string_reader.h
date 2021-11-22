@@ -10,6 +10,8 @@ extern "C" {
 
 #include "fifo_char.h"
 
+#define UART_RX_ARRAY_SIZE 500U
+
 typedef void (*handle_string_f)(char* s);
 
 typedef struct {
