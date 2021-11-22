@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
-HAS_TEST_SUIT_RTCM3_PROTO
+
 extern const uint8_t rtcm3_message2[39];
 
 bool test_rtcm3_array(void);

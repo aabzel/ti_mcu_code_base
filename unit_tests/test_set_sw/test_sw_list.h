@@ -83,11 +83,7 @@ extern "C" {
 #define TEST_SUIT_FIFO_INDEXER
 #endif
 
-
-
-
 #include "unit_test_check.h"
-
 #include "unit_test_info.h"
 
 bool test_types(void);

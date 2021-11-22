@@ -17,10 +17,3 @@ bool test_rtcm3_path(void) {
 
     return true;
 }
-
- 
- 
-
- 
-
-
