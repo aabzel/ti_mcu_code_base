@@ -13,7 +13,7 @@
 #include "writer_generic.h"
 #include "writer_config.h"
 
-static const char* interfacefRtcmLuTable[RTCM_IF_CNT] = {"UART", "LoRa"};
+static const char* interfacefRtcmLuTable[RTCM_IF_CNT] = {"UART", "LoRa", "RS232"};
 
 static bool rtcm3_diag(void) {
     bool res = false;

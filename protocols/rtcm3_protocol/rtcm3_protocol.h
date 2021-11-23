@@ -19,7 +19,7 @@ typedef enum eRtcm3IfSrc_t {
     RT_LORA_ID = 1,
     RT_RS232_ID = 2, /*UART0 or CLI*/
     RTCM_IF_CNT = 3,
-    //RT_ÑAN_ID
+    //RT_AN_ID
     //RT_BLE_ID
     //RT_RF_ID
     RT_ALL_ID = 4,

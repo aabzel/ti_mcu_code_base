@@ -222,6 +222,9 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
     if(PAR_ID_LORA_CR == id) {
         name = coding_rate2str((LoRaCodingRate_t)*value);
     }
+    if(PAR_ID_LORA_MAX_BIT_RATE == id) {
+        name = bit_rate2str((float)*value);
+    }
     if(PAR_ID_LORA_BW == id) {
         name = bandwidth2str((uint8_t)*value);
     }

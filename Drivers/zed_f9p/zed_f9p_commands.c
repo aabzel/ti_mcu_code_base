@@ -27,13 +27,11 @@ bool zed_f9p_diag_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool zed_f9p_base_command(int32_t argc, char* argv[]) {
+bool zed_f9p_base_dot_command(int32_t argc, char* argv[]) {
     bool res = false;
     GnssCoordinate_t coordinate_base;
     double altitude_sea_lev_m = 0.0;
-    if(0 == argc) {
-        res = zed_f9p_load_params();
-    }
+
     if(1 <= argc) {
         res = try_str2double(argv[0], &coordinate_base.latitude);
     }
@@ -42,7 +40,24 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     }
     if(3 <= argc) {
         res = try_str2double(argv[2], &altitude_sea_lev_m);
+        if(res){
+            ZedF9P.alt_base=altitude_sea_lev_m;
+#ifdef HAS_PARAM
+            res = mm_set(PAR_ID_BASE_ALT, (uint8_t*)&ZedF9P.alt_base, sizeof(double));
+            if(false == res) {
+                LOG_ERROR(ZED_F9P, "ParamSetAltError");
+            }
+#endif /*HAS_PARAM*/
+        }
     }
+
+    if((2 <= argc) && res){
+        res = is_valid_gnss_coordinates(coordinate_base);
+        if(false==res){
+            LOG_ERROR(ZED_F9P, "InvalidBaseDot");
+        }
+    }
+
     if((2 <= argc) && res) {
         ZedF9P.coordinate_base = coordinate_base;
 #ifdef HAS_PARAM
@@ -53,16 +68,31 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
 #endif /*HAS_PARAM*/
     }
 
+    if(false == res) {
+        LOG_ERROR(ZED_F9P, "Usage: zfbd lat lon alt");
+    }
+    return res;
+}
+
+bool zed_f9p_base_command(int32_t argc, char* argv[]) {
+    bool res = false;
+
+    if(0 == argc) {
+        res = zed_f9p_load_params();
+        if(res){
+            LOG_ERROR(ZED_F9P, "BaseParamGetErr");
+        }
+    }
+
     if(res) {
-        res = zed_f9p_deploy_base(ZedF9P.coordinate_base, altitude_sea_lev_m);
+        res = zed_f9p_deploy_base(ZedF9P.coordinate_base, ZedF9P.alt_base);
         if(res) {
-            LOG_INFO(ZED_F9P, "RTKBaseStarted");
+            LOG_INFO(ZED_F9P, "RtkBaseStarted");
         }
     }
 
     if(false == res) {
-        LOG_ERROR(ZED_F9P, "Error");
-        LOG_ERROR(ZED_F9P, "Usage: zfb lat lon alt");
+        LOG_ERROR(ZED_F9P, "Usage: zfb");
     }
     return res;
 }
