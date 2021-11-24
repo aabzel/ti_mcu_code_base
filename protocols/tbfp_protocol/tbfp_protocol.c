@@ -49,6 +49,7 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
     if(instance) {
         memset(instance, 0x0, sizeof(TbfpProtocol_t));
         instance->interface = interface;
+        instance->rx_pkt_cnt=0;
         res = true;
     }
     return res;

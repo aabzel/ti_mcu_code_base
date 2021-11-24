@@ -11,7 +11,7 @@ typedef enum eInterfaces_t{
     IF_CAN=3,
     IF_BLE=4,
     IF_NONE=5,
-}Interfaces_t;
+} __attribute__ ((__packed__)) Interfaces_t;
 
 
 #endif /* SYSTEM_H  */

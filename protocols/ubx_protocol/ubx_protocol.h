@@ -120,29 +120,29 @@ typedef struct xUbxCfgCfg_t {
     uint32_t saveMask;  /*Mask for configuration to save*/
     uint32_t loadMask;  /*Mask for configuration to load*/
     uint8_t deviceMask; /*deviceMask*/
-} __attribute__((packed)) UbxCfgCfg_t;
+} __attribute__((__packed__)) UbxCfgCfg_t;
 
 /*3.10.17 UBX-CFG-RATE (0x06 0x08)*/
 typedef struct xUbxCfgRate_t {
     uint16_t meas_rate_ms; /*0 ms The elapsed time between GNSS measurements*/
     uint16_t navRate; /*2 cycles The ratio between the number of measurements and the number of navigation solutions*/
     uint16_t timeRef; /*4 */
-} __attribute__((packed)) UbxCfgRate_t;
+} __attribute__((__packed__)) UbxCfgRate_t;
 
 typedef struct xConfigurationKeyID_t {
     union {
         uint32_t word;
         struct {
             uint16_t
-                id_within_group : 12; /* Twelve bits that define a unique item ID within a group (range 0x001-0xffe)*/
-            uint8_t rsvd1 : 4;        /*Currently unused. Reserved for future use.*/
-            uint16_t group : 8;       /*Eight bits that define a unique group ID (range 0x01-0xfe)*/
-            uint8_t rsvd2 : 4;        /*Currently unused. Reserved for future use.*/
-            uint8_t size : 3;  /*Three bits that indicate the storage size of a Configuration Value (range 0x01-0x05,*/
-            uint8_t rsvd3 : 1; /*Currently unused. Reserved for future use.*/
+              id_within_group : 12; /* Twelve bits that define a unique item ID within a group (range 0x001-0xffe)*/
+            uint16_t rsvd1 : 4;        /*Currently unused. Reserved for future use.*/
+            uint16_t group:8;       /*Eight bits that define a unique group ID (range 0x01-0xfe)*/
+            uint16_t rsvd2 : 4;        /*Currently unused. Reserved for future use.*/
+            uint16_t size : 3;  /*Three bits that indicate the storage size of a Configuration Value (range 0x01-0x05,*/
+            uint16_t rsvd3 : 1; /*Currently unused. Reserved for future use.*/
         };
     };
-} __attribute__((packed)) ConfigurationKeyID_t;
+}  __attribute__ ((__packed__)) ConfigurationKeyID_t;
 
 typedef struct xCfgValGetHeader_t {
     uint8_t version;

@@ -5,6 +5,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifdef X86_64
+#include <stdio.h>
+#endif
+
 #include "data_utils.h"
 #include "crc8_sae_j1850.h"
 
@@ -44,7 +48,11 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t *instance, uint8_t rx_byte)
         instance->max_len = max16u(instance->max_len, instance->parser.exp_payload_len);
         instance->min_len = min16u(instance->min_len, instance->parser.exp_payload_len);
 #endif
-        instance->parser.rx_state = WAIT_PAYLOAD;
+        if (0 < instance->parser.exp_payload_len) {
+            instance->parser.rx_state = WAIT_PAYLOAD;
+        } else {
+            instance->parser.rx_state = WAIT_CRC;
+        }
         res = true;
     } else {
         res = tbfp_parser_reset_rx(instance);
@@ -54,22 +62,30 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t *instance, uint8_t rx_byte)
 
 static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t *instance, uint8_t rx_byte){
     bool res = false;
-    if( instance->parser.load_len <(TBFP_HEADER_SIZE+ instance->parser.exp_payload_len )){
-        instance->parser.rx_frame[instance->parser.load_len] = rx_byte;
-        instance->parser.load_len++;
-        instance->parser.rx_state = WAIT_PAYLOAD;
-    }else if(instance->parser.exp_payload_len == (TBFP_HEADER_SIZE + instance->parser.exp_payload_len- 1)){
-        instance->parser.rx_frame[instance->parser.load_len] = rx_byte;
-        instance->parser.load_len++;
-        instance->parser.rx_state = WAIT_CRC;
-    }else{
+#ifdef X86_64
+    printf("\n%s(): rx: 0x%02x loadLen: %u", __FUNCTION__, rx_byte,instance->parser.load_len);
+#endif
+    if((TBFP_HEADER_SIZE + instance->parser.exp_payload_len) <= instance->parser.load_len){
         res = tbfp_parser_reset_rx(instance);
+    } else {
+        instance->parser.rx_frame[instance->parser.load_len] = rx_byte;
+        if(instance->parser.load_len  == (TBFP_HEADER_SIZE + instance->parser.exp_payload_len - 1)){
+            instance->parser.rx_state = WAIT_CRC;
+            res = true;
+        }else if( instance->parser.load_len <(TBFP_HEADER_SIZE+ instance->parser.exp_payload_len )){
+            instance->parser.rx_state = WAIT_PAYLOAD;
+            res = true;
+        }
+        instance->parser.load_len++;
     }
     return res;
 }
 
 static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t *instance, uint8_t rx_byte)   {
     bool res = false;
+#ifdef X86_64
+    printf("\n%s():", __FUNCTION__);
+#endif
     uint16_t crc8_index = TBFP_HEADER_SIZE + instance->parser.exp_payload_len;
     if(crc8_index == instance->parser.load_len){
         instance->parser.rx_frame[instance->parser.load_len] = rx_byte;
@@ -94,6 +110,9 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t *instance, uint8_t rx_byte
 
 bool tbfp_proc_byte(TbfpProtocol_t *instance, uint8_t rx_byte){
     bool res = false;
+#ifdef X86_64
+    printf("\n%s(): rx: 0x%02x loadLen: %u", __FUNCTION__, rx_byte,instance->parser.load_len);
+#endif
     switch(instance->parser.rx_state){
      case WAIT_PREAMBLE:
          res = tbfp_parser_proc_wait_preamble(instance, rx_byte);
