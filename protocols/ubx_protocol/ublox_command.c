@@ -18,16 +18,16 @@
 
 static bool ubx_diag(void) {
 
-    io_printf("tx pkt cnt: %u" CRLF, UbloxPorotocol.tx_pkt_cnt);
-    io_printf("rx pkt cnt: %u" CRLF, UbloxPorotocol.rx_pkt_cnt);
-    io_printf("crc cnt: %u" CRLF, UbloxPorotocol.crc_err_cnt);
-    io_printf("rx state: %u" CRLF, UbloxPorotocol.rx_state);
-    io_printf("ack cnt: %u" CRLF, UbloxPorotocol.ack_cnt);
-    io_printf("diag: %u" CRLF, UbloxPorotocol.diag);
+    io_printf("tx pkt cnt: %u" CRLF, UbloxProtocol.tx_pkt_cnt);
+    io_printf("rx pkt cnt: %u" CRLF, UbloxProtocol.rx_pkt_cnt);
+    io_printf("crc cnt: %u" CRLF, UbloxProtocol.crc_err_cnt);
+    io_printf("rx state: %u" CRLF, UbloxProtocol.rx_state);
+    io_printf("ack cnt: %u" CRLF, UbloxProtocol.ack_cnt);
+    io_printf("diag: %u" CRLF, UbloxProtocol.diag);
 #ifdef HAS_UBX_DEBUG
-    io_printf("sync cnt: %u" CRLF, UbloxPorotocol.sync_cnt);
-    io_printf("min len: %u" CRLF, UbloxPorotocol.min_len);
-    io_printf("max len: %u" CRLF, UbloxPorotocol.max_len);
+    io_printf("sync cnt: %u" CRLF, UbloxProtocol.sync_cnt);
+    io_printf("min len: %u" CRLF, UbloxProtocol.min_len);
+    io_printf("max len: %u" CRLF, UbloxProtocol.max_len);
 #endif
     io_printf("chip id:");
     print_mem(NavInfo.id, 5, true, false, true, true);
@@ -85,7 +85,7 @@ bool ubx_print_key_val_command(int32_t argc, char* argv[]) {
 bool ubx_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(1 <= argc) {
-        res = try_str2bool(argv[0], &UbloxPorotocol.diag);
+        res = try_str2bool(argv[0], &UbloxProtocol.diag);
         if(false == res) {
             LOG_ERROR(UBX, "Unable to extract diag");
         }

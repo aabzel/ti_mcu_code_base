@@ -8,9 +8,9 @@
 extern "C" {
 #endif
 
+bool crc8_sae_j1850_check(const void* in_buf, uint32_t len, uint8_t exp_crc);
 uint8_t crc8_sae_j1850_calc(const void* buf, uint32_t len);
 uint8_t crc8_sae_j1850_calc_continue(uint8_t crc_in, const void* buf, uint32_t len);
-bool crc8_sae_j1850_is_self_test_ok(void);
 
 #ifdef __cplusplus
 }

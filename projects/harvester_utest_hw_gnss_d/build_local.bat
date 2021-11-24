@@ -1,4 +1,5 @@
 echo off
+cls
 set project_dir=%cd%
 set workspace_dir=%project_dir%\..\..\
 

@@ -86,6 +86,10 @@
 #include "watchdog_drv.h"
 #endif /*HAS_WDT*/
 
+#ifdef HAS_RS232
+#include "rs232_drv.h"
+#endif /*HAS_RS232*/
+
 bool sys_init(void) {
     bool res = true;
     res = try_init(hw_init(), "HW") && res;
@@ -126,7 +130,11 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_WDT*/
 
 #ifdef HAS_UART
-    measure_task_interval(TASK_ID_UART, 1, proc_uarts, loop_start_time_us);
+    measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us);
+#endif /*HAS_UART1*/
+
+#ifdef HAS_RS232
+    measure_task_interval(TASK_ID_RS232, RS232_PERIOD_US, proc_rs232, loop_start_time_us);
 #endif /*HAS_UART1*/
 
 #ifdef HAS_TCAN4550

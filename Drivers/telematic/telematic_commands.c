@@ -10,6 +10,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "lora_drv.h"
+#include "system.h"
 #include "tbfp_protocol.h"
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
@@ -54,16 +55,25 @@ bool lora_sent_command(int32_t argc, char* argv[]) {
 
 bool ping_command(int32_t argc, char* argv[]){
     bool res = false;
-    if(0 == argc) {
+    uint8_t interface = IF_LORA;
+    if (0 == argc) {
         res = true;
-        res = tbfp_send_ping(FRAME_ID_PING);
-        if(res){
+        interface = IF_LORA;
+    }
+
+    if (1 == argc) {
+        res = try_str2uint8(argv[0], &interface);
+    }
+
+    if (res) {
+        res = tbfp_send_ping(FRAME_ID_PING,(Interfaces_t) interface);
+        if (res) {
             LOG_INFO(SYS, "OK");
-        }else{
+        } else {
             LOG_ERROR(SYS, "Err");
         }
     } else {
-        LOG_ERROR(SYS, "Usage: ping");
+        LOG_ERROR(SYS, "Usage: ping if");
     }
     return res;
 }

@@ -14,7 +14,7 @@ bool test_tbfp_proto_1(void) {
     printf("\n%s():", __FUNCTION__);
 #endif
 
-    return true;
+    return false;
 }
 
 bool test_tbfp_types(void) {
@@ -22,5 +22,5 @@ bool test_tbfp_types(void) {
     printf("\n%s():", __FUNCTION__);
 #endif
 
-    return true;
+    return false;
 }

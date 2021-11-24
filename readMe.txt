@@ -35,3 +35,6 @@ https://r1ban.ru/calc/loss-calc-dist.htm
 
 RTL-SDR V3 - Улучшенная версия популярного SDR приёмника
 https://mysku.ru/blog/ebay/65825.html
+
+Особенности применении на территории Российской Федерации радиоэлектронных средств, работающих в режиме IoT и в сетях транспортной телематики
+https://rkn.gov.ru/communication/licensing-activity/p1064/

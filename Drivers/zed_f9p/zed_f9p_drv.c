@@ -49,15 +49,15 @@ static bool zed_f9p_proc_base(void) {
 
     if(RTK_CH_RS232 == ZedF9P.channel) {
 #ifdef HAS_RTCM3
-        Rtcm3Porotocol[RT_UART1_ID].lora_fwd = false;
-        Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = true;
+        Rtcm3Protocol[IF_UART1].lora_fwd = false;
+        Rtcm3Protocol[IF_UART1].rs232_fwd = true;
 #endif
     }
 
     if(RTK_CH_LORA == ZedF9P.channel) {
 #ifdef HAS_RTCM3
-        Rtcm3Porotocol[RT_UART1_ID].lora_fwd = true;
-        Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = false;
+        Rtcm3Protocol[IF_UART1].lora_fwd = true;
+        Rtcm3Protocol[IF_UART1].rs232_fwd = false;
 #endif
     }
 
@@ -230,12 +230,12 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
 #ifdef HAS_RTCM3
 
         if(RTK_CH_LORA == ZedF9P.channel) {
-            Rtcm3Porotocol[RT_UART1_ID].lora_fwd = true;
-            Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = false;
+            Rtcm3Protocol[IF_UART1].lora_fwd = true;
+            Rtcm3Protocol[IF_UART1].rs232_fwd = false;
         }
         if(RTK_CH_RS232 == ZedF9P.channel) {
-            Rtcm3Porotocol[RT_UART1_ID].lora_fwd = false;
-            Rtcm3Porotocol[RT_UART1_ID].rs232_fwd = true;
+            Rtcm3Protocol[IF_UART1].lora_fwd = false;
+            Rtcm3Protocol[IF_UART1].rs232_fwd = true;
         }
 #endif /*HAS_RTCM3*/
 #endif

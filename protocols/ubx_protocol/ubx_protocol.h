@@ -150,7 +150,7 @@ typedef struct xCfgValGetHeader_t {
     uint16_t position;
 } CfgValGetHeader_t;
 
-typedef struct xUbloxPorotocol_t {
+typedef struct xUbloxProtocol_t {
     uint32_t rx_time_stamp;
     uint32_t rx_pkt_cnt;
     uint32_t tx_pkt_cnt;
@@ -169,7 +169,7 @@ typedef struct xUbloxPorotocol_t {
     uint8_t fix_frame[UBX_RX_FRAME_SIZE];
     bool unproc_frame;
     bool diag;
-} UbloxPorotocol_t;
+} UbloxProtocol_t;
 
 typedef struct xUbxHeader_t {
     uint8_t class;
@@ -181,7 +181,7 @@ typedef struct xStatClass_t {
     uint16_t cnt;
 } StatClass_t;
 
-extern UbloxPorotocol_t UbloxPorotocol;
+extern UbloxProtocol_t UbloxProtocol;
 extern StatClass_t tableRxClass[UBX_CLA_CNT];
 
 bool ubx_reset_rx(void);

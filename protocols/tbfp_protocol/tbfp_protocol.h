@@ -11,6 +11,8 @@ extern "C" {
 #include <time.h>
 
 #include "gnss_utils.h"
+#include "system.h"
+#include "tbfp_protocol_parser.h"
 
 typedef enum xFrameId_t {
     FRAME_ID_CMD = 0x44,  /*D*/
@@ -43,7 +45,9 @@ typedef struct xTbfPingFrame_t {
     GnssCoordinate_t coordinate;
 } __attribute__((packed)) TbfPingFrame_t;
 
-typedef struct xTbfpPorotocol_t {
+
+
+typedef struct xTbfpProtocol_t {
     uint32_t rx_pkt_cnt;
     uint32_t crc_err_cnt;
     uint32_t err_cnt;
@@ -52,15 +56,18 @@ typedef struct xTbfpPorotocol_t {
     uint16_t max_len;
     uint16_t min_len;
 #endif
-} TbfpPorotocol_t;
+    Interfaces_t interface;
+    TBFTparser_t parser;
+} TbfpProtocol_t;
 
-extern TbfpPorotocol_t TbfpPorotocol;
+extern TbfpProtocol_t TbfpProtocol[2]; /*RS232 LoRa*/
 
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len);
 bool tbfp_send_chat(uint8_t* tx_array, uint32_t len);
-bool tbfp_send_ping(uint8_t frame_id);
-bool tbfp_protocol_init(TbfpPorotocol_t* instance);
-bool tbfp_proc(uint8_t* arr, uint16_t len);
+bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface);
+bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface);
+bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface);
+bool tbfp_proc_byte(TbfpProtocol_t *instance, uint8_t rx_byte);
 bool is_tbfp_protocol(uint8_t* arr, uint16_t len);
 bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame);
 

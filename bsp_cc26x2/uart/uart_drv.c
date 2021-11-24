@@ -36,6 +36,10 @@
 #include "rtcm3_protocol.h"
 #endif /*HAS_RTCM3*/
 
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif /*HAS_TBFP*/
+
 #ifdef HAS_CLI
 #include "uart_string_reader.h"
 #endif /*HAS_CLI*/
@@ -43,6 +47,10 @@
 #include "fifo_char.h"
 #include "sys_config.h"
 #include "uart_common.h"
+
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif /*HAS_TBFP*/
 
 UARTCC26XX_Object uartCC26XXObjects[UART_COUNT];
 
@@ -373,7 +381,7 @@ bool proc_uart(uint8_t uart_index) {
             if(true == res) {
                 loop = true;
 #ifdef HAS_RTCM3
-                rtcm3_proc_byte(&Rtcm3Porotocol[RT_UART1_ID], rx_byte);
+                rtcm3_proc_byte(&Rtcm3Protocol[IF_UART1], rx_byte);
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_NMEA
@@ -398,8 +406,12 @@ bool proc_uart(uint8_t uart_index) {
             res = fifo_pull(&huart[0].RxFifo, (char*)&rx_byte);
             if(true == res) {
 #ifdef HAS_RTCM3
-                rtcm3_proc_byte(&Rtcm3Porotocol[RT_RS232_ID], rx_byte);
+                rtcm3_proc_byte(&Rtcm3Protocol[IF_RS232], rx_byte);
 #endif /*HAS_RTCM3*/
+
+#ifdef HAS_TBFP
+                tbfp_proc_byte(&TbfpProtocol[IF_RS232], rx_byte);
+#endif /*HAS_TBFP*/
             }else{
                 loop = false;
             }

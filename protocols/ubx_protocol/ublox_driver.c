@@ -46,7 +46,7 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
     if(true == res) {
         res = uart_send(UBX_UART_NUM, tx_array, tx_array_len, true);
         if(res) {
-            UbloxPorotocol.tx_pkt_cnt++;
+            UbloxProtocol.tx_pkt_cnt++;
         }
     }
     return res;
@@ -77,9 +77,9 @@ static bool ubx_cfg_valget_parse(uint8_t* payload) {
 
 static bool ubx_proc_cfg_frame(void) {
     bool res = false;
-    switch(UbloxPorotocol.fix_frame[UBX_INDEX_ID]) {
+    switch(UbloxProtocol.fix_frame[UBX_INDEX_ID]) {
     case UBX_ID_CFG_GET_VAL:
-        res = ubx_cfg_valget_parse(&UbloxPorotocol.fix_frame[UBX_INDEX_PAYLOAD]);
+        res = ubx_cfg_valget_parse(&UbloxProtocol.fix_frame[UBX_INDEX_PAYLOAD]);
         break;
     }
     return res;
@@ -200,10 +200,10 @@ static bool ubx_proc_nav_frame(uint8_t* frame, uint16_t len) {
 
 static bool ubx_proc_ack_frame(void) {
     bool res = false;
-    switch(UbloxPorotocol.fix_frame[UBX_INDEX_ID]) {
+    switch(UbloxProtocol.fix_frame[UBX_INDEX_ID]) {
     case UBX_ACK_ACK:
         LOG_NOTICE(UBX, "Ack");
-        UbloxPorotocol.ack_cnt++;
+        UbloxProtocol.ack_cnt++;
         res = true;
         break;
     case UBX_ACK_NAK:
@@ -239,7 +239,7 @@ static bool ubx_proc_sec_frame(uint8_t* frame, uint16_t len) {
     return res;
 }
 
-bool ubx_proc_frame(UbloxPorotocol_t* inst) {
+bool ubx_proc_frame(UbloxProtocol_t* inst) {
     bool res = false;
     uint8_t in_class = inst->fix_frame[UBX_INDEX_CLS];
     if(inst->diag) {
@@ -337,7 +337,7 @@ bool ubx_proc(void) {
     }
     uint32_t cur_time = get_time_ms32();
     uint32_t time_diff = 0;
-    time_diff = cur_time - UbloxPorotocol.rx_time_stamp;
+    time_diff = cur_time - UbloxProtocol.rx_time_stamp;
     if(UBX_RX_TIME_OUT_MS < time_diff) {
         LOG_ERROR(UBX, "UBX proto link lost %f s", MS_2_S(time_diff));
         res = false;

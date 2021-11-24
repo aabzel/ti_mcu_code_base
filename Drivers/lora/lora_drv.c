@@ -17,6 +17,7 @@
 #include "fifo_array.h"
 #include "flash_fs.h"
 #include "log.h"
+#include "system.h"
 #include "none_blocking_pause.h"
 #include "param_ids.h"
 #ifdef HAS_RTCM3
@@ -33,10 +34,11 @@ LoRaIf_t LoRaInterface = {0};
 bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
     bool res = false;
 #ifdef HAS_RTCM3
-    res = rtcm3_proc_array(rx_payload, rx_size, RT_LORA_ID);
+    res = rtcm3_proc_array(rx_payload, rx_size, IF_LORA);
 #endif /*HAS_RTCM3*/
+
 #ifdef HAS_TBFP
-    res = tbfp_proc(rx_payload, rx_size);
+    res = tbfp_proc(rx_payload, rx_size, IF_LORA);
 #endif /*HAS_TBFP*/
     return res;
 }
@@ -83,7 +85,7 @@ bool lora_process(void) {
     bool res = false;
 #ifdef HAS_TBFT
     /*HeartBeat Lora Frame*/
-    res = tbfp_send_ping(FRAME_ID_PONG);
-#endif
+    res = tbfp_send_ping(FRAME_ID_PONG, IF_LORA);
+#endif /*HAS_TBFT*/
     return res;
 }

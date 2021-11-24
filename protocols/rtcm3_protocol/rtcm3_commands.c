@@ -34,16 +34,16 @@ static bool rtcm3_diag(void) {
     for(interface = 0; interface < RTCM_IF_CNT; interface++) {
         io_printf(TSEP);
         io_printf(" %4s " TSEP, interfacefRtcmLuTable[interface]);
-        io_printf("  %1u  " TSEP, Rtcm3Porotocol[interface].lora_fwd);
-        io_printf(" %7u " TSEP,  Rtcm3Porotocol[interface].lora_lost_pkt_cnt);
-        io_printf(" %7u " TSEP,  Rtcm3Porotocol[interface].uart_lost_pkt_cnt);
-        io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].rx_pkt_cnt);
-        io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].crc_err_cnt);
+        io_printf("  %1u  " TSEP, Rtcm3Protocol[interface].lora_fwd);
+        io_printf(" %7u " TSEP,  Rtcm3Protocol[interface].lora_lost_pkt_cnt);
+        io_printf(" %7u " TSEP,  Rtcm3Protocol[interface].uart_lost_pkt_cnt);
+        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].rx_pkt_cnt);
+        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].crc_err_cnt);
 #ifdef HAS_DEBUG
-        io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].preamble_cnt);
-        io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].err_cnt);
-        io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].min_len);
-        io_printf(" %7u " TSEP, Rtcm3Porotocol[interface].max_len);
+        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].preamble_cnt);
+        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].err_cnt);
+        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].min_len);
+        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].max_len);
 #endif /*HAS_DEBUG*/
         io_printf(CRLF);
         res = true;
@@ -79,7 +79,7 @@ bool rtcm3_reset_command(int32_t argc, char* argv[]) {
         LOG_ERROR(SYS, "Usage: rtcmr interface");
     }
     if(res) {
-        res = rtcm3_reset_rx(&Rtcm3Porotocol[interface]);
+        res = rtcm3_reset_rx(&Rtcm3Protocol[interface]);
     }
     return res;
 }
@@ -103,7 +103,7 @@ bool rtcm3_fwd_command(int32_t argc, char* argv[]){
         LOG_ERROR(SYS, "Usage: rtcmf interface status");
     }
     if(res) {
-        Rtcm3Porotocol[interface].lora_fwd = status;
+        Rtcm3Protocol[interface].lora_fwd = status;
     }
     return res;
 }

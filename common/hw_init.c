@@ -60,6 +60,10 @@
 #include "bq25171_q1_drv.h"
 #endif /*HAS_BQ25171_Q1*/
 
+#ifdef HAS_RS232
+#include "rs232_drv.h"
+#endif /*HAS_RS232*/
+
 #ifdef HAS_DAC
 #include "dac_drv.h"
 #endif
@@ -118,6 +122,10 @@ bool hw_init(void) {
 
 #ifdef HAS_UART
   res = try_init(uart_init(),"UART") && res;
+#endif /*HAS_UART*/
+
+#ifdef HAS_RS232
+  res = try_init(rs232_init(),"RS232") && res;
 #endif /*HAS_UART*/
 
 #ifdef HAS_WDT

@@ -8,22 +8,13 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "system.h"
+
 #define RTCM3_PREAMBLE 0xD3
 #define RTCM3_RX_FRAME_SIZE 256U
 #define RTCM3_HEADER_SIZE 3U
 #define RTCM3_CRC24_SIZE 3U
-
-/*RTCM3 stream source*/
-typedef enum eRtcm3IfSrc_t {
-    RT_UART1_ID = 0,
-    RT_LORA_ID = 1,
-    RT_RS232_ID = 2, /*UART0 or CLI*/
-    RTCM_IF_CNT = 3,
-    //RT_AN_ID
-    //RT_BLE_ID
-    //RT_RF_ID
-    RT_ALL_ID = 4,
-} Rtcm3IfSrc_t;
+#define RTCM_IF_CNT 3 /*LoRa RS232 UART1*/
 
 typedef enum eRtcm3ProtState_t {
     RTCM3_WAIT_PREAMBLE = 0U,
@@ -49,7 +40,7 @@ typedef struct xRtcm3Header_t {
     Rtcm3Len_t ex_len;
 } __attribute__((packed)) Rtcm3Header_t;
 
-typedef struct xRtcm3Porotocol_t {
+typedef struct xRtcm3Protocol_t {
     uint32_t rx_pkt_cnt;
     uint32_t rx_rx_pkt_cnt;
     uint32_t lora_lost_pkt_cnt;
@@ -68,18 +59,18 @@ typedef struct xRtcm3Porotocol_t {
     Rtcm3ProtState_t rx_state;
     uint8_t rx_frame[RTCM3_RX_FRAME_SIZE];
     uint8_t fix_frame[RTCM3_RX_FRAME_SIZE];
-    Rtcm3IfSrc_t interface;
+    Interfaces_t interface;
     bool lora_fwd;
     bool rs232_fwd;
-} Rtcm3Porotocol_t;
+} Rtcm3Protocol_t;
 
-extern Rtcm3Porotocol_t Rtcm3Porotocol[RTCM_IF_CNT];
+extern Rtcm3Protocol_t Rtcm3Protocol[RTCM_IF_CNT];
 
-bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, Rtcm3IfSrc_t interface, bool lora_fwd);
-bool rtcm3_proc_byte(Rtcm3Porotocol_t* instance, uint8_t rx_byte);
-bool rtcm3_reset_rx(Rtcm3Porotocol_t* instance);
+bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool lora_fwd);
+bool rtcm3_proc_byte(Rtcm3Protocol_t* instance, uint8_t rx_byte);
+bool rtcm3_reset_rx(Rtcm3Protocol_t* instance);
 bool is_rtcm3_frame(uint8_t* arr, uint16_t len);
-bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Rtcm3IfSrc_t interface);
+bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Interfaces_t interface);
 
 #ifdef __cplusplus
 }

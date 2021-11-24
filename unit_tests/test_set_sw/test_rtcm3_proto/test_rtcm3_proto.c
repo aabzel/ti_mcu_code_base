@@ -9,6 +9,7 @@
 #include "uart_drv.h"
 #endif
 #include "unit_test_check.h"
+#include "system.h"
 
 const uint8_t rtcm3_message[36] = {0xD3, 0x00, 0x1E, 0x44, 0x60, 0x00, 0x1C, 0x77, 0xD7, 0x82, 0x00, 0x00,
                                    0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
@@ -27,13 +28,13 @@ bool test_rtcm3_proto_1(void) {
     EXPECT_TRUE(uart_deinit(1));
 #endif
     EXPECT_TRUE(is_rtcm3_frame((uint8_t*)rtcm3_message, sizeof(rtcm3_message)));
-    rtcm3_reset_rx(&Rtcm3Porotocol[RT_UART1_ID]);
-    Rtcm3Porotocol[RT_UART1_ID].rx_pkt_cnt = 0;
+    rtcm3_reset_rx(&Rtcm3Protocol[IF_UART1]);
+    Rtcm3Protocol[IF_UART1].rx_pkt_cnt = 0;
     for(i = 0; i < sizeof(rtcm3_message); i++) {
-        rtcm3_proc_byte(&Rtcm3Porotocol[RT_UART1_ID], rtcm3_message[i]);
+        rtcm3_proc_byte(&Rtcm3Protocol[IF_UART1], rtcm3_message[i]);
     }
-    EXPECT_EQ(0, Rtcm3Porotocol[RT_UART1_ID].load_len);
-    EXPECT_EQ(1, Rtcm3Porotocol[RT_UART1_ID].rx_pkt_cnt);
+    EXPECT_EQ(0, Rtcm3Protocol[IF_UART1].load_len);
+    EXPECT_EQ(1, Rtcm3Protocol[IF_UART1].rx_pkt_cnt);
 
     return true;
 }
@@ -42,7 +43,7 @@ bool test_rtcm3_types(void) {
 #ifdef X86_64
     printf("\n%s():", __FUNCTION__);
 #endif
-    EXPECT_EQ(1, sizeof(Rtcm3IfSrc_t));
+    EXPECT_EQ(1, sizeof(Interfaces_t));
     EXPECT_EQ(2, sizeof(Rtcm3Len_t));
     EXPECT_EQ(3, sizeof(Rtcm3Header_t));
 #ifndef X86_64
@@ -55,9 +56,9 @@ bool test_rtcm3_array(void) {
 #ifdef X86_64
     printf("\n%s():", __FUNCTION__);
 #endif /*X86_64*/
-    Rtcm3Porotocol[RT_LORA_ID].rx_pkt_cnt = 0;
-    rtcm3_reset_rx(&Rtcm3Porotocol[RT_LORA_ID]);
-    EXPECT_TRUE(rtcm3_proc_array((uint8_t*)rtcm3_message2, sizeof(rtcm3_message2), RT_LORA_ID));
-    EXPECT_EQ(2, Rtcm3Porotocol[RT_LORA_ID].rx_pkt_cnt);
+    Rtcm3Protocol[IF_LORA].rx_pkt_cnt = 0;
+    rtcm3_reset_rx(&Rtcm3Protocol[IF_LORA]);
+    EXPECT_TRUE(rtcm3_proc_array((uint8_t*)rtcm3_message2, sizeof(rtcm3_message2), IF_LORA));
+    EXPECT_EQ(2, Rtcm3Protocol[IF_LORA].rx_pkt_cnt);
     return true;
 }

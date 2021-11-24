@@ -26,18 +26,24 @@
 #include "gnss_utils.h"
 #include "io_utils.h"
 #include "log.h"
+#include "system.h"
 #include "tbfp_diag.h"
 #include "writer_config.h"
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
 #endif
 
-TbfpPorotocol_t TbfpPorotocol = {0};
+#ifdef HAS_RS232
+#include "rs232_drv.h"
+#endif
 
-bool tbfp_protocol_init(TbfpPorotocol_t* instance) {
+TbfpProtocol_t TbfpProtocol[2] = {0};
+
+bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
     bool res = false;
     if(instance) {
-        memset(instance, 0x0, sizeof(TbfpPorotocol_t));
+        memset(instance, 0x0, sizeof(TbfpProtocol_t));
+        instance->interface = interface;
         res = true;
     }
     return res;
@@ -55,13 +61,7 @@ bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
     if(res) {
         uint32_t frame_len = TBFP_SIZE_HEADER + header.len;
         uint8_t read_crc8 = arr[frame_len];
-        uint8_t calc_crc8 = 0;
-        calc_crc8 = crc8_sae_j1850_calc(arr, frame_len);
-        if(calc_crc8 == read_crc8) {
-            res = true;
-        } else {
-            res = false;
-        }
+        res =  crc8_sae_j1850_check(arr, frame_len, read_crc8);
     }
 
     return res;
@@ -122,7 +122,7 @@ bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len) {
     return res;
 }
 
-bool tbfp_send_ping(uint8_t frame_id) {
+bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
     bool res = false;
     uint8_t frame[256] = "";
     memset(frame, 0, sizeof(frame));
@@ -146,12 +146,26 @@ bool tbfp_send_ping(uint8_t frame_id) {
 #endif
     res = tbfp_compose_ping(frame, &tx_frame_len, &pingFrame);
     if(res) {
-        res = lora_send_queue(frame, tx_frame_len);
+        switch(interface){
+#ifdef HAS_LORA
+        case IF_LORA:
+            res = lora_send_queue(frame, tx_frame_len);
+            break;
+#endif
+#ifdef HAS_RS232
+        case IF_RS232:
+            res = rs232_send(frame, tx_frame_len);
+            break;
+#endif
+        default:
+            res = false;
+            break;
+        }
     }
     return res;
 }
 
-static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len) {
+static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t interface) {
     bool res = false;
     if(NULL != ping_payload) {
         TbfPingFrame_t pingFrame = {0};
@@ -160,7 +174,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len) {
         tbfp_print_ping_frame(&pingFrame);
 
         if(FRAME_ID_PING == pingFrame.id) {
-            res = tbfp_send_ping(FRAME_ID_PONG);
+            res = tbfp_send_ping(FRAME_ID_PONG, interface);
         }
         double cur_dist = 0;
 #ifdef HAS_ZED_F9P
@@ -219,7 +233,7 @@ static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len) {
     return res;
 }
 
-bool tbfp_proc_payload(uint8_t* payload, uint16_t len) {
+static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t interface) {
     bool res = false;
     switch(payload[0]) {
     case FRAME_ID_CHAT:
@@ -227,7 +241,7 @@ bool tbfp_proc_payload(uint8_t* payload, uint16_t len) {
         break;
     case FRAME_ID_PONG:
     case FRAME_ID_PING:
-        res = tbfp_proc_ping(payload, len);
+        res = tbfp_proc_ping(payload, len, interface);
         break;
     case FRAME_ID_CMD:
         res = tbfp_proc_cmd(payload, len);
@@ -239,13 +253,13 @@ bool tbfp_proc_payload(uint8_t* payload, uint16_t len) {
     return res;
 }
 
-bool tbfp_proc(uint8_t* arr, uint16_t len) {
+bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = false;
     res = is_tbfp_protocol(arr, len);
     if(res) {
         TbfHeader_t header = {0};
         memcpy(&header, arr, sizeof(TbfHeader_t));
-        res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], header.len);
+        res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], header.len,  interface);
     }
     return res;
 }

@@ -39,7 +39,7 @@
 #endif /*HAS_UBLOX*/
 
 #ifdef HAS_RTCM3
-#include "rtcm3_protocol.h"
+#include "Rtcm3_protocol.h"
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_TBFP
@@ -92,7 +92,8 @@ bool sw_init(void) {
 #endif
 
 #ifdef HAS_TBFP
-    res = try_init(tbfp_protocol_init(&TbfpPorotocol), "TBFP") && res;
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_LORA],IF_LORA), "TbfpLoRa") && res;
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_RS232],IF_RS232), "TbfpRS232") && res;
 #endif /*HAS_TBFP*/
 
 #ifdef HAS_UBLOX
@@ -101,9 +102,9 @@ bool sw_init(void) {
 #endif /*HAS_UBLOX*/
 
 #ifdef HAS_RTCM3
-    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_UART1_ID], RT_UART1_ID, true), "RTCM3_UART1") && res;
-    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_LORA_ID], RT_LORA_ID, false), "RTCM3_LORA") && res;
-    res = try_init(rtcm3_protocol_init(&Rtcm3Porotocol[RT_RS232_ID], RT_RS232_ID, false), "RTCM3_RS232") && res;
+    res = try_init(rtcm3_protocol_init(&Rtcm3Protocol[IF_UART1], IF_UART1, true), "Rtcm3UART1") && res;
+    res = try_init(rtcm3_protocol_init(&Rtcm3Protocol[IF_LORA], IF_LORA, false), "Rtcm3LORA") && res;
+    res = try_init(rtcm3_protocol_init(&Rtcm3Protocol[IF_RS232], IF_RS232, false), "Rtcm3RS232") && res;
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_HEALTH_MONITOR

@@ -7,6 +7,7 @@
   TASKS_BASE                \
   TASK(LORA)                \
   TASK(NMEA)                \
+  TASK(RS232)               \
   TASK(SX1262)              \
   TASK(UBX)                 \
   TASK(ZED_F9P)

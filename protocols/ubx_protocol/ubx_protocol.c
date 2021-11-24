@@ -15,27 +15,27 @@
 #include "log.h"
 #include "ublox_driver.h"
 
-UbloxPorotocol_t UbloxPorotocol = {0};
+UbloxProtocol_t UbloxProtocol = {0};
 StatClass_t tableRxClass[UBX_CLA_CNT] = {0};
 
 bool ubx_reset_rx(void) {
-    UbloxPorotocol.load_len = 0;
-    UbloxPorotocol.exp_len = 0;
-    UbloxPorotocol.rx_state = UBX_WAIT_SYC0;
+    UbloxProtocol.load_len = 0;
+    UbloxProtocol.exp_len = 0;
+    UbloxProtocol.rx_state = UBX_WAIT_SYC0;
     return true;
 }
 
 bool ublox_protocol_init(void) {
     ubx_reset_rx();
-    UbloxPorotocol.diag = false;
-    UbloxPorotocol.rx_pkt_cnt = 0;
-    UbloxPorotocol.ack_cnt = 0;
+    UbloxProtocol.diag = false;
+    UbloxProtocol.rx_pkt_cnt = 0;
+    UbloxProtocol.ack_cnt = 0;
 #ifdef HAS_DEBUG
-    UbloxPorotocol.min_len = 0xffff;
-    UbloxPorotocol.max_len = 0;
+    UbloxProtocol.min_len = 0xffff;
+    UbloxProtocol.max_len = 0;
 #endif
-    UbloxPorotocol.unproc_frame = false;
-    memset(UbloxPorotocol.fix_frame, 0x00, UBX_RX_FRAME_SIZE);
+    UbloxProtocol.unproc_frame = false;
+    memset(UbloxProtocol.fix_frame, 0x00, UBX_RX_FRAME_SIZE);
     memset(tableRxClass, 0x00, sizeof(tableRxClass));
     return true;
 }
@@ -55,9 +55,9 @@ uint16_t ubx_calc_crc16(uint8_t* const array, uint16_t len) {
 static bool proc_ublox_wait_sync0(uint8_t rx_byte) {
     bool res = false;
     if(UBX_SYN_0 == rx_byte) {
-        UbloxPorotocol.rx_state = UBX_WAIT_SYC1;
-        UbloxPorotocol.rx_frame[0] = rx_byte;
-        UbloxPorotocol.load_len = 1;
+        UbloxProtocol.rx_state = UBX_WAIT_SYC1;
+        UbloxProtocol.rx_frame[0] = rx_byte;
+        UbloxProtocol.load_len = 1;
         res = true;
     } else {
         ubx_reset_rx();
@@ -68,11 +68,11 @@ static bool proc_ublox_wait_sync0(uint8_t rx_byte) {
 static bool proc_ublox_wait_sync1(uint8_t rx_byte) {
     bool res = false;
     if(UBX_SYN_1 == rx_byte) {
-        UbloxPorotocol.rx_state = UBX_WAIT_CLASS;
-        UbloxPorotocol.rx_frame[1] = rx_byte;
-        UbloxPorotocol.load_len = 2;
+        UbloxProtocol.rx_state = UBX_WAIT_CLASS;
+        UbloxProtocol.rx_frame[1] = rx_byte;
+        UbloxProtocol.load_len = 2;
 #ifdef HAS_DEBUG
-        UbloxPorotocol.sync_cnt++;
+        UbloxProtocol.sync_cnt++;
 #endif
         res = true;
     } else {
@@ -82,37 +82,37 @@ static bool proc_ublox_wait_sync1(uint8_t rx_byte) {
 }
 
 static bool proc_ublox_wait_calss(uint8_t rx_byte) {
-    UbloxPorotocol.rx_frame[2] = rx_byte;
-    UbloxPorotocol.load_len = 3;
-    UbloxPorotocol.rx_state = UBX_WAIT_ID;
+    UbloxProtocol.rx_frame[2] = rx_byte;
+    UbloxProtocol.load_len = 3;
+    UbloxProtocol.rx_state = UBX_WAIT_ID;
     return true;
 }
 
 static bool proc_ublox_wait_id(uint8_t rx_byte) {
-    UbloxPorotocol.rx_frame[3] = rx_byte;
-    UbloxPorotocol.load_len = 4;
-    UbloxPorotocol.rx_state = UBX_WAIT_LEN;
+    UbloxProtocol.rx_frame[3] = rx_byte;
+    UbloxProtocol.load_len = 4;
+    UbloxProtocol.rx_state = UBX_WAIT_LEN;
     return true;
 }
 
 static bool proc_ublox_wait_len(uint8_t rx_byte) {
     bool res = false;
-    if(4 == UbloxPorotocol.load_len) {
-        UbloxPorotocol.rx_frame[4] = rx_byte;
-        UbloxPorotocol.load_len = 5;
-        UbloxPorotocol.rx_state = UBX_WAIT_LEN;
+    if(4 == UbloxProtocol.load_len) {
+        UbloxProtocol.rx_frame[4] = rx_byte;
+        UbloxProtocol.load_len = 5;
+        UbloxProtocol.rx_state = UBX_WAIT_LEN;
         res = true;
-    } else if(5 == UbloxPorotocol.load_len) {
-        UbloxPorotocol.rx_frame[5] = rx_byte;
-        UbloxPorotocol.load_len = 6;
-        memcpy(&UbloxPorotocol.exp_len, &UbloxPorotocol.rx_frame[4], UBX_LEN_SIZE);
+    } else if(5 == UbloxProtocol.load_len) {
+        UbloxProtocol.rx_frame[5] = rx_byte;
+        UbloxProtocol.load_len = 6;
+        memcpy(&UbloxProtocol.exp_len, &UbloxProtocol.rx_frame[4], UBX_LEN_SIZE);
 #ifdef HAS_DEBUG
-        UbloxPorotocol.min_len = min16u(UbloxPorotocol.min_len, UbloxPorotocol.exp_len);
-        UbloxPorotocol.max_len = max16u(UbloxPorotocol.max_len, UbloxPorotocol.exp_len);
+        UbloxProtocol.min_len = min16u(UbloxProtocol.min_len, UbloxProtocol.exp_len);
+        UbloxProtocol.max_len = max16u(UbloxProtocol.max_len, UbloxProtocol.exp_len);
 #endif /*HAS_DEBUG*/
-        UbloxPorotocol.rx_state = UBX_WAIT_PAYLOAD;
+        UbloxProtocol.rx_state = UBX_WAIT_PAYLOAD;
         res = true;
-        if(UBX_RX_FRAME_SIZE < UbloxPorotocol.exp_len) {
+        if(UBX_RX_FRAME_SIZE < UbloxProtocol.exp_len) {
             ubx_reset_rx();
         }
     } else {
@@ -123,15 +123,15 @@ static bool proc_ublox_wait_len(uint8_t rx_byte) {
 
 bool proc_ublox_wait_payload(uint8_t rx_byte) {
     bool res = false;
-    if(UbloxPorotocol.load_len < (UBX_HEADER_SIZE + UbloxPorotocol.exp_len - 1)) {
-        UbloxPorotocol.rx_frame[UbloxPorotocol.load_len] = rx_byte;
-        UbloxPorotocol.load_len++;
-        UbloxPorotocol.rx_state = UBX_WAIT_PAYLOAD;
+    if(UbloxProtocol.load_len < (UBX_HEADER_SIZE + UbloxProtocol.exp_len - 1)) {
+        UbloxProtocol.rx_frame[UbloxProtocol.load_len] = rx_byte;
+        UbloxProtocol.load_len++;
+        UbloxProtocol.rx_state = UBX_WAIT_PAYLOAD;
         res = true;
-    } else if(UbloxPorotocol.load_len == (UBX_HEADER_SIZE + UbloxPorotocol.exp_len - 1)) {
-        UbloxPorotocol.rx_frame[UbloxPorotocol.load_len] = rx_byte;
-        UbloxPorotocol.load_len++;
-        UbloxPorotocol.rx_state = UBX_WAIT_CRC;
+    } else if(UbloxProtocol.load_len == (UBX_HEADER_SIZE + UbloxProtocol.exp_len - 1)) {
+        UbloxProtocol.rx_frame[UbloxProtocol.load_len] = rx_byte;
+        UbloxProtocol.load_len++;
+        UbloxProtocol.rx_state = UBX_WAIT_CRC;
         res = true;
     } else {
         ubx_reset_rx();
@@ -142,28 +142,28 @@ bool proc_ublox_wait_payload(uint8_t rx_byte) {
 static bool proc_ublox_wait_crc(uint8_t rx_byte) {
     bool res = false;
     uint16_t calc_crc = 0;
-    uint16_t crc_index = UBX_HEADER_SIZE + UbloxPorotocol.exp_len;
-    if(crc_index == UbloxPorotocol.load_len) {
-        UbloxPorotocol.rx_frame[UbloxPorotocol.load_len] = rx_byte;
-        UbloxPorotocol.load_len++;
-        UbloxPorotocol.rx_state = UBX_WAIT_CRC;
+    uint16_t crc_index = UBX_HEADER_SIZE + UbloxProtocol.exp_len;
+    if(crc_index == UbloxProtocol.load_len) {
+        UbloxProtocol.rx_frame[UbloxProtocol.load_len] = rx_byte;
+        UbloxProtocol.load_len++;
+        UbloxProtocol.rx_state = UBX_WAIT_CRC;
         res = true;
-    } else if((crc_index + 1) == UbloxPorotocol.load_len) {
-        UbloxPorotocol.rx_frame[UbloxPorotocol.load_len] = rx_byte;
-        UbloxPorotocol.load_len++;
-        memcpy(&UbloxPorotocol.read_crc, &UbloxPorotocol.rx_frame[crc_index], UBX_LEN_SIZE);
-        uint16_t len = UbloxPorotocol.exp_len + 4;
-        calc_crc = ubx_calc_crc16(&UbloxPorotocol.rx_frame[2], len);
-        if(calc_crc == UbloxPorotocol.read_crc) {
-            UbloxPorotocol.rx_state = UBX_RX_DONE;
-            UbloxPorotocol.rx_pkt_cnt++;
-            memcpy(UbloxPorotocol.fix_frame, UbloxPorotocol.rx_frame, UBX_RX_FRAME_SIZE);
-            UbloxPorotocol.unproc_frame = true;
+    } else if((crc_index + 1) == UbloxProtocol.load_len) {
+        UbloxProtocol.rx_frame[UbloxProtocol.load_len] = rx_byte;
+        UbloxProtocol.load_len++;
+        memcpy(&UbloxProtocol.read_crc, &UbloxProtocol.rx_frame[crc_index], UBX_LEN_SIZE);
+        uint16_t len = UbloxProtocol.exp_len + 4;
+        calc_crc = ubx_calc_crc16(&UbloxProtocol.rx_frame[2], len);
+        if(calc_crc == UbloxProtocol.read_crc) {
+            UbloxProtocol.rx_state = UBX_RX_DONE;
+            UbloxProtocol.rx_pkt_cnt++;
+            memcpy(UbloxProtocol.fix_frame, UbloxProtocol.rx_frame, UBX_RX_FRAME_SIZE);
+            UbloxProtocol.unproc_frame = true;
 #ifdef HAS_MCU
-            UbloxPorotocol.rx_time_stamp = get_time_ms32();
-            LOG_DEBUG(UBX, "Rx frame class id: 0x%02x 0x%02x len %u", UbloxPorotocol.fix_frame[UBX_INDEX_CLS],
-                      UbloxPorotocol.fix_frame[UBX_INDEX_ID], len);
-            res = ubx_proc_frame(&UbloxPorotocol);
+            UbloxProtocol.rx_time_stamp = get_time_ms32();
+            LOG_DEBUG(UBX, "Rx frame class id: 0x%02x 0x%02x len %u", UbloxProtocol.fix_frame[UBX_INDEX_CLS],
+                      UbloxProtocol.fix_frame[UBX_INDEX_ID], len);
+            res = ubx_proc_frame(&UbloxProtocol);
             if(res) {
                 LOG_DEBUG(UBX, "Rx proc done");
             }
@@ -171,7 +171,7 @@ static bool proc_ublox_wait_crc(uint8_t rx_byte) {
             ubx_reset_rx();
             res = true;
         } else {
-            UbloxPorotocol.crc_err_cnt++;
+            UbloxProtocol.crc_err_cnt++;
             ubx_reset_rx();
         }
     } else {
@@ -182,7 +182,7 @@ static bool proc_ublox_wait_crc(uint8_t rx_byte) {
 
 bool ubx_proc_byte(uint8_t rx_byte) {
     bool res = false;
-    switch(UbloxPorotocol.rx_state) {
+    switch(UbloxProtocol.rx_state) {
     case UBX_WAIT_SYC0:
         res = proc_ublox_wait_sync0(rx_byte);
         break;
@@ -276,11 +276,11 @@ bool ubx_wait_ack(uint32_t wait_pause_ms) {
     bool res = false, loop = true;
     uint32_t start_ms = 0U, curr_ms = 0U, ack_cnt_diff = 0;
     start_ms = get_time_ms32();
-    uint32_t ack_cnt_init = UbloxPorotocol.ack_cnt;
+    uint32_t ack_cnt_init = UbloxProtocol.ack_cnt;
     uint64_t loop_start_time_us = 0;
     while(loop) {
 
-        ack_cnt_diff = UbloxPorotocol.ack_cnt - ack_cnt_init;
+        ack_cnt_diff = UbloxProtocol.ack_cnt - ack_cnt_init;
         if(0 < ack_cnt_diff) {
             res = true;
             loop = false;

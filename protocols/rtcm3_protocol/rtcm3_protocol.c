@@ -24,30 +24,31 @@
 #include "uart_drv.h"
 #endif /*HAS_UART*/
 
-Rtcm3Porotocol_t Rtcm3Porotocol[RTCM_IF_CNT];
 
-bool rtcm3_reset_rx(Rtcm3Porotocol_t* instance) {
+Rtcm3Protocol_t Rtcm3Protocol[RTCM_IF_CNT];
+
+bool rtcm3_reset_rx(Rtcm3Protocol_t* instance) {
     instance->load_len = 0;
     instance->exp_len.len16 = 0;
     instance->rx_state = RTCM3_WAIT_PREAMBLE;
     return true;
 }
 
-bool rtcm3_protocol_init(Rtcm3Porotocol_t* instance, Rtcm3IfSrc_t interface, bool lora_fwd) {
+bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool lora_fwd) {
     rtcm3_reset_rx(instance);
-    memset(instance, 0x0, sizeof(Rtcm3Porotocol_t));
+    memset(instance, 0x0, sizeof(Rtcm3Protocol_t));
     memset(instance->fix_frame, 0x00, RTCM3_RX_FRAME_SIZE);
     memset(instance->rx_frame, 0x00, RTCM3_RX_FRAME_SIZE);
 #ifdef HAS_DEBUG
     instance->lora_fwd = false;
 #else
     instance->lora_fwd = lora_fwd;
-#endif
+#endif /*HAS_DEBUG*/
     instance->interface = interface;
     return true;
 }
 
-static bool rtcm3_proc_wait_preamble(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
+static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     if(RTCM3_PREAMBLE == rx_byte) {
         instance->rx_state = RTCM3_WAIT_LEN;
@@ -63,7 +64,7 @@ static bool rtcm3_proc_wait_preamble(Rtcm3Porotocol_t* instance, uint8_t rx_byte
     return res;
 }
 
-static bool rtcm3_proc_wait_len(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
+static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     if(1 == instance->load_len) {
         instance->rx_frame[1] = rx_byte;
@@ -98,7 +99,7 @@ static bool rtcm3_proc_wait_len(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
     return res;
 }
 
-bool rtcm3_proc_wait_payload(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
+bool rtcm3_proc_wait_payload(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     if(instance->load_len < (RTCM3_HEADER_SIZE + instance->exp_len.field.len - 1)) {
         instance->rx_frame[instance->load_len] = rx_byte;
@@ -116,7 +117,7 @@ bool rtcm3_proc_wait_payload(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
     return res;
 }
 
-static bool rtcm3_proc_wait_crc24(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
+static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #ifdef X86_64
     printf("\n %s() 0x%02x", __FUNCTION__, rx_byte);
 #endif
@@ -146,7 +147,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
 #ifdef HAS_LORA
             /*Send RTCM3 frame to LoRa*/
-            if(RT_UART1_ID == instance->interface ) {
+            if(IF_UART1 == instance->interface ) {
                 if(true == instance->lora_fwd){
                     res = lora_send_queue(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE);
                     if(false == res) {
@@ -163,8 +164,8 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
 #endif /*HAS_LORA*/
 
 #ifdef HAS_UART1
-            if(( RT_LORA_ID == instance->interface) ||
-               (RT_RS232_ID == instance->interface)) {
+            if(( IF_LORA == instance->interface) ||
+               (IF_RS232 == instance->interface)) {
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                 if(false == res) {
                     instance->uart_lost_pkt_cnt++;
@@ -184,7 +185,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
     return res;
 }
 
-bool rtcm3_proc_byte(Rtcm3Porotocol_t* instance, uint8_t rx_byte) {
+bool rtcm3_proc_byte(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     switch(instance->rx_state) {
     case RTCM3_WAIT_PREAMBLE:
@@ -242,16 +243,16 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
     return res;
 }
 
-bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Rtcm3IfSrc_t interface) {
+bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Interfaces_t interface) {
     bool res = false;
     if((NULL != payload) && (0 < size)) {
         uint32_t i = 0;
-        rtcm3_reset_rx(&Rtcm3Porotocol[interface]);
-        uint32_t init_rx_pkt_cnt = Rtcm3Porotocol[interface].rx_pkt_cnt;
+        rtcm3_reset_rx(&Rtcm3Protocol[interface]);
+        uint32_t init_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt;
         for(i = 0; i < size; i++) {
-            res = rtcm3_proc_byte(&Rtcm3Porotocol[interface], payload[i]);
+            res = rtcm3_proc_byte(&Rtcm3Protocol[interface], payload[i]);
         }
-        if(init_rx_pkt_cnt < Rtcm3Porotocol[interface].rx_pkt_cnt) {
+        if(init_rx_pkt_cnt < Rtcm3Protocol[interface].rx_pkt_cnt) {
             res = true;
         }
     }

@@ -15,30 +15,34 @@
 
 static bool tbfp_diag(void) {
     bool res = false;
-
+    Interfaces_t interface;
     static const table_col_t cols[] = {
+                                       {3, "If"},
                                        {9, "rxCnt"},
-                                       {9, "preCnt"},
                                        {9, "crcErCnt"},
+#ifdef HAS_DEBUG
+                                       {9, "preCnt"},
                                        {9, "ErCnt"},
                                        {9, "minLen"},
-                                       {9, "maxLen"}};
-    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-
-        io_printf(TSEP);
-        io_printf(" %7u " TSEP, TbfpPorotocol.rx_pkt_cnt);
-#ifdef HAS_DEBUG
-        io_printf(" %7u " TSEP, TbfpPorotocol.preamble_cnt);
+                                       {9, "maxLen"},
 #endif /*HAS_DEBUG*/
-        io_printf(" %7u " TSEP, TbfpPorotocol.crc_err_cnt);
+    };
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    for(interface=IF_LORA; interface < ARRAY_SIZE(TbfpProtocol); interface++){
+        io_printf(TSEP);
+        io_printf(" %1u " TSEP, TbfpProtocol[interface].interface);
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
 
 #ifdef HAS_DEBUG
-        io_printf(" %7u " TSEP, TbfpPorotocol.err_cnt);
-        io_printf(" %7u " TSEP, TbfpPorotocol.min_len);
-        io_printf(" %7u " TSEP, TbfpPorotocol.max_len);
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].min_len);
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].max_len);
         io_printf(CRLF);
 #endif /*HAS_DEBUG*/
         res = true;
+    }
 
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
