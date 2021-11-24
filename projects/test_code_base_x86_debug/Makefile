@@ -35,22 +35,23 @@ OPT += -DHAS_DEBUG
 OPT += -DX86_64
 OPT += -DHAS_SW_TESTS
 OPT += -DHAS_TEST_CLI
-OPT += -DHAS_TEST_SUIT_FIFO
-OPT += -DHAS_TEST_SUIT_UTILS
-OPT += -DHAS_TEST_SUIT_RTCM3_PROTO
 OPT += -DHAS_TEST_SUIT_CONVERT
 OPT += -DHAS_TEST_SUIT_CRC
-OPT += -DHAS_TEST_SUIT_UBLOX_PROTO
+OPT += -DHAS_TEST_SUIT_FIFO
 OPT += -DHAS_TEST_SUIT_NMEA_PROTO
-OPT += -DHAS_STRING_UTILS_TEST_SUIT
+OPT += -DHAS_TEST_SUIT_RTCM3_PROTO
+OPT += -DHAS_TEST_SUIT_STRING_UTILS
+OPT += -DHAS_TEST_SUIT_TBFP
+OPT += -DHAS_TEST_SUIT_UTILS
+OPT += -DHAS_TEST_SUIT_UBLOX_PROTO
 
 #files to link:
 LFLAGS= -static -lm
 
 EXECUTABLE=test_code_base
-
+include $(PROJECT_ROOT)code_base.mk
 include $(PROJECT_ROOT)common/common.mk
-include $(PROJECT_ROOT)Drivers/drivers.mk
+
 include $(PROJECT_ROOT)protocols/protocols.mk
 include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 include $(PROJECT_ROOT)utils/io_utils/io_utils.mk

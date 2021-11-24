@@ -11,7 +11,11 @@
 #ifdef HAS_CLI
 #include "cli_manager.h"
 #endif
+
+#ifdef HAS_MCU
 #include "core_driver.h"
+#endif
+
 #include "crc8_sae_j1850.h"
 #include "data_utils.h"
 #include "debug_info.h"
@@ -21,7 +25,8 @@
 
 #ifdef HAS_PARAM
 #include "param_ids.h"
-#endif
+#endif /*HAS_PARAM*/
+
 #include "float_utils.h"
 #include "gnss_utils.h"
 #include "io_utils.h"
@@ -51,17 +56,28 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
 
 bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
     bool res = false;
+#ifdef X86_64
+    printf("\n%s(): len: %u", __FUNCTION__,len);
+#endif
     TbfHeader_t header = {0};
     memcpy(&header, arr, sizeof(TbfHeader_t));
-    if(TBFP_PREAMBLE == header.preamble && (header.len < len)) {
+    if((TBFP_PREAMBLE == header.preamble) && (header.len < len)) {
         res = true;
     } else {
         res = false;
+#ifdef X86_64
+    printf("\n%s(): error", __FUNCTION__);
+#endif
     }
     if(res) {
         uint32_t frame_len = TBFP_SIZE_HEADER + header.len;
         uint8_t read_crc8 = arr[frame_len];
         res =  crc8_sae_j1850_check(arr, frame_len, read_crc8);
+        if(false==res){
+#ifdef X86_64
+    printf("\n%s(): CRC8 error", __FUNCTION__);
+#endif
+        }
     }
 
     return res;
@@ -103,7 +119,9 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len) 
             memcpy(&frame[TBFP_INDEX_PAYLOAD + 1], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
             if(res) {
+#ifdef HAS_LORA
                 res = lora_send_queue(frame, frame_len + TBFP_SIZE_CRC);
+#endif
             }
         }
     }
@@ -129,7 +147,9 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
     uint32_t tx_frame_len = 0;
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
+#ifdef HAS_MCU
     pingFrame.mac = get_ble_mac();
+#endif
     memset(&pingFrame.coordinate, 0xFF, sizeof(GnssCoordinate_t));
 #ifdef HAS_ZED_F9P
     pingFrame.time_stamp = mktime(&ZedF9P.time_date);
@@ -170,9 +190,9 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
     if(NULL != ping_payload) {
         TbfPingFrame_t pingFrame = {0};
         memcpy((void*)&pingFrame, (void*)ping_payload, sizeof(TbfPingFrame_t));
-
+#ifdef HAS_MCU
         tbfp_print_ping_frame(&pingFrame);
-
+#endif
         if(FRAME_ID_PING == pingFrame.id) {
             res = tbfp_send_ping(FRAME_ID_PONG, interface);
         }

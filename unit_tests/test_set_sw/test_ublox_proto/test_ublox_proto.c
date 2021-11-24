@@ -27,12 +27,12 @@ bool test_ublox_proto_set_baud  (void) {
    printf("\n%s()",__FUNCTION__);
 #endif
    ubx_reset_rx();
-   Ublox.rx_pkt_cnt=0;
+   UbloxProtocol.rx_pkt_cnt=0;
    for(i=0; i<sizeof(ubx_baud_115200_message); i++) {
        ubx_proc_byte(ubx_baud_115200_message[i]);
    }
 
-   EXPECT_EQ(1, Ublox.rx_pkt_cnt);
+   EXPECT_EQ(1, UbloxProtocol.rx_pkt_cnt);
 
    return true;
 }
@@ -51,12 +51,12 @@ bool test_ublox_proto_err_len(void) {
    ubx_error_len_message[4]=0xff;
    ubx_error_len_message[5]=0xFF;
    ubx_reset_rx();
-   Ublox.rx_pkt_cnt=0;
+   UbloxProtocol.rx_pkt_cnt=0;
    for(i=0; i<sizeof(ubx_error_len_message); i++) {
        ubx_proc_byte(ubx_error_len_message[i]);
    }
 
-   EXPECT_EQ(0, Ublox.rx_pkt_cnt);
+   EXPECT_EQ(0, UbloxProtocol.rx_pkt_cnt);
 
    return true;
 }

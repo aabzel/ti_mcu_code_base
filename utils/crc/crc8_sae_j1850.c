@@ -49,6 +49,10 @@ bool crc8_sae_j1850_check(const void* in_buf, uint32_t len, uint8_t exp_crc) {
     uint8_t calc_crc = crc8_sae_j1850_calc_continue(CRC8_SAE_J1850_SEED ^ CRC8_XOR, in_buf, len);
     if(calc_crc==exp_crc){
         res = true;
+    }else{
+#ifdef X86_64
+    printf("\n%s(): CRC8 error calc:%04x", __FUNCTION__,calc_crc);
+#endif
     }
     return res;
 }

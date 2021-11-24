@@ -73,6 +73,12 @@ extern "C" {
 #define TEST_SUIT_UTILS_GNSS
 #endif
 
+#ifdef HAS_TEST_SUIT_TBFP
+#include "test_tbfp_proto.h"
+#else
+#define TEST_SUIT_TBFP_PROTO
+#endif
+
 #ifdef HAS_TEST_SUIT_FIFO
 #include "test_fifo_array.h"
 #include "test_fifo_char.h"
@@ -109,6 +115,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_FIFO_CHAR                                                                                                \
     TEST_SUIT_FIFO_ARRAY                                                                                               \
     TEST_SUIT_RTCM3_PROTO                                                                                              \
+    TEST_SUIT_TBFP_PROTO                                                                                               \
     TEST_SUIT_SYSTEM                                                                                                   \
     TEST_SUIT_NMEA_PROTO                                                                                               \
     TEST_SUIT_STRING_UTILS                                                                                             \

@@ -16,6 +16,7 @@ extern "C" {
 #define RTCM3_CRC24_SIZE 3U
 #define RTCM_IF_CNT 3 /*LoRa RS232 UART1*/
 
+/*TODO: replase with RxState_t*/
 typedef enum eRtcm3ProtState_t {
     RTCM3_WAIT_PREAMBLE = 0U,
     RTCM3_WAIT_LEN = 1U,
