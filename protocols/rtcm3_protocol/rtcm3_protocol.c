@@ -144,32 +144,34 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             instance->rx_state = RTCM3_RX_DONE;
             instance->rx_pkt_cnt++;
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
-#ifdef HAS_LORA
             /*Send RTCM3 frame to LoRa*/
             if(IF_UART1 == instance->interface) {
+#ifdef HAS_LORA
                 if(true == instance->lora_fwd) {
                     res = lora_send_queue(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE);
                     if(false == res) {
                         instance->lora_lost_pkt_cnt++;
                     }
                 }
+#endif /*HAS_LORA*/
+#ifdef HAS_RS232
                 if(true == instance->rs232_fwd) {
                     res = uart_send(UART_NUM_CLI, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                     if(false == res) {
                         instance->uart_lost_pkt_cnt++;
                     }
                 }
+#endif /*HAS_RS232*/
             }
-#endif /*HAS_LORA*/
 
-#ifdef HAS_UART1
             if((IF_LORA == instance->interface) || (IF_RS232 == instance->interface)) {
+#ifdef HAS_UART1
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                 if(false == res) {
                     instance->uart_lost_pkt_cnt++;
                 }
-            }
 #endif /*HAS_UART1*/
+            }
 
             rtcm3_reset_rx(instance);
         } else {
