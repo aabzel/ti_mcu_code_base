@@ -36,7 +36,7 @@ bool test_fifo_char_array_overrun(void) {
 
     uint16_t outLen = 0;
     char outArray[100] = "";
-    EXPECT_TRUE(fifo_pull_array(&FifiObj, outArray, &outLen));
+    EXPECT_TRUE(fifo_pull_array(&FifiObj, outArray, sizeof(outArray), &outLen));
     EXPECT_EQ(6, outLen);
     EXPECT_STREQ("123456", outArray);
     return true;
@@ -58,7 +58,7 @@ bool test_fifo_char_array(void) {
     EXPECT_TRUE(fifo_peek(&FifiObj, &peek_ch));
     EXPECT_EQ('1', peek_ch);
 
-    EXPECT_TRUE(fifo_pull_array(&FifiObj, outArray, &outLen));
+    EXPECT_TRUE(fifo_pull_array(&FifiObj, outArray, sizeof(outArray), &outLen));
 
     EXPECT_EQ(5, outLen);
 

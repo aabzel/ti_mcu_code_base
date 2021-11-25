@@ -47,6 +47,10 @@ speed up to 16 MHz
 #include "param_ids.h"
 #endif
 
+#ifdef HAS_LEGAL_BAND_CHECK
+#include "legal_band.h"
+#endif
+
 #ifdef HAS_SX1262_DEBUG
 #include "sx1262_diag.h"
 #endif
@@ -987,6 +991,17 @@ bool sx1262_init(void) {
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
     res = sx1262_load_params(&Sx1262Instance) && res;
+#ifdef HAS_LEGAL_BAND_CHECK
+    uint32_t bandwidth_hz = bandwidth2num(Sx1262Instance.mod_params.band_width);
+    res = is_band_legal(Sx1262Instance.rf_frequency_hz, bandwidth_hz);
+    if(false == res) {
+        LOG_WARNING(LORA, "illegal frequencies %u...%u Hz", Sx1262Instance.rf_frequency_hz - bandwidth_hz / 2,
+                    Sx1262Instance.rf_frequency_hz + bandwidth_hz / 2);
+    } else {
+        LOG_INFO(LORA, "frequency setting are legal %u...%u Hz", Sx1262Instance.rf_frequency_hz - bandwidth_hz / 2,
+                 Sx1262Instance.rf_frequency_hz + bandwidth_hz / 2);
+    }
+#endif /*HAS_LEGAL_BAND_CHECK*/
     GPIO_writeDio(DIO_SX1262_SS, 1);
     res = set_log_level(LORA, LOG_LEVEL_NOTICE);
     res = sx1262_init_gpio() && res;

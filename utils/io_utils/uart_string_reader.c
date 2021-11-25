@@ -38,8 +38,10 @@ bool uart_string_reader_init(uart_string_reader_t* rdr) {
 }
 
 void uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
-    if(false == fifo_push(&rdr->fifo, c)) {
-        rdr->lost_char_count++;
+    if(rdr){
+        if(false == fifo_push(&rdr->fifo, c)) {
+            rdr->lost_char_count++;
+        }
     }
 }
 
@@ -49,10 +51,11 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
     while(1) {
         fifo_index_t size = 0, i = 0;
         char data[200] = "";
-        fifo_pull_array(&rdr->fifo, data, &size);
+        fifo_pull_array(&rdr->fifo, data, sizeof(data), &size);
         if(0 == size) {
             break;
         }
+
 #ifdef HAS_CLI_CMD_HISTORY
         Arrow_t arr = ARROW_UNDEF;
 #endif

@@ -17,9 +17,9 @@
 #include "fifo_array.h"
 #include "flash_fs.h"
 #include "log.h"
-#include "system.h"
 #include "none_blocking_pause.h"
 #include "param_ids.h"
+#include "system.h"
 #ifdef HAS_RTCM3
 #include "rtcm3_protocol.h"
 #endif

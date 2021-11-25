@@ -66,7 +66,6 @@ bool test_array_init(void) {
 }
 
 bool test_64bit_mult(void) {
-    uint64_t exp = 0x00000002CB417800;
     EXPECT_EQ(8, sizeof(uint64_t));
     uint64_t temp10x3 = mul64((uint64_t)1000, (uint64_t)12000000);
 #ifdef HAS_CLI
@@ -78,6 +77,7 @@ bool test_64bit_mult(void) {
     // exp        3410065408 cb417800 2 3410065408 14646119404580896770
     //  temp10x3: 48         cb417800 2 3410065408 14646119404580896770!
 #ifdef HAS_CLI
+    uint64_t exp = 0x00000002CB417800;
     io_printf("\n exp: %" PRIu64 "" CRLF, 0x00000002CB417800);
     print_mem((uint8_t*)&exp, 8U, false, false, false, false);
     print_mem((uint8_t*)&temp10x3, 8U, false, false, false, false);

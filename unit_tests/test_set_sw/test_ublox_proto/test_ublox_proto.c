@@ -62,7 +62,6 @@ bool test_ublox_proto_err_len(void) {
 }
   
 bool test_ublox_proto_types(void) {
-   uint8_t i=0;
 #ifdef X86_64
    printf("\n%s()",__FUNCTION__);
 #endif

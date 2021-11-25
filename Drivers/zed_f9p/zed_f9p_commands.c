@@ -40,8 +40,8 @@ bool zed_f9p_base_dot_command(int32_t argc, char* argv[]) {
     }
     if(3 <= argc) {
         res = try_str2double(argv[2], &altitude_sea_lev_m);
-        if(res){
-            ZedF9P.alt_base=altitude_sea_lev_m;
+        if(res) {
+            ZedF9P.alt_base = altitude_sea_lev_m;
 #ifdef HAS_PARAM
             res = mm_set(PAR_ID_BASE_ALT, (uint8_t*)&ZedF9P.alt_base, sizeof(double));
             if(false == res) {
@@ -51,9 +51,9 @@ bool zed_f9p_base_dot_command(int32_t argc, char* argv[]) {
         }
     }
 
-    if((2 <= argc) && res){
+    if((2 <= argc) && res) {
         res = is_valid_gnss_coordinates(coordinate_base);
-        if(false==res){
+        if(false == res) {
             LOG_ERROR(ZED_F9P, "InvalidBaseDot");
         }
     }
@@ -79,7 +79,7 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
 
     if(0 == argc) {
         res = zed_f9p_load_params();
-        if(res){
+        if(res) {
             LOG_ERROR(ZED_F9P, "BaseParamGetErr");
         }
     }

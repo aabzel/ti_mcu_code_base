@@ -49,7 +49,7 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
     if(instance) {
         memset(instance, 0x0, sizeof(TbfpProtocol_t));
         instance->interface = interface;
-        instance->rx_pkt_cnt=0;
+        instance->rx_pkt_cnt = 0;
         res = true;
     }
     return res;
@@ -58,7 +58,7 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
 bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
     bool res = false;
 #ifdef X86_64
-    printf("\n%s(): len: %u", __FUNCTION__,len);
+    printf("\n%s(): len: %u", __FUNCTION__, len);
 #endif
     TbfHeader_t header = {0};
     memcpy(&header, arr, sizeof(TbfHeader_t));
@@ -67,16 +67,16 @@ bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
     } else {
         res = false;
 #ifdef X86_64
-    printf("\n%s(): error", __FUNCTION__);
+        printf("\n%s(): error", __FUNCTION__);
 #endif
     }
     if(res) {
         uint32_t frame_len = TBFP_SIZE_HEADER + header.len;
         uint8_t read_crc8 = arr[frame_len];
-        res =  crc8_sae_j1850_check(arr, frame_len, read_crc8);
-        if(false==res){
+        res = crc8_sae_j1850_check(arr, frame_len, read_crc8);
+        if(false == res) {
 #ifdef X86_64
-    printf("\n%s(): CRC8 error", __FUNCTION__);
+            printf("\n%s(): CRC8 error", __FUNCTION__);
 #endif
         }
     }
@@ -167,7 +167,7 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
 #endif
     res = tbfp_compose_ping(frame, &tx_frame_len, &pingFrame);
     if(res) {
-        switch(interface){
+        switch(interface) {
 #ifdef HAS_LORA
         case IF_LORA:
             res = lora_send_queue(frame, tx_frame_len);
@@ -199,14 +199,14 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
         }
         double cur_dist = 0;
 #ifdef HAS_ZED_F9P
-        if(is_valid_gnss_coordinates(pingFrame.coordinate) ){
-            if( is_valid_gnss_coordinates(ZedF9P.coordinate_cur)) {
+        if(is_valid_gnss_coordinates(pingFrame.coordinate)) {
+            if(is_valid_gnss_coordinates(ZedF9P.coordinate_cur)) {
                 cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
                 LOG_INFO(LORA, "link distance %f m", cur_dist);
             } else {
                 LOG_ERROR(LORA, "InvalidLocalGNSSDot");
             }
-        }else{
+        } else {
             LOG_ERROR(LORA, "InvalidRemoteGNSSDot");
         }
 #endif /*HAS_ZED_F9P*/
@@ -280,7 +280,7 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     if(res) {
         TbfHeader_t header = {0};
         memcpy(&header, arr, sizeof(TbfHeader_t));
-        res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], header.len,  interface);
+        res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], header.len, interface);
     }
     return res;
 }

@@ -25,7 +25,7 @@ generic_writer_t dbg_o = {
 bool uart_writer_transmit(struct generic_writer_s* writer) {
     bool res = false;
     char data[300] = ""; /*TODO Determine min size*/
-    res = fifo_pull_array(&writer->fifo, data, (uint16_t*)&writer->in_transmit);
+    res = fifo_pull_array(&writer->fifo, data,sizeof(data), (uint16_t*)&writer->in_transmit);
     if(false == res) {
         writer->fifo.err_cnt++;
     }
@@ -34,7 +34,7 @@ bool uart_writer_transmit(struct generic_writer_s* writer) {
         if(MAX_UART_BLOCK < writer->in_transmit) {
             writer->in_transmit = MAX_UART_BLOCK;
         }
-        if(writer->enable){
+        if(writer->enable) {
             res = uart_send(UART_NUM_CLI, (uint8_t*)data, writer->in_transmit, true); /*Error here*/
         }
     }

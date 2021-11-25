@@ -7,6 +7,7 @@
 #include <GPIO.h>
 
 #include "board_layout.h"
+#include "gpio_drv.h"
 #include "uart_drv.h"
 #include "system.h"
 #ifdef HAS_TBFP

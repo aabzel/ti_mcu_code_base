@@ -130,7 +130,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_WDT*/
 
 #ifdef HAS_UART
-    measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us);
+    measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us); //hang on
 #endif /*HAS_UART1*/
 
 #ifdef HAS_RS232

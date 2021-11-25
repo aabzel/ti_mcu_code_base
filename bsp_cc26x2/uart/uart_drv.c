@@ -161,8 +161,8 @@ static void uart0ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
 
 #ifdef HAS_CLI
         uart_string_reader_rx_callback(&cmd_reader, (char)huart[0].rx_byte_it);
-        uart_read(0, &rx0_byte, 1);
 #endif /*HAS_CLI*/
+        uart_read(0, &rx0_byte, 1);
     } else {
         huart[0].error_cnt++;
     }
@@ -366,63 +366,64 @@ uint32_t uart_get_baudrate(uint8_t uart_num) {
     return baudrate;
 }
 
-bool proc_uart(uint8_t uart_index) {
+#ifdef HAS_UART0
+static bool proc_uart0(void) {
     bool res = false;
-
     uint8_t rx_byte = 0;
     bool loop = true;
-    // huart[uart_index].rx_int = false;
-    if(1 == uart_index) {
-#ifdef HAS_UART1
-        res = true;
-        uint32_t cnt = 0;
-        while(loop) {
-            res = fifo_pull(&huart[1].RxFifo, (char*)&rx_byte);
-            if(true == res) {
-                loop = true;
+    while(loop) {
+        res = fifo_pull(&huart[0].RxFifo, (char*)&rx_byte);
+        if(true == res) {
 #ifdef HAS_RTCM3
-                rtcm3_proc_byte(&Rtcm3Protocol[IF_UART1], rx_byte);
-#endif /*HAS_RTCM3*/
-
-#ifdef HAS_NMEA
-                nmea_proc_byte(rx_byte);
-#endif /*HAS_NMEA*/
-
-#ifdef HAS_UBLOX
-                ubx_proc_byte(rx_byte);
-#endif /*HAS_UBLOX*/
-            } else {
-                loop = false;
-            }
-            cnt++;
-            if(((UART_FIFO_RX_SIZE * 4) / 2) < cnt) {
-                loop = false;
-            }
-        } /*while(loop) */
-        res = true;
-#endif /*HAS_UART1*/
-    } else if(0 == uart_index) {
-        while(loop) {
-            res = fifo_pull(&huart[0].RxFifo, (char*)&rx_byte);
-            if(true == res) {
-#ifdef HAS_RTCM3
-                rtcm3_proc_byte(&Rtcm3Protocol[IF_RS232], rx_byte);
+            rtcm3_proc_byte(&Rtcm3Protocol[IF_RS232], rx_byte);
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_TBFP
-                tbfp_proc_byte(&TbfpProtocol[IF_RS232], rx_byte);
+            tbfp_proc_byte(&TbfpProtocol[IF_RS232], rx_byte);
 #endif /*HAS_TBFP*/
-            }else{
-                loop = false;
-            }
+        } else {
+            loop = false;
         }
-        res = true;
-    } else {
-        res = false;
     }
 
     return res;
 }
+#endif /*HAS_UART0*/
+
+#ifdef HAS_UART1
+bool proc_uart1(void) {
+    bool res = false;
+    uint8_t rx_byte = 0;
+    res = true;
+    bool loop = true;
+    uint32_t cnt = 0;
+    while(loop) {
+        res = fifo_pull(&huart[1].RxFifo, (char*)&rx_byte);
+        if(true == res) {
+            loop = true;
+#ifdef HAS_RTCM3
+            rtcm3_proc_byte(&Rtcm3Protocol[IF_UART1], rx_byte);
+#endif /*HAS_RTCM3*/
+
+#ifdef HAS_NMEA
+            nmea_proc_byte(rx_byte);
+#endif /*HAS_NMEA*/
+
+#ifdef HAS_UBLOX
+            ubx_proc_byte(rx_byte);
+#endif /*HAS_UBLOX*/
+        } else {
+            loop = false;
+        }
+        cnt++;
+        if(((UART_FIFO_RX_SIZE * 4) / 2) < cnt) {
+            loop = false;
+        }
+    } /*while(loop) */
+
+    return res;
+}
+#endif /*HAS_UART1*/
 
 #define UNLIKELY_SYMBOL1 0XFF
 #define UNLIKELY_SYMBOL2 0X00
@@ -437,7 +438,7 @@ static bool uart_poll(uint8_t uart_index) {
             res = true;
             huart[uart_index].rx_byte = rx_byte;
             if(UART_NUM_CLI == uart_index) {
-                // uart_string_reader_rx_callback(&cmd_reader, (char)rx_byte);
+                uart_string_reader_rx_callback(&cmd_reader, (char)rx_byte);
             }
         } else {
             res = false;
@@ -461,11 +462,11 @@ bool proc_uarts(void) {
 #endif /*HAS_UART1*/
 
 #ifdef HAS_UART0
-    res = proc_uart(0);
+    res = proc_uart0();
 #endif /*HAS_UART1*/
 
 #ifdef HAS_UART1
-    res = proc_uart(1);
+    res = proc_uart1();
 #endif /*HAS_UART1*/
     return res;
 }
@@ -475,14 +476,14 @@ static bool proc_uart_fwd_ll(uint8_t uart_num) {
     bool res = false;
     fifo_index_t read_size = 0;
     char txData[UART_FIFO_TX_SIZE * 2] = {0};
-    res = fifo_pull_array(&huart[uart_num].TxFifo, txData, &read_size);
+    res = fifo_pull_array(&huart[uart_num].TxFifo, txData, sizeof(txData), &read_size);
     if((true == res) && (0 < read_size)) {
         res = uart_send(uart_num, (uint8_t*)txData, read_size, false);
     } else {
     }
     return res;
 }
-#endif
+#endif /*HAS_UART_FWD*/
 
 #ifdef HAS_UART0_FWD
 bool proc_uart0_fwd(void) {

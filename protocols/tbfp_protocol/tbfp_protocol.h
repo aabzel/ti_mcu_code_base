@@ -27,11 +27,10 @@ typedef enum xFrameId_t {
 #define TBFP_INDEX_LEN 1
 #define TBFP_INDEX_PAYLOAD 2
 
-#define TBFP_SIZE_HEADER 2
 #define TBFP_SIZE_ID 1
-#define TBFP_SIZE_CRC 1
 
-#define TBFP_MAX_PAYLOAD (255 - TBFP_SIZE_CRC - TBFP_SIZE_HEADER)
+
+//#define TBFP_MAX_PAYLOAD (256 - TBFP_SIZE_CRC - TBFP_SIZE_HEADER)
 
 typedef struct xTbfHeader_t {
     uint8_t preamble;
@@ -44,8 +43,6 @@ typedef struct xTbfPingFrame_t {
     time_t time_stamp;
     GnssCoordinate_t coordinate;
 } __attribute__((packed)) TbfPingFrame_t;
-
-
 
 typedef struct xTbfpProtocol_t {
     uint32_t rx_pkt_cnt;
@@ -67,7 +64,7 @@ bool tbfp_send_chat(uint8_t* tx_array, uint32_t len);
 bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface);
 bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface);
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface);
-bool tbfp_proc_byte(TbfpProtocol_t *instance, uint8_t rx_byte);
+bool tbfp_proc_byte(TbfpProtocol_t* instance, uint8_t rx_byte);
 bool is_tbfp_protocol(uint8_t* arr, uint16_t len);
 bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame);
 

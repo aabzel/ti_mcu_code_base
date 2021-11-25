@@ -48,6 +48,7 @@ static bool zed_f9p_proc_base(void) {
     }
 
     if(RTK_CH_RS232 == ZedF9P.channel) {
+        res = cli_set_echo(false);
 #ifdef HAS_RTCM3
         Rtcm3Protocol[IF_UART1].lora_fwd = false;
         Rtcm3Protocol[IF_UART1].rs232_fwd = true;

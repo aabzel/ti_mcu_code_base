@@ -6,6 +6,7 @@
 #define TASKS               \
   TASKS_BASE                \
   TASK(NMEA)                \
+  TASK(RS232)               \
   TASK(UBX)                 \
   TASK(ZED_F9P)
 

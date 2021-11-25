@@ -17,8 +17,8 @@
 #include "unit_test_info.h"
 
 #define MAX_FAILED_TEST 100U
-
 static uint32_t failed_tests[MAX_FAILED_TEST];
+
 static uint32_t failed_tests_count;
 bool test_failed;
 

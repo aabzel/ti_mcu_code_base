@@ -96,7 +96,7 @@ bool fifo_pull(Fifo_array_t* instance, char* const out_char) {
     if(res) {
         res = false;
         if(0u < instance->fifoState.count) {
-            *out_char = instance->array[instance->fifoState.start];
+            (*out_char) = instance->array[instance->fifoState.start];
             instance->array[instance->fifoState.start] = (char)0x00;
             (void)fifo_index_get(&(instance->fifoState));
             res = true;
@@ -147,25 +147,32 @@ bool fifo_push_array(Fifo_array_t* instance, char* const inArr, fifo_index_t arr
     return res;
 }
 
-bool fifo_pull_array(Fifo_array_t* instance, char* const outArr, fifo_index_t* const outLen) {
+bool fifo_pull_array(Fifo_array_t* instance, char* const outArr, size_t arr_size, fifo_index_t* const outLen) {
     bool res = is_fifo_valid(instance);
     if((NULL != outArr) && (NULL != outLen) && (true == res)) {
         res = false;
-        bool runLoop = true;
+        bool loop = true;
         (*outLen) = 0u;
-        while(true == runLoop) {
+        while(loop) {
             if(0u < instance->fifoState.count) {
                 char out_char = (char)0;
-                res = fifo_pull(instance, &out_char);
-                if(true == res) {
-                    outArr[(*outLen)] = out_char;
-                    (*outLen)++;
+                if ((*outLen)<(arr_size-1)) {
+                    res = fifo_pull(instance, &out_char);
+                    if(true == res) {
+                        outArr[(*outLen)] = out_char;
+                        (*outLen)++;
+                    } else {
+                        loop = false;
+                    }
                 } else {
-                    runLoop = false;
-                }
+                    /*Lack of space to store */
+                    outArr[(*outLen)] = '\0';
+                    loop = false;
+                    res = true;
+                }/**/
             } else {
                 outArr[(*outLen)] = '\0';
-                runLoop = false;
+                loop = false;
                 res = true;
             }
         }

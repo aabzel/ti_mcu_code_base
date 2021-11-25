@@ -32,7 +32,7 @@ bool fifo_peek(Fifo_array_t* const instance, char* const outChar);
 bool has_fifo_valid_data(Fifo_array_t* const instance);
 
 bool fifo_push_array(Fifo_array_t* const instance, char* const inArr, fifo_index_t arrLen);
-bool fifo_pull_array(Fifo_array_t* const instance, char* const outArr, fifo_index_t* const outLen);
+bool fifo_pull_array(Fifo_array_t* instance, char* const outArr, size_t arr_size, fifo_index_t* const outLen);
 bool fifo_peek_array(Fifo_array_t* const instance, char* const outArr, fifo_index_t* const outLen);
 
 #ifdef __cplusplus

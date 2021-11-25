@@ -134,15 +134,15 @@ typedef struct xConfigurationKeyID_t {
         uint32_t word;
         struct {
             uint16_t
-              id_within_group : 12; /* Twelve bits that define a unique item ID within a group (range 0x001-0xffe)*/
-            uint16_t rsvd1 : 4;        /*Currently unused. Reserved for future use.*/
-            uint16_t group:8;       /*Eight bits that define a unique group ID (range 0x01-0xfe)*/
-            uint16_t rsvd2 : 4;        /*Currently unused. Reserved for future use.*/
+                id_within_group : 12; /* Twelve bits that define a unique item ID within a group (range 0x001-0xffe)*/
+            uint16_t rsvd1 : 4;       /*Currently unused. Reserved for future use.*/
+            uint16_t group : 8;       /*Eight bits that define a unique group ID (range 0x01-0xfe)*/
+            uint16_t rsvd2 : 4;       /*Currently unused. Reserved for future use.*/
             uint16_t size : 3;  /*Three bits that indicate the storage size of a Configuration Value (range 0x01-0x05,*/
             uint16_t rsvd3 : 1; /*Currently unused. Reserved for future use.*/
         };
     };
-}  __attribute__ ((__packed__)) ConfigurationKeyID_t;
+} __attribute__((__packed__)) ConfigurationKeyID_t;
 
 typedef struct xCfgValGetHeader_t {
     uint8_t version;

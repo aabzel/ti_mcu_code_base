@@ -92,8 +92,8 @@ bool sw_init(void) {
 #endif
 
 #ifdef HAS_TBFP
-    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_LORA],IF_LORA), "TbfpLoRa") && res;
-    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_RS232],IF_RS232), "TbfpRS232") && res;
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_LORA], IF_LORA), "TbfpLoRa") && res;
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_RS232], IF_RS232), "TbfpRS232") && res;
 #endif /*HAS_TBFP*/
 
 #ifdef HAS_UBLOX

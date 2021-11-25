@@ -9,6 +9,7 @@ extern "C" {
 
 bool test_tbfp_proto_29(void);
 bool test_tbfp_proto_0(void);
+bool test_tbfp_proto_overlen(void);
 bool test_tbfp_proto_1(void);
 bool test_tbfp_proto_2(void);
 bool test_tbfp_types(void);

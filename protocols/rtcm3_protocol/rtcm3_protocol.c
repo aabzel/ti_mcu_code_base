@@ -24,7 +24,6 @@
 #include "uart_drv.h"
 #endif /*HAS_UART*/
 
-
 Rtcm3Protocol_t Rtcm3Protocol[RTCM_IF_CNT];
 
 bool rtcm3_reset_rx(Rtcm3Protocol_t* instance) {
@@ -147,14 +146,14 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
 #ifdef HAS_LORA
             /*Send RTCM3 frame to LoRa*/
-            if(IF_UART1 == instance->interface ) {
-                if(true == instance->lora_fwd){
+            if(IF_UART1 == instance->interface) {
+                if(true == instance->lora_fwd) {
                     res = lora_send_queue(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE);
                     if(false == res) {
                         instance->lora_lost_pkt_cnt++;
                     }
                 }
-                if(true == instance->rs232_fwd){
+                if(true == instance->rs232_fwd) {
                     res = uart_send(UART_NUM_CLI, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                     if(false == res) {
                         instance->uart_lost_pkt_cnt++;
@@ -164,15 +163,13 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #endif /*HAS_LORA*/
 
 #ifdef HAS_UART1
-            if(( IF_LORA == instance->interface) ||
-               (IF_RS232 == instance->interface)) {
+            if((IF_LORA == instance->interface) || (IF_RS232 == instance->interface)) {
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                 if(false == res) {
                     instance->uart_lost_pkt_cnt++;
                 }
             }
 #endif /*HAS_UART1*/
-
 
             rtcm3_reset_rx(instance);
         } else {
