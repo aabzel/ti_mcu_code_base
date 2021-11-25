@@ -34,12 +34,15 @@
 #include "task_info.h"
 #include "uart_common.h"
 #include "writer_config.h"
+#include "sx1262_drv.h"
 #include "zed_f9p_diag.h"
 
 extern ZedF9P_t ZedF9P = {0};
 
 static bool zed_f9p_proc_base(void) {
     bool res = false;
+    Sx1262Instance.sync_reg = false;
+
     if(task_data[TASK_ID_NMEA].on) {
         task_data[TASK_ID_NMEA].on = false;
     }
@@ -53,6 +56,7 @@ static bool zed_f9p_proc_base(void) {
         Rtcm3Protocol[IF_UART1].lora_fwd = false;
         Rtcm3Protocol[IF_UART1].rs232_fwd = true;
 #endif
+        task_data[TASK_ID_RS232].on = true;
     }
 
     if(RTK_CH_LORA == ZedF9P.channel) {
@@ -60,6 +64,7 @@ static bool zed_f9p_proc_base(void) {
         Rtcm3Protocol[IF_UART1].lora_fwd = true;
         Rtcm3Protocol[IF_UART1].rs232_fwd = false;
 #endif
+        task_data[TASK_ID_RS232].on = false;
     }
 
     return res;
@@ -188,6 +193,9 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
     if(res) {
         res = false;
 #ifdef HAS_UBLOX
+        task_data[TASK_ID_UART0_FWD].on = false;
+        task_data[TASK_ID_UART1_FWD].on = false;
+        task_data[TASK_ID_FLASH_FS].on = false;
         /*
           perform settings from here
           https://www.youtube.com/watch?v=FpkUXmM7mrc

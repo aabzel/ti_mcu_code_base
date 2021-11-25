@@ -8,18 +8,19 @@
 #include "data_utils.h"
 #include "io_utils.h"
 #include "log.h"
+#include "system.h"
 #include "rtcm3_protocol.h"
 #include "table_utils.h"
 #include "writer_generic.h"
 #include "writer_config.h"
 
-static const char* interfacefRtcmLuTable[RTCM_IF_CNT] = {"UART", "LoRa", "RS232"};
-
 static bool rtcm3_diag(void) {
     bool res = false;
     uint8_t interface = 0;
-    static const table_col_t cols[] = {{6, "if"},{5, "loF"},
+    static const table_col_t cols[] = {{7, "if"},
+                                       {5, "loF"},
                                        {9, "lostLoRa"},
+                                       {8, "lost,%"},
                                        {9, "lostUart"},
                                        {9, "rxCnt"},
                                        {9, "crcErCnt"},
@@ -31,12 +32,14 @@ static bool rtcm3_diag(void) {
 #endif /*HAS_DEBUG*/
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-    for(interface = 0; interface < RTCM_IF_CNT; interface++) {
+    for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
         io_printf(TSEP);
-        io_printf(" %4s " TSEP, interfacefRtcmLuTable[interface]);
+        io_printf(" %5s " TSEP, interface2str((Interfaces_t)interface));
         io_printf("  %1u  " TSEP, Rtcm3Protocol[interface].lora_fwd);
         io_printf(" %7u " TSEP,  Rtcm3Protocol[interface].lora_lost_pkt_cnt);
-        io_printf(" %7u " TSEP,  Rtcm3Protocol[interface].uart_lost_pkt_cnt);
+        uint32_t lora_lost_pkt = (100*Rtcm3Protocol[interface].lora_lost_pkt_cnt)/Rtcm3Protocol[interface].rx_pkt_cnt;
+        io_printf("   %3u  " TSEP,(uint32_t) lora_lost_pkt);
+        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].uart_lost_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].rx_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].crc_err_cnt);
 #ifdef HAS_DEBUG

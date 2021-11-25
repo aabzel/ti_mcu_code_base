@@ -11,6 +11,7 @@ extern "C" {
 #define DFLT_APP_START_ADDR 0x0001A000
 #define APP_LAYNCH_TRY 5U
 #define FINE_START_TIME_OUT_MS 3000U
+#define BOOT_PERIOD_US 2000000
 
 typedef enum eCmdBoot_t {
     BOOT_CMD_LAUNCH_APP = 0,

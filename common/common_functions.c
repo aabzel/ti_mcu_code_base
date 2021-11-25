@@ -114,7 +114,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_CLI*/
 
 #ifdef HAS_GENERIC
-    measure_task_interval(TASK_ID_BOOT, 2000000, boot_proc, loop_start_time_us);
+    measure_task_interval(TASK_ID_BOOT, BOOT_PERIOD_US, boot_proc, loop_start_time_us);
 #endif
 
 #ifdef HAS_DAC
@@ -122,7 +122,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif
 
 #ifdef HAS_ADC
-    measure_task_interval(TASK_ID_ADC, 100000, adc_proc, loop_start_time_us);
+    measure_task_interval(TASK_ID_ADC, 300000, adc_proc, loop_start_time_us);
 #endif
 
 #ifdef HAS_WDT

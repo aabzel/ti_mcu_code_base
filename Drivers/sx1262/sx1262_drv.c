@@ -974,8 +974,9 @@ static bool sx1262_set_tx_len(uint8_t payload_length) {
 
 bool sx1262_init(void) {
     bool res = true;
+    Sx1262Instance.sync_reg= true;
 #ifdef HAS_DEBUG
-    set_log_level(LORA, LOG_LEVEL_DEBUG);
+    //set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = true;
 #else
@@ -1454,7 +1455,7 @@ static inline bool sx1262_poll_status(void) {
 #endif /*HAS_SX1262_BIT_RATE*/
             if(Sx1262Instance.debug) {
 #ifdef HAS_SX1262_BIT_RATE
-                LOG_INFO(LORA, "TX done %f bit/s=%f byte/s duration: %u ms for %u bytes", tx_real_bit_rate,
+                LOG_INFO(LORA, "TX done %7.1f bit/s=%7.1f byte/s duration: %u ms for %u bytes", tx_real_bit_rate,
                          tx_real_bit_rate / 8, tx_duration_ms, Sx1262Instance.tx_last_size);
 #else
                 LOG_INFO(LORA, "TX done");
@@ -1606,8 +1607,9 @@ bool sx1262_process(void) {
         res = sx1262_transmit_from_queue(&Sx1262Instance);
 
         res = sx1262_poll_status();
-
-        res = sx1262_sync_registers();
+        if (Sx1262Instance.sync_reg) {
+            res = sx1262_sync_registers();
+        }
 
     } else {
         LOG_ERROR(LORA, "SX1262 SPI link lost");

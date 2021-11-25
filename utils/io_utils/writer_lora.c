@@ -23,9 +23,9 @@ generic_writer_t dbg_lora_o = {
 bool lora_writer_transmit(struct generic_writer_s* writer) {
     bool res = false;
     fifo_index_t cur_sise = fifo_get_count(&writer->fifo);
-    if(120 < cur_sise) {
+    if(200 < cur_sise) {
         char data[300] = ""; /*TODO Determine min size*/
-        res = fifo_pull_array(&writer->fifo, data, (uint16_t*)&writer->in_transmit);
+        res = fifo_pull_array(&writer->fifo, data, sizeof(data), (uint16_t*)&writer->in_transmit);
         if(0 < writer->in_transmit) {
             writer->total_char_count += writer->in_transmit;
             if(LORA_TX_ARRAY_SIZE < writer->in_transmit) {

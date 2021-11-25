@@ -216,6 +216,7 @@ typedef struct xSx1262_t {
     int8_t rssi_inst;
     bool tx_done;
     bool debug;
+    bool sync_reg;
     bool show_bin;
     bool show_ascii;
     bool is_packet;

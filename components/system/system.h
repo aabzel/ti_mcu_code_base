@@ -13,5 +13,6 @@ typedef enum eInterfaces_t{
     IF_NONE=5,
 } __attribute__ ((__packed__)) Interfaces_t;
 
+const char* interface2str(Interfaces_t interface);
 
 #endif /* SYSTEM_H  */

@@ -76,6 +76,11 @@
 			<locationURI>$%7BCOM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR%7D/source/ti/devices/cc13x2_cc26x2/startup_files/startup_ccs.c</locationURI>
 		</link>
 		<link>
+			<name>system.c</name>
+			<type>1</type>
+			<locationURI>WORKSPACE_LOC/components/system/system.c</locationURI>
+		</link>
+		<link>
 			<name>unit_tests</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/unit_tests</locationURI>
