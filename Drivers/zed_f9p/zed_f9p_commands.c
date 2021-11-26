@@ -46,6 +46,8 @@ bool zed_f9p_base_dot_command(int32_t argc, char* argv[]) {
             res = mm_set(PAR_ID_BASE_ALT, (uint8_t*)&ZedF9P.alt_base, sizeof(double));
             if(false == res) {
                 LOG_ERROR(ZED_F9P, "ParamSetAltError");
+            }else {
+                LOG_INFO(ZED_F9P, "AltOk!");
             }
 #endif /*HAS_PARAM*/
         }
@@ -62,8 +64,10 @@ bool zed_f9p_base_dot_command(int32_t argc, char* argv[]) {
         ZedF9P.coordinate_base = coordinate_base;
 #ifdef HAS_PARAM
         res = mm_set(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t));
-        if(false == res) {
+        if (false == res) {
             LOG_ERROR(ZED_F9P, "ParamSetError");
+        } else {
+            LOG_INFO(ZED_F9P, "DotOk!");
         }
 #endif /*HAS_PARAM*/
     }

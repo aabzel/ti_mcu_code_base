@@ -6,15 +6,12 @@
 #include <time.h>
 
 #include "gnss_utils.h"
+#include "system.h"
+
 
 #define ZED_F9P_PERIOD_US S_2_US(1.0)
 #define DFLT_GNSS_PER_MS 1000U
 
-typedef enum eRtkRtcm3Channel_t {
-    RTK_CH_UNDEF = 0,
-    RTK_CH_LORA = 1,
-    RTK_CH_RS232 = 2,
-} RtkRtcm3Channel_t;
 
 typedef enum eRTKmode_t {
     RTK_NONE = 0,
@@ -39,7 +36,7 @@ typedef struct xZedF9P_t {
     uint16_t rate_ms;
     int8_t time_zone;
     RTKmode_t rtk_mode;
-    RtkRtcm3Channel_t channel;
+    Interfaces_t channel;
     // TODO:  time since update
     bool is_init;
 } ZedF9P_t;

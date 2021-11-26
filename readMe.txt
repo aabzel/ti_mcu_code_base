@@ -8,7 +8,7 @@ There is a bootloader configuration.
 
 That is the single-thread supercicle with interrupts code base firmware.
 
-Most parameters are controlled with CLI through UART and LoRa.
+Most parameters are controlled with CLI through UART0 (460800 bit/s) and LoRa.
 
 Lots of parameters can be stored in none volatile on chip Nor-Flash File system.
 

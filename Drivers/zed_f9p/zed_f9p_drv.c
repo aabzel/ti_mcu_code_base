@@ -50,7 +50,7 @@ static bool zed_f9p_proc_base(void) {
         task_data[TASK_ID_UBX].on = false;
     }
 
-    if(RTK_CH_RS232 == ZedF9P.channel) {
+    if(IF_RS232 == ZedF9P.channel) {
         res = cli_set_echo(false);
 #ifdef HAS_RTCM3
         Rtcm3Protocol[IF_UART1].lora_fwd = false;
@@ -59,7 +59,7 @@ static bool zed_f9p_proc_base(void) {
         task_data[TASK_ID_RS232].on = true;
     }
 
-    if(RTK_CH_LORA == ZedF9P.channel) {
+    if(IF_LORA == ZedF9P.channel) {
 #ifdef HAS_RTCM3
         Rtcm3Protocol[IF_UART1].lora_fwd = true;
         Rtcm3Protocol[IF_UART1].rs232_fwd = false;
@@ -85,8 +85,11 @@ static bool zed_f9p_proc_rover(void) {
     }
 #endif
 
-    if(RTK_CH_RS232 == ZedF9P.channel) {
+    if(IF_RS232 == ZedF9P.channel) {
         res = cli_set_echo(false);
+    }
+    if(IF_LORA == ZedF9P.channel) {
+        task_data[TASK_ID_RS232].on = false;
     }
 
     return res;
@@ -238,11 +241,11 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         task_data[TASK_ID_NMEA].on = false;
 #ifdef HAS_RTCM3
 
-        if(RTK_CH_LORA == ZedF9P.channel) {
+        if(IF_LORA == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].lora_fwd = true;
             Rtcm3Protocol[IF_UART1].rs232_fwd = false;
         }
-        if(RTK_CH_RS232 == ZedF9P.channel) {
+        if(IF_RS232 == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].lora_fwd = false;
             Rtcm3Protocol[IF_UART1].rs232_fwd = true;
         }
@@ -327,7 +330,7 @@ bool zed_f9p_load_params(void) {
 
     res = mm_get(PAR_ID_RTK_CHANNEL, (uint8_t*)&ZedF9P.channel, 1, &file_len);
     if(res && (1 == file_len)) {
-        LOG_INFO(ZED_F9P, "RTKchannel:%u-%s", ZedF9P.channel, rtk_channel2str(ZedF9P.channel));
+        LOG_INFO(ZED_F9P, "RTKchannel:%u-%s", ZedF9P.channel, interface2str(ZedF9P.channel));
     } else {
         LOG_ERROR(ZED_F9P, "GetRTKchanErr");
         res = false;
@@ -358,7 +361,7 @@ bool zed_f9p_init(void) {
     bool res = true;
     res = set_log_level(ZED_F9P, LOG_LEVEL_INFO);
     ZedF9P.rate_ms = DFLT_GNSS_PER_MS;
-    ZedF9P.channel = RTK_CH_LORA;
+    ZedF9P.channel = IF_LORA;
     res = zed_f9p_load_params();
     if(res) {
         switch(ZedF9P.rtk_mode) {

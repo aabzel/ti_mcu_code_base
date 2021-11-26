@@ -16,6 +16,7 @@
 #ifdef HAS_SX1262
 #include "sx1262_diag.h"
 #endif
+#include "system.h"
 
 #ifdef HAS_ZED_F9P
 #include "gnss_diag.h"
@@ -238,7 +239,7 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
         name = rtk_mode2str((uint8_t)*value);
     }
     if(PAR_ID_RTK_CHANNEL == id) {
-        name = rtk_channel2str((uint8_t)*value);
+        name = interface2str((uint8_t)*value);
     }
     if(PAR_ID_BASE_LOCATION == id) {
         name = coordinate2str((GnssCoordinate_t*)value);
