@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum eInterfaces_t{
+typedef enum eInterfaces_t {
     IF_LORA=0,
     IF_RS232=1,
     IF_UART1=2,
