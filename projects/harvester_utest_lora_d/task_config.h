@@ -6,6 +6,7 @@
 #define TASKS               \
   TASKS_BASE                \
   TASK(LORA)                \
+  TASK(RS232)               \
   TASK(SX1262)
 
 #endif /* TASK_CONFIG_H */

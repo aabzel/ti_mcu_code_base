@@ -23,6 +23,7 @@ bool test_clock_us(void) {
         up_time_us_cur = get_time_us();
         EXPECT_GR(up_time_us_prev, up_time_us_cur, i);
         pause_1us();
+        pause_1us();
         up_time_us_prev = up_time_us_cur;
     }
     return true;

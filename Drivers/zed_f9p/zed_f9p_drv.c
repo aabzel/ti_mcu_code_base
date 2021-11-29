@@ -34,15 +34,18 @@
 #include "task_info.h"
 #include "uart_common.h"
 #include "writer_config.h"
+#ifdef HAS_SX1262
 #include "sx1262_drv.h"
+#endif
 #include "zed_f9p_diag.h"
 
 extern ZedF9P_t ZedF9P = {0};
 
 static bool zed_f9p_proc_base(void) {
     bool res = false;
+#ifdef HAS_SX1262
     Sx1262Instance.sync_reg = false;
-
+#endif
     if(task_data[TASK_ID_NMEA].on) {
         task_data[TASK_ID_NMEA].on = false;
     }

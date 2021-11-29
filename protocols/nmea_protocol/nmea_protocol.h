@@ -141,7 +141,7 @@ typedef struct xNmeaData_t {
     // rlm_t rlm; /*Return link message (RLM) */
     // ths_t ths; /*True heading and status*/
     // txt_t txt; /*Text transmission*/
-    // zda_t zda Time and date
+    //zda_t zda; /*Time and date*/
     // dtm_t dtm Datum reference
     // grs_t grs GNSS range residuals
     // gst_t GNSS pseudorange error statistics

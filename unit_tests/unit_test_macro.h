@@ -1,6 +1,6 @@
 #ifndef UNIT_TEST_MACRO_H
 #define UNIT_TEST_MACRO_H
-
+#if 0
 #include "unit_test_info.h"
 
 #define PRAGMA(x) _Pragma(#x)
@@ -24,5 +24,5 @@
             const unit_test_info_t _ut_##suite##_##test_case = {(#suite "." #test_case), (ut_##suite##_##test_case)}; \
         static void(ut_##suite##_##test_case)(void)
 #endif
-
+#endif
 #endif /* UNIT_TEST_MACRO_H */

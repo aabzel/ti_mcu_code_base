@@ -974,7 +974,6 @@ static bool sx1262_set_tx_len(uint8_t payload_length) {
 
 bool sx1262_init(void) {
     bool res = true;
-    Sx1262Instance.sync_reg= true;
 #ifdef HAS_DEBUG
     //set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
@@ -1038,6 +1037,7 @@ bool sx1262_init(void) {
         Sx1262Instance.set_sync_word = SYNC_WORD;
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
 
+        Sx1262Instance.sync_reg= true;
         res = sx1262_start_rx(0xFFFFFF) && res;
     } else {
         LOG_ERROR(LORA, "SX1262 link error");
