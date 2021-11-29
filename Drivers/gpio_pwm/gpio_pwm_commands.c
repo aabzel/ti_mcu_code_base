@@ -16,7 +16,7 @@ bool gpio_pwm_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     (void)argv;
     if(0 == argc) {
-        static const table_col_t cols[] = {{5, "dio"},  {7, "gpio"},     {5, "pin"},   {5, "state"},
+        static const table_col_t cols[] = {{5, "dio"},  {9, "wire"},     {5, "pin"},   {5, "state"},
                                            {9, "freq"}, {9, "periodMs"}, {7, "duty%"}, {8, "phaseMs"}};
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         uint16_t i = 0;

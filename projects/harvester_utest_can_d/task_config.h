@@ -5,6 +5,7 @@
 
 #define TASKS               \
   TASKS_BASE                \
+  TASK(RS232)               \
   TASK(TCAN4550)
 
 

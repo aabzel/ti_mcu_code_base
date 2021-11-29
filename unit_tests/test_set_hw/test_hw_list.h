@@ -8,7 +8,6 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #ifdef HAS_TEST_FLASH
 #include "test_flash.h"
 #else
@@ -21,13 +20,11 @@ extern "C" {
 #define TEST_SUIT_FLASH_FS
 #endif
 
-
 #ifdef HAS_TEST_PARAM
 #include "test_params.h"
 #else
 #define TEST_SUIT_PARAM
 #endif
-
 
 #ifdef HAS_TEST_TCAN4550
 #include "test_tcan4550.h"
