@@ -4,6 +4,8 @@
 #define TASKS                                                                  \
   TASK(BOOT)                                                                   \
   TASK(CLI)                                                                    \
+  TASK(RS232)                                                                  \
+  TASK(PARAM)                                                                  \
   TASK(FLASH_FS)                                                               \
   TASK(GPIO_PWM)                                                               \
   TASK(LED)                                                                    \

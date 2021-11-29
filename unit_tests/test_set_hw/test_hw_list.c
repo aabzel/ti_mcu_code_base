@@ -34,9 +34,10 @@ bool test_clock_ms(void) {
     uint32_t up_time_ms_prev = 0;
     up_time_ms_prev = get_time_ms32();
     pause_1ms();
-    for(i = 0; i < 1000; i++) {
+    for(i = 0; i < 500; i++) {
         up_time_ms_cur = get_time_ms32();
         EXPECT_GR(up_time_ms_prev, up_time_ms_cur, i);
+        pause_1ms();
         pause_1ms();
         up_time_ms_prev = up_time_ms_cur;
     }

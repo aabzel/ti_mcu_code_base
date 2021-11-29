@@ -15,7 +15,7 @@
 #include "param_types.h"
 #ifdef HAS_SX1262
 #include "sx1262_diag.h"
-#endif
+#endif /*HAS_SX1262*/
 #include "system.h"
 
 #ifdef HAS_ZED_F9P

@@ -1577,11 +1577,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.9999998"
-     inkscape:cx="286.75001"
-     inkscape:cy="322.75001"
+     inkscape:zoom="2.828427"
+     inkscape:cx="301.2275"
+     inkscape:cy="296.63131"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer9"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -5964,7 +5964,7 @@
      id="layer9"
      inkscape:label="Interrupts">
     <path
-       style="fill:none;stroke:#ff00ff;stroke-width:0.146598px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker3497)"
+       style="fill:#ff00ff;stroke:#ff00ff;stroke-width:0.146598px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker3497)"
        d="M 96.576758,75.698993 V 86.331139"
        id="path1210" />
     <text

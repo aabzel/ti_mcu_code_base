@@ -62,6 +62,7 @@
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/system"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
@@ -70,6 +71,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/lora"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/rs232_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards/harvester_cc2642_v1"/>
@@ -128,6 +130,9 @@
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_FLASH_FS"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_GPIO"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART0"/>
@@ -257,7 +262,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="utils/io_utils/writer_lora.c|utils/win_utils|utils/utils_files|unit_tests/test_set_hw/test_zed_f9p|protocols/j1939|protocols/tbfp_protocol|Drivers/telematic|Drivers/zed_f9p|Drivers/tcan4550_q1_ti|unit_tests/test_set_hw/test_spi|unit_tests/test_set_hw/test_can|unit_tests/test_set_hw/test_sx1262|utils/utils_string/str_utils_ex.c|utils/crc/crc24_q.c|protocols/rtcm3_protocol|protocols/ubx_protocol|protocols/nmea_protocol|bsp_cc26x2/watchdog|bsp_cc26x2/tim|bsp_cc26x2/adc|bsp_cc26x2/spi|Drivers/tcan4550_q1|Drivers/sx1262|Drivers/lora|boards/harvester_v1|boards/launchpad|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="unit_tests/test_set_hw/test_system|utils/io_utils/writer_lora.c|utils/win_utils|utils/utils_files|unit_tests/test_set_hw/test_zed_f9p|protocols/j1939|protocols/tbfp_protocol|Drivers/telematic|Drivers/zed_f9p|Drivers/tcan4550_q1_ti|unit_tests/test_set_hw/test_spi|unit_tests/test_set_hw/test_can|unit_tests/test_set_hw/test_sx1262|utils/utils_string/str_utils_ex.c|utils/crc/crc24_q.c|protocols/rtcm3_protocol|protocols/ubx_protocol|protocols/nmea_protocol|bsp_cc26x2/watchdog|bsp_cc26x2/tim|bsp_cc26x2/adc|bsp_cc26x2/spi|Drivers/tcan4550_q1|Drivers/sx1262|Drivers/lora|boards/harvester_v1|boards/launchpad|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
