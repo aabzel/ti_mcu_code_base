@@ -239,7 +239,7 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
         name = rtk_mode2str((uint8_t)*value);
     }
     if(PAR_ID_RTK_CHANNEL == id) {
-        name = interface2str((uint8_t)*value);
+        name = interface2str((Interfaces_t)*value);
     }
     if(PAR_ID_BASE_LOCATION == id) {
         name = coordinate2str((GnssCoordinate_t*)value);

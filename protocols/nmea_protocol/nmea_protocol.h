@@ -127,6 +127,15 @@ typedef struct xGsv_t {
     uint32_t cnt;
 } gsv_t;
 
+
+/*Time and date*/
+typedef struct xZda_t {
+    struct tm time_date;
+    uint8_t ltzh;
+    uint8_t ltzn;
+    uint32_t cnt;
+}zda_t;
+
 /* GNSS context. Used to keep last GNSS infos from GNSS module msgs*/
 typedef struct xNmeaData_t {
     uint8_t is_initialized;
@@ -141,7 +150,7 @@ typedef struct xNmeaData_t {
     // rlm_t rlm; /*Return link message (RLM) */
     // ths_t ths; /*True heading and status*/
     // txt_t txt; /*Text transmission*/
-    //zda_t zda; /*Time and date*/
+    zda_t zda; /*Time and date*/
     // dtm_t dtm Datum reference
     // grs_t grs GNSS range residuals
     // gst_t GNSS pseudorange error statistics
@@ -163,6 +172,7 @@ extern NmeaData_t NmeaData;
 bool nmea_init(void);
 bool nmea_proc_byte(uint8_t rx_byte);
 uint8_t nmea_calc_checksum(char* nmea_data, uint16_t len);
+bool gnss_parse_zda(char* nmea_msg, zda_t* zda);
 bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc);
 bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg);
 bool gnss_parse_gga(char* nmea_msg, gga_t* gga);

@@ -1,5 +1,10 @@
 #include "system.h"
 
+#include <stdbool.h>
+
+#include "uart_common.h"
+#include "sys_config.h"
+
 const char* interface2str(Interfaces_t interface){
     const char *name="undef";
 	switch(interface){
@@ -12,4 +17,10 @@ const char* interface2str(Interfaces_t interface){
 		default:break;
 	}
 	return name;
+}
+
+bool sys_bypass_nmea_rs232(void) {
+    bool res = true;
+    huart[UART_NUM_ZED_F9P].is_uart_fwd[UART_NUM_CLI] = true;
+    return res;
 }

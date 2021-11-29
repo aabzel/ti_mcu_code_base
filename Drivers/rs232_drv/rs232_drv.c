@@ -14,6 +14,8 @@
 #include "tbfp_protocol.h"
 #endif /*HAS_TBFT*/
 
+RS232_t rs232;
+
 bool rs232_send(uint8_t* const data, uint32_t len){
     bool res = false;
     GPIO_writeDio(DIO_PS_RS232, 1);
@@ -23,6 +25,7 @@ bool rs232_send(uint8_t* const data, uint32_t len){
 
 bool rs232_init(void) {
     bool res = true;
+    rs232.ping = false;
 #ifdef HAS_RS232
     GPIO_setConfig(CONF_GPIO_PS_RS232, gpio_get_cfg_dio(DIO_PS_RS232));
     GPIO_writeDio(DIO_PS_RS232, 1);
@@ -34,7 +37,9 @@ bool proc_rs232(void){
     bool res = false;
 #ifdef HAS_TBFP
     /*HeartBeat RS232 Frame*/
-    res = tbfp_send_ping(FRAME_ID_PONG, IF_RS232);
+    if (rs232.ping) {
+        res = tbfp_send_ping(FRAME_ID_PONG, IF_RS232);
+    }
 #endif /*HAS_TBFP*/
     return res;
 }

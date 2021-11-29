@@ -160,6 +160,7 @@
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
+									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_FLASH"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_FLASH_FS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_PARAM"/>

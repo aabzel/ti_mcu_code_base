@@ -32,6 +32,9 @@
 #include "none_blocking_pause.h"
 #include "sys_config.h"
 #include "task_info.h"
+#ifdef HAS_RS232
+#include "rs232_drv.h"
+#endif
 #include "uart_common.h"
 #include "writer_config.h"
 #ifdef HAS_SX1262
@@ -60,6 +63,9 @@ static bool zed_f9p_proc_base(void) {
         Rtcm3Protocol[IF_UART1].rs232_fwd = true;
 #endif
         task_data[TASK_ID_RS232].on = true;
+#ifdef HAS_RS232
+        rs232.ping = true;
+#endif
     }
 
     if(IF_LORA == ZedF9P.channel) {
@@ -68,6 +74,9 @@ static bool zed_f9p_proc_base(void) {
         Rtcm3Protocol[IF_UART1].rs232_fwd = false;
 #endif
         task_data[TASK_ID_RS232].on = false;
+#ifdef HAS_RS232
+        rs232.ping = false;
+#endif
     }
 
     return res;
@@ -90,9 +99,15 @@ static bool zed_f9p_proc_rover(void) {
 
     if(IF_RS232 == ZedF9P.channel) {
         res = cli_set_echo(false);
+#ifdef HAS_RS232
+        rs232.ping = true;
+#endif
     }
     if(IF_LORA == ZedF9P.channel) {
         task_data[TASK_ID_RS232].on = false;
+#ifdef HAS_RS232
+        rs232.ping = false;
+#endif
     }
 
     return res;

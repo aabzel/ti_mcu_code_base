@@ -14,5 +14,6 @@ typedef enum eInterfaces_t {
 } __attribute__ ((__packed__)) Interfaces_t;
 
 const char* interface2str(Interfaces_t interface);
+bool sys_bypass_nmea_rs232(void);
 
 #endif /* SYSTEM_H  */

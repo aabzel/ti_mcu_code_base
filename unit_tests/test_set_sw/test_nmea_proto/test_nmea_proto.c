@@ -5,9 +5,8 @@
 #include "unit_test_check.h"
 
 const char msg_gnrmc[] = "$GNRMC,072316.27,A,5551.84825,N,03725.60995,E,0.010,,290721,11.73,E,A,V*76";
-
 // tsr nmea+
-static bool test_nmea_proto_gnrmc(void) {
+bool test_nmea_proto_gnrmc(void) {
    rmc_t rmc= {0};
    EXPECT_TRUE( gnss_parse_rmc((char*)msg_gnrmc, &rmc));
    EXPECT_EQ(7,rmc.time_date.tm_hour);
@@ -32,7 +31,7 @@ static bool test_nmea_proto_gnrmc(void) {
 }
 
 const char msg_gnrgga[] = "$GNGGA,140212.00,5540.70555,N,03737.93437,E,1,12,0.58,201.3,M,13.3,M,,*45";
-static bool test_nmea_proto_gngga(void) {
+bool test_nmea_proto_gngga(void) {
    gga_t gga= {0};
    EXPECT_TRUE( gnss_parse_gga((char*)msg_gnrgga, &gga));
    EXPECT_EQ(14,gga.time_date.tm_hour);
@@ -71,7 +70,7 @@ static bool test_nmea_proto_gngll(void) {
 }
 
 const char msg_gnrgsa[] = "$GNGSA,A,3,78,85,68,84,69,,,,,,,,1.04,0.58,0.86,2*0B";
-static bool test_nmea_proto_gngsa(void) {
+bool test_nmea_proto_gngsa(void) {
     gsa_t gsa= {0};
     EXPECT_TRUE( gnss_parse_gsa((char*)msg_gnrgsa, &gsa));
     EXPECT_EQ('A',gsa.opMode);
@@ -83,6 +82,27 @@ static bool test_nmea_proto_gngsa(void) {
 
     return true;
 }
+
+const char msg_gnzda[] ="$GNZDA,122013.00,29,11,2021,00,00*71";
+bool test_nmea_proto_gnzda(void) {
+#ifdef X86_64
+   printf("\n%s()",__FUNCTION__);
+#endif
+    zda_t zda= {0};
+    EXPECT_TRUE( gnss_parse_zda((char*)msg_gnzda, &zda));
+    EXPECT_EQ(12, zda.time_date.tm_hour);
+    EXPECT_EQ(20, zda.time_date.tm_min);
+    EXPECT_EQ(13, zda.time_date.tm_sec);
+    EXPECT_EQ(29, zda.time_date.tm_mday);
+    EXPECT_EQ(11, zda.time_date.tm_mon);
+    EXPECT_EQ(2021, zda.time_date.tm_year);
+
+    EXPECT_EQ(0, zda.ltzh);
+    EXPECT_EQ(0, zda.ltzn);
+
+    return true;
+}
+
 
 const char msg_gnrvtg[] = "$GNVTG,,T,,M,0.017,N,0.032,K,A*3A";
 static bool test_nmea_proto_gnvtg(void) {
@@ -130,15 +150,15 @@ static bool test_nmea_proto_pubx(void) {
 }
 
 bool test_nmea_proto(void) {
+#ifdef X86_64
+   printf("\n%s()",__FUNCTION__);
+#endif
   EXPECT_EQ(16, sizeof(GnssCoordinate_t));
 
   EXPECT_TRUE(test_nmea_proto_pubx());
   EXPECT_TRUE(test_nmea_checksum());
-  EXPECT_TRUE(test_nmea_proto_gnrmc());
   EXPECT_TRUE(test_nmea_proto_gnvtg());
-  EXPECT_TRUE(test_nmea_proto_gngga());
   EXPECT_TRUE(test_nmea_proto_gngll());
-  EXPECT_TRUE(test_nmea_proto_gngsa());
   EXPECT_TRUE(nmea_parse((char*) msg_gnrmc, &NmeaData));
   EXPECT_TRUE(nmea_parse((char*) msg_gnrgga, &NmeaData));
   EXPECT_TRUE(nmea_parse((char*) msg_gnrgll, &NmeaData));

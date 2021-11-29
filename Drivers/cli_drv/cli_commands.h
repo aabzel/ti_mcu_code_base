@@ -111,6 +111,12 @@ extern "C" {
 #define TRNG_COMMANDS
 #endif
 
+#ifdef HAS_SYSTEM
+#include "system_commands.h"
+#else
+#define SYSTEM_COMMANDS
+#endif
+
 #ifdef HAS_TBFP
 #include "tbfp_commands.h"
 #else
@@ -156,6 +162,7 @@ extern "C" {
     RF_COMMANDS                                                                                                        \
     RTCM3_COMMANDS    \
     SX1262_COMMANDS                                                                                                    \
+    SYSTEM_COMMANDS \
     TRNG_COMMANDS                                                                                                      \
     UBLOX_COMMANDS                 \
     ZED_F9P_COMMANDS

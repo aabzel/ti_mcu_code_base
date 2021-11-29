@@ -20,6 +20,34 @@ bool nmea_init(void) {
     return true;
 }
 
+/*$GNZDA,122013.00,29,11,2021,00,00*71*/
+bool gnss_parse_zda(char* nmea_msg, zda_t* zda){
+    bool res = true;
+    char* ptr = strchr(nmea_msg, ',') + 1;
+    // 122013.00,29,11,2021,00,00*71*/
+    uint32_t utc_time = 0;
+    res = try_strl2uint32(ptr, 6, &utc_time) && res;
+    if(res) {
+        res = parse_time_from_val(utc_time, &zda->time_date);
+    }
+    ptr = strchr(ptr, ',') + 1;
+    /*29,11,2021,00,00*71*/
+    res = try_strl2int32(ptr,2, &zda->time_date.tm_mday) && res;
+    ptr = strchr(ptr, ',') + 1;
+    /*11,2021,00,00*71*/
+    res = try_strl2int32(ptr,2, &zda->time_date.tm_mon) && res;
+    ptr = strchr(ptr, ',') + 1;
+    /*2021,00,00*71*/
+    res = try_strl2int32(ptr,4, &zda->time_date.tm_year) && res;
+    ptr = strchr(ptr, ',') + 1;
+    /*00,00*71*/
+    res = try_strl2uint8(ptr,2, &zda->ltzh) && res;
+    ptr = strchr(ptr, ',') + 1;
+    /*00*71*/
+    res = try_strl2uint8(ptr,2, &zda->ltzn) && res;
+    return res;
+}
+
 /*$GNGGA,140213.00,5540.70555,N,03737.93436,E,1,12,0.58,201.4,M,13.3,M,,*42*/
 bool gnss_parse_gga(char* nmea_msg, gga_t* gga) {
     bool res = true;
@@ -150,6 +178,8 @@ bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg) {
     vtg->posMode = ptr[0];
     return res;
 }
+
+
 
 /* GNSS DOP and active satellites */
 //$GNGSA,A,3,78,85,68,84,69,,,,,,,,1.04,0.58,0.86,2*0B
@@ -410,6 +440,11 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
                 res = gnss_parse_gsa(nmea_msg, &gps_ctx->gsa);
                 if(res) {
                     gps_ctx->gsa.cnt++;
+                }
+            } else if(!strncmp(nmea_msg + 3, "ZDA", 3)){
+                res = gnss_parse_zda(nmea_msg, &gps_ctx->zda);
+                if(res) {
+                    gps_ctx->zda.cnt++;
                 }
             } else if(!strncmp(nmea_msg + 3, "TXT", 3)) {
             } else if(!strncmp(nmea_msg + 3, "PUBX", 4)) {
