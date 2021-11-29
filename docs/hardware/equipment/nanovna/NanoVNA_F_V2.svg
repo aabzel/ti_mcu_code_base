@@ -13,7 +13,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="NanoVNA-F V2.svg">
+   sodipodi:docname="NanoVNA_F_V2.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -23,16 +23,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="893.14325"
-     inkscape:cy="535.39247"
+     inkscape:zoom="0.9899495"
+     inkscape:cx="153.41011"
+     inkscape:cy="1404.4727"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="1742"
-     inkscape:window-height="987"
-     inkscape:window-x="2204"
+     inkscape:window-width="1366"
+     inkscape:window-height="729"
+     inkscape:window-x="2560"
      inkscape:window-y="0"
      inkscape:window-maximized="0" />
   <metadata
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -51,13 +51,6 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <rect
-       style="opacity:0.998;fill:none;stroke:#ff00ff;stroke-width:0.407485"
-       id="rect833"
-       width="80.770309"
-       height="96.840813"
-       x="65.167946"
-       y="47.207573" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -69,13 +62,6 @@
          x="68.413696"
          y="60.098213"
          style="stroke-width:0.264583">NanoVNA-F V2</tspan></text>
-    <rect
-       style="opacity:0.998;fill:none;stroke:#ff00ff;stroke-width:0.499999"
-       id="rect926"
-       width="71.059525"
-       height="48.75893"
-       x="162.15178"
-       y="124.73214" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.48697px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.935869"
@@ -87,13 +73,6 @@
          x="164.6326"
          y="139.20818"
          style="font-size:7.48697px;stroke-width:0.935869">STM32F103VET6</tspan></text>
-    <rect
-       style="opacity:0.998;fill:none;stroke:#ff00ff;stroke-width:0.499999"
-       id="rect932"
-       width="42.228584"
-       height="19.243404"
-       x="170.78523"
-       y="184.41597" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 192.38988,184.45238 V 173.58556"
@@ -109,13 +88,6 @@
          x="171.00441"
          y="194.52582"
          style="stroke-width:0.163853">16MB flash</tspan></text>
-    <rect
-       style="opacity:0.998;fill:none;stroke:#ff00ff;stroke-width:0.626383"
-       id="rect940"
-       width="37.024078"
-       height="14.439804"
-       x="260.51736"
-       y="161.22672" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:9.68421px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.242106"
@@ -127,6 +99,125 @@
          x="262.57202"
          y="170.79796"
          style="stroke-width:0.242106">Buzzer</tspan></text>
+    <rect
+       style="opacity:0.998;fill:#f2f2f2;stroke:#000000;stroke-width:0.518532"
+       id="rect887"
+       width="219.98215"
+       height="98.376694"
+       x="18.142857"
+       y="342.34354" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 117.17262,212.42262 V 325.81548"
+       id="path889" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="133.80357"
+       y="273.65475"
+       id="text893"><tspan
+         sodipodi:role="line"
+         id="tspan891"
+         x="133.80357"
+         y="273.65475"
+         style="stroke-width:0.264583">COM6</tspan></text>
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.499999"
+       id="rect895"
+       width="50.24667"
+       height="16.30344"
+       x="99.424263"
+       y="326.06882" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="104.50238"
+       y="335.95779"
+       id="text899"><tspan
+         sodipodi:role="line"
+         id="tspan897"
+         x="104.50238"
+         y="335.95779"
+         style="stroke-width:0.264583">USB</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="131.49661"
+       y="293.19467"
+       id="text903"><tspan
+         sodipodi:role="line"
+         id="tspan901"
+         x="131.49661"
+         y="293.19467"
+         style="stroke-width:0.264583">115200</tspan></text>
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.499999"
+       id="rect905"
+       width="330.34515"
+       height="163.56895"
+       x="-58.264755"
+       y="325.5343" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.499999"
+       id="rect915"
+       width="164.04167"
+       height="58.208332"
+       x="44.601189"
+       y="365.125" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="chips">
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.407485"
+       id="rect833"
+       width="80.770309"
+       height="96.840813"
+       x="65.167946"
+       y="47.207573" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.499999"
+       id="rect926"
+       width="71.059525"
+       height="48.75893"
+       x="162.15178"
+       y="124.73214" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.499999"
+       id="rect932"
+       width="42.228584"
+       height="19.243404"
+       x="170.78523"
+       y="184.41597" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.626383"
+       id="rect940"
+       width="37.024078"
+       height="14.439804"
+       x="260.51736"
+       y="161.22672" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.455407"
+       id="rect844"
+       width="125.11555"
+       height="51.579632"
+       x="172.3517"
+       y="60.301323" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.499999"
+       id="rect874"
+       width="71.815475"
+       height="29.482143"
+       x="88.446426"
+       y="180.67261" />
+    <rect
+       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.499999"
+       id="rect916"
+       width="40.624966"
+       height="20.045216"
+       x="256.04419"
+       y="135.10475" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -143,13 +234,6 @@
          x="86.934525"
          y="105.45536"
          style="stroke-width:0.264583">3GHz</tspan></text>
-    <rect
-       style="opacity:0.998;fill:none;stroke:#ff00ff;stroke-width:0.455407"
-       id="rect844"
-       width="125.11555"
-       height="51.579632"
-       x="172.3517"
-       y="60.301323" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -230,13 +314,6 @@
        height="55.654049"
        x="-0.14407858"
        y="71.391724" />
-    <rect
-       style="opacity:0.998;fill:none;stroke:#ff00ff;stroke-width:0.499999"
-       id="rect874"
-       width="71.815475"
-       height="29.482143"
-       x="88.446426"
-       y="180.67261" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -298,13 +375,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="224.50639"
-       y="194.57222"
+       x="243.48253"
+       y="206.86662"
        id="text898"><tspan
          sodipodi:role="line"
          id="tspan896"
-         x="224.50639"
-         y="194.57222"
+         x="243.48253"
+         y="206.86662"
          style="stroke-width:0.264583">0℃-45℃</tspan></text>
     <text
        xml:space="preserve"
@@ -356,13 +433,6 @@
        height="8.9769344"
        x="-0.094494052"
        y="209.87128" />
-    <rect
-       style="opacity:0.998;fill:none;stroke:#ff00ff;stroke-width:0.499999"
-       id="rect916"
-       width="40.624966"
-       height="20.045216"
-       x="256.04419"
-       y="135.10475" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -385,5 +455,27 @@
          x="67.279762"
          y="31.372023"
          style="stroke-width:0.264583">SN: 4D30383445088975</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="46.772163"
+       y="359.21024"
+       id="text919"><tspan
+         sodipodi:role="line"
+         id="tspan917"
+         x="46.772163"
+         y="359.21024"
+         style="stroke-width:0.264583">Windows</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="-47.306705"
+       y="336.49231"
+       id="text923"><tspan
+         sodipodi:role="line"
+         id="tspan921"
+         x="-47.306705"
+         y="336.49231"
+         style="stroke-width:0.264583">X86-64</tspan></text>
   </g>
 </svg>

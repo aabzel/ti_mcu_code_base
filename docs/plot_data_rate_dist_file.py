@@ -5,7 +5,7 @@ content = file.readlines()
 
 plt.title("LoRa Performance")
 plt.grid(True)
-plt.xlabel('Distanse, [m]')
+plt.xlabel('Distance, [m]')
 plt.ylabel('DataRate, [Bit/s]')
 
 # loop over lines in a file
