@@ -134,10 +134,11 @@ uint8_t extract_digit(uint32_t in_num, uint8_t digit_index) {
     return out_digit;
 }
 
+#if 0
 bool try_alloc_on_stack(int n, uint8_t pat, uint16_t* real_size) {
     // uint8_t array[n];
     bool res = false;
-    uint8_t array[n];
+    uint8_t array[n]; // actually on heap
     *real_size = sizeof(array);
 
     memset(array, pat, n);
@@ -147,6 +148,9 @@ bool try_alloc_on_stack(int n, uint8_t pat, uint16_t* real_size) {
 
     return res;
 }
+#endif
+
+
 
 const static char hex2asciiLUT[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 bool hex2ascii(uint8_t* in_hex, uint32_t hex_len, uint8_t* out_ascii, uint32_t ascii_len) {

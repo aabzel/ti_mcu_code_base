@@ -1,7 +1,7 @@
 #include "system_commands.h"
 
 #include "log.h"
-
+#include "system.h"
 
 bool sys_bypass_nmea_rs232_command(int32_t argc, char* argv[]){
     bool res = false;

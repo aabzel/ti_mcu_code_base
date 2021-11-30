@@ -10,7 +10,9 @@ uint8_t read_addr_8bit(uint32_t address) {
     volatile uint8_t* p_addr = NULL;
     /*MISRA 2012 Rule 11.4: integer should not be converted to pointer */
     p_addr = (volatile uint8_t*)address;
-    value = *p_addr;
+    if(p_addr){
+        value = *p_addr;
+    }
 
     return value;
 }

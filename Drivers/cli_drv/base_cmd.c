@@ -184,13 +184,13 @@ bool cmd_read_memory(int32_t argc, char* argv[]) {
         uint32_t offset = 0,cnt=0;
         uint8_t value_byte = 0u;
         for(cnt = 0; cnt < num_of_byte; cnt++) {
+            value_byte = read_addr_8bit(address + offset);
+            io_printf("%02x", (unsigned int)value_byte);
             if('f'==dir){
                 offset++;
             }else if('r'==dir){
                 offset--;
             }
-            value_byte = read_addr_8bit(address + offset);
-            io_printf("%02x", (unsigned int)value_byte);
         }
         io_printf(CRLF);
 
@@ -361,10 +361,10 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
     return res;
 }
 
-#define EXPECT_STACK_SIZE  (4096)
+#define EXPECT_STACK_SIZE  (4096*10)
 bool cmd_try_stack(int32_t argc, char* argv[]) {
     bool res = false;
-    uint32_t size = 0;
+    uint32_t max_depth = 0;
     uint32_t busy = 0;
     uint16_t real_size = 0;
     uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
@@ -383,31 +383,30 @@ bool cmd_try_stack(int32_t argc, char* argv[]) {
 #ifdef HAS_DEBUG
         parse_stack();
 #endif
-        for(size =0;;size ++){
-            res = try_alloc_on_stack(size, 0x5A,&real_size);
-             if(false == res) {
-                 LOG_ERROR(SYS, "data error");
-             } else {
-                 LOG_INFO(SYS, "size: %u real_size %u",size, real_size);
-             }
-        }
-    }
-    if(1 == argc) {
-        res = true;
-        if(true == res) {
-            res = try_str2uint32(argv[0], &size);
-        }
-        if(true == res) {
-            res = try_alloc_on_stack(size, 0x5A,&real_size);
+        for(max_depth =0;;max_depth++){
+            uint32_t stack_size=0;
+            res=try_recursion( max_depth, &stack_size);
             if(false == res) {
-                LOG_ERROR(SYS, "data error");
+                LOG_ERROR(SYS, "error");
             } else {
-                LOG_INFO(SYS, "real_size %u", real_size);
+                LOG_INFO(SYS, "depth %u calls %u byte Ok!", max_depth, stack_size);
             }
         }
+    }
 
-    } else {
-        LOG_ERROR(SYS, "Usage: tstk size");
+    if(1 <= argc) {
+        res = try_str2uint32(argv[0], &max_depth);
+    }
+
+    if(res) {
+        res=try_recursion( max_depth);
+        if(false == res) {
+             LOG_ERROR(SYS, "error");
+        } else {
+              LOG_INFO(SYS, "depth %u Ok!", max_depth);
+        }
+    }else{
+        LOG_ERROR(SYS, "Usage: tstk depth");
     }
     return res;
 }
