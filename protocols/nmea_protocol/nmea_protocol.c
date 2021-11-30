@@ -292,8 +292,8 @@ bool gnss_parse_pbux_pos(char* nmea_msg, pbux_t* const pbux) {
     }
     return res;
 }
-
 /*
+$GNRMC,142710.60,A,5551.84214,N,03725.61511,E,0.015,,301121,,,D,V*1C
 $GNRMC,072316.27,A,5551.85875,N,03755.65965,E,0.010,,290721,11.73,E,A,V*76
 */
 bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
@@ -334,7 +334,7 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
     }
 
     ptr = strchr(ptr, ',') + 1;
-    res = try_strl2double(ptr, 5, &rmc->mv) && res;
+    try_strl2double(ptr, 5, &rmc->mv) && res;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->mv_ew = ptr[0];
