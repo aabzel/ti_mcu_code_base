@@ -991,6 +991,12 @@ bool sx1262_init(void) {
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
     res = sx1262_load_params(&Sx1262Instance) && res;
+
+    Sx1262Instance.bit_rate = lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor,
+                                    Sx1262Instance.mod_params.band_width,
+                                    Sx1262Instance.mod_params.coding_rate);
+    LOG_INFO(LORA, "data rate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
+
 #ifdef HAS_LEGAL_BAND_CHECK
     uint32_t bandwidth_hz = bandwidth2num(Sx1262Instance.mod_params.band_width);
     res = is_band_legal(Sx1262Instance.rf_frequency_hz, bandwidth_hz);

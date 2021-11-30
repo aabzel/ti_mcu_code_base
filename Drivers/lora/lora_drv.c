@@ -83,7 +83,7 @@ bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
 
 bool lora_process(void) {
     bool res = false;
-#ifdef HAS_TBFT
+#ifdef HAS_TBFP
     /*HeartBeat Lora Frame*/
     res = tbfp_send_ping(FRAME_ID_PONG, IF_LORA);
 #endif /*HAS_TBFT*/

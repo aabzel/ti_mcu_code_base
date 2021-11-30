@@ -69,6 +69,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
                  Sx1262Instance.rx_buffer_pointer);
         LOG_INFO(LORA, "rx_payload_len: %u byte", Sx1262Instance.rx_payload_len);
         LOG_INFO(LORA, "data aval cnt: %u", Sx1262Instance.data_aval_cnt);
+        LOG_INFO(LORA, "data rate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
         io_printf("int cnt: %u" CRLF, Sx1262Instance.int_cnt);
         LOG_INFO(LORA, "busyCnt: %u", Sx1262Instance.busy_cnt);
         io_printf("RssiInst: %d dBm" CRLF, Sx1262Instance.rssi_inst);
