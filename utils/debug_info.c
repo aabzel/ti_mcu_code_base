@@ -127,19 +127,22 @@ bool print_version(void) {
 
     return res;
 }
-#endif
+#endif /*USE_HAL_DRIVER*/
 
 #ifdef HAS_MCU
+extern unsigned long __STACK_SIZE;
 void print_sys_info(void) {
     uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
-    io_printf("Boot top of stack: 0x%x " CRLF, *((uint32_t*)(0x00000000)));
-    io_printf("App  top of stack: 0x%x " CRLF, top_stack_val);
+    io_printf("stack size: 0x%x %u" CRLF, __STACK_SIZE, __STACK_SIZE);
+
+    io_printf("BootStackEnd: 0x%x " CRLF, *((uint32_t*)(0x00000000)));
+    io_printf("AppStackEnd: 0x%x " CRLF, top_stack_val);
     io_printf("Boot reset handler: 0x%x " CRLF, *((uint32_t*)(0x00000004)));
     io_printf("App  reset handler: 0x%x " CRLF, *((uint32_t*)(APP_START_ADDRESS + 4)));
     io_printf("addr of main() 0x08%p" CRLF, main);
     explore_stack_dir();
 }
-#endif
+#endif /*HAS_MCU*/
 
 /*platform spesific data type calculator */
 bool print_u16_un(U16_bit_t un) {
@@ -471,7 +474,7 @@ static bool print_text_addresses(uint32_t cur_stack_val, uint32_t top_stack_val)
     uint32_t cur_addr = 0;
     uint32_t num = 1;
     if(cur_stack_val < top_stack_val) {
-        for(cur_addr = cur_stack_val; cur_addr < top_stack_val; cur_addr++) {
+        for(cur_addr = cur_stack_val; cur_addr < (top_stack_val-4); cur_addr++) {
             uint32_t* ram_addr = (uint32_t*)cur_addr;
             res = is_flash_addr((uint32_t)*ram_addr);
             if(res) {

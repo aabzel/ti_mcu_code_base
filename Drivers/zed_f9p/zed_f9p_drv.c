@@ -93,7 +93,7 @@ static bool zed_f9p_proc_rover(void) {
     if(res) {
         ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
     } else {
-        LOG_ERROR(ZED_F9P, "Invalid GNSS Nmea coordinate");
+        LOG_ERROR(ZED_F9P, "InvalidGnssNmeaDot");
     }
 #endif
 

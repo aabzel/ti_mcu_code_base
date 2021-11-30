@@ -10,6 +10,8 @@
 #ifdef HAS_MCU
 #include "clocks.h"
 #endif
+#include "data_utils.h"
+
  /*
   Note: assume caller calls free().
   */
@@ -31,6 +33,33 @@ bool is_arr_pat(uint8_t* arr, uint32_t size, uint8_t patt) {
         if(patt != arr[i]) {
             res = false;
         }
+    }
+    return res;
+}
+
+bool array_max_cont(uint8_t* arr, size_t size, uint8_t patt, uint32_t *max_cont_patt){
+    bool res = false;
+    if(arr && (0<size) && max_cont_patt){
+        res = true;
+        uint32_t cur_cont_pat=0;
+        uint32_t max_cont_pat=0;
+        uint8_t prev_elem = 0xFF;
+        uint32_t i = 0;
+        for(i = 0; i < size; i++){
+            if(patt==arr[i]){
+                cur_cont_pat++;
+                if(prev_elem==arr[i]){
+
+                }else{
+                    cur_cont_pat=1;
+                }
+            }else{
+                cur_cont_pat=0;
+            }
+            prev_elem  = arr[i];
+            max_cont_pat = rx_max32u(max_cont_pat, cur_cont_pat);
+        }
+        *max_cont_patt=max_cont_pat;
     }
     return res;
 }

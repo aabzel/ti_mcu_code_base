@@ -26,25 +26,26 @@ typedef struct {
 
 
 
-void shell_prompt(void); /*TODO: replace to cli_prompt*/
+bool cmd_ascii(int32_t argc, char* argv[]);
 bool cmd_calc(int32_t argc, char* argv[]);
+bool cmd_echo(int32_t argc, char *argv []);
 bool cmd_find_addr(int32_t argc, char* argv[]);
 bool cmd_help(int32_t argc, char* argv[]);
 bool cmd_launch_function(int32_t argc, char* argv[]);
-bool cmd_version(int32_t argc, char* argv[]);
-bool cmd_repeat(int32_t argc, char* argv[]);
-bool cmd_ascii(int32_t argc, char* argv[]);
-bool cmd_try_stack(int32_t argc, char* argv[]);
-bool dump_cmd_result(bool res);
-bool dump_cmd_result_ex(bool res, const char* message);
-bool cmd_wd_test(int32_t argc, char* argv[]);
-bool cmd_wd_test_hw(int32_t argc, char* argv[]);
-bool cmd_sysinfo(int32_t argc, char* argv[]);
-bool reboot(void);
 bool cmd_low_level_control(int32_t argc, char* argv[]);
 bool cmd_read_memory(int32_t argc, char* argv[]);
+bool cmd_repeat(int32_t argc, char* argv[]);
+bool cmd_sysinfo(int32_t argc, char* argv[]);
+bool cmd_try_stack(int32_t argc, char* argv[]);
+bool cmd_version(int32_t argc, char* argv[]);
+bool cmd_wd_test(int32_t argc, char* argv[]);
+bool cmd_wd_test_hw(int32_t argc, char* argv[]);
 bool cmd_write_memory(int32_t argc, char* argv[]);
-bool cmd_echo(int32_t argc, char *argv []);
+bool dump_cmd_result(bool res);
+bool dump_cmd_result_ex(bool res, const char* message);
+bool reboot(void);
+void shell_prompt(void); /*TODO: replace to cli_prompt*/
+
 
 #define BASE_COMMANDS                                                                                          \
     SHELL_CMD("version", "vi", cmd_version, "Print version information"),                                      \

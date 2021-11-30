@@ -521,9 +521,13 @@ bool nmea_proc(void) {
 #ifdef HAS_MCU
     lack_of_frame_time_out_ms = (cur_time_ms - NmeaData.gnss_time_stamp);
     if(NMEA_LACK_FRAME_WARNING_TIME_OUT_MS < lack_of_frame_time_out_ms) {
-        LOG_WARNING(NMEA, "LackOfFrame");
+        LOG_WARNING(NMEA, "LackOfFrame %u<%u s",
+                    NMEA_LACK_FRAME_WARNING_TIME_OUT_MS/1000,
+                    lack_of_frame_time_out_ms/1000);
         if(NMEA_LACK_FRAME_ERROR_TIME_OUT_MS < lack_of_frame_time_out_ms) {
-            LOG_ERROR(NMEA, "LackOfFrame");
+            LOG_ERROR(NMEA, "LackOfFrame %u<%u s",
+                      NMEA_LACK_FRAME_ERROR_TIME_OUT_MS/1000,
+                      lack_of_frame_time_out_ms/1000);
             NmeaData.coordinate_dd.latitude = 0.0;
             NmeaData.coordinate_dd.longitude = 0.0;
         }

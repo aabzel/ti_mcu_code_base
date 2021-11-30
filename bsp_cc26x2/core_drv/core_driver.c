@@ -46,6 +46,7 @@ bool reboot(void) {
 }
 
 
+
 bool is_ram_addr(uint32_t address) {
     bool res = false;
     if((RAM_START < address) && (address <= (RAM_START + RAM_SIZE))) {

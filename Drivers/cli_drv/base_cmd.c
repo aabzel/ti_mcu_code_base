@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include <string.h>
 
+#include "array.h"
 #include "bit_utils.h"
 #include "cli_manager.h"
 #include "clocks.h"
@@ -127,7 +128,6 @@ bool cmd_write_memory(int32_t argc, char* argv[]) {
         if(true == res) {
             if(false==is_flash_addr(address)){
                 res = write_addr_32bit(address, value);
-
             }
         }
     } else {
@@ -141,15 +141,21 @@ bool cmd_write_memory(int32_t argc, char* argv[]) {
 /* variable address can be obtained from *.elf due to readelf tool*/
 bool cmd_read_memory(int32_t argc, char* argv[]) {
     bool res = false;
-    if(1 == argc) {
-        uint32_t address = 0u;
-        uint32_t value = 0u;
+    char dir='f';
+    uint32_t num_of_byte = 4u;
+    uint32_t address = 0u;
+    if(1 <= argc){
         res = try_str2uint32(argv[0], &address);
         if(false == res) {
-            LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
+            LOG_ERROR(SYS, "InvalidAddrHexVal %s", argv[0]);
         } else {
             io_printf("address: 0x%08x" CRLF, (unsigned int)address);
         }
+
+    }
+#if 0
+    if(1 == argc) {
+        uint32_t value = 0u;
         if(true == res) {
             value = read_addr_32bit(address);
             io_printf("value: 0x%08x" CRLF, (unsigned int)value);
@@ -159,34 +165,42 @@ bool cmd_read_memory(int32_t argc, char* argv[]) {
 
         }
     }
-    if(2 == argc) {
-        uint32_t address = 0u;
-        uint32_t num_of_byte = 0u;
-        uint8_t value_byte = 0u;
-        uint32_t index = 0u;
-        res = try_str2uint32(argv[0], &address);
-        if(false == res) {
-            LOG_ERROR(SYS, "Invalid address hex value %s", argv[0]);
-        } else {
-            io_printf("address: 0x%08x " CRLF, (unsigned int)address);
-        }
+#endif
+
+    if(2 <= argc) {
         res = try_str2uint32(argv[1], &num_of_byte);
         if(false == res) {
-            LOG_ERROR(SYS, "Invalid amount of byte %s", argv[1]);
+            LOG_ERROR(SYS, "InvalidNumByte %s", argv[1]);
         } else {
-            io_printf("num_of_byte: %d " CRLF, (unsigned int)num_of_byte);
+            io_printf("numOfByte: %d " CRLF, (unsigned int)num_of_byte);
         }
-        for(index = 0; index < num_of_byte; index++) {
-            value_byte = read_addr_8bit(address + index);
+    }
+
+    if(3<=argc){
+        dir=argv[2][0];
+    }
+
+    if(res){
+        uint32_t offset = 0,cnt=0;
+        uint8_t value_byte = 0u;
+        for(cnt = 0; cnt < num_of_byte; cnt++) {
+            if('f'==dir){
+                offset++;
+            }else if('r'==dir){
+                offset--;
+            }
+            value_byte = read_addr_8bit(address + offset);
             io_printf("%02x", (unsigned int)value_byte);
         }
         io_printf(CRLF);
+
     }
 
-    if((0 == argc) || (2 < argc)) {
-        LOG_ERROR(SYS, "Usage: read_mem: address num_of_byte");
+    if((0 == argc) || ( 3 < argc)) {
+        LOG_ERROR(SYS, "Usage: read_mem: address num_of_byte dir");
         LOG_INFO(SYS, "Usage: address 0xXXXXXXXX");
         LOG_INFO(SYS, "Usage: num_of_byte [0...]");
+        LOG_INFO(SYS, "Usage: dir [f r]");
     }
     return res;
 }
@@ -347,19 +361,42 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
     return res;
 }
 
+#define EXPECT_STACK_SIZE  (4096)
 bool cmd_try_stack(int32_t argc, char* argv[]) {
-#ifdef HAS_DEBUG
-    parse_stack();
-#endif
     bool res = false;
+    uint32_t size = 0;
+    uint32_t busy = 0;
+    uint16_t real_size = 0;
+    uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
+    uint32_t cur_stack_use=  top_stack_val-((uint32_t)&real_size);
+    io_printf("curStackUsage: %u byte"CRLF,cur_stack_use);
+    io_printf("remStack: %d byte"CRLF,EXPECT_STACK_SIZE-cur_stack_use);
+    uint32_t max_cont_patt = 0;
+    res =  array_max_cont((uint8_t*) top_stack_val-EXPECT_STACK_SIZE, EXPECT_STACK_SIZE, 0, &max_cont_patt);
+    busy = EXPECT_STACK_SIZE-max_cont_patt;
+    if(res){
+        io_printf("max free: %d byte"CRLF, max_cont_patt);
+        io_printf("max busy: %d byte"CRLF, busy);
+        io_printf("max usage: %5.1f %%"CRLF, ((float)100*busy)/((float)EXPECT_STACK_SIZE));
+    }
+    if(0 == argc){
+#ifdef HAS_DEBUG
+        parse_stack();
+#endif
+        for(size =0;;size ++){
+            res = try_alloc_on_stack(size, 0x5A,&real_size);
+             if(false == res) {
+                 LOG_ERROR(SYS, "data error");
+             } else {
+                 LOG_INFO(SYS, "size: %u real_size %u",size, real_size);
+             }
+        }
+    }
     if(1 == argc) {
         res = true;
-        uint32_t size = 0;
-        uint16_t real_size= 0;
         if(true == res) {
             res = try_str2uint32(argv[0], &size);
         }
-
         if(true == res) {
             res = try_alloc_on_stack(size, 0x5A,&real_size);
             if(false == res) {

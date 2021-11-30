@@ -8,6 +8,13 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef HAS_TEST_SUIT_ARRAY
+#include "test_array.h"
+#else
+#define TEST_SUIT_ARRAY
+#endif
+
+
 #ifdef HAS_TEST_SUIT_UTILS
 #include "bit_utils_test.h"
 #include "byte_utils_test.h"
@@ -35,6 +42,7 @@ extern "C" {
 #else
 #define TEST_SUIT_CLI
 #endif
+
 
 #ifdef HAS_TEST_SUIT_CRC
 #include "test_crc.h"
@@ -102,6 +110,7 @@ bool test_array(void);
 bool test_uspec_behavior(void);
 
 #define TEST_SUIT_SW                                                                                                   \
+    TEST_SUIT_ARRAY                                                                                                    \
     TEST_SUIT_UTILS_BIT                                                                                                \
     TEST_SUIT_UTILS_BYTE                                                                                               \
     TEST_SUIT_UTILS_DATA                                                                                               \

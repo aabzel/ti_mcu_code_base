@@ -41,3 +41,6 @@ https://rkn.gov.ru/communication/licensing-activity/p1064/
 
 Обзор технологии LoRa
 https://itechinfo.ru/content/%D0%BE%D0%B1%D0%B7%D0%BE%D1%80-%D1%82%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D0%B8-lora
+
+Начало работы с TI CC13xx-CC26xx и Contiki под Code Composer Studio
+https://habr.com/ru/company/unwds/blog/390815/
