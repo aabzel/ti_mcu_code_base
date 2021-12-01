@@ -10,6 +10,7 @@
 #include "log.h"
 #include "table_utils.h"
 #include "nmea_protocol.h"
+#include "writer_config.h"
 #include "writer_generic.h"
 
 static bool nmea_diag(void) {
@@ -19,6 +20,8 @@ static bool nmea_diag(void) {
     io_printf("crc err cnt : %u" CRLF, NmeaProto.crc_err_cnt);
     io_printf("proc_msg_cnt: %u" CRLF, NmeaProto.proc_msg_cnt);
     io_printf("err cnt : %u" CRLF, NmeaProto.err_cnt);
+    io_printf("undef messeges: %u" CRLF, NmeaProto.undef_err_cnt);
+    io_printf("undef: %s"CRLF, NmeaProto.undef_message);
     io_printf("msg: [%s]" CRLF, NmeaProto.fix_message);
     return true;
 }
@@ -61,6 +64,35 @@ bool nmea_data_command(int32_t argc, char* argv[]) {
         res = nmea_data();
     } else {
         LOG_ERROR(SYS, "Usage: nmd");
+    }
+    return res;
+}
+
+static bool nmea_messages(void){
+    bool res = false;
+    static const table_col_t cols[] = {{5, "mess"},
+                                       {8, "hCnt"},
+                                       {8, "pCnt"},
+    };
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    io_printf(TSEP" GLL "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gll.fcnt.h_cnt,NmeaData.gll.fcnt.cnt);
+    io_printf(TSEP" RMC "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.rmc.fcnt.h_cnt,NmeaData.rmc.fcnt.cnt);
+    io_printf(TSEP" VTG "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.vtg.fcnt.h_cnt,NmeaData.vtg.fcnt.cnt);
+    io_printf(TSEP" GGA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gga.fcnt.h_cnt,NmeaData.gga.fcnt.cnt);
+    io_printf(TSEP" GSV "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gsv.fcnt.h_cnt,NmeaData.gsv.fcnt.cnt);
+    io_printf(TSEP" PBUX"TSEP" %6u "TSEP" %6u "TSEP CRLF,NmeaData.pbux.fcnt.h_cnt,NmeaData.pbux.fcnt.cnt);
+    io_printf(TSEP" ZDA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.zda.fcnt.h_cnt,NmeaData.zda.fcnt.cnt);
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+
+    return res;
+}
+
+bool nmea_messages_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(0 == argc) {
+        res = nmea_messages();
+    } else {
+        LOG_ERROR(SYS, "Usage: nmm");
     }
     return res;
 }

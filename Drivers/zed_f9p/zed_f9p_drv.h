@@ -8,10 +8,8 @@
 #include "gnss_utils.h"
 #include "system.h"
 
-
 #define ZED_F9P_PERIOD_US S_2_US(1.0)
 #define DFLT_GNSS_PER_MS 1000U
-
 
 typedef enum eRTKmode_t {
     RTK_NONE = 0,

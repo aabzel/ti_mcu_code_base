@@ -27,14 +27,14 @@ double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2){
 bool is_valid_time_date(struct tm *date_time){
     bool res = true;
     if(res){
-        if((0<=date_time->tm_sec) && (date_time->tm_sec<=59)){
+        if((0<=date_time->tm_mon) && (date_time->tm_mon<=11)){
             res = true;
         }else{
             res = false;
         }
     }
     if(res){
-        if((0<=date_time->tm_min) && (date_time->tm_min<=59)){
+        if((1<=date_time->tm_mday) && (date_time->tm_mday<=31)){
             res = true;
         }else{
             res = false;
@@ -48,7 +48,7 @@ bool is_valid_time_date(struct tm *date_time){
         }
     }
     if(res){
-        if((1<=date_time->tm_mday) && (date_time->tm_mday<=31)){
+        if((0<=date_time->tm_min) && (date_time->tm_min<=59)){
             res = true;
         }else{
             res = false;
@@ -56,7 +56,7 @@ bool is_valid_time_date(struct tm *date_time){
     }
 
     if(res){
-        if((0<=date_time->tm_mon) && (date_time->tm_mon<=11)){
+        if((0<=date_time->tm_sec) && (date_time->tm_sec<=59)){
             res = true;
         }else{
             res = false;
@@ -65,6 +65,90 @@ bool is_valid_time_date(struct tm *date_time){
 
     return res ;
 }
+
+bool is_valid_time(struct tm *date_time){
+    bool res = true;
+    if(res){
+        if((0<=date_time->tm_hour) && (date_time->tm_hour<=23)){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+    if(res){
+        if((0<=date_time->tm_min) && (date_time->tm_min<=59)){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+
+    if(res){
+        if((0<=date_time->tm_sec) && (date_time->tm_sec<=59)){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+
+    return res ;
+}
+
+
+bool is_time_date_equal(struct tm *date_time1,
+                        struct tm *date_time2){
+    bool res = true;
+    if(res){
+        if(date_time1->tm_year == date_time2->tm_year){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+
+    if(res){
+        if(date_time1->tm_mon == date_time2->tm_mon){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+    if(res){
+        if(date_time1->tm_mday == date_time2->tm_mday){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+
+    if(res){
+        if(date_time1->tm_hour == date_time2->tm_hour){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+
+
+    if(res){
+        if(date_time1->tm_min == date_time2->tm_min){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+
+    if(res){
+        if(date_time1->tm_sec == date_time2->tm_sec){
+            res = true;
+        }else{
+            res = false;
+        }
+    }
+
+    return res ;
+}
+
 
 
 bool is_valid_gnss_coordinates(GnssCoordinate_t dot){

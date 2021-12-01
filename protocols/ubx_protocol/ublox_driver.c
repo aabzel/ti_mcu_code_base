@@ -144,7 +144,7 @@ static bool ubx_proc_nav_timeutc_frame(uint8_t* payload, uint16_t len) {
         NavInfo.date_time.tm_sec = data.sec;
 
         NavInfo.date_time.tm_mday = data.day;
-        NavInfo.date_time.tm_mon = data.month;
+        NavInfo.date_time.tm_mon = data.month-1; /* see page 147*/
         NavInfo.date_time.tm_year = data.year;
         // io_printf("valid: %u" CRLF, data.ValidityFlags.byte);
     }

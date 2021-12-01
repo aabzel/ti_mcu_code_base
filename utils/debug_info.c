@@ -474,7 +474,7 @@ static bool print_text_addresses(uint32_t cur_stack_val, uint32_t top_stack_val)
     uint32_t cur_addr = 0;
     uint32_t num = 1;
     if(cur_stack_val < top_stack_val) {
-        for(cur_addr = cur_stack_val; cur_addr < (top_stack_val-4); cur_addr++) {
+        for(cur_addr = cur_stack_val; cur_addr < (top_stack_val - 4); cur_addr++) {
             uint32_t* ram_addr = (uint32_t*)cur_addr;
             res = is_flash_addr((uint32_t)*ram_addr);
             if(res) {

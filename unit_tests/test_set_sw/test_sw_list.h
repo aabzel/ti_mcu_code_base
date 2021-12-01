@@ -14,7 +14,6 @@ extern "C" {
 #define TEST_SUIT_ARRAY
 #endif
 
-
 #ifdef HAS_TEST_SUIT_UTILS
 #include "bit_utils_test.h"
 #include "byte_utils_test.h"
@@ -42,7 +41,6 @@ extern "C" {
 #else
 #define TEST_SUIT_CLI
 #endif
-
 
 #ifdef HAS_TEST_SUIT_CRC
 #include "test_crc.h"

@@ -753,7 +753,7 @@ bool sx1262_statistic_command(int32_t argc, char* argv[]) {
 bool sx1262_calc_diag(char* key_word1, char* key_word2) {
     bool res = false;
     uint8_t sf = 0, cr = 0, bw = 0;
-    static const table_col_t cols[] = {{5, "No"},     {7, "SF,Ch/s"}, {8, "BW,kHz"},   {5, "CR"},      {9, "bit/s"},
+    static const table_col_t cols[] = {{5, "No"},     {7, "SF,Ch/s"}, {8, "BW,kHz"},    {5, "CR"},       {9, "bit/s"},
                                        {9, "Byte/s"}, {9, "Tsym,ms"}, {9, "Tpream,ms"}, {9, "Tframe,ms"}};
     uint16_t num = 1;
     float data_rate = 0.0f, t_frame;
@@ -780,8 +780,8 @@ bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate);
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate / 8);
                     snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, Tsym * 1000.0f);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_preamble* 1000.0f);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_frame* 1000.0f);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_preamble * 1000.0f);
+                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_frame * 1000.0f);
                     snprintf(temp_str, sizeof(temp_str), "%s", temp_str);
                     if(is_contain(temp_str, key_word1, key_word2)) {
                         io_printf(TSEP " %3u ", num);

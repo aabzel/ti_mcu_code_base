@@ -38,7 +38,7 @@ bool uart_string_reader_init(uart_string_reader_t* rdr) {
 }
 
 void uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
-    if(rdr){
+    if(rdr) {
         if(false == fifo_push(&rdr->fifo, c)) {
             rdr->lost_char_count++;
         }

@@ -7,11 +7,10 @@ speed up to 16 MHz
 #include "sx1262_drv.h"
 
 #include <gpio.h>
+#include <math.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <math.h>
-
 
 #include "bit_utils.h"
 #include "board_layout.h"
@@ -974,7 +973,7 @@ static bool sx1262_set_tx_len(uint8_t payload_length) {
 bool sx1262_init(void) {
     bool res = true;
 #ifdef HAS_DEBUG
-    //set_log_level(LORA, LOG_LEVEL_DEBUG);
+    // set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = true;
 #else
@@ -991,9 +990,9 @@ bool sx1262_init(void) {
     Sx1262Instance.tx_done = true;
     res = sx1262_load_params(&Sx1262Instance) && res;
 
-    Sx1262Instance.bit_rate = lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor,
-                                    Sx1262Instance.mod_params.band_width,
-                                    Sx1262Instance.mod_params.coding_rate);
+    Sx1262Instance.bit_rate =
+        lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
+                            Sx1262Instance.mod_params.coding_rate);
     LOG_INFO(LORA, "data rate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
 
 #ifdef HAS_LEGAL_BAND_CHECK
@@ -1042,7 +1041,7 @@ bool sx1262_init(void) {
         Sx1262Instance.set_sync_word = SYNC_WORD;
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
 
-        Sx1262Instance.sync_reg= true;
+        Sx1262Instance.sync_reg = true;
         res = sx1262_start_rx(0xFFFFFF) && res;
     } else {
         LOG_ERROR(LORA, "SX1262 link error");
@@ -1612,7 +1611,7 @@ bool sx1262_process(void) {
         res = sx1262_transmit_from_queue(&Sx1262Instance);
 
         res = sx1262_poll_status();
-        if (Sx1262Instance.sync_reg) {
+        if(Sx1262Instance.sync_reg) {
             res = sx1262_sync_registers();
         }
 

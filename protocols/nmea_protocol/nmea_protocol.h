@@ -18,10 +18,49 @@
 #define NUM_OF_PARSED_SAT 5
 #define NMEA_MSG_SIZE 100U
 
+typedef enum eGgaQuality_t {
+    QUA_NO_FIX = 0,
+    QUA_AUTONOMOUS_GNSS_FIX = 1,
+    QUA_DIFFERENTIAL_GNSS_FIX = 2,
+    QUA_RTK_FIXED = 4,
+    QUA_RTK_FLOAT = 5,
+    QUA_ESTIMATED_DEAD_RECKONING_FIX = 6,
+} GgaQuality_t;
+
+typedef enum eGsaNavMode_t {
+    NAV_MODE_NO_FIX = 1,
+    NAV_MODE_2D_FIX = 2,
+    NAV_MODE_3D_FIX = 3,
+} GsaNavMode_t;
+
+/*GLL VTG RMC GNS*/
+typedef enum ePosMode_t {
+    POM_NO_FIX = 'N',
+    POM_ESTIMATED_DEAD_RECKONING_FIX = 'E',
+    POM_AUTONOMOUS_GNSS_FIX = 'A',
+    POM_DIFFERENTIAL_GNSS_FIX = 'D',
+    POM_RTK_FLOAT = 'F',
+    POM_RTK_FIXED = 'R',
+} PosMode_t;
+
+typedef enum ePositionMode_t {
+    PM_UNDEF,
+    PM_RTK_FIXED,
+    PM_RTK_FLOAT,
+    PM_DEAD_RECKONING_FIX,
+    PM_DEAD_RECKONING_FIX_BUT_USER_LIMITS_EXCEEDED,
+    PM_GNSS_FIX_BUT_USER_LIMITS_EXCEEDED,
+    PM_NO_POSITION_FIX,
+    PM_2D_GNSS_FIX,
+    PM_3D_GNSS_FIX,
+    PM_COMBINED_GNSS_DEAD_RECKONING_FIX,
+} PositionMode_t;
+
 typedef struct xNmeaProtocol_t {
     uint16_t pos;
     uint32_t msg_cnt;
     uint32_t crc_err_cnt;
+    uint32_t undef_err_cnt;
     uint32_t err_cnt;
     uint32_t crc_read_cnt;
     uint32_t crc_ok_cnt;
@@ -30,11 +69,20 @@ typedef struct xNmeaProtocol_t {
     bool got_massege;
     char message[NMEA_MSG_SIZE];
     char fix_message[NMEA_MSG_SIZE];
+    char undef_message[NMEA_MSG_SIZE];
+    PositionMode_t pos_mode;
 } NmeaProtocol_t;
+
+extern NmeaProtocol_t NmeaProto;
+
+typedef struct xFrameCnt_t {
+    uint32_t cnt;   /*proc counter*/
+    uint32_t h_cnt; /*header counter*/
+} FrameCnt_t;
 
 /* Recommended minimum specific GPS/Transit data */
 typedef struct xRmc_t {
-    uint32_t cnt;
+    FrameCnt_t fcnt;
     struct tm time_date;
     char data_valid; /* validity - A-ok, V-invalid */
     GnssCoordinate_t coordinate_ddmm;
@@ -51,7 +99,7 @@ typedef struct xRmc_t {
 
 /* Global Positioning System Fix Data */
 typedef struct xGga_t {
-    uint32_t cnt;
+    FrameCnt_t fcnt;
     uint32_t utc; /* UTC hour in hhmmss format */
     struct tm time_date;
     GnssCoordinate_t coordinate_ddmm;
@@ -77,7 +125,7 @@ typedef struct xGll_t {
     char lon_dir;  /* Longitude direction East/West indicator */
     char status;   /*Data validity status*/
     char pos_mode; /*Positioning mode, see position fix flags description*/
-    uint32_t cnt;
+    FrameCnt_t fcnt;
 } gll_t;
 
 typedef struct xGsa_t {
@@ -87,7 +135,7 @@ typedef struct xGsa_t {
     double HDOP;      /* Horizontal dilution of precision */
     double VDOP;      /* Vertical dilution of precision */
     uint8_t systemId; /* NMEA-defined GNSS system ID*/
-    uint32_t cnt;
+    FrameCnt_t fcnt;
 } gsa_t;
 
 /*Course over ground and ground speed*/
@@ -101,13 +149,13 @@ typedef struct xVtg_t {
     char sognUnit; /*Speed over ground units: N (knots, fixed field)*/
     char sogkUnit; /*Speed over ground units: K*/
     char posMode;  /*Mode indicator*/
-    uint32_t cnt;
+    FrameCnt_t fcnt;
 } vtg_t;
 
 typedef struct xPbux_t {
     uint8_t msg_id;
     struct tm time_date;
-    uint32_t cnt;
+    FrameCnt_t fcnt;
 } pbux_t;
 
 typedef struct xSatellite_t {
@@ -124,17 +172,20 @@ typedef struct xGsv_t {
     uint8_t signalId; /*NMEA-defined GNSS signal ID*/
     Satellite_t sat[NUM_OF_PARSED_SAT];
     uint16_t numSV; /*Number of known satellites in view regarding both the talker ID and the signalId*/
-    uint32_t cnt;
+    FrameCnt_t fcnt;
 } gsv_t;
-
 
 /*Time and date*/
 typedef struct xZda_t {
     struct tm time_date;
     uint8_t ltzh;
     uint8_t ltzn;
-    uint32_t cnt;
-}zda_t;
+    FrameCnt_t fcnt;
+} zda_t;
+
+typedef struct xTxt_t {
+    FrameCnt_t fcnt;
+} txt_t;
 
 /* GNSS context. Used to keep last GNSS infos from GNSS module msgs*/
 typedef struct xNmeaData_t {
@@ -149,7 +200,7 @@ typedef struct xNmeaData_t {
     pbux_t pbux; /*Proprietary NMEA messages for u-blox positioning receivers*/
     // rlm_t rlm; /*Return link message (RLM) */
     // ths_t ths; /*True heading and status*/
-    // txt_t txt; /*Text transmission*/
+    txt_t txt; /*Text transmission*/
     zda_t zda; /*Time and date*/
     // dtm_t dtm Datum reference
     // grs_t grs GNSS range residuals
@@ -166,7 +217,6 @@ typedef struct xNmeaData_t {
     double height; /*Altitude above mean sea level*/
 } NmeaData_t;
 
-extern NmeaProtocol_t NmeaProto;
 extern NmeaData_t NmeaData;
 
 bool nmea_init(void);

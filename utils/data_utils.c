@@ -150,8 +150,6 @@ bool try_alloc_on_stack(int n, uint8_t pat, uint16_t* real_size) {
 }
 #endif
 
-
-
 const static char hex2asciiLUT[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 bool hex2ascii(uint8_t* in_hex, uint32_t hex_len, uint8_t* out_ascii, uint32_t ascii_len) {
     bool res = false;

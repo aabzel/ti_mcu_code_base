@@ -117,21 +117,21 @@ static bool zed_f9p_proc_none(void) {
     bool res = false;
     task_data[TASK_ID_NMEA].on = true;
     task_data[TASK_ID_UBX].on = false;
-#ifdef HAS_UBLOX
+
+#ifdef HAS_NMEA
     static bool first_time = true;
-    res = is_valid_time_date(&NavInfo.date_time);
+    res = is_valid_time_date(&NmeaData.time_date);
     if(res) {
         if(first_time) {
             LOG_INFO(ZED_F9P, "SpotValidTime!");
-            print_time_date(&NavInfo.date_time);
+            print_time_date(&NmeaData.time_date);
             first_time = false;
         }
-        ZedF9P.time_date = NavInfo.date_time;
+        ZedF9P.time_date = NmeaData.time_date;
     } else {
-        LOG_ERROR(ZED_F9P, "InvalidUbxTimeDate");
+        LOG_ERROR(ZED_F9P, "InvalidNmeaTimeDate");
     }
-#endif
-#ifdef HAS_NMEA
+
     static bool first_gnss = true;
     res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
     if(res) {

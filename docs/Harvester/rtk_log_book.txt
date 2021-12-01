@@ -1,4 +1,15 @@
+Дифференциальные навигационные системы (ДНСС) улучшают точность определения местоположения и скорости подвижных пользователей за счет предоставления данных измерений или корректирующей информации от одной или нескольких базовых станций.
+
+
 https://en.wikipedia.org/wiki/Real-time_kinematic_positioning
+
+https://habr.com/ru/company/intel/blog/258779/
+  
+https://habr.com/ru/post/244475/
+  
+https://en.wikipedia.org/wiki/Precise_Point_Positioning
+  
+https://habr.com/ru/post/244475/  
   
 https://rtklibexplorer.wordpress.com/2018/11/30/a-first-look-at-the-u-blox-zed-f9p-dual-frequency-receiver/
 

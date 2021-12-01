@@ -29,7 +29,6 @@ typedef enum xFrameId_t {
 
 #define TBFP_SIZE_ID 1
 
-
 //#define TBFP_MAX_PAYLOAD (256 - TBFP_SIZE_CRC - TBFP_SIZE_HEADER)
 
 typedef struct xTbfHeader_t {

@@ -17,9 +17,9 @@ bool cmd_try_stack(int32_t argc, char* argv[]);
 
 #define CORTEX_M4_COMMANDS                                                                                             \
     SHELL_CMD("vector_table", "vt", vector_table_command, "Cortex M4 vector table"),                                   \
-    SHELL_CMD("try_stack", "tstk", cmd_try_stack, "Explore stack RAM"),                                            \
-    SHELL_CMD("soft_reboot", "reboot", cmd_soft_reboot, "Reboot board"),                                           \
-    SHELL_CMD("core_diag", "cd", core_diag_command, "Cortex M4 diag"),
+        SHELL_CMD("try_stack", "tstk", cmd_try_stack, "Explore stack RAM"),                                            \
+        SHELL_CMD("soft_reboot", "reboot", cmd_soft_reboot, "Reboot board"),                                           \
+        SHELL_CMD("core_diag", "cd", core_diag_command, "Cortex M4 diag"),
 
 #ifdef __cplusplus
 }

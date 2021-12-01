@@ -83,31 +83,31 @@ bool cmd_soft_reboot(int32_t argc, char* argv[]) {
     return res;
 }
 
-#define EXPECT_STACK_SIZE  (4096*10)
+#define EXPECT_STACK_SIZE (4096 * 10)
 bool cmd_try_stack(int32_t argc, char* argv[]) {
     bool res = false;
     uint32_t max_depth = 0;
     uint32_t busy = 0;
-    uint32_t stack_size=0;
+    uint32_t stack_size = 0;
     uint16_t real_size = 0;
     uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
-    uint32_t cur_stack_use=  top_stack_val-((uint32_t)&real_size);
-    io_printf("curStackUsage: %u byte"CRLF,cur_stack_use);
-    io_printf("remStack: %d byte"CRLF,EXPECT_STACK_SIZE-cur_stack_use);
+    uint32_t cur_stack_use = top_stack_val - ((uint32_t)&real_size);
+    io_printf("curStackUsage: %u byte" CRLF, cur_stack_use);
+    io_printf("remStack: %d byte" CRLF, EXPECT_STACK_SIZE - cur_stack_use);
     uint32_t max_cont_patt = 0;
-    res =  array_max_cont((uint8_t*) top_stack_val-EXPECT_STACK_SIZE, EXPECT_STACK_SIZE, 0, &max_cont_patt);
-    busy = EXPECT_STACK_SIZE-max_cont_patt;
-    if(res){
-        io_printf("max free: %d byte"CRLF, max_cont_patt);
-        io_printf("max busy: %d byte"CRLF, busy);
-        io_printf("max usage: %5.1f %%"CRLF, ((float)100*busy)/((float)EXPECT_STACK_SIZE));
+    res = array_max_cont((uint8_t*)top_stack_val - EXPECT_STACK_SIZE, EXPECT_STACK_SIZE, 0, &max_cont_patt);
+    busy = EXPECT_STACK_SIZE - max_cont_patt;
+    if(res) {
+        io_printf("max free: %d byte" CRLF, max_cont_patt);
+        io_printf("max busy: %d byte" CRLF, busy);
+        io_printf("max usage: %5.1f %%" CRLF, ((float)100 * busy) / ((float)EXPECT_STACK_SIZE));
     }
-    if(0 == argc){
+    if(0 == argc) {
 #ifdef HAS_DEBUG
         parse_stack();
 #endif
-        for(max_depth =0;;max_depth++){
-            res = try_recursion( max_depth, &stack_size);
+        for(max_depth = 0;; max_depth++) {
+            res = try_recursion(max_depth, &stack_size);
             if(false == res) {
                 LOG_ERROR(SYS, "error");
             } else {
@@ -127,9 +127,8 @@ bool cmd_try_stack(int32_t argc, char* argv[]) {
         } else {
             LOG_INFO(SYS, "depth %u calls %u byte Ok!", max_depth, stack_size);
         }
-    }else{
+    } else {
         LOG_ERROR(SYS, "Usage: tstk depth");
     }
     return res;
 }
-
