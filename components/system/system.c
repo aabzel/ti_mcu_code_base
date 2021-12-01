@@ -6,6 +6,10 @@
 #include "sys_config.h"
 #include "io_utils.h"
 
+#ifdef HAS_BOOTLOADER
+#error "That API only for Generic"
+#endif
+
 const char* interface2str(Interfaces_t interface){
     const char *name="undef";
 	switch(interface){
@@ -26,25 +30,3 @@ bool sys_bypass_nmea_rs232(void) {
     return res;
 }
 
-static bool call_recursion(uint32_t cur_depth,
-                           uint32_t max_depth,
-                           uint32_t* stack_size){
-    bool res = false;
-    if (cur_depth < max_depth) {
-        res = call_recursion(cur_depth+1, max_depth, stack_size);
-    } else if ( cur_depth == max_depth) {
-        uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
-        uint32_t cur_stack_use=  top_stack_val-((uint32_t)&res);
-        *stack_size=cur_stack_use;
-        res = true;
-    }else{
-        res = false;
-    }
-    return res;
-}
-
-bool try_recursion(uint32_t max_depth, uint32_t* stack_size){
-    bool res = false;
-    res = call_recursion(0,max_depth, stack_size);
-    return res;
-}

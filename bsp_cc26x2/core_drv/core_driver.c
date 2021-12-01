@@ -8,6 +8,7 @@
 #include <TemperatureCC26X2.h>
 
 #include "bit_utils.h"
+#include "boot_cfg.h"
 #include "data_utils.h"
 #include "sys.h"
 #include "read_mem.h"
@@ -54,3 +55,28 @@ bool is_ram_addr(uint32_t address) {
     }
     return res;
 }
+
+static bool call_recursion(uint32_t cur_depth,
+                           uint32_t max_depth,
+                           uint32_t* stack_size){
+    bool res = false;
+    if (cur_depth < max_depth) {
+        res = call_recursion(cur_depth+1, max_depth, stack_size);
+    } else if ( cur_depth == max_depth) {
+        uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
+        uint32_t cur_stack_use=  top_stack_val-((uint32_t)&res);
+        *stack_size=cur_stack_use;
+        res = true;
+    }else{
+        res = false;
+    }
+    return res;
+}
+
+bool try_recursion(uint32_t max_depth, uint32_t* stack_size){
+    bool res = false;
+    res = call_recursion(0,max_depth, stack_size);
+    return res;
+}
+
+

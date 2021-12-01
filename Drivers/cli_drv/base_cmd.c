@@ -6,6 +6,7 @@
 
 #include "array.h"
 #include "bit_utils.h"
+#include "boot_cfg.h"
 #include "cli_manager.h"
 #include "clocks.h"
 #include "convert.h"
@@ -19,6 +20,7 @@
 #include "oprintf.h"
 #include "read_mem.h"
 #include "str_utils.h"
+#include "system.h"
 #include "uart_string_reader.h"
 
 #ifdef HAS_WDT
@@ -361,55 +363,6 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
     return res;
 }
 
-#define EXPECT_STACK_SIZE  (4096*10)
-bool cmd_try_stack(int32_t argc, char* argv[]) {
-    bool res = false;
-    uint32_t max_depth = 0;
-    uint32_t busy = 0;
-    uint16_t real_size = 0;
-    uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
-    uint32_t cur_stack_use=  top_stack_val-((uint32_t)&real_size);
-    io_printf("curStackUsage: %u byte"CRLF,cur_stack_use);
-    io_printf("remStack: %d byte"CRLF,EXPECT_STACK_SIZE-cur_stack_use);
-    uint32_t max_cont_patt = 0;
-    res =  array_max_cont((uint8_t*) top_stack_val-EXPECT_STACK_SIZE, EXPECT_STACK_SIZE, 0, &max_cont_patt);
-    busy = EXPECT_STACK_SIZE-max_cont_patt;
-    if(res){
-        io_printf("max free: %d byte"CRLF, max_cont_patt);
-        io_printf("max busy: %d byte"CRLF, busy);
-        io_printf("max usage: %5.1f %%"CRLF, ((float)100*busy)/((float)EXPECT_STACK_SIZE));
-    }
-    if(0 == argc){
-#ifdef HAS_DEBUG
-        parse_stack();
-#endif
-        for(max_depth =0;;max_depth++){
-            uint32_t stack_size=0;
-            res=try_recursion( max_depth, &stack_size);
-            if(false == res) {
-                LOG_ERROR(SYS, "error");
-            } else {
-                LOG_INFO(SYS, "depth %u calls %u byte Ok!", max_depth, stack_size);
-            }
-        }
-    }
-
-    if(1 <= argc) {
-        res = try_str2uint32(argv[0], &max_depth);
-    }
-
-    if(res) {
-        res=try_recursion( max_depth);
-        if(false == res) {
-             LOG_ERROR(SYS, "error");
-        } else {
-              LOG_INFO(SYS, "depth %u Ok!", max_depth);
-        }
-    }else{
-        LOG_ERROR(SYS, "Usage: tstk depth");
-    }
-    return res;
-}
 
 bool cmd_launch_function(int32_t argc, char* argv[]) {
     bool res = false;

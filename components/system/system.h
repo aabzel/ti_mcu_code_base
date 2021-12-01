@@ -15,6 +15,5 @@ typedef enum eInterfaces_t {
 
 const char* interface2str(Interfaces_t interface);
 bool sys_bypass_nmea_rs232(void);
-bool try_recursion(uint32_t max_depth,uint32_t* stack_size);
 
 #endif /* SYSTEM_H  */

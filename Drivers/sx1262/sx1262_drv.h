@@ -289,8 +289,8 @@ bool sx1262_wakeup(void);
 bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len);
 bool sx1262_read_buffer(int16_t offset, uint8_t* payload, uint16_t payload_len);
 bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val);
-#ifdef HAS_DEBUG
 float lora_calc_data_rate(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code);
+#ifdef HAS_DEBUG
 float lora_calc_max_frame_tx_time(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code, uint16_t n_preamble,
                                   uint8_t header, uint8_t low_data_rate_opt, float* Tsym, float* t_preamble);
 #endif
