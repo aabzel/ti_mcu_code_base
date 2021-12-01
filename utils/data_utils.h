@@ -63,7 +63,6 @@ typedef union uType8Union_t {
 } Type8Union_t;
 
 bool hex2ascii(uint8_t* in_hex, uint32_t hex_len, uint8_t* out_ascii, uint32_t ascii_len);
-bool try_alloc_on_stack(int n, uint8_t pat, uint16_t* real_size);
 const char* get_spaces_str(uint32_t spaces_length);
 float ms2Hz(uint16_t ms);
 int16_t rx_max16(int16_t max16_x1, int16_t max16_x2);

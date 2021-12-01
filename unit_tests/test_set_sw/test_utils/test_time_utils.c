@@ -20,7 +20,7 @@ bool test_date_utils_2(void) {
   EXPECT_TRUE(parse_date_from_val(280721,&time_stamp));
   EXPECT_EQ(2021,time_stamp.tm_year);
   EXPECT_EQ(28,time_stamp.tm_mday);
-  EXPECT_EQ(7,time_stamp.tm_mon);
+  EXPECT_EQ(6,time_stamp.tm_mon);
   return true;
 }
 

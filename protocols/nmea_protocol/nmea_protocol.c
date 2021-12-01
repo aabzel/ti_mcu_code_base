@@ -581,7 +581,9 @@ bool nmea_proc(void) {
         if(res){
             NmeaData.time_date = NmeaData.zda.time_date;
         }else{
-            LOG_ERROR(ZED_F9P, "InvalidZdaTimeDate");
+#ifdef HAS_MCU
+            LOG_ERROR(NMEA, "InvalidZdaTimeDate");
+#endif
         }
     }
 
@@ -592,7 +594,9 @@ bool nmea_proc(void) {
         if(res){
             NmeaData.time_date = NmeaData.rmc.time_date;
         }else{
-            LOG_ERROR(ZED_F9P, "InvalidRmcTimeDate");
+#ifdef HAS_MCU
+            LOG_ERROR(NMEA, "InvalidRmcTimeDate");
+#endif
         }
     }
 
@@ -604,7 +608,9 @@ bool nmea_proc(void) {
             NmeaData.time_date.tm_min = NmeaData.gga.time_date.tm_min;
             NmeaData.time_date.tm_sec = NmeaData.gga.time_date.tm_sec;
         }else{
-            LOG_ERROR(ZED_F9P, "InvalidGgaTimeDate");
+#ifdef HAS_MCU
+            LOG_ERROR(NMEA, "InvalidGgaTimeDate");
+#endif
         }
     }
     /*If new coordinates had not been received in the last 3 seconds, then FW would have erased the old ones*/

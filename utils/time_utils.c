@@ -41,7 +41,7 @@ bool parse_date_from_val(uint32_t packed_date, struct tm* tm_stamp) {
             res = false;
         }
         if(true == res) {
-            tm_stamp->tm_mon = extract_digit(packed_date, 3) * 10 + extract_digit(packed_date, 2)-1;
+            tm_stamp->tm_mon = extract_digit(packed_date, 3) * 10 + extract_digit(packed_date, 2)-1; /*Ublox count from 1*/
             if(13 <= tm_stamp->tm_mon) {
                 res = false;
             }
