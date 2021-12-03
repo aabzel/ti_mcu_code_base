@@ -859,7 +859,7 @@ bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #ifdef HAS_SX1262_BIT_RATE
     res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&sx1262Instance->tx_max_bit_rate,
                  sizeof(sx1262Instance->tx_max_bit_rate), &file_len);
-    if(res && (4 == file_len)) {
+    if(res) {
         LOG_INFO(LORA, "load max bit rate %f bit/s", sx1262Instance->tx_max_bit_rate);
     } else {
         res = false;
@@ -973,13 +973,13 @@ static bool sx1262_set_tx_len(uint8_t payload_length) {
 bool sx1262_init(void) {
     bool res = true;
 #ifdef HAS_DEBUG
-    // set_log_level(LORA, LOG_LEVEL_DEBUG);
-    Sx1262Instance.debug = true;
-    Sx1262Instance.show_ascii = true;
+    res = set_log_level(LORA, LOG_LEVEL_INFO);
+   // Sx1262Instance.debug = true;
+   // Sx1262Instance.show_ascii = true;
 #else
     Sx1262Instance.debug = false;
     Sx1262Instance.show_bin = false;
-    set_log_level(LORA, LOG_LEVEL_INFO);
+    res = set_log_level(LORA, LOG_LEVEL_INFO);
 #endif
     LOG_INFO(LORA, "Init SX1262");
     static uint8_t call_cnt = 0;
@@ -1007,7 +1007,6 @@ bool sx1262_init(void) {
     }
 #endif /*HAS_LEGAL_BAND_CHECK*/
     GPIO_writeDio(DIO_SX1262_SS, 1);
-    res = set_log_level(LORA, LOG_LEVEL_NOTICE);
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
 
@@ -1392,10 +1391,10 @@ static bool sx1262_calc_bit_rate(uint32_t bytes, float* tx_real_bit_rate, uint32
     duration_ms = tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
     bit_rate = ((float)(bytes * 8 * 1000)) / (((float)duration_ms));
     uint16_t file_len = 0;
-    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(float), &file_len);
+    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(Sx1262Instance.tx_max_bit_rate), &file_len);
     if(Sx1262Instance.tx_max_bit_rate < bit_rate) {
         Sx1262Instance.tx_max_bit_rate = bit_rate;
-        res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(float));
+        res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(Sx1262Instance.tx_max_bit_rate));
         if(false == res) {
             LOG_ERROR(LORA, "SaveMaxLoRaBitRateErr");
         }

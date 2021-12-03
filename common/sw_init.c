@@ -78,8 +78,9 @@ bool sw_init(void) {
 #endif /*HAS_LED*/
 
 #ifdef HAS_CLI
+    set_log_level(ALL_FACILITY, LOG_LEVEL_INFO);
 #ifdef HAS_DEBUG
-    set_log_level(ALL_FACILITY, LOG_LEVEL_DEBUG);
+    //set_log_level(ALL_FACILITY, LOG_LEVEL_DEBUG);
 #endif /*HAS_DEBUG*/
 #ifdef HAS_RELEASE
     set_log_level(ALL_FACILITY, LOG_LEVEL_INFO);

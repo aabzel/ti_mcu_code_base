@@ -9,6 +9,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "table_utils.h"
+#include "nmea_diag.h"
 #include "nmea_protocol.h"
 #include "writer_config.h"
 #include "writer_generic.h"
@@ -26,10 +27,10 @@ static bool nmea_diag(void) {
     return true;
 }
 
-
 static bool nmea_data(void) {
     print_time_date(&NmeaData.rmc.time_date);
     io_printf("RCM" CRLF);
+    io_printf("PosMode: %u %s" CRLF, NmeaProto.pos_mode, nmea_pos_mode2std(NmeaProto.pos_mode));
     print_coordinate(NmeaData.rmc.coordinate_ddmm, true);
     NmeaData.rmc.coordinate_dd = encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
     print_coordinate(NmeaData.rmc.coordinate_dd, true);

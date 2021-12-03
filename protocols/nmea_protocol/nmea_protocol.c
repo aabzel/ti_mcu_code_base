@@ -578,9 +578,9 @@ bool nmea_proc(void) {
 #endif
     if(prev_zda_cnt < NmeaData.zda.fcnt.cnt) {
         res = is_valid_time_date(&NmeaData.zda.time_date);
-        if(res){
+        if(res) {
             NmeaData.time_date = NmeaData.zda.time_date;
-        }else{
+        } else {
 #ifdef HAS_MCU
             LOG_ERROR(NMEA, "InvalidZdaTimeDate");
 #endif
@@ -591,9 +591,9 @@ bool nmea_proc(void) {
         NmeaData.coordinate_dd = encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
         NmeaData.time_date = NmeaData.rmc.time_date;
         res = is_valid_time_date(&NmeaData.rmc.time_date);
-        if(res){
+        if(res) {
             NmeaData.time_date = NmeaData.rmc.time_date;
-        }else{
+        } else {
 #ifdef HAS_MCU
             LOG_ERROR(NMEA, "InvalidRmcTimeDate");
 #endif
@@ -603,11 +603,11 @@ bool nmea_proc(void) {
     if(prev_gga_cnt < NmeaData.gga.fcnt.cnt) {
         NmeaData.coordinate_dd = encode_gnss_coordinates(NmeaData.gga.coordinate_ddmm);
         res = is_valid_time(&NmeaData.gga.time_date);
-        if(res){
+        if(res) {
             NmeaData.time_date.tm_hour = NmeaData.gga.time_date.tm_hour;
             NmeaData.time_date.tm_min = NmeaData.gga.time_date.tm_min;
             NmeaData.time_date.tm_sec = NmeaData.gga.time_date.tm_sec;
-        }else{
+        } else {
 #ifdef HAS_MCU
             LOG_ERROR(NMEA, "InvalidGgaTimeDate");
 #endif

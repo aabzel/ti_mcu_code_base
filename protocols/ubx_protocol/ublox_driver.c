@@ -43,7 +43,7 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
     tx_array_len = len + UBX_HEADER_SIZE + UBX_CRC_SIZE;
     crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
     memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
-    if(true == res) {
+    if(res) {
         res = uart_send(UBX_UART_NUM, tx_array, tx_array_len, true);
         if(res) {
             UbloxProtocol.tx_pkt_cnt++;
@@ -144,7 +144,7 @@ static bool ubx_proc_nav_timeutc_frame(uint8_t* payload, uint16_t len) {
         NavInfo.date_time.tm_sec = data.sec;
 
         NavInfo.date_time.tm_mday = data.day;
-        NavInfo.date_time.tm_mon = data.month-1; /* see page 147*/
+        NavInfo.date_time.tm_mon = data.month - 1; /* see page 147*/
         NavInfo.date_time.tm_year = data.year;
         // io_printf("valid: %u" CRLF, data.ValidityFlags.byte);
     }
@@ -356,7 +356,7 @@ bool ubx_reset_to_dflt(void) {
     print_mem((uint8_t*)&data, sizeof(data), true, false, true, true);
     res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_CFG, (uint8_t*)&data, sizeof(data));
     if(res) {
-        res = ubx_wait_ack(1000);
+        res = ubx_wait_ack(2000);
     }
     return res;
 }
@@ -371,7 +371,7 @@ bool ubx_set_rate(uint16_t meas_rate_ms, uint16_t time_ref) {
         print_mem((uint8_t*)&data, sizeof(data), true, false, true, true);
         res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_RATE, (uint8_t*)&data, sizeof(data));
         if(res) {
-            res = ubx_wait_ack(1000);
+            res = ubx_wait_ack(3000);
         }
     }
     return res;

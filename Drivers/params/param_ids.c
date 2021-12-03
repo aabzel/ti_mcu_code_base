@@ -43,7 +43,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
     /**/ {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
     /**/ {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
-    /**/ {PAR_ID_LORA_MAX_BIT_RATE, 4, FLOAT, "MaxBitRate"},    /*Max LoRa bit/rate*/
+    /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},    /*Max LoRa bit/rate*/
     /**/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
     /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
     /**/ {PAR_ID_RTK_CHANNEL, 1, UINT8, "RTKchannel"},
@@ -72,7 +72,8 @@ bool param_init(void) {
             res = true;
         } else {
             if(value_len != ParamArray[i].len) {
-                LOG_ERROR(PARAM, "Param %u %s len error in Flash FS", ParamArray[i].id, ParamArray[i].name);
+                LOG_ERROR(PARAM, "Param %u %s len error in Flash FS RealLen:%u", ParamArray[i].id,
+                          ParamArray[i].name,value_len);
                 res = false;
                 out_res = false;
             }
@@ -224,7 +225,7 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
         name = coding_rate2str((LoRaCodingRate_t)*value);
     }
     if(PAR_ID_LORA_MAX_BIT_RATE == id) {
-        name = bit_rate2str((float)*value);
+        name = bit_rate2str((double)*value);
     }
     if(PAR_ID_LORA_BW == id) {
         name = bandwidth2str((uint8_t)*value);

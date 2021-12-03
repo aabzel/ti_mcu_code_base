@@ -1,7 +1,7 @@
 #include "nmea_diag.h"
 
 #ifndef HAS_NMEA_DIAG
-#error Do not compile unused code
+    #error Do not compile unused code
 #endif
 
 const char* nmea_pos_mode2std(PositionMode_t pos_mode){

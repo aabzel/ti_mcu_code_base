@@ -216,7 +216,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
 #if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
         res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance, sizeof(double), &file_len);
 #endif /*HAS_PARAM && HAS_FLASH_FS*/
-        if((LoRaInterface.max_distance < cur_dist) && (res) && (sizeof(double) == file_len)) {
+        if((LoRaInterface.max_distance < cur_dist) && res) {
 #if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
             res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&cur_dist, sizeof(double));
             if(false == res) {

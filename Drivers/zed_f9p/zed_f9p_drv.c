@@ -49,6 +49,14 @@ static bool zed_f9p_proc_base(void) {
 #ifdef HAS_SX1262
     Sx1262Instance.sync_reg = false;
 #endif
+
+    res = is_valid_gnss_coordinates(ZedF9P.coordinate_base);
+    if(res) {
+        ZedF9P.coordinate_cur = ZedF9P.coordinate_base;
+    } else {
+        LOG_ERROR(ZED_F9P, "InvalidGnssBaseDot");
+    }
+
     if(task_data[TASK_ID_NMEA].on) {
         task_data[TASK_ID_NMEA].on = false;
     }
@@ -209,7 +217,7 @@ static const keyValItem_t BaseCfgLut[] = {
 #endif
 
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) {
-    bool res = false;
+    bool res = false,    out_res = true;
     res = is_valid_gnss_coordinates(coordinate_base);
     if(res) {
         res = false;
@@ -224,10 +232,15 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
           reset to dflt cfg
          */
         res = ubx_reset_to_dflt();
+        if(false==res){
+            LOG_ERROR(ZED_F9P, "Set Dflt error");
+            out_res = false;
+        }
         uint8_t cnt = 0;
         uint32_t i = 0;
         for(i = 0; i < ARRAY_SIZE(BaseCfgLut); i++) {
             bool loop = true;
+            cnt = 0;
             do {
                 cnt++;
                 res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
@@ -237,8 +250,10 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
                 if(res) {
                     loop = false;
                 }
-                if(10 < cnt) {
+                if(RETRANSMITT_CNT < cnt) {
                     loop = false;
+                    LOG_ERROR(ZED_F9P, "Set 0x%x error",BaseCfgLut[i].key_id);
+                    out_res = false;
                     res = false;
                 }
             } while(loop);
@@ -254,6 +269,10 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         data.ecefYOrLon = 1e7 * coordinate_base.longitude;
         data.ecefZOrAlt = altitude_sea_lev_m * 100;
         res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
+        if(false==res){
+            LOG_ERROR(ZED_F9P, "SetBaseDotErr");
+            out_res = false;
+        }
 
         ZedF9P.rtk_mode = RTK_BASE;
         task_data[TASK_ID_NMEA].on = false;
@@ -272,7 +291,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
     } else {
         LOG_ERROR(ZED_F9P, "InvalBaseGNSScoordinate");
     }
-    return res;
+    return out_res;
 }
 #ifdef HAS_UBLOX
 static const keyValItem_t RoverCfgLut[] = {
@@ -283,29 +302,78 @@ static const keyValItem_t RoverCfgLut[] = {
 #endif
 
 bool zed_f9p_deploy_rover(void) {
-    bool res = false;
+    bool res = false, out_res = true;
 #ifdef HAS_UBLOX
+#ifdef HAS_SX1262
+    Sx1262Instance.sync_reg = false;
+#endif
+    task_data[TASK_ID_PARAM].on = false;
+    task_data[TASK_ID_UBX].on = false;
+    task_data[TASK_ID_FLASH_FS].on = false;
     /*
       perform settings from here
       https://www.youtube.com/watch?v=FpkUXmM7mrc
      */
     res = ubx_reset_to_dflt();
+    if (false==res) {
+        LOG_ERROR(ZED_F9P, "Set Dflt error");
+        out_res = false;
+    }
 
     uint32_t i = 0;
+    uint8_t cnt = 0;
     for(i = 0; i < ARRAY_SIZE(RoverCfgLut); i++) {
-        res = ubx_cfg_set_val(RoverCfgLut[i].key_id, (uint8_t*)&RoverCfgLut[i].u_value.u8[0],
-                              ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM) &&
-              res;
-        res = ubx_wait_ack(700) && res;
+        bool loop = true;
+        cnt = 0;
+        do {
+            cnt++;
+            res = ubx_cfg_set_val(RoverCfgLut[i].key_id, (uint8_t*)&RoverCfgLut[i].u_value.u8[0],
+                              ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM);
+            if(false==res){
+                LOG_ERROR(ZED_F9P, "Key:0x%08x set Error",RoverCfgLut[i].key_id);
+            }
+            res = ubx_wait_ack(900);
+            if(res) {
+                loop = false;
+            } else {
+                LOG_ERROR(ZED_F9P, "noAck");
+            }
+            if(RETRANSMITT_CNT < cnt) {
+                loop = false;
+                res = false;
+                LOG_ERROR(ZED_F9P, "Set 0x%08x error",RoverCfgLut[i].key_id);
+                out_res = false;
+            }
+        } while(loop);
     }
     /*adjust output rate*/
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_UTC) && res;
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GPS) && res;
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GLONASS) && res;
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GALILEO) && res;
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_BEIDOU) && res;
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_UTC) ;
+    if (false==res) {
+        LOG_ERROR(ZED_F9P, "SetRateUtcErr");
+        out_res = false;
+    }
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GPS);
+    if (false==res) {
+        LOG_ERROR(ZED_F9P, "SetRateGpsErr");
+        out_res = false;
+    }
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GLONASS) ;
+    if (false==res) {
+        LOG_ERROR(ZED_F9P, "SetRateGloErr");
+        out_res = false;
+    }
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GALILEO) ;
+    if (false==res) {
+        LOG_ERROR(ZED_F9P, "SetRateGalErr");
+        out_res = false;
+    }
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_BEIDOU) ;
+    if (false==res) {
+        LOG_ERROR(ZED_F9P, "SetRateBeErr");
+        out_res = false;
+    }
 #endif
-    return res;
+    return out_res;
 }
 
 bool zed_f9p_load_params(void) {

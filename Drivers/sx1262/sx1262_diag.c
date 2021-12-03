@@ -290,9 +290,9 @@ const char* bandwidth2str(uint8_t bandwidth) {
     return name;
 }
 
-char* bit_rate2str(float bit_s) {
+char* bit_rate2str(double bit_s) {
     static char name[30] = "";
-    snprintf(name, sizeof(name), "%f Byte/s", bit_s / 8.0f);
+    snprintf(name, sizeof(name), "%7.1f Byte/s", bit_s / 8.0);
     return name;
 }
 

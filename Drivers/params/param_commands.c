@@ -59,7 +59,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                     if(ParamArray[i].len == value_len) {
                         res = raw_val_2str(value, value_len, ParamArray[i].type, valStr, sizeof(valStr));
                     } else {
-                        strncpy(valStr, "lenErr", sizeof(valStr));
+                        snprintf(valStr, sizeof(valStr), "lenErr:%u", value_len);
                     }
                 } else {
                     strncpy(valStr, "lack", sizeof(valStr));
@@ -184,7 +184,7 @@ bool cmd_param_set(int32_t argc, char* argv[]) {
             /* write data to flash FS*/
             res = mm_set(param_id, wrData, write_len);
             if(true == res) {
-                LOG_INFO(PARAM, "Write param_id %u OK", param_id);
+                LOG_INFO(PARAM, "Write param_id %u,%u bute OK", param_id,write_len);
             } else {
                 LOG_ERROR(PARAM, "Unable to write param_id %u", param_id);
             }
