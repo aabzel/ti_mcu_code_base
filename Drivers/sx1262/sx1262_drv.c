@@ -16,6 +16,9 @@ speed up to 16 MHz
 #include "board_layout.h"
 #include "byte_utils.h"
 #include "clocks.h"
+#ifdef HAS_LED
+#include "led_drv.h"
+#endif
 #include "data_utils.h"
 #include "debug_info.h"
 #include "float_utils.h"
@@ -1435,6 +1438,7 @@ static inline bool sx1262_poll_status(void) {
 #ifdef HAS_LORA
                 res = lora_proc_payload(rx_payload, rx_size);
 #endif /*HAS_LORA*/
+                led_blink(&Led[LED_INDEX_RED], 50);
             }
         } break;
         case COM_STAT_COM_TIMEOUT:

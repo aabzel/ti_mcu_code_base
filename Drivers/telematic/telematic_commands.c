@@ -34,7 +34,7 @@ bool lora_sent_command(int32_t argc, char* argv[]) {
     }
 
     if(0 == argc) {
-        LOG_ERROR(SYS, "Usage: lc cmd arg1 arg2 [argN]");
+        LOG_ERROR(SYS, "Usage: lcm cmd arg1 arg2 [argN]");
         LOG_INFO(SYS, "cli_cmd command for remote target");
         res = false;
     }

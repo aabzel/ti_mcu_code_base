@@ -317,7 +317,7 @@ bool zed_f9p_deploy_rover(void) {
     res = ubx_reset_to_dflt();
     if (false==res) {
         LOG_ERROR(ZED_F9P, "Set Dflt error");
-        out_res = false;
+        //out_res = false;
     }
 
     uint32_t i = 0;
