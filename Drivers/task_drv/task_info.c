@@ -23,13 +23,13 @@ uint64_t loop_duration_min_us = UINT64_MAX;
 uint64_t loop_duration_max_us = 0;
 #endif /*HAS_DEBUG*/
 
-#ifdef TASKS
+#ifdef SYS_TASKS
 #define TASK(task_name) {.name = #task_name},
 task_data_t task_data[] = {
-    TASKS
+    SYS_TASKS
 #undef TASK
 };
-#endif /* TASKS */
+#endif /* SYS_TASKS */
 
 
 uint16_t task_cnt(void){

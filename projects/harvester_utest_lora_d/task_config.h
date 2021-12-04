@@ -3,7 +3,7 @@
 
 #include "task_config_base.h"
 
-#define TASKS               \
+#define SYS_TASKS           \
   TASKS_BASE                \
   TASK(LORA)                \
   TASK(RS232)               \
