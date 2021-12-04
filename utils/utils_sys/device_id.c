@@ -10,7 +10,7 @@
 #include "version.h"
 
 uint64_t get_device_serial(void) {
-    uint32_t value;
+    uint32_t value = 0;
 #ifdef CC26XX
     value = read_addr_32bit(CPU_SCS_CPUID);
 #endif

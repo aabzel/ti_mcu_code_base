@@ -46,3 +46,6 @@ https://itechinfo.ru/content/%D0%BE%D0%B1%D0%B7%D0%BE%D1%80-%D1%82%D0%B5%D1%85%D
 
 Начало работы с TI CC13xx-CC26xx и Contiki под Code Composer Studio
 https://habr.com/ru/company/unwds/blog/390815/
+
+IAR EW ARM: выравнивание полей в структурах
+http://microsin.net/programming/arm/iar-data-alignment.html

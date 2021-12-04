@@ -6,9 +6,15 @@
 #include <ti/drivers/Board.h>
 #endif
 
+#ifdef USE_HAL_DRIVER
+#include "stm32f4xx_hal.h"
+#endif    
+
 #ifdef NORTOS
 /*mandatory space NoRTOS.h needs stdint.h*/
+#ifdef CC26XX
 #include <NoRTOS.h>
+#endif
 #endif /*NORTOS*/
 
 #include "clocks.h"
@@ -34,6 +40,10 @@
 
 int main(void) {
     bool res = true;
+#ifdef USE_HAL_DRIVER
+    HAL_Init();
+#endif    
+    
 #ifdef HAS_START_PAUSE
     pause_ms(20);
 #endif /*HAS_START_PAUSE*/

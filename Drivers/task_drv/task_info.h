@@ -26,8 +26,6 @@ typedef struct task_data_tag {
     uint64_t run_time_min;     /*us*/
 } task_data_t;
 
-#ifdef TASKS
-
 #ifdef HAS_DEBUG
 extern uint32_t iteration_cnt;
 extern uint64_t loop_duration_us;
@@ -37,21 +35,20 @@ extern uint64_t loop_duration_max_us;
 
 extern task_data_t task_data[];
 
-typedef enum {
 #define TASK(id) TASK_ID_##id,
+typedef enum {  
     TASKS
-#undef TASK
-        TASK_ID_COUNT
+    TASK_ID_COUNT
 } task_id_t;
-#endif /* TASKS */
+#undef TASK
 
-#ifdef TASKS
+
 uint16_t task_cnt(void);
 uint64_t calc_total_run_time(void) ;
 bool task_init(void);
 bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_func)(void),
                            uint64_t loop_start_time_us);
 bool diag_page_tasks(ostream_t* stream);
-#endif /*TASKS*/
+
 
 #endif /* SRC_TASK_INFO_H */

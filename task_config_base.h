@@ -1,5 +1,5 @@
-#ifndef TASK_CONFIG_BASE_H
-#define TASK_CONFIG_BASE_H
+#ifndef TASKS_CONFIG_BASE_H
+#define TASKS_CONFIG_BASE_H
 
 #define TASKS_BASE                                                        \
   TASK(ADC)                                                               \
@@ -10,8 +10,6 @@
   TASK(LED)                                                               \
   TASK(PARAM)                                                             \
   TASK(RF)                                                                \
-  TASK(UART)                                                              \
-  TASK(UART0_FWD)                                                         \
-  TASK(UART1_FWD)
+  TASK(UART)                                                              
 
-#endif /* TASK_CONFIG_BASE_H */
+#endif /* TASKS_CONFIG_BASE_H */

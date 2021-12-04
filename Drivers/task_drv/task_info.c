@@ -5,8 +5,8 @@
 #include "base_cmd.h"
 #include "clocks.h"
 #include "data_utils.h"
-#include "diag_page_nums.h"
-#include "diag_report.h"
+//#include "diag_page_nums.h"
+//#include "diag_report.h"
 #include "flash_drv.h"
 #include "sys.h"
 #include "sys_tick.h"
@@ -24,8 +24,8 @@ uint64_t loop_duration_max_us = 0;
 #endif /*HAS_DEBUG*/
 
 #ifdef TASKS
-task_data_t task_data[] = {
 #define TASK(task_name) {.name = #task_name},
+task_data_t task_data[] = {
     TASKS
 #undef TASK
 };

@@ -8,6 +8,8 @@
   TASK(RS232)                                                                  \
   TASK(TCAN4550)                                                               \
   TASK(UBX)                                                                    \
+  TASK(UART0_FWD)                                                              \
+  TASK(UART1_FWD)                                                              \
   TASK(ZED_F9P)
 
 #endif /* TASK_CONFIG_HARVESTER_H */

@@ -1049,7 +1049,7 @@ static void dtoa_normal(double double_data, int32_t double_precision, char doubl
 
 void dtoa_(double double_data_, int32_t double_precision_, char out_double_stringified_[]) {
     dtoa_normal(double_data_, double_precision_, out_double_stringified_);
-#if((!defined(DeviceFamily_CC26X2)) && (!defined(STM32F4xx)) && !defined(X86_64))
+#if(!defined(DeviceFamily_CC26X2) && !defined(STM32F4xx) && !defined(X86_64))
     switch(__fpclassifyl(double_data_)) {
     case FP_NORMAL:
     case FP_ZERO:

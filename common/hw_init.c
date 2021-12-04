@@ -11,7 +11,9 @@
 
 #ifdef NORTOS
 /*mandatory space NoRTOS uses stdint*/
+#ifdef CC26XX
 #include <NoRTOS.h>
+#endif /*CC26XX*/
 #include "common_functions.h"
 #endif /*NORTOS*/
 
@@ -95,21 +97,25 @@
 
 bool hw_init(void) {
   bool res = true;
-
-#ifdef CC26X2
+#ifdef CC26XX
   Board_init();
 #endif /*CC26X2*/
 
 #ifdef NORTOS
+  #ifdef CC26XX
   NoRTOS_start();
+  #endif /*CC26X2*/
 #endif /*NORTOS*/
 
 #ifdef HAS_TEMP
   Temperature_init();
 #endif /*HAS_TEMP*/
 
+#ifdef USE_HAL_DRIVER
+   SystemClockConfig();
+#endif
 #ifdef NORTOS  
-  SysTickInit();
+   SysTickInit();
 #endif /*NORTOS*/
 
 #ifdef HAS_GPIO

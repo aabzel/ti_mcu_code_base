@@ -8,7 +8,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#define SYS_FREQ 100000000U
+#define SYS_FREQ 168000000U
 #define CLOCK_FOR_US (SYS_FREQ / 1000000U)
 
 #define COUNTER_FREQ (SYS_FREQ / 1000000U)
@@ -41,8 +41,7 @@ void delay_us(uint32_t delay_in_us);
 
 uint64_t sw_pause_ms(uint32_t delay_in_ms);
 uint32_t clock_get_tick_ms(void);
-bool SystemClock_Config(void);
-
+bool SystemClockConfig(void);
 #ifdef __cplusplus
 }
 #endif

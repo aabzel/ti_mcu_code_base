@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "array.h"
 #include "bit_utils.h"
 #include "data_utils.h"
 #include "none_blocking_pause.h"

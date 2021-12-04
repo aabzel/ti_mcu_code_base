@@ -2,6 +2,7 @@
 #include "main.h"
 #include "stm32f4xx_it.h"
 #include "uart_common.h"
+#include "sys_tick.h"
 
 extern SD_HandleTypeDef hsd;
 
@@ -80,9 +81,9 @@ void PendSV_Handler(void)
 /**
   * @brief This function handles System tick timer.
   */
-void SysTick_Handler(void)
-{
+void SysTick_Handler(void){
   HAL_IncTick();
+  SysTickIntHandler();
 }
 
 /******************************************************************************/
@@ -105,6 +106,6 @@ void SDIO_IRQHandler(void)
   */
 void USART6_IRQHandler(void)
 {
-  HAL_UART_IRQHandler(&huart[6].uart_h);
+  HAL_UART_IRQHandler(&huart[6-1].uart_h);
 }
 
