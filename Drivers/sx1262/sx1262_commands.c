@@ -63,31 +63,34 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         LOG_INFO(LORA, "data rate %f bit/s %f byte/s", data_rate, data_rate / 8);
         LOG_INFO(LORA, "Tframe %f s", t_frame);
 #endif
+        // float rssi_watts=0.0;
         LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
+        // float rssi_inst = dbm2watts((int32_t) Sx1262Instance.rssi_inst);
+        LOG_INFO(LORA, "RssiInst: %d dBm=%f W", Sx1262Instance.rssi_inst, dbm2watts((int32_t)Sx1262Instance.rssi_inst));
+        LOG_INFO(LORA, "RssiPkt: %d=%f W", Sx1262Instance.rssi_pkt, dbm2watts((int32_t)Sx1262Instance.rssi_pkt));
+        LOG_INFO(LORA, "SnrPkt: %u", Sx1262Instance.snr_pkt);
+        LOG_INFO(LORA, "SignalRssiPkt: %d=%f W", Sx1262Instance.signal_rssi_pkt,
+                 dbm2watts((int32_t)Sx1262Instance.signal_rssi_pkt));
+        // io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
+        // io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
+        // LOG_INFO(LORA,"RssiAvg: %d dBm=%f W", Sx1262Instance.rssi_avg, rssi_watts);
         LOG_INFO(LORA, "packet type: %s", pack_type2str(Sx1262Instance.packet_type));
+        LOG_INFO(LORA, "rx_payload_len: %u byte", Sx1262Instance.rx_payload_len);
         LOG_INFO(LORA, "rx_buffer_pointer: %u 0x%x", Sx1262Instance.rx_buffer_pointer,
                  Sx1262Instance.rx_buffer_pointer);
-        LOG_INFO(LORA, "rx_payload_len: %u byte", Sx1262Instance.rx_payload_len);
         LOG_INFO(LORA, "data aval cnt: %u", Sx1262Instance.data_aval_cnt);
         LOG_INFO(LORA, "data rate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
         io_printf("int cnt: %u" CRLF, Sx1262Instance.int_cnt);
         LOG_INFO(LORA, "busyCnt: %u", Sx1262Instance.busy_cnt);
-        io_printf("RssiInst: %d dBm" CRLF, Sx1262Instance.rssi_inst);
-        io_printf("RssiPkt: %u" CRLF, Sx1262Instance.rssi_pkt);
-        io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
         io_printf("debug: %u" CRLF, Sx1262Instance.debug);
         io_printf("showBin: %u" CRLF, Sx1262Instance.show_bin);
         io_printf("showAscii: %u" CRLF, Sx1262Instance.show_ascii);
         io_printf("isPacket: %u" CRLF, Sx1262Instance.is_packet);
-        io_printf("RssiAvg: %u" CRLF, Sx1262Instance.rssi_avg);
-        io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
         io_printf("status: %u" CRLF, Sx1262Instance.status);
         LOG_INFO(LORA, "cmd stat: [%u] %s", Sx1262Instance.com_stat, cmd_stat2str(Sx1262Instance.com_stat));
         printf_pack_stat(&Sx1262Instance.lora, "LoRA");
         parse_op_error(Sx1262Instance.op_error);
         parse_irq_stat(Sx1262Instance.irq_stat);
-        io_printf("SnrPkt: %u" CRLF, Sx1262Instance.snr_pkt);
-        io_printf("SignalRssiPkt: %u" CRLF, Sx1262Instance.signal_rssi_pkt);
         io_printf("read sync_word: 0x%" PRIx64 "" CRLF, Sx1262Instance.get_sync_word);
         io_printf("set sync_word: 0x%" PRIx64 "" CRLF, Sx1262Instance.set_sync_word);
 

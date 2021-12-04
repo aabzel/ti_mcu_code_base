@@ -2,7 +2,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#ifdef CC26XX
 #include <ti/drivers/Board.h>
+#endif
 
 #ifdef NORTOS
 /*mandatory space NoRTOS.h needs stdint.h*/

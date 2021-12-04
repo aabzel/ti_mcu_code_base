@@ -5,6 +5,7 @@
 
 #include "debug_info.h"
 #include "io_utils.h"
+#include "sys_config.h"
 #include "version.h"
 #include "writer_generic.h"
 

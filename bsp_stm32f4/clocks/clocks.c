@@ -5,8 +5,6 @@
 
 #include "sys_tick.h"
 
-uint32_t volatile g_up_time_ms = 0;
-
 void delay_ms(uint32_t delay_in_ms) {
     uint32_t init_time_in_ms = g_up_time_ms;
     while(g_up_time_ms < (init_time_in_ms + delay_in_ms)) {

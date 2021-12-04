@@ -1,6 +1,6 @@
 #include <string.h>
 
-#ifndef STM32F413xx
+#if !defined(STM32F413xx) && !defined(STM32F407xx)
 #include <strings.h>
 #endif
 

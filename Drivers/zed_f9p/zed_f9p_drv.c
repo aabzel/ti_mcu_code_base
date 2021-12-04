@@ -217,7 +217,7 @@ static const keyValItem_t BaseCfgLut[] = {
 #endif
 
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) {
-    bool res = false,    out_res = true;
+    bool res = false, out_res = true;
     res = is_valid_gnss_coordinates(coordinate_base);
     if(res) {
         res = false;
@@ -232,7 +232,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
           reset to dflt cfg
          */
         res = ubx_reset_to_dflt();
-        if(false==res){
+        if(false == res) {
             LOG_ERROR(ZED_F9P, "Set Dflt error");
             out_res = false;
         }
@@ -252,7 +252,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
                 }
                 if(RETRANSMITT_CNT < cnt) {
                     loop = false;
-                    LOG_ERROR(ZED_F9P, "Set 0x%x error",BaseCfgLut[i].key_id);
+                    LOG_ERROR(ZED_F9P, "Set 0x%x error", BaseCfgLut[i].key_id);
                     out_res = false;
                     res = false;
                 }
@@ -269,7 +269,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         data.ecefYOrLon = 1e7 * coordinate_base.longitude;
         data.ecefZOrAlt = altitude_sea_lev_m * 100;
         res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
-        if(false==res){
+        if(false == res) {
             LOG_ERROR(ZED_F9P, "SetBaseDotErr");
             out_res = false;
         }
@@ -315,9 +315,9 @@ bool zed_f9p_deploy_rover(void) {
       https://www.youtube.com/watch?v=FpkUXmM7mrc
      */
     res = ubx_reset_to_dflt();
-    if (false==res) {
+    if(false == res) {
         LOG_ERROR(ZED_F9P, "Set Dflt error");
-        //out_res = false;
+        // out_res = false;
     }
 
     uint32_t i = 0;
@@ -328,9 +328,9 @@ bool zed_f9p_deploy_rover(void) {
         do {
             cnt++;
             res = ubx_cfg_set_val(RoverCfgLut[i].key_id, (uint8_t*)&RoverCfgLut[i].u_value.u8[0],
-                              ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM);
-            if(false==res){
-                LOG_ERROR(ZED_F9P, "Key:0x%08x set Error",RoverCfgLut[i].key_id);
+                                  ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM);
+            if(false == res) {
+                LOG_ERROR(ZED_F9P, "Key:0x%08x set Error", RoverCfgLut[i].key_id);
             }
             res = ubx_wait_ack(900);
             if(res) {
@@ -341,34 +341,34 @@ bool zed_f9p_deploy_rover(void) {
             if(RETRANSMITT_CNT < cnt) {
                 loop = false;
                 res = false;
-                LOG_ERROR(ZED_F9P, "Set 0x%08x error",RoverCfgLut[i].key_id);
+                LOG_ERROR(ZED_F9P, "Set 0x%08x error", RoverCfgLut[i].key_id);
                 out_res = false;
             }
         } while(loop);
     }
     /*adjust output rate*/
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_UTC) ;
-    if (false==res) {
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_UTC);
+    if(false == res) {
         LOG_ERROR(ZED_F9P, "SetRateUtcErr");
         out_res = false;
     }
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_GPS);
-    if (false==res) {
+    if(false == res) {
         LOG_ERROR(ZED_F9P, "SetRateGpsErr");
         out_res = false;
     }
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GLONASS) ;
-    if (false==res) {
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GLONASS);
+    if(false == res) {
         LOG_ERROR(ZED_F9P, "SetRateGloErr");
         out_res = false;
     }
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GALILEO) ;
-    if (false==res) {
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_GALILEO);
+    if(false == res) {
         LOG_ERROR(ZED_F9P, "SetRateGalErr");
         out_res = false;
     }
-    res = ubx_set_rate(ZedF9P.rate_ms, TIME_BEIDOU) ;
-    if (false==res) {
+    res = ubx_set_rate(ZedF9P.rate_ms, TIME_BEIDOU);
+    if(false == res) {
         LOG_ERROR(ZED_F9P, "SetRateBeErr");
         out_res = false;
     }

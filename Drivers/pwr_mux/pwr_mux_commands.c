@@ -19,19 +19,19 @@ bool pwr_mux_set_command(int32_t argc, char* argv[]){
     if(1 == argc) {
         res = try_str2uint8(argv[0], &source);
         if(false == res) {
-            LOG_ERROR(PWR, "Unable to parse source", argv[0]);
+            LOG_ERROR(LG_PWR, "Unable to parse source", argv[0]);
         }
         if(res){
           res= pwr_src_set((PwrSource_t)source);
           if(true==res){
-              LOG_INFO(PWR, "OK");
+              LOG_INFO(LG_PWR, "OK");
           }else{
-              LOG_ERROR(PWR, "Error");
+              LOG_ERROR(LG_PWR, "Error");
           }
         }
     } else {
-        LOG_ERROR(PWR, "Usage: pms source");
-        LOG_INFO(PWR, "source [0-VCC_3V3 1-PWR_SRC_3V0_BATT]");
+        LOG_ERROR(LG_PWR, "Usage: pms source");
+        LOG_INFO(LG_PWR, "source [0-VCC_3V3 1-PWR_SRC_3V0_BATT]");
     }
     return res;
 }
@@ -44,7 +44,7 @@ bool pwr_mux_diag_command(int32_t argc, char* argv[]){
         pwr_source = pwr_src_get();
         io_printf("power source %u %s"CRLF, pwr_source, pwr_source2str(pwr_source));
     } else {
-        LOG_ERROR(PWR, "Usage: pmd");
+        LOG_ERROR(LG_PWR, "Usage: pmd");
     }
     return res;
 }
@@ -55,19 +55,19 @@ bool pwr_set_save_mode_command(int32_t argc, char *argv[]) {
     if(1 == argc) {
         res = try_str2bool(argv[0], &state);
         if(false == res) {
-            LOG_ERROR(PWR, "Unable to extract state %s", argv[0]);
+            LOG_ERROR(LG_PWR, "Unable to extract state %s", argv[0]);
         }
     }
     if(res){
         if (true==state) {
-            LOG_INFO(PWR, "Enter power save mode");
+            LOG_INFO(LG_PWR, "Enter power save mode");
 #ifdef HAS_TCAN4550
             res = tcan4550_deinit() && res;
             task_data[TASK_ID_TCAN4550].on = false;
 #endif
             res = gpio_set_state(DIO_PS_RS232 , 0)&& res;
         } else {
-            LOG_INFO(PWR, "Enter power normal mode");
+            LOG_INFO(LG_PWR, "Enter power normal mode");
             res = gpio_set_state(DIO_PS_RS232 , 1);
 #ifdef HAS_TCAN4550
             task_data[TASK_ID_TCAN4550].on = true;

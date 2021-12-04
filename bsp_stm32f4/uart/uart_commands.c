@@ -10,6 +10,7 @@
 #include "table_utils.h"
 #include "uart_common.h"
 #include "uart_drv.h"
+#include "writer_config.h"
 #include "uart_string_reader.h"
 
 bool diag_page_uarts(ostream_t* stream) {
@@ -69,7 +70,7 @@ bool uart_send_command(int32_t argc, char* argv[]) {
         }
 
         if(true == res) {
-            res = uart_send(uart_num, array, array_len);
+            res = uart_send(uart_num, array, array_len, true);
             if(false == res) {
                 LOG_ERROR(UART, "Unable to send UART");
             } else {

@@ -48,7 +48,7 @@ bool pwr_src_set(PwrSource_t source) {
         if(true == is_float_equal_absolute(vbatt_voltage, NORMAL_BATT_VOL, 0.5f)) {
             GPIO_writeDio(DIO_PWR_MUX_CTRL, 1);
         } else {
-            LOG_ERROR(PWR, "Batt voltage too low %f norm: %f", vbatt_voltage, NORMAL_BATT_VOL);
+            LOG_ERROR(LG_PWR, "Batt voltage too low %f norm: %f", vbatt_voltage, NORMAL_BATT_VOL);
         }
     } else {
         res = false;
@@ -64,15 +64,15 @@ bool pwr_src_init(void) {
     res = mm_get(PAR_ID_PWR_SRC, (uint8_t*)&pwr_source, sizeof(pwr_source), &file_len);
 #endif /*HAS_FLASH_FS*/
     if((true == res) && (1 == file_len)) {
-        LOG_INFO(PWR, "Set power source %u %s", pwr_source, pwr_source2str(pwr_source));
+        LOG_INFO(LG_PWR, "Set power source %u %s", pwr_source, pwr_source2str(pwr_source));
         res = pwr_src_set(pwr_source);
     } else {
-        LOG_WARNING(PWR, "Set default power source VCC 3.3V");
+        LOG_WARNING(LG_PWR, "Set default power source VCC 3.3V");
         res = pwr_src_set(PWR_SRC_VCC_3V3);
         pwr_source = PWR_SRC_VCC_3V3;
         res = mm_set(PAR_ID_PWR_SRC, (uint8_t*)&pwr_source, sizeof(pwr_source));
         if(false == res) {
-            LOG_ERROR(PWR, "Unable to set dflt PwrSrc");
+            LOG_ERROR(LG_PWR, "Unable to set dflt PwrSrc");
         }
     }
 

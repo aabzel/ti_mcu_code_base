@@ -130,11 +130,9 @@ bool print_version(void) {
 #endif /*USE_HAL_DRIVER*/
 
 #ifdef HAS_MCU
-extern unsigned long __STACK_SIZE;
+
 void print_sys_info(void) {
     uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
-    io_printf("stack size: 0x%x %u" CRLF, __STACK_SIZE, __STACK_SIZE);
-
     io_printf("BootStackEnd: 0x%x " CRLF, *((uint32_t*)(0x00000000)));
     io_printf("AppStackEnd: 0x%x " CRLF, top_stack_val);
     io_printf("Boot reset handler: 0x%x " CRLF, *((uint32_t*)(0x00000004)));

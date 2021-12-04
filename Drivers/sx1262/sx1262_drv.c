@@ -977,8 +977,8 @@ bool sx1262_init(void) {
     bool res = true;
 #ifdef HAS_DEBUG
     res = set_log_level(LORA, LOG_LEVEL_INFO);
-   // Sx1262Instance.debug = true;
-   // Sx1262Instance.show_ascii = true;
+    // Sx1262Instance.debug = true;
+    // Sx1262Instance.show_ascii = true;
 #else
     Sx1262Instance.debug = false;
     Sx1262Instance.show_bin = false;
@@ -1167,37 +1167,45 @@ bool sx1262_get_status(uint8_t* out_status) {
     return res;
 }
 
-bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, uint8_t* RssiPkt, uint8_t* SnrPkt,
-                              uint8_t* SignalRssiPkt) {
+/*
+ GetPacketStatus
+ * */
+bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, int8_t* RssiPkt, uint8_t* SnrPkt,
+                              int8_t* SignalRssiPkt) {
     bool res = false;
     if((NULL != RxStatus) && (NULL != RssiSync) && (NULL != RssiAvg) && (NULL != RssiPkt) && (NULL != SnrPkt) &&
        (NULL != SignalRssiPkt)) {
 
-        uint8_t rx_array[10];
+        uint8_t rx_array[5];
         memset(rx_array, 0xFF, sizeof(rx_array));
         res = sx1262_send_opcode(OPCODE_GET_PACKET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
         if(res) {
             Sx1262Instance.status = rx_array[1];
-            *RxStatus = rx_array[2];
-            *RssiSync = rx_array[3];
-            *RssiAvg = rx_array[4];
-            *RssiPkt = rx_array[7];
-            *SnrPkt = rx_array[8];
-            *SignalRssiPkt = rx_array[9];
+            int8_t tRssiPkt = -rx_array[2] / 2;
+            uint8_t tSnrPkt = rx_array[3] / 4;
+            int8_t tSignalRssiPkt = -rx_array[4] / 2;
+            *RssiPkt = tRssiPkt;
+            *SnrPkt = tSnrPkt;
+            *SignalRssiPkt = tSignalRssiPkt;
         }
     }
     return res;
 }
 
-bool sx1262_get_rssi_inst(int8_t* rssi_inst) {
+/*GetRssiInst
+  Returns the instantaneous measured RSSI while in Rx mode
+  */
+bool sx1262_get_rssi_inst(int8_t* out_rssi_inst) {
     bool res = false;
-    if((NULL != rssi_inst)) {
-        uint8_t rx_array[3];
-        memset(rx_array, 0xFF, sizeof(rx_array));
-        res = sx1262_send_opcode(OPCODE_GET_RSSIINST, NULL, 0, rx_array, sizeof(rx_array));
-        if(res) {
-            Sx1262Instance.status = rx_array[1];
-            *rssi_inst = -(rx_array[2] >> 1);
+    int8_t rssi_inst = 0;
+    uint8_t rx_array[3];
+    memset(rx_array, 0xFF, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_GET_RSSIINST, NULL, 0, rx_array, sizeof(rx_array));
+    if(res) {
+        Sx1262Instance.status = rx_array[1];
+        rssi_inst = -(rx_array[2] >> 1); /*Signal power in dBm*/
+        if(NULL != out_rssi_inst) {
+            *out_rssi_inst = rssi_inst;
         }
     }
     return res;
@@ -1360,9 +1368,13 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
             res = sx1262_init();
         }
     } break;
-    case CHP_MODE_RX:
-        res = true;
-        break;
+    case CHP_MODE_RX: {
+        int8_t rssi_inst = 0;
+        res = sx1262_get_rssi_inst(&rssi_inst);
+        if(res) {
+            Sx1262Instance.rssi_inst = rssi_inst;
+        }
+    } break;
     case CHP_MODE_TX: {
         if(prev_chip_mode == chip_mode) {
             chip_mode_tx++;
@@ -1394,10 +1406,12 @@ static bool sx1262_calc_bit_rate(uint32_t bytes, float* tx_real_bit_rate, uint32
     duration_ms = tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
     bit_rate = ((float)(bytes * 8 * 1000)) / (((float)duration_ms));
     uint16_t file_len = 0;
-    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(Sx1262Instance.tx_max_bit_rate), &file_len);
+    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate,
+                 sizeof(Sx1262Instance.tx_max_bit_rate), &file_len);
     if(Sx1262Instance.tx_max_bit_rate < bit_rate) {
         Sx1262Instance.tx_max_bit_rate = bit_rate;
-        res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate, sizeof(Sx1262Instance.tx_max_bit_rate));
+        res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate,
+                     sizeof(Sx1262Instance.tx_max_bit_rate));
         if(false == res) {
             LOG_ERROR(LORA, "SaveMaxLoRaBitRateErr");
         }
@@ -1409,6 +1423,26 @@ static bool sx1262_calc_bit_rate(uint32_t bytes, float* tx_real_bit_rate, uint32
     return res;
 }
 #endif /*HAS_SX1262_BIT_RATE*/
+
+static bool sx1262_sync_rssi(void) {
+    bool res = false;
+    uint8_t rx_status = 0;
+    uint8_t rssi_sync = 0;
+    uint8_t rssi_avg = 0;
+    int8_t rssi_pkt = 0;
+    uint8_t snr_pkt = 0;
+    int8_t signal_rssi_pkt = 0;
+    res = sx1262_get_packet_status(&rx_status, &rssi_sync, &rssi_avg, &rssi_pkt, &snr_pkt, &signal_rssi_pkt);
+    if(res) {
+        Sx1262Instance.rx_status = rx_status;
+        Sx1262Instance.rssi_sync = rssi_sync;
+        Sx1262Instance.rssi_avg = rssi_avg;
+        Sx1262Instance.rssi_pkt = rssi_pkt;
+        Sx1262Instance.snr_pkt = snr_pkt;
+        Sx1262Instance.signal_rssi_pkt = signal_rssi_pkt;
+    }
+    return res;
+}
 
 static inline bool sx1262_poll_status(void) {
     bool res = false;
@@ -1483,6 +1517,8 @@ static inline bool sx1262_poll_status(void) {
 
         res = sx1262_reset_stats();
     }
+
+    sx1262_sync_rssi();
     return res;
 }
 
@@ -1499,30 +1535,6 @@ static inline bool sx1262_sync_registers(void) {
         Sx1262Instance.rx_buffer_pointer = tempSx1262Instance.rx_buffer_pointer;
     }
 #ifdef HAS_SX1262_POLL
-
-    tempSx1262Instance.rx_status = 0;
-    tempSx1262Instance.rssi_sync = 0;
-    tempSx1262Instance.rssi_avg = 0;
-    tempSx1262Instance.rssi_pkt = 0;
-    tempSx1262Instance.snr_pkt = 0;
-    tempSx1262Instance.signal_rssi_pkt = 0;
-    res = sx1262_get_packet_status(&tempSx1262Instance.rx_status, &tempSx1262Instance.rssi_sync,
-                                   &tempSx1262Instance.rssi_avg, &tempSx1262Instance.rssi_pkt,
-                                   &tempSx1262Instance.snr_pkt, &tempSx1262Instance.signal_rssi_pkt);
-    if(res) {
-        Sx1262Instance.rx_status = tempSx1262Instance.rx_status;
-        Sx1262Instance.rssi_sync = tempSx1262Instance.rssi_sync;
-        Sx1262Instance.rssi_avg = tempSx1262Instance.rssi_avg;
-        Sx1262Instance.rssi_pkt = tempSx1262Instance.rssi_pkt;
-        Sx1262Instance.snr_pkt = tempSx1262Instance.snr_pkt;
-        Sx1262Instance.signal_rssi_pkt = tempSx1262Instance.signal_rssi_pkt;
-    }
-
-    tempSx1262Instance.rssi_inst = 0;
-    res = sx1262_get_rssi_inst(&tempSx1262Instance.rssi_inst);
-    if(res) {
-        Sx1262Instance.rssi_inst = tempSx1262Instance.rssi_inst;
-    }
 
     memset(&tempSx1262Instance.gfsk, 0x0, sizeof(tempSx1262Instance.gfsk));
     memset(&tempSx1262Instance.lora, 0x0, sizeof(tempSx1262Instance.lora));

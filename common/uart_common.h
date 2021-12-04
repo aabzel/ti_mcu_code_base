@@ -39,8 +39,6 @@ typedef struct xUartHandle_t {
   volatile uint8_t *rx_buff;
   uint8_t rx_byte_cnt;
   uint8_t tx_byte_cnt;
-  //volatile uint32_t rx_cnt;
-  //volatile uint32_t tx_cnt;
   volatile flowCnt_t cnt;
   flowCnt_t cnt_prev;
   uint32_t rx_buff_size;
@@ -53,6 +51,8 @@ typedef struct xUartHandle_t {
   UART_Params uartParams;
 #endif
 #ifdef  USE_HAL_DRIVER 
+  volatile uint32_t rx_cnt;
+  volatile uint32_t tx_cnt;
   UART_HandleTypeDef uart_h;
 #endif /*USE_HAL_DRIVER*/
 #ifdef  HAS_MCU

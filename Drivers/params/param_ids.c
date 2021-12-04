@@ -43,7 +43,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
     /**/ {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
     /**/ {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
-    /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},    /*Max LoRa bit/rate*/
+    /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},   /*Max LoRa bit/rate*/
     /**/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
     /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
     /**/ {PAR_ID_RTK_CHANNEL, 1, UINT8, "RTKchannel"},
@@ -65,15 +65,15 @@ bool param_init(void) {
     uint16_t value_len = 0;
     uint16_t i = 0;
     for(i = 0; i < ARRAY_SIZE(ParamArray); i++) {
-        uint8_t value[ParamArray[i].len];
+        uint8_t value[FLASH_FS_MAX_FILE_SIZE];
         res = mm_get(ParamArray[i].id, value, ParamArray[i].len, &value_len);
         if(false == res) {
             LOG_WARNING(PARAM, "Param %u %s lacks in Flash FS", ParamArray[i].id, ParamArray[i].name);
             res = true;
         } else {
             if(value_len != ParamArray[i].len) {
-                LOG_ERROR(PARAM, "Param %u %s len error in Flash FS RealLen:%u", ParamArray[i].id,
-                          ParamArray[i].name,value_len);
+                LOG_ERROR(PARAM, "Param %u %s len error in Flash FS RealLen:%u", ParamArray[i].id, ParamArray[i].name,
+                          value_len);
                 res = false;
                 out_res = false;
             }

@@ -2,9 +2,9 @@
 #ifndef DAC_DRV_H
 #define DAC_DRV_H
 
+#include <ioc.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <ioc.h>
 
 uint8_t io2comp(uint8_t io_pin);
 bool dac_init(void);

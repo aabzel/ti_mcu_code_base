@@ -4,6 +4,7 @@
 
 #include "bit_utils.h"
 #include "data_utils.h"
+#include "sys_config.h"
 #include "sys.h"
 #include "read_mem.h"
 #ifdef HAS_WDT

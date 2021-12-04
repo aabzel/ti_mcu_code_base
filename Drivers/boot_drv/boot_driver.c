@@ -1,7 +1,9 @@
 #include "boot_driver.h"
 
+#ifdef CC26XX
 #include <hw_nvic.h>
 #include <hw_types.h>
+#endif
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -21,11 +23,13 @@ static bool fine_start_event = false;
 typedef void (*pFunction)(void);
 pFunction Jump_To_Application;
 
+#ifdef CC26XX
 static bool disable_interrupt(void) {
     HWREG(NVIC_DIS0) = 0xffffffff;
     HWREG(NVIC_DIS1) = 0xffffffff;
     return true;
 }
+#endif
 
 bool boot_jump_to_code(uint32_t app_start_address) {
     bool res = false;

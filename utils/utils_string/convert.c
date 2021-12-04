@@ -1049,7 +1049,7 @@ static void dtoa_normal(double double_data, int32_t double_precision, char doubl
 
 void dtoa_(double double_data_, int32_t double_precision_, char out_double_stringified_[]) {
     dtoa_normal(double_data_, double_precision_, out_double_stringified_);
-#if((!defined(DeviceFamily_CC26X2)) && (!defined(STM32F413xx)) && !defined(X86_64))
+#if((!defined(DeviceFamily_CC26X2)) && (!defined(STM32F4xx)) && !defined(X86_64))
     switch(__fpclassifyl(double_data_)) {
     case FP_NORMAL:
     case FP_ZERO:
@@ -1068,7 +1068,7 @@ void dtoa_(double double_data_, int32_t double_precision_, char out_double_strin
     }
 #endif /*DeviceFamily_CC26X2*/
 }
-#ifndef STM32F413xx
+#ifndef STM32F4xx
 static void ftoa_normal(float_t float_data, int32_t float_precision, char float_stringified[]) {
     uint32_t float_result_str_index = 0U;
     bool float_auto_precision = false;
@@ -1147,7 +1147,7 @@ static void ftoa_normal(float_t float_data, int32_t float_precision, char float_
 // uint8_t __fpclassifyf(float_t float_data_) { return FP_SUBNORMAL; }
 
 void ftoa_(float_t float_data_, int32_t float_precision_, char float_stringified_[]) {
-#ifndef STM32F413xx
+#ifndef STM32F4xx
     switch(__fpclassifyf(float_data_)) {
     case FP_NORMAL:
     case FP_ZERO:

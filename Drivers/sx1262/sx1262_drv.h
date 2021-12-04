@@ -205,14 +205,14 @@ typedef struct xSx1262_t {
     uint8_t rx_status;
     uint8_t rssi_sync;
     uint8_t rssi_avg;
-    uint8_t rssi_pkt;
-    uint8_t snr_pkt;
     uint8_t wire_int;
     uint8_t wire_rst;
     uint8_t wire_nss;
     uint8_t wire_busy;
     uint32_t tx_time_out_ms;
-    uint8_t signal_rssi_pkt;
+    int8_t rssi_pkt;
+    uint8_t snr_pkt;
+    int8_t signal_rssi_pkt;
     int8_t output_power;
     int8_t rssi_inst;
     bool tx_done;
@@ -242,8 +242,8 @@ bool is_power_valid(int8_t power);
 
 bool sx1262_get_dev_err(uint16_t* op_error);
 bool sx1262_get_irq_status(uint16_t* irq_stat);
-bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, uint8_t* RssiPkt, uint8_t* SnrPkt,
-                              uint8_t* SignalRssiPkt);
+bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, int8_t* RssiPkt, uint8_t* SnrPkt,
+                              int8_t* SignalRssiPkt);
 bool sx1262_get_packet_type(RadioPacketType_t* packet_type);
 bool sx1262_get_rand(uint32_t* rand_num);
 bool sx1262_get_rssi_inst(int8_t* rssi_inst);

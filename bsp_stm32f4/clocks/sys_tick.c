@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #include "clocks.h"
-#include "systick.h"
+//#include "systick.h"
 
 volatile uint32_t g_up_time_ms = 0;
 

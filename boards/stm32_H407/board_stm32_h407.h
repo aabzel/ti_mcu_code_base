@@ -1,0 +1,12 @@
+#ifndef BOARD_HARVESTER_V1_H
+#define BOARD_HARVESTER_V1_H
+
+#define BOARD_NAME "h407"
+#define MCU_NAME "STM32F407ZGT6"
+#define UART_COUNT 6
+#define SPI_COUNT 3
+
+#define RAM_SIZE (192 * K_BYTES)
+#define ROM_SIZE ( 1024 * K_BYTES)
+
+#endif /* BOARD_HARVESTER_V1_H  */

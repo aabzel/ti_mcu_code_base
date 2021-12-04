@@ -12,7 +12,9 @@
 #include "cli_manager.h"
 #endif /*HAS_CLI*/
 
+#ifdef HAS_BOOT
 #include "boot_driver.h"
+#endif
 
 #ifdef HAS_GPIO
 #include "gpio_drv.h"

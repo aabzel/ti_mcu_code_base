@@ -6,7 +6,9 @@
 
 #include "array.h"
 #include "bit_utils.h"
+#ifdef HAS_BOOT
 #include "boot_cfg.h"
+#endif
 #include "cli_manager.h"
 #include "clocks.h"
 #include "convert.h"

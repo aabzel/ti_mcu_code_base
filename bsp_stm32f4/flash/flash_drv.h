@@ -12,6 +12,7 @@
 #define NOR_FLASH_END (NOR_FLASH_BASE + NOR_FLASH_SIZE)
 /*Hardware related code end*/
 #define FLASH_WR_TIME_MS 20
+#define FLASH_SECTOR_SIZE (128*K_BYTES)
 
 bool flash_init(void);
 bool flash_wr(uint32_t addr, uint8_t* array, uint32_t array_len);

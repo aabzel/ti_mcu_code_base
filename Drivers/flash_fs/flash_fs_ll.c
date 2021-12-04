@@ -10,7 +10,9 @@
 #include <string.h>
 
 #include "flash_fs.h"
+#ifdef CC26XX
 #include "flash_nvs_drv.h"
+#endif
 #include "memory_layout.h"
 
 
@@ -28,11 +30,14 @@ bool mm_flash_write(uint32_t address_des, uint8_t* address_src, uint32_t len) {
     return res;
 }
 
+#define MAX_FLASH_ZERO_SIZE 256
 bool mm_flash_zero(uint32_t address, uint32_t len){
     bool res = false;
-    uint8_t zeroArray[len];
-    memset(zeroArray,00,len);
-    res= flash_nvs_write(address,(uint8_t*) zeroArray, len);
+    uint8_t zeroArray[MAX_FLASH_ZERO_SIZE];
+    if ( len <= MAX_FLASH_ZERO_SIZE) {
+        memset(zeroArray,00,len);
+        res = flash_nvs_write(address,(uint8_t*) zeroArray, len);
+    }
     return res;
 }
 

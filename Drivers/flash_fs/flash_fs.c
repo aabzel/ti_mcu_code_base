@@ -12,7 +12,9 @@
 #include "crc8_autosar.h"
 #include "data_utils.h"
 #include "flash_fs_ll.h"
+#ifdef CC26XX
 #include "flash_nvs_drv.h"
+#endif
 #include "io_utils.h"
 #include "log.h"
 #include "memory_layout.h"

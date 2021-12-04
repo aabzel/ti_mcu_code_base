@@ -45,8 +45,8 @@ bool adc_start_command(int32_t argc, char* argv[]) {
             AUXADCEnableAsync(refSource, trigger);
         }
     } else {
-        LOG_ERROR(ADC, "Usage: ast refSource trigger");
-        LOG_INFO(ADC, "in [0..]");
+        LOG_ERROR(LG_ADC, "Usage: ast refSource trigger");
+        LOG_INFO(LG_ADC, "in [0..]");
     }
     return res;
 }
@@ -56,12 +56,12 @@ bool adc_init_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         res = adc_init();
         if(false == res) {
-            LOG_ERROR(ADC, "ADC init error");
+            LOG_ERROR(LG_ADC, "ADC init error");
         } else {
-            LOG_INFO(ADC, "ADC init OK");
+            LOG_INFO(LG_ADC, "ADC init OK");
         }
     } else {
-        LOG_ERROR(ADC, "Usage: ait");
+        LOG_ERROR(LG_ADC, "Usage: ait");
     }
     return res;
 }
@@ -73,7 +73,7 @@ bool adc_wait_fifo_command(int32_t argc, char* argv[]) {
         uint32_t val = AUXADCReadFifo();
         io_printf("val: 0x%08x %u" CRLF, val, val);
     } else {
-        LOG_ERROR(ADC, "Usage: awf");
+        LOG_ERROR(LG_ADC, "Usage: awf");
     }
     return res;
 }
@@ -113,7 +113,7 @@ bool adc_diag_command(int32_t argc, char* argv[]) {
         // io_printf("pop: 0x%08x %u" CRLF, vap, vap);
         io_printf("stat: 0x%08x %s" CRLF, stat, adc_stat2str(stat));
     } else {
-        LOG_ERROR(ADC, "Usage: ad");
+        LOG_ERROR(LG_ADC, "Usage: ad");
     }
     return res;
 }
@@ -135,8 +135,8 @@ bool adc_sel_in_command(int32_t argc, char* argv[]) {
             AUXADCSelectInput(input);
         }
     } else {
-        LOG_ERROR(ADC, "Usage: asl in");
-        LOG_INFO(ADC, "in [0..]");
+        LOG_ERROR(LG_ADC, "Usage: asl in");
+        LOG_INFO(LG_ADC, "in [0..]");
     }
     return res;
 }
@@ -169,7 +169,7 @@ bool adc_all_command(int32_t argc, char* argv[]) {
         }
         table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     } else {
-        LOG_ERROR(ADC, "Usage: ain");
+        LOG_ERROR(LG_ADC, "Usage: ain");
     }
     return res;
 }

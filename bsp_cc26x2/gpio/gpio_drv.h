@@ -38,7 +38,7 @@ bool gpio_set_pull_mode(uint8_t io_pin, PullMode_t pull_mode);
 bool gpio_set_state(uint8_t io_pin, uint8_t logic_level);
 bool gpio_toggle(uint8_t io_pin);
 bool is_edge_irq_en(uint8_t dio_pin);
-//bool proc_led(void);
+// bool proc_led(void);
 inline bool is_dio(uint8_t dio_pin);
 uint32_t gpio_get_alter_fun(uint8_t dio_pin);
 uint8_t get_aux_num(uint8_t io_pin);
