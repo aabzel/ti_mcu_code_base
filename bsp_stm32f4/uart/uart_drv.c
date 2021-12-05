@@ -66,7 +66,7 @@ static uint8_t get_uart_index(USART_TypeDef* USARTx) {
 #endif
 static bool init_uart(uint8_t uart_num) {
     bool res = false;
-    huart[uart_num].rx_buff = (volatile uint8_t *) rx_buff[uart_num][0];
+    huart[uart_num].rx_buff = (volatile uint8_t *) &rx_buff[uart_num][0];
     huart[uart_num].rx_buff_size = sizeof(rx_buff[uart_num][0]);
     huart[uart_num].uart_h.Init.BaudRate = CLI_UART_BAUD_RATE;
     huart[uart_num].uart_h.Init.HwFlowCtl = UART_HWCONTROL_NONE;
@@ -85,7 +85,7 @@ static bool init_uart(uint8_t uart_num) {
     }
     HAL_UART_Receive_IT(&huart[uart_num].uart_h, (uint8_t*)huart[uart_num].rx_buff, huart[uart_num].rx_buff_size);
 	char str[20]="0";
-    snprintf(str,sizeof(str),"UART%u",uart_num);
+    snprintf(str,sizeof(str),"UART%u",uart_num+1);
     uart_send(uart_num, (uint8_t *)str, strlen(str), true);
     return res;
 }
@@ -217,12 +217,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* uart_handle) {
     }
 #endif
     if(USART6 == uart_handle->Instance) {
-        huart[UART_NUM_CLI-1].rx_cnt++;
-        huart[UART_NUM_CLI-1].rx_int = true;
-        HAL_UART_Receive_IT(&huart[UART_NUM_CLI-1].uart_h, (uint8_t*)huart[UART_NUM_CLI-1].rx_buff,
-                            huart[UART_NUM_CLI-1].rx_buff_size);
+        huart[UART_NUM_CLI].rx_cnt++;
+        huart[UART_NUM_CLI].rx_int = true;
+        HAL_UART_Receive_IT(&huart[UART_NUM_CLI].uart_h, (uint8_t*)huart[UART_NUM_CLI].rx_buff,
+                            huart[UART_NUM_CLI].rx_buff_size);
 #ifdef HAS_CLI
-        uart_string_reader_rx_callback(&cmd_reader, huart[UART_NUM_CLI-1].rx_buff[0]);
+        uart_string_reader_rx_callback(&cmd_reader, huart[UART_NUM_CLI].rx_buff[0]);
 #endif /*HAS_CLI*/
     }
 }
@@ -230,18 +230,18 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* uart_handle) {
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef* uart_handle) {
 #ifdef UART7
     if(UART7 == uart_handle->Instance) {
-        huart[UART_NUM_CLI-1].tx_cnt++;
+        huart[UART_NUM_CLI].tx_cnt++;
 #ifdef HAS_CLI
-        huart[UART_NUM_CLI-1].tx_int = true;
-        huart[UART_NUM_CLI-1].tx_cpl_cnt++;
+        huart[UART_NUM_CLI].tx_int = true;
+        huart[UART_NUM_CLI].tx_cpl_cnt++;
 #endif /*HAS_CLI*/
     }
 #endif
     if(USART6 == uart_handle->Instance) {
-        huart[UART_NUM_CLI-1].tx_cnt++;
+        huart[UART_NUM_CLI].tx_cnt++;
 #ifdef HAS_CLI
-        huart[UART_NUM_CLI-1].tx_int = true;
-        huart[UART_NUM_CLI-1].tx_cpl_cnt++;
+        huart[UART_NUM_CLI].tx_int = true;
+        huart[UART_NUM_CLI].tx_cpl_cnt++;
 #endif /*HAS_CLI*/
     }
 }
