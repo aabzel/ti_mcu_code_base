@@ -92,17 +92,23 @@ bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
 static bool _measure_task_interval(task_data_t* taskItem, uint64_t interval_us, bool (*task_func)(void),
                                    uint64_t loop_start_time_us) {
     bool res = false;
+    static uint64_t loop_start_time_us_prev = 0;
+    uint64_t loop_start_time_us_diff = loop_start_time_us-loop_start_time_us_prev;
+    if(0==loop_start_time_us_diff){
+      res = false;
+    }
     if(taskItem->start_time_next < loop_start_time_us) {
         taskItem->start_time_next = loop_start_time_us + interval_us;
         res = task_frame(taskItem, task_func);
     }
+    loop_start_time_us_prev = loop_start_time_us;
     return res;
 }
 
 bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_func)(void),
                            uint64_t loop_start_time_us) {
     bool res = false;
-    if(task_data[task_id].on){
+    if(task_data[task_id].on) {
         res = _measure_task_interval(&task_data[task_id], interval_us, task_func, loop_start_time_us);
     }
     return res;

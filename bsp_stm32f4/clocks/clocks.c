@@ -6,10 +6,13 @@
 #include "stm32f4xx_hal.h"
 #include "sys_tick.h"
 
-void delay_ms(uint32_t delay_in_ms) {
+bool delay_ms(uint32_t delay_in_ms) {
+    bool res = false;
     uint32_t init_time_in_ms = g_up_time_ms;
     while(g_up_time_ms < (init_time_in_ms + delay_in_ms)) {
+      res=true;
     }
+    return res;
 }
 
 // overflow after 4294967 s 49 days
@@ -18,13 +21,11 @@ uint64_t get_time_us(void) {
     uint64_t up_time_ms;
     uint32_t usec;
     uint32_t cnt;
-    uint32_t sys_tick_val=0;
+    uint32_t sys_tick_val = 0;
     /*Sys tick counts down (Wrap to zero counter)*/
     static uint64_t prev_time_us = 0;
     static uint64_t cur_time_us = 0;
-#ifdef NORTOS
-    sys_tick_val = HAL_GetTick();
-#endif
+    sys_tick_val = SysTick->VAL;
     up_time_ms = g_up_time_ms;
     cnt = SYS_TICK_PERIOD - sys_tick_val;
     usec = cnt / CLOCK_FOR_US;
@@ -99,7 +100,7 @@ bool SystemClockConfig(void){
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)  {
-    res = false;
+     res = false;
   }
   /** Initializes the CPU, AHB and APB buses clocks
   */

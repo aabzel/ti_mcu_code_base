@@ -128,7 +128,7 @@ bool sw_init(void) {
     res = try_init(ext_ram_init(), "ext_ram_em") && res;
 #endif /*HAS_EXT_RAM_EMUL*/
 
-#ifdef TASKS
+#ifdef HAS_TASKS
     res = try_init(task_init(), "task") && res;
 #endif /*TASKS*/
 

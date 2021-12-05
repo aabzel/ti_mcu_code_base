@@ -83,8 +83,11 @@ static bool init_uart(uint8_t uart_num) {
         res = true;
         huart[uart_num].init_done = true;
     }
-    HAL_UART_Receive_IT(&huart[uart_num].uart_h, (uint8_t*)huart[uart_num].rx_buff, huart[uart_num].rx_buff_size);
-	char str[20]="0";
+    HAL_StatusTypeDef ret = HAL_UART_Receive_IT(&huart[uart_num].uart_h, (uint8_t*)huart[uart_num].rx_buff, huart[uart_num].rx_buff_size);
+    if(HAL_OK!=ret){
+      res = false;
+    }
+    char str[20]="0";
     snprintf(str,sizeof(str),"UART%u",uart_num+1);
     uart_send(uart_num, (uint8_t *)str, strlen(str), true);
     return res;
@@ -103,7 +106,7 @@ void cli_tune_read_char(void) {}
 
 bool uart_send_ll(uint8_t uart_num, uint8_t* tx_buffer, uint16_t len) {
     bool res = false;
-    HAL_StatusTypeDef stat;
+    HAL_StatusTypeDef stat=HAL_ERROR;
     uint32_t cnt = 0;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
     stat = HAL_UART_Transmit_IT(&huart[uart_num].uart_h, tx_buffer, len);
@@ -122,7 +125,8 @@ bool uart_send_ll(uint8_t uart_num, uint8_t* tx_buffer, uint16_t len) {
 
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wait) {
     bool res = false;
-    if(uart_num < UART_COUNT) {
+    (void) is_wait;
+    if(array && (uart_num < UART_COUNT) && (0 < array_len)) {
         res = uart_send_ll(uart_num, array, array_len);
     }
     return res;
@@ -210,10 +214,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* uart_handle) {
     g_uart_rx_cnt++;
 #ifdef UART7
     if(UART7 == uart_handle->Instance) {
-        huart[UART_NUM_CLI-1].rx_cnt++;
-        huart[UART_NUM_CLI-1].rx_int = true;
-        HAL_UART_Receive_IT(&huart[UART_NUM_CLI-1].uart_h, (uint8_t*)huart[UART_NUM_CLI-1].rx_buff,
-                            huart[UART_NUM_CLI-1].rx_buff_size);
+        huart[6].rx_cnt++;
+        huart[6].rx_int = true;
+        HAL_UART_Receive_IT(&huart[6].uart_h, (uint8_t*)huart[6].rx_buff,
+                            huart[6].rx_buff_size);
     }
 #endif
     if(USART6 == uart_handle->Instance) {
@@ -230,10 +234,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* uart_handle) {
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef* uart_handle) {
 #ifdef UART7
     if(UART7 == uart_handle->Instance) {
-        huart[UART_NUM_CLI].tx_cnt++;
+        huart[6].tx_cnt++;
 #ifdef HAS_CLI
-        huart[UART_NUM_CLI].tx_int = true;
-        huart[UART_NUM_CLI].tx_cpl_cnt++;
+        huart[6].tx_int = true;
+        huart[6].tx_cpl_cnt++;
 #endif /*HAS_CLI*/
     }
 #endif

@@ -227,13 +227,12 @@
                     <state>USE_HAL_DRIVER</state>
                     <state>NORTOS</state>
                     <state>HAS_IAR</state>
-                    <state>TASKS</state>
                     <state>STM32F407xx</state>
                     <state>HAS_DEBUG</state>
+                    <state>HAS_TASKS</state>
                     <state>HAS_MCU</state>
                     <state>HAS_UART</state>
                     <state>STM32F4xx</state>
-                    <state>HAS_FLASH_FS</state>
                     <state>HAS_CLI</state>
                 </option>
                 <option>
@@ -678,15 +677,15 @@
                 <option>
                     <name>OOCOutputFormat</name>
                     <version>3</version>
-                    <state>1</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>OCOutputOverride</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state>stm32_h407.hex</state>
+                    <state>stm32_h407.bin</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -1094,6 +1093,9 @@
         <name>boards</name>
         <group>
             <name>stm32_H407</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\boards\stm32_H407\board_stm32_h407.h</name>
+            </file>
         </group>
     </group>
     <group>
@@ -1256,6 +1258,9 @@
         </group>
         <group>
             <name>flash_fs</name>
+            <excluded>
+                <configuration>stm32_h407</configuration>
+            </excluded>
             <file>
                 <name>$PROJ_DIR$\..\..\Drivers\flash_fs\flash_fs.c</name>
             </file>
@@ -1274,6 +1279,9 @@
         </group>
         <group>
             <name>params</name>
+            <excluded>
+                <configuration>stm32_h407</configuration>
+            </excluded>
             <file>
                 <name>$PROJ_DIR$\..\..\Drivers\params\param_ids.c</name>
             </file>
@@ -1391,6 +1399,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\utils\health_monitor.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\utils\health_monitor_command.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\utils\none_blocking_pause.c</name>

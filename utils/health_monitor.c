@@ -54,7 +54,7 @@ bool health_monotor_proc(void) {
     }
 #endif
 
-    if(false == cli_init_done) {
+    if(true != cli_init_done) {
         cli_init_done = true;
     }
 
