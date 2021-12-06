@@ -1,5 +1,5 @@
 MK_PATH:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
-#@echo $(error MK_PATH= $(MK_PATH))
+#@echo $(error MK_PATH=$(MK_PATH))
 PROJECT_ROOT:= $(MK_PATH)../../
 #@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
 INCDIR += -I$(PROJECT_ROOT)
@@ -51,7 +51,6 @@ LFLAGS= -static -lm
 EXECUTABLE=test_code_base
 include $(PROJECT_ROOT)code_base.mk
 include $(PROJECT_ROOT)common/common.mk
-
 include $(PROJECT_ROOT)protocols/protocols.mk
 include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 include $(PROJECT_ROOT)utils/io_utils/io_utils.mk

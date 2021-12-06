@@ -2,7 +2,7 @@ TEST_UTILS_DIR = $(PROJECT_ROOT)unit_tests/test_set_sw/test_utils
 #@echo $(error TEST_UTILS_DIR= $(TEST_UTILS_DIR))
 #@echo $(error CFLAGS= $(CFLAGS))
 
-INCDIR			+= -I$(TEST_UTILS_DIR)
+INCDIR += -I$(TEST_UTILS_DIR)
 
 
 
