@@ -991,7 +991,10 @@ bool sx1262_init(void) {
     }
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
-    res = sx1262_load_params(&Sx1262Instance) && res;
+    res = sx1262_load_params(&Sx1262Instance) ;
+    if(false==res){
+        LOG_WARNING(LORA, "LackOfParam");
+    }
 
     Sx1262Instance.bit_rate =
         lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
@@ -1013,7 +1016,7 @@ bool sx1262_init(void) {
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
 
-    res = sx1262_is_exist() && res;
+    res = sx1262_is_exist();
     if(true == res) {
         res = sx1262_wakeup() && res;
 

@@ -1,3 +1,22 @@
+Плата№1
+нет Link(а) c SPI регистрами SX1262 трансивера
+сть Link с CAN регистрами
+
+
+
+247.436:E [LoRa] SX1262 link error
+247.494:E [LoRa] SX1262 SPI link lost
+247.498:I [LoRa] Init SX1262
+247.524:W [LoRa] Set default coding rate [4] 4/8
+247.541:W [LoRa] Set default bandwidth [4] 1250.000 kHz
+247.558:W [LoRa] Set default spreading_factor [7] 128 Chips/Symbol
+247.575:W [LoRa] Set default freq 868000000 Hz
+247.592:W [LoRa] Set default output power [22] 22 dBm 0.15848933 W
+247.598:I [LoRa] data rate 3417.9687 bit/s 427.24609 byte/s
+
+
+
+
 Плата №3
 нет link по SPI ни к LoRa ни к CAN
 тест GPIO проходит

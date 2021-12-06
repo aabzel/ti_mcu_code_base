@@ -3,6 +3,7 @@
 #ifdef CC26XX
 #include <hw_nvic.h>
 #include <hw_types.h>
+#include "systick.h"
 #endif
 #include <stdbool.h>
 #include <stdint.h>
@@ -44,17 +45,23 @@ bool boot_jump_to_code(uint32_t app_start_address) {
         res = is_ram_addr(stack_top);
         if(res) {
             uint32_t reset_handler = 0;
-            LOG_INFO(BOOT, "stack_top address 0x%08x", stack_top);
+            LOG_INFO(BOOT, "Add stack_top address 0x%08x", stack_top);
             LOG_INFO(BOOT, "Jump to address 0x%08x", app_start_address);
-#ifdef CC26XX
-            disable_interrupt();
-#endif
             reset_handler = read_addr_32bit(app_start_address + 4);
             LOG_INFO(BOOT, "App reset handler address 0x%08x", reset_handler);
+#ifdef CC26XX
+            disable_interrupt();
+            SysTickDisable();
+#endif
+            sw_pause_ms(500);
             Jump_To_Application = (pFunction)reset_handler;
             /* Initialize user application's Stack Pointer */
             __set_MSP(stack_top);
+            sw_pause_ms(500);
             Jump_To_Application();
+            while(1){
+
+            }
             res = true;
         } else {
             res = false;

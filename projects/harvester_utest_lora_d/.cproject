@@ -157,6 +157,7 @@
 									<listOptionValue builtIn="false" value="HAS_SX1262_BIT_RATE"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
+									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>

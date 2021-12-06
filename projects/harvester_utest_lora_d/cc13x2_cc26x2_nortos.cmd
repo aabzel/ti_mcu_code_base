@@ -63,9 +63,9 @@
 #define FLASH_BASE              0x0001A000
 #define FLASH_SIZE              0x00034000
 #define RAM_BASE                0x20000000
-#define RAM_SIZE                0x14000
+#define RAM_SIZE                0x00014000
 #define GPRAM_BASE              0x11000000
-#define GPRAM_SIZE              0x2000
+#define GPRAM_SIZE              0x00002000
 
 
 /* System memory map */

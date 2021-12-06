@@ -131,6 +131,7 @@
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
+									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_FLASH_FS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_PARAM"/>
