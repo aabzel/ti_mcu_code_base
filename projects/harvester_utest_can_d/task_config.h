@@ -3,10 +3,12 @@
 
 #include "task_config_base.h"
 
-#define SYS_TASKS               \
+#define SYS_TASKS           \
   TASKS_BASE                \
   TASK(RS232)               \
-  TASK(TCAN4550)
+  TASK(TCAN4550)            \
+  TASK(UART0_FWD)           \
+  TASK(UART1_FWD)
 
 
 #endif /* TASK_CONFIG_H */
