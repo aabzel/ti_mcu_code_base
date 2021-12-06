@@ -3,7 +3,7 @@
 
 #include "task_config_boot.h"
 
-#define TASKS    \
+#define SYS_TASKS    \
   TASKS_BOOT
 
 #endif /* TASK_CONFIG_H */

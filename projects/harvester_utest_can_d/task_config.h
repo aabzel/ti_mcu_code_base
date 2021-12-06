@@ -3,7 +3,7 @@
 
 #include "task_config_base.h"
 
-#define TASKS               \
+#define SYS_TASKS               \
   TASKS_BASE                \
   TASK(RS232)               \
   TASK(TCAN4550)

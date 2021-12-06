@@ -1,7 +1,7 @@
 #ifndef TASK_CONFIG_H
 #define TASK_CONFIG_H
 
-#define TASKS                                                                  \
+#define SYS_TASKS                                                                  \
   TASK(BOOT)                                                                   \
   TASK(CLI)                                                                    \
   TASK(RS232)                                                                  \
