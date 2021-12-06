@@ -96,15 +96,14 @@ static bool init_uart(uint8_t uart_num) {
 bool uart_init(void) {
     bool res = true;
     res = init_uart(UART_NUM_CLI) && res;
+    if(res){
+        res = uart_send_banner(UART_NUM_CLI, 'v');
+    }
 
     return res;
 }
 
-int cli_putchar_uart(int ch) { return ch; }
-
-void cli_tune_read_char(void) {}
-
-bool uart_send_ll(uint8_t uart_num, uint8_t* tx_buffer, uint16_t len) {
+static bool uart_send_ll(uint8_t uart_num, uint8_t* tx_buffer, uint16_t len) {
     bool res = false;
     HAL_StatusTypeDef stat=HAL_ERROR;
     uint32_t cnt = 0;

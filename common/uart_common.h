@@ -76,6 +76,7 @@ extern UartHandle_t huart[UART_COUNT];
 bool uart_common_init(uint8_t uart_num);
 #endif
 
+bool uart_send_banner(uint8_t uart_num, char pattern);
 uint32_t calc_uart_transfer_time_ms(uint32_t baudrate, uint32_t bytes);
 uint32_t calc_uart_transfer_time_us(uint32_t baudrate, uint32_t bytes);
 const char *uart_error2str(rx_uart_error_t e);

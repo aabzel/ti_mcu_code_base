@@ -4,6 +4,7 @@
 #include <strings.h>
 #endif
 
+#include "log_commands.h"
 #include "convert.h"
 #include "data_utils.h"
 #include "io_utils.h"

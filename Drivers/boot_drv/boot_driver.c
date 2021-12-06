@@ -62,7 +62,7 @@ bool boot_jump_to_code(uint32_t app_start_address) {
             while(1){
 
             }
-            res = true;
+            //res = true;
         } else {
             res = false;
             LOG_ERROR(BOOT, "Error top stack size pointer 0x%08x lim: [0x%08x 0x%08x]", stack_top, RAM_START,

@@ -32,11 +32,11 @@
                 </option>
                 <option>
                     <name>Input description</name>
-                    <state>Full formatting, with multibyte support.</state>
+                    <state>No specifier n, no float nor long long, no scan set, no assignment suppressing, with multibyte support.</state>
                 </option>
                 <option>
                     <name>Output description</name>
-                    <state>Full formatting, with multibyte support.</state>
+                    <state>No specifier a, A, no specifier n, no float nor long long, no flags, without multibyte support.</state>
                 </option>
                 <option>
                     <name>GOutputBinary</name>
@@ -49,16 +49,16 @@
                 <option>
                     <name>GRuntimeLibSelect</name>
                     <version>0</version>
-                    <state>2</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>GRuntimeLibSelectSlave</name>
                     <version>0</version>
-                    <state>2</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>RTDescription</name>
-                    <state>Use the full configuration of the C/C++ runtime library. Full locale interface, C locale, file descriptor support, multibytes in printf and scanf, and hex floats in strtod.</state>
+                    <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
                 </option>
                 <option>
                     <name>OGProductVersion</name>
@@ -103,7 +103,7 @@
                 </option>
                 <option>
                     <name>GeneralMisraVer</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>GeneralMisraRules04</name>
@@ -112,7 +112,7 @@
                 </option>
                 <option>
                     <name>RTConfigPath2</name>
-                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</state>
+                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
@@ -164,7 +164,7 @@
                 </option>
                 <option>
                     <name>OgLibHeap</name>
-                    <state>0</state>
+                    <state>2</state>
                 </option>
                 <option>
                     <name>OGLibAdditionalLocale</name>
@@ -173,7 +173,7 @@
                 <option>
                     <name>OGPrintfVariant</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>4</state>
                 </option>
                 <option>
                     <name>OGPrintfMultibyteSupport</name>
@@ -182,7 +182,7 @@
                 <option>
                     <name>OGScanfVariant</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>OGScanfMultibyteSupport</name>
@@ -294,7 +294,7 @@
                 <option>
                     <name>CCAllowList</name>
                     <version>1</version>
-                    <state>11111110</state>
+                    <state>00000000</state>
                 </option>
                 <option>
                     <name>CCDebugInfo</name>
@@ -326,7 +326,7 @@
                 </option>
                 <option>
                     <name>CCRequirePrototypes</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCDiagWarnAreErr</name>
@@ -405,7 +405,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>3</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -414,7 +414,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>3</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CompilerMisraRules98</name>
@@ -780,11 +780,11 @@
                 </option>
                 <option>
                     <name>IlinkLogFile</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkLogInitialization</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkLogModule</name>
@@ -959,7 +959,7 @@
                 </option>
                 <option>
                     <name>IlinkOptExceptionsAllow</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkOptExceptionsForce</name>
@@ -975,7 +975,7 @@
                 </option>
                 <option>
                     <name>IlinkOptUseVfe</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkOptForceVfe</name>
@@ -1009,7 +1009,7 @@
                 </option>
                 <option>
                     <name>IlinkLogCallGraph</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkIcfFile_AltDefault</name>

@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "uart_drv.h"
+
 #ifdef HAS_MCU
 UartHandle_t huart[UART_COUNT] = {0};
 
@@ -31,4 +33,19 @@ uint32_t calc_uart_transfer_time_ms(uint32_t baudrate, uint32_t bytes) {
     float byte_train_duration = byte_time*bytes;
     tx_time_us = (uint32_t) (byte_train_duration*1000.0f);
     return tx_time_us;
+}
+
+bool uart_send_banner(uint8_t uart_num, char pattern){
+    bool res = false;
+    uint8_t banner[80]={0};
+    uint32_t i =0;
+    for(i=0; i< sizeof(banner); i++){
+        banner[i] = pattern;
+    }
+    banner[0] = 0x0A;
+    banner[1] = 0x0D;
+    banner[sizeof(banner)-2] = 0x0A;
+    banner[sizeof(banner)-1] = 0x0D;
+    res= uart_send(uart_num, banner, sizeof(banner),true);
+    return res;
 }

@@ -73,6 +73,6 @@ bool flush_printf(void) {
   return res;
 }
 
-ostream_t *get_console_stream(void) { return &curWriterPtr->s; }
+//static  ostream_t *get_console_stream(void) { return &curWriterPtr->s; }
 
 

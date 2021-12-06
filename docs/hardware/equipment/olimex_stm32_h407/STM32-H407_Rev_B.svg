@@ -193,17 +193,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="613.66325"
-     inkscape:cy="564.02868"
+     inkscape:zoom="2.8"
+     inkscape:cx="660.26357"
+     inkscape:cy="737.90918"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer4"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
-     inkscape:window-x="2552"
-     inkscape:window-y="-8"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
+     inkscape:window-y="-11"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true">
@@ -287,12 +287,12 @@
        x="164.08162"
        y="8.6934605" />
     <rect
-       style="opacity:0.996;fill:none;stroke:#000000;stroke-width:0.264999;stroke-opacity:1"
+       style="opacity:0.996;fill:none;stroke:#000000;stroke-width:0.214211;stroke-opacity:1"
        id="rect133"
        width="45.168152"
-       height="18.520834"
+       height="12.101937"
        x="190.8024"
-       y="180.93704" />
+       y="187.35594" />
     <rect
        style="opacity:0.996;fill:none;stroke:#000000;stroke-width:0.264999;stroke-opacity:1"
        id="rect145"
@@ -335,17 +335,17 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.54673px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.477511"
-       x="176.59618"
-       y="186.84001"
+       x="174.04483"
+       y="190.43079"
        id="text923"><tspan
          sodipodi:role="line"
          id="tspan921"
-         x="176.59618"
-         y="186.84001"
+         x="174.04483"
+         y="190.43079"
          style="font-size:2.54673px;stroke-width:0.477511">10 pin</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Lend);marker-start:url(#Arrow1Lstart)"
-       d="m 172.12157,139.9156 v 43.16403"
+       style="fill:none;stroke:#000000;stroke-width:0.291254;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)"
+       d="m 172.12157,139.9156 v 47.44034"
        id="path925" />
     <text
        xml:space="preserve"
@@ -394,12 +394,12 @@
        x="106.23992"
        y="38.960159" />
     <rect
-       style="display:inline;fill:none;stroke:#000000;stroke-width:0.542478;stroke-opacity:1"
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.469662;stroke-opacity:1"
        id="rect919"
        width="34.920315"
-       height="16.036907"
+       height="12.020644"
        x="150.07779"
-       y="183.33968" />
+       y="187.35594" />
     <rect
        style="display:inline;opacity:0.996;fill:#f2f2f2;stroke:#000000;stroke-width:0.264999"
        id="rect33"
@@ -473,8 +473,8 @@
        d="m 146.53052,27.461943 v -4.543581 h 9.28761 v 10.089424 h 11.09169 l 1.21854,-4.54765"
        id="path111" />
     <path
-       style="display:inline;fill:none;stroke:#000000;stroke-width:0.316395px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 194.65774,140.04018 v 40.53794"
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.369295px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 194.65774,140.04018 v 47.31576"
        id="path135" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -945,13 +945,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:6.2474px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.156185"
-       x="151.43925"
-       y="189.28238"
+       x="151.06128"
+       y="194.57405"
        id="text917"><tspan
          sodipodi:role="line"
          id="tspan915"
-         x="151.43925"
-         y="189.28238"
+         x="151.06128"
+         y="194.57405"
          style="stroke-width:0.156185">UEXT</tspan></text>
     <text
        xml:space="preserve"
@@ -1066,13 +1066,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="192.12532"
-       y="193.22127"
+       x="193.16475"
+       y="196.71754"
        id="text131"><tspan
          sodipodi:role="line"
          id="tspan129"
-         x="192.12532"
-         y="193.22127"
+         x="193.16475"
+         y="196.71754"
          style="stroke-width:0.264583">CON3</tspan></text>
     <text
        xml:space="preserve"

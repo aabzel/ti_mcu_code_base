@@ -52,11 +52,13 @@ bool explore_stack_dir(void) {
     return res;
 }
 
-bool is_big_endian(void) {
+#if 0
+static bool is_big_endian(void) {
     U32_bit_t bint;
     bint.u32 = 0x01020304;
     return bint.u8[0] == 1;
 }
+#endif
 
 bool is_little_endian(void) {
     U32_bit_t bint;
@@ -143,7 +145,7 @@ void print_sys_info(void) {
 #endif /*HAS_MCU*/
 
 /*platform spesific data type calculator */
-bool print_u16_un(U16_bit_t un) {
+static bool print_u16_un(U16_bit_t un) {
     io_printf("un 0x%04x 0b_%s" CRLF, un.u16, utoa_bin16(un.u16));
     io_printf("s16: %d " CRLF, un.s16);
     io_printf("u16: %u " CRLF, un.u16);
@@ -316,7 +318,8 @@ bool print_mem(uint8_t* addr, uint32_t len, bool is_bin, bool is_ascii, bool new
     return res;
 }
 
-bool print_mem2(uint8_t* addr, uint32_t len, bool new_line) {
+#if 0
+static bool print_mem2(uint8_t* addr, uint32_t len, bool new_line) {
     io_printf("0x");
     bool res = false;
     char asciiLine[18] = "";
@@ -352,6 +355,7 @@ bool print_mem2(uint8_t* addr, uint32_t len, bool new_line) {
     }
     return res;
 }
+#endif 
 
 #ifdef HAS_MCU
 bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint32_t end_addr) {
@@ -393,7 +397,7 @@ bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint
 }
 #endif
 
-bool print_offset(uint16_t offset) {
+static bool print_offset(uint16_t offset) {
     bool res = false;
     if(0 < offset) {
         res = true;

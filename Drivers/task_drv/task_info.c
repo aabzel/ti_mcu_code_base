@@ -50,7 +50,7 @@ uint64_t calc_total_run_time(void) {
     return tot_run_time;
 }
 
-bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
+static bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
     bool res = false;
     if(taskItem){
         taskItem->start_count++;

@@ -309,18 +309,6 @@ bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len,
     return res;
 }
 
-bool uart_send_banner(uint8_t uart_num, char pattern){
-    bool res = false;
-    uint8_t banner[80]={0};
-    uint32_t i =0;
-    for(i=0; i< sizeof(banner); i++){
-        banner[i] = pattern;
-    }
-    banner[sizeof(banner)-2] = 0x0A;
-    banner[sizeof(banner)-1] = 0x0D;
-    res= uart_send(uart_num, banner, sizeof(banner),true);
-    return res;
-}
 
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wait) {
     bool res = false;

@@ -36,11 +36,6 @@ bool flash_wr(uint32_t flash_addr, uint8_t* wr_array, uint32_t array_len) {
     return res;
 }
 
-bool flash_erase_sector(uint32_t sector_address) {
-    bool res = false;
-    return res;
-}
-
 
 
 
@@ -55,11 +50,6 @@ bool is_flash_addr(uint32_t flash_addr) {
     if(flash_addr < NOR_FLASH_END) {
         res = true;
     }
-    return res;
-}
-
-bool is_addr_protected(uint32_t flash_addr) {
-    bool res = false;
     return res;
 }
 
