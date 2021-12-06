@@ -3,7 +3,6 @@
 	<name>harvester_utest_sw_d</name>
 	<comment></comment>
 	<projects>
-		<project>harvester_utest_hw_d</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
