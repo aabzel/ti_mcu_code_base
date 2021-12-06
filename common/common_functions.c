@@ -8,17 +8,30 @@
 #include "led_drv.h"
 #endif /*HAS_LED*/
 
-#ifdef HAS_CLI
-#include "cli_manager.h"
-#endif /*HAS_CLI*/
+
+#ifdef HAS_ADC
+#include "adc_drv.h"
+#endif /*HAS_ADC*/
 
 #ifdef HAS_BOOT
 #include "boot_driver.h"
 #endif
 
+#ifdef HAS_CLI
+#include "cli_manager.h"
+#endif /*HAS_CLI*/
+
+#ifdef HAS_DAC
+#include "dac_drv.h"
+#endif /*HAS_DAC*/
+
 #ifdef HAS_GPIO
 #include "gpio_drv.h"
 #endif
+
+#ifdef HAS_GPIO_PWM
+#include "gpio_pwm_drv.h"
+#endif /*HAS_GPIO_PWM*/
 
 #ifdef HAS_HEALTH_MONITOR
 #include "health_monitor.h"
@@ -34,21 +47,13 @@
 #endif
 #include "uart_drv.h"
 
-#ifdef HAS_ADC
-#include "adc_drv.h"
-#endif /*HAS_ADC*/
-
-#ifdef HAS_GPIO_PWM
-#include "gpio_pwm_drv.h"
-#endif /*HAS_GPIO_PWM*/
-
-#ifdef HAS_DAC
-#include "dac_drv.h"
-#endif /*HAS_DAC*/
-
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
 #endif /*HAS_FLASH_FS*/
+
+#ifdef HAS_LORA
+#include "lora_drv.h"
+#endif /*HAS_LORA*/
 
 #ifdef HAS_PARAM
 #include "param_ids.h"
@@ -58,18 +63,16 @@
 #include "rf_drv.h"
 #endif /*HAS_RF*/
 
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
+#endif /*HAS_SX1262*/
+
 #ifdef HAS_TCAN4550
 #include "TCAN_hl.h"
 #include "tcan4550_drv.h"
 #endif /*HAS_TCAN4550*/
 
-#ifdef HAS_SX1262
-#include "sx1262_drv.h"
-#endif /*HAS_SX1262*/
 
-#ifdef HAS_LORA
-#include "lora_drv.h"
-#endif /*HAS_LORA*/
 
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
