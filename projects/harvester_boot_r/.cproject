@@ -114,7 +114,9 @@
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
+									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_MCU"/>
+									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RELEASE"/>
