@@ -34,12 +34,12 @@ typedef union uRtcm3Len_t {
     uint16_t len16;
     uint8_t len8[2];
     Rtcm3LenBit_t field;
-} Rtcm3Len_t;
+} __attribute__((__packed__)) Rtcm3Len_t;
 
 typedef struct xRtcm3Header_t {
     uint8_t preamble;
     Rtcm3Len_t ex_len;
-} __attribute__((__packed__)) Rtcm3Header_t;
+}  __attribute__((__packed__)) Rtcm3Header_t;
 
 typedef struct xRtcm3Protocol_t {
     uint32_t rx_pkt_cnt;
