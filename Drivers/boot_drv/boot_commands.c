@@ -142,7 +142,7 @@ bool boot_jump_boot_command(int32_t argc, char* argv[]) {
         if(res) {
             LOG_ERROR(BOOT, "OK");
         } else {
-            LOG_ERROR(BOOT, "Unable jump boot");
+            LOG_ERROR(BOOT, "UnableJumpBoot");
         }
 
     } else {
