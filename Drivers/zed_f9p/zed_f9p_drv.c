@@ -31,6 +31,7 @@
 #include "cli_manager.h"
 #include "none_blocking_pause.h"
 #include "sys_config.h"
+#include "task_config.h"
 #include "task_info.h"
 #ifdef HAS_RS232
 #include "rs232_drv.h"

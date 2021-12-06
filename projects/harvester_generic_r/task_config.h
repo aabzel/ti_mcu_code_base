@@ -4,7 +4,7 @@
 #include "task_config_base.h"
 #include "task_config_harvester.h"
 
-#define TASKS               \
+#define SYS_TASKS           \
   TASKS_BASE                \
   TASKS_HARVESTER           \
   TASK(WDT)

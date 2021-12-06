@@ -27,7 +27,7 @@
 #define GPIO_PWM_COMMANDS
 #endif
 
-#ifdef HAS_TIM
+#ifdef HAS_TIM_CMD
 #include "tim_commands.h"
 #else
 #define TIM_COMMANDS

@@ -36,8 +36,8 @@ extern uint64_t loop_duration_max_us;
 extern task_data_t task_data[];
 
 
-typedef enum {  
 #define TASK(id) TASK_ID_##id,
+typedef enum {  
     SYS_TASKS
     TASK_ID_COUNT
 } task_id_t;
