@@ -64,6 +64,8 @@
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/system"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
@@ -72,6 +74,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/lora"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/rs232_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/sx1262"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/telematic"/>
@@ -99,6 +102,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/watchdog"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/tbfp_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/rtcm3_protocol"/>
@@ -128,6 +132,7 @@
 									<listOptionValue builtIn="false" value="CC26XX"/>
 									<listOptionValue builtIn="false" value="DeviceFamily_CC26X2"/>
 									<listOptionValue builtIn="false" value="HAS_ADC"/>
+									<listOptionValue builtIn="false" value="HAS_BOOT"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
 									<listOptionValue builtIn="false" value="HAS_CLI"/>
@@ -305,7 +310,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="utils/io_utils/writer_lora.c|Drivers/zed_f9p|Drivers/lora|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/sx1262|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="protocols/nmea_protocol/nmea_diag.c|utils/io_utils/writer_lora.c|Drivers/zed_f9p|Drivers/lora|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/sx1262|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
