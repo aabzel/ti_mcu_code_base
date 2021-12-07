@@ -160,6 +160,10 @@
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_FLASH"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_FLASH_FS"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_PARAM"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SX1262"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>

@@ -228,7 +228,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
         if(is_valid_gnss_coordinates(pingFrame.coordinate)) {
             if(is_valid_gnss_coordinates(ZedF9P.coordinate_cur)) {
                 cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
-                LOG_INFO(LORA, "link distance %f m", cur_dist);
+                LOG_INFO(LORA, "LinkDistance %f m", cur_dist);
             } else {
                 LOG_ERROR(LORA, "InvalidLocalGNSSDot");
             }
@@ -237,7 +237,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
         }
 #endif /*HAS_ZED_F9P*/
 
-#ifdef HAS_LORA
+#if defined(HAS_LORA) && defined(HAS_ZED_F9P)
         uint16_t file_len = 0;
 #if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
         res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance, sizeof(double), &file_len);
@@ -252,7 +252,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
             LoRaInterface.max_distance = cur_dist;
         }
 
-#endif /*HAS_LORA*/
+#endif /*HAS_LORA HAS_ZED_F9P*/
     }
     return res;
 }
