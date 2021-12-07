@@ -4,7 +4,9 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifdef HAS_MCU
 #include "uart_drv.h"
+#endif
 
 #ifdef HAS_MCU
 UartHandle_t huart[UART_COUNT] = {0};
@@ -35,6 +37,7 @@ uint32_t calc_uart_transfer_time_ms(uint32_t baudrate, uint32_t bytes) {
     return tx_time_us;
 }
 
+#ifdef HAS_MCU
 bool uart_send_banner(uint8_t uart_num, char pattern){
     bool res = false;
     uint8_t banner[80]={0};
@@ -49,3 +52,4 @@ bool uart_send_banner(uint8_t uart_num, char pattern){
     res= uart_send(uart_num, banner, sizeof(banner),true);
     return res;
 }
+#endif
