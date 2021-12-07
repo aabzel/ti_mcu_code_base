@@ -159,13 +159,13 @@ static bool zed_f9p_proc_none(void) {
             LOG_ERROR(ZED_F9P, "Invalid Ubx GNSS coordinate");
         }
     }
-#endif
     res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
     if(res) {
         ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
     } else {
         LOG_ERROR(ZED_F9P, "Invalid GNSS cur coordinate");
     }
+#endif
     return res;
 }
 

@@ -4,6 +4,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef X86_64
+#include <stdio.h>
+#endif
+
 #define CRC8_XOR 0xFFU
 #define CRC8_SAE_J1850_SEED 0xFFU
 
@@ -51,7 +55,7 @@ bool crc8_sae_j1850_check(const void* in_buf, uint32_t len, uint8_t exp_crc) {
         res = true;
     } else {
 #ifdef X86_64
-        printf("\n%s(): CRC8 error calc:0x%02x", __FUNCTION__, calc_crc);
+        printf("\n%s(): CRC8 error calc:0x%02x exp:0x%02x", __FUNCTION__, calc_crc, exp_crc);
 #endif
     }
     return res;

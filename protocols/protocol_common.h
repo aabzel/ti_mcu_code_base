@@ -8,9 +8,10 @@ extern "C" {
 typedef enum eRxState_t{
     WAIT_PREAMBLE=0,
     WAIT_LEN=1,
-    WAIT_PAYLOAD=2,
-    WAIT_CRC=3,
-    RX_DONE=4,
+    WAIT_SERIAL_NUM = 2,
+    WAIT_PAYLOAD=3,
+    WAIT_CRC=4,
+    RX_DONE=5,
 }RxState_t;
 
 #ifdef __cplusplus

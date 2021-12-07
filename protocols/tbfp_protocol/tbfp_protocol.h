@@ -21,11 +21,13 @@ typedef enum xFrameId_t {
     FRAME_ID_PONG = 0x90, /**/
 } FrameId_t;
 
+
 #define TBFP_PREAMBLE 0xA5
 
 #define TBFP_INDEX_PREAMBLE 0
 #define TBFP_INDEX_LEN 1
-#define TBFP_INDEX_PAYLOAD 2
+#define TBFP_INDEX_SER_NUM 2
+#define TBFP_INDEX_PAYLOAD 4
 
 #define TBFP_SIZE_ID 1
 
@@ -34,7 +36,10 @@ typedef enum xFrameId_t {
 typedef struct xTbfHeader_t {
     uint8_t preamble;
     uint8_t len;
-} __attribute__((packed)) TbfHeader_t;
+#ifdef HAS_TBFP_FLOW_CONTROL
+    uint16_t snum; /* serial number of the frame. For flow controll.*/
+#endif
+} __attribute__((__packed__)) TbfHeader_t;
 
 typedef struct xTbfPingFrame_t {
     uint8_t id;
@@ -52,20 +57,26 @@ typedef struct xTbfpProtocol_t {
     uint16_t max_len;
     uint16_t min_len;
 #endif
+#ifdef HAS_TBFP_FLOW_CONTROL
+    uint16_t prev_s_num;
+    uint16_t s_num;
+    uint16_t con_flow;
+    uint16_t max_con_flow;
+#endif
     Interfaces_t interface;
     TBFTparser_t parser;
 } TbfpProtocol_t;
 
-extern TbfpProtocol_t TbfpProtocol[2]; /*RS232 LoRa*/
+extern TbfpProtocol_t TbfpProtocol[3]; /*RS232 LoRa*/
 
-bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len);
-bool tbfp_send_chat(uint8_t* tx_array, uint32_t len);
+bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len,Interfaces_t interface);
+bool tbfp_send_chat(uint8_t* tx_array, uint32_t len,Interfaces_t interface);
 bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface);
 bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface);
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface);
 bool tbfp_proc_byte(TbfpProtocol_t* instance, uint8_t rx_byte);
 bool is_tbfp_protocol(uint8_t* arr, uint16_t len);
-bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame);
+bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame, Interfaces_t interface);
 
 #ifdef __cplusplus
 }

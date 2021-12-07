@@ -991,8 +991,8 @@ bool sx1262_init(void) {
     }
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
-    res = sx1262_load_params(&Sx1262Instance) ;
-    if(false==res){
+    res = sx1262_load_params(&Sx1262Instance);
+    if(false == res) {
         LOG_WARNING(LORA, "LackOfParam");
     }
 

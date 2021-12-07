@@ -55,6 +55,7 @@ typedef enum eLog_facility_t {
   NMEA,
   HMOM,
   TEST,
+  TBFP,
   LG_FLASH,
   FLASH_FS,
   LORA,

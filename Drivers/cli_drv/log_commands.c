@@ -4,11 +4,11 @@
 #include <strings.h>
 #endif
 
-#include "log_commands.h"
 #include "convert.h"
 #include "data_utils.h"
 #include "io_utils.h"
 #include "log.h"
+#include "log_commands.h"
 #include "table_utils.h"
 #include "terminal_codes.h"
 #include "writer_config.h"

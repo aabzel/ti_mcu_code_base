@@ -13,7 +13,7 @@
 #include "sys_config.h"
 
 uint32_t g_uart_rx_cnt = 0;
-static  volatile uint8_t rx_buff[UART_COUNT][1];
+static volatile uint8_t rx_buff[UART_COUNT][1];
 
 static USART_TypeDef* uart_get_instance(uint8_t uart_num) {
     USART_TypeDef* USARTx = NULL;
@@ -66,7 +66,7 @@ static uint8_t get_uart_index(USART_TypeDef* USARTx) {
 #endif
 static bool init_uart(uint8_t uart_num) {
     bool res = false;
-    huart[uart_num].rx_buff = (volatile uint8_t *) &rx_buff[uart_num][0];
+    huart[uart_num].rx_buff = (volatile uint8_t*)&rx_buff[uart_num][0];
     huart[uart_num].rx_buff_size = sizeof(rx_buff[uart_num][0]);
     huart[uart_num].uart_h.Init.BaudRate = CLI_UART_BAUD_RATE;
     huart[uart_num].uart_h.Init.HwFlowCtl = UART_HWCONTROL_NONE;
@@ -83,20 +83,21 @@ static bool init_uart(uint8_t uart_num) {
         res = true;
         huart[uart_num].init_done = true;
     }
-    HAL_StatusTypeDef ret = HAL_UART_Receive_IT(&huart[uart_num].uart_h, (uint8_t*)huart[uart_num].rx_buff, huart[uart_num].rx_buff_size);
-    if(HAL_OK!=ret){
-      res = false;
+    HAL_StatusTypeDef ret =
+        HAL_UART_Receive_IT(&huart[uart_num].uart_h, (uint8_t*)huart[uart_num].rx_buff, huart[uart_num].rx_buff_size);
+    if(HAL_OK != ret) {
+        res = false;
     }
-    char str[20]="0";
-    snprintf(str,sizeof(str),"UART%u",uart_num+1);
-    uart_send(uart_num, (uint8_t *)str, strlen(str), true);
+    char str[20] = "0";
+    snprintf(str, sizeof(str), "UART%u", uart_num + 1);
+    uart_send(uart_num, (uint8_t*)str, strlen(str), true);
     return res;
 }
 
 bool uart_init(void) {
     bool res = true;
     res = init_uart(UART_NUM_CLI) && res;
-    if(res){
+    if(res) {
         res = uart_send_banner(UART_NUM_CLI, 'v');
     }
 
@@ -105,7 +106,7 @@ bool uart_init(void) {
 
 static bool uart_send_ll(uint8_t uart_num, uint8_t* tx_buffer, uint16_t len) {
     bool res = false;
-    HAL_StatusTypeDef stat=HAL_ERROR;
+    HAL_StatusTypeDef stat = HAL_ERROR;
     uint32_t cnt = 0;
     uint32_t init_tx_cnt = huart[uart_num].tx_cnt;
     stat = HAL_UART_Transmit_IT(&huart[uart_num].uart_h, tx_buffer, len);
@@ -124,7 +125,7 @@ static bool uart_send_ll(uint8_t uart_num, uint8_t* tx_buffer, uint16_t len) {
 
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wait) {
     bool res = false;
-    (void) is_wait;
+    (void)is_wait;
     if(array && (uart_num < UART_COUNT) && (0 < array_len)) {
         res = uart_send_ll(uart_num, array, array_len);
     }
@@ -215,8 +216,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* uart_handle) {
     if(UART7 == uart_handle->Instance) {
         huart[6].rx_cnt++;
         huart[6].rx_int = true;
-        HAL_UART_Receive_IT(&huart[6].uart_h, (uint8_t*)huart[6].rx_buff,
-                            huart[6].rx_buff_size);
+        HAL_UART_Receive_IT(&huart[6].uart_h, (uint8_t*)huart[6].rx_buff, huart[6].rx_buff_size);
     }
 #endif
     if(USART6 == uart_handle->Instance) {
@@ -249,6 +249,4 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef* uart_handle) {
     }
 }
 
-bool proc_uarts(void) {
-	return false;
-}
+bool proc_uarts(void) { return false; }

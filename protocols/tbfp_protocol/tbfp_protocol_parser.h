@@ -12,9 +12,8 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #define TBFP_RX_FRAME_SIZE 256U
-#define TBFP_SIZE_HEADER 2
+#define TBFP_SIZE_HEADER (sizeof(TbfHeader_t))
 #define TBFP_SIZE_CRC 1
 #define TBFP_SIZE_OVERHEAD (TBFP_SIZE_HEADER+TBFP_SIZE_CRC)
 #define TBFP_MAX_PAYLOAD (256-TBFP_SIZE_OVERHEAD)

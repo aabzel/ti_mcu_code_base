@@ -8,7 +8,6 @@
 #include "led_drv.h"
 #endif /*HAS_LED*/
 
-
 #ifdef HAS_ADC
 #include "adc_drv.h"
 #endif /*HAS_ADC*/
@@ -72,8 +71,6 @@
 #include "tcan4550_drv.h"
 #endif /*HAS_TCAN4550*/
 
-
-
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
@@ -135,15 +132,15 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_WDT*/
 
 #ifdef HAS_UART
-    measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us); 
-#endif  /*HAS_UART1*/
+    measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us);
+#endif /*HAS_UART1*/
 
 #ifdef HAS_RS232
     measure_task_interval(TASK_ID_RS232, RS232_PERIOD_US, proc_rs232, loop_start_time_us);
 #endif /*HAS_UART1*/
 
 #ifdef HAS_TCAN4550
-    //measure_task_interval(TASK_ID_TCAN4550, 500000, tcan_proc, loop_start_time_us);
+    // measure_task_interval(TASK_ID_TCAN4550, 500000, tcan_proc, loop_start_time_us);
     measure_task_interval(TASK_ID_TCAN4550, 1000, tcan4550_proc, loop_start_time_us);
 #endif /*HAS_TCAN4550*/
 

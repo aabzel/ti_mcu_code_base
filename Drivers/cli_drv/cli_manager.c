@@ -123,15 +123,15 @@ bool cli_process(void) {
 
     bool res = false;
 
-   // if(true == cli_init_done) {
-        cli_task_cnt++;
-        if(true == huart[UART_NUM_CLI].tx_int) {
-            dbg_o.f_transmit(&dbg_o);
-            huart[UART_NUM_CLI].tx_int = false;
-        }
-        uart_string_reader_proccess(&cmd_reader);
-        res = true;
-   // }
+    // if(true == cli_init_done) {
+    cli_task_cnt++;
+    if(true == huart[UART_NUM_CLI].tx_int) {
+        dbg_o.f_transmit(&dbg_o);
+        huart[UART_NUM_CLI].tx_int = false;
+    }
+    uart_string_reader_proccess(&cmd_reader);
+    res = true;
+    // }
 
     return res;
 }

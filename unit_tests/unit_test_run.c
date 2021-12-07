@@ -31,24 +31,24 @@ static void add_to_failed(uint32_t index) {
     }
 }
 
-uint32_t unit_test_run(uint32_t index) {
-    uint32_t count;
+bool unit_test_run(uint32_t index) {
+    bool test_res = false;
     const unit_test_info_t* ui = get_unit_test(index);
     if(NULL == ui) {
 #ifdef HAS_CLI
         LOG_ERROR(SYS, "Invalid unit_test number %" PRIu32, index + 1U);
 #endif
-        count = 0U;
+        test_res = false;
     } else {
 #ifdef HAS_CLI
         io_printf("************* Run test %s.%" PRIu32 "/%" PRIu32 CRLF, ui->name, index + 1U, get_unit_test_count());
         print_buf_stream_en = true;
 #endif
-        test_failed = false;
+
 #ifdef HAS_DEV_ERROR_HANDLER
         dev_errors_clear();
 #endif
-        test_failed = !ui->utest_func();
+        test_res = ui->utest_func();
 #ifdef HAS_CLI
         print_buf_stream_en = false;
 #endif
@@ -64,7 +64,7 @@ uint32_t unit_test_run(uint32_t index) {
             test_failed = true;
         }
 #endif
-        if(test_failed) {
+        if(false==test_res) {
 #ifdef HAS_CLI
             io_puts("!ERRTEST" CRLF);
             io_flush();
@@ -76,12 +76,12 @@ uint32_t unit_test_run(uint32_t index) {
             io_flush();
 #endif
         }
-        count = 1U;
+
 #ifdef HAS_NORTOS
         wait_in_loop_ms(10);
 #endif
     }
-    return count;
+    return test_res;
 }
 
 void failed_tests_reset(void) { failed_tests_count = 0U; }

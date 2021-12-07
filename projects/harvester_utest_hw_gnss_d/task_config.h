@@ -7,6 +7,8 @@
   TASKS_BASE                \
   TASK(NMEA)                \
   TASK(RS232)               \
+  TASK(UART0_FWD)               \
+  TASK(UART1_FWD)               \
   TASK(UBX)                 \
   TASK(ZED_F9P)
 

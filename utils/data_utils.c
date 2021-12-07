@@ -53,7 +53,7 @@ int8_t rx_max8(int8_t max8_x1, int8_t max8_x2) { return (((max8_x1) > (max8_x2))
 
 int8_t rx_min8(int8_t min8_x1, int8_t min8_x2) { return (((min8_x1) < (min8_x2)) ? (min8_x1) : (min8_x2)); }
 
-int16_t rx_max16(int16_t max16_x1, int16_t max16_x2) { return (((max16_x1) > (max16_x2)) ? (max16_x1) : (max16_x2)); }
+int16_t max16(int16_t max16_x1, int16_t max16_x2) { return (((max16_x1) > (max16_x2)) ? (max16_x1) : (max16_x2)); }
 
 int16_t rx_min16(int16_t min16_x1, int16_t min16_x2) { return (((min16_x1) < (min16_x2)) ? (min16_x1) : (min16_x2)); }
 

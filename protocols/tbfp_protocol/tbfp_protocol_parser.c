@@ -48,15 +48,35 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t *instance, uint8_t rx_byte)
         instance->max_len = max16u(instance->max_len, instance->parser.exp_payload_len);
         instance->min_len = min16u(instance->min_len, instance->parser.exp_payload_len);
 #endif
-        if ((0 < instance->parser.exp_payload_len) && (instance->parser.exp_payload_len<=TBFP_MAX_PAYLOAD)) {
-            instance->parser.rx_state = WAIT_PAYLOAD;
-        } else if(0==instance->parser.exp_payload_len ){
-            instance->parser.rx_state = WAIT_CRC;
-        }else{
-            res = tbfp_parser_reset_rx(instance);
-        }
+        instance->parser.rx_state = WAIT_SERIAL_NUM;
         res = true;
     } else {
+        res = tbfp_parser_reset_rx(instance);
+    }
+    return res;
+}
+
+static bool tbfp_parser_proc_wait_serial_num(TbfpProtocol_t *instance, uint8_t rx_byte){
+    bool res = false;
+    if(2==instance->parser.load_len){
+        instance->parser.rx_frame[2] = rx_byte;
+        instance->parser.load_len = 3;
+        instance->parser.rx_state = WAIT_SERIAL_NUM;
+        res = true;
+    }else if(3==instance->parser.load_len){
+        instance->parser.rx_frame[3] = rx_byte;
+        instance->parser.load_len = 4;
+        instance->parser.rx_state = WAIT_PAYLOAD;
+        if ((0 < instance->parser.exp_payload_len) && (instance->parser.exp_payload_len<=TBFP_MAX_PAYLOAD)) {
+            instance->parser.rx_state = WAIT_PAYLOAD;
+            res = true;
+        } else if(0==instance->parser.exp_payload_len) {
+            instance->parser.rx_state = WAIT_CRC;
+            res = true;
+        } else {
+            res = tbfp_parser_reset_rx(instance);
+        }
+    }else{
         res = tbfp_parser_reset_rx(instance);
     }
     return res;
@@ -121,6 +141,9 @@ bool tbfp_proc_byte(TbfpProtocol_t *instance, uint8_t rx_byte){
          break;
      case WAIT_LEN:
          res = tbfp_parser_proc_wait_len(instance, rx_byte);
+         break;
+     case WAIT_SERIAL_NUM:
+         res = tbfp_parser_proc_wait_serial_num(instance, rx_byte);
          break;
      case WAIT_PAYLOAD:
          res = tbfp_parser_proc_wait_payload(instance, rx_byte);

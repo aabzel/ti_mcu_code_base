@@ -309,7 +309,6 @@ bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len,
     return res;
 }
 
-
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wait) {
     bool res = false;
     (void)is_wait;
@@ -558,13 +557,12 @@ bool uart_init(void) {
 #endif /*HAS_UART1*/
 #ifdef HAS_UART0
     res = init_uart_ll(0, "CLI") && res;
-    if(res){
-        res= uart_send_banner(0, 'v')&& res;
+    if(res) {
+        res = uart_send_banner(0, 'v') && res;
     }
 #endif /*HAS_UART0*/
     return res;
 }
-
 
 bool uart_deinit(uint8_t uart_num) {
     bool res = false;

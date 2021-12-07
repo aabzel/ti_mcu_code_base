@@ -8,7 +8,7 @@
 
 #ifdef USE_HAL_DRIVER
 #include "stm32f4xx_hal.h"
-#endif    
+#endif
 
 #ifdef NORTOS
 /*mandatory space NoRTOS.h needs stdint.h*/
@@ -42,8 +42,8 @@ int main(void) {
     bool res = true;
 #ifdef USE_HAL_DRIVER
     HAL_Init();
-#endif    
-    
+#endif
+
 #ifdef HAS_START_PAUSE
     pause_ms(20);
 #endif /*HAS_START_PAUSE*/
@@ -61,11 +61,11 @@ int main(void) {
 #ifdef HAS_BOOTLOADER
     res = boot_try_app();
 #endif /*HAS_BOOTLOADER*/
-   uint8_t array[]="------";
-   uart_send(5, array, 1, true);
-   uart_send(5, array, 2, true);
-   uart_send(5, array, 1, true);
-   uart_send(5, array, 1, true);
+    uint8_t array[] = "------";
+    uart_send(5, array, 1, true);
+    uart_send(5, array, 2, true);
+    uart_send(5, array, 1, true);
+    uart_send(5, array, 1, true);
 #ifdef NORTOS
     common_main_loop();
 #endif /*NORTOS*/

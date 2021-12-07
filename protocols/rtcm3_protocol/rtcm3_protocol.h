@@ -14,7 +14,7 @@ extern "C" {
 #define RTCM3_RX_FRAME_SIZE 256U
 #define RTCM3_HEADER_SIZE 3U
 #define RTCM3_CRC24_SIZE 3U
-#define RTCM_IF_CNT 3 /*LoRa RS232 UART1*/
+#define RTCM_IF_CNT 4 /*LoRa RS232 UART1*/
 
 /*TODO: replase with RxState_t*/
 typedef enum eRtcm3ProtState_t {
@@ -39,7 +39,7 @@ typedef union uRtcm3Len_t {
 typedef struct xRtcm3Header_t {
     uint8_t preamble;
     Rtcm3Len_t ex_len;
-}  __attribute__((__packed__)) Rtcm3Header_t;
+} __attribute__((__packed__)) Rtcm3Header_t;
 
 typedef struct xRtcm3Protocol_t {
     uint32_t rx_pkt_cnt;

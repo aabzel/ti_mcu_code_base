@@ -126,6 +126,7 @@ bool print_version(void) {
     io_printf("MAC: 0x%" PRIX64 CRLF, ble_mac);
 #endif /*USE_HAL_DRIVER*/
     io_printf("TG: @aabdev" CRLF);
+    io_printf("Made in Russia" CRLF);
 
     return res;
 }
@@ -355,7 +356,7 @@ static bool print_mem2(uint8_t* addr, uint32_t len, bool new_line) {
     }
     return res;
 }
-#endif 
+#endif
 
 #ifdef HAS_MCU
 bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint32_t end_addr) {

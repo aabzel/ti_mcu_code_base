@@ -45,11 +45,11 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
     /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},   /*Max LoRa bit/rate*/
     /**/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
+    /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"}, /**/
     /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
     /**/ {PAR_ID_RTK_CHANNEL, 1, UINT8, "RTKchannel"},
     /**/ {PAR_ID_GNSS_PERIOD, 2, UINT16, "GnssPer"},
     /**/ {PAR_ID_BASE_ALT, 8, DOUBLE, "BaseAlt"},
-
 };
 
 bool param_init(void) {
@@ -81,6 +81,7 @@ bool param_init(void) {
     }
     return out_res;
 }
+
 /*TODO: implement bin search */
 ParamType_t param_get_type(Id_t id) {
     ParamType_t ret_type = UNDEF;

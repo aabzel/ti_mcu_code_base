@@ -43,7 +43,7 @@ bool lora_sent_command(int32_t argc, char* argv[]) {
         res = false;
         (void)tx_array_len;
         (void)timeout_s;
-        res = tbfp_send_cmd(tx_array, tx_array_len);
+        res = tbfp_send_cmd(tx_array, tx_array_len, IF_LORA );
         if(res){
             LOG_INFO(SYS, "OK");
         }
@@ -97,7 +97,7 @@ bool chat_command(int32_t argc, char* argv[]){
         res = false;
     }
     if(true == res) {
-        res = tbfp_send_chat(tx_array, tx_array_len);
+        res = tbfp_send_chat(tx_array, tx_array_len,IF_LORA);
         if(res) {
             LOG_INFO(SYS, "ok [%s]",tx_array);
             res = print_mem(tx_array,tx_array_len,false,true,true,false);
