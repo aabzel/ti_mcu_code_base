@@ -14,7 +14,6 @@ extern "C" {
 #define TEST_SUIT_ARRAY
 #endif
 
-
 #ifdef HAS_TEST_SUIT_CONVERT
 #include "test_convert.h"
 #else

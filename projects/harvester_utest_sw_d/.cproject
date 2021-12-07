@@ -108,6 +108,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_cli"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_fifo"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_nmea_proto"/>
@@ -293,8 +294,12 @@
 									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UBLOX_PROTO"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_CLI"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_NMEA_PROTO"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_ARRAY"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_FIFO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
