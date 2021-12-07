@@ -14,7 +14,7 @@ extern "C" {
 #define TEST_SUIT_ARRAY
 #endif
 
-#ifdef HAS_TEST_SUIT_CONVERT
+#ifdef HAS_TEST_SUIT_CONVERT /*Not Fit in Flash Memory*/
 #include "test_convert.h"
 #else
 #define TEST_SUIT_CONVERT
