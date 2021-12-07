@@ -157,11 +157,14 @@
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
 									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
+									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_CLI"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UBLOX_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="HAS_UART0"/>
 									<listOptionValue builtIn="false" value="HAS_UART1"/>

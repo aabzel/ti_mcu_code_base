@@ -1,4 +1,5 @@
 #include "log.h"
+#if 0
 class TmpLogLevel {
     log_level_t saved_level;
     log_facility_t saved_facility;
@@ -13,3 +14,5 @@ public:
         set_log_level(saved_facility, saved_level);
     }
 };
+
+#endif
