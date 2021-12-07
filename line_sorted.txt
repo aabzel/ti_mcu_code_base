@@ -1,32 +1,41 @@
-                    <state>$PROJ_DIR$/../../boards/stm32_H407</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/clocks</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/core_drv</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/flash_nvs</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/flash</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/gpio</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/spi</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/tim</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/uart</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4</state>
-                    <state>$PROJ_DIR$/../../CMSIS/Device/ST/STM32F4xx/Include</state>
-                    <state>$PROJ_DIR$/../../CMSIS/Include</state>
-                    <state>$PROJ_DIR$/../../common</state>
-                    <state>$PROJ_DIR$/../../components/system</state>
-                    <state>$PROJ_DIR$/../../Drivers/boot_drv</state>
-                    <state>$PROJ_DIR$/../../Drivers/cli_drv</state>
-                    <state>$PROJ_DIR$/../../Drivers/flash_fs</state>
-                    <state>$PROJ_DIR$/../../Drivers/params</state>
-                    <state>$PROJ_DIR$/../../Drivers/task_drv</state>
-                    <state>$PROJ_DIR$/../../Drivers</state>
-                    <state>$PROJ_DIR$/../../STM32F4xx_HAL_Driver/Inc/Legacy</state>
-                    <state>$PROJ_DIR$/../../STM32F4xx_HAL_Driver/Inc</state>
-                    <state>$PROJ_DIR$/../../utils/crc</state>
-                    <state>$PROJ_DIR$/../../utils/fifo</state>
-                    <state>$PROJ_DIR$/../../utils/io_utils</state>
-                    <state>$PROJ_DIR$/../../utils/utils_math</state>
-                    <state>$PROJ_DIR$/../../utils/utils_string</state>
-                    <state>$PROJ_DIR$/../../utils/utils_sys</state>
-                    <state>$PROJ_DIR$/../../utils</state>
-                    <state>$PROJ_DIR$/../..</state>
-                    <state>$PROJ_DIR$/Core</state>
-                    <state>$PROJ_DIR$</state>
+									<listOptionValue builtIn="false" value="CC26X2"/>
+									<listOptionValue builtIn="false" value="CC26XX"/>
+									<listOptionValue builtIn="false" value="DeviceFamily_CC26X2"/>
+									<listOptionValue builtIn="false" value="HAS_ADC"/>
+									<listOptionValue builtIn="false" value="HAS_BOOT"/>
+									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
+									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
+									<listOptionValue builtIn="false" value="HAS_CLI"/>
+									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
+									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
+									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
+									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
+									<listOptionValue builtIn="false" value="HAS_FLASH"/>
+									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
+									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
+									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
+									<listOptionValue builtIn="false" value="HAS_GPIO"/>
+									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
+									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
+									<listOptionValue builtIn="false" value="HAS_LED"/>
+									<listOptionValue builtIn="false" value="HAS_MCU"/>
+									<listOptionValue builtIn="false" value="HAS_NMEA"/>
+									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
+									<listOptionValue builtIn="false" value="HAS_PARAM"/>
+									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
+									<listOptionValue builtIn="false" value="HAS_RS232"/>
+									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
+									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
+									<listOptionValue builtIn="false" value="HAS_TBFP"/>
+									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_NMEA_PROTO"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_FIFO"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS_GNSS"/>
+									<listOptionValue builtIn="false" value="HAS_UART"/>
+									<listOptionValue builtIn="false" value="HAS_UART0"/>
+									<listOptionValue builtIn="false" value="HAS_UART1"/>
+									<listOptionValue builtIn="false" value="HAS_UBX_PTOTO"/>
+									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
+									<listOptionValue builtIn="false" value="NORTOS"/>
