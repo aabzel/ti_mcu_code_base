@@ -1577,11 +1577,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.828427"
-     inkscape:cx="301.2275"
-     inkscape:cy="296.63131"
+     inkscape:zoom="5.656854"
+     inkscape:cx="744.49509"
+     inkscape:cy="383.07512"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer9"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -2034,7 +2034,7 @@
        id="path1428"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:none;stroke:#ffd000;stroke-width:0.135853px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker2426)"
+       style="fill:none;stroke:#ffd000;stroke-width:0.26;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker2426);stroke-miterlimit:4;stroke-dasharray:none"
        d="m 203.24845,68.98841 0,31.69706 3.77264,0.0877"
        id="path1586"
        sodipodi:nodetypes="ccc" />
@@ -2061,7 +2061,7 @@
        x="188.53862"
        y="137.34286" />
     <path
-       style="fill:none;stroke:#ff00d2;stroke-width:0.386667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker4634);marker-end:url(#marker4938)"
+       style="fill:none;stroke:#ff00ff;stroke-width:0.386667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker4634);marker-end:url(#marker4938)"
        d="m 188.28855,141.96863 -63.8402,0"
        id="path1610"
        sodipodi:nodetypes="cc" />
@@ -2519,11 +2519,11 @@
          y="46.254223"
          style="font-size:4.6702px;fill:#800000;stroke-width:0.175132">12..24 V</tspan></text>
     <path
-       style="fill:none;stroke:#00ff29;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker11611)"
+       style="fill:none;stroke:#008000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker11611)"
        d="m 200.08004,64.943186 h 6.85083"
        id="path11607" />
     <path
-       style="fill:none;stroke:#00ff29;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker12011)"
+       style="fill:none;stroke:#008000;stroke-width:0.255765px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker12011)"
        d="M 204.73402,64.871025 V 81.21236 h 12.71097 l 0,18.493082"
        id="path12007"
        sodipodi:nodetypes="cccc" />
@@ -2913,8 +2913,8 @@
        d="m 155.37656,145.78541 h 33.16206"
        id="path28462" />
     <path
-       style="fill:none;stroke:#ff000b;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Send)"
-       d="m 155.15224,161.5242 h 105.27518 v -9.98238"
+       style="fill:none;stroke:#ff000b;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Send)"
+       d="m 155.76028,161.5242 h 105.27518 v -9.98238"
        id="path28563" />
     <path
        style="fill:none;stroke:#ff000b;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow1Send)"
@@ -4598,7 +4598,7 @@
          style="stroke-width:0.060639">LED</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#00ff1c;fill-opacity:1;stroke:none;stroke-width:0.255765"
+       style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#008000;fill-opacity:1;stroke:none;stroke-width:0.255765"
        x="202.41493"
        y="64.511879"
        id="text12005"><tspan
@@ -4606,7 +4606,7 @@
          id="tspan12003"
          x="202.41493"
          y="64.511879"
-         style="font-size:0.682038px;fill:#00ff1c;fill-opacity:1;stroke-width:0.255765">PG_3V3</tspan></text>
+         style="font-size:0.682038px;fill:#008000;fill-opacity:1;stroke-width:0.255765">PG_3V3</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.255765"
@@ -5958,6 +5958,33 @@
          x="157.35036"
          y="39.904865"
          style="font-size:2.76914px;stroke-width:0.207685">23 spare pins</tspan></text>
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker5305)"
+       d="m 168.80076,142.09385 v 17.49279 h 60.94413"
+       id="path16726" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker4653)"
+       d="m 226.28375,149.81126 v 9.54152"
+       id="path16728" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker4653)"
+       d="M 224.97413,144.33891 V 159.4931"
+       id="path16730" />
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 214.5264,159.10723 0.90913,0.90913"
+       id="path16732" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.742326px;line-height:1.25;font-family:sans-serif;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.111349"
+       x="214.40207"
+       y="160.29593"
+       id="text17352"><tspan
+         sodipodi:role="line"
+         id="tspan17350"
+         style="font-size:0.742326px;stroke-width:0.111349;fill:#ff00ff"
+         x="214.40207"
+         y="160.29593">2</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

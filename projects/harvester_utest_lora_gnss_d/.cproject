@@ -132,6 +132,7 @@
 									<listOptionValue builtIn="false" value="CC26XX"/>
 									<listOptionValue builtIn="false" value="DeviceFamily_CC26X2"/>
 									<listOptionValue builtIn="false" value="HAS_ADC"/>
+									<listOptionValue builtIn="false" value="HAS_BOOT"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
 									<listOptionValue builtIn="false" value="HAS_CLI"/>
@@ -165,6 +166,7 @@
 									<listOptionValue builtIn="false" value="HAS_SX1262_BIT_RATE"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
+									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SX1262"/>
@@ -293,7 +295,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_nmea_proto|unit_tests/test_set_sw/test_ublox_proto|unit_tests/test_set_sw/test_tbfp_proto|utils/utils_string/str_utils_ex.c|utils/win_utils|utils/utils_files|unit_tests/test_set_hw/test_can|protocols/j1939|Drivers/tcan4550_q1|Drivers/tcan4550_q1_ti|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/fifo_char_buffer.c|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="boards/stm32_H407|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_nmea_proto|unit_tests/test_set_sw/test_ublox_proto|unit_tests/test_set_sw/test_tbfp_proto|utils/utils_string/str_utils_ex.c|utils/win_utils|utils/utils_files|unit_tests/test_set_hw/test_can|protocols/j1939|Drivers/tcan4550_q1|Drivers/tcan4550_q1_ti|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/fifo_char_buffer.c|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
