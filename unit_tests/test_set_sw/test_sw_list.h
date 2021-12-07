@@ -14,21 +14,6 @@ extern "C" {
 #define TEST_SUIT_ARRAY
 #endif
 
-#ifdef HAS_TEST_SUIT_UTILS
-#include "bit_utils_test.h"
-#include "byte_utils_test.h"
-#include "data_utils_test.h"
-#include "float_utils_test.h"
-#include "test_system.h"
-#include "test_time_utils.h"
-#else
-#define TEST_SUIT_SYSTEM
-#define TEST_SUIT_UTILS_BIT
-#define TEST_SUIT_UTILS_BYTE
-#define TEST_SUIT_UTILS_DATA
-#define TEST_SUIT_UTILS_FLOAT
-#define TEST_SUIT_UTILS_TIME
-#endif
 
 #ifdef HAS_TEST_SUIT_CONVERT
 #include "test_convert.h"
@@ -54,7 +39,7 @@ extern "C" {
 #define UBLOX_PROTO_TEST_SUIT
 #endif
 
-#ifdef HAS_TEST_SUIT_NMEA_PROTO
+#ifdef HAS_TEST_NMEA_PROTO
 #include "test_gnss_utils.h"
 #include "test_nmea_proto.h"
 #else
@@ -98,6 +83,22 @@ extern "C" {
 #include "unit_test_check.h"
 #include "unit_test_info.h"
 
+#ifdef HAS_TEST_SUIT_UTILS
+#include "bit_utils_test.h"
+#include "byte_utils_test.h"
+#include "data_utils_test.h"
+#include "float_utils_test.h"
+#include "test_system.h"
+#include "test_time_utils.h"
+#else
+#define TEST_SUIT_SYSTEM
+#define TEST_SUIT_UTILS_BIT
+#define TEST_SUIT_UTILS_BYTE
+#define TEST_SUIT_UTILS_DATA
+#define TEST_SUIT_UTILS_FLOAT
+#define TEST_SUIT_UTILS_TIME
+#endif
+
 bool test_types(void);
 bool test_array_init(void);
 bool test_64bit_mult(void);
@@ -121,10 +122,10 @@ bool test_uspec_behavior(void);
     TEST_SUIT_FIFO_INDEXER                                                                                             \
     TEST_SUIT_FIFO_CHAR                                                                                                \
     TEST_SUIT_FIFO_ARRAY                                                                                               \
+    TEST_SUIT_NMEA_PROTO                                                                                               \
     TEST_SUIT_RTCM3_PROTO                                                                                              \
     TEST_SUIT_TBFP_PROTO                                                                                               \
     TEST_SUIT_SYSTEM                                                                                                   \
-    TEST_SUIT_NMEA_PROTO                                                                                               \
     TEST_SUIT_STRING_UTILS                                                                                             \
     UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init}, {"uspec_behavior", test_uspec_behavior},                     \
         {"array", test_array}, {"types", test_types}, {"64bit_mult", test_64bit_mult},                                 \

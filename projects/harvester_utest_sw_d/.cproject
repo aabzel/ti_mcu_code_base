@@ -162,6 +162,7 @@
 									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_CLI"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_ARRAY"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_NMEA_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
@@ -187,13 +188,15 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.ASM_LISTING.23661065" name="Generate listing file (--asm_listing, -al)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.ASM_LISTING" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.KEEP_ASM.1799360565" name="Keep the generated assembly language (.asm) file (--keep_asm, -k)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.KEEP_ASM" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.RAMFUNC.2074944258" name="Run functions from RAM. (--ramfunc)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.RAMFUNC" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.RAMFUNC._none" valueType="enumerated"/>
-								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT.1225646037" name="C Dialect" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT.C89" valueType="enumerated"/>
-								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE.265604701" name="Mode" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE.automatic" valueType="enumerated"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT.1225646037" name="C Dialect" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT.C11" valueType="enumerated"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE.265604701" name="Mode" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE.automatic" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY.1440920769" name="Preprocess only (--preproc_only, -ppo)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE.573688216" name="Continue compilation after using -pp&lt;X&gt; options. (--preproc_with_compile, -ppa)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.EMIT_WARNINGS_AS_ERRORS.828401641" name="Treat warnings as errors (--emit_warnings_as_errors, -pdew)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.EMIT_WARNINGS_AS_ERRORS" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CHECK_MISRA.1040331369" name="Enable checking of MISRA-C:2004 rules (--check_misra)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CHECK_MISRA" useByScannerDiscovery="false" value="" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.LANGUAGE_MODE.665153814" name="Language mode" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.LANGUAGE_MODE" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.LANGUAGE_MODE.RELAXED_ANSI" valueType="enumerated"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CPP_DEFAULT.1568444176" name="Treat C files as C++ files (--cpp_default, -fg)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CPP_DEFAULT" useByScannerDiscovery="false" value="false" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PRINTF_SUPPORT.1811364380" name="Level of printf/scanf support required (--printf_support)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PRINTF_SUPPORT" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PRINTF_SUPPORT.full" valueType="enumerated"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.425241768" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.467512831" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS.2146356311" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS"/>
@@ -290,6 +293,7 @@
 									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_NMEA_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS_GNSS"/>
