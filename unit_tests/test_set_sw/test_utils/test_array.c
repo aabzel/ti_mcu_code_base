@@ -9,5 +9,5 @@ bool test_array_con_pat(void){
     uint32_t max_cont_patt=0;
     EXPECT_TRUE( array_max_cont((uint8_t*) array1, sizeof(array1), 0, &max_cont_patt));
     EXPECT_EQ( 3, max_cont_patt);
-	return false;
+	return true;
 }
