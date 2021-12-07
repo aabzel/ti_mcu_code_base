@@ -85,7 +85,6 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards/harvester_v1"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/adc"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/clocks"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/core_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash"/>
@@ -147,6 +146,7 @@
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
+									<listOptionValue builtIn="false" value="HAS_HARVESTER_V1"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_MCU"/>
@@ -161,13 +161,17 @@
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_CLI"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_ARRAY"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UBLOX_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
+									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART0"/>
+									<listOptionValue builtIn="false" value="HAS_UART0_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
+									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UBX_PTOTO"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
