@@ -333,9 +333,20 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
 /*One LoRa frame can contain several TBFP frames*/
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
-    uint32_t i = 0;
+    uint32_t i = 0,ok_cnt=0, err_cnt=0;
     for(i = 0; i < len; i++) {
-        res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]) && res;
+        res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]) ;
+        if(res){
+            ok_cnt++;
+        }else{
+            err_cnt++;
+            LOG_ERROR(TBFP, "i=%u" , i);
+        }
+    }
+    if(len==ok_cnt){
+        res = true;
+    }else{
+        res = false;
     }
 
     return res;
@@ -359,10 +370,14 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
                 max16(TbfpProtocol[interface].max_con_flow, TbfpProtocol[interface].con_flow);
         } else if((TbfpProtocol[interface].prev_s_num + 1) < inHeader.snum) {
 #ifdef HAS_MCU
-            LOG_WARNING(TBFP, "LostFrames %u...%u", TbfpProtocol[interface].prev_s_num + 1, inHeader.snum - 1);
+            uint32_t lost_frame_cnt = inHeader.snum-TbfpProtocol[interface].prev_s_num-1;
+            LOG_WARNING(TBFP, "Lost %u...%u=%u Frames", TbfpProtocol[interface].prev_s_num + 1, inHeader.snum - 1,lost_frame_cnt);
 #endif
             TbfpProtocol[interface].con_flow = 1;
-        } else {
+        } else if(TbfpProtocol[interface].prev_s_num  < inHeader.snum){
+            /*Unreal situation*/
+            TbfpProtocol[interface].con_flow = 1;
+        }else{
             /*cur serial < prev serial*/
             TbfpProtocol[interface].con_flow = 1;
         }

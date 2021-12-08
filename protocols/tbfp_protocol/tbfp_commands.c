@@ -10,6 +10,7 @@
 #include "log.h"
 #include "tbfp_protocol.h"
 #include "table_utils.h"
+#include "system.h"
 #include "writer_generic.h"
 #include "writer_config.h"
 
@@ -17,7 +18,7 @@ static bool tbfp_diag(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
-                                       {3, "If"},
+                                       {8, "interf"},
                                        {9, "rxCnt"},
                                        {9, "crcErCnt"},
 #ifdef HAS_DEBUG
@@ -31,7 +32,7 @@ static bool tbfp_diag(void) {
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface=IF_LORA; interface < ARRAY_SIZE(TbfpProtocol); interface++){
         io_printf(TSEP);
-        io_printf(" %1u " TSEP, TbfpProtocol[interface].interface);
+        io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
         io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);
         io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
 

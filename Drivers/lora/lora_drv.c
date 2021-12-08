@@ -36,6 +36,9 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
 
 #ifdef HAS_TBFP
     res = tbfp_proc(rx_payload, rx_size, IF_LORA);
+    if(false==res){
+        LOG_ERROR(LORA, "LoRaProcErr");
+    }
 #endif /*HAS_TBFP*/
     return res;
 }

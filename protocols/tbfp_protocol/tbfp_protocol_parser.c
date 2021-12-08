@@ -91,12 +91,15 @@ static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t *instance, uint8_t rx_b
         res = tbfp_parser_reset_rx(instance);
     } else {
         instance->parser.rx_frame[instance->parser.load_len] = rx_byte;
-        if(instance->parser.load_len  == (TBFP_SIZE_HEADER + instance->parser.exp_payload_len - 1)){
+        if (instance->parser.load_len  == (TBFP_SIZE_HEADER + instance->parser.exp_payload_len - 1)) {
             instance->parser.rx_state = WAIT_CRC;
             res = true;
-        }else if( instance->parser.load_len <(TBFP_SIZE_HEADER+ instance->parser.exp_payload_len )){
+        } else if ( instance->parser.load_len < (TBFP_SIZE_HEADER+ instance->parser.exp_payload_len-1 )) {
             instance->parser.rx_state = WAIT_PAYLOAD;
             res = true;
+        } else {
+            /*Payload OverRun*/
+            res = tbfp_parser_reset_rx(instance);
         }
         instance->parser.load_len++;
     }
@@ -112,7 +115,7 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t *instance, uint8_t rx_byte
     if(crc8_index == instance->parser.load_len){
         instance->parser.rx_frame[instance->parser.load_len] = rx_byte;
         instance->parser.read_crc8 = rx_byte;
-        instance->parser.load_len++;
+        instance->parser.load_len=0;
         uint16_t frame_len = TBFP_SIZE_HEADER + instance->parser.exp_payload_len;
         res =  crc8_sae_j1850_check(&instance->parser.rx_frame[0], frame_len, instance->parser.read_crc8);
         if (res) {
@@ -121,7 +124,8 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t *instance, uint8_t rx_byte
             instance->rx_pkt_cnt++;
             res = tbfp_proc_full(instance->parser.fix_frame,   frame_len+TBFP_SIZE_CRC, instance->interface);
         } else {
-            res = false;
+            instance->crc_err_cnt++;
+            res = false;// errors
         }
         res = tbfp_parser_reset_rx(instance);
     } else {
