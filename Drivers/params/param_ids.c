@@ -13,6 +13,9 @@
 #endif
 #include "log.h"
 #include "param_types.h"
+#ifdef HAS_PWR_MUX
+#include "pwr_mux_diag.h"
+#endif
 #ifdef HAS_SX1262
 #include "sx1262_diag.h"
 #endif /*HAS_SX1262*/
@@ -226,7 +229,9 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
         name = coding_rate2str((LoRaCodingRate_t)*value);
     }
     if(PAR_ID_LORA_MAX_BIT_RATE == id) {
-        name = bit_rate2str((double)*value);
+        Type64Union_t un64;
+        memcpy(&un64, value, sizeof(Type64Union_t));
+        name = bit_rate2str(un64.d64);
     }
     if(PAR_ID_LORA_BW == id) {
         name = bandwidth2str((uint8_t)*value);
@@ -235,6 +240,12 @@ const char* param_val2str(uint16_t id, uint8_t* value) {
     if(PAR_ID_BOOT_CMD == id) {
         name = boot_cmd2str((uint8_t)*value);
     }
+
+#ifdef HAS_PWR_MUX
+    if(PAR_ID_PWR_SRC == id) {
+        name = pwr_source2str((PwrSource_t)*value);
+    }
+#endif
 
 #ifdef HAS_ZED_F9P
     if(PAR_ID_RTK_MODE == id) {

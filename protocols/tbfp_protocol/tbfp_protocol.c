@@ -1,4 +1,3 @@
-
 #include "tbfp_protocol.h"
 
 #include <string.h>
@@ -20,7 +19,6 @@
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
 #endif
-
 #include "float_utils.h"
 #include "gnss_utils.h"
 #include "io_utils.h"
@@ -33,6 +31,9 @@
 #endif /*HAS_PARAM*/
 #ifdef HAS_RS232
 #include "rs232_drv.h"
+#endif
+#ifdef HAS_RTCM3
+#include "rtcm3_protocol.h"
 #endif
 #include "system.h"
 #include "tbfp_diag.h"
@@ -99,10 +100,7 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
     return res;
 }
 
-bool tbfp_compose_ping(uint8_t* out_frame,
-                       uint32_t* tx_frame_len,
-                       TbfPingFrame_t* pingFrame,
-                       Interfaces_t interface) {
+bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame, Interfaces_t interface) {
     bool res = false;
     if(out_frame && tx_frame_len) {
         res = tbfp_make_header(out_frame, sizeof(TbfPingFrame_t), interface);
@@ -117,10 +115,38 @@ bool tbfp_compose_ping(uint8_t* out_frame,
     return res;
 }
 
-static bool tbfp_send_text(uint8_t payload_id,
-                           uint8_t* tx_array,
-                           uint32_t len,
-                           Interfaces_t interface) {
+bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
+    bool res = false;
+    if(tx_array && (0 < len)) {
+        uint8_t frame[256] = "";
+        uint32_t frame_len = TBFP_SIZE_HEADER + len;
+        res = tbfp_make_header(frame, len, interface);
+        if(res) {
+            memcpy(&frame[TBFP_INDEX_PAYLOAD], tx_array, len);
+            frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
+            switch(interface) {
+            case IF_LORA: {
+#ifdef HAS_LORA
+                res = lora_send_queue(frame, frame_len + TBFP_SIZE_CRC);
+#endif
+            } break;
+            case IF_RS232: {
+#ifdef HAS_RS232
+                res = rs232_send(frame, frame_len + TBFP_SIZE_CRC);
+#endif
+            } break;
+            case IF_LOOPBACK: {
+                res = tbfp_proc_full(frame, frame_len + TBFP_SIZE_CRC, IF_LOOPBACK);
+            } break;
+            default:
+                break;
+            }
+        }
+    }
+    return res;
+}
+
+static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     bool res = false;
     if(tx_array && (0 < len)) {
         uint8_t frame[256] = "";
@@ -132,22 +158,21 @@ static bool tbfp_send_text(uint8_t payload_id,
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
             if(res) {
                 switch(interface) {
-                  case IF_LORA: {
+                case IF_LORA: {
 #ifdef HAS_LORA
                     res = lora_send_queue(frame, frame_len + TBFP_SIZE_CRC);
 #endif
-                  } break;
-                  case IF_RS232: {
+                } break;
+                case IF_RS232: {
 #ifdef HAS_RS232
                     res = rs232_send(frame, frame_len + TBFP_SIZE_CRC);
 #endif
-                  } break;
-                  case IF_LOOPBACK:{
-                      res= tbfp_proc(frame, frame_len + TBFP_SIZE_CRC,IF_LOOPBACK);
-                  }break;
-                  default:
+                } break;
+                case IF_LOOPBACK: {
+                    res = tbfp_proc_full(frame, frame_len + TBFP_SIZE_CRC, IF_LOOPBACK);
+                } break;
+                default:
                     break;
-
                 }
             }
         }
@@ -155,15 +180,15 @@ static bool tbfp_send_text(uint8_t payload_id,
     return res;
 }
 
-bool tbfp_send_chat(uint8_t* tx_array, uint32_t len,Interfaces_t interface) {
+bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     bool res = false;
     res = tbfp_send_text(FRAME_ID_CHAT, tx_array, len, interface);
     return res;
 }
 
-bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len,Interfaces_t interface) {
+bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     bool res = false;
-    res = tbfp_send_text(FRAME_ID_CMD, tx_array, len,interface);
+    res = tbfp_send_text(FRAME_ID_CMD, tx_array, len, interface);
     return res;
 }
 
@@ -283,6 +308,11 @@ static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len) {
 static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t interface) {
     bool res = false;
     switch(payload[0]) {
+#ifdef HAS_RTCM3
+    case FRAME_ID_RTCM3:
+        res = rtcm3_proc_array(payload, len, interface);
+        break;
+#endif /*HAS_RTCM3*/
     case FRAME_ID_CHAT:
         res = tbfp_proc_chat(payload, len);
         break;
@@ -300,42 +330,49 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     return res;
 }
 
+/*One LoRa frame can contain several TBFP frames*/
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
-    bool res = false;
+    bool res = true;
+    uint32_t i = 0;
+    for(i = 0; i < len; i++) {
+        res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]) && res;
+    }
+
+    return res;
+}
+
+bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
+    bool res = true;
+
     res = is_tbfp_protocol(arr, len);
     if(res) {
         TbfHeader_t inHeader = {0};
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
 #ifdef HAS_TBFP_FLOW_CONTROL
 #ifdef X86_64
-        printf("\n%s(): prev_snum:%u snum:%u", __FUNCTION__,
-               TbfpProtocol[interface].prev_s_num,
-               inHeader.snum
-               );
+        printf("\n%s(): prev_snum:%u snum:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num, inHeader.snum);
 #endif
-        if((TbfpProtocol[interface].prev_s_num+1) == inHeader.snum){
+        if((TbfpProtocol[interface].prev_s_num + 1) == inHeader.snum) {
             /*Flow ok*/
             TbfpProtocol[interface].con_flow++;
-            TbfpProtocol[interface].max_con_flow = max16(TbfpProtocol[interface].max_con_flow,
-                                                            TbfpProtocol[interface].con_flow);
-        }else if((TbfpProtocol[interface].prev_s_num + 1) < inHeader.snum){
+            TbfpProtocol[interface].max_con_flow =
+                max16(TbfpProtocol[interface].max_con_flow, TbfpProtocol[interface].con_flow);
+        } else if((TbfpProtocol[interface].prev_s_num + 1) < inHeader.snum) {
 #ifdef HAS_MCU
-            LOG_WARNING(TBFP, "LostFrames %u...%u", TbfpProtocol[interface].prev_s_num+1, inHeader.snum-1);
+            LOG_WARNING(TBFP, "LostFrames %u...%u", TbfpProtocol[interface].prev_s_num + 1, inHeader.snum - 1);
 #endif
             TbfpProtocol[interface].con_flow = 1;
-        }else{
+        } else {
             /*cur serial < prev serial*/
             TbfpProtocol[interface].con_flow = 1;
         }
         TbfpProtocol[interface].prev_s_num = inHeader.snum;
 #ifdef X86_64
-        printf("\n2 %s(): prev_snum:%u snum:%u", __FUNCTION__,
-               TbfpProtocol[interface].prev_s_num,
-               inHeader.snum
-               );
+        printf("\n2 %s(): prev_snum:%u snum:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num, inHeader.snum);
 #endif
 #endif /*HAS_TBFP_FLOW_CONTROL*/
         res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
     }
+
     return res;
 }

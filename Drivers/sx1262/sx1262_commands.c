@@ -66,10 +66,11 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         // float rssi_watts=0.0;
         LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
         // float rssi_inst = dbm2watts((int32_t) Sx1262Instance.rssi_inst);
-        LOG_INFO(LORA, "RssiInst: %d dBm=%f W", Sx1262Instance.rssi_inst, dbm2watts((int32_t)Sx1262Instance.rssi_inst));
-        LOG_INFO(LORA, "RssiPkt: %d=%f W", Sx1262Instance.rssi_pkt, dbm2watts((int32_t)Sx1262Instance.rssi_pkt));
+        LOG_INFO(LORA, "RssiInst: %d dBm=%8.7f W", Sx1262Instance.rssi_inst,
+                 dbm2watts((int32_t)Sx1262Instance.rssi_inst));
+        LOG_INFO(LORA, "RssiPkt: %d=%8.7f W", Sx1262Instance.rssi_pkt, dbm2watts((int32_t)Sx1262Instance.rssi_pkt));
         LOG_INFO(LORA, "SnrPkt: %u", Sx1262Instance.snr_pkt);
-        LOG_INFO(LORA, "SignalRssiPkt: %d=%f W", Sx1262Instance.signal_rssi_pkt,
+        LOG_INFO(LORA, "SignalRssiPkt: %d=%8.7f W", Sx1262Instance.signal_rssi_pkt,
                  dbm2watts((int32_t)Sx1262Instance.signal_rssi_pkt));
         // io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
         // io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
@@ -702,7 +703,8 @@ static bool sx1262_statistic(void) {
 bool sx1262_test_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint32_t wait_pause_ms = 5000, tx_array_len = 0;
-    uint32_t try_cnt = 0, try_num = 0;
+    uint32_t try_cnt = 0;
+    uint32_t try_num = 0;
     uint8_t tx_array[TX_SIZE] = {0};
     if(1 <= argc) {
         res = try_str2uint32(argv[0], &try_cnt);
@@ -726,7 +728,7 @@ bool sx1262_test_command(int32_t argc, char* argv[]) {
         Sx1262Instance.tx_done_cnt = 0;
         Sx1262Instance.rx_done_cnt = 0;
         for(try_num = 1; try_num <= try_cnt; try_num++) {
-            snprintf(tx_array, sizeof(tx_array), "ping_%u", (uint32_t)try_num);
+            snprintf(tx_array, sizeof(tx_array), "ping_%u", try_num);
             tx_array_len = (uint16_t)strlen((char*)tx_array) + 1U;
             LOG_INFO(LORA, "send %u/%u [%s] pause %u ms", try_num, try_cnt, tx_array, wait_pause_ms);
             res = sx1262_start_tx(tx_array, tx_array_len, 0);

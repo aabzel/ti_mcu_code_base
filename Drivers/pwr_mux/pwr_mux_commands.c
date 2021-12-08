@@ -6,6 +6,7 @@
 #include "gpio_drv.h"
 #include "log.h"
 #include "io_utils.h"
+#include "pwr_mux_diag.h"
 #include "pwr_mux_drv.h"
 #include "sys_config.h"
 #include "task_info.h"

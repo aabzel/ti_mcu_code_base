@@ -20,6 +20,10 @@
 #include "lora_drv.h"
 #endif /*HAS_LORA*/
 
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif /*HAS_TBFP*/
+
 #ifdef HAS_UART
 #include "uart_drv.h"
 #endif /*HAS_UART*/
@@ -148,10 +152,13 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             if(IF_UART1 == instance->interface) {
 #ifdef HAS_LORA
                 if(true == instance->lora_fwd) {
-                    res = lora_send_queue(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE);
+                    /*Wrap to TBFP*/
+#ifdef HAS_TBFP
+                    res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, IF_LORA);
                     if(false == res) {
                         instance->lora_lost_pkt_cnt++;
                     }
+#endif
                 }
 #endif /*HAS_LORA*/
 #ifdef HAS_RS232

@@ -21,6 +21,7 @@ static bool tbfp_diag(void) {
                                        {9, "rxCnt"},
                                        {9, "crcErCnt"},
 #ifdef HAS_DEBUG
+                                       {9, "maxFlow"},
                                        {9, "preCnt"},
                                        {9, "ErCnt"},
                                        {9, "minLen"},
@@ -35,6 +36,7 @@ static bool tbfp_diag(void) {
         io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
 
 #ifdef HAS_DEBUG
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].max_con_flow);
         io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
         io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
         io_printf(" %7u " TSEP, TbfpProtocol[interface].min_len);
@@ -54,10 +56,43 @@ bool tbfp_diag_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         res = true;
     } else {
-        LOG_ERROR(SYS, "Usage: tbfpd");
+        LOG_ERROR(TBFP, "Usage: tbfpd");
     }
     if(res) {
         res = tbfp_diag();
+    }
+    return res;
+}
+
+bool tbfp_send_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint8_t array[256] = {0};
+    uint32_t array_len = 0;
+    uint8_t interface = IF_NONE;
+    if(1<=argc){
+        res = try_str2array(argv[0], array, sizeof(array), &array_len);
+        if(false == res) {
+            LOG_ERROR(TBFP, "Unable to extract data %s", argv[0]);
+        }
+    }
+    if(2 <= argc) {
+        res = try_str2uint8(argv[1], &interface);
+        if(false == res) {
+            LOG_ERROR(TBFP, "UnableToParseInterface");
+        }
+    }
+
+
+    if(res) {
+        res = tbfp_send(array,array_len,(Interfaces_t) interface);
+        if(res){
+            LOG_INFO(TBFP, "Ok!");
+        }else{
+            LOG_ERROR(TBFP, "TbfpSendError");
+        }
+
+    }else{
+        LOG_ERROR(TBFP, "Usage: tbfpds data interface");
     }
     return res;
 }

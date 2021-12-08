@@ -4,6 +4,7 @@
 
 #include "sx1262_drv.h"
 #include "unit_test_check.h"
+#include "none_blocking_pause.h"
 
 static bool test_one_sync_word(uint64_t sync_word) {
     uint64_t read_sync_word = 0;
@@ -73,15 +74,17 @@ bool test_sx1262_fifo(void) {
     return true;
 }
 
-/*fails*/
+/*Test requre second device. Fails*/
 bool test_sx1262_rx_addr(void) {
     uint8_t read_rx_addr = 0;
-    uint8_t set_rx_addr = 200;
-    uint8_t PayloadLengthRx = 0;
-    EXPECT_TRUE(sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, set_rx_addr));
-    EXPECT_TRUE(sx1262_get_rxbuff_status(&PayloadLengthRx, &read_rx_addr));
-    EXPECT_EQ(set_rx_addr, read_rx_addr);
+
+    uint8_t payload_length_rx = 0;
+    //EXPECT_TRUE(sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, set_rx_addr));
     EXPECT_TRUE(sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS));
+    //EXPECT_TRUE( wait_in_loop_ms(100));
+    EXPECT_TRUE(sx1262_get_rxbuff_status(&payload_length_rx, &read_rx_addr));
+    EXPECT_GR(0,payload_length_rx,0);
+    EXPECT_EQ(RX_BASE_ADDRESS, read_rx_addr); /*Error*/
     return true;
 }
 

@@ -172,8 +172,10 @@
 									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SX1262"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SYSTEM"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>

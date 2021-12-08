@@ -5,6 +5,9 @@
 
 #include "sys_config.h"
 
+#ifndef USE_HAL_DRIVER
+#error "that wile only for STM32 MCUs"
+#endif /*USE_HAL_DRIVER*/
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {

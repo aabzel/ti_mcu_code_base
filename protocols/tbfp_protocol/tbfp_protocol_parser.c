@@ -119,7 +119,7 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t *instance, uint8_t rx_byte
             memcpy(instance->parser.fix_frame, instance->parser.rx_frame, TBFP_RX_FRAME_SIZE);
             instance->parser.rx_state = RX_DONE;
             instance->rx_pkt_cnt++;
-            res = tbfp_proc(instance->parser.fix_frame,   frame_len+TBFP_SIZE_CRC, instance->interface);
+            res = tbfp_proc_full(instance->parser.fix_frame,   frame_len+TBFP_SIZE_CRC, instance->interface);
         } else {
             res = false;
         }

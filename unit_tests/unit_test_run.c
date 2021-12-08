@@ -64,7 +64,7 @@ bool unit_test_run(uint32_t index) {
             test_failed = true;
         }
 #endif
-        if(false==test_res) {
+        if(false == test_res) {
 #ifdef HAS_CLI
             io_puts("!ERRTEST" CRLF);
             io_flush();

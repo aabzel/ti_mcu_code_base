@@ -7,6 +7,10 @@
 
 #include "sys_config.h"
 
+#ifndef CC26XX
+#error "that wile only for CC26CC MCUs"
+#endif /*USE_HAL_DRIVER*/
+
 #define DIO_CNT 27
 #define GPIO_COUNT 17U
 

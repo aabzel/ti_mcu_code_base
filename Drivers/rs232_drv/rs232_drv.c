@@ -10,11 +10,12 @@
 #include "gpio_drv.h"
 #include "uart_drv.h"
 #include "system.h"
+
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
 #endif /*HAS_TBFT*/
 
-RS232_t rs232;
+RS232_t rs232 = {0};
 
 bool rs232_send(uint8_t* const data, uint32_t len){
     bool res = false;
