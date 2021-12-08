@@ -68,6 +68,8 @@ typedef struct xTbfpProtocol_t {
 } TbfpProtocol_t;
 
 extern TbfpProtocol_t TbfpProtocol[3]; /*RS232 LoRa*/
+
+bool tbfp_parser_reset_rx(TbfpProtocol_t *instance);
 bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
 bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface);

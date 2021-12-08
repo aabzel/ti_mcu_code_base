@@ -305,6 +305,16 @@ static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len) {
     return res;
 }
 
+bool tbfp_parser_reset_rx(TbfpProtocol_t *instance){
+    bool res = false;
+    if (instance) {
+        instance->parser.rx_state = WAIT_PREAMBLE;
+        instance->parser.load_len = 0;
+        res = true;
+    }
+    return res;
+}
+
 static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t interface) {
     bool res = false;
     switch(payload[0]) {
@@ -333,6 +343,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
 /*One LoRa frame can contain several TBFP frames*/
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
+    res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
     uint32_t i = 0,ok_cnt=0, err_cnt=0;
     for(i = 0; i < len; i++) {
         res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]) ;

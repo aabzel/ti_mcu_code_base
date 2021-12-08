@@ -12,16 +12,6 @@
 #include "data_utils.h"
 #include "crc8_sae_j1850.h"
 
-static bool tbfp_parser_reset_rx(TbfpProtocol_t *instance){
-    bool res = false;
-    if (instance) {
-        instance->parser.rx_state = WAIT_PREAMBLE;
-        instance->parser.load_len = 0;
-        res = true;
-    }
-    return res;
-}
-
 static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t *instance, uint8_t rx_byte){
     bool res = false;
     if (TBFP_PREAMBLE == rx_byte) {
