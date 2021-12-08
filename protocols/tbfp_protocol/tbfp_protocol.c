@@ -305,9 +305,9 @@ static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len) {
     return res;
 }
 
-bool tbfp_parser_reset_rx(TbfpProtocol_t *instance){
+bool tbfp_parser_reset_rx(TbfpProtocol_t* instance) {
     bool res = false;
-    if (instance) {
+    if(instance) {
         instance->parser.rx_state = WAIT_PREAMBLE;
         instance->parser.load_len = 0;
         res = true;
@@ -344,19 +344,19 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
     res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
-    uint32_t i = 0,ok_cnt=0, err_cnt=0;
+    uint32_t i = 0, ok_cnt = 0, err_cnt = 0;
     for(i = 0; i < len; i++) {
-        res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]) ;
-        if(res){
+        res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]);
+        if(res) {
             ok_cnt++;
-        }else{
+        } else {
             err_cnt++;
-            LOG_ERROR(TBFP, "i=%u" , i);
+            LOG_ERROR(TBFP, "i=%u", i);
         }
     }
-    if(len==ok_cnt){
+    if(len == ok_cnt) {
         res = true;
-    }else{
+    } else {
         res = false;
     }
 
@@ -381,14 +381,19 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
                 max16(TbfpProtocol[interface].max_con_flow, TbfpProtocol[interface].con_flow);
         } else if((TbfpProtocol[interface].prev_s_num + 1) < inHeader.snum) {
 #ifdef HAS_MCU
-            uint32_t lost_frame_cnt = inHeader.snum-TbfpProtocol[interface].prev_s_num-1;
-            LOG_WARNING(TBFP, "Lost %u...%u=%u Frames", TbfpProtocol[interface].prev_s_num + 1, inHeader.snum - 1,lost_frame_cnt);
+            uint32_t lost_frame_cnt = inHeader.snum - TbfpProtocol[interface].prev_s_num - 1;
+            if((TbfpProtocol[interface].prev_s_num + 1) == (inHeader.snum - 1)) {
+                LOG_WARNING(TBFP, "Lost %u=%u Frame", inHeader.snum - 1, lost_frame_cnt);
+            } else {
+                LOG_WARNING(TBFP, "Lost %u...%u=%u Frames", TbfpProtocol[interface].prev_s_num + 1, inHeader.snum - 1,
+                            lost_frame_cnt);
+            }
 #endif
             TbfpProtocol[interface].con_flow = 1;
-        } else if(TbfpProtocol[interface].prev_s_num  < inHeader.snum){
+        } else if(TbfpProtocol[interface].prev_s_num < inHeader.snum) {
             /*Unreal situation*/
             TbfpProtocol[interface].con_flow = 1;
-        }else{
+        } else {
             /*cur serial < prev serial*/
             TbfpProtocol[interface].con_flow = 1;
         }

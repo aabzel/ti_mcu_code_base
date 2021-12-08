@@ -66,12 +66,12 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         // float rssi_watts=0.0;
         LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
         // float rssi_inst = dbm2watts((int32_t) Sx1262Instance.rssi_inst);
-        LOG_INFO(LORA, "RssiInst: %d dBm=%8.7f W", Sx1262Instance.rssi_inst,
-                 dbm2watts((int32_t)Sx1262Instance.rssi_inst));
-        LOG_INFO(LORA, "RssiPkt: %d=%8.7f W", Sx1262Instance.rssi_pkt, dbm2watts((int32_t)Sx1262Instance.rssi_pkt));
+        LOG_INFO(LORA, "RssiInst: %d dBm=%8.7f mW", Sx1262Instance.rssi_inst,
+                 1000.0 * dbm2watts((int32_t)Sx1262Instance.rssi_inst));
+        LOG_INFO(LORA, "RssiPkt: %d=%8.7f mW", Sx1262Instance.rssi_pkt, 1000.0 *dbm2watts((int32_t)Sx1262Instance.rssi_pkt));
         LOG_INFO(LORA, "SnrPkt: %u", Sx1262Instance.snr_pkt);
-        LOG_INFO(LORA, "SignalRssiPkt: %d=%8.7f W", Sx1262Instance.signal_rssi_pkt,
-                 dbm2watts((int32_t)Sx1262Instance.signal_rssi_pkt));
+        LOG_INFO(LORA, "SignalRssiPkt: %d=%8.7f mW", Sx1262Instance.signal_rssi_pkt,
+                 1000.0 *dbm2watts((int32_t)Sx1262Instance.signal_rssi_pkt));
         // io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
         // io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
         // LOG_INFO(LORA,"RssiAvg: %d dBm=%f W", Sx1262Instance.rssi_avg, rssi_watts);
@@ -695,6 +695,8 @@ static bool sx1262_statistic(void) {
     uint32_t rx_done_cnt_diff = Sx1262Instance.rx_done_cnt - rx_done_cnt_prev;
     io_printf("tx done cnt: %u+%u" CRLF, Sx1262Instance.tx_done_cnt, tx_done_cnt_diff);
     io_printf("rx done cnt: %u+%u" CRLF, Sx1262Instance.rx_done_cnt, rx_done_cnt_diff);
+    io_printf("rx size max: %u" CRLF, Sx1262Instance.rx_size_max);
+    io_printf("tx size max: %u" CRLF, Sx1262Instance.tx_size_max);
     tx_done_cnt_prev = Sx1262Instance.tx_done_cnt;
     rx_done_cnt_prev = Sx1262Instance.rx_done_cnt;
     return res;

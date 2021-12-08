@@ -21,7 +21,7 @@ uint8_t uint8_limiter(uint8_t in_val, uint8_t up_val) {
     return out_val;
 }
 
-uint8_t rx_max8u(uint8_t max8u_x1, uint8_t max8u_x2) { return (((max8u_x1) > (max8u_x2)) ? (max8u_x1) : (max8u_x2)); }
+uint8_t max8u(uint8_t max8u_x1, uint8_t max8u_x2) { return (((max8u_x1) > (max8u_x2)) ? (max8u_x1) : (max8u_x2)); }
 
 uint8_t rx_min8u(uint8_t min8u_x1, uint8_t min8u_x2) { return (((min8u_x1) < (min8u_x2)) ? (min8u_x1) : (min8u_x2)); }
 

@@ -1083,7 +1083,10 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
         Sx1262Instance.tx_last_size = tx_buf_len;
         Sx1262Instance.tx_start_time_stamp_ms = get_time_ms32();
 #endif /*HAS_SX1262_BIT_RATE*/
-        res = sx1262_set_tx(timeout_s) && res;
+        res = sx1262_set_tx(timeout_s);
+        if(res) {
+            Sx1262Instance.tx_size_max = max8u(Sx1262Instance.tx_size_max, tx_buf_len);
+        }
     }
     return res;
 }
@@ -1466,6 +1469,7 @@ static inline bool sx1262_poll_status(void) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.rx_done_cnt++;
             res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
+            Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
             if(res) {
                 if(Sx1262Instance.debug) {
                     LOG_INFO(LORA, "rx %u byte", rx_size);

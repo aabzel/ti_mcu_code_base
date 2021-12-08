@@ -222,6 +222,8 @@ typedef struct xSx1262_t {
     bool show_ascii;
     bool is_packet;
     uint32_t rx_done_cnt;
+    uint8_t rx_size_max;
+    uint8_t tx_size_max;
     uint32_t tx_done_cnt;
     ChipMode_t chip_mode;
     PaketStat_t gfsk;

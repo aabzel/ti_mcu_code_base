@@ -82,7 +82,7 @@ uint32_t swap32(uint32_t u32_num);
 uint64_t rx_max64u(uint64_t max64u_x1, uint64_t max64u_x2);
 uint64_t rx_min64u(uint64_t min64u_x1, uint64_t min64u_x2);
 uint8_t extract_digit(uint32_t in_num, uint8_t digit_index);
-uint8_t rx_max8u(uint8_t max8u_x1, uint8_t max8u_x2);
+uint8_t max8u(uint8_t max8u_x1, uint8_t max8u_x2);
 uint8_t rx_min8u(uint8_t min8u_x1, uint8_t min8u_x2);
 uint8_t uint16_to_uint8_limiter(uint16_t in_val);
 uint8_t uint8_limiter(uint8_t in_val, uint8_t up_val);
