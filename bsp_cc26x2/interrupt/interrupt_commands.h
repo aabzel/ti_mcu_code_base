@@ -12,8 +12,7 @@ extern "C" {
 
 bool it_diag_command(int32_t argc, char* argv[]);
 
-#define INTERRUPT_COMMANDS                                     \
-    SHELL_CMD("it_diag", "itd", it_diag_command, "IT diag"),
+#define INTERRUPT_COMMANDS SHELL_CMD("it_diag", "itd", it_diag_command, "IT diag"),
 
 #ifdef __cplusplus
 }
