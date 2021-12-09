@@ -27,6 +27,9 @@
 #define GPIO_PWM_COMMANDS
 #endif
 
+#include "interrupt_commands.h"
+
+
 #ifdef HAS_TIM_CMD
 #include "tim_commands.h"
 #else
@@ -105,7 +108,8 @@
     ADC_COMMANDS                                                                                                       \
     BASE_COMMANDS                                                                                                      \
     BOOT_COMMANDS                                                                                                      \
-    CLOCK_COMMANDS                                                                                                     \
+    CLOCK_COMMANDS     \
+    INTERRUPT_COMMANDS \
     DAC_COMMANDS                                                                                                       \
     TCAN4550_COMMANDS                                                                                                  \
     TCAN4550_TI_TI_COMMANDS                                                                                            \
