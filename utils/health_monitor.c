@@ -7,6 +7,7 @@
 #include "adc_drv.h"
 #endif
 #include "cli_manager.h"
+#include "core_driver.h"
 #include "gnss_diag.h"
 #include "gnss_utils.h"
 #include "log.h"
@@ -60,11 +61,18 @@ bool health_monotor_proc(void) {
         cli_init_done = true;
     }
 
-    if(0 < huart[UART_NUM_CLI].error_cnt){
-        res = init_uart_ll(UART_NUM_CLI, "CLI");
-        if(false==res){
-            LOG_ERROR(UART, "ReInit0Error");
+    float stack_precent = stack_used();
+    if(50.0<stack_precent ){
+        LOG_WARNING(HMOM, "StackUsed:%f %%", stack_precent);
+        if(75.0<stack_precent ){
+            LOG_ERROR(HMOM, "StackUsed:%f %%", stack_precent);
         }
+    }
+    if(0 < huart[UART_NUM_CLI].error_cnt){
+        LOG_ERROR(UART, "Error");
+        //res = init_uart_ll(UART_NUM_CLI, "CLI");
+        //if(false==res){
+       // }
     }
 
 #if defined(HAS_CHECK_TIME) && defined(HAS_NMEA) && defined(HAS_UBLOX)

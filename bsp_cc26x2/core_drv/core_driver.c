@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys_ctrl.h>
 
+#include "array.h"
 #include "bit_utils.h"
 #include "boot_cfg.h"
 #include "data_utils.h"
@@ -74,3 +75,20 @@ bool try_recursion(uint32_t max_depth, uint32_t* stack_size) {
     res = call_recursion(0, max_depth, stack_size);
     return res;
 }
+
+
+float stack_used(void) {
+    float precent=0.0f;
+    uint32_t busy = 0;
+    uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
+    uint32_t max_cont_patt = 0;
+    bool res = array_max_cont((uint8_t*)top_stack_val - EXPECT_STACK_SIZE, EXPECT_STACK_SIZE, 0, &max_cont_patt);
+    busy = EXPECT_STACK_SIZE - max_cont_patt;
+    if(res) {
+        precent = ((float)100 * busy) / ((float)EXPECT_STACK_SIZE);
+    }
+
+    return precent;
+}
+
+

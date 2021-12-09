@@ -94,6 +94,7 @@ bool cmd_try_stack(int32_t argc, char* argv[]) {
     uint32_t cur_stack_use = top_stack_val - ((uint32_t)&real_size);
     io_printf("curStackUsage: %u byte" CRLF, cur_stack_use);
     io_printf("remStack: %d byte" CRLF, EXPECT_STACK_SIZE - cur_stack_use);
+
     uint32_t max_cont_patt = 0;
     res = array_max_cont((uint8_t*)top_stack_val - EXPECT_STACK_SIZE, EXPECT_STACK_SIZE, 0, &max_cont_patt);
     busy = EXPECT_STACK_SIZE - max_cont_patt;

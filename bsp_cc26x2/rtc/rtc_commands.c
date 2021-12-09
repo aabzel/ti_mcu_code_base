@@ -10,7 +10,7 @@
 #include "table_utils.h"
 
 bool rtc_disable_command(int32_t argc, char* argv[]){
-    AONRTCDisable();
+    AONRTCDisable();/*Error*/
     return true;
 }
 
@@ -54,12 +54,12 @@ bool rtc_set_sec_command(int32_t argc, char* argv[]){
         LOG_ERROR(SYS, "Usage: rss sec");
     }
     if(res){
-        res= rtc_set_sec( sec);
+        res= rtc_set_sec( sec);/*Error*/
     }
     return res;
 }
 
 bool rtc_reset_command(int32_t argc, char* argv[]) {
-    AONRTCReset();
+    AONRTCReset(); /*Error*/
     return true;
 }

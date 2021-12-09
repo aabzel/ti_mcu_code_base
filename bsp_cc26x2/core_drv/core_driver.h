@@ -10,6 +10,8 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+
+#define EXPECT_STACK_SIZE (4096 * 10)
 #define CPU_SCS_BASE 0xE000E000
 #define CPU_SCS_CPUID (CPU_SCS_BASE + 0xD00)
 
@@ -20,6 +22,7 @@ bool reboot(void);
 uint64_t get_ble_mac(void);
 bool is_ram_addr(uint32_t address);
 bool try_recursion(uint32_t max_depth, uint32_t* stack_size);
+float stack_used(void);
 
 #ifdef __cplusplus
 }
