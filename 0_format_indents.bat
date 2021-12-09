@@ -5,6 +5,8 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\rtc\rtc_commands.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\rtc\rtc_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\tbfp_protocol\tbfp_protocol_parser.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\tbfp_protocol\tbfp_protocol_parser.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\none_blocking_pause.c

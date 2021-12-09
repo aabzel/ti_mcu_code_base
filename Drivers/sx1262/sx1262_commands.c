@@ -68,10 +68,11 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         // float rssi_inst = dbm2watts((int32_t) Sx1262Instance.rssi_inst);
         LOG_INFO(LORA, "RssiInst: %d dBm=%8.7f mW", Sx1262Instance.rssi_inst,
                  1000.0 * dbm2watts((int32_t)Sx1262Instance.rssi_inst));
-        LOG_INFO(LORA, "RssiPkt: %d=%8.7f mW", Sx1262Instance.rssi_pkt, 1000.0 *dbm2watts((int32_t)Sx1262Instance.rssi_pkt));
+        LOG_INFO(LORA, "RssiPkt: %d=%8.7f mW", Sx1262Instance.rssi_pkt,
+                 1000.0 * dbm2watts((int32_t)Sx1262Instance.rssi_pkt));
         LOG_INFO(LORA, "SnrPkt: %u", Sx1262Instance.snr_pkt);
         LOG_INFO(LORA, "SignalRssiPkt: %d=%8.7f mW", Sx1262Instance.signal_rssi_pkt,
-                 1000.0 *dbm2watts((int32_t)Sx1262Instance.signal_rssi_pkt));
+                 1000.0 * dbm2watts((int32_t)Sx1262Instance.signal_rssi_pkt));
         // io_printf("RxStatus: %u" CRLF, Sx1262Instance.rx_status);
         // io_printf("RssiSync: %u" CRLF, Sx1262Instance.rssi_sync);
         // LOG_INFO(LORA,"RssiAvg: %d dBm=%f W", Sx1262Instance.rssi_avg, rssi_watts);

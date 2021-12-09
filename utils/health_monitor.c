@@ -20,6 +20,8 @@
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #endif
+#include "uart_common.h"
+#include "uart_drv.h"
 HealthMon_t HealthMon = {0};
 
 bool health_monotor_init(void) {
@@ -56,6 +58,13 @@ bool health_monotor_proc(void) {
 
     if(true != cli_init_done) {
         cli_init_done = true;
+    }
+
+    if(0 < huart[UART_NUM_CLI].error_cnt){
+        res = init_uart_ll(UART_NUM_CLI, "CLI");
+        if(false==res){
+            LOG_ERROR(UART, "ReInit0Error");
+        }
     }
 
 #if defined(HAS_CHECK_TIME) && defined(HAS_NMEA) && defined(HAS_UBLOX)

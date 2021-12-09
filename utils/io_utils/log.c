@@ -156,6 +156,9 @@ const char *facility2str(log_facility_t facility) {
   case NMEA:
     facility_str = "NMEA";
     break;
+  case LG_RTC:
+    facility_str = "RTC";
+    break;
   case SYS:
     facility_str = "SYS";
     break;

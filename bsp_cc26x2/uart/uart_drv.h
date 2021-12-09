@@ -32,6 +32,7 @@ bool proc_uart0_fwd(void);
 #ifdef HAS_UART1_FWD
 bool proc_uart1_fwd(void);
 #endif
+bool init_uart_ll(uint8_t uart_num, char* in_name);
 bool uart_init(void);
 bool uart_deinit(uint8_t uart_num);
 bool is_uart_valid(uint8_t uart_num);

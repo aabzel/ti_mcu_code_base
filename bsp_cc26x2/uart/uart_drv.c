@@ -287,10 +287,14 @@ bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len,
     uint32_t tx_duration_ms = calc_uart_transfer_time_ms(baudrate, len);
     /*TODO Wait previous transfer*/
     huart[uart_num].in_progress = true;
-    int_fast32_t ret = UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
-    if(0 == ret) {
-        res = true;
-    } else {
+    if(huart[uart_num].uart_h){
+        int_fast32_t ret = UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
+        if(0 == ret) {
+            res = true;
+        } else {
+            res = false;
+        }
+    }else{
         res = false;
     }
 
@@ -499,7 +503,7 @@ bool proc_uart1_fwd(void) {
 }
 #endif /*HAS_UART1_FWD*/
 
-static bool init_uart_ll(uint8_t uart_num, char* in_name) {
+bool init_uart_ll(uint8_t uart_num, char* in_name) {
     bool res = false;
     if(uart_num < UART_COUNT) {
         memset(&huart[uart_num], 0x00, sizeof(huart[uart_num]));

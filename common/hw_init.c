@@ -122,13 +122,14 @@ bool hw_init(void) {
   res = gpio_init() && res;
 #endif /*HAS_GPIO*/
 
-#ifdef HAS_RTC
-  res = (rtc_init(),"RTC") && res;
-#endif /*HAS_RTC*/
 
 #ifdef HAS_UART
   res = try_init(uart_init(),"UART") && res;
 #endif /*HAS_UART*/
+
+#ifdef HAS_RTC
+  res = try_init(rtc_init(),"RTC") && res;
+#endif /*HAS_RTC*/
 
 #ifdef HAS_RS232
   res = try_init(rs232_init(),"RS232") && res;
