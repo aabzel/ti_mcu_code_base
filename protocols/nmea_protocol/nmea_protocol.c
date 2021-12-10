@@ -10,6 +10,10 @@
 #include "io_utils.h"
 #include "log.h"
 #endif
+
+#include "flash_fs.h"
+#include "param_ids.h"
+
 #ifdef HAS_NMEA_DIAG
 #include "nmea_diag.h"
 #endif
@@ -634,6 +638,26 @@ bool nmea_proc(void) {
     if(res) {
         if(prev_pos_mode != NmeaProto.pos_mode) {
             LOG_INFO(NMEA, "Mode %s", nmea_pos_mode2std(NmeaProto.pos_mode));
+            if(PM_RTK_FIXED==prev_pos_mode){
+                uint32_t cur_up_time = get_time_ms32( );
+                uint32_t cur_rtk_fixed_duration = cur_up_time-NmeaProto.rtk_fixed_start_ms ;
+                uint16_t file_len = 0 ;
+                res= mm_get( PAR_ID_RTK_FIX_LONG,
+                              (uint8_t*) &NmeaProto.rtk_fixed_max_duration_ms,
+                              sizeof(NmeaProto.rtk_fixed_max_duration_ms), &file_len);
+
+                if(NmeaProto.rtk_fixed_max_duration_ms<cur_rtk_fixed_duration){
+                    NmeaProto.rtk_fixed_max_duration_ms= cur_rtk_fixed_duration;
+
+                    res= mm_set(  PAR_ID_RTK_FIX_LONG,
+                                  (uint8_t*) &NmeaProto.rtk_fixed_max_duration_ms,
+                                  sizeof(NmeaProto.rtk_fixed_max_duration_ms));
+                }
+
+            }
+            if(PM_RTK_FIXED==NmeaProto.pos_mode){
+                NmeaProto.rtk_fixed_start_ms = get_time_ms32( );
+            }
         }
     }
     prev_pos_mode = NmeaProto.pos_mode;

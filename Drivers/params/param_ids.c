@@ -48,6 +48,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
     /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},   /*Max LoRa bit/rate*/
     /**/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
+    /**/ {PAR_ID_RTK_FIX_LONG, 4, UINT32, "FTKFixedTime"},         /*RTK fixed max duration*/
     /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"}, /**/
     /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
     /**/ {PAR_ID_RTK_CHANNEL, 1, UINT8, "RTKchannel"},

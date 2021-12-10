@@ -66,6 +66,8 @@ typedef struct xNmeaProtocol_t {
     uint32_t crc_ok_cnt;
     uint32_t overflow;
     uint32_t proc_msg_cnt;
+    uint32_t rtk_fixed_start_ms;
+    uint32_t rtk_fixed_max_duration_ms;
     bool got_massege;
     char message[NMEA_MSG_SIZE];
     char fix_message[NMEA_MSG_SIZE];

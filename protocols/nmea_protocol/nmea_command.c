@@ -32,6 +32,7 @@ static bool nmea_data(void) {
     io_printf("RCM" CRLF);
 #ifdef HAS_NMEA_DIAG
     io_printf("PosMode: %u %s" CRLF, NmeaProto.pos_mode, nmea_pos_mode2std(NmeaProto.pos_mode));
+    io_printf("RTKFixed max duration: %u ms" CRLF, NmeaProto.rtk_fixed_max_duration_ms);
 #endif
     print_coordinate(NmeaData.rmc.coordinate_ddmm, true);
     NmeaData.rmc.coordinate_dd = encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
