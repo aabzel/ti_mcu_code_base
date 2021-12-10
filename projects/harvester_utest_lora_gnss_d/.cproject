@@ -87,6 +87,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash_nvs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/gpio"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/i2c"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/interrupt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rf"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rng"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rtc"/>
@@ -147,6 +148,7 @@
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
+									<listOptionValue builtIn="false" value="HAS_HARVESTER_V1"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
@@ -159,6 +161,7 @@
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
+									<listOptionValue builtIn="false" value="HAS_RTC"/>
 									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
@@ -176,8 +179,10 @@
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SPI"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SYSTEM"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_UART"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
