@@ -57,6 +57,10 @@ bool health_monotor_proc(void) {
     }
 #endif
 
+    if(HealthMon.init_error){
+        LOG_ERROR(HMOM, "InitError");
+    }
+
     if(true != cli_init_done) {
         cli_init_done = true;
     }

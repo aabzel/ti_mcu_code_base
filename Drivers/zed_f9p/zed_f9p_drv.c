@@ -383,14 +383,6 @@ bool zed_f9p_load_params(void) {
 #if defined(HAS_FLASH_FS) && defined(HAS_PARAM)
     uint16_t file_len = 0;
 
-    res = mm_get(PAR_ID_GNSS_PERIOD, (uint8_t*)&ZedF9P.rate_ms, 2, &file_len);
-    if(res && (2 == file_len)) {
-        LOG_INFO(ZED_F9P, "GNSS period %u ms", ZedF9P.rate_ms);
-    } else {
-        LOG_ERROR(ZED_F9P, "GnssPerLoadErr");
-        ZedF9P.rate_ms = DFLT_GNSS_PER_MS;
-        res = mm_set(PAR_ID_GNSS_PERIOD, (uint8_t*)&ZedF9P.rate_ms, 2);
-    }
 
     ZedF9P.time_zone = 0;
     res = mm_get(PAR_ID_TIME_ZONE, (uint8_t*)&ZedF9P.time_zone, 1, &file_len);
@@ -424,21 +416,39 @@ bool zed_f9p_load_params(void) {
         res = false;
     }
 
-    res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
-    if(res && (16 == file_len)) {
-        LOG_INFO(ZED_F9P, "RTKBaseLocLoadOk");
-        res = print_coordinate(ZedF9P.coordinate_base, true);
-    } else {
-        LOG_ERROR(ZED_F9P, "ReadBaseLocLoadErr");
-        res = false;
-    }
+    switch(ZedF9P.rtk_mode){
+    case RTK_BASE: {
+        res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
+        if(res && (16 == file_len)) {
+            LOG_INFO(ZED_F9P, "RTKBaseLocLoadOk");
+            res = print_coordinate(ZedF9P.coordinate_base, true);
+        } else {
+            LOG_ERROR(ZED_F9P, "ReadBaseLocLoadErr");
+            res = false;
+        }
 
-    res = mm_get(PAR_ID_BASE_ALT, (uint8_t*)&ZedF9P.alt_base, sizeof(double), &file_len);
-    if(res && (8 == file_len)) {
-        LOG_INFO(ZED_F9P, "RTKBaseAlt: %f m", ZedF9P.alt_base);
-    } else {
-        LOG_ERROR(ZED_F9P, "ReadBaseAltLoadErr");
-        res = false;
+        res = mm_get(PAR_ID_BASE_ALT, (uint8_t*)&ZedF9P.alt_base, sizeof(double), &file_len);
+        if(res && (8 == file_len)) {
+            LOG_INFO(ZED_F9P, "RTKBaseAlt: %f m", ZedF9P.alt_base);
+        } else {
+            LOG_ERROR(ZED_F9P, "ReadBaseAltLoadErr");
+            res = false;
+        }
+
+    }break;
+    case RTK_ROVER: {
+        res = mm_get(PAR_ID_GNSS_PERIOD, (uint8_t*)&ZedF9P.rate_ms, 2, &file_len);
+        if(res && (2 == file_len)) {
+            LOG_INFO(ZED_F9P, "GNSS period %u ms", ZedF9P.rate_ms);
+        } else {
+            LOG_ERROR(ZED_F9P, "GnssPerLoadErr");
+            ZedF9P.rate_ms = DFLT_GNSS_PER_MS;
+            res = mm_set(PAR_ID_GNSS_PERIOD, (uint8_t*)&ZedF9P.rate_ms, 2);
+        }
+
+    }break;
+    default:
+        break;
     }
 
 #endif /*HAS_FLASH_FS && HAS_PARAM*/
@@ -466,6 +476,8 @@ bool zed_f9p_init(void) {
             res = false;
             break;
         }
+    } else {
+        LOG_ERROR(ZED_F9P, "ParLoadErr");
     }
     return res;
 }
