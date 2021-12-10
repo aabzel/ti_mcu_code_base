@@ -441,7 +441,7 @@ bool sx1262_set_packet_params(PacketParam_t* packParam) {
         tx_array[3] = packParam->proto.lora.payload_length;
         tx_array[4] = packParam->proto.lora.crc_type;
         tx_array[5] = packParam->proto.lora.invert_iq;
-        res = sx1262_send_opcode(OPCODE_SET_PACKET_PARAMS, tx_array, sizeof(tx_array), NULL, 0);
+        res = sx1262_send_opcode(OPCODE_SET_PACKET_PARAMS, tx_array, 6, NULL, 0);
     } else if(PACKET_TYPE_GFSK == packParam->packet_type) {
         res = false;
     }
