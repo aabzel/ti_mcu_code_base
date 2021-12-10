@@ -20,6 +20,7 @@ static bool tbfp_diag(void) {
     static const table_col_t cols[] = {
                                        {8, "interf"},
                                        {9, "rxCnt"},
+                                       {9, "txCnt"},
                                        {9, "crcErCnt"},
 #ifdef HAS_DEBUG
                                        {9, "maxFlow"},
@@ -34,6 +35,7 @@ static bool tbfp_diag(void) {
         io_printf(TSEP);
         io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
         io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].tx_pkt_cnt);
         io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
 
 #ifdef HAS_DEBUG

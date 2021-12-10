@@ -93,6 +93,7 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
         header.snum = TbfpProtocol[interface].s_num;
         TbfpProtocol[interface].s_num++;
 #endif /*HAS_TBFP_FLOW_CONTROL*/
+        TbfpProtocol[interface].tx_pkt_cnt++;
         header.len = (uint8_t)payload_len;
         memcpy(out_array, &header, sizeof(TbfHeader_t));
         res = true;

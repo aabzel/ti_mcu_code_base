@@ -50,6 +50,7 @@ typedef struct xTbfPingFrame_t {
 
 typedef struct xTbfpProtocol_t {
     uint32_t rx_pkt_cnt;
+    uint32_t tx_pkt_cnt;
     uint32_t crc_err_cnt;
     uint32_t err_cnt;
 #ifdef HAS_DEBUG
