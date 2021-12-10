@@ -1314,11 +1314,13 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint8_t* out_size, uint16_t max
     uint8_t rx_payload_len = 0;
     uint8_t rx_start_buffer_pointer = 0;
     res = sx1262_get_rxbuff_status(&rx_payload_len, &rx_start_buffer_pointer);
+    if(res){
+        LOG_DEBUG(LORA, "Start %u rxLen %u",rx_start_buffer_pointer, rx_payload_len);
+    }
+    rx_start_buffer_pointer = 0;
+    rx_payload_len = 255;
     if(rx_payload_len <= max_size) {
-#ifdef HAS_SX1262_DEBUG_RX
-        LOG_INFO(LORA, "rx_len %u start %u", rx_payload_len, rx_start_buffer_pointer);
-#endif
-        res = sx1262_read_buffer(rx_start_buffer_pointer - 1, out_payload, (uint16_t)rx_payload_len);
+        res = sx1262_read_buffer(rx_start_buffer_pointer, out_payload, (uint16_t)rx_payload_len);
         *out_size = rx_payload_len;
     } else {
         *out_size = 0;
@@ -1479,7 +1481,7 @@ static inline bool sx1262_poll_status(void) {
 #ifdef HAS_LORA
                 res = lora_proc_payload(rx_payload, rx_size);
 #endif /*HAS_LORA*/
-                led_blink(&Led[LED_INDEX_RED], 50);
+                led_blink(&Led[LED_INDEX_RED], 25);
             }
         } break;
         case COM_STAT_COM_TIMEOUT:
