@@ -61,11 +61,6 @@ int main(void) {
 #ifdef HAS_BOOTLOADER
     res = boot_try_app();
 #endif /*HAS_BOOTLOADER*/
-    uint8_t array[] = "------";
-    uart_send(5, array, 1, true);
-    uart_send(5, array, 2, true);
-    uart_send(5, array, 1, true);
-    uart_send(5, array, 1, true);
 #ifdef NORTOS
     common_main_loop();
 #endif /*NORTOS*/
