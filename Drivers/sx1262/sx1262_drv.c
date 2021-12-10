@@ -1600,6 +1600,7 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
         uint8_t tx_buf[TX_SIZE] = {0};
         memset(tx_buf, 0, sizeof(tx_buf));
         uint32_t tx_len = 0;
+#ifdef HAS_PACKED_LORA_FRAME
         /*Transmitt multiple RTCM3 packages in single LoRa frame*/
         res = fifo_arr_pack_frame(tx_buf, sizeof(tx_buf), &LoRaInterface.FiFoLoRaTx, &tx_len);
         if(res) {
@@ -1613,6 +1614,32 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
             }
         } else {
             LoRaInterface.err_cnt++;
+        }
+#else
+        Array_t Node = {.size = 0, .pArr = NULL};
+        res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &Node);
+        if(res) {
+              if(Node.pArr) {
+                  if(0<Node.size){
+                      if(Node.size <=sizeof(tx_buf)){
+
+                         memcpy(tx_buf, Node.pArr, Node.size);
+                         tx_len = Node.size;
+                      }
+                  }
+#ifdef HAS_MCU
+                  free(Node.pArr);
+#endif
+              }
+        }
+#endif
+        if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
+            res = sx1262_start_tx(tx_buf, tx_len, 0);
+            if(res) {
+                LoRaInterface.tx_ok_cnt++;
+            } else {
+                LoRaInterface.tx_err_cnt++;
+            }
         }
     }
     return res;

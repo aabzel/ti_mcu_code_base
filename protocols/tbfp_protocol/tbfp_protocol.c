@@ -359,7 +359,7 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     }
     cur_rx_prk = TbfpProtocol[interface].rx_pkt_cnt-init_rx_prk;
     if(1<cur_rx_prk ){
-        LOG_INFO(TBFP, "InPktCnt:%u", cur_rx_prk);
+        LOG_INFO(TBFP, "InPktCnt:%u in %u byte", cur_rx_prk, len);
     }else{
         LOG_ERROR(TBFP, "LackPkt:%u", len);
         print_mem(arr,len,true,false,true,true);

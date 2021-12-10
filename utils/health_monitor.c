@@ -2,7 +2,6 @@
 
 #include <stdbool.h>
 #include <string.h>
-
 #ifdef HAS_ADC
 #include "adc_drv.h"
 #endif
@@ -11,6 +10,7 @@
 #include "gnss_diag.h"
 #include "gnss_utils.h"
 #include "log.h"
+#include "lora_drv.h"
 #ifdef HAS_NMEA
 #include "nmea_protocol.h"
 #endif
