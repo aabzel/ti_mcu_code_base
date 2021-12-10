@@ -344,6 +344,8 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
 /*One LoRa frame can contain several TBFP frames*/
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
+    uint32_t cur_rx_prk=0;
+    uint32_t init_rx_prk=TbfpProtocol[interface].rx_pkt_cnt;
     res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
     uint32_t i = 0, ok_cnt = 0, err_cnt = 0;
     for(i = 0; i < len; i++) {
@@ -354,6 +356,13 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
             err_cnt++;
             LOG_ERROR(TBFP, "i=%u", i);
         }
+    }
+    cur_rx_prk = TbfpProtocol[interface].rx_pkt_cnt-init_rx_prk;
+    if(1<cur_rx_prk ){
+        LOG_INFO(TBFP, "InPktCnt:%u", cur_rx_prk);
+    }else{
+        LOG_ERROR(TBFP, "LackPkt:%u", len);
+        print_mem(arr,len,true,false,true,true);
     }
     if(len == ok_cnt) {
         res = true;
@@ -384,10 +393,16 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
 #ifdef HAS_MCU
             uint32_t lost_frame_cnt = inHeader.snum - TbfpProtocol[interface].prev_s_num - 1;
             if((TbfpProtocol[interface].prev_s_num + 1) == (inHeader.snum - 1)) {
-                LOG_WARNING(TBFP, "Lost %u=%u Frame", inHeader.snum - 1, lost_frame_cnt);
+                LOG_WARNING(TBFP, "Lost %u=%u Flow:%u",
+                            inHeader.snum - 1,
+                            lost_frame_cnt,
+                            TbfpProtocol[interface].con_flow);
             } else {
-                LOG_WARNING(TBFP, "Lost %u...%u=%u Frames", TbfpProtocol[interface].prev_s_num + 1, inHeader.snum - 1,
-                            lost_frame_cnt);
+                LOG_WARNING(TBFP, "Lost %u...%u=%u Flow:%u",
+                            TbfpProtocol[interface].prev_s_num + 1,
+                            inHeader.snum - 1,
+                            lost_frame_cnt,
+                            TbfpProtocol[interface].con_flow);
             }
 #endif
             TbfpProtocol[interface].con_flow = 1;
