@@ -1068,7 +1068,7 @@ bool sx1262_set_tx(uint32_t timeout_s) {
 bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_buf_len, uint32_t timeout_s) {
     bool res = true;
     if((NULL != tx_buf) && (0 < tx_buf_len) && (tx_buf_len <= TX_SIZE)) {
-        /* res = sx1262_clear_fifo() && res;*/
+        res = sx1262_clear_fifo();
         // sx1262_set_tx_len(tx_buf_len); /*Error*/
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
         res = sx1262_set_payload(tx_buf, tx_buf_len) && res;
