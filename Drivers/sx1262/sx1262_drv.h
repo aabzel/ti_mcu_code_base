@@ -20,7 +20,7 @@
 #define FIFO_SIZE 256
 
 #define RX_SIZE 256
-#define TX_SIZE 256
+#define TX_SIZE 255
 
 #define RC_FREQ_HZ 13000000U
 #define XTAL_FREQ_HZ 32000000U

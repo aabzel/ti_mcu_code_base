@@ -1608,7 +1608,7 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
                 if(res) {
                     LoRaInterface.tx_ok_cnt++;
                 } else {
-                    LoRaInterface.err_cnt++;
+                    LoRaInterface.tx_err_cnt++;
                 }
             }
         } else {

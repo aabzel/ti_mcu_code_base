@@ -131,7 +131,7 @@ bool fifo_arr_pack_frame(uint8_t *out_buf, uint32_t buf_size, FifoArray_t* const
                 break;
             }
         }while(0<rem_size);
-        if(buff_len ){
+        if(buff_len) {
             *buff_len = buf_size-rem_size;
         }
     }

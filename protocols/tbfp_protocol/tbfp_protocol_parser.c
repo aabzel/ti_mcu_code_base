@@ -103,7 +103,7 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
 #endif
     uint16_t crc8_index = TBFP_SIZE_HEADER + instance->parser.exp_payload_len;
     if(crc8_index == instance->parser.load_len) {
-        instance->parser.rx_frame[instance->parser.load_len] = rx_byte;
+        instance->parser.rx_frame[instance->parser.load_len] = rx_byte;/*read crc8*/
         instance->parser.read_crc8 = rx_byte;
         instance->parser.load_len = 0;
         uint16_t frame_len = TBFP_SIZE_HEADER + instance->parser.exp_payload_len;

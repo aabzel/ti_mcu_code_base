@@ -363,6 +363,18 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     }else{
         LOG_ERROR(TBFP, "LackPkt:%u", len);
         print_mem(arr,len,true,false,true,true);
+        res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
+        ok_cnt = 0;
+        err_cnt = 0;
+        for(i = 0; i < len; i++) {
+            res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]);
+            if(res) {
+                ok_cnt++;
+            } else {
+                err_cnt++;
+                LOG_ERROR(TBFP, "i=%u", i);
+            }
+        }
     }
     if(len == ok_cnt) {
         res = true;

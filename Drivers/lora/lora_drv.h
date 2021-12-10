@@ -18,6 +18,7 @@ typedef struct xLoRaIf_t {
     uint32_t err_cnt;
     uint32_t ovfl_err_cnt;
     uint32_t tx_ok_cnt;
+    uint32_t tx_err_cnt;
     uint32_t tx_done_cnt;
     FifoArray_t FiFoLoRaTx;
     double max_distance;

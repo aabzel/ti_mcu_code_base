@@ -61,6 +61,9 @@ bool health_monotor_proc(void) {
         LOG_ERROR(HMOM, "InitError");
     }
 
+    if(LoRaInterface.tx_err_cnt){
+        LOG_ERROR(HMOM, "LoRaRxError");
+    }
     if(true != cli_init_done) {
         cli_init_done = true;
     }
