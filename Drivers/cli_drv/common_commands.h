@@ -27,8 +27,11 @@
 #define GPIO_PWM_COMMANDS
 #endif
 
+#ifdef HAS_INTERRUPT
 #include "interrupt_commands.h"
-
+#else
+#define INTERRUPT_COMMANDS
+#endif
 
 #ifdef HAS_TIM_CMD
 #include "tim_commands.h"
