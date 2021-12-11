@@ -18,7 +18,7 @@ typedef enum uPort_t{
     PORT_E=4,
     PORT_F=5,
     PORT_G=6,
-    PORT_H=6,
+    PORT_H=7,
 }Port_t;
 
 typedef struct xPad_t{
@@ -32,9 +32,9 @@ typedef struct xPin_t {
     char name[PIN_NAME_LEN];
     uint8_t mcu_pin;
     uint32_t mode; /* Specifies the operating mode for the selected pins.*/
-    uint32_t Pull; /* Specifies the Pull-up or Pull-Down activation for the selected pins.*/
-    uint32_t Speed; /*GPIO_speed_define*/
-    uint32_t Alternate; /*Peripheral to be connected to the selected pins.*/
+    uint32_t pull; /* Specifies the Pull-up or Pull-Down activation for the selected pins.*/
+    uint32_t speed; /*GPIO_speed_define*/
+    uint32_t alternate; /*Peripheral to be connected to the selected pins.*/
     GPIO_PinState pin_state;
 }Pin_t;
 
