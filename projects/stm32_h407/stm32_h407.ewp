@@ -226,6 +226,7 @@
                     <name>CCDefines</name>
                     <state>USE_HAL_DRIVER</state>
                     <state>NORTOS</state>
+                    <state>HAS_GPIO</state>
                     <state>HAS_IAR</state>
                     <state>STM32F407xx</state>
                     <state>HAS_DEBUG</state>
@@ -1094,6 +1095,12 @@
         <group>
             <name>stm32_H407</name>
             <file>
+                <name>$PROJ_DIR$\..\..\boards\stm32_H407\board_layout.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\boards\stm32_H407\board_layout.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\boards\stm32_H407\board_stm32_h407.h</name>
             </file>
         </group>
@@ -1119,6 +1126,27 @@
             <name>flash</name>
             <file>
                 <name>$PROJ_DIR$\..\..\bsp_stm32f4\flash\flash_drv.c</name>
+            </file>
+        </group>
+        <group>
+            <name>gpio</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\gpio\gpio_commands.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\gpio\gpio_commands.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\gpio\gpio_diag.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\gpio\gpio_diag.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\gpio\gpio_drv.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\gpio\gpio_drv.h</name>
             </file>
         </group>
         <group>
