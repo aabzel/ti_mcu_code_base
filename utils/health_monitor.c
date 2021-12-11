@@ -10,7 +10,9 @@
 #include "gnss_diag.h"
 #include "gnss_utils.h"
 #include "log.h"
+#ifdef HAS_LORA
 #include "lora_drv.h"
+#endif
 #ifdef HAS_NMEA
 #include "nmea_protocol.h"
 #endif
@@ -61,9 +63,12 @@ bool health_monotor_proc(void) {
         LOG_ERROR(HMOM, "InitError");
     }
 
+#ifdef HAS_LORA
     if(LoRaInterface.tx_err_cnt){
         LOG_ERROR(HMOM, "LoRaRxError");
     }
+#endif
+
     if(true != cli_init_done) {
         cli_init_done = true;
     }
