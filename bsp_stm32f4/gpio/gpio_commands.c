@@ -15,16 +15,30 @@
 #include "ostream.h"
 #include "str_utils.h"
 #include "table_utils.h"
+#include "writer_config.h"
+#include "board_layout.h"
 
 /*
 gg D 1
 */
 bool gpio_get_command(int32_t argc, char* argv[]) {
     bool res = false;
-    if(1 == argc) {
+
+    uint8_t logic_level = 0xFF;
+    uint8_t pin_num=0xFF;
+    char port_lett='_';
+
+    if(1<=argc){
+        port_lett=argv[0][0];
+    }
+    if(2<=argc){
+            res = try_str2uint8(argv[1], &pin_num);
+            if(false == res) {
+                LOG_ERROR(SYS, "Unable to extract pin_num %s", argv[1]);
+            }
+    }
+
         res = true;
-        uint8_t logic_level = 0xFF;
-        uint8_t port_pin_num = 0;
 
         if(true == res) {
             res = try_str2uint8(argv[0], &port_pin_num);
@@ -34,54 +48,63 @@ bool gpio_get_command(int32_t argc, char* argv[]) {
         }
 
         if(true == res) {
-            res = gpio_get_state(port_pin_num, &logic_level);
+            Pad_t pad;
+            pad.port = PortLetter2PortNum(port_lett);
+            pad.pin = pin_num;
+            res = gpio_get_state(pad.byte, &logic_level);
             if(false == res) {
                 LOG_ERROR(SYS, "Unable to get gpio state");
             } else {
                 io_printf("%u" CRLF, logic_level);
             }
         }
-    } else {
-        LOG_ERROR(SYS, "Usage: gg gpio_port gpio_pin");
-        LOG_INFO(SYS, "gpio_port [A...Z]");
-        LOG_INFO(SYS, "gpio_pin 0....15 ");
+    if(2!=argc) {
+        LOG_ERROR(SYS, "Usage: gg port pin");
+        LOG_INFO(SYS, "port [A...Z]");
+        LOG_INFO(SYS, "pin 0....15 ");
     }
     return res;
 }
 
 bool gpio_set_command(int32_t argc, char* argv[]) {
     bool res = false;
-    if(2 == argc) {
-        res = true;
-        uint8_t logic_level = 0xFF;
-        uint8_t port_pin_num = 0;
-
-        if(true == res) {
-            res = try_str2uint8(argv[0], &port_pin_num);
+    uint8_t pad_num=0;
+    uint8_t pin_num=0xFF;
+    char port_lett='_';
+    uint8_t logic_level = 0xFF;
+    if(1<=argc){
+        port_lett=argv[0][0];
+    }
+    if(2<=argc){
+            res = try_str2uint8(argv[1], &pin_num);
             if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract port_pin_num %s", argv[0]);
+                LOG_ERROR(SYS, "Unable to extract pin_num %s", argv[1]);
             }
-        }
+    }
 
-        if(true == res) {
-            res = try_str2uint8(argv[1], &logic_level);
+    if(3<=argc) {
+            res = try_str2uint8(argv[2], &logic_level);
             if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract logic_level %s", argv[1]);
+                LOG_ERROR(SYS, "Unable to extract logic_level %s", argv[2]);
             }
+    }
+    if(argc<3) {
+        LOG_ERROR(SYS, "Usage: gs port pin level");
+        LOG_INFO(SYS, "port A....H");
+        LOG_INFO(SYS, "pin 0....15 ");
+        LOG_INFO(SYS, "level 0..1 ");
+        res = false;
+    }
+    if(res) {
+        Pad_t pad;
+        pad.port = PortLetter2PortNum(port_lett);
+        pad.pin = pin_num;
+        res = gpio_set_state(pad.byte, logic_level);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to set gpio state");
+        } else {
+            io_printf("%u" CRLF, logic_level);
         }
-
-        if(true == res) {
-            res = gpio_set_state(port_pin_num, logic_level);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to set gpio state");
-            } else {
-                io_printf("%u" CRLF, logic_level);
-            }
-        }
-    } else {
-        LOG_ERROR(SYS, "Usage: gs gpio_port gpio_pin logic_level");
-        LOG_INFO(SYS, "gpio_pin 0....30 ");
-        LOG_INFO(SYS, "logic_level 0..1 ");
     }
     return res;
 }
@@ -90,29 +113,30 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
     bool res = false;
 
     static const table_col_t cols[] = {{5, "No"},
-	{5, "gpioPort"}, 
-	{5, "gpioPin"}, 
-	{5, "mcuPort"},  
-	{5, "mcuPin"},  
-	{5, "dir"},
+	{5, "gpioPort"},
+	{5, "gpioPin"},
+	{5, "mcuPin"},
     {7, "level"},
-	{6, "edge"}, 
+	{5, "dir"},
+	{6, "edge"},
 	{6, "pull"},
-    {10, "AltFun"}, 
+    {10, "AltFun"},
 	{12, "name"}};
     uint16_t num = 0;
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
-    uint8_t io_pin = 0;
+    uint8_t i = 0;
     char temp_str[120];
-    for(io_pin = 0; io_pin < ARRAY_SIZE(PinTable); io_pin++) {
-        if(true == res) {
-            strcpy(temp_str, TSEP);
-            if(is_contain(temp_str, key_word1, key_word2)) {
-                io_printf(TSEP " %3u ", num);
-                io_printf("%s", temp_str);
-                num++;
-            }
+    for(i = 0; i < gpio_get_cnt(); i++) {
+        strcpy(temp_str, TSEP);
+        snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, GpioPort2str(PinTable[i].pad.port));
+        snprintf(temp_str, sizeof(temp_str), "%s %2u  " TSEP, temp_str, PinTable[i].pad.pin);
+        snprintf(temp_str, sizeof(temp_str), "%s %u " TSEP, temp_str, PinTable[i].mcu_pin);
+
+        if(is_contain(temp_str, key_word1, key_word2)) {
+            io_printf(TSEP " %3u ", num);
+            io_printf("%s\r\n", temp_str);
+            num++;
         }
     }
 
