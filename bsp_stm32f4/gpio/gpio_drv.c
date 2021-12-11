@@ -11,48 +11,48 @@
 #include "stm32f4xx_hal.h"
 
 bool gpios_init(void) {
-    bool res = false;
-   GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOG_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOE_CLK_ENABLE();
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_6, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin : PG6 */
-  GPIO_InitStruct.Pin = GPIO_PIN_6;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PD13 PD14 PD15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PB0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    return res;
+      bool res = false;
+     GPIO_InitTypeDef GPIO_InitStruct = {0};
+   
+    /* GPIO Ports Clock Enable */
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    __HAL_RCC_GPIOH_CLK_ENABLE();
+    __HAL_RCC_GPIOG_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_GPIOE_CLK_ENABLE();
+   
+    /*Configure GPIO pin Output Level */
+    HAL_GPIO_WritePin(GPIOG, GPIO_PIN_6, GPIO_PIN_RESET);
+   
+    /*Configure GPIO pin Output Level */
+    HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
+   
+    /*Configure GPIO pin Output Level */
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+   
+    /*Configure GPIO pin : PG6 */
+    GPIO_InitStruct.Pin = GPIO_PIN_6;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+   
+    /*Configure GPIO pins : PD13 PD14 PD15 */
+    GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+   
+    /*Configure GPIO pin : PB0 */
+    GPIO_InitStruct.Pin = GPIO_PIN_0;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+      return res;
 }
 
 uint32_t PinNum2PinMask(uint8_t pin_num){
@@ -64,42 +64,46 @@ uint32_t PinNum2PinMask(uint8_t pin_num){
 GPIO_TypeDef *Port2PortPtr(uint8_t port_num){
     GPIO_TypeDef *GpioPort=NULL;
     switch(port_num){
-		case  PORT_A:GpioPort=GPIOA; break;
-		case PORT_B:GpioPort=GPIOB; break;
-		case PORT_C:GpioPort=GPIOC; break;
-		case PORT_D:GpioPort=GPIOD; break;
-		case PORT_E:GpioPort=GPIOE; break;
-		case PORT_F:GpioPort=GPIOF; break;
-		case PORT_G:GpioPort=GPIOG; break;
-		case PORT_H:GpioPort=GPIOH; break;
-		default: break;
-	}
+        case  PORT_A:GpioPort=GPIOA; break;
+        case PORT_B:GpioPort=GPIOB; break;
+        case PORT_C:GpioPort=GPIOC; break;
+        case PORT_D:GpioPort=GPIOD; break;
+        case PORT_E:GpioPort=GPIOE; break;
+        case PORT_F:GpioPort=GPIOF; break;
+        case PORT_G:GpioPort=GPIOG; break;
+        case PORT_H:GpioPort=GPIOH; break;
+        default: break;
+    }
     return GpioPort;
 }
 
 Port_t PortLetter2PortNum(char port){
     Port_t port_num=PORT_UNDEF;
     switch (port) {
-		case 'A':port_num=PORT_A; break;
-		case 'B':port_num=PORT_B; break;
-		case 'C':port_num=PORT_C; break;
-		case 'D':port_num=PORT_D; break;
-		case 'E':port_num=PORT_E; break;
-		case 'F':port_num=PORT_F; break;
-		case 'G':port_num=PORT_G; break;
-		case 'H':port_num=PORT_H; break;
-	}
+        case 'A':port_num=PORT_A; break;
+        case 'B':port_num=PORT_B; break;
+        case 'C':port_num=PORT_C; break;
+        case 'D':port_num=PORT_D; break;
+        case 'E':port_num=PORT_E; break;
+        case 'F':port_num=PORT_F; break;
+        case 'G':port_num=PORT_G; break;
+        case 'H':port_num=PORT_H; break;
+    }
     return port_num;
 }
 
-bool gpio_get_state(uint8_t dioNumber, uint8_t* logic_level) {
-    GPIO_PinState value = HAL_GPIO_ReadPin(GPIOB, 1<<dioNumber);
+bool gpio_get_state(uint8_t pad_num, uint8_t* logic_level) {
+    Pad_t pad;
+    pad.byte = pad_num;
+    GPIO_PinState value = HAL_GPIO_ReadPin(Port2PortPtr(pad.port), 1<<pad.pin);
     (*logic_level) = (uint8_t)value;
     return true;
 }
 
-bool gpio_set_state(uint8_t dioNumber, uint8_t logic_level) {
-    HAL_GPIO_WritePin(GPIOB,   1<<dioNumber, (GPIO_PinState) logic_level);
+bool gpio_set_state(uint8_t pad_num, uint8_t logic_level) {
+    Pad_t pad;
+    pad.byte = pad_num;
+    HAL_GPIO_WritePin(Port2PortPtr(pad.port), 1<<pad.pin, (GPIO_PinState) logic_level);
     return true;
 }
 
@@ -121,7 +125,7 @@ uint8_t get_aux_num(uint8_t io_pin) {
     return aux_pin;
 }
 
-bool gpio_toggle(uint8_t dioNumber) {
+bool gpio_toggle(uint8_t pad_num) {
     return true;
 }
 

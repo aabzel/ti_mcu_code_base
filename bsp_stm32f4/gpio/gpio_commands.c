@@ -114,14 +114,16 @@ static bool diag_gpio(char* key_word1, char* key_word2) {
 	{12, "name"}};
     uint16_t num = 0;
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-
+    uint8_t logic_level = 0xFF;
     uint8_t i = 0;
     char temp_str[120];
     for(i = 0; i < gpio_get_cnt(); i++) {
         strcpy(temp_str, TSEP);
+        gpio_get_state(PinTable[i].pad.byte, &logic_level);
         snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, GpioPort2str(PinTable[i].pad.port));
         snprintf(temp_str, sizeof(temp_str), "%s %2u  " TSEP, temp_str, PinTable[i].pad.pin);
-        snprintf(temp_str, sizeof(temp_str), "%s %u " TSEP, temp_str, PinTable[i].mcu_pin);
+        snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].mcu_pin);
+        snprintf(temp_str, sizeof(temp_str), "%s   %s   " TSEP, temp_str, (1==logic_level) ? "H" : "L");
 
         if(is_contain(temp_str, key_word1, key_word2)) {
             io_printf(TSEP " %3u ", num);

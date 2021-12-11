@@ -6,7 +6,7 @@
 #include "adc_drv.h"
 #endif
 #include "cli_manager.h"
-#include "core_driver.h"
+#include "core_utils.h"
 #include "gnss_diag.h"
 #include "gnss_utils.h"
 #include "log.h"
