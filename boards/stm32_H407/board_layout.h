@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+#include "gpio_drv.h"
 #include "sys_config.h"
 #include "stm32f4xx_hal.h"
 
@@ -10,33 +11,6 @@
 #error "that wile only for STM32 MCUs"
 #endif /*USE_HAL_DRIVER*/
 
-typedef enum uPort_t{
-    PORT_A=0,
-    PORT_B=1,
-    PORT_C=2,
-    PORT_D=3,
-    PORT_E=4,
-    PORT_F=5,
-    PORT_G=6,
-    PORT_H=7,
-}Port_t;
-
-typedef struct xPad_t{
-    uint8_t port :4; /*A B C D E F G H*/
-    uint8_t pin :4; /*0....15*/
-}Pad_t;
-
-#define PIN_NAME_LEN 10
-typedef struct xPin_t {
-    Pad_t pad;
-    char name[PIN_NAME_LEN];
-    uint8_t mcu_pin;
-    uint32_t mode; /* Specifies the operating mode for the selected pins.*/
-    uint32_t pull; /* Specifies the Pull-up or Pull-Down activation for the selected pins.*/
-    uint32_t speed; /*GPIO_speed_define*/
-    uint32_t alternate; /*Peripheral to be connected to the selected pins.*/
-    GPIO_PinState pin_state;
-}Pin_t;
 
 extern Pin_t PinTable[];
 

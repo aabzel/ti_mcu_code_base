@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+const char* GpioPort2str(uint8_t port);
 const char* get_gpio_mode(uint8_t io_pin);
 const char* get_gpio_type(uint8_t io_pin);
 const char* get_pin_dir(uint8_t io_pin);

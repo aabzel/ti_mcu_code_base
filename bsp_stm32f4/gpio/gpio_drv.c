@@ -6,10 +6,11 @@
 #include <string.h>
 
 #include "bit_utils.h"
+#include "board_layout.h"
 #include "data_utils.h"
 #include "stm32f4xx_hal.h"
 
-bool gpio_init(void) {
+bool gpios_init(void) {
     bool res = false;
    GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -54,6 +55,43 @@ bool gpio_init(void) {
     return res;
 }
 
+uint32_t PinNum2PinMask(uint8_t pin_num){
+    uint32_t pin_mask=0;
+    pin_mask |= (1 << pin_num);
+    return pin_mask;
+}
+
+GPIO_TypeDef *Port2PortPtr(uint8_t port_num){
+    GPIO_TypeDef *GpioPort=NULL;
+    switch(port_num){
+		case  PORT_A:GpioPort=GPIOA; break;
+		case PORT_B:GpioPort=GPIOB; break;
+		case PORT_C:GpioPort=GPIOC; break;
+		case PORT_D:GpioPort=GPIOD; break;
+		case PORT_E:GpioPort=GPIOE; break;
+		case PORT_F:GpioPort=GPIOF; break;
+		case PORT_G:GpioPort=GPIOG; break;
+		case PORT_H:GpioPort=GPIOH; break;
+		default: break;
+	}
+    return GpioPort;
+}
+
+Port_t PortLetter2PortNum(char port){
+    Port_t port_num=PORT_UNDEF;
+    switch (port) {
+		case 'A':port_num=PORT_A; break;
+		case 'B':port_num=PORT_B; break;
+		case 'C':port_num=PORT_C; break;
+		case 'D':port_num=PORT_D; break;
+		case 'E':port_num=PORT_E; break;
+		case 'F':port_num=PORT_F; break;
+		case 'G':port_num=PORT_G; break;
+		case 'H':port_num=PORT_H; break;
+	}
+    return port_num;
+}
+
 bool gpio_get_state(uint8_t dioNumber, uint8_t* logic_level) {
     GPIO_PinState value = HAL_GPIO_ReadPin(GPIOB, 1<<dioNumber);
     (*logic_level) = (uint8_t)value;
@@ -85,4 +123,56 @@ uint8_t get_aux_num(uint8_t io_pin) {
 
 bool gpio_toggle(uint8_t dioNumber) {
     return true;
+}
+
+bool gpio_init_one(Pin_t *pinInstance){
+    bool res = false;
+    if(pinInstance){
+        if(0!=pinInstance->mcu_pin){
+            GPIO_InitTypeDef GPIO_InitStruct = {0};
+            GPIO_TypeDef *GpioPort = Port2PortPtr(pinInstance->pad.port);
+            /*Configure GPIO pin Output Level */
+            HAL_GPIO_WritePin(GpioPort, PinNum2PinMask(pinInstance->pad.pin), pinInstance->pin_state);
+
+            /*Configure GPIO pin : PtPin */
+            GPIO_InitStruct.Pin = PinNum2PinMask(pinInstance->pad.pin);
+            GPIO_InitStruct.Mode = pinInstance->mode;
+            GPIO_InitStruct.Pull = pinInstance->pull;
+            GPIO_InitStruct.Speed = pinInstance->speed;
+            GPIO_InitStruct.Alternate = pinInstance->alternate;
+            HAL_GPIO_Init(GpioPort, &GPIO_InitStruct);
+        }
+        res = true;
+    }
+    return res;
+}
+
+
+static bool gpio_init_clock(void){
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    __HAL_RCC_GPIOE_CLK_ENABLE();
+    __HAL_RCC_GPIOF_CLK_ENABLE();
+    __HAL_RCC_GPIOG_CLK_ENABLE();
+    __HAL_RCC_GPIOH_CLK_ENABLE();
+    return true;
+}
+
+bool gpio_init(void){
+    bool res = false;
+    gpio_init_clock();
+
+    uint32_t i=0, cnt_ok=0;
+    for(i=0;i<gpio_get_cnt();i++){
+        res = gpio_init_one(&PinTable[i]);
+        if(res){
+            cnt_ok++;
+        }
+    }
+    if(gpio_get_cnt()==cnt_ok){
+        res = true;
+    }
+    return res;
 }

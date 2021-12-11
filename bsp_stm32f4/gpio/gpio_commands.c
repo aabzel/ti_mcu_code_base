@@ -38,26 +38,17 @@ bool gpio_get_command(int32_t argc, char* argv[]) {
             }
     }
 
-        res = true;
-
-        if(true == res) {
-            res = try_str2uint8(argv[0], &port_pin_num);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract port_pin_num %s", argv[0]);
-            }
+    if(true == res) {
+        Pad_t pad;
+        pad.port = PortLetter2PortNum(port_lett);
+        pad.pin = pin_num;
+        res = gpio_get_state(pad.byte, &logic_level);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to get gpio state");
+        } else {
+            io_printf("%u" CRLF, logic_level);
         }
-
-        if(true == res) {
-            Pad_t pad;
-            pad.port = PortLetter2PortNum(port_lett);
-            pad.pin = pin_num;
-            res = gpio_get_state(pad.byte, &logic_level);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to get gpio state");
-            } else {
-                io_printf("%u" CRLF, logic_level);
-            }
-        }
+    }
     if(2!=argc) {
         LOG_ERROR(SYS, "Usage: gg port pin");
         LOG_INFO(SYS, "port [A...Z]");
@@ -68,7 +59,6 @@ bool gpio_get_command(int32_t argc, char* argv[]) {
 
 bool gpio_set_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint8_t pad_num=0;
     uint8_t pin_num=0xFF;
     char port_lett='_';
     uint8_t logic_level = 0xFF;

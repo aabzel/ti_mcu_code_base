@@ -10,7 +10,7 @@
 #endif /*USE_HAL_DRIVER*/
 
 Pin_t PinTable[]={
-    {{PORT_A,0},"WKUP",00},
+    {{PORT_A,0},"WKUP",34, GPIO_MODE_IT_RISING, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, 0, GPIO_PIN_RESET},
     {{PORT_A,1},"PA1",00},
     {{PORT_A,2},"CON3.2",00},
     {{PORT_A,3},"CON3.1",00},
@@ -50,8 +50,8 @@ Pin_t PinTable[]={
     {{PORT_C,3},"",00},
     {{PORT_C,4},"",00},
     {{PORT_C,5},"",00},
-    {{PORT_C,6},"USART6_TX",96,GPIO_MODE_AF_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_VERY_HIGH,GPIO_AF8_USART6, GPIO_PIN_SET},
-    {{PORT_C,7},"USART6_RX",97,GPIO_MODE_AF_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_VERY_HIGH,GPIO_AF8_USART6, GPIO_PIN_SET},
+    {{PORT_C,6},"USART6_TX",96,GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_VERY_HIGH,GPIO_AF8_USART6, GPIO_PIN_SET},
+    {{PORT_C,7},"USART6_RX",97,GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_VERY_HIGH,GPIO_AF8_USART6, GPIO_PIN_SET},
     {{PORT_C,8},"",00},
     {{PORT_C,9},"",00},
     {{PORT_C,10},"",00},
@@ -134,80 +134,6 @@ Pin_t PinTable[]={
 
 };
 
-
-static GPIO_TypeDef *Port2PortPtr(uint8_t port_num){
-    GPIO_TypeDef *GpioPort=NULL;
-    switch(port_num){
-		case  PORT_A:GpioPort=GPIOA; break;
-		case PORT_B:GpioPort=GPIOB; break;
-		case PORT_C:GpioPort=GPIOC; break;
-		case PORT_D:GpioPort=GPIOD; break;
-		case PORT_E:GpioPort=GPIOE; break;
-		case PORT_F:GpioPort=GPIOF; break;
-		case PORT_G:GpioPort=GPIOG; break;
-		case PORT_H:GpioPort=GPIOH; break;
-		default: break;
-	}
-    return GpioPort;
-}
-
-static uint32_t PinNum2PinMask(uint8_t pin_num){
-    uint32_t pin_mask=0;
-    pin_mask |= (1 << pin_num);
-    return pin_mask;
-}
-
-static bool gpio_init_one(Pin_t *pinInstance){
-    bool res = false;
-    if(pinInstance){
-        if(0!=pinInstance->mcu_pin){
-            GPIO_InitTypeDef GPIO_InitStruct = {0};
-            GPIO_TypeDef *GpioPort = Port2PortPtr(pinInstance->pad.port);
-            /*Configure GPIO pin Output Level */
-            HAL_GPIO_WritePin(GpioPort, PinNum2PinMask(pinInstance->pad.pin), pinInstance->pin_state);
-
-            /*Configure GPIO pin : PtPin */
-            GPIO_InitStruct.Pin = PinNum2PinMask(pinInstance->pad.pin);
-            GPIO_InitStruct.Mode = pinInstance->mode;
-            GPIO_InitStruct.Pull = pinInstance->pull;
-            GPIO_InitStruct.Speed = pinInstance->speed;
-            GPIO_InitStruct.Alternate = pinInstance->alternate;
-            HAL_GPIO_Init(GpioPort, &GPIO_InitStruct);
-        }
-        res = true;
-    }
-    return res;
-}
-
 uint32_t gpio_get_cnt(void){
     return ARRAY_SIZE(PinTable);
-}
-
-static bool gpio_init_clock(void){
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    __HAL_RCC_GPIOD_CLK_ENABLE();
-    __HAL_RCC_GPIOE_CLK_ENABLE();
-    __HAL_RCC_GPIOF_CLK_ENABLE();
-    __HAL_RCC_GPIOG_CLK_ENABLE();
-    __HAL_RCC_GPIOH_CLK_ENABLE();
-    return true;
-}
-
-bool gpio_init(void){
-    bool res = false;
-    gpio_init_clock();
-
-    uint32_t i=0, cnt_ok=0;
-    for(i=0;i<gpio_get_cnt();i++){
-        res = gpio_init_one(&PinTable[i]);
-        if(res){
-            cnt_ok++;
-        }
-    }
-    if(gpio_get_cnt()==cnt_ok){
-        res = true;
-    }
-    return res;
 }
