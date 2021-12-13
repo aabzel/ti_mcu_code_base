@@ -20,9 +20,6 @@ extern const TemperatureCC26X2_Config TemperatureCC26X2_config;
 uint32_t cpu_get_id(void);
 bool reboot(void);
 uint64_t get_ble_mac(void);
-bool is_ram_addr(uint32_t address);
-bool try_recursion(uint32_t max_depth, uint32_t* stack_size);
-float stack_used(void);
 
 #ifdef __cplusplus
 }

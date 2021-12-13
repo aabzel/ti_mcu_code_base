@@ -23,6 +23,7 @@ typedef struct xTBFTparser_t{
     uint8_t read_crc8;
     uint8_t exp_payload_len;
     uint32_t load_len;
+    uint16_t s_num;
     uint8_t rx_frame[TBFP_RX_FRAME_SIZE];
     uint8_t fix_frame[TBFP_RX_FRAME_SIZE];
 }TBFTparser_t;

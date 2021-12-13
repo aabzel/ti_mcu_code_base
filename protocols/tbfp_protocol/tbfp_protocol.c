@@ -346,7 +346,7 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
     uint32_t cur_rx_prk=0;
     uint32_t init_rx_prk=TbfpProtocol[interface].rx_pkt_cnt;
-    res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
+    //res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
     uint32_t i = 0, ok_cnt = 0, err_cnt = 0;
     for(i = 0; i < len; i++) {
         res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]);
@@ -398,7 +398,7 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
                             lost_frame_cnt,
                             TbfpProtocol[interface].con_flow);
             } else {
-                LOG_WARNING(TBFP, "Lost %u...%u=%u Flow:%u",
+                LOG_WARNING(TBFP, "Lost %u-%u=%u Flow:%u",
                             TbfpProtocol[interface].prev_s_num + 1,
                             inHeader.snum - 1,
                             lost_frame_cnt,

@@ -12,9 +12,11 @@ extern "C" {
 
 bool tbfp_diag_command(int32_t argc, char* argv[]);
 bool tbfp_send_command(int32_t argc, char* argv[]);
+bool tbfp_send_hi_load_command(int32_t argc, char* argv[]);
 
 #define TBFP_COMMANDS                                                 \
     SHELL_CMD("tbfp_diag", "tbfp", tbfp_diag_command, "TBFP diag"),   \
+    SHELL_CMD("tbfp_send_h", "tbfsh", tbfp_send_hi_load_command, "TBFP SendHiLoad"),   \
     SHELL_CMD("tbfp_send", "tbfps", tbfp_send_command, "TBFP send"),
 
 #ifdef __cplusplus

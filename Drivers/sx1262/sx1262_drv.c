@@ -11,6 +11,7 @@ speed up to 16 MHz
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "bit_utils.h"
 #include "board_layout.h"
@@ -375,7 +376,7 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
             *out_payload_length_rx = rx_array[2];
         }
         if(out_rx_start_buffer_pointer) {
-            *out_rx_start_buffer_pointer = rx_array[3];
+            *out_rx_start_buffer_pointer = rx_array[3]-1; /*subtraction matters*/
         }
     }
     return res;
@@ -1317,8 +1318,8 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint8_t* out_size, uint16_t max
     if(res){
         LOG_DEBUG(LORA, "Start %u rxLen %u",rx_start_buffer_pointer, rx_payload_len);
     }
-    rx_start_buffer_pointer = 0;
-    rx_payload_len = 255;
+    //rx_start_buffer_pointer = 0;
+    //rx_payload_len = 255;
     if(rx_payload_len <= max_size) {
         res = sx1262_read_buffer(rx_start_buffer_pointer, out_payload, (uint16_t)rx_payload_len);
         *out_size = rx_payload_len;
@@ -1470,19 +1471,25 @@ static inline bool sx1262_poll_status(void) {
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.rx_done_cnt++;
-            res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
-            Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
-            if(res) {
-                if(Sx1262Instance.debug) {
-                    LOG_INFO(LORA, "rx %u byte", rx_size);
-                    res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true,
-                                    Sx1262Instance.is_packet);
-                }
+            //do{
+              res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
+              if(res){
+
+              Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
+
+              if(Sx1262Instance.debug) {
+                  LOG_INFO(LORA, "rx %u byte", rx_size);
+                  res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true,
+                                  Sx1262Instance.is_packet);
+              }
 #ifdef HAS_LORA
-                res = lora_proc_payload(rx_payload, rx_size);
+              res = lora_proc_payload(rx_payload, rx_size);
 #endif /*HAS_LORA*/
-                led_blink(&Led[LED_INDEX_RED], 25);
-            }
+              led_blink(&Led[LED_INDEX_RED], 25);
+              }else{
+                  LOG_INFO(LORA, "DataReadErr");
+              }
+             // sx1262_clear_fifo();
         } break;
         case COM_STAT_COM_TIMEOUT:
             LOG_WARNING(LORA, "time out");

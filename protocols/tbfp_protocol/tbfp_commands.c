@@ -8,6 +8,7 @@
 #include "data_utils.h"
 #include "io_utils.h"
 #include "log.h"
+#include "none_blocking_pause.h"
 #include "tbfp_protocol.h"
 #include "table_utils.h"
 #include "system.h"
@@ -100,5 +101,62 @@ bool tbfp_send_command(int32_t argc, char* argv[]){
     return res;
 }
 
+bool tbfp_send_hi_load_command(int32_t argc, char* argv[]){
+    bool res = false;
+    uint32_t attempt = 0;
+    uint32_t len = 0;
+    uint32_t pause_ms=0;
+    uint8_t interface = IF_NONE;
+    uint8_t array[255-TBFP_OVERHEAD_SIZE]={0};
+    memset(array,0,len);
 
+    if(1 <= argc) {
+        res = try_str2uint32(argv[0], &len);
+        if(false == res) {
+            LOG_ERROR(TBFP, "UnableToParseLen");
+        }
+    }
+    if (2<=argc) {
+        res = try_str2uint32(argv[1], &attempt);
+        if(false == res) {
+            LOG_ERROR(TBFP, "UnableToParseAtt");
+        }
+    }
+
+    if(3 <= argc) {
+        res = try_str2uint32(argv[2], &pause_ms);
+        if(false == res) {
+            LOG_ERROR(TBFP, "UnableToParsePause");
+        }
+    }
+
+    if(4 <= argc) {
+        res = try_str2uint8(argv[3], &interface);
+        if(false == res) {
+            LOG_ERROR(TBFP, "UnableToParseInterface");
+        }
+    }
+
+    if(4!=argc){
+        LOG_ERROR(TBFP, "Usage: tbfsh"
+                " len"
+                " attempt"
+                " pause_ms"
+                " interf"
+                  );
+        return res;
+    }
+
+    if(res) {
+        if(len<=sizeof(array)){
+          uint32_t i = 0;
+          for(i=0; i<attempt; i++){
+              memset(array,((uint8_t) i),len);
+              res = tbfp_send(array, len, (Interfaces_t) interface);
+              wait_in_loop_ms( pause_ms);
+          }
+        }
+    }
+    return res;
+}
 

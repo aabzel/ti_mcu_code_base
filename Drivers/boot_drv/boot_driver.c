@@ -14,6 +14,7 @@
 
 #include "clocks.h"
 #include "core_driver.h"
+#include "core_utils.h"
 #include "flash_drv.h"
 #include "flash_fs.h"
 #include "log.h"

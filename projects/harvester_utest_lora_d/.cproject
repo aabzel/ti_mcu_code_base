@@ -159,6 +159,7 @@
 									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
+									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_FLASH"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_FLASH_FS"/>

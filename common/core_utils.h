@@ -1,5 +1,5 @@
-#ifndef CORE_DRIVER_H
-#define CORE_DRIVER_H
+#ifndef CORE_UTILS_H
+#define CORE_UTILS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,4 +16,4 @@ float stack_used(void);
 }
 #endif
 
-#endif /* CORE_DRIVER_H */
+#endif /* CORE_UTILS_H */

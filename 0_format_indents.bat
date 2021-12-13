@@ -4,7 +4,8 @@ set work_space_dir=%cd%
 set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortUsingDeclarations: true , UseTab: Never,PointerAlignment: Left, BreakBeforeBraces: Attach, TabWidth: 4,ColumnLimit: 120 }"
 set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 rem set format_tool="C:\cygwin64\bin\clang-format.exe"
-
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\tbfp_protocol\tbfp_commands.h
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\tbfp_protocol\tbfp_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\interrupt\interrupt_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\interrupt\interrupt_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\rtc\rtc_commands.c

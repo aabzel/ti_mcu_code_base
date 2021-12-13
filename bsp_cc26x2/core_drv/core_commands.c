@@ -10,6 +10,7 @@
 #include "boot_cfg.h"
 #include "convert.h"
 #include "core_driver.h"
+#include "core_utils.h"
 #include "ctype.h"
 #include "data_utils.h"
 #include "debug_info.h"
