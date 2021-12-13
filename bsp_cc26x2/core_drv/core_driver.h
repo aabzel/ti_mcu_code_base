@@ -10,7 +10,6 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #define EXPECT_STACK_SIZE (4096 * 10)
 #define CPU_SCS_BASE 0xE000E000
 #define CPU_SCS_CPUID (CPU_SCS_BASE + 0xD00)

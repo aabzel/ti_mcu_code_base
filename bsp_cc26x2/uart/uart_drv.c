@@ -287,14 +287,14 @@ bool uart_send_wait_ll(uint8_t uart_num, const uint8_t* tx_buffer, uint16_t len,
     uint32_t tx_duration_ms = calc_uart_transfer_time_ms(baudrate, len);
     /*TODO Wait previous transfer*/
     huart[uart_num].in_progress = true;
-    if(huart[uart_num].uart_h){
+    if(huart[uart_num].uart_h) {
         int_fast32_t ret = UART_write(huart[uart_num].uart_h, (uint8_t*)tx_buffer, len);
         if(0 == ret) {
             res = true;
         } else {
             res = false;
         }
-    }else{
+    } else {
         res = false;
     }
 

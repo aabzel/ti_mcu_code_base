@@ -9,30 +9,23 @@
 #include "io_utils.h"
 #include "log.h"
 #include "none_blocking_pause.h"
-#include "tbfp_protocol.h"
-#include "table_utils.h"
 #include "system.h"
-#include "writer_generic.h"
+#include "table_utils.h"
+#include "tbfp_protocol.h"
 #include "writer_config.h"
+#include "writer_generic.h"
 
 static bool tbfp_diag(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
-                                       {8, "interf"},
-                                       {9, "rxCnt"},
-                                       {9, "txCnt"},
-                                       {9, "crcErCnt"},
+        {8, "interf"},  {9, "rxCnt"},  {9, "txCnt"}, {9, "crcErCnt"},
 #ifdef HAS_DEBUG
-                                       {9, "maxFlow"},
-                                       {9, "preCnt"},
-                                       {9, "ErCnt"},
-                                       {9, "minLen"},
-                                       {9, "maxLen"},
+        {9, "maxFlow"}, {9, "preCnt"}, {9, "ErCnt"}, {9, "minLen"},   {9, "maxLen"},
 #endif /*HAS_DEBUG*/
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-    for(interface=IF_LORA; interface < ARRAY_SIZE(TbfpProtocol); interface++){
+    for(interface = IF_LORA; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
         io_printf(TSEP);
         io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
         io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);
@@ -68,12 +61,12 @@ bool tbfp_diag_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool tbfp_send_command(int32_t argc, char* argv[]){
+bool tbfp_send_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t array[256] = {0};
     uint32_t array_len = 0;
     uint8_t interface = IF_NONE;
-    if(1<=argc){
+    if(1 <= argc) {
         res = try_str2array(argv[0], array, sizeof(array), &array_len);
         if(false == res) {
             LOG_ERROR(TBFP, "Unable to extract data %s", argv[0]);
@@ -86,29 +79,28 @@ bool tbfp_send_command(int32_t argc, char* argv[]){
         }
     }
 
-
     if(res) {
-        res = tbfp_send(array,array_len,(Interfaces_t) interface);
-        if(res){
+        res = tbfp_send(array, array_len, (Interfaces_t)interface);
+        if(res) {
             LOG_INFO(TBFP, "Ok!");
-        }else{
+        } else {
             LOG_ERROR(TBFP, "TbfpSendError");
         }
 
-    }else{
+    } else {
         LOG_ERROR(TBFP, "Usage: tbfpds data interface");
     }
     return res;
 }
 
-bool tbfp_send_hi_load_command(int32_t argc, char* argv[]){
+bool tbfp_send_hi_load_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint32_t attempt = 0;
     uint32_t len = 0;
-    uint32_t pause_ms=0;
+    uint32_t pause_ms = 0;
     uint8_t interface = IF_NONE;
-    uint8_t array[255-TBFP_OVERHEAD_SIZE]={0};
-    memset(array,0,len);
+    uint8_t array[255 - TBFP_OVERHEAD_SIZE] = {0};
+    memset(array, 0, len);
 
     if(1 <= argc) {
         res = try_str2uint32(argv[0], &len);
@@ -116,7 +108,7 @@ bool tbfp_send_hi_load_command(int32_t argc, char* argv[]){
             LOG_ERROR(TBFP, "UnableToParseLen");
         }
     }
-    if (2<=argc) {
+    if(2 <= argc) {
         res = try_str2uint32(argv[1], &attempt);
         if(false == res) {
             LOG_ERROR(TBFP, "UnableToParseAtt");
@@ -137,26 +129,24 @@ bool tbfp_send_hi_load_command(int32_t argc, char* argv[]){
         }
     }
 
-    if(4!=argc){
+    if(4 != argc) {
         LOG_ERROR(TBFP, "Usage: tbfsh"
-                " len"
-                " attempt"
-                " pause_ms"
-                " interf"
-                  );
+                        " len"
+                        " attempt"
+                        " pause_ms"
+                        " interf");
         return res;
     }
 
     if(res) {
-        if(len<=sizeof(array)){
-          uint32_t i = 0;
-          for(i=0; i<attempt; i++){
-              memset(array,((uint8_t) i),len);
-              res = tbfp_send(array, len, (Interfaces_t) interface);
-              wait_in_loop_ms( pause_ms);
-          }
+        if(len <= sizeof(array)) {
+            uint32_t i = 0;
+            for(i = 0; i < attempt; i++) {
+                memset(array, ((uint8_t)i), len);
+                res = tbfp_send(array, len, (Interfaces_t)interface);
+                wait_in_loop_ms(pause_ms);
+            }
         }
     }
     return res;
 }
-

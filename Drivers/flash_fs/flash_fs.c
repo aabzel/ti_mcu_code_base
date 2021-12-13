@@ -596,7 +596,7 @@ bool flash_fs_init(void) {
         reboot_cnt++;
         LOG_INFO(FLASH_FS, "reboot cnt: %u", reboot_cnt);
         res = mm_set(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt));
-        if(false==res){
+        if(false == res) {
             LOG_ERROR(FLASH_FS, "RebootCntSetErr");
         }
     } else {

@@ -383,7 +383,6 @@ bool zed_f9p_load_params(void) {
 #if defined(HAS_FLASH_FS) && defined(HAS_PARAM)
     uint16_t file_len = 0;
 
-
     ZedF9P.time_zone = 0;
     res = mm_get(PAR_ID_TIME_ZONE, (uint8_t*)&ZedF9P.time_zone, 1, &file_len);
     if(res && (1 == file_len)) {
@@ -416,7 +415,7 @@ bool zed_f9p_load_params(void) {
         res = false;
     }
 
-    switch(ZedF9P.rtk_mode){
+    switch(ZedF9P.rtk_mode) {
     case RTK_BASE: {
         res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
         if(res && (16 == file_len)) {
@@ -435,7 +434,7 @@ bool zed_f9p_load_params(void) {
             res = false;
         }
 
-    }break;
+    } break;
     case RTK_ROVER: {
         res = mm_get(PAR_ID_GNSS_PERIOD, (uint8_t*)&ZedF9P.rate_ms, 2, &file_len);
         if(res && (2 == file_len)) {
@@ -446,7 +445,7 @@ bool zed_f9p_load_params(void) {
             res = mm_set(PAR_ID_GNSS_PERIOD, (uint8_t*)&ZedF9P.rate_ms, 2);
         }
 
-    }break;
+    } break;
     default:
         break;
     }

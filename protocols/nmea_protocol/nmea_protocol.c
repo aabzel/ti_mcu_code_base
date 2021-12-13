@@ -571,28 +571,26 @@ static bool nmea_calc_mode(PositionMode_t* pos_mode, NmeaData_t* nmea_data) {
     return res;
 }
 
-bool nmea_update_rtk_fixed_duration(void){
+bool nmea_update_rtk_fixed_duration(void) {
     bool res = false;
-    uint32_t cur_up_time = get_time_ms32( );
-    uint32_t cur_rtk_fixed_duration = cur_up_time-NmeaProto.rtk_fixed_start_ms ;
-    uint16_t file_len = 0 ;
-    res= mm_get( PAR_ID_RTK_FIX_LONG,
-                  (uint8_t*) &NmeaProto.rtk_fixed_max_duration_ms,
-                  sizeof(NmeaProto.rtk_fixed_max_duration_ms), &file_len);
+    uint32_t cur_up_time = get_time_ms32();
+    uint32_t cur_rtk_fixed_duration = cur_up_time - NmeaProto.rtk_fixed_start_ms;
+    uint16_t file_len = 0;
+    res = mm_get(PAR_ID_RTK_FIX_LONG, (uint8_t*)&NmeaProto.rtk_fixed_max_duration_ms,
+                 sizeof(NmeaProto.rtk_fixed_max_duration_ms), &file_len);
 
-    if(NmeaProto.rtk_fixed_max_duration_ms < cur_rtk_fixed_duration){
+    if(NmeaProto.rtk_fixed_max_duration_ms < cur_rtk_fixed_duration) {
         NmeaProto.rtk_fixed_max_duration_ms = cur_rtk_fixed_duration;
 
-        res= mm_set(  PAR_ID_RTK_FIX_LONG,
-                      (uint8_t*) &NmeaProto.rtk_fixed_max_duration_ms,
-                      sizeof(NmeaProto.rtk_fixed_max_duration_ms));
+        res = mm_set(PAR_ID_RTK_FIX_LONG, (uint8_t*)&NmeaProto.rtk_fixed_max_duration_ms,
+                     sizeof(NmeaProto.rtk_fixed_max_duration_ms));
     }
     return res;
 }
 
 bool nmea_proc(void) {
     bool res = false;
-    static uint32_t call_cnt=0;
+    static uint32_t call_cnt = 0;
     call_cnt++;
     static uint32_t prev_zda_cnt = 0;
     static uint32_t prev_rmc_cnt = 0;
@@ -659,15 +657,15 @@ bool nmea_proc(void) {
     if(res) {
         if(prev_pos_mode != NmeaProto.pos_mode) {
             LOG_INFO(NMEA, "Mode %s", nmea_pos_mode2std(NmeaProto.pos_mode));
-            if(PM_RTK_FIXED==prev_pos_mode){
+            if(PM_RTK_FIXED == prev_pos_mode) {
                 nmea_update_rtk_fixed_duration();
             }
-            if(PM_RTK_FIXED==NmeaProto.pos_mode){
-                NmeaProto.rtk_fixed_start_ms = get_time_ms32( );
+            if(PM_RTK_FIXED == NmeaProto.pos_mode) {
+                NmeaProto.rtk_fixed_start_ms = get_time_ms32();
             }
-        }else if(prev_pos_mode == NmeaProto.pos_mode){
-            if(PM_RTK_FIXED==prev_pos_mode){
-                if(0==(call_cnt%5)){
+        } else if(prev_pos_mode == NmeaProto.pos_mode) {
+            if(PM_RTK_FIXED == prev_pos_mode) {
+                if(0 == (call_cnt % 5)) {
                     nmea_update_rtk_fixed_duration();
                 }
             }

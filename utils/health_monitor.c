@@ -59,12 +59,12 @@ bool health_monotor_proc(void) {
     }
 #endif
 
-    if(HealthMon.init_error){
+    if(HealthMon.init_error) {
         LOG_ERROR(HMOM, "InitError");
     }
 
 #ifdef HAS_LORA
-    if(LoRaInterface.tx_err_cnt){
+    if(LoRaInterface.tx_err_cnt) {
         LOG_ERROR(HMOM, "LoRaRxError");
     }
 #endif
@@ -74,17 +74,17 @@ bool health_monotor_proc(void) {
     }
 
     float stack_precent = stack_used();
-    if(50.0<stack_precent ){
+    if(50.0 < stack_precent) {
         LOG_WARNING(HMOM, "StackUsed:%f %%", stack_precent);
-        if(75.0<stack_precent ){
+        if(75.0 < stack_precent) {
             LOG_ERROR(HMOM, "StackUsed:%f %%", stack_precent);
         }
     }
-    if(0 < huart[UART_NUM_CLI].error_cnt){
+    if(0 < huart[UART_NUM_CLI].error_cnt) {
         LOG_ERROR(UART, "Error");
-        //res = init_uart_ll(UART_NUM_CLI, "CLI");
-        //if(false==res){
-       // }
+        // res = init_uart_ll(UART_NUM_CLI, "CLI");
+        // if(false==res){
+        // }
     }
 
 #if defined(HAS_CHECK_TIME) && defined(HAS_NMEA) && defined(HAS_UBLOX)
