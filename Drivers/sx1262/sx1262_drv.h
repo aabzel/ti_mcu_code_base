@@ -249,7 +249,7 @@ bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* Rss
 bool sx1262_get_packet_type(RadioPacketType_t* packet_type);
 bool sx1262_get_rand(uint32_t* rand_num);
 bool sx1262_get_rssi_inst(int8_t* rssi_inst);
-bool sx1262_get_rx_payload(uint8_t* payload, uint8_t* size, uint16_t max_size);
+bool sx1262_get_rx_payload(uint8_t* payload, uint16_t* size, uint16_t max_size, uint8_t* crc8);
 bool sx1262_get_rxbuff_status(uint8_t* PayloadLengthRx, uint8_t* RxStartBufferPointer);
 bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora);
 bool sx1262_get_status(uint8_t* out_status);

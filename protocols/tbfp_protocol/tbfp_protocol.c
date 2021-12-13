@@ -346,7 +346,7 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
     uint32_t cur_rx_prk = 0;
     uint32_t init_rx_prk = TbfpProtocol[interface].rx_pkt_cnt;
-    // res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
+    res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
     uint32_t i = 0, ok_cnt = 0, err_cnt = 0;
     for(i = 0; i < len; i++) {
         res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]);
@@ -404,9 +404,12 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         } else if(TbfpProtocol[interface].prev_s_num < inHeader.snum) {
             /*Unreal situation*/
             TbfpProtocol[interface].con_flow = 1;
+            TbfpProtocol[interface].err_cnt++;
+        } else if(TbfpProtocol[interface].prev_s_num == inHeader.snum) {
+            TbfpProtocol[interface].err_cnt++;
         } else {
-            /*cur serial < prev serial*/
-            TbfpProtocol[interface].con_flow = 1;
+            /*Unreal situation*/
+            TbfpProtocol[interface].err_cnt++;
         }
         TbfpProtocol[interface].prev_s_num = inHeader.snum;
 #ifdef X86_64

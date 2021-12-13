@@ -31,7 +31,7 @@
 static Array_t ArrLoRaTxNode[LORA_TX_QUEUE_SIZE];
 LoRaIf_t LoRaInterface = {0};
 
-bool lora_proc_payload(uint8_t* const rx_payload, uint8_t rx_size) {
+bool lora_proc_payload(uint8_t* const rx_payload, uint32_t rx_size) {
     bool res = false;
 
 #ifdef HAS_TBFP

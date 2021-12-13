@@ -674,8 +674,9 @@ bool sx1262_read_rx_payload_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         res = true;
         uint8_t rx_payload[FIFO_SIZE] = {0};
-        uint8_t rx_size = 0;
-        res = sx1262_get_rx_payload(rx_payload, &rx_size, sizeof(rx_payload));
+        uint16_t rx_size = 0;
+        uint8_t crc = 0;
+        res = sx1262_get_rx_payload(rx_payload, &rx_size, sizeof(rx_payload), &crc);
         if(res) {
             LOG_INFO(LORA, "load %u byte", rx_size);
             print_mem(rx_payload, rx_size, true, true, true, true);
