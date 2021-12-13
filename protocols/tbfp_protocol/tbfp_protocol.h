@@ -57,6 +57,7 @@ typedef struct xTbfpProtocol_t {
     uint32_t preamble_cnt;
     uint16_t max_len;
     uint16_t min_len;
+    bool debug;
 #endif
 #ifdef HAS_TBFP_FLOW_CONTROL
     uint16_t prev_s_num;
@@ -64,6 +65,7 @@ typedef struct xTbfpProtocol_t {
     uint16_t con_flow;
     uint16_t max_con_flow;
 #endif
+
     Interfaces_t interface;
     TBFTparser_t parser;
 } TbfpProtocol_t;
