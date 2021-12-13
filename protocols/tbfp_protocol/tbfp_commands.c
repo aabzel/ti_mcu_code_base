@@ -50,26 +50,26 @@ static bool tbfp_diag(void) {
 
 bool tbfp_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint8_t interface=IF_NONE;
+    uint8_t interface = IF_NONE;
 
-    if(0<=argc){
+    if(0 <= argc) {
         res = true;
     }
 
-    if(1<=argc){
+    if(1 <= argc) {
         res = try_str2uint8(argv[0], &interface);
         if(false == res) {
             LOG_ERROR(SYS, "Unable to extract if %s", argv[0]);
         }
     }
 
-    if(2<=argc){
+    if(2 <= argc) {
         res = try_str2bool(argv[1], &TbfpProtocol[interface].debug);
         if(false == res) {
             LOG_ERROR(SYS, "Unable to extract state %s", argv[1]);
         }
     }
-    if( 2<argc ) {
+    if(2 < argc) {
         LOG_ERROR(TBFP, "Usage: tbfpd if debug");
     }
     if(res) {

@@ -9,7 +9,6 @@ extern "C" {
 #include <stdint.h>
 #include <time.h>
 
-
 typedef struct xGnssCoordinate_t{
     double latitude;    /* Latitude (degrees and minutes) */
     double longitude;    /* Longitude (degrees and minutes) */
@@ -27,10 +26,6 @@ typedef struct xGnssVelocity_t{
     double accuracy_course;
 } GnssVelocity_t;
 
-bool is_valid_time(struct tm *date_time);
-bool is_time_date_equal(struct tm *date_time1,
-                        struct tm *date_time2);
-bool is_valid_time_date(struct tm *date_time);
 bool is_valid_gnss_coordinates(GnssCoordinate_t dot);
 double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2);
 double gnss_encoding_2_degrees(double in_ddmm_mmmmm);

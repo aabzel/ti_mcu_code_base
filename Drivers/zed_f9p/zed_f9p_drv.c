@@ -21,7 +21,7 @@
 #ifdef HAS_PARAM
 #include "param_ids.h"
 #endif
-
+#include "time_utils.h"
 #ifdef HAS_UBX_PTOTO
 #include "ublox_driver.h"
 #include "ubx_key_ids.h"
@@ -55,7 +55,7 @@ static bool zed_f9p_proc_base(void) {
     if(res) {
         ZedF9P.coordinate_cur = ZedF9P.coordinate_base;
     } else {
-        LOG_ERROR(ZED_F9P, "InvalidGnssBaseDot");
+        LOG_ERROR(ZED_F9P, "InvalGnssBaseDot");
     }
 
     if(task_data[TASK_ID_NMEA].on) {
@@ -91,19 +91,54 @@ static bool zed_f9p_proc_base(void) {
     return res;
 }
 
+#ifdef HAS_NMEA
+bool zed_f9p_uptate_nmea(void) {
+    bool res = true, res_time = false, res_dot = false;
+    static bool first_time = true;
+    static bool first_gnss = true;
+    res = is_valid_time_date(&NmeaData.time_date);
+    if(res) {
+        if(first_time) {
+            LOG_INFO(ZED_F9P, "SpotValidTime!");
+            print_time_date(&NmeaData.time_date);
+            first_time = false;
+        }
+        ZedF9P.time_date = NmeaData.time_date;
+        res_time = true;
+    } else {
+        LOG_ERROR(ZED_F9P, "InvalNmeaTimeDate");
+    }
+
+    res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
+    if(res) {
+        if(first_gnss) {
+            LOG_INFO(ZED_F9P, "SpotValidGNSSData!");
+            print_coordinate(NmeaData.coordinate_dd, true);
+            first_gnss = false;
+        }
+        ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
+        res_dot = true;
+    } else {
+        LOG_ERROR(ZED_F9P, "InvalNmeaGNSSDot");
+    }
+
+    if(res_time && res_dot) {
+        res = true;
+    } else {
+        res = false;
+    }
+    return res;
+}
+#endif
+
 static bool zed_f9p_proc_rover(void) {
     bool res = true;
     if(task_data[TASK_ID_UBX].on) {
         task_data[TASK_ID_UBX].on = false;
     }
 #ifdef HAS_NMEA
+    res = zed_f9p_uptate_nmea();
     task_data[TASK_ID_NMEA].on = true;
-    res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
-    if(res) {
-        ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
-    } else {
-        LOG_ERROR(ZED_F9P, "InvalidGnssNmeaDot");
-    }
 #endif
 
     if(IF_RS232 == ZedF9P.channel) {
@@ -129,43 +164,8 @@ static bool zed_f9p_proc_none(void) {
     task_data[TASK_ID_UBX].on = false;
 
 #ifdef HAS_NMEA
-    static bool first_time = true;
-    res = is_valid_time_date(&NmeaData.time_date);
-    if(res) {
-        if(first_time) {
-            LOG_INFO(ZED_F9P, "SpotValidTime!");
-            print_time_date(&NmeaData.time_date);
-            first_time = false;
-        }
-        ZedF9P.time_date = NmeaData.time_date;
-    } else {
-        LOG_ERROR(ZED_F9P, "InvalidNmeaTimeDate");
-    }
+    res = zed_f9p_uptate_nmea();
 
-    static bool first_gnss = true;
-    res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
-    if(res) {
-        ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
-    } else {
-        LOG_ERROR(ZED_F9P, "InvalidGNSSNmeaDot");
-        res = is_valid_gnss_coordinates(NavInfo.coordinate);
-        if(res) {
-            if(first_gnss) {
-                LOG_INFO(ZED_F9P, "SpotValidGNSSData!");
-                print_coordinate(NavInfo.coordinate, true);
-                first_gnss = false;
-            }
-            ZedF9P.coordinate_cur = NavInfo.coordinate;
-        } else {
-            LOG_ERROR(ZED_F9P, "Invalid Ubx GNSS coordinate");
-        }
-    }
-    res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
-    if(res) {
-        ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
-    } else {
-        LOG_ERROR(ZED_F9P, "Invalid GNSS cur coordinate");
-    }
 #endif
     return res;
 }
@@ -188,6 +188,12 @@ bool zed_f9p_proc(void) {
     default:
         res = false;
         break;
+    }
+    res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
+    if(res) {
+        ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
+    } else {
+        LOG_ERROR(ZED_F9P, "Inval GNSS cur coordinate");
     }
 
     return res;

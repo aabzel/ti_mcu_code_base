@@ -379,11 +379,11 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
         if(out_rx_start_buffer_pointer) {
             *out_rx_start_buffer_pointer = rx_array[3];
             uint8_t i = 0;
-            for(i=0;i<2;i++){
+            for(i = 0; i < 2; i++) {
 
-                if(0<*out_rx_start_buffer_pointer ){
-                    *out_rx_start_buffer_pointer -=1; /*subtraction matters*/
-                }else{
+                if(0 < *out_rx_start_buffer_pointer) {
+                    *out_rx_start_buffer_pointer -= 1; /*subtraction matters*/
+                } else {
                     *out_rx_start_buffer_pointer = 255;
                 }
             }

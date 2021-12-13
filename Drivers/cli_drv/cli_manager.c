@@ -15,6 +15,7 @@
 #include "none_blocking_pause.h"
 #include "sys_config.h"
 #include "table_utils.h"
+#include "time_utils.h"
 #include "uart_drv.h"
 #include "uart_string_reader.h"
 #include "writer_config.h"
@@ -123,7 +124,6 @@ bool cli_process(void) {
 
     bool res = false;
 
-    // if(true == cli_init_done) {
     cli_task_cnt++;
     if(true == huart[UART_NUM_CLI].tx_int) {
         dbg_o.f_transmit(&dbg_o);
@@ -131,7 +131,6 @@ bool cli_process(void) {
     }
     uart_string_reader_proccess(&cmd_reader);
     res = true;
-    // }
 
     return res;
 }
@@ -167,6 +166,14 @@ bool cli_parse_args(char* cmd_line, int* argc, char** argv) {
     return res;
 }
 
+static void cli_prompt(void) {
+    if(cli_echo) {
+        char timeStr[10];
+        time_get_time_str(timeStr, sizeof(timeStr));
+        io_printf("%s-->", timeStr);
+    }
+}
+
 #ifndef X86_64
 bool process_shell_cmd(char* cmd_line) {
     bool res = false;
@@ -191,7 +198,7 @@ bool process_shell_cmd(char* cmd_line) {
     cli_parse_args(cmd_line, &shell_argc, &shell_argv[0]);
 
     if(0 == shell_argc) {
-        shell_prompt();
+        cli_prompt();
         res = true;
     }
 
@@ -203,7 +210,7 @@ bool process_shell_cmd(char* cmd_line) {
                 if(false == res) {
                     LOG_ERROR(SYS, "cmd error");
                 }
-                shell_prompt();
+                cli_prompt();
                 // res = true;
                 break;
             }
@@ -216,7 +223,7 @@ bool process_shell_cmd(char* cmd_line) {
         } else {
             dump_cmd_result_ex(false, "Unknown command");
         }
-        shell_prompt();
+        cli_prompt();
 #ifdef HAS_CLI_CMD_HISTORY
         memset(prev_cmd, 0x00, sizeof(prev_cmd));
 #endif

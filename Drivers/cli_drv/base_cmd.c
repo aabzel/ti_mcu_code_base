@@ -270,12 +270,6 @@ bool cmd_wd_test_hw(int32_t argc, char* argv[]) {
     return true;
 }
 
-void shell_prompt(void) {
-    if(cli_echo) {
-        io_printf("-->");
-    }
-}
-
 bool cmd_version(int32_t argc, char* argv[]) {
     (void)(argv);
     if(argc != 0) {

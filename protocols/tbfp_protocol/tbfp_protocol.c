@@ -361,9 +361,9 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     if(0 < cur_rx_prk) {
         LOG_DEBUG(TBFP, "InPktCnt:%u in %u byte", cur_rx_prk, len);
     } else {
-        if(true==TbfpProtocol[interface].debug){
-          LOG_ERROR(TBFP, "LackPkt:%u", len);
-          print_mem(arr, len, true, false, true, true);
+        if(true == TbfpProtocol[interface].debug) {
+            LOG_ERROR(TBFP, "LackPkt:%u", len);
+            print_mem(arr, len, true, false, true, true);
         }
     }
     if(len == ok_cnt) {
