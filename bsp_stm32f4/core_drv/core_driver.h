@@ -8,7 +8,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#define EXPECT_STACK_SIZE (0x400 )
+#define EXPECT_STACK_SIZE (2048 )
 
 uint32_t cpu_get_id(void);
 bool reboot(void);
