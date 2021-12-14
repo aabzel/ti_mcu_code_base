@@ -89,7 +89,7 @@ bool cmd_try_stack(int32_t argc, char* argv[]) {
     }
     if(0 == argc) {
 #ifdef HAS_DEBUG
-        parse_stack();
+       // parse_stack();
 #endif
         for(max_depth = 0;; max_depth++) {
             res = try_recursion(max_depth, &stack_size);
