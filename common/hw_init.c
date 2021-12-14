@@ -95,6 +95,10 @@
 #include "watchdog_drv.h"
 #endif/*HAS_WDT*/
 
+#ifdef HAS_INTERRUPT
+#include "interrupt_drv.h"
+#endif
+
 bool hw_init(void) {
   bool res = true;
 #ifdef CC26XX
@@ -117,6 +121,10 @@ bool hw_init(void) {
 #ifdef NORTOS  
    SysTickInit();
 #endif /*NORTOS*/
+
+#ifdef HAS_INTERRUPT
+  res = interrupt_init() && res;
+#endif
 
 #ifdef HAS_GPIO
   res = gpio_init() && res;

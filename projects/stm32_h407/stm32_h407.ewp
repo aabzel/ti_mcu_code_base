@@ -227,6 +227,7 @@
                     <state>USE_HAL_DRIVER</state>
                     <state>NORTOS</state>
                     <state>HAS_GPIO</state>
+                    <state>HAS_INTERRUPT</state>
                     <state>HAS_IAR</state>
                     <state>STM32F407xx</state>
                     <state>HAS_DEBUG</state>
@@ -391,6 +392,7 @@
                     <state>$PROJ_DIR$/../..</state>
                     <state>$PROJ_DIR$/Core</state>
                     <state>$PROJ_DIR$</state>
+                    <state>$PROJ_DIR$\..\..\bsp_stm32f4\interrupt</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1150,6 +1152,12 @@
             </file>
         </group>
         <group>
+            <name>interrupt</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\interrupt\interrupt_drv.c</name>
+            </file>
+        </group>
+        <group>
             <name>uart</name>
             <file>
                 <name>$PROJ_DIR$\..\..\bsp_stm32f4\uart\uart_commands.c</name>
@@ -1436,6 +1444,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\utils\read_mem.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\utils\time_utils.c</name>
         </file>
     </group>
     <file>

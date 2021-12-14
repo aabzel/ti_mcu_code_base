@@ -10,6 +10,8 @@
 #include "data_utils.h"
 #include "stm32f4xx_hal.h"
 
+uint32_t gpio_int_cnt=0;
+
 bool gpios_init(void) {
       bool res = false;
      GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -167,7 +169,7 @@ static bool gpio_init_clock(void){
 bool gpio_init(void){
     bool res = false;
     gpio_init_clock();
-
+    gpio_int_cnt=0;
     uint32_t i=0, cnt_ok=0;
     for(i=0;i<gpio_get_cnt();i++){
         res = gpio_init_one(&PinTable[i]);
@@ -179,4 +181,10 @@ bool gpio_init(void){
         res = true;
     }
     return res;
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+  if(1==GPIO_Pin){
+      gpio_int_cnt++;
+  }
 }

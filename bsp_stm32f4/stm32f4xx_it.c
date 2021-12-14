@@ -7,11 +7,8 @@
 extern SD_HandleTypeDef hsd;
 
 
-void NMI_Handler(void)
-{
-
-  while (1)
-  {
+void NMI_Handler(void){
+  while (1)  {
   }
 
 }
@@ -78,6 +75,9 @@ void PendSV_Handler(void)
 {
 }
 
+void EXTI0_IRQHandler(void){
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+}
 /**
   * @brief This function handles System tick timer.
   */
