@@ -3,9 +3,11 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+#include "array.h"
 #include "base_cmd.h"
 #include "convert.h"
 #include "core_driver.h"
+#include "core_utils.h"
 #include "data_utils.h"
 #include "debug_info.h"
 #include "io_utils.h"
@@ -61,6 +63,57 @@ bool cmd_soft_reboot(int32_t argc, char* argv[]) {
         res = reboot();
     } else {
         LOG_ERROR(SYS, "Usage: reboot");
+    }
+    return res;
+}
+
+bool cmd_try_stack(int32_t argc, char* argv[]) {
+    bool res = false;
+    uint32_t max_depth = 0;
+    uint32_t busy = 0;
+    uint32_t stack_size = 0;
+    uint16_t real_size = 0;
+    uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
+    io_printf("TopStackVal: 0x%08x byte" CRLF, top_stack_val);
+    uint32_t cur_stack_use = top_stack_val - ((uint32_t)&real_size);
+    io_printf("curStackUsage: %u byte" CRLF, cur_stack_use);
+    io_printf("remStack: %d byte" CRLF, EXPECT_STACK_SIZE - cur_stack_use);
+
+    uint32_t max_cont_patt = 0;
+    res = array_max_cont((uint8_t*)top_stack_val - EXPECT_STACK_SIZE-1, EXPECT_STACK_SIZE, 0, &max_cont_patt);
+    busy = EXPECT_STACK_SIZE - max_cont_patt;
+    if(res) {
+        io_printf("max free: %d byte" CRLF, max_cont_patt);
+        io_printf("max busy: %d byte" CRLF, busy);
+        io_printf("max usage: %5.1f %%" CRLF, ((float)100 * busy) / ((float)EXPECT_STACK_SIZE));
+    }
+    if(0 == argc) {
+#ifdef HAS_DEBUG
+        parse_stack();
+#endif
+        for(max_depth = 0;; max_depth++) {
+            res = try_recursion(max_depth, &stack_size);
+            if(false == res) {
+                LOG_ERROR(SYS, "error");
+            } else {
+                LOG_INFO(SYS, "depth %u calls %u byte Ok!", max_depth, stack_size);
+            }
+        }
+    }
+
+    if(1 <= argc) {
+        res = try_str2uint32(argv[0], &max_depth);
+    }
+
+    if(res) {
+        res = try_recursion(max_depth, &stack_size);
+        if(false == res) {
+            LOG_ERROR(SYS, "error");
+        } else {
+            LOG_INFO(SYS, "depth %u calls %u byte Ok!", max_depth, stack_size);
+        }
+    } else {
+        LOG_ERROR(SYS, "Usage: tstk depth");
     }
     return res;
 }

@@ -236,6 +236,7 @@
                     <state>HAS_UART</state>
                     <state>STM32F4xx</state>
                     <state>HAS_CLI</state>
+                    <state>HAS_CORTEX_M4</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1121,6 +1122,9 @@
         <group>
             <name>core</name>
             <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\core_drv\core_commands.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\bsp_stm32f4\core_drv\core_driver.c</name>
             </file>
         </group>
@@ -1177,6 +1181,9 @@
         <name>common</name>
         <file>
             <name>$PROJ_DIR$\..\..\common\common_functions.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\common\core_utils.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\common\hw_init.c</name>

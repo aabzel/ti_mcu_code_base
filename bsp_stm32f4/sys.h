@@ -6,6 +6,7 @@
 
 #include "macro_utils.h"
 
+#define RAM_SIZE (192 * K_BYTES)
 #define APP_START_ADDRESS (0x08000000)
 
 #define _disable_interrupt_()

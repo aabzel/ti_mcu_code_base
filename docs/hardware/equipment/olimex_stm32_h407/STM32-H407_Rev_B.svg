@@ -19,12 +19,27 @@
      id="defs2">
     <marker
        style="overflow:visible;"
-       id="marker1311"
+       id="marker1102"
        refX="0.0"
        refY="0.0"
        orient="auto"
        inkscape:stockid="Arrow1Lend"
        inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1100" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1311"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
       <path
          transform="scale(0.8) rotate(180) translate(12.5,0)"
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
@@ -193,11 +208,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="660.26357"
-     inkscape:cy="737.90918"
+     inkscape:zoom="1.979899"
+     inkscape:cx="287.63764"
+     inkscape:cy="320.26412"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -301,12 +316,12 @@
        x="253.62201"
        y="50.851223" />
     <rect
-       style="opacity:0.996;fill:none;stroke:#000000;stroke-width:0.264999;stroke-opacity:1"
+       style="opacity:0.996;fill:none;stroke:#000000;stroke-width:0.18339;stroke-opacity:1"
        id="rect27"
-       width="21.916101"
-       height="77.508163"
+       width="19.671455"
+       height="41.355816"
        x="9.6217022"
-       y="46.92086" />
+       y="83.073204" />
     <rect
        style="opacity:0.996;fill:#ffeb00;stroke:#000000;stroke-width:0.264999;stroke-opacity:1;fill-opacity:1"
        id="rect215"
@@ -359,6 +374,39 @@
          x="-178.3036"
          y="177.06461"
          style="font-size:5.54117px;stroke-width:1.03897">USART6</tspan></text>
+    <rect
+       style="opacity:0.998;fill:#f2f2f2;stroke:#000000;stroke-width:0.499999"
+       id="rect1091"
+       width="19.843752"
+       height="14.967093"
+       x="9.4494047"
+       y="62.674702" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="14.165285"
+       y="71.8955"
+       id="text1096"><tspan
+         sodipodi:role="line"
+         id="tspan1094"
+         x="14.165285"
+         y="71.8955"
+         style="font-size:3.52778px;stroke-width:0.264583">WKUP</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker1102)"
+       d="M 29.293156,70.024616 H 100.62698"
+       id="path1098" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.2754px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.106885"
+       x="53.137547"
+       y="67.708504"
+       id="text1184"><tspan
+         sodipodi:role="line"
+         id="tspan1182"
+         x="53.137547"
+         y="67.708504"
+         style="stroke-width:0.106885">PA0</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -774,13 +822,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.73484px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.118371"
-       x="13.162938"
-       y="77.550293"
+       x="12.09386"
+       y="92.250114"
        id="text25"><tspan
          sodipodi:role="line"
          id="tspan23"
-         x="13.162938"
-         y="77.550293"
+         x="12.09386"
+         y="92.250114"
          style="stroke-width:0.118371">JTAG</tspan></text>
     <text
        xml:space="preserve"

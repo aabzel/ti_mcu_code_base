@@ -8,11 +8,11 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#define EXPECT_STACK_SIZE (0x400 )
 
 uint32_t cpu_get_id(void);
 bool reboot(void);
 uint64_t get_ble_mac(void);
-bool is_ram_addr(uint32_t address);
 
 #ifdef __cplusplus
 }
