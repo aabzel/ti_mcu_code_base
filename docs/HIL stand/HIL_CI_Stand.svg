@@ -989,9 +989,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="380.57497"
-     inkscape:cy="769.73623"
+     inkscape:zoom="1.4"
+     inkscape:cx="368.21428"
+     inkscape:cy="725.71428"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1008,31 +1008,38 @@
     <sodipodi:guide
        position="0,0"
        orientation="297.0,0"
-       id="guide2462" />
+       id="guide2462"
+       inkscape:locked="true" />
     <sodipodi:guide
        position="105,0"
        orientation="297.0,0"
-       id="guide2464" />
+       id="guide2464"
+       inkscape:locked="true" />
     <sodipodi:guide
        position="210,0"
        orientation="297.0,0"
-       id="guide2466" />
+       id="guide2466"
+       inkscape:locked="true" />
     <sodipodi:guide
        position="0,0"
        orientation="0,210.0"
-       id="guide2468" />
+       id="guide2468"
+       inkscape:locked="true" />
     <sodipodi:guide
        position="0,99"
        orientation="0,210.0"
-       id="guide2470" />
+       id="guide2470"
+       inkscape:locked="true" />
     <sodipodi:guide
        position="0,198"
        orientation="0,210.0"
-       id="guide2472" />
+       id="guide2472"
+       inkscape:locked="true" />
     <sodipodi:guide
        position="0,297"
        orientation="0,210.0"
-       id="guide2474" />
+       id="guide2474"
+       inkscape:locked="true" />
   </sodipodi:namedview>
   <metadata
      id="metadata26510">
@@ -1042,7 +1049,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

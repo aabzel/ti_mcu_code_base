@@ -20,9 +20,9 @@
 bool sys_init(void);
 bool try_init(bool status, char* message);
 #ifdef NORTOS
-void common_loop(uint64_t loop_start_time);
+void super_loop(uint64_t loop_start_time);
 void custom_loop(uint64_t loop_start_time);
-void common_main_loop(void);
+void super_main_loop(void);
 #endif /*NORTOS*/
 
 #endif /* COMMON_LOOP_H */

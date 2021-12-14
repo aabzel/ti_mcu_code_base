@@ -62,7 +62,7 @@ int main(void) {
     res = boot_try_app();
 #endif /*HAS_BOOTLOADER*/
 #ifdef NORTOS
-    common_main_loop();
+    super_main_loop();
 #endif /*NORTOS*/
     /*Unreachable line*/
     while(1) {

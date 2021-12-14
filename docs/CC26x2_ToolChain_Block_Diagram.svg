@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
    height="297mm"
    viewBox="0 0 210 297"
    version="1.1"
    id="svg251068"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="CC26x2_ToolChain_Block_Diagram.svg">
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="CC26x2_ToolChain_Block_Diagram.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <metadata
      id="metadata254">
     <rdf:RDF>
@@ -35,15 +35,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.0028457"
-     inkscape:cx="-552.96698"
-     inkscape:cy="245.28925"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
-     inkscape:window-x="2552"
-     inkscape:window-y="-8"
+     inkscape:zoom="2.836476"
+     inkscape:cx="263.53123"
+     inkscape:cy="703.33753"
+     inkscape:window-width="1920"
+     inkscape:window-height="1000"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer6"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:document-rotation="0">
@@ -1458,7 +1458,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer7"
-     inkscape:label="HW">
+     inkscape:label="HW"
+     style="display:inline">
     <rect
        style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.102918;stroke-opacity:1"
        id="rect1955"
@@ -1477,7 +1478,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer11"
-     inkscape:label="Chips">
+     inkscape:label="Chips"
+     style="display:inline">
     <rect
        style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.1;stroke-opacity:1"
        id="rect1963"
@@ -1512,17 +1514,6 @@
        height="6.7342596"
        x="67.438072"
        y="201.63576" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.72976px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0682442"
-       x="78.65731"
-       y="206.12782"
-       id="text3541-2"><tspan
-         sodipodi:role="line"
-         id="tspan3539-2"
-         style="stroke-width:0.0682442"
-         x="78.65731"
-         y="206.12782">USB</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.204364"
        id="rect2356-6"
@@ -1530,17 +1521,6 @@
        height="6.8934369"
        x="32.052258"
        y="201.71542" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.77255px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.119314"
-       x="38.792236"
-       y="206.73743"
-       id="text3541-2-3"><tspan
-         sodipodi:role="line"
-         id="tspan3539-2-1"
-         style="stroke-width:0.119314"
-         x="38.792236"
-         y="206.73743">USB</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.128065"
        id="rect8022"
@@ -1559,14 +1539,6 @@
          style="font-size:1.77019px;stroke-width:0.132764"
          x="94.148743"
          y="20.402388">100BaseTX</tspan></text>
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.222003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2042)"
-       d="M 88.858561,186.82527 H 31.73514 v 7.34524"
-       id="path8154" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.222003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1441)"
-       d="m 88.858561,186.82527 h 24.851259 v 7.34524"
-       id="path1176" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.144043"
        id="rect2356-6-1"
@@ -1610,7 +1582,7 @@
      inkscape:label="OS"
      style="display:inline">
     <rect
-       style="fill:#f2f4ff;fill-opacity:1;stroke:#000000;stroke-width:0.225627;stroke-opacity:1"
+       style="fill:#f2f4ff;fill-opacity:1;stroke:#000000;stroke-width:0.226;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect261517"
        width="116.2466"
        height="174.49181"
@@ -1842,21 +1814,6 @@
          y="44.479145"
          style="stroke-width:0.0883173"
          id="tspan1675">CCS</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.92468px;line-height:1.25;font-family:sans-serif;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:0.0731171"
-       x="96.445244"
-       y="190.74835"
-       id="text1858-8"><tspan
-         sodipodi:role="line"
-         id="tspan1856-8"
-         x="96.445244"
-         y="190.74835"
-         style="fill:#00ff00;stroke-width:0.0731171">.ccsproject</tspan></text>
-    <path
-       style="fill:none;stroke:#00ff00;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2277)"
-       d="m 95.237746,187.42061 v 4.36079 h 18.375944 v -35.25942"
-       id="path2273" />
     <rect
        style="display:inline;fill:#f2f4ff;fill-opacity:1;stroke:#000000;stroke-width:0.20974;stroke-opacity:1"
        id="rect261517-3"
@@ -1868,17 +1825,19 @@
   <g
      inkscape:groupmode="layer"
      id="layer9"
-     inkscape:label="IDE">
+     inkscape:label="IDE"
+     style="display:none">
     <path
        style="fill:none;stroke:#000000;stroke-width:0.266799px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 11.563902,33.160178 h 99.414868 v 20.906716 l -22.133162,-0.186558 0,16.000025 V 94.446048 H 105 V 187.39729 H 11.566582 Z"
+       d="M 11.563902,33.160178 H 110.97877 V 54.066894 L 88.845608,53.880336 V 69.880361 94.446048 H 105 V 187.39729 H 11.566582 Z"
        id="path1673"
        sodipodi:nodetypes="cccccccccc" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="files" />
+     inkscape:label="files"
+     style="display:none" />
   <g
      inkscape:groupmode="layer"
      id="layer8"
@@ -1916,7 +1875,7 @@
      inkscape:label="arrows"
      inkscape:groupmode="layer"
      id="layer1"
-     style="display:none">
+     style="display:inline">
     <rect
        style="fill:#ffdcd9;fill-opacity:1;stroke:#df0000;stroke-width:0.0907491;stroke-opacity:1"
        id="rect265625"
@@ -1946,21 +1905,6 @@
          style="stroke-width:0.0277558"
          x="73.496773"
          y="147.07484">*.out</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.11023px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0277558"
-       x="73.53138"
-       y="192.21056"
-       id="text283204-4"><tspan
-         sodipodi:role="line"
-         id="tspan283202-7"
-         style="stroke-width:0.0277558"
-         x="73.53138"
-         y="192.21056">*.out</tspan></text>
-    <path
-       style="fill:none;stroke:#ff0800;stroke-width:0.251324;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2076)"
-       d="m 73.165399,145.70216 v 48.25651"
-       id="path284679" />
     <path
        style="fill:none;stroke:#ff0300;stroke-width:0.108908px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
        d="m 94.328276,119.81673 c 0,0 -16.702374,7.02351 -25.548322,12.81677"
@@ -2030,17 +1974,6 @@
          style="font-size:0.987931px;stroke-width:0.0370472"
          x="95.015999"
          y="36.017803">*.c</tspan></text>
-    <rect
-       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.191733"
-       id="rect2197"
-       width="23.957304"
-       height="7.3236871"
-       x="60.859116"
-       y="194.22127" />
-    <path
-       style="fill:#008000;stroke:#008000;stroke-width:0.418874;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1992);marker-end:url(#marker2112)"
-       d="m 72.898711,208.44394 v 31.39558"
-       id="path2393" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.35632px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.108908"
@@ -2234,11 +2167,6 @@
          style="stroke-width:0.0395124"
          x="76.267128"
          y="152.44194">*.out</tspan></text>
-    <path
-       style="fill:none;stroke:#ff0800;stroke-width:0.254231;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2172)"
-       d="m 88.699176,175.34689 v 18.39687"
-       id="path8025-6"
-       sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444541"
@@ -2250,17 +2178,6 @@
          style="stroke-width:0.0444541"
          x="88.819382"
          y="177.32161">*.bin</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444541"
-       x="89.192474"
-       y="191.94153"
-       id="text6362-8-2-7"><tspan
-         sodipodi:role="line"
-         id="tspan6360-2-9-6"
-         style="stroke-width:0.0444541"
-         x="89.192474"
-         y="191.94153">*.bin</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444541"
@@ -2414,20 +2331,6 @@
        d="M 82.810438,44.933122 V 98.9521 H 66.235812"
        id="path25838"
        sodipodi:nodetypes="ccc" />
-    <rect
-       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.22962;stroke-opacity:1"
-       id="rect2365"
-       width="17.816881"
-       height="7.3566904"
-       x="40.970036"
-       y="194.1705" />
-    <rect
-       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.173389;stroke-opacity:1"
-       id="rect2365-7"
-       width="10.081974"
-       height="7.4129224"
-       x="27.174593"
-       y="194.1424" />
     <path
        style="fill:none;stroke:#ff00ff;stroke-width:0.418874;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker2022);marker-end:url(#marker2244)"
        d="m 45.029022,227.26903 v 41.3317 h 12.156385"
@@ -2450,28 +2353,6 @@
        height="10.250045"
        x="39.06134"
        y="217.15712" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.36431px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
-       x="45.81181"
-       y="215.12634"
-       id="text6600"><tspan
-         sodipodi:role="line"
-         id="tspan6598"
-         style="font-size:2.36431px;stroke-width:0.221654"
-         x="45.81181"
-         y="215.12634">USB</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.36431px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
-       x="41.99147"
-       y="219.46761"
-       id="text6600-8"><tspan
-         sodipodi:role="line"
-         id="tspan6598-5"
-         style="font-size:2.36431px;stroke-width:0.221654"
-         x="41.99147"
-         y="219.46761">USB</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.4777px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
@@ -2537,31 +2418,6 @@
        height="14.698175"
        x="57.62746"
        y="246.05618" />
-    <rect
-       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.106415;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect9099"
-       width="20.279062"
-       height="7.227591"
-       x="86.747528"
-       y="194.18149" />
-    <rect
-       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.173389;stroke-opacity:1"
-       id="rect2365-7-2"
-       width="10.081974"
-       height="7.4129224"
-       x="111.31126"
-       y="194.1705" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444542"
-       x="113.98598"
-       y="191.41823"
-       id="text6362-8-2-7-8"><tspan
-         sodipodi:role="line"
-         id="tspan6360-2-9-6-0"
-         style="stroke-width:0.0444542"
-         x="113.98598"
-         y="191.41823">*.bin</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.4718px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0551923"
@@ -2595,13 +2451,6 @@
          style="font-size:1.4718px;stroke-width:0.0551923"
          x="92.363983"
          y="47.950031">*.h</tspan></text>
-    <rect
-       style="fill:#f9f9f9;stroke:#000000;stroke-width:0.175606;stroke-opacity:1"
-       id="rect2365-7-8"
-       width="10.360521"
-       height="7.3992748"
-       x="12.000195"
-       y="194.05161" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444542"
@@ -2830,6 +2679,31 @@
          x="14.265457"
          y="13.686676"
          style="stroke-width:0.211571">ToolChain Block Diagram</tspan></text>
+    <path
+       style="display:inline;fill:none;stroke:#ff0000;stroke-width:0.222003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1441)"
+       d="m 88.858561,186.82527 h 24.851259 v 7.34524"
+       id="path1176" />
+    <path
+       style="display:inline;fill:none;stroke:#ff0800;stroke-width:0.251324;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2076)"
+       d="m 73.165399,145.70216 v 48.25651"
+       id="path284679" />
+    <path
+       style="display:inline;fill:#008000;stroke:#008000;stroke-width:0.418874;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1992);marker-end:url(#marker2112)"
+       d="m 72.898711,208.44394 v 31.39558"
+       id="path2393" />
+    <path
+       style="display:inline;fill:none;stroke:#ff0800;stroke-width:0.254231;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2172)"
+       d="m 88.699176,175.34689 v 18.39687"
+       id="path8025-6"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#ff0000;stroke-width:0.222003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2042)"
+       d="M 88.858561,186.82527 H 31.73514 v 7.34524"
+       id="path8154" />
+    <path
+       style="display:inline;fill:none;stroke:#00ff00;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2277)"
+       d="m 95.237746,187.42061 v 4.36079 h 18.375944 v -35.25942"
+       id="path2273" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2927,6 +2801,48 @@
        height="7.3064837"
        x="-140.69817"
        y="38.031235" />
+    <rect
+       style="display:inline;fill:#f9f9f9;stroke:#000000;stroke-width:0.183414"
+       id="rect2197"
+       width="21.923315"
+       height="7.3236871"
+       x="62.893105"
+       y="194.22127" />
+    <rect
+       style="display:inline;fill:#f9f9f9;stroke:#000000;stroke-width:0.22962;stroke-opacity:1"
+       id="rect2365"
+       width="17.816881"
+       height="7.3566904"
+       x="40.970036"
+       y="194.1705" />
+    <rect
+       style="display:inline;fill:#f9f9f9;stroke:#000000;stroke-width:0.173389;stroke-opacity:1"
+       id="rect2365-7"
+       width="10.081974"
+       height="7.4129224"
+       x="27.174593"
+       y="194.1424" />
+    <rect
+       style="display:inline;fill:#f9f9f9;stroke:#000000;stroke-width:0.106415;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect9099"
+       width="20.279062"
+       height="7.227591"
+       x="86.747528"
+       y="194.18149" />
+    <rect
+       style="display:inline;fill:#f9f9f9;stroke:#000000;stroke-width:0.173389;stroke-opacity:1"
+       id="rect2365-7-2"
+       width="10.081974"
+       height="7.4129224"
+       x="111.31126"
+       y="194.1705" />
+    <rect
+       style="display:inline;fill:#f9f9f9;stroke:#000000;stroke-width:0.175606;stroke-opacity:1"
+       id="rect2365-7-8"
+       width="10.360521"
+       height="7.3992748"
+       x="12.000195"
+       y="194.05161" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2981,61 +2897,6 @@
          style="font-size:1.4777px;stroke-width:0.221654"
          x="60.326153"
          y="103.06444">k</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.8495px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0462376"
-       x="70.234795"
-       y="196.77089"
-       id="text1367"><tspan
-         sodipodi:role="line"
-         id="tspan1365"
-         style="stroke-width:0.0462376"
-         x="70.234795"
-         y="196.77089">uniflash</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.33833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0584582"
-       x="68.117889"
-       y="199.63463"
-       id="text6855"><tspan
-         sodipodi:role="line"
-         id="tspan6853"
-         style="stroke-width:0.0584582"
-         x="68.117889"
-         y="199.63463">DSLite.exe</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444541"
-       x="49.221287"
-       y="192.66411"
-       id="text6362-5-55-3"><tspan
-         sodipodi:role="line"
-         id="tspan6360-5-8-8"
-         style="stroke-width:0.0444541"
-         x="49.221287"
-         y="192.66411">*.hex</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.4777px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
-       x="42.845505"
-       y="197.77628"
-       id="text1627"><tspan
-         sodipodi:role="line"
-         id="tspan1625"
-         style="font-size:1.4777px;stroke-width:0.221654"
-         x="42.845505"
-         y="197.77628">cc2538-bsl_x64.exe</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.75784px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.413676"
-       x="90.19117"
-       y="198.29535"
-       id="text4791"><tspan
-         sodipodi:role="line"
-         id="tspan4789"
-         style="font-size:2.75784px;stroke-width:0.413676"
-         x="90.19117"
-         y="198.29535">xdsdfu.exe</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.01623px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.050406"
@@ -3123,17 +2984,6 @@
          y="271.85703">230400</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.43747px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0359368"
-       x="112.33972"
-       y="198.37294"
-       id="text1159"><tspan
-         sodipodi:role="line"
-         id="tspan1157"
-         x="112.33972"
-         y="198.37294"
-         style="stroke-width:0.0359368">srfprog.exe</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="12.499374"
        y="196.18881"
@@ -3213,17 +3063,6 @@
          style="stroke-width:0.0272385"
          x="84.155411"
          y="158.37212">armofd.exe</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.0707px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0517675"
-       x="83.165756"
-       y="174.3849"
-       id="text29873"><tspan
-         sodipodi:role="line"
-         id="tspan29871"
-         style="stroke-width:0.0517675"
-         x="83.165756"
-         y="174.3849">armhex.exe</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.58049px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.0395124"
@@ -4219,5 +4058,170 @@
          x="-137.21414"
          y="81.830467"
          style="stroke-width:0.0684757">GNU Make 4.3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.72976px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0682442"
+       x="78.65731"
+       y="206.12782"
+       id="text3541-2"><tspan
+         sodipodi:role="line"
+         id="tspan3539-2"
+         style="stroke-width:0.0682442"
+         x="78.65731"
+         y="206.12782">USB</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:4.77255px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.119314"
+       x="38.792236"
+       y="206.73743"
+       id="text3541-2-3"><tspan
+         sodipodi:role="line"
+         id="tspan3539-2-1"
+         style="stroke-width:0.119314"
+         x="38.792236"
+         y="206.73743">USB</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.11023px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0277558"
+       x="73.53138"
+       y="192.21056"
+       id="text283204-4"><tspan
+         sodipodi:role="line"
+         id="tspan283202-7"
+         style="stroke-width:0.0277558"
+         x="73.53138"
+         y="192.21056">*.out</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.36431px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
+       x="45.81181"
+       y="215.12634"
+       id="text6600"><tspan
+         sodipodi:role="line"
+         id="tspan6598"
+         style="font-size:2.36431px;stroke-width:0.221654"
+         x="45.81181"
+         y="215.12634">USB</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.36431px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
+       x="41.99147"
+       y="219.46761"
+       id="text6600-8"><tspan
+         sodipodi:role="line"
+         id="tspan6598-5"
+         style="font-size:2.36431px;stroke-width:0.221654"
+         x="41.99147"
+         y="219.46761">USB</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.8495px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0462376"
+       x="70.234795"
+       y="196.77089"
+       id="text1367"><tspan
+         sodipodi:role="line"
+         id="tspan1365"
+         style="stroke-width:0.0462376"
+         x="70.234795"
+         y="196.77089">uniflash</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.33833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0584582"
+       x="68.117889"
+       y="199.63463"
+       id="text6855"><tspan
+         sodipodi:role="line"
+         id="tspan6853"
+         style="stroke-width:0.0584582"
+         x="68.117889"
+         y="199.63463">DSLite.exe</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444541"
+       x="49.221287"
+       y="192.66411"
+       id="text6362-5-55-3"><tspan
+         sodipodi:role="line"
+         id="tspan6360-5-8-8"
+         style="stroke-width:0.0444541"
+         x="49.221287"
+         y="192.66411">*.hex</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.4777px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221654"
+       x="42.845505"
+       y="197.77628"
+       id="text1627"><tspan
+         sodipodi:role="line"
+         id="tspan1625"
+         style="font-size:1.4777px;stroke-width:0.221654"
+         x="42.845505"
+         y="197.77628">cc2538-bsl_x64.exe</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.75784px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.413676"
+       x="90.19117"
+       y="198.29535"
+       id="text4791"><tspan
+         sodipodi:role="line"
+         id="tspan4789"
+         style="font-size:2.75784px;stroke-width:0.413676"
+         x="90.19117"
+         y="198.29535">xdsdfu.exe</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.92468px;line-height:1.25;font-family:sans-serif;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:0.0731171"
+       x="96.445244"
+       y="190.74835"
+       id="text1858-8"><tspan
+         sodipodi:role="line"
+         id="tspan1856-8"
+         x="96.445244"
+         y="190.74835"
+         style="fill:#00ff00;stroke-width:0.0731171">.ccsproject</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444542"
+       x="113.98598"
+       y="191.41823"
+       id="text6362-8-2-7-8"><tspan
+         sodipodi:role="line"
+         id="tspan6360-2-9-6-0"
+         style="stroke-width:0.0444542"
+         x="113.98598"
+         y="191.41823">*.bin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.43747px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0359368"
+       x="112.33972"
+       y="198.37294"
+       id="text1159"><tspan
+         sodipodi:role="line"
+         id="tspan1157"
+         x="112.33972"
+         y="198.37294"
+         style="stroke-width:0.0359368">srfprog.exe</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.0707px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0517675"
+       x="83.165756"
+       y="174.3849"
+       id="text29873"><tspan
+         sodipodi:role="line"
+         id="tspan29871"
+         style="stroke-width:0.0517675"
+         x="83.165756"
+         y="174.3849">armhex.exe</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0444541"
+       x="89.192474"
+       y="191.94153"
+       id="text6362-8-2-7"><tspan
+         sodipodi:role="line"
+         id="tspan6360-2-9-6"
+         style="stroke-width:0.0444541"
+         x="89.192474"
+         y="191.94153">*.bin</tspan></text>
   </g>
 </svg>

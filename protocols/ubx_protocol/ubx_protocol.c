@@ -286,7 +286,7 @@ bool ubx_wait_ack(uint32_t wait_pause_ms) {
             loop = false;
         }
         loop_start_time_us = get_time_us();
-        common_loop(loop_start_time_us);
+        super_loop(loop_start_time_us);
 
         curr_ms = get_time_ms32();
         if(wait_pause_ms < (curr_ms - start_ms)) {

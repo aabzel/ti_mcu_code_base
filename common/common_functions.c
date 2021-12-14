@@ -100,7 +100,7 @@ bool sys_init(void) {
 }
 
 #ifdef NORTOS
-void common_loop(uint64_t loop_start_time_us) {
+void super_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_DEBUG
     iteration_cnt++;
 #endif
@@ -195,7 +195,7 @@ void common_loop(uint64_t loop_start_time_us) {
 #endif /*NORTOS*/
 
 #ifdef NORTOS
-_Noreturn void common_main_loop(void) {
+_Noreturn void super_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
     uint64_t loop_start_time_us = 0;
 #ifdef HAS_DEBUG
@@ -212,7 +212,7 @@ _Noreturn void common_main_loop(void) {
         loop_duration_max_us = rx_max64u(loop_duration_max_us, loop_duration_us);
         prev_loop_start_time_us = loop_start_time_us;
 #endif /*HAS_DEBUG*/
-        common_loop(loop_start_time_us);
+        super_loop(loop_start_time_us);
     }
 }
 #endif /*NORTOS*/

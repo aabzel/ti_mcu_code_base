@@ -49,3 +49,16 @@ https://habr.com/ru/company/unwds/blog/390815/
 
 IAR EW ARM: выравнивание полей в структурах
 http://microsin.net/programming/arm/iar-data-alignment.html
+
+
+SimpleLink Academy v1.11
+https://software-dl.ti.com/lprf/simplelink_academy/overview.html
+
+
+TI-RTOS Basics
+https://dev.ti.com/tirex/explore/node?node=AAliBv1MZ54NaV.m2AIT8w__krol.2c__LATEST
+
+
+
+Debugging Common Application Issues with TI-RTOS
+https://training.ti.com/debugging-common-application-issues-ti-rtos
