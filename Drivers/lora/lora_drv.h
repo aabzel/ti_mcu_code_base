@@ -13,7 +13,7 @@
 #define LORA_PERIOD_US S_2_US(15)
 
 extern FifoArray_t FiFoLoRaTx;
-
+/*TODO: rewrite to Interface array*/
 typedef struct xLoRaIf_t {
     uint32_t err_cnt;
     uint32_t ovfl_err_cnt;

@@ -10,6 +10,11 @@
 #include "gnss_diag.h"
 #include "gnss_utils.h"
 #include "log.h"
+
+#ifdef HAS_RTCM3
+#include "rtcm3_protocol.h"
+#endif
+
 #ifdef HAS_LORA
 #include "lora_drv.h"
 #endif
@@ -86,6 +91,16 @@ bool health_monotor_proc(void) {
         // if(false==res){
         // }
     }
+
+#ifdef HAS_RTCM3
+    static uint32_t lora_lost_pkt_cnt_prev=0;
+    uint32_t lora_lost_pkt_cnt_diff=0;
+    lora_lost_pkt_cnt_diff = Rtcm3Protocol[IF_UART1].lora_lost_pkt_cnt-lora_lost_pkt_cnt_prev;
+    if(0 < lora_lost_pkt_cnt_diff){
+        LOG_WARNING(HMOM, "RTCM3 UART1 lost %u",lora_lost_pkt_cnt_diff);
+    }
+    lora_lost_pkt_cnt_prev = Rtcm3Protocol[IF_UART1].lora_lost_pkt_cnt;
+#endif
 
 #if defined(HAS_CHECK_TIME) && defined(HAS_NMEA) && defined(HAS_UBLOX)
     bool res_eq = is_time_date_equal(&NavInfo.date_time, &NmeaData.time_date);
