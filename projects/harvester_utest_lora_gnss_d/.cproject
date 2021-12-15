@@ -158,6 +158,7 @@
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
+									<listOptionValue builtIn="false" value="HAS_PACKED_LORA_FRAME"/>
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
