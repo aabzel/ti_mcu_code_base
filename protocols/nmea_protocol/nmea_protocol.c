@@ -8,6 +8,7 @@
 #ifdef HAS_MCU
 #include "clocks.h"
 #include "io_utils.h"
+#include "led_drv.h"
 #include "log.h"
 #endif
 
@@ -661,7 +662,10 @@ bool nmea_proc(void) {
                 nmea_update_rtk_fixed_duration();
             }
             if(PM_RTK_FIXED == NmeaProto.pos_mode) {
+                Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_RTK_FIXED_MS;
                 NmeaProto.rtk_fixed_start_ms = get_time_ms32();
+            }else{
+                Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_MS;
             }
         } else if(prev_pos_mode == NmeaProto.pos_mode) {
             if(PM_RTK_FIXED == prev_pos_mode) {

@@ -17,6 +17,7 @@
 
 #define NUM_OF_PARSED_SAT 5
 #define NMEA_MSG_SIZE 100U
+#define LED_GREEN_PERIOD_RTK_FIXED_MS 100U
 
 typedef enum eGgaQuality_t {
     QUA_NO_FIX = 0,
