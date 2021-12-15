@@ -10,7 +10,6 @@ speed up to 16 MHz
 #include <math.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "bit_utils.h"
@@ -20,7 +19,6 @@ speed up to 16 MHz
 #ifdef HAS_LED
 #include "led_drv.h"
 #endif
-#include "crc8_sae_j1850.h"
 #include "data_utils.h"
 #include "debug_info.h"
 #include "float_utils.h"
@@ -378,15 +376,6 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
         }
         if(out_rx_start_buffer_pointer) {
             *out_rx_start_buffer_pointer = rx_array[3];
-            uint8_t i = 0;
-            for(i = 0; i < 2; i++) {
-
-                if(0 < *out_rx_start_buffer_pointer) {
-                    *out_rx_start_buffer_pointer -= 1; /*subtraction matters*/
-                } else {
-                    *out_rx_start_buffer_pointer = 255;
-                }
-            }
         }
     }
     return res;
@@ -1320,22 +1309,19 @@ bool sx1262_read_buffer(int16_t offset, uint8_t* out_payload, uint16_t payload_l
     return res;
 }
 
-bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t max_size, uint8_t* crc8) {
+bool sx1262_get_rx_payload(uint8_t* out_payload, uint8_t* out_size, uint16_t max_size) {
     bool res = false;
-    uint16_t rx_payload_len = 0;
-    uint8_t len = 0;
-    uint8_t calc_crc8 = 0;
+    uint8_t rx_payload_len = 0;
     uint8_t rx_start_buffer_pointer = 0;
-    res = sx1262_get_rxbuff_status(&len, &rx_start_buffer_pointer);
+    res = sx1262_get_rxbuff_status(&rx_payload_len, &rx_start_buffer_pointer);
     if(res) {
-        LOG_DEBUG(LORA, "Start %u rxLen %u", rx_start_buffer_pointer, len);
+        LOG_DEBUG(LORA, "Start %u rxLen %u", rx_start_buffer_pointer, rx_payload_len);
     }
-    rx_payload_len = 256; // len;
+    rx_start_buffer_pointer = 0;
+    rx_payload_len = 255;
     if(rx_payload_len <= max_size) {
         res = sx1262_read_buffer(rx_start_buffer_pointer, out_payload, (uint16_t)rx_payload_len);
         *out_size = rx_payload_len;
-        calc_crc8 = crc8_sae_j1850_calc(out_payload, rx_payload_len);
-        *crc8 = calc_crc8;
     } else {
         *out_size = 0;
     }
@@ -1477,33 +1463,25 @@ static inline bool sx1262_poll_status(void) {
         Sx1262Instance.dev_status = tempSx1262Instance.dev_status;
 
         Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
-        uint8_t rx_payload[RX_SIZE + 1] = {0};
+        uint8_t rx_payload[RX_SIZE] = {0};
         memset(rx_payload, 0x00, sizeof(rx_payload));
-        uint16_t rx_size = 0;
-        uint32_t read_cnt = 0;
+        uint8_t rx_size = 0;
+
         switch(Sx1262Instance.com_stat) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.rx_done_cnt++;
-
-            rx_size = 0;
-            uint8_t cur_crc8 = 0;
-            res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE, &cur_crc8);
+            res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE);
+            Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
             if(res) {
-                read_cnt++;
-                Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
-
                 if(Sx1262Instance.debug) {
-                    LOG_INFO(LORA, "rx %u byte try:%u", rx_size, read_cnt);
+                    LOG_INFO(LORA, "rx %u byte", rx_size);
                     res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true,
                                     Sx1262Instance.is_packet);
                 }
 #ifdef HAS_LORA
                 res = lora_proc_payload(rx_payload, rx_size);
 #endif /*HAS_LORA*/
-                led_blink(&Led[LED_INDEX_RED], 10);
-
-            } else {
-                LOG_INFO(LORA, "DataReadErr");
+                led_blink(&Led[LED_INDEX_RED], 25);
             }
         } break;
         case COM_STAT_COM_TIMEOUT:
@@ -1627,8 +1605,17 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
 #ifdef HAS_PACKED_LORA_FRAME
         /*Transmitt multiple RTCM3 packages in single LoRa frame*/
         res = fifo_arr_pack_frame(tx_buf, sizeof(tx_buf), &LoRaInterface.FiFoLoRaTx, &tx_len);
-        if(false==res) {
-            LOG_ERROR(LORA,"PackErr Len:%u",tx_len);
+        if(res) {
+            if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
+                res = sx1262_start_tx(tx_buf, tx_len, 0);
+                if(res) {
+                    LoRaInterface.tx_ok_cnt++;
+                } else {
+                    LoRaInterface.tx_err_cnt++;
+                }
+            }
+        } else {
+            LoRaInterface.err_cnt++;
         }
 #else
         Array_t Node = {.size = 0, .pArr = NULL};
@@ -1648,14 +1635,12 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
             }
         }
 #endif
-        if(res) {
-            if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
-                res = sx1262_start_tx(tx_buf, tx_len, 0);
-                if(res) {
-                    LoRaInterface.tx_ok_cnt++;
-                } else {
-                    LoRaInterface.tx_err_cnt++;
-                }
+        if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
+            res = sx1262_start_tx(tx_buf, tx_len, 0);
+            if(res) {
+                LoRaInterface.tx_ok_cnt++;
+            } else {
+                LoRaInterface.tx_err_cnt++;
             }
         }
     }
