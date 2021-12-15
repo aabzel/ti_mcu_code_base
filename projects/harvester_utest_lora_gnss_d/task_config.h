@@ -12,6 +12,7 @@
   TASK(UART0_FWD)           \
   TASK(UART1_FWD)           \
   TASK(UBX)                 \
-  TASK(ZED_F9P)
+  TASK(ZED_F9P)             \
+  TASK(WDT)
 
 #endif /* TASK_CONFIG_H */
