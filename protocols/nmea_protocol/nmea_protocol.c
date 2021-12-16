@@ -10,10 +10,10 @@
 #include "io_utils.h"
 #include "led_drv.h"
 #include "log.h"
+#include "param_ids.h"
+#include "flash_fs.h"
 #endif
 
-#include "flash_fs.h"
-#include "param_ids.h"
 
 #ifdef HAS_NMEA_DIAG
 #include "nmea_diag.h"
@@ -366,16 +366,19 @@ uint8_t nmea_calc_checksum(char* nmea_data, uint16_t len) {
     return crc8;
 }
 
-bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
+bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
     bool res = false;
     uint8_t read_crc = 0;
-    uint16_t len = strlen(nmea_msg) - 4;
-#ifdef X86_64
-    printf("\nlen: %u", len);
+    //uint16_t len = strlen(nmea_msg) - 4;
+#if defined(X86_64) && defined(HAS_DEBUG)
+    printf("\n[d] len: %u", len);
 #endif
     if(len < NMEA_MSG_SIZE) {
         res = true;
     } else {
+#if defined(X86_64) && defined(HAS_DEBUG)
+    printf("\n[e] lenErr: %u", len);
+#endif
         NmeaProto.err_cnt++;
         res = false;
     }
@@ -390,6 +393,9 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
                 NmeaProto.err_cnt++;
             }
         } else {
+#if defined(X86_64) && defined(HAS_DEBUG)
+    printf("\n[e] Err:");
+#endif
             NmeaProto.err_cnt++;
         }
     }
@@ -399,14 +405,14 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
         uint8_t calc_crc = 0;
         calc_crc = nmea_calc_checksum(&nmea_msg[1], len);
         if(read_crc == calc_crc) {
-#ifdef X86_64
+#if defined(X86_64) && defined(HAS_DEBUG)
             printf("\nCRC OK!");
 #endif
             res = false;
             NmeaProto.crc_ok_cnt++;
             if(!strncmp(nmea_msg + 3, "GGA", 3)) {
                 gps_ctx->gga.fcnt.h_cnt++;
-#ifdef X86_64
+#if defined(X86_64) && defined(HAS_DEBUG)
                 printf("\nGGA");
 #endif
                 res = gnss_parse_gga(nmea_msg, &gps_ctx->gga);
@@ -415,7 +421,7 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
                 }
             } else if(!strncmp(nmea_msg + 3, "RMC", 3)) {
                 gps_ctx->rmc.fcnt.h_cnt++;
-#ifdef X86_64
+#if defined(X86_64) && defined(HAS_DEBUG)
                 printf("\n RMC");
 #endif
                 res = gnss_parse_rmc(nmea_msg, &gps_ctx->rmc);
@@ -427,7 +433,7 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
                 }
             } else if(!strncmp(nmea_msg + 3, "GLL", 3)) {
                 gps_ctx->gll.fcnt.h_cnt++;
-#ifdef X86_64
+#if defined(X86_64) && defined(HAS_DEBUG)
                 printf("\n GLL");
 #endif
                 /*here lat and lon*/
@@ -476,6 +482,9 @@ bool nmea_parse(char* nmea_msg, NmeaData_t* gps_ctx) {
                 res = false;
             }
         } else {
+#if defined(X86_64) && defined(HAS_DEBUG)
+            printf("\n[e] CrcErr Read 0x%02x Calc 0x%02x",read_crc, calc_crc);
+#endif
             NmeaProto.crc_err_cnt++;
         }
     }
@@ -497,7 +506,9 @@ bool nmea_proc_byte(uint8_t rx_byte) {
             NmeaProto.msg_cnt++;
             NmeaProto.pos = 0;
             NmeaProto.got_massege = true;
-            res = nmea_parse(NmeaProto.fix_message, &NmeaData);
+            uint16_t len =0;
+            len = strlen(NmeaProto.fix_message) - 4;
+            res = nmea_parse(NmeaProto.fix_message, len, &NmeaData);
             if(true == res) {
                 NmeaProto.proc_msg_cnt++;
             }
@@ -574,17 +585,22 @@ static bool nmea_calc_mode(PositionMode_t* pos_mode, NmeaData_t* nmea_data) {
 
 bool nmea_update_rtk_fixed_duration(void) {
     bool res = false;
-    uint32_t cur_up_time = get_time_ms32();
+    uint32_t cur_up_time = 0;
+#ifdef HAS_MCU
+    cur_up_time = get_time_ms32();
+#endif
     uint32_t cur_rtk_fixed_duration = cur_up_time - NmeaProto.rtk_fixed_start_ms;
     uint16_t file_len = 0;
+#ifdef HAS_FLASH_FS
     res = mm_get(PAR_ID_RTK_FIX_LONG, (uint8_t*)&NmeaProto.rtk_fixed_max_duration_ms,
                  sizeof(NmeaProto.rtk_fixed_max_duration_ms), &file_len);
-
+#endif
     if(NmeaProto.rtk_fixed_max_duration_ms < cur_rtk_fixed_duration) {
         NmeaProto.rtk_fixed_max_duration_ms = cur_rtk_fixed_duration;
-
+#ifdef HAS_FLASH_FS
         res = mm_set(PAR_ID_RTK_FIX_LONG, (uint8_t*)&NmeaProto.rtk_fixed_max_duration_ms,
                      sizeof(NmeaProto.rtk_fixed_max_duration_ms));
+#endif
     }
     return res;
 }
@@ -663,7 +679,9 @@ bool nmea_proc(void) {
             }
             if(PM_RTK_FIXED == NmeaProto.pos_mode) {
                 Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_RTK_FIXED_MS;
+#ifdef HAS_MCU
                 NmeaProto.rtk_fixed_start_ms = get_time_ms32();
+#endif
             }else{
                 Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_MS;
             }

@@ -26,6 +26,7 @@ typedef struct xGnssVelocity_t{
     double accuracy_course;
 } GnssVelocity_t;
 
+GnssCoordinate_t gnss_encode_deg2mm(GnssCoordinate_t dot_dd);
 bool is_valid_gnss_coordinates(GnssCoordinate_t dot);
 double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2);
 double gnss_encoding_2_degrees(double in_ddmm_mmmmm);

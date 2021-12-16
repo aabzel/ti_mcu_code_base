@@ -14,7 +14,7 @@
 #define D2R (M_PI / 180.0)
 
 double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2){
-    double	 distance=0.0f;
+    double distance = 0.0f;
     double dlong = (dot2.longitude - dot1.longitude) * D2R;
     double dlat = (dot2.latitude - dot1.latitude) * D2R;
     double a = pow(sin(dlat/2.0), 2) + cos(dot1.latitude*D2R) * cos(dot2.latitude*D2R) * pow(sin(dlong/2.0), 2);
@@ -57,5 +57,16 @@ GnssCoordinate_t encode_gnss_coordinates(GnssCoordinate_t dot_ddmm){
     dot_dd.longitude = gnss_encoding_2_degrees(dot_ddmm.longitude);
     return dot_dd;
 }
+
+GnssCoordinate_t gnss_encode_deg2mm(GnssCoordinate_t dot_dd){
+    GnssCoordinate_t dot_mm = {0.0,0.0};
+    GnssCoordinate_t equator = {0.0, dot_dd.longitude};
+    GnssCoordinate_t Greenwich = {dot_dd.latitude ,0.0};
+    dot_mm.longitude = gnss_calc_distance_m(dot_dd, Greenwich);
+    dot_mm.latitude  = gnss_calc_distance_m(dot_dd, equator  );
+    return dot_mm;
+}
+
+
 
 

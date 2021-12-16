@@ -15,7 +15,6 @@ OBJDIR := $(SRC_PATH)obj
 #CC = C:\cygwin64\bin\gcc.exe
 CC = C:\MinGW\bin\gcc.exe
 
-HAS_TEST_CLI=Y
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
@@ -31,34 +30,26 @@ CFLAGS  += -O0
 HAS_X86_64=Y
 #OPT += -DSORT_LIST
 OPT += -DHAS_UTESTS
-OPT += -DHAS_DEBUG
+#OPT += -DHAS_DEBUG
 OPT += -DX86_64
-OPT += -DHAS_SW_TESTS
-OPT += -DHAS_TEST_CLI
-OPT += -DHAS_TEST_SUIT_CONVERT
-OPT += -DHAS_TEST_SUIT_CRC
-OPT += -DHAS_TEST_SUIT_FIFO
-OPT += -DHAS_TEST_SUIT_NMEA_PROTO
-OPT += -DHAS_TEST_SUIT_RTCM3_PROTO
-OPT += -DHAS_TEST_SUIT_STRING_UTILS
-OPT += -DHAS_TEST_SUIT_TBFP
-OPT += -DHAS_TEST_SUIT_UTILS
-OPT += -DHAS_TEST_SUIT_UBLOX_PROTO
+
+
 
 #files to link:
 LFLAGS= -static -lm
 
-EXECUTABLE=test_code_base
+EXECUTABLE=nmea_ploter_d
 
 include $(PROJECT_ROOT)code_base.mk
-include $(PROJECT_ROOT)common/common.mk
-include $(PROJECT_ROOT)protocols/protocols.mk
-include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
+include $(PROJECT_ROOT)protocols/nmea_protocol/nmea_protocol.mk
+
 include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
-include $(PROJECT_ROOT)unit_tests/unit_test.mk
+include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 #include $(PROJECT_ROOT)tests/tests.mk
 SOURCES_C += main.c
+SOURCES_C += nmea_plot.c
+
 # the name to use for both the target source file, and the output file:
 #include $(PROJECT_ROOT)system_explore/system_explore.mk
 
