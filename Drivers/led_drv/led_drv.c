@@ -53,19 +53,38 @@ static bool proc_led(Led_t *inLed){
     bool res = false;
     if(inLed){
         uint32_t cur_time_ms = get_time_ms32();
-        uint32_t cur_duration_ms = 0;
-        if(LED_MODE_BLINK==inLed->mode){
-            cur_duration_ms = cur_time_ms - inLed->on_time_ms;
-            if(inLed->duration_ms < cur_duration_ms ){
-                res = gpio_set_state(inLed->dio_num, 0);
-                inLed->mode = LED_MODE_NONE;
-            }
-        }else if(LED_MODE_PWM==inLed->mode){
-            uint8_t val = 0;
-            val  = pwm_sample_calc_num(cur_time_ms,
-                                       inLed->period_ms,
-                                       inLed->duty,
-                                       inLed->phase_ms);
+        uint8_t val = 0;
+        switch(inLed->mode){
+            case LED_MODE_ON: {
+                val = 1;
+                res = true;
+            }break;
+            case LED_MODE_OFF: {
+                val = 0;
+                res = true;
+            }break;
+            case LED_MODE_BLINK: {
+                uint32_t cur_duration_ms = 0;
+                cur_duration_ms = cur_time_ms - inLed->on_time_ms;
+                if(inLed->duration_ms < cur_duration_ms ){
+                    res = true;
+                    val = 0;
+                    inLed->mode = LED_MODE_NONE;
+                }
+            }break;
+            case LED_MODE_PWM: {
+                val  = pwm_sample_calc_num(cur_time_ms,
+                                           inLed->period_ms,
+                                           inLed->duty,
+                                           inLed->phase_ms);
+                res = true;
+            }break;
+            default: {
+                res = false;
+            }break;
+        }
+
+        if(res) {
             res = gpio_set_state(inLed->dio_num, val);
         }
     }
@@ -84,5 +103,23 @@ bool proc_leds(void) {
         Led[LED_INDEX_RED].mode = LED_MODE_PWM;
     }
 #endif /*HAS_HEALTH_MONITOR*/
+    return res;
+}
+
+bool led_on(Led_t *inLed){
+    bool res = false;
+    if(inLed){
+        res = true;
+        inLed->mode = LED_MODE_ON;
+    }
+    return res;
+}
+
+bool led_off(Led_t *inLed){
+    bool res = false;
+    if(inLed){
+        res = true;
+        inLed->mode = LED_MODE_OFF;
+    }
     return res;
 }

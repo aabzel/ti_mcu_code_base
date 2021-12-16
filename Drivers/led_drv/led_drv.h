@@ -26,6 +26,8 @@
 typedef enum uLedMode_t{
     LED_MODE_NONE,
     LED_MODE_PWM,
+    LED_MODE_ON,
+    LED_MODE_OFF,
     LED_MODE_BLINK,
 }LedMode_t;
 
@@ -43,6 +45,8 @@ extern Led_t Led[2];
 
 bool led_init(void);
 bool led_blink(Led_t *inLed, uint32_t duration_ms);
+bool led_on(Led_t *inLed);
+bool led_off(Led_t *inLed);
 bool proc_leds(void);
 
 #endif /* LED_DRV_H  */
