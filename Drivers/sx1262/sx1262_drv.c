@@ -1078,29 +1078,36 @@ bool sx1262_set_tx(uint32_t timeout_s) {
 
 bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
     bool res = true;
-    if((NULL != tx_buf) && (0 < tx_len) && (tx_len <= TX_SIZE)) {
-        res = sx1262_clear_fifo();
-        // sx1262_set_tx_len(tx_len); /*Error*/
-        res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-        res = sx1262_set_payload(tx_buf, tx_len) && res;
-        LOG_DEBUG(LORA, "TxLen:%u", tx_len);
-        if(Sx1262Instance.debug){
-            print_mem(tx_buf,tx_len,true,false,true, true);
+    if(Sx1262Instance.tx_done) {
+        Sx1262Instance.tx_done = false;
+        if((NULL != tx_buf) && (0 < tx_len) && (tx_len <= TX_SIZE)) {
+            res = sx1262_clear_fifo();
+            // sx1262_set_tx_len(tx_len); /*Error*/
+            res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
+            res = sx1262_set_payload(tx_buf, tx_len) && res;
+            LOG_DEBUG(LORA, "TxLen:%u", tx_len);
+            if(Sx1262Instance.debug){
+                print_mem(tx_buf,tx_len,true,false,true, true);
+            }
+        } else {
+            res = false;
+        }
+        if(res) {
+            // res = sx1262_write_buffer(offset, tx_buf, tx_len) && res;
+#ifdef HAS_SX1262_BIT_RATE
+            Sx1262Instance.tx_last_size = tx_len;
+            Sx1262Instance.tx_start_time_stamp_ms = get_time_ms32();
+#endif /*HAS_SX1262_BIT_RATE*/
+            /*TODO: Set Red Led on*/
+            led_on(&Led[LED_INDEX_RED]);
+            res = sx1262_set_tx(timeout_s);
+            if(res) {
+                Sx1262Instance.tx_size_max = max8u(Sx1262Instance.tx_size_max, tx_len);
+            }
         }
     } else {
+        LOG_ERROR(LORA, "TxBusy");
         res = false;
-    }
-    if(res) {
-        // res = sx1262_write_buffer(offset, tx_buf, tx_len) && res;
-        Sx1262Instance.tx_done = false;
-#ifdef HAS_SX1262_BIT_RATE
-        Sx1262Instance.tx_last_size = tx_len;
-        Sx1262Instance.tx_start_time_stamp_ms = get_time_ms32();
-#endif /*HAS_SX1262_BIT_RATE*/
-        res = sx1262_set_tx(timeout_s);
-        if(res) {
-            Sx1262Instance.tx_size_max = max8u(Sx1262Instance.tx_size_max, tx_len);
-        }
     }
     return res;
 }
@@ -1523,6 +1530,8 @@ static inline bool sx1262_poll_status(void) {
             res = false;
             break;
         case COM_STAT_COM_TX_DONE: {
+            Sx1262Instance.tx_done = true;
+            led_off(&Led[LED_INDEX_RED]);
 #ifdef HAS_SX1262_BIT_RATE
             float tx_real_bit_rate = 0.0;
             uint32_t tx_duration_ms = 0;
@@ -1536,7 +1545,6 @@ static inline bool sx1262_poll_status(void) {
                 LOG_INFO(LORA, "TX done");
 #endif /*HAS_SX1262_BIT_RATE*/
             }
-            Sx1262Instance.tx_done = true;
             Sx1262Instance.tx_done_cnt++;
             LoRaInterface.tx_done_cnt++;
             res = sx1262_start_rx(0xFFFFFF);
