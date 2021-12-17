@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>fw_loader_debug</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
+			<triggers>full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>utils</name>
+			<type>2</type>
+			<location>C:/1_job/0_NPP_IT_ELMA/code_base_workspace/ti_mcu_code_base/utils</location>
+		</link>
+		<link>
+			<name>win_utils</name>
+			<type>2</type>
+			<location>C:/1_job/0_NPP_IT_ELMA/code_base_workspace/ti_mcu_code_base/win_utils</location>
+		</link>
+	</linkedResources>
+</projectDescription>
