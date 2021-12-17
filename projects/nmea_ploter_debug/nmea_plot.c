@@ -8,43 +8,53 @@
 
 #include "nmea_protocol.h"
 
-
-bool plot_nmea(char *file_name){
-	printf ("\n%s()\n", __FUNCTION__);
-    char curFileStr[500];
-    bool res= false;
-	FILE *inFilePrt = NULL;
-	FILE *outFile = NULL;
-	uint16_t len = 0;
-    printf ("\n>In file: [%s]", file_name);
-	outFile =fopen ("gnss_out.txt", "w");
-	inFilePrt = fopen (file_name, "r");
-	if (inFilePrt) {
-		int line = 0;
-        while (NULL != fgets (curFileStr, sizeof (curFileStr), inFilePrt)) {
+bool plot_nmea(char* file_name, char* out_file_name) {
+    printf("\n%s()\n", __FUNCTION__);
+    char OutFileMM[80] = "";
+    char OutFileDeg[80] = "";
+    char curFileStr[2000] = "";
+    bool res = false;
+    FILE* pInFile = NULL;
+    FILE* pOutFileDeg = NULL;
+    FILE* pOutFileM = NULL;
+    uint16_t len = 0;
+    printf("\n>In file: [%s]", file_name);
+    printf("\n>Out file: [%s]", out_file_name);
+    snprintf(OutFileDeg, sizeof(OutFileDeg), "%s_deg.txt", out_file_name);
+    snprintf(OutFileMM, sizeof(OutFileMM), "%s_m.txt", out_file_name);
+    pOutFileDeg = fopen(OutFileDeg, "w");
+    pOutFileM = fopen(OutFileMM, "w");
+    pInFile = fopen(file_name, "r");
+    if(pInFile && pOutFileM && pOutFileDeg) {
+        int line = 0;
+        while(NULL != fgets(curFileStr, sizeof(curFileStr), pInFile)) {
 #ifdef HAS_NMEA_LOG_DIAG
-			printf ("\n>[%s] len %u", curFileStr, strlen(curFileStr));
+            printf("\n>[%s] len %u", curFileStr, strlen(curFileStr));
 #endif
-            len = strlen(curFileStr)-4-1;
-			res = nmea_parse(curFileStr,len, &NmeaData);
-			if(res){
-				NmeaData.rmc.coordinate_dd= encode_gnss_coordinates(NmeaData.rmc.coordinate_ddmm);
-				NmeaData.rmc.coordinate_dd = gnss_encode_deg2mm(NmeaData.rmc.coordinate_dd);
-				if(outFile){
-    				fprintf(outFile,"%f %f\n", NmeaData.rmc.coordinate_dd.longitude, NmeaData.rmc.coordinate_dd.latitude);
-				}
-			}else{
-				printf ("\n[e] Unable to proc [%s]", curFileStr);
-			}
-			line++;
-		}
-        fclose(inFilePrt);
-		if(outFile){
-    		fclose(outFile);
-		}
+            len = strlen(curFileStr) - 4 - 1;
+            res = nmea_parse(curFileStr, len, &NmeaData);
+            if(res) {
+                res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
+                if(res) {
+                    fprintf(pOutFileDeg, "%f %f\n", NmeaData.coordinate_dd.longitude, NmeaData.coordinate_dd.latitude);
+                    NmeaData.coordinate_dd = gnss_encode_deg2mm(NmeaData.coordinate_dd);
+
+                    fprintf(pOutFileM, "%f %f\n", NmeaData.coordinate_dd.longitude, NmeaData.coordinate_dd.latitude);
+                    line++;
+                } else {
+                    printf("\n[e] Infalid GNSS %f %f\n", NmeaData.coordinate_dd.longitude,
+                           NmeaData.coordinate_dd.latitude);
+                }
+            } else {
+                printf("\n[e] Unable to proc [%s] len %u", curFileStr, strlen(curFileStr));
+            }
+        }
+        fclose(pInFile);
+        fclose(pOutFileM);
+        fclose(pOutFileDeg);
         res = true;
-	}else{
-		printf ("\n[e] Unable to open file [%s]", file_name);
-	}
+    } else {
+        printf("\n[e] Unable to open file [%s]", file_name);
+    }
     return res;
 }

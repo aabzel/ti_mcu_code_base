@@ -21,7 +21,6 @@ void delay_us(uint32_t delay_in_us);
 void delay_us_wd(uint32_t delay_in_us);
 void delay_wd(uint32_t delay_in_ms);
 
-
 #ifdef __cplusplus
 }
 #endif

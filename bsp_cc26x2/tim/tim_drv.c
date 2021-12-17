@@ -13,6 +13,10 @@ https://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/tirtos/2_20_
 #include <ti/drivers/timer/GPTimerCC26XX.h>
 #endif
 
+#ifdef HAS_RTC
+#include "rtc_drv.h"
+#endif
+
 #include "bit_utils.h"
 #include "clocks.h"
 #include "float_utils.h"
@@ -144,6 +148,9 @@ void timerCallback4(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interrupt
     // interrupt callback code goes here. Minimize processing in interrupt.
     if(TimerItem[4].hTimer == handle) {
         TimerItem[4].tim_it_cnt++;
+#ifdef HAS_RTC
+        SwRtc.raw_sec++;
+#endif
     }
 }
 

@@ -93,11 +93,11 @@ bool health_monotor_proc(void) {
     }
 
 #ifdef HAS_RTCM3
-    static uint32_t lora_lost_pkt_cnt_prev=0;
-    uint32_t lora_lost_pkt_cnt_diff=0;
-    lora_lost_pkt_cnt_diff = Rtcm3Protocol[IF_UART1].lora_lost_pkt_cnt-lora_lost_pkt_cnt_prev;
-    if(0 < lora_lost_pkt_cnt_diff){
-        LOG_WARNING(HMOM, "RTCM3 UART1 lost %u",lora_lost_pkt_cnt_diff);
+    static uint32_t lora_lost_pkt_cnt_prev = 0;
+    uint32_t lora_lost_pkt_cnt_diff = 0;
+    lora_lost_pkt_cnt_diff = Rtcm3Protocol[IF_UART1].lora_lost_pkt_cnt - lora_lost_pkt_cnt_prev;
+    if(0 < lora_lost_pkt_cnt_diff) {
+        LOG_WARNING(HMOM, "RTCM3 UART1 lost %u", lora_lost_pkt_cnt_diff);
     }
     lora_lost_pkt_cnt_prev = Rtcm3Protocol[IF_UART1].lora_lost_pkt_cnt;
 #endif

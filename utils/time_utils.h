@@ -17,6 +17,7 @@ bool parse_time_from_val(uint32_t packed_time, struct tm* tm_stamp);
 bool parse_date_from_val(uint32_t packed_date, struct tm* tm_stamp);
 bool parse_date_time_from_string(char* name, struct tm* tm_stamp);
 bool time_get_time_str(char* str, uint32_t size);
+bool time_data_parse(struct tm* date_time, char* str);
 
 #ifdef __cplusplus
 }

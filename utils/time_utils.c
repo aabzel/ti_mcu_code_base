@@ -208,4 +208,11 @@ bool time_get_time_str(char* str, uint32_t size) {
     return res;
 }
 
-bool parse_date_time_from_string(char* name, struct tm* tm_stamp) { return true; }
+/*Tue Dec  7 15:34:46 2021*/
+bool time_data_parse(struct tm* date_time, char* str) {
+    bool res = false;
+    if(date_time && str) {
+        res = false;
+    }
+    return res;
+}

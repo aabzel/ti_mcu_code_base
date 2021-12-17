@@ -32,6 +32,12 @@ extern "C" {
 #define TEST_SUIT_CRC
 #endif
 
+#ifdef HAS_TEST_SUIT_CALENDAR
+#include "test_calendar.h"
+#else
+#define TEST_SUIT_CALENDAR
+#endif
+
 #ifdef HAS_TEST_SUIT_UBLOX_PROTO
 #include "test_ublox_proto.h"
 #else
@@ -115,6 +121,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_UTILS_FLOAT                                                                                              \
     TEST_SUIT_UTILS_GNSS                                                                                               \
     TEST_SUIT_CONVERT                                                                                                  \
+    TEST_SUIT_CALENDAR                                                                                                 \
     TEST_SUIT_UTILS_TIME                                                                                               \
     TEST_SUIT_CLI                                                                                                      \
     TEST_SUIT_CRC                                                                                                      \

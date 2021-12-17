@@ -58,15 +58,11 @@ GnssCoordinate_t encode_gnss_coordinates(GnssCoordinate_t dot_ddmm){
     return dot_dd;
 }
 
+#define ONE_DEG_OF_EQUATOR (40000000.0/360.0)
 GnssCoordinate_t gnss_encode_deg2mm(GnssCoordinate_t dot_dd){
-    GnssCoordinate_t dot_mm = {0.0,0.0};
-    GnssCoordinate_t equator = {0.0, dot_dd.longitude};
-    GnssCoordinate_t Greenwich = {dot_dd.latitude ,0.0};
-    dot_mm.longitude = gnss_calc_distance_m(dot_dd, Greenwich);
-    dot_mm.latitude  = gnss_calc_distance_m(dot_dd, equator  );
-    return dot_mm;
+    GnssCoordinate_t ret_dot_mm = {0.0,0.0};
+    ret_dot_mm.longitude = dot_dd.longitude*cos(dot_dd.latitude* D2R)*ONE_DEG_OF_EQUATOR;//долгота
+    ret_dot_mm.latitude  = ONE_DEG_OF_EQUATOR*dot_dd.latitude;            //широта
+
+    return ret_dot_mm;
 }
-
-
-
-

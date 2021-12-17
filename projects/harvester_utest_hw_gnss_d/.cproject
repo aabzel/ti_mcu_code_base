@@ -63,6 +63,7 @@
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/calendar"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/system"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
@@ -289,7 +290,12 @@
 						</tool>
 					</fileInfo>
 					<fileInfo id="com.ti.ccstudio.buildDefinitions.TMS470.Debug.2039576451.776924958" name="interrupt_commands.c" rcbsApplicability="disable" resourcePath="bsp_cc26x2/interrupt/interrupt_commands.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905.1719343250">
-						<tool id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905.1719343250" name="Arm Compiler" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905"/>
+						<tool id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905.1719343250" name="Arm Compiler" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.exe.compilerDebug.1493131905">
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.815795549" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.152213419" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS.1134265306" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS"/>
+							<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM2_SRCS.492051956" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM2_SRCS"/>
+						</tool>
 						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.369259887" name="Resource Custom Build Step">
 							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.2104597898" name="Resource Custom Build Step Input Type">
 								<additionalInput kind="additionalinputdependency" paths=""/>

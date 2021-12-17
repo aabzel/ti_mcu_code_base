@@ -7,14 +7,14 @@
 
 #ifdef HAS_MCU
 #include "clocks.h"
+#include "flash_fs.h"
 #include "io_utils.h"
 #include "led_drv.h"
 #include "log.h"
 #include "param_ids.h"
-#include "flash_fs.h"
 #endif
 
-
+#include "gnss_utils.h"
 #ifdef HAS_NMEA_DIAG
 #include "nmea_diag.h"
 #endif
@@ -369,7 +369,7 @@ uint8_t nmea_calc_checksum(char* nmea_data, uint16_t len) {
 bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
     bool res = false;
     uint8_t read_crc = 0;
-    //uint16_t len = strlen(nmea_msg) - 4;
+    // uint16_t len = strlen(nmea_msg) - 4;
 #if defined(X86_64) && defined(HAS_DEBUG)
     printf("\n[d] len: %u", len);
 #endif
@@ -377,7 +377,7 @@ bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
         res = true;
     } else {
 #if defined(X86_64) && defined(HAS_DEBUG)
-    printf("\n[e] lenErr: %u", len);
+        printf("\n[e] lenErr: %u", len);
 #endif
         NmeaProto.err_cnt++;
         res = false;
@@ -394,7 +394,7 @@ bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
             }
         } else {
 #if defined(X86_64) && defined(HAS_DEBUG)
-    printf("\n[e] Err:");
+            printf("\n[e] Err:");
 #endif
             NmeaProto.err_cnt++;
         }
@@ -418,6 +418,8 @@ bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
                 res = gnss_parse_gga(nmea_msg, &gps_ctx->gga);
                 if(res) {
                     gps_ctx->gga.fcnt.cnt++;
+                    gps_ctx->gga.coordinate_dd = encode_gnss_coordinates(gps_ctx->gga.coordinate_ddmm);
+                    gps_ctx->coordinate_dd = gps_ctx->gga.coordinate_dd;
                 }
             } else if(!strncmp(nmea_msg + 3, "RMC", 3)) {
                 gps_ctx->rmc.fcnt.h_cnt++;
@@ -429,6 +431,8 @@ bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
 #ifdef HAS_MCU
                     gps_ctx->gnss_time_stamp = get_time_ms32();
 #endif
+                    gps_ctx->rmc.coordinate_dd = encode_gnss_coordinates(gps_ctx->rmc.coordinate_ddmm);
+                    gps_ctx->coordinate_dd = gps_ctx->rmc.coordinate_dd;
                     gps_ctx->rmc.fcnt.cnt++;
                 }
             } else if(!strncmp(nmea_msg + 3, "GLL", 3)) {
@@ -483,7 +487,7 @@ bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
             }
         } else {
 #if defined(X86_64) && defined(HAS_DEBUG)
-            printf("\n[e] CrcErr Read 0x%02x Calc 0x%02x",read_crc, calc_crc);
+            printf("\n[e] CrcErr Read 0x%02x Calc 0x%02x", read_crc, calc_crc);
 #endif
             NmeaProto.crc_err_cnt++;
         }
@@ -506,7 +510,7 @@ bool nmea_proc_byte(uint8_t rx_byte) {
             NmeaProto.msg_cnt++;
             NmeaProto.pos = 0;
             NmeaProto.got_massege = true;
-            uint16_t len =0;
+            uint16_t len = 0;
             len = strlen(NmeaProto.fix_message) - 4;
             res = nmea_parse(NmeaProto.fix_message, len, &NmeaData);
             if(true == res) {
@@ -682,7 +686,7 @@ bool nmea_proc(void) {
 #ifdef HAS_MCU
                 NmeaProto.rtk_fixed_start_ms = get_time_ms32();
 #endif
-            }else{
+            } else {
                 Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_MS;
             }
         } else if(prev_pos_mode == NmeaProto.pos_mode) {

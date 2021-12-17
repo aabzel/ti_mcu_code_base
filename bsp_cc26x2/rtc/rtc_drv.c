@@ -7,9 +7,14 @@
 #include <string.h>
 
 #include "data_utils.h"
+#include "time_utils.h"
 #include "read_mem.h"
 
+SwRtc_t SwRtc;
+
 bool rtc_init(void) {
+    SwRtc.raw_sec=0;
+    time_data_parse(&SwRtc.date_time,__TIMESTAMP__);
     AONRTCEnable();
     return true;
 }
@@ -21,11 +26,11 @@ uint32_t rtc_get_ms(void){
     return  time_ms;
 }
 
-
 bool rtc_set_sec(uint32_t sec){
     bool res = false;
-   // AONRTCDisable();
-    res = write_addr_32bit(AON_RTC_BASE + AON_RTC_O_SEC, sec);
+    SwRtc.raw_sec = sec;
+    // AONRTCDisable();
+    //res = write_addr_32bit(AON_RTC_BASE + AON_RTC_O_SEC, sec);
     //AONRTCEnable();
     return res ;
 }

@@ -19,9 +19,12 @@ static bool tbfp_diag(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
-        {8, "interf"},  {9, "rxCnt"},  {9, "txCnt"}, {9, "crcErCnt"},
+        {8, "interf"},  {9, "rxCnt"}, {9, "txCnt"},  {9, "crcErCnt"},
 #ifdef HAS_DEBUG
-        {9, "maxFlow"}, {9, "preCnt"}, {9, "ErCnt"}, {9, "minLen"},   {9, "maxLen"}, {7, "debug"},
+#ifdef HAS_TBFP_FLOW_CONTROL
+        {9, "maxFlow"},
+#endif
+        {9, "preCnt"},  {9, "ErCnt"}, {9, "minLen"}, {9, "maxLen"},   {7, "debug"},
 #endif /*HAS_DEBUG*/
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
@@ -33,7 +36,9 @@ static bool tbfp_diag(void) {
         io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
 
 #ifdef HAS_DEBUG
+#ifdef HAS_TBFP_FLOW_CONTROL
         io_printf(" %7u " TSEP, TbfpProtocol[interface].max_con_flow);
+#endif
         io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
         io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
         io_printf(" %7u " TSEP, TbfpProtocol[interface].min_len);

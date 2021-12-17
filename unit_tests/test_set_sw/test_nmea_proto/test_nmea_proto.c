@@ -184,10 +184,10 @@ bool test_nmea_proto(void) {
   EXPECT_TRUE(test_nmea_checksum());
   EXPECT_TRUE(test_nmea_proto_gnvtg());
   EXPECT_TRUE(test_nmea_proto_gngll());
-  EXPECT_TRUE(nmea_parse((char*) msg_gnrmc, &NmeaData));
-  EXPECT_TRUE(nmea_parse((char*) msg_gnrgga, &NmeaData));
-  EXPECT_TRUE(nmea_parse((char*) msg_gnrgll, &NmeaData));
-  EXPECT_TRUE(nmea_parse((char*) msg_gnrgsa, &NmeaData));
+  EXPECT_TRUE(nmea_parse((char*) msg_gnrmc,strlen(msg_gnrmc), &NmeaData));
+  EXPECT_TRUE(nmea_parse((char*) msg_gnrgga,strlen(msg_gnrgga), &NmeaData));
+  EXPECT_TRUE(nmea_parse((char*) msg_gnrgll,strlen(msg_gnrgll), &NmeaData));
+  EXPECT_TRUE(nmea_parse((char*) msg_gnrgsa,strlen(msg_gnrgsa), &NmeaData));
   EXPECT_TRUE(nmea_init());
   return true;
 }

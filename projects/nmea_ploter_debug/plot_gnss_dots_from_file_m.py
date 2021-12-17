@@ -1,13 +1,13 @@
 import matplotlib.pyplot as plt
 
-file = open('gnss_out.txt')
+file = open('gnss_out_m.txt')
 content = file.readlines()
 
 #print ('BatVolDiv {}'.format(BatVolDiv))
-plt.title("track")
+plt.title("GNSS Path")
 plt.grid(True)
-plt.xlabel('Lat, [m]')
-plt.ylabel('Lon, [m')
+plt.xlabel('Lon, [m]') #долгота
+plt.ylabel('Lat, [m]') #Широта
 
 # loop over lines in a file
 for pos, a_string in enumerate(content):
@@ -17,9 +17,10 @@ for pos, a_string in enumerate(content):
     map_object = map(float, a_list)
     list_of_integers = list(map_object)
     #print(list_of_integers)
-    plt.plot(list_of_integers[0], list_of_integers[1], '.')
+    plt.plot(list_of_integers[0], list_of_integers[1], '.', color="blue",linewidth=1)
 
 plt.show()
+plt.axis('scaled')
 plt.axis('equal')
         
-        
+

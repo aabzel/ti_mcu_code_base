@@ -1086,8 +1086,8 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
             res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
             res = sx1262_set_payload(tx_buf, tx_len) && res;
             LOG_DEBUG(LORA, "TxLen:%u", tx_len);
-            if(Sx1262Instance.debug){
-                print_mem(tx_buf,tx_len,true,false,true, true);
+            if(Sx1262Instance.debug) {
+                print_mem(tx_buf, tx_len, true, false, true, true);
             }
         } else {
             res = false;
@@ -1638,8 +1638,8 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
 #ifdef HAS_PACKED_LORA_FRAME
         /*Transmitt multiple RTCM3 packages in single LoRa frame*/
         res = fifo_arr_pack_frame(tx_buf, sizeof(tx_buf), &LoRaInterface.FiFoLoRaTx, &tx_len);
-        if(false==res) {
-            LOG_ERROR(LORA,"PackErr Len:%u",tx_len);
+        if(false == res) {
+            LOG_ERROR(LORA, "PackErr Len:%u", tx_len);
         }
 #else
         Array_t Node = {.size = 0, .pArr = NULL};

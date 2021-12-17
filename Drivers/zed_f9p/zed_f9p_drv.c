@@ -148,7 +148,9 @@ static bool zed_f9p_proc_rover(void) {
 #endif
     }
     if(IF_LORA == ZedF9P.channel) {
+#ifdef HAS_LORA
         task_data[TASK_ID_LORA].on = false;
+#endif
 #ifdef HAS_RS232
         task_data[TASK_ID_RS232].on = false;
         rs232.ping = false;
