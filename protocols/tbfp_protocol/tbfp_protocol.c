@@ -49,6 +49,7 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
     if(instance) {
         memset(instance, 0x0, sizeof(TbfpProtocol_t));
         instance->interface = interface;
+        instance->prev_s_num = 0xFFFF;
         instance->rx_pkt_cnt = 0;
         res = true;
     }
@@ -392,7 +393,7 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
 #ifdef HAS_TBFP_FLOW_CONTROL
 #ifdef X86_64
-        printf("\n%s(): prev_snum:%u snum:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num, inHeader.snum);
+        printf("\n1 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num, inHeader.snum,TbfpProtocol[interface].con_flow);
 #endif
         if((TbfpProtocol[interface].prev_s_num + 1) == inHeader.snum) {
             /*Flow ok*/
@@ -419,11 +420,12 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
             TbfpProtocol[interface].err_cnt++;
         } else {
             /*Unreal situation*/
+            TbfpProtocol[interface].con_flow = 1;
             TbfpProtocol[interface].err_cnt++;
         }
         TbfpProtocol[interface].prev_s_num = inHeader.snum;
 #ifdef X86_64
-        printf("\n2 %s(): prev_snum:%u snum:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num, inHeader.snum);
+        printf("\n2 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num, inHeader.snum,TbfpProtocol[interface].con_flow);
 #endif
 #endif /*HAS_TBFP_FLOW_CONTROL*/
         res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);

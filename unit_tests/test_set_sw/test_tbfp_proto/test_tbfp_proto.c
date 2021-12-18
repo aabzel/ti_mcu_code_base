@@ -118,10 +118,13 @@ bool test_tbfp_proto_flow_ctrl(void) {
     printf("\n%s():", __FUNCTION__);
 #endif
     EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_LOOPBACK], IF_LOOPBACK));
+
     EXPECT_TRUE(tbfp_send_chat("12", 2, IF_LOOPBACK));
     EXPECT_EQ(0, TbfpProtocol[IF_LOOPBACK].prev_s_num);
+
     EXPECT_TRUE(tbfp_send_chat("34", 2, IF_LOOPBACK));
     EXPECT_EQ(1, TbfpProtocol[IF_LOOPBACK].prev_s_num);
+
     EXPECT_TRUE(tbfp_send_chat("56", 2, IF_LOOPBACK));
     EXPECT_EQ(3, TbfpProtocol[IF_LOOPBACK].s_num);
     EXPECT_EQ(2, TbfpProtocol[IF_LOOPBACK].prev_s_num);

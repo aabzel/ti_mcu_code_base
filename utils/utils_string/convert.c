@@ -6,7 +6,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#ifdef X86_64
+#ifdef HAS_CONVERT_DEBUG
 #include <stdio.h>
 #endif
 
@@ -465,7 +465,7 @@ bool try_strl2uint32_dec(const char u32_dec_str[], int32_t u32_dec_str_len, uint
 
 bool try_strl2int32_dec(const char s32_dec_str[], int32_t s32_dec_str_len, int32_t* s32_dec_value) {
     int64_t s32l_dec_result = 0;
-#ifdef X86_64
+#ifdef HAS_CONVERT_DEBUG
     printf("\n%s() str:[%s] len [%u]",__FUNCTION__, s32_dec_str, s32_dec_str_len);
 #endif
     bool s32l_dec_success = try_strl2int64_dec(s32_dec_str, s32_dec_str_len, &s32l_dec_result);
@@ -1715,12 +1715,12 @@ bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, 
     bool res = false;
     uint8_t out_shift = 0;
     uint32_t len_str_in = strlen(in_str_array);
-#ifdef X86_64
+#ifdef HAS_CONVERT_DEBUG
     printf("[d]len_str_in %u", len_str_in);
 #endif
     res = is_hex_str(in_str_array, len_str_in, &out_shift);
     if(true == res) {
-#ifdef X86_64
+#ifdef HAS_CONVERT_DEBUG
         printf("[d]shift %u", out_shift);
 #endif
         if(0 == (len_str_in % 2)) {
@@ -1738,7 +1738,7 @@ bool try_str2array(char* in_str_array, uint8_t* out_array, uint16_t array_size, 
             }
         }
     } else {
-#ifdef X86_64
+#ifdef HAS_CONVERT_DEBUG
         printf("[d] not a hex str [%s]", in_str_array);
 #endif
     }

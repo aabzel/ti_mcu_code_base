@@ -69,7 +69,7 @@ static bool counter_to_struct(uint32_t sec, struct tm* t) {
             day -= DaysInMonth[month - 1];
         }
 
-        t->tm_mon = month - 1; // 0..11
+        t->tm_mon = month ; // 0..11
         t->tm_mday = day + 1;  // 1..31
         res = true;
     }
@@ -83,7 +83,7 @@ bool calendar_gettime(struct tm* date_time) {
     cur_sec = SwRtc.raw_sec;
 #endif
     counter_to_struct(cur_sec, date_time); // get non DST time
-    return false;
+    return true;
 }
 
 /*
