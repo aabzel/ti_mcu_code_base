@@ -223,6 +223,10 @@ bool test_convert_try_str2lint32(void) {
     int32_t value = -1;
     char inStr[40]="";
 
+    strncpy(inStr, " 7", sizeof(inStr));
+    EXPECT_TRUE(try_strl2int32(inStr, strlen(inStr), &value));
+    EXPECT_EQ(7, value);
+
     strncpy(inStr, "words and 987", sizeof(inStr));
     EXPECT_FALSE(try_strl2int32(inStr, strlen(inStr), &value));
     EXPECT_EQ(0, value);
