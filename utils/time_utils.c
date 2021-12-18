@@ -9,6 +9,7 @@
 #include "zed_f9p_drv.h"
 #endif /*HAS_ZED_F9P*/
 
+#include "convert.h"
 #include "data_utils.h"
 // UTC hour in hhmmss format
 bool parse_time_from_val(uint32_t packed_time, struct tm* tm_stamp) {
@@ -212,7 +213,20 @@ bool time_get_time_str(char* str, uint32_t size) {
 bool time_data_parse(struct tm* date_time, char* str) {
     bool res = false;
     if(date_time && str) {
-        res = false;
+        uint32_t cnt=0;
+        res = try_strl2int32(&str[8], 2, &date_time->tm_mday);
+        if(res){
+            cnt++;
+        }else{
+#ifdef X86_64
+            printf("\n[e] ErrParse mday [%s]",&str[8]);
+#endif
+        }
+        if(1==cnt){
+            res = true;
+        }else{
+            res = false;
+        }
     }
     return res;
 }
