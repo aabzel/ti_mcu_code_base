@@ -170,7 +170,9 @@ static void cli_prompt(void) {
     if(cli_echo) {
         char timeStr[10];
         time_get_time_str(timeStr, sizeof(timeStr));
+#ifdef HAS_MCU
         io_printf("%s-->", timeStr);
+#endif
     }
 }
 
