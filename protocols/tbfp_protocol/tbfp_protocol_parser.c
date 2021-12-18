@@ -21,7 +21,9 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
         instance->parser.load_len = 1;
 #ifdef HAS_DEBUG
         instance->preamble_cnt++;
+#ifdef HAS_MCU
         LOG_DEBUG(TBFP, "Preamble");
+#endif
 #endif
         res = true;
     } else {
@@ -37,7 +39,9 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
         instance->parser.rx_frame[1] = rx_byte;
         instance->parser.load_len = 2;
 #ifdef HAS_DEBUG
+#ifdef HAS_MCU
         LOG_DEBUG(TBFP, "Len:0x%02x %u", rx_byte, rx_byte);
+#endif
         instance->max_len = max16u(instance->max_len, instance->parser.exp_payload_len);
         instance->min_len = min16u(instance->min_len, instance->parser.exp_payload_len);
 #endif
