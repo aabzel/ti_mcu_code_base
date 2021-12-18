@@ -23,6 +23,7 @@
 
 #define MAX_PRECISION 10U
 
+    bool try_strl2month(const char str[], int32_t* mon_value);
     bool is_dec_str(const char str_to_check[], int32_t str_to_check_len);
     bool is_hex_str(const char str_to_check[], int32_t str_to_check_len, uint8_t* const out_shift);
     bool try_str2uint64(const char u64_str[], uint64_t* u64_value);

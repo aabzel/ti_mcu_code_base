@@ -208,12 +208,50 @@ bool time_get_time_str(char* str, uint32_t size) {
     }
     return res;
 }
-
+/*000000000011111111112222*/
+/*012345678901234567890123*/
 /*Tue Dec  7 15:34:46 2021*/
 bool time_data_parse(struct tm* date_time, char* str) {
     bool res = false;
     if(date_time && str) {
         uint32_t cnt=0;
+        res = try_strl2int32(&str[17], 2, &date_time->tm_sec);
+        if(res){
+            cnt++;
+        }else{
+#ifdef X86_64
+            printf("\n[e] ErrParse sec [%s]",&str[17]);
+#endif
+        }
+
+        res = try_strl2int32(&str[14], 2, &date_time->tm_min);
+        if(res){
+            cnt++;
+        }else{
+#ifdef X86_64
+            printf("\n[e] ErrParse min [%s]",&str[14]);
+#endif
+        }
+
+        res = try_strl2int32(&str[11], 2, &date_time->tm_hour);
+        if(res){
+            cnt++;
+        }else{
+#ifdef X86_64
+            printf("\n[e] ErrParse hour [%s]",&str[11]);
+#endif
+        }
+
+        res = try_strl2month(&str[4], &date_time->tm_mon);
+        if(res){
+            cnt++;
+        }else{
+#ifdef X86_64
+            printf("\n[e] ErrParse mon [%s]",&str[4]);
+#endif
+        }
+
+
         res = try_strl2int32(&str[8], 2, &date_time->tm_mday);
         if(res){
             cnt++;
@@ -222,7 +260,16 @@ bool time_data_parse(struct tm* date_time, char* str) {
             printf("\n[e] ErrParse mday [%s]",&str[8]);
 #endif
         }
-        if(1==cnt){
+        res = try_strl2int32(&str[20], 4, &date_time->tm_year);
+        if(res){
+            cnt++;
+        }else{
+#ifdef X86_64
+            printf("\n[e] ErrParse year [%s]",&str[20]);
+#endif
+        }
+
+        if(6==cnt){
             res = true;
         }else{
             res = false;

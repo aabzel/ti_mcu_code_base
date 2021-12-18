@@ -372,6 +372,16 @@ static bool skip_prefix_spaces(const char str[],  int32_t len, uint32_t *start_i
     return res;
 }
 
+bool try_strl2month(const char str[], int32_t* mon_value){
+    bool res = true;
+    if(strstr(str,"Dec")){
+        *mon_value=11;
+    }else{
+        res = false;
+    }
+    return res;
+}
+
 bool try_strl2int32(const char s32l_str[], int32_t s32l_str_len, int32_t* s32l_value) {
     //printf("\n%s() index %u len %u status %u",__FUNCTION__,s32l_str,s32l_str_len);
     bool s32l_success = true;
