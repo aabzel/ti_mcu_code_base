@@ -62,7 +62,9 @@ static bool tbfp_parser_proc_wait_serial_num(TbfpProtocol_t* instance, uint8_t r
         memcpy(&instance->parser.s_num, &instance->parser.rx_frame[2], 2);
         instance->parser.load_len = 4;
         instance->parser.rx_state = WAIT_PAYLOAD;
+#ifdef HAS_MCU
         LOG_DEBUG(TBFP, "SN:0x%04x %u", instance->parser.s_num, instance->parser.s_num);
+#endif
         if((0 < instance->parser.exp_payload_len) && (instance->parser.exp_payload_len <= TBFP_MAX_PAYLOAD)) {
             instance->parser.rx_state = WAIT_PAYLOAD;
             res = true;
@@ -115,14 +117,18 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
         uint16_t frame_len = TBFP_SIZE_HEADER + instance->parser.exp_payload_len;
         res = crc8_sae_j1850_check(&instance->parser.rx_frame[0], frame_len, instance->parser.read_crc8);
         if(res) {
+#ifdef HAS_MCU
             LOG_DEBUG(TBFP, "SN:0x%04x %u crc OK", instance->parser.s_num, instance->parser.s_num);
+#endif
             memcpy(instance->parser.fix_frame, instance->parser.rx_frame, TBFP_RX_FRAME_SIZE);
             instance->parser.rx_state = RX_DONE;
             instance->rx_pkt_cnt++;
             res = tbfp_proc_full(instance->parser.fix_frame, frame_len + TBFP_SIZE_CRC, instance->interface);
         } else {
+#ifdef HAS_MCU
             LOG_DEBUG(TBFP, "SN:0x%04x %u crc err read:0x%02x", instance->parser.s_num, instance->parser.s_num,
                       instance->parser.read_crc8);
+#endif
             instance->crc_err_cnt++;
             res = false; // errors
         }

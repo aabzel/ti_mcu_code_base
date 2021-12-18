@@ -354,12 +354,16 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
             ok_cnt++;
         } else {
             err_cnt++;
+#ifdef HAS_MCU
             LOG_ERROR(TBFP, "i=%u", i);
+#endif
         }
     }
     cur_rx_prk = TbfpProtocol[interface].rx_pkt_cnt - init_rx_prk;
     if(0 < cur_rx_prk) {
+#ifdef HAS_MCU
         LOG_DEBUG(TBFP, "InPktCnt:%u in %u byte", cur_rx_prk, len);
+#endif
     } else {
 #ifdef HAS_DEBUG
         if(true == TbfpProtocol[interface].debug) {
