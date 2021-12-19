@@ -20,5 +20,7 @@ uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* frac
 bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate);
 bool proc_uart(uint8_t uart_index);
 bool proc_uarts(void);
+uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa,
+                            uint16_t* fraction, uint8_t* over_sampling) ;
 
 #endif /* USART_DRV_H  */

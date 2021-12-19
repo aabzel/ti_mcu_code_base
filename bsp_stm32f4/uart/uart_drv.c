@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "bit_utils.h"
 #include "stm32f4xx_hal.h"
 #include "uart_common.h"
 #ifdef HAS_CLI
@@ -138,10 +139,6 @@ bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     return res;
 }
 
-uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling) {
-    return 0;
-}
-
 bool uart_set_baudrate(uint8_t uart_num, uint32_t baudrate) { return false; }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uart_handle) {
@@ -220,12 +217,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* uart_handle) {
     }
 #endif
     if(USART6 == uart_handle->Instance) {
-        huart[UART_NUM_CLI].rx_cnt++;
-        huart[UART_NUM_CLI].rx_int = true;
-        HAL_UART_Receive_IT(&huart[UART_NUM_CLI].uart_h, (uint8_t*)huart[UART_NUM_CLI].rx_buff,
-                            huart[UART_NUM_CLI].rx_buff_size);
+        huart[5].rx_cnt++;
+        huart[5].rx_int = true;
+        HAL_UART_Receive_IT(&huart[5].uart_h, (uint8_t*)huart[5].rx_buff,
+                            huart[5].rx_buff_size);
 #ifdef HAS_CLI
-        uart_string_reader_rx_callback(&cmd_reader, huart[UART_NUM_CLI].rx_buff[0]);
+        uart_string_reader_rx_callback(&cmd_reader, huart[5].rx_buff[0]);
 #endif /*HAS_CLI*/
     }
 }
@@ -241,12 +238,97 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef* uart_handle) {
     }
 #endif
     if(USART6 == uart_handle->Instance) {
-        huart[UART_NUM_CLI].tx_cnt++;
+        huart[5].tx_cnt++;
 #ifdef HAS_CLI
-        huart[UART_NUM_CLI].tx_int = true;
-        huart[UART_NUM_CLI].tx_cpl_cnt++;
+        huart[5].tx_int = true;
+        huart[5].tx_cpl_cnt++;
 #endif /*HAS_CLI*/
     }
 }
 
 bool proc_uarts(void) { return false; }
+
+/*see Figure 4. STM32F413xG/H block diagram*/
+static const uint32_t UartClockLUT[UART_COUNT] = {
+    /*0  USART1  */ APB2_CLOCK_HZ,
+    /*1  USART2  */ APB1_CLOCK_HZ,
+    /*2  USART3  */ APB1_CLOCK_HZ,
+    /*3  UART4  */ APB1_CLOCK_HZ,
+    /*4  UART5  */ APB1_CLOCK_HZ,
+    /*5  USART6  */ APB2_CLOCK_HZ,
+};
+
+uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa,
+                            uint16_t* fraction, uint8_t* over_sampling) {
+    bool res = true;
+    uint32_t baud_rate_reg = 0;
+    uint32_t control_register1 = 0;
+    uint32_t baud_rate = 0;
+    switch (uart_num) {
+        case 0:
+            baud_rate_reg = USART1->BRR;
+            control_register1 = USART1->CR1;
+            break;
+        case 1:
+            baud_rate_reg = USART2->BRR;
+            control_register1 = USART2->CR1;
+            break;
+        case 2:
+            baud_rate_reg = USART3->BRR;
+            control_register1 = USART3->CR1;
+            break;
+        case 3:
+            baud_rate_reg = UART4->BRR;
+            control_register1 = UART4->CR1;
+            break;
+        case 4:
+            baud_rate_reg = UART5->BRR;
+            control_register1 = UART5->CR1;
+            break;
+        case 5:
+            baud_rate_reg = USART6->BRR;
+            control_register1 = USART6->CR1;
+            break;
+        case 6:
+#ifdef UART7
+            baud_rate_reg = UART7->BRR;
+            control_register1 = UART7->CR1;
+#endif
+            break;
+        case 7:
+#ifdef UART8
+            baud_rate_reg = UART8->BRR;
+            control_register1 = UART8->CR1;
+#endif
+            break;
+        case 8:
+#ifdef UART9
+            baud_rate_reg = UART9->BRR;
+            control_register1 = UART9->CR1;
+#endif
+            break;
+        case 9:
+#ifdef UART10
+            baud_rate_reg = UART10->BRR;
+            control_register1 = UART10->CR1;
+#endif
+            break;
+        default:
+            res = false;
+            break;
+    }
+    if (true == res) {
+        (*fraction) = MASK_4BIT & baud_rate_reg;
+        (*mantissa) = MASK_12BIT & (baud_rate_reg >> 4);
+        if (BIT_15 == (control_register1 & BIT_15)) {
+            (*over_sampling) = 8U;
+        } else {
+            (*over_sampling) = 16U;
+        }
+        baud_rate =
+            UartClockLUT[uart_num] /
+            ((*over_sampling) * ((*mantissa) + (*fraction) / (*over_sampling)));
+    }
+
+    return baud_rate;
+}
