@@ -9,6 +9,7 @@
 #include "log.h"
 #include "spi_drv.h"
 #include "table_utils.h"
+#include "writer_config.h"
 
 bool spi_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -120,7 +121,7 @@ bool spi_read_command(int32_t argc, char* argv[]) {
             if(false == res) {
                 LOG_ERROR(SPI, "Unable to read SPI");
             } else {
-                print_mem(array, array_len, false);
+                print_mem(array, array_len, true, false, false, true);
                 io_printf(CRLF);
             }
         }

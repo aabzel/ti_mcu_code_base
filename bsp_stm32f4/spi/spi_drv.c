@@ -21,10 +21,14 @@ static SpiName_t spi_base_2_num(SPI_TypeDef *Instance){
       spi_num=(SpiName_t)2;
     }else if(SPI3==Instance){
       spi_num=(SpiName_t)3;
+#ifdef HAS_SPI4
     }else if(SPI4==Instance){
       spi_num=(SpiName_t)4;
+#endif
+#ifdef HAS_SPI5
     }else if(SPI5==Instance){
       spi_num=(SpiName_t)5;
+#endif
     }else {
       spi_num=(SpiName_t)0;
     }
@@ -34,11 +38,17 @@ static SpiName_t spi_base_2_num(SPI_TypeDef *Instance){
 static SPI_TypeDef*  spi_num_2_base(SpiName_t spi_num){
     SPI_TypeDef* Instance=0;
     switch(spi_num){
+#ifdef HAS_SPI1
       case 1: Instance=SPI1; break;
+#endif
       case 2: Instance=SPI2; break;
       case 3: Instance=SPI3; break;
+#ifdef HAS_SPI4
       case 4: Instance=SPI4; break;
+#endif
+#ifdef HAS_SPI5
       case 5: Instance=SPI5; break;
+#endif
     default:
       Instance=NULL;
       break;
@@ -80,16 +90,19 @@ bool spi_init(void) {
 
 bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
     bool res = false;
-    HAL_StatusTypeDef status;
+    HAL_StatusTypeDef status=HAL_ERROR;
+    (void) status;
     switch(spi_num) {
     case 0:
         break;
+#ifdef HAS_SPI1
     case 1:
         status = HAL_SPI_Transmit_IT(&SpiInstance[spi_num].handle,tx_array,tx_array_len);
         if (HAL_OK==status ) {
           res = true;
         }
         break;
+#endif
     default:
         res = false;
         break;
@@ -102,16 +115,19 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
 
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
-    HAL_StatusTypeDef status;
+    HAL_StatusTypeDef status=HAL_ERROR;
+    (void) status;
     switch(spi_num) {
     case 0:
         break;
+#ifdef HAS_SPI1
     case 1:
         status = HAL_SPI_Receive_IT(&SpiInstance[spi_num].handle,rx_array,rx_array_len);
         if (HAL_OK==status ) {
           res = true;
         }
         break;
+#endif
     default:
         res = false;
         break;
@@ -166,6 +182,8 @@ uint8_t spi_get_receive_overrun_interrupt(SpiName_t spi_num) {
 void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle){
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  (void)GPIO_InitStruct;
+#ifdef HAS_SPI1
   if(spiHandle->Instance==SPI1)  {
     __HAL_RCC_SPI1_CLK_ENABLE();
 
@@ -185,10 +203,11 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle){
     HAL_NVIC_SetPriority(SPI1_IRQn, 7, 0);
     HAL_NVIC_EnableIRQ(SPI1_IRQn);
   }
+#endif
 }
 
 void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle){
-
+#ifdef HAS_SPI1
   if(spiHandle->Instance==SPI1)  {
     __HAL_RCC_SPI1_CLK_DISABLE();
 
@@ -201,38 +220,45 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle){
 
     HAL_NVIC_DisableIRQ(SPI1_IRQn);
   }
+#endif
 }
-
-
 
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
   SpiName_t spi_num = spi_base_2_num(hspi->Instance);
-  if (hspi->Instance == SPI1) {
+#ifdef HAS_SPI1
+  if (SPI1==hspi->Instance) {
     SpiInstance[spi_num].tx_cnt++;
   }
+#endif
 }
 
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi) {
   SpiName_t spi_num = spi_base_2_num(hspi->Instance);
-  if (hspi->Instance == SPI1) {
+#ifdef HAS_SPI1
+  if (SPI1 == hspi->Instance ) {
     SpiInstance[spi_num].rxtx_cnt++;
   }
+#endif
 }
 
 void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi) {
   SpiName_t spi_num = spi_base_2_num(hspi->Instance);
+#ifdef HAS_SPI1
   if (SPI1 == hspi->Instance) {
     SpiInstance[spi_num].rx_cnt++;
   }
+#endif
 }
 
 void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi) {
   SpiName_t spi_num = spi_base_2_num(hspi->Instance);
+#ifdef HAS_SPI1
   if (SPI1 == hspi->Instance) {
     SpiInstance[spi_num].err_cnt++;
     hspi->State = HAL_SPI_STATE_READY;
     hspi->ErrorCode = 0;
     hspi->Instance->SR = 0x0002;
   }
+#endif
 }
 
