@@ -11,9 +11,7 @@
 #include "gpio_drv.h"
 #include "stm32f4xx_hal.h"
 
-
 SpiInstance_t SpiInstance[SPI_CNT];
-
 
 static SpiName_t spi_base_2_num(SPI_TypeDef *Instance){
     SpiName_t spi_num=(SpiName_t)0;
@@ -71,9 +69,6 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
   }
   return res;
 }
-
-
-
 
 bool spi_init(void) {
     bool res = true;
