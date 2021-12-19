@@ -69,8 +69,8 @@ static bool counter_to_struct(uint32_t sec, struct tm* t) {
             day -= DaysInMonth[month - 1];
         }
 
-        t->tm_mon = month ; // 0..11
-        t->tm_mday = day + 1;  // 1..31
+        t->tm_mon = month;    // 0..11
+        t->tm_mday = day + 1; // 1..31
         res = true;
     }
     return res;

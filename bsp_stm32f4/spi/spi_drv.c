@@ -1,6 +1,5 @@
 #include "spi_drv.h"
 
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -11,7 +10,7 @@
 #include "gpio_drv.h"
 #include "stm32f4xx_hal.h"
 
-SpiInstance_t SpiInstance[SPI_CNT];
+SpiInstance_t SpiInstance[SPI_CNT]={0};
 
 static SpiName_t spi_base_2_num(SPI_TypeDef *Instance){
     SpiName_t spi_num=(SpiName_t)0;
@@ -57,27 +56,27 @@ static SPI_TypeDef*  spi_num_2_base(SpiName_t spi_num){
 }
 
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
-  bool res = false;
-  SpiInstance[spi_num].handle.Init.Mode = SPI_MODE_MASTER;
-  SpiInstance[spi_num].handle.Instance =  spi_num_2_base(spi_num);
-  SpiInstance[spi_num].handle.Init.Direction = SPI_DIRECTION_2LINES;
-  SpiInstance[spi_num].handle.Init.DataSize = SPI_DATASIZE_8BIT;
-  SpiInstance[spi_num].handle.Init.CLKPolarity = SPI_POLARITY_LOW;
-  SpiInstance[spi_num].handle.Init.CLKPhase = SPI_PHASE_1EDGE;
-  SpiInstance[spi_num].handle.Init.NSS = SPI_NSS_SOFT;
-  SpiInstance[spi_num].handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-  SpiInstance[spi_num].handle.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  SpiInstance[spi_num].handle.Init.TIMode = SPI_TIMODE_DISABLE;
-  SpiInstance[spi_num].handle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  SpiInstance[spi_num].handle.Init.CRCPolynomial = 10;
-  strncpy(SpiInstance[spi_num].name,spi_name,sizeof(SpiInstance[spi_num].name));
-  if (HAL_OK == HAL_SPI_Init(&SpiInstance[spi_num].handle) )  {
-     res = true;
-     SpiInstance[spi_num].init_done = true;
-  }else{
-     res = false;
-  }
-  return res;
+    bool res = false;
+    SpiInstance[spi_num].handle.Init.Mode = SPI_MODE_MASTER;
+    SpiInstance[spi_num].handle.Instance =  spi_num_2_base(spi_num);
+    SpiInstance[spi_num].handle.Init.Direction = SPI_DIRECTION_2LINES;
+    SpiInstance[spi_num].handle.Init.DataSize = SPI_DATASIZE_8BIT;
+    SpiInstance[spi_num].handle.Init.CLKPolarity = SPI_POLARITY_LOW;
+    SpiInstance[spi_num].handle.Init.CLKPhase = SPI_PHASE_1EDGE;
+    SpiInstance[spi_num].handle.Init.NSS = SPI_NSS_SOFT;
+    SpiInstance[spi_num].handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+    SpiInstance[spi_num].handle.Init.FirstBit = SPI_FIRSTBIT_MSB;
+    SpiInstance[spi_num].handle.Init.TIMode = SPI_TIMODE_DISABLE;
+    SpiInstance[spi_num].handle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+    SpiInstance[spi_num].handle.Init.CRCPolynomial = 10;
+    strncpy(SpiInstance[spi_num].name,spi_name,sizeof(SpiInstance[spi_num].name));
+    if (HAL_OK == HAL_SPI_Init(&SpiInstance[spi_num].handle) )  {
+       res = true;
+       SpiInstance[spi_num].init_done = true;
+    }else{
+       res = false;
+    }
+    return res;
 }
 
 bool spi_init(void) {
@@ -195,7 +194,6 @@ uint8_t spi_get_receive_overrun_interrupt(SpiName_t spi_num) {
 }
 
 void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle){
-
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     (void)GPIO_InitStruct;
 #ifdef HAS_SPI1
@@ -219,6 +217,14 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle){
         HAL_NVIC_EnableIRQ(SPI1_IRQn);
     }
 #endif
+
+#ifdef HAS_SPI2
+    if(spiHandle->Instance==SPI2)  {
+        __HAL_RCC_SPI2_CLK_ENABLE();
+        HAL_NVIC_SetPriority(SPI2_IRQn, 7, 0);
+        HAL_NVIC_EnableIRQ(SPI2_IRQn);
+    }
+#endif
 }
 
 void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle){
@@ -234,6 +240,13 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle){
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7);
 
     HAL_NVIC_DisableIRQ(SPI1_IRQn);
+  }
+#endif
+#ifdef HAS_SPI2
+  if(spiHandle->Instance==SPI2)  {
+    __HAL_RCC_SPI2_CLK_DISABLE();
+
+    HAL_NVIC_DisableIRQ(SPI2_IRQn);
   }
 #endif
 }
