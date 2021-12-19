@@ -65,8 +65,10 @@ static uint8_t get_uart_index(USART_TypeDef* USARTx) {
     return uart_num;
 }
 #endif
-static bool init_uart(uint8_t uart_num) {
+
+static bool init_uart(uint8_t uart_num, char *name) {
     bool res = false;
+    strncpy(huart[uart_num].name, name,sizeof(huart[uart_num].name));
     huart[uart_num].rx_buff = (volatile uint8_t*)&rx_buff[uart_num][0];
     huart[uart_num].rx_buff_size = sizeof(rx_buff[uart_num][0]);
     huart[uart_num].uart_h.Init.BaudRate = CLI_UART_BAUD_RATE;
@@ -97,7 +99,7 @@ static bool init_uart(uint8_t uart_num) {
 
 bool uart_init(void) {
     bool res = true;
-    res = init_uart(UART_NUM_CLI) && res;
+    res = init_uart(UART_NUM_CLI,"CLI") && res;
     if(res) {
         res = uart_send_banner(UART_NUM_CLI, 'v');
     }

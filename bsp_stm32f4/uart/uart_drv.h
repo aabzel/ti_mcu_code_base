@@ -12,7 +12,7 @@
 
 #define UART6_BAUD_RATE CLI_UART_BAUD_RATE /*CLI   */
 
-bool init_uart(uint8_t uart_num);;
+
 bool uart_init(void);
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len);
 bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wait);
