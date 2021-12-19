@@ -21,6 +21,8 @@ typedef struct xSpiInstance_t {
   uint32_t rx_byte_cnt;
   uint32_t tx_byte_cnt;
   uint32_t rxtx_cnt;
+  uint32_t tx_cnt;
+  uint32_t rx_cnt;
   uint32_t err_cnt;
   volatile uint32_t it_cnt;
   uint32_t rx_buff_size;

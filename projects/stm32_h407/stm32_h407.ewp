@@ -235,6 +235,8 @@
                     <state>HAS_MCU</state>
                     <state>HAS_UART</state>
                     <state>STM32F4xx</state>
+                    <state>HAS_SPI</state>
+                    <state>HAS_SPI2</state>
                     <state>HAS_CLI</state>
                     <state>HAS_CORTEX_M4</state>
                 </option>
@@ -394,6 +396,7 @@
                     <state>$PROJ_DIR$/Core</state>
                     <state>$PROJ_DIR$</state>
                     <state>$PROJ_DIR$\..\..\bsp_stm32f4\interrupt</state>
+                    <state>$PROJ_DIR$\..\..\bsp_stm32f4\spi</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1159,6 +1162,21 @@
             <name>interrupt</name>
             <file>
                 <name>$PROJ_DIR$\..\..\bsp_stm32f4\interrupt\interrupt_drv.c</name>
+            </file>
+        </group>
+        <group>
+            <name>spi</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\spi\spi_commands.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\spi\spi_commands.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\spi\spi_drv.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\bsp_stm32f4\spi\spi_drv.h</name>
             </file>
         </group>
         <group>

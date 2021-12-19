@@ -11,7 +11,8 @@ extern "C" {
 #include "spi_common.h"
 #include "stm32f4xx_hal.h"
   
-#define SPI1_BIT_RATE_HZ 100000
+#define SPI1_BIT_RATE_HZ  100000
+#define SPI2_BIT_RATE_HZ 3000000
 
 typedef enum eSpiName_t {
     SPI_UNDEF_INX = 0,

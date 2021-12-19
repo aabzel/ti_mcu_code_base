@@ -85,6 +85,9 @@ bool spi_init(void) {
 #ifdef HAS_SPI1
     res = spi_init_ll((SpiName_t)1, "NorFlash", SPI1_BIT_RATE_HZ) && res;
 #endif /*HAS_SPI1*/
+#ifdef HAS_SPI2
+    res = spi_init_ll((SpiName_t)2, "SX1262", SPI2_BIT_RATE_HZ) && res;
+#endif /*HAS_SPI1*/
     return res;
 }
 
@@ -94,13 +97,16 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
     (void) status;
     switch(spi_num) {
     case 0:
+        res = true;
         break;
 #ifdef HAS_SPI1
     case 1:
-        status = HAL_SPI_Transmit_IT(&SpiInstance[spi_num].handle,tx_array,tx_array_len);
-        if (HAL_OK==status ) {
-          res = true;
-        }
+        res = true;
+        break;
+#endif
+#ifdef HAS_SPI2
+    case 2:
+        res = true;
         break;
 #endif
     default:
@@ -108,6 +114,10 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
         break;
     }
     if(res) {
+        status = HAL_SPI_Transmit_IT(&SpiInstance[spi_num].handle, tx_array, tx_array_len);
+        if (HAL_OK==status ) {
+          res = true;
+        }
         SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
     }
     return res;
@@ -122,10 +132,11 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
         break;
 #ifdef HAS_SPI1
     case 1:
-        status = HAL_SPI_Receive_IT(&SpiInstance[spi_num].handle,rx_array,rx_array_len);
-        if (HAL_OK==status ) {
-          res = true;
-        }
+        break;
+#endif
+#ifdef HAS_SPI2
+    case 2:
+        res = true;
         break;
 #endif
     default:
@@ -133,6 +144,10 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
         break;
     }
     if(res) {
+        status = HAL_SPI_Receive_IT(&SpiInstance[spi_num].handle, rx_array, rx_array_len);
+        if (HAL_OK==status ) {
+          res = true;
+        }
         SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
     }
 
@@ -181,28 +196,28 @@ uint8_t spi_get_receive_overrun_interrupt(SpiName_t spi_num) {
 
 void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle){
 
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  (void)GPIO_InitStruct;
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    (void)GPIO_InitStruct;
 #ifdef HAS_SPI1
-  if(spiHandle->Instance==SPI1)  {
-    __HAL_RCC_SPI1_CLK_ENABLE();
+    if(spiHandle->Instance==SPI1)  {
+        __HAL_RCC_SPI1_CLK_ENABLE();
 
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**SPI1 GPIO Configuration
-    PA5     ------> SPI1_SCK
-    PA6     ------> SPI1_MISO
-    PA7     ------> SPI1_MOSI
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        __HAL_RCC_GPIOA_CLK_ENABLE();
+        /**SPI1 GPIO Configuration
+        PA5     ------> SPI1_SCK
+        PA6     ------> SPI1_MISO
+        PA7     ------> SPI1_MOSI
+        */
+        GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    HAL_NVIC_SetPriority(SPI1_IRQn, 7, 0);
-    HAL_NVIC_EnableIRQ(SPI1_IRQn);
-  }
+        HAL_NVIC_SetPriority(SPI1_IRQn, 7, 0);
+        HAL_NVIC_EnableIRQ(SPI1_IRQn);
+    }
 #endif
 }
 
@@ -224,41 +239,78 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle){
 }
 
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
-  SpiName_t spi_num = spi_base_2_num(hspi->Instance);
+    bool res = false;
+    SpiName_t spi_num = spi_base_2_num(hspi->Instance);
 #ifdef HAS_SPI1
-  if (SPI1==hspi->Instance) {
-    SpiInstance[spi_num].tx_cnt++;
-  }
+    if (SPI1==hspi->Instance) {
+        SpiInstance[spi_num].tx_cnt++;
+        res = true;
+    }
 #endif
+#ifdef HAS_SPI2
+    if (SPI2==hspi->Instance) {
+        res = true;
+    }
+#endif
+    if(res){
+        SpiInstance[spi_num].tx_cnt++;
+    }
 }
 
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi) {
-  SpiName_t spi_num = spi_base_2_num(hspi->Instance);
+    bool res = false;
+    SpiName_t spi_num = spi_base_2_num(hspi->Instance);
 #ifdef HAS_SPI1
-  if (SPI1 == hspi->Instance ) {
-    SpiInstance[spi_num].rxtx_cnt++;
-  }
+    if (SPI1 == hspi->Instance ) {
+        res = true;
+    }
 #endif
+#ifdef HAS_SPI2
+    if (SPI2 == hspi->Instance ) {
+        res = true;
+    }
+#endif
+    if(res){
+        SpiInstance[spi_num].rxtx_cnt++;
+    }
 }
 
 void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi) {
-  SpiName_t spi_num = spi_base_2_num(hspi->Instance);
+    SpiName_t spi_num = spi_base_2_num(hspi->Instance);
+    bool res = false;
 #ifdef HAS_SPI1
-  if (SPI1 == hspi->Instance) {
-    SpiInstance[spi_num].rx_cnt++;
-  }
+    if (SPI1 == hspi->Instance) {
+        res = true;
+    }
 #endif
+#ifdef HAS_SPI2
+    if (SPI2 == hspi->Instance) {
+        res = true;
+    }
+#endif
+    if(res){
+        SpiInstance[spi_num].rx_cnt++;
+    }
 }
 
 void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi) {
-  SpiName_t spi_num = spi_base_2_num(hspi->Instance);
+    SpiName_t spi_num = spi_base_2_num(hspi->Instance);
+    bool res = false;
 #ifdef HAS_SPI1
-  if (SPI1 == hspi->Instance) {
-    SpiInstance[spi_num].err_cnt++;
-    hspi->State = HAL_SPI_STATE_READY;
-    hspi->ErrorCode = 0;
-    hspi->Instance->SR = 0x0002;
-  }
+    if (SPI1 == hspi->Instance) {
+        res = true;
+    }
 #endif
+#ifdef HAS_SPI2
+    if (SPI2 == hspi->Instance) {
+        res = true;
+    }
+#endif
+    if(res) {
+        SpiInstance[spi_num].err_cnt++;
+        hspi->State = HAL_SPI_STATE_READY;
+        hspi->ErrorCode = 0;
+        hspi->Instance->SR = 0x0002;
+    }
 }
 
