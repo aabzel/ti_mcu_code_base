@@ -4,9 +4,6 @@
 #include <stdint.h>
 #include <string.h>
 
-
-
-
 bool watchdog_set(uint32_t period_ms, bool status) {
     bool res = false;
     return res;

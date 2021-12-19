@@ -10,7 +10,8 @@ extern "C" {
 
 #include "spi_common.h"
 #include "stm32f4xx_hal.h"
-  
+#include "sys_config.h"
+
 #define SPI1_BIT_RATE_HZ  100000
 #define SPI2_BIT_RATE_HZ 3000000
 
@@ -21,10 +22,8 @@ typedef enum eSpiName_t {
     SPI3_INX = 3,
     SPI4_INX = 4,
     SPI5_INX = 5,
-    SPI_CNT = 6
+    //SPI_CNT = 6
 } SpiName_t;
-
-extern SpiInstance_t SpiInstance[SPI_CNT];
 
 bool spi_init(void);
 bool spi_write(SpiName_t spi_num, uint8_t* array, uint16_t array_len);

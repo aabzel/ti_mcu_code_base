@@ -234,6 +234,7 @@
                     <state>HAS_TASKS</state>
                     <state>HAS_MCU</state>
                     <state>HAS_UART</state>
+                    <state>HAS_USART6</state>
                     <state>STM32F4xx</state>
                     <state>HAS_SPI</state>
                     <state>HAS_SPI2</state>

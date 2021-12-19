@@ -18,7 +18,7 @@ bool spi_diag_command(int32_t argc, char* argv[]) {
                                        {5, "bits"}, {8, "tx"},   {8, "rx"},  {10, "name"}};
     char temp_str[120];
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-    for(spi_num = 0; spi_num < SPI_CNT; spi_num++) {
+    for(spi_num = 0; spi_num < SPI_COUNT; spi_num++) {
         strcpy(temp_str, TSEP);
         snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, spi_num);
         snprintf(temp_str, sizeof(temp_str), "%s %8u " TSEP, temp_str, spi_get_clock((SpiName_t)spi_num));
@@ -42,7 +42,7 @@ bool spi_diag_int_command(int32_t argc, char* argv[]) {
     static const table_col_t cols[] = {{5, "No"}, {4, "rx"}, {4, "tx"}, {6, "rxTo"}, {6, "RxOrun"}, {10, "name"}};
     char temp_str[120];
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-    for(spi_num = 0; spi_num < SPI_CNT; spi_num++) {
+    for(spi_num = 0; spi_num < SPI_COUNT; spi_num++) {
         strcpy(temp_str, TSEP);
         snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, spi_num);
         snprintf(temp_str, sizeof(temp_str), "%s %1u " TSEP, temp_str, spi_get_receive_int((SpiName_t)spi_num));

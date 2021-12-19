@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "sys_config.h"
+
 #ifdef DeviceFamily_CC26X2
 #include <ti/drivers/SPI.h>
 #endif /*DeviceFamily_CC26X2*/
@@ -38,5 +40,7 @@ typedef struct xSpiInstance_t {
   char name[SPI_NAME_SZ_BYTE];
   bool init_done;
 }SpiInstance_t;
+
+extern SpiInstance_t SpiInstance[SPI_COUNT];
 
 #endif /* SPI_COMMON_H */

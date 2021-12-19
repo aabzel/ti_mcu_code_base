@@ -10,8 +10,6 @@
 #include "gpio_drv.h"
 #include "stm32f4xx_hal.h"
 
-SpiInstance_t SpiInstance[SPI_CNT]={0};
-
 static SpiName_t spi_base_2_num(SPI_TypeDef *Instance){
     SpiName_t spi_num=(SpiName_t)0;
     if(SPI1==Instance){
@@ -38,18 +36,18 @@ static SPI_TypeDef*  spi_num_2_base(SpiName_t spi_num){
     SPI_TypeDef* Instance=0;
     switch(spi_num){
 #ifdef HAS_SPI1
-      case 1: Instance=SPI1; break;
+      case 1: Instance =SPI1; break;
 #endif
-      case 2: Instance=SPI2; break;
-      case 3: Instance=SPI3; break;
+      case 2: Instance = SPI2; break;
+      case 3: Instance = SPI3; break;
 #ifdef HAS_SPI4
-      case 4: Instance=SPI4; break;
+      case 4: Instance = SPI4; break;
 #endif
 #ifdef HAS_SPI5
-      case 5: Instance=SPI5; break;
+      case 5: Instance = SPI5; break;
 #endif
     default:
-      Instance=NULL;
+      Instance = NULL;
       break;
     }
     return Instance;
@@ -57,22 +55,22 @@ static SPI_TypeDef*  spi_num_2_base(SpiName_t spi_num){
 
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
     bool res = false;
-    SpiInstance[spi_num].handle.Init.Mode = SPI_MODE_MASTER;
-    SpiInstance[spi_num].handle.Instance =  spi_num_2_base(spi_num);
-    SpiInstance[spi_num].handle.Init.Direction = SPI_DIRECTION_2LINES;
-    SpiInstance[spi_num].handle.Init.DataSize = SPI_DATASIZE_8BIT;
-    SpiInstance[spi_num].handle.Init.CLKPolarity = SPI_POLARITY_LOW;
-    SpiInstance[spi_num].handle.Init.CLKPhase = SPI_PHASE_1EDGE;
-    SpiInstance[spi_num].handle.Init.NSS = SPI_NSS_SOFT;
-    SpiInstance[spi_num].handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
-    SpiInstance[spi_num].handle.Init.FirstBit = SPI_FIRSTBIT_MSB;
-    SpiInstance[spi_num].handle.Init.TIMode = SPI_TIMODE_DISABLE;
-    SpiInstance[spi_num].handle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-    SpiInstance[spi_num].handle.Init.CRCPolynomial = 10;
-    strncpy(SpiInstance[spi_num].name,spi_name,sizeof(SpiInstance[spi_num].name));
-    if (HAL_OK == HAL_SPI_Init(&SpiInstance[spi_num].handle) )  {
+    SpiInstance[spi_num-1].handle.Init.Mode = SPI_MODE_MASTER;
+    SpiInstance[spi_num-1].handle.Instance =  spi_num_2_base(spi_num);
+    SpiInstance[spi_num-1].handle.Init.Direction = SPI_DIRECTION_2LINES;
+    SpiInstance[spi_num-1].handle.Init.DataSize = SPI_DATASIZE_8BIT;
+    SpiInstance[spi_num-1].handle.Init.CLKPolarity = SPI_POLARITY_LOW;
+    SpiInstance[spi_num-1].handle.Init.CLKPhase = SPI_PHASE_1EDGE;
+    SpiInstance[spi_num-1].handle.Init.NSS = SPI_NSS_SOFT;
+    SpiInstance[spi_num-1].handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+    SpiInstance[spi_num-1].handle.Init.FirstBit = SPI_FIRSTBIT_MSB;
+    SpiInstance[spi_num-1].handle.Init.TIMode = SPI_TIMODE_DISABLE;
+    SpiInstance[spi_num-1].handle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+    SpiInstance[spi_num-1].handle.Init.CRCPolynomial = 10;
+    strncpy(SpiInstance[spi_num-1].name, spi_name, sizeof(SpiInstance[spi_num-1].name));
+    if (HAL_OK == HAL_SPI_Init(&SpiInstance[spi_num-1].handle) )  {
        res = true;
-       SpiInstance[spi_num].init_done = true;
+       SpiInstance[spi_num-1].init_done = true;
     }else{
        res = false;
     }
@@ -113,11 +111,11 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
         break;
     }
     if(res) {
-        status = HAL_SPI_Transmit_IT(&SpiInstance[spi_num].handle, tx_array, tx_array_len);
+        status = HAL_SPI_Transmit_IT(&SpiInstance[spi_num-1].handle, tx_array, tx_array_len);
         if (HAL_OK==status ) {
           res = true;
         }
-        SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
+        SpiInstance[spi_num-1].tx_byte_cnt += tx_array_len;
     }
     return res;
 }
@@ -143,11 +141,11 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
         break;
     }
     if(res) {
-        status = HAL_SPI_Receive_IT(&SpiInstance[spi_num].handle, rx_array, rx_array_len);
+        status = HAL_SPI_Receive_IT(&SpiInstance[spi_num-1].handle, rx_array, rx_array_len);
         if (HAL_OK==status ) {
           res = true;
         }
-        SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
+        SpiInstance[spi_num-1].rx_byte_cnt += rx_array_len;
     }
 
     return res;
@@ -256,7 +254,7 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
     SpiName_t spi_num = spi_base_2_num(hspi->Instance);
 #ifdef HAS_SPI1
     if (SPI1==hspi->Instance) {
-        SpiInstance[spi_num].tx_cnt++;
+        SpiInstance[spi_num-1].tx_cnt++;
         res = true;
     }
 #endif
@@ -266,7 +264,7 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
     }
 #endif
     if(res){
-        SpiInstance[spi_num].tx_cnt++;
+        SpiInstance[spi_num-1].tx_cnt++;
     }
 }
 
@@ -284,7 +282,7 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi) {
     }
 #endif
     if(res){
-        SpiInstance[spi_num].rxtx_cnt++;
+        SpiInstance[spi_num-1].rxtx_cnt++;
     }
 }
 
@@ -302,7 +300,7 @@ void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi) {
     }
 #endif
     if(res){
-        SpiInstance[spi_num].rx_cnt++;
+        SpiInstance[spi_num-1].rx_cnt++;
     }
 }
 
@@ -320,7 +318,7 @@ void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi) {
     }
 #endif
     if(res) {
-        SpiInstance[spi_num].err_cnt++;
+        SpiInstance[spi_num-1].err_cnt++;
         hspi->State = HAL_SPI_STATE_READY;
         hspi->ErrorCode = 0;
         hspi->Instance->SR = 0x0002;

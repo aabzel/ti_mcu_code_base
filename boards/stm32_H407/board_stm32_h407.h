@@ -6,6 +6,7 @@
 #define UART_COUNT 6
 #define SPI_COUNT 3
 
+
 #define SYS_FREQ 168000000U
 #define RAM_SIZE (192 * K_BYTES)
 #define ROM_SIZE ( 1024 * K_BYTES)
