@@ -87,7 +87,7 @@ bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
     return res;
 }
 
-static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interfaces_t interface) {
+static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interfaces_t interface,uint8_t lifetime) {
     bool res = false;
     if(out_array && (0 < payload_len) && (payload_len < TBFP_MAX_PAYLOAD)) {
         TbfHeader_t header;
@@ -96,6 +96,9 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
         header.snum = TbfpProtocol[interface].s_num;
         TbfpProtocol[interface].s_num++;
 #endif /*HAS_TBFP_FLOW_CONTROL*/
+#ifdef HAS_TBFP_RETRANSMIT
+        header.lifetime = lifetime;
+#endif
         TbfpProtocol[interface].tx_pkt_cnt++;
         header.len = (uint8_t)payload_len;
         memcpy(out_array, &header, sizeof(TbfHeader_t));
@@ -107,7 +110,7 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
 bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame, Interfaces_t interface) {
     bool res = false;
     if(out_frame && tx_frame_len) {
-        res = tbfp_make_header(out_frame, sizeof(TbfPingFrame_t), interface);
+        res = tbfp_make_header(out_frame, sizeof(TbfPingFrame_t), interface, 0);
         if(res) {
             memcpy(&out_frame[TBFP_INDEX_PAYLOAD], pingFrame, sizeof(TbfPingFrame_t));
             uint32_t frame_len = sizeof(TbfPingFrame_t) + TBFP_SIZE_HEADER;
@@ -124,7 +127,7 @@ bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     if(tx_array && (0 < len)) {
         uint8_t frame[256] = "";
         uint32_t frame_len = TBFP_SIZE_HEADER + len;
-        res = tbfp_make_header(frame, len, interface);
+        res = tbfp_make_header(frame, len, interface,0);
         if(res) {
             memcpy(&frame[TBFP_INDEX_PAYLOAD], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
@@ -150,12 +153,16 @@ bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     return res;
 }
 
-static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
+static bool tbfp_send_text(uint8_t payload_id,
+                           uint8_t* tx_array,
+                           uint32_t len,
+                           Interfaces_t interface,
+                           uint8_t lifetime) {
     bool res = false;
     if(tx_array && (0 < len)) {
         uint8_t frame[256] = "";
         uint32_t frame_len = TBFP_SIZE_HEADER + TBFP_SIZE_ID + len;
-        res = tbfp_make_header(frame, len + TBFP_SIZE_ID, interface);
+        res = tbfp_make_header(frame, len + TBFP_SIZE_ID, interface, lifetime);
         if(res) {
             frame[TBFP_INDEX_PAYLOAD] = payload_id;
             memcpy(&frame[TBFP_INDEX_PAYLOAD + 1], tx_array, len);
@@ -184,15 +191,15 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, 
     return res;
 }
 
-bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
+bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime) {
     bool res = false;
-    res = tbfp_send_text(FRAME_ID_CHAT, tx_array, len, interface);
+    res = tbfp_send_text(FRAME_ID_CHAT, tx_array, len, interface, lifetime);
     return res;
 }
 
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     bool res = false;
-    res = tbfp_send_text(FRAME_ID_CMD, tx_array, len, interface);
+    res = tbfp_send_text(FRAME_ID_CMD, tx_array, len, interface,0);
     return res;
 }
 

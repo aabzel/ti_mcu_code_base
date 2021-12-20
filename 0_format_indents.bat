@@ -6,6 +6,8 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 rem set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 set format_tool="C:\cygwin64\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\telematic\telematic_commands.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\telematic\telematic_commands.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_stm32f4\spi\spi_drv.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_stm32f4\spi\spi_drv.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\unit_tests\test_set_sw\test_calendar\test_calendar.c

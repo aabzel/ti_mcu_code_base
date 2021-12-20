@@ -39,6 +39,9 @@ typedef struct xTbfHeader_t {
 #ifdef HAS_TBFP_FLOW_CONTROL
     uint16_t snum; /* serial number of the frame. For flow controll.*/
 #endif
+#ifdef HAS_TBFP_RETRANSMIT
+    uint8_t lifetime; /*For mesh feature*/
+#endif
 } __attribute__((__packed__)) TbfHeader_t;
 
 typedef struct xTbfPingFrame_t {
@@ -75,7 +78,7 @@ extern TbfpProtocol_t TbfpProtocol[3]; /*RS232 LoRa*/
 bool tbfp_parser_reset_rx(TbfpProtocol_t* instance);
 bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
-bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
+bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime);
 bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface);
 bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface);
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface);

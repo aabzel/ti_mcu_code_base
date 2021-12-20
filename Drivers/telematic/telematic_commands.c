@@ -83,6 +83,7 @@ bool chat_command(int32_t argc, char* argv[]){
     uint8_t tx_array[LORA_MAX_FRAME_SIZE] = {0};
     memset(tx_array, 0x00, sizeof(tx_array));
     uint32_t tx_array_len = 0;
+    uint8_t lifetime =0;
     if(1 <= argc) {
         res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);
         if(false == res) {
@@ -92,12 +93,17 @@ bool chat_command(int32_t argc, char* argv[]){
         }
     }
 
-    if((1 < argc) || (0 == argc)) {
-        LOG_ERROR(SYS, "Usage: char text");
+    if(2 <= argc) {
+        res = try_str2uint8(argv[1], &lifetime);
+    }
+
+    if((2 < argc) || (0 == argc)) {
+        LOG_ERROR(SYS, "Usage: char text ttl");
         res = false;
     }
-    if(true == res) {
-        res = tbfp_send_chat(tx_array, tx_array_len,IF_LORA);
+
+    if(res) {
+        res = tbfp_send_chat(tx_array, tx_array_len,IF_LORA, lifetime);
         if(res) {
             LOG_INFO(SYS, "ok [%s]",tx_array);
             res = print_mem(tx_array,tx_array_len,false,true,true,false);
