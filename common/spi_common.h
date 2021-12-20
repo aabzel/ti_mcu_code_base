@@ -41,6 +41,8 @@ typedef struct xSpiInstance_t {
   bool init_done;
 }SpiInstance_t;
 
+#ifdef SPI_COUNT
 extern SpiInstance_t SpiInstance[SPI_COUNT];
+#endif
 
 #endif /* SPI_COMMON_H */
