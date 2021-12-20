@@ -3,6 +3,12 @@
 
 #include "log.h"
 
+#ifdef HAS_ADC_COMMANDS
+#include "adc_commands.h"
+#else
+#define ADC_COMMANDS
+#endif
+
 #ifdef NORTOS
 #include "task_commands.h"
 #else
@@ -83,11 +89,6 @@
 #define UART_COMMANDS
 #endif
 
-#ifdef HAS_ADC
-#include "adc_commands.h"
-#else
-#define ADC_COMMANDS
-#endif
 
 #ifdef HAS_DAC
 #include "dac_commands.h"
