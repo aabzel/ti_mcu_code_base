@@ -20,6 +20,10 @@
 #include "led_drv.h"
 #endif /*HAS_LED*/
 
+#ifdef HAS_CALENDAR
+#include "calendar.h"
+#endif /*HAS_CALENDAR*/
+
 #ifdef HAS_CLI
 #include "cli_manager.h"
 #include "log.h"
@@ -147,5 +151,10 @@ bool sw_init(void) {
 #ifdef HAS_ZED_F9P
     res = try_init(zed_f9p_init(), "zedf9p") && res;
 #endif /*HAS_ZED_F9P*/
+
+#ifdef HAS_CALENDAR
+    res = try_init(calendar_init(), "calendar") && res;
+#endif /*HAS_CALENDAR*/
+
     return res;
 }
