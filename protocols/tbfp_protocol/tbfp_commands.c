@@ -89,6 +89,7 @@ bool tbfp_send_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t array[256] = {0};
     uint32_t array_len = 0;
+    uint8_t livetime = 0;
     uint8_t interface = IF_NONE;
     if(1 <= argc) {
         res = try_str2array(argv[0], array, sizeof(array), &array_len);
@@ -102,15 +103,20 @@ bool tbfp_send_command(int32_t argc, char* argv[]) {
             LOG_ERROR(TBFP, "UnableToParseInterface");
         }
     }
+    if(3 <= argc) {
+        res = try_str2uint8(argv[2], &livetime);
+        if(false == res) {
+            LOG_ERROR(TBFP, "UnableToParseLivetime");
+        }
+    }
 
     if(res) {
-        res = tbfp_send(array, array_len, (Interfaces_t)interface);
+        res = tbfp_send(array, array_len, (Interfaces_t)interface, livetime);
         if(res) {
             LOG_INFO(TBFP, "Ok!");
         } else {
             LOG_ERROR(TBFP, "TbfpSendError");
         }
-
     } else {
         LOG_ERROR(TBFP, "Usage: tbfpds data interface");
     }
@@ -167,7 +173,7 @@ bool tbfp_send_hi_load_command(int32_t argc, char* argv[]) {
             uint32_t i = 0;
             for(i = 0; i < attempt; i++) {
                 memset(array, ((uint8_t)i), len);
-                res = tbfp_send(array, len, (Interfaces_t)interface);
+                res = tbfp_send(array, len, (Interfaces_t)interface, 0);
                 wait_in_loop_ms(pause_ms);
             }
         }

@@ -65,13 +65,39 @@ static bool tbfp_parser_proc_wait_serial_num(TbfpProtocol_t* instance, uint8_t r
         instance->parser.s_num = 0;
         memcpy(&instance->parser.s_num, &instance->parser.rx_frame[2], 2);
         instance->parser.load_len = 4;
-        instance->parser.rx_state = WAIT_PAYLOAD;
 #ifdef HAS_MCU
         LOG_DEBUG(TBFP, "SN:0x%04x %u", instance->parser.s_num, instance->parser.s_num);
 #endif
-        if((0 < instance->parser.exp_payload_len) && (instance->parser.exp_payload_len <= TBFP_MAX_PAYLOAD)) {
-            instance->parser.rx_state = WAIT_PAYLOAD;
-            res = true;
+        instance->parser.rx_state = WAIT_RETX_CNT;
+        res = true;
+    } else {
+        res = tbfp_parser_reset_rx(instance);
+    }
+    return res;
+}
+
+static bool tbfp_parser_proc_retransmit_cnt(TbfpProtocol_t* instance, uint8_t rx_byte) {
+    bool res = false;
+#ifdef X86_64
+    printf("\n%s(): rx: 0x%02x loadLen: %u", __FUNCTION__, rx_byte, instance->parser.load_len);
+#endif
+    if(TBFP_INDEX_RETX == instance->parser.load_len) {
+        instance->parser.rx_frame[TBFP_INDEX_RETX] = rx_byte;
+        instance->parser.load_len = TBFP_INDEX_RETX + 1;
+#ifdef HAS_MCU
+        LOG_DEBUG(TBFP, "ReTx:%u", rx_byte);
+#endif
+        if(0 < instance->parser.exp_payload_len) {
+            if(instance->parser.exp_payload_len <= TBFP_MAX_PAYLOAD) {
+                instance->parser.rx_state = WAIT_PAYLOAD;
+                res = true;
+            } else {
+                instance->err_cnt++;
+                res = tbfp_parser_reset_rx(instance);
+#ifdef HAS_MCU
+                LOG_ERROR(TBFP, "TooBigData %u byte", instance->parser.exp_payload_len);
+#endif
+            }
         } else if(0 == instance->parser.exp_payload_len) {
             instance->parser.rx_state = WAIT_CRC;
             res = true;
@@ -157,6 +183,9 @@ bool tbfp_proc_byte(TbfpProtocol_t* instance, uint8_t rx_byte) {
         break;
     case WAIT_SERIAL_NUM:
         res = tbfp_parser_proc_wait_serial_num(instance, rx_byte);
+        break;
+    case WAIT_RETX_CNT:
+        res = tbfp_parser_proc_retransmit_cnt(instance, rx_byte);
         break;
     case WAIT_PAYLOAD:
         res = tbfp_parser_proc_wait_payload(instance, rx_byte);

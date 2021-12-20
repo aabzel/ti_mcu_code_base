@@ -27,11 +27,14 @@ typedef enum xFrameId_t {
 #define TBFP_INDEX_PREAMBLE 0
 #define TBFP_INDEX_LEN 1
 #define TBFP_INDEX_SER_NUM 2
-#define TBFP_INDEX_PAYLOAD 4
+#define TBFP_INDEX_RETX 4
+#define TBFP_INDEX_PAYLOAD 5
 
 #define TBFP_SIZE_ID 1
-#define TBFP_OVERHEAD_SIZE (1 + 1 + 2 + 1)
-//#define TBFP_MAX_PAYLOAD (256 - TBFP_SIZE_CRC - TBFP_SIZE_HEADER)
+#define TBFP_SIZE_CRC 1
+
+#define TBFP_OVERHEAD_SIZE (sizeof(TbfHeader_t) + TBFP_SIZE_CRC)
+#define TBFP_MAX_PAYLOAD (256 - TBFP_OVERHEAD_SIZE)
 
 typedef struct xTbfHeader_t {
     uint8_t preamble;
@@ -76,7 +79,7 @@ typedef struct xTbfpProtocol_t {
 extern TbfpProtocol_t TbfpProtocol[3]; /*RS232 LoRa*/
 
 bool tbfp_parser_reset_rx(TbfpProtocol_t* instance);
-bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
+bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime);
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
 bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime);
 bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface);

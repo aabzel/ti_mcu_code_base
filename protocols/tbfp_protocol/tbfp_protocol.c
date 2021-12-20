@@ -122,12 +122,12 @@ bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_
     return res;
 }
 
-bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
+bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime) {
     bool res = false;
     if(tx_array && (0 < len)) {
         uint8_t frame[256] = "";
         uint32_t frame_len = TBFP_SIZE_HEADER + len;
-        res = tbfp_make_header(frame, len, interface, 0);
+        res = tbfp_make_header(frame, len, interface, lifetime);
         if(res) {
             memcpy(&frame[TBFP_INDEX_PAYLOAD], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
@@ -436,6 +436,12 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
                inHeader.snum, TbfpProtocol[interface].con_flow);
 #endif
 #endif /*HAS_TBFP_FLOW_CONTROL*/
+
+#ifdef HAS_TBFP_RETRANSMIT
+        if(inHeader.lifetime) {
+            res = tbfp_send(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface, inHeader.lifetime - 1);
+        }
+#endif /*HAS_TBFP_RETRANSMIT*/
         res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
     }
 

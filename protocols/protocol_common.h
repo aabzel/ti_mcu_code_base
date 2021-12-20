@@ -5,14 +5,15 @@
 extern "C" {
 #endif
 
-typedef enum eRxState_t{
-    WAIT_PREAMBLE=0,
-    WAIT_LEN=1,
+typedef enum eRxState_t {
+    WAIT_PREAMBLE = 0,
+    WAIT_LEN = 1,
     WAIT_SERIAL_NUM = 2,
-    WAIT_PAYLOAD=3,
-    WAIT_CRC=4,
-    RX_DONE=5,
-}RxState_t;
+    WAIT_RETX_CNT = 3,
+    WAIT_PAYLOAD = 4,
+    WAIT_CRC = 5,
+    RX_DONE = 6,
+} RxState_t;
 
 #ifdef __cplusplus
 }
