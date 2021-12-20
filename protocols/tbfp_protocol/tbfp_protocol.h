@@ -34,7 +34,6 @@ typedef enum xFrameId_t {
 #define TBFP_SIZE_CRC 1
 
 #define TBFP_OVERHEAD_SIZE (sizeof(TbfHeader_t) + TBFP_SIZE_CRC)
-#define TBFP_MAX_PAYLOAD (256 - TBFP_OVERHEAD_SIZE)
 
 typedef struct xTbfHeader_t {
     uint8_t preamble;

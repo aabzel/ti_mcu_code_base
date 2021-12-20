@@ -26,7 +26,7 @@ extern "C" {
 #define MX25L6433_COMMANDS
 #endif
 
-#ifdef HAS_CORTEX_M4
+#ifdef HAS_CORTEX_M4_COMMANDS
 #include "core_commands.h"
 #else
 #define CORTEX_M4_COMMANDS
