@@ -27,7 +27,7 @@ Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT] = {
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 2},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 60000U},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 100},
-    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 1000},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 5, .period_ms = 1000},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 500},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 100},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 100}};
@@ -134,6 +134,9 @@ void timerCallback2(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interrupt
     // interrupt callback code goes here. Minimize processing in interrupt.
     if(TimerItem[2].hTimer == handle) {
         TimerItem[2].tim_it_cnt++;
+#ifdef HAS_RTC
+        SwRtc.raw_sec++;
+#endif
     }
 }
 
@@ -148,9 +151,6 @@ void timerCallback4(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interrupt
     // interrupt callback code goes here. Minimize processing in interrupt.
     if(TimerItem[4].hTimer == handle) {
         TimerItem[4].tim_it_cnt++;
-#ifdef HAS_RTC
-        SwRtc.raw_sec++;
-#endif
     }
 }
 
@@ -245,8 +245,8 @@ static bool tim_init_item(uint32_t index, uint32_t period_ms, uint8_t cnt_period
             TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
             GPTimerCC26XX_registerInterrupt(TimerItem[index].hTimer, timerCallback[index], GPT_INT_TIMEOUT);
             GPTimerCC26XX_start(TimerItem[index].hTimer);
-            TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
-            TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
+            //TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
+            //TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
         } else {
             LOG_ERROR(TIM, "Unable to set timer %u", index);
             res = false;

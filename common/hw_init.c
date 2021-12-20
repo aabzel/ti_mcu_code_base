@@ -82,7 +82,6 @@
 #include "rtc_drv.h"
 #endif /*HAS_RTC*/
 
-
 #ifdef HAS_BLE
 #include "ble_drv.h"
 #endif /*HAS_BLE*/

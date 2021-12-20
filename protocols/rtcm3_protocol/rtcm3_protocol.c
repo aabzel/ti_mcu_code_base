@@ -154,7 +154,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
                 if(true == instance->lora_fwd) {
                     /*Wrap to TBFP*/
 #ifdef HAS_TBFP
-                    res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, IF_LORA,0);
+                    res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, IF_LORA, 0);
                     if(false == res) {
                         instance->lora_lost_pkt_cnt++;
                     }

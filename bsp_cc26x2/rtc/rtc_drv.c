@@ -10,11 +10,11 @@
 #include "time_utils.h"
 #include "read_mem.h"
 
-SwRtc_t SwRtc;
+SwRtc_t SwRtc={0};
 
 bool rtc_init(void) {
     SwRtc.raw_sec=0;
-    time_data_parse(&SwRtc.date_time,__TIMESTAMP__);
+    //time_data_parse(&SwRtc.date_time,__TIMESTAMP__);
     AONRTCEnable();
     return true;
 }

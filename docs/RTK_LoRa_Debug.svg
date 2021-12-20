@@ -491,11 +491,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="320.14259"
-     inkscape:cy="632.86057"
+     inkscape:zoom="4"
+     inkscape:cx="1063.375"
+     inkscape:cy="201.5"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer6"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -637,11 +637,6 @@
          x="223.15071"
          y="77.405205"
          style="stroke-width:0.264583">Rover</tspan></text>
-    <path
-       style="fill:none;stroke:#008000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1368);marker-end:url(#marker1294-1)"
-       d="m 40.003884,103.46685 -0.472497,50.45844"
-       id="path851"
-       sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#008000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -674,58 +669,6 @@
        d="M 40.892237,34.47777 35.242211,31.750262"
        id="path871"
        sodipodi:nodetypes="cc" />
-    <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.305277;stroke-opacity:1"
-       id="rect881"
-       width="22.772776"
-       height="14.365742"
-       x="37.230946"
-       y="88.065308" />
-    <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.440075;stroke-opacity:1"
-       id="rect883"
-       width="16.768723"
-       height="8.9284601"
-       x="43.300106"
-       y="108.24416" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.54431px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.340822"
-       x="38.883732"
-       y="93.024269"
-       id="text938"><tspan
-         sodipodi:role="line"
-         id="tspan936"
-         x="38.883732"
-         y="93.024269"
-         style="font-size:4.54431px;stroke-width:0.340822">ZED-F9P</tspan></text>
-    <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.23685;stroke-opacity:1"
-       id="rect960"
-       width="8.8867121"
-       height="8.7003317"
-       x="70.091431"
-       y="108.37779" />
-    <path
-       style="fill:none;stroke:#ff00ff;stroke-width:0.338511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 45.70309,102.43105 v 5.81311"
-       id="path964" />
-    <path
-       style="fill:none;stroke:#ff00ff;stroke-width:0.168895px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 60.068828,113.68978 h 9.788744"
-       id="path966"
-       sodipodi:nodetypes="cc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.52387px;line-height:1.25;font-family:sans-serif;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.18929"
-       x="61.122852"
-       y="112.90472"
-       id="text992-1"><tspan
-         sodipodi:role="line"
-         id="tspan990-4"
-         x="61.122852"
-         y="112.90472"
-         style="font-size:2.52387px;stroke-width:0.18929;fill:#ff00ff">UART0</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -748,32 +691,17 @@
          x="161.44598"
          y="84.892754"
          style="stroke-width:0.155626">RTCM3</tspan></text>
-    <path
-       style="fill:none;stroke:#ff00ff;stroke-width:0.443934px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Sstart-3);marker-end:url(#Arrow1Send-8)"
-       d="M 36.1473,95.575554 H 27.49444"
-       id="path986-5" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.48736px;line-height:1.25;font-family:sans-serif;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.557757"
-       x="29.28883"
-       y="95.096512"
-       id="text1538-1"><tspan
-         sodipodi:role="line"
-         id="tspan1536-1"
-         x="29.28883"
-         y="95.096512"
-         style="font-size:1.48736px;stroke-width:0.557757;fill:#ff00ff">UART2</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="76.351189"
-       y="19.049997"
+       x="72.609413"
+       y="17.366199"
        id="text2453"><tspan
          sodipodi:role="line"
          id="tspan2451"
-         x="76.351189"
-         y="19.049997"
-         style="stroke-width:0.264583">Real Time Kinematic Debug</tspan></text>
+         x="72.609413"
+         y="17.366199"
+         style="stroke-width:0.264583">Real Time Kinematic Installation</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker2841);marker-end:url(#marker2483)"
        d="m 251.63769,26.9875 h 26.26935"
@@ -782,17 +710,6 @@
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker2831);marker-end:url(#marker2473)"
        d="M 264.2999,12.52991 V 38.421278"
        id="path2469" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.85584px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0463963"
-       x="53.673954"
-       y="101.79696"
-       id="text3019-1"><tspan
-         sodipodi:role="line"
-         id="tspan3017-1"
-         x="53.673954"
-         y="101.79696"
-         style="stroke-width:0.0463963">250$</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -848,24 +765,6 @@
          style="stroke-width:0.0537657"
          x="41.766273"
          y="51.696655">50 Ω</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="39.906681"
-       y="84.27343"
-       id="text10052"><tspan
-         sodipodi:role="line"
-         id="tspan10050"
-         style="font-size:1.05833px;stroke-width:0.264583"
-         x="39.906681"
-         y="84.27343">SMA </tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.264999;stroke-opacity:1"
-       id="rect13314"
-       width="4.7440343"
-       height="2.3051996"
-       x="38.770782"
-       y="82.870255" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.264999;stroke-opacity:1"
        id="rect13314-8"
@@ -873,10 +772,6 @@
        height="2.3051996"
        x="38.770782"
        y="80.565056" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 40.825419,85.258978 v 2.789626"
-       id="path13437" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.672345px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.504258"
@@ -1122,17 +1017,6 @@
        id="path28136" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.43508px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.60877"
-       x="37.989788"
-       y="96.597"
-       id="text1131"><tspan
-         sodipodi:role="line"
-         id="tspan1129"
-         x="37.989788"
-         y="96.597"
-         style="font-size:2.43508px;stroke-width:0.60877">Mode: TIME</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.95133px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0737833"
        x="24.298872"
        y="29.450117"
@@ -1200,85 +1084,58 @@
          style="fill:#ff00e9;fill-opacity:1;stroke-width:0.0818657">5V 2A</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="8.8360214"
-       y="38.640835"
+       style="font-style:normal;font-weight:normal;font-size:4.21385px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.316038"
+       x="6.8045912"
+       y="41.104076"
        id="text1531"><tspan
          sodipodi:role="line"
          id="tspan1529"
-         x="8.8360214"
-         y="38.640835"
-         style="font-size:3.52778px;stroke-width:0.264583">REMAX</tspan></text>
+         x="6.8045912"
+         y="41.104076"
+         style="font-size:4.21385px;stroke-width:0.316038">REMAX</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.23489px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0808725"
-       x="10.808104"
-       y="50.836094"
+       x="6.9493999"
+       y="53.478722"
        id="text1535"><tspan
          sodipodi:role="line"
          id="tspan1533"
-         x="10.808104"
-         y="50.836094"
+         x="6.9493999"
+         y="53.478722"
          style="stroke-width:0.0808725">Power</tspan><tspan
          sodipodi:role="line"
-         x="10.808104"
-         y="54.879707"
+         x="6.9493999"
+         y="57.522335"
          style="stroke-width:0.0808725"
          id="tspan1537">Bank</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.58145px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0895364"
-       x="8.7908859"
-       y="42.779606"
+       style="font-style:normal;font-weight:normal;font-size:4.43345px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.110836"
+       x="7.1408148"
+       y="45.993988"
        id="text1541"><tspan
          sodipodi:role="line"
          id="tspan1539"
-         x="8.7908859"
-         y="42.779606"
-         style="stroke-width:0.0895364">RPP-15</tspan></text>
+         x="7.1408148"
+         y="45.993988"
+         style="stroke-width:0.110836">RPP-15</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="10.040824"
-       y="45.657021"
+       style="font-style:normal;font-weight:normal;font-size:2.87526px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.431288"
+       x="6.4221568"
+       y="49.849693"
        id="text1545"><tspan
          sodipodi:role="line"
          id="tspan1543"
-         x="10.040824"
-         y="45.657021"
-         style="font-size:1.76389px;stroke-width:0.264583">20000mAh</tspan></text>
+         x="6.4221568"
+         y="49.849693"
+         style="font-size:2.87526px;stroke-width:0.431288">20000mAh</tspan></text>
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker3457)"
        d="M 17.492791,78.517329 V 88.5085 l 15.852871,0"
        id="path1772"
        sodipodi:nodetypes="ccc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1368-3);marker-end:url(#marker1294-1);stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 73.932909,117.07813 0.02405,36.65248"
-       id="path875-7"
-       sodipodi:nodetypes="cc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="45.502636"
-       y="113.32228"
-       id="text2507"><tspan
-         sodipodi:role="line"
-         id="tspan2505"
-         x="45.502636"
-         y="113.32228"
-         style="font-size:3.52778px;stroke-width:0.264583">MCU</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.18929"
-       x="46.291561"
-       y="104.95187"
-       id="text992-3-9"><tspan
-         sodipodi:role="line"
-         id="tspan990-7-7"
-         x="46.291561"
-         y="104.95187"
-         style="font-size:1.76389px;stroke-width:0.18929;fill:#ff00ff">UART1</tspan></text>
     <rect
        style="opacity:0.998;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.212166;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2581"
@@ -1294,32 +1151,6 @@
        style="fill:none;stroke:#00ff00;stroke-width:0.382347;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker2751);marker-end:url(#marker3135)"
        d="m 187.61551,112.36682 h 8.23397"
        id="path2609" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.38844px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.208265"
-       x="74.016983"
-       y="116.25407"
-       id="text4431-0"><tspan
-         sodipodi:role="line"
-         id="tspan4429-0"
-         x="74.016983"
-         y="116.25407"
-         style="font-size:1.38844px;stroke-width:0.208265">RS232</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.31672px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.141077"
-       x="70.946884"
-       y="110.64579"
-       id="text4435-0"><tspan
-         sodipodi:role="line"
-         id="tspan4433-6"
-         x="70.946884"
-         y="110.64579"
-         style="font-size:1.31672px;stroke-width:0.141077">UART</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 78.97814,108.37779 -8.663826,8.66383"
-       id="path4461" />
     <rect
        style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.322963;stroke-opacity:1"
        id="rect1933-8-0"
@@ -1387,92 +1218,11 @@
        d="m 283.28491,78.50273 0,9.763032 -14.74676,0.242734"
        id="path1772-0"
        sodipodi:nodetypes="ccc" />
-    <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.246548;stroke-opacity:1"
-       id="rect885-7-0"
-       width="14.416459"
-       height="14.312281"
-       x="62.10709"
-       y="88.118767" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.9181px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.479528"
-       x="93.216339"
-       y="-85.995247"
-       id="text10052-6-9-0"
-       inkscape:transform-center-x="-1.1201624"
-       inkscape:transform-center-y="-1.0596317"
-       transform="rotate(90)"><tspan
-         sodipodi:role="line"
-         id="tspan10050-4-4-0"
-         style="font-size:1.9181px;stroke-width:0.479528"
-         x="93.216339"
-         y="-85.995247">SMA </tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.277944;stroke-opacity:1"
-       id="rect13314-1-3-6"
-       width="2.2091184"
-       height="5.4458122"
-       x="-85.195763"
-       y="-98.14711"
-       transform="scale(-1)" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="93.084885"
-       y="-83.338608"
-       id="text3290-3"
-       inkscape:transform-center-x="1.3229217"
-       inkscape:transform-center-y="-0.70870577"
-       transform="rotate(90)"><tspan
-         sodipodi:role="line"
-         id="tspan3288-8"
-         style="font-size:1.76389px;stroke-width:0.264583"
-         x="93.084885"
-         y="-83.338608">SMB</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.184875"
-       id="rect5804-3"
-       width="4.1988635"
-       height="5.4473658"
-       x="-89.382355"
-       y="-98.11393"
-       transform="scale(-1)" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="69.29126"
-       y="93.412201"
-       id="text7332-3"><tspan
-         sodipodi:role="line"
-         id="tspan7330-2"
-         style="font-size:1.76389px;stroke-width:0.264583"
-         x="69.29126"
-         y="93.412201">LoRa</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.447219px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 94.932583,82.84766 0.01494,12.66693 h -5.631146"
        id="path10093-2"
        sodipodi:nodetypes="ccc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 65.387489,102.43105 v 6.80534 h -5.19171"
-       id="path12600" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="66.182617"
-       y="106.26637"
-       id="text13484"><tspan
-         sodipodi:role="line"
-         id="tspan13482"
-         style="font-size:1.76389px;stroke-width:0.264583"
-         x="66.182617"
-         y="106.26637">SPI</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 76.566037,95.395042 h 6.314241"
-       id="path16627" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 91.451135,82.84766 H 98.55629 L 94.74125,85.280928 91.451135,82.84766"
@@ -1559,28 +1309,6 @@
          style="stroke-width:0.108026"
          x="90.719948"
          y="94.671761">1KByte/s</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.82222px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="63.376293"
-       y="98.408638"
-       id="text77084"><tspan
-         sodipodi:role="line"
-         id="tspan77082"
-         style="font-size:2.82222px;stroke-width:0.264583"
-         x="63.376293"
-         y="98.408638">SX1262</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.66717px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.125038"
-       x="215.75708"
-       y="29.175728"
-       id="text84203"><tspan
-         sodipodi:role="line"
-         id="tspan84201"
-         style="font-size:1.66717px;stroke-width:0.125038"
-         x="215.75708"
-         y="29.175728">55.86370259686189, 37.42779278366271</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.78546px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.119637"
@@ -1674,6 +1402,28 @@
          style="font-size:3.52778px;stroke-width:0.264583"
          x="8.9988794"
          y="68.96743">StepUp</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.04121px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.780908"
+       x="18.817448"
+       y="59.06176"
+       id="text156899"><tspan
+         sodipodi:role="line"
+         id="tspan156897"
+         style="font-size:1.04121px;stroke-width:0.780908"
+         x="18.817448"
+         y="59.06176">3600RUR</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="283.56717"
+       y="59.002083"
+       id="text159059"><tspan
+         sodipodi:role="line"
+         id="tspan159057"
+         style="font-size:1.76389px;stroke-width:0.264583"
+         x="283.56717"
+         y="59.002083">3600RUR</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1681,19 +1431,12 @@
      inkscape:label="HW"
      style="display:inline">
     <rect
-       style="opacity:0.998;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.338891;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.998;fill:#ececec;fill-opacity:1;stroke:#000000;stroke-width:0.338891;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2607"
        width="19.654762"
        height="39.496113"
        x="167.38638"
        y="100.50388" />
-    <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.265427;stroke-opacity:1"
-       id="rect833"
-       width="52.160713"
-       height="44.366329"
-       x="33.261906"
-       y="82.822662" />
     <rect
        style="opacity:0.998;fill:#f9f9f9;stroke:#000000;stroke-width:0.292852;stroke-opacity:1"
        id="rect835"
@@ -1715,6 +1458,13 @@
        height="29.217381"
        x="221.88596"
        y="153.66873" />
+    <rect
+       style="display:inline;opacity:0.998;fill:#f2f2f2;stroke:#000000;stroke-width:0.26677;stroke-opacity:1"
+       id="rect833"
+       width="52.424625"
+       height="44.590805"
+       x="32.997993"
+       y="82.710426" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1786,7 +1536,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="ICs">
+     inkscape:label="ICs"
+     style="display:inline">
     <rect
        style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.273079;stroke-opacity:1"
        id="rect885"
@@ -1815,6 +1566,34 @@
        height="8.8630562"
        x="241.24113"
        y="108.21507" />
+    <rect
+       style="opacity:0.998;fill:#e6e6e6;stroke:#000000;stroke-width:0.305277;stroke-opacity:1"
+       id="rect881"
+       width="22.772776"
+       height="14.365742"
+       x="37.230946"
+       y="88.065308" />
+    <rect
+       style="opacity:0.998;fill:#e6e6e6;stroke:#000000;stroke-width:0.440075;stroke-opacity:1"
+       id="rect883"
+       width="16.768723"
+       height="8.9284601"
+       x="43.300106"
+       y="108.24416" />
+    <rect
+       style="opacity:0.998;fill:#e6e6e6;stroke:#000000;stroke-width:0.23685;stroke-opacity:1"
+       id="rect960"
+       width="8.8867121"
+       height="8.7003317"
+       x="70.091431"
+       y="108.37779" />
+    <rect
+       style="opacity:0.998;fill:#e6e6e6;stroke:#000000;stroke-width:0.246548;stroke-opacity:1"
+       id="rect885-7-0"
+       width="14.416459"
+       height="14.312281"
+       x="62.10709"
+       y="88.118767" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2165,15 +1944,15 @@
          style="font-size:1.31672px;stroke-width:0.141077">UART</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="230.61272"
-       y="94.777534"
+       style="font-style:normal;font-weight:normal;font-size:3.5232px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.528479"
+       x="228.58882"
+       y="93.692574"
        id="text7332"><tspan
          sodipodi:role="line"
          id="tspan7330"
-         style="font-size:1.76389px;stroke-width:0.264583"
-         x="230.61272"
-         y="94.777534">LoRa</tspan></text>
+         style="font-size:3.5232px;stroke-width:0.528479"
+         x="228.58882"
+         y="93.692574">LoRa</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.31566px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0986741"
@@ -2299,6 +2078,177 @@
          x="69.128639"
          y="158.76343"
          style="stroke-width:0.0829144">USB</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.54431px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.340822"
+       x="38.883732"
+       y="93.024269"
+       id="text938"><tspan
+         sodipodi:role="line"
+         id="tspan936"
+         x="38.883732"
+         y="93.024269"
+         style="font-size:4.54431px;stroke-width:0.340822">ZED-F9P</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.52387px;line-height:1.25;font-family:sans-serif;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.18929"
+       x="61.122852"
+       y="112.90472"
+       id="text992-1"><tspan
+         sodipodi:role="line"
+         id="tspan990-4"
+         x="61.122852"
+         y="112.90472"
+         style="font-size:2.52387px;stroke-width:0.18929;fill:#ff00ff">UART0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.444724px;line-height:1.25;font-family:sans-serif;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.16677"
+       x="34.652195"
+       y="94.322678"
+       id="text1538-1"><tspan
+         sodipodi:role="line"
+         id="tspan1536-1"
+         x="34.652195"
+         y="94.322678"
+         style="font-size:0.444724px;fill:#ff00ff;stroke-width:0.16677">UART2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.85584px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0463963"
+       x="53.673954"
+       y="101.79696"
+       id="text3019-1"><tspan
+         sodipodi:role="line"
+         id="tspan3017-1"
+         x="53.673954"
+         y="101.79696"
+         style="stroke-width:0.0463963">250$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="39.906681"
+       y="84.27343"
+       id="text10052"><tspan
+         sodipodi:role="line"
+         id="tspan10050"
+         style="font-size:1.05833px;stroke-width:0.264583"
+         x="39.906681"
+         y="84.27343">SMA </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.43508px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.60877"
+       x="37.989788"
+       y="96.597"
+       id="text1131"><tspan
+         sodipodi:role="line"
+         id="tspan1129"
+         x="37.989788"
+         y="96.597"
+         style="font-size:2.43508px;stroke-width:0.60877">Mode: TIME</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="45.502636"
+       y="113.32228"
+       id="text2507"><tspan
+         sodipodi:role="line"
+         id="tspan2505"
+         x="45.502636"
+         y="113.32228"
+         style="font-size:3.52778px;stroke-width:0.264583">MCU</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.18929"
+       x="46.291561"
+       y="104.95187"
+       id="text992-3-9"><tspan
+         sodipodi:role="line"
+         id="tspan990-7-7"
+         x="46.291561"
+         y="104.95187"
+         style="font-size:1.76389px;stroke-width:0.18929;fill:#ff00ff">UART1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.38844px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.208265"
+       x="74.016983"
+       y="116.25407"
+       id="text4431-0"><tspan
+         sodipodi:role="line"
+         id="tspan4429-0"
+         x="74.016983"
+         y="116.25407"
+         style="font-size:1.38844px;stroke-width:0.208265">RS232</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.31672px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.141077"
+       x="70.946884"
+       y="110.64579"
+       id="text4435-0"><tspan
+         sodipodi:role="line"
+         id="tspan4433-6"
+         x="70.946884"
+         y="110.64579"
+         style="font-size:1.31672px;stroke-width:0.141077">UART</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.9181px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.479528"
+       x="93.216339"
+       y="-85.995247"
+       id="text10052-6-9-0"
+       inkscape:transform-center-x="-1.1201624"
+       inkscape:transform-center-y="-1.0596317"
+       transform="rotate(90)"><tspan
+         sodipodi:role="line"
+         id="tspan10050-4-4-0"
+         style="font-size:1.9181px;stroke-width:0.479528"
+         x="93.216339"
+         y="-85.995247">SMA </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="93.084885"
+       y="-83.338608"
+       id="text3290-3"
+       inkscape:transform-center-x="1.3229217"
+       inkscape:transform-center-y="-0.70870577"
+       transform="rotate(90)"><tspan
+         sodipodi:role="line"
+         id="tspan3288-8"
+         style="font-size:1.76389px;stroke-width:0.264583"
+         x="93.084885"
+         y="-83.338608">SMB</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.30292px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.645438"
+       x="63.844769"
+       y="94.101379"
+       id="text7332-3"><tspan
+         sodipodi:role="line"
+         id="tspan7330-2"
+         style="font-size:4.30292px;stroke-width:0.645438"
+         x="63.844769"
+         y="94.101379">LoRa</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="66.182617"
+       y="106.26637"
+       id="text13484"><tspan
+         sodipodi:role="line"
+         id="tspan13482"
+         style="font-size:1.76389px;stroke-width:0.264583"
+         x="66.182617"
+         y="106.26637">SPI</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.82222px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="63.376293"
+       y="98.408638"
+       id="text77084"><tspan
+         sodipodi:role="line"
+         id="tspan77082"
+         style="font-size:2.82222px;stroke-width:0.264583"
+         x="63.376293"
+         y="98.408638">SX1262</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2336,6 +2286,29 @@
        x="-163.32161"
        y="37.795826"
        transform="rotate(-90)" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.264999;stroke-opacity:1"
+       id="rect13314"
+       width="4.7440343"
+       height="2.3051996"
+       x="38.770782"
+       y="82.870255" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.277944;stroke-opacity:1"
+       id="rect13314-1-3-6"
+       width="2.2091184"
+       height="5.4458122"
+       x="-85.195763"
+       y="-98.14711"
+       transform="scale(-1)" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.184875"
+       id="rect5804-3"
+       width="4.1988635"
+       height="5.4473658"
+       x="-89.382355"
+       y="-98.11393"
+       transform="scale(-1)" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2378,5 +2351,44 @@
        d="m 227.73262,95.51459 h -1.98454"
        id="path10093"
        sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#008000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1368);marker-end:url(#marker1294-1)"
+       d="m 40.003884,103.46685 -0.472497,50.45844"
+       id="path851"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.338511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 45.70309,102.43105 v 5.81311"
+       id="path964" />
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.132737px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Sstart-3);marker-end:url(#Arrow1Send-8)"
+       d="M 36.702892,94.465915 H 34.11567"
+       id="path986-5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 40.825419,85.258978 v 2.789626"
+       id="path13437" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 76.566037,95.395042 h 6.314241"
+       id="path16627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1368-3);marker-end:url(#marker1294-1);stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 73.932909,117.07813 0.02405,36.65248"
+       id="path875-7"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 78.97814,108.37779 -8.663826,8.66383"
+       id="path4461" />
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.168895px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 60.068828,113.68978 h 9.788744"
+       id="path966"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 65.387489,102.43105 v 6.80534 h -5.19171"
+       id="path12600" />
   </g>
 </svg>

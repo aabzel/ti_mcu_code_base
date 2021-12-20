@@ -86,6 +86,7 @@ bool sw_init(void) {
 #ifdef HAS_DEBUG
     // set_log_level(ALL_FACILITY, LOG_LEVEL_DEBUG);
 #endif /*HAS_DEBUG*/
+
 #ifdef HAS_RELEASE
     set_log_level(ALL_FACILITY, LOG_LEVEL_INFO);
 #endif /*HAS_RELEASE*/
@@ -121,7 +122,7 @@ bool sw_init(void) {
 #endif /*HAS_FLASH_FS*/
 
 #ifdef HAS_PARAM
-    res = try_init(param_init(), "param") && res;
+    res = try_init(param_init(), "param") && res;//
 #endif /*HAS_PARAM*/
 
 #ifdef HAS_PWR_MUX

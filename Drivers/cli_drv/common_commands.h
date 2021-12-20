@@ -39,7 +39,7 @@
 #define INTERRUPT_COMMANDS
 #endif
 
-#ifdef HAS_TIM_CMD
+#ifdef HAS_TIM_COMMANDS
 #include "tim_commands.h"
 #else
 #define TIM_COMMANDS

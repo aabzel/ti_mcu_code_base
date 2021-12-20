@@ -39,7 +39,7 @@ typedef struct xTimer_t {
     GPTimerCC26XX_Handle hTimer;
     uint32_t tim_it_cnt;
     uint32_t period_ms;
-    uint8_t cnt_period_us; /* 5.3125e-06 s*/
+    uint8_t cnt_period_us; /* max 5.3125us*/
 } Timer_t;
 
 extern Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT];

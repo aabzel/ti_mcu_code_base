@@ -3,44 +3,43 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef HAS_CALENDAR
+#include "calendar.h"
+#endif
+#include "cli_manager.h"
 #include "clocks.h"
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
 #endif
 #include "gnss_diag.h"
 #include "log.h"
-
 #ifdef HAS_NMEA
 #include "nmea_protocol.h"
 #endif
-
-#ifdef HAS_RTCM3
-#include "rtcm3_protocol.h"
-#endif
-
+#include "none_blocking_pause.h"
 #ifdef HAS_PARAM
 #include "param_ids.h"
 #endif
+#include "sys_config.h"
+#include "task_config.h"
+#include "task_info.h"
 #include "time_utils.h"
+#ifdef HAS_RTCM3
+#include "rtcm3_protocol.h"
+#endif
+#ifdef HAS_RS232
+#include "rs232_drv.h"
+#endif
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
+#endif
+#include "uart_common.h"
 #ifdef HAS_UBX_PTOTO
 #include "ublox_driver.h"
 #include "ubx_key_ids.h"
 #include "ubx_protocol.h"
 #endif
-
-#include "cli_manager.h"
-#include "none_blocking_pause.h"
-#include "sys_config.h"
-#include "task_config.h"
-#include "task_info.h"
-#ifdef HAS_RS232
-#include "rs232_drv.h"
-#endif
-#include "uart_common.h"
 #include "writer_config.h"
-#ifdef HAS_SX1262
-#include "sx1262_drv.h"
-#endif
 #include "zed_f9p_diag.h"
 
 extern ZedF9P_t ZedF9P = {0};
@@ -191,6 +190,12 @@ bool zed_f9p_proc(void) {
         res = false;
         break;
     }
+#ifdef HAS_CALENDAR
+    res=is_valid_time_date(&ZedF9P.time_date);
+    if(res){
+       calendar_settime(&ZedF9P.time_date);
+    }
+#endif
     res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
     if(res) {
         ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
