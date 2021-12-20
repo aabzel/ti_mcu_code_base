@@ -1,8 +1,8 @@
-#include "unit_test_commands.h"
 #include "convert.h"
 #include "io_utils.h"
 #include "log.h"
 #include "unit_test.h"
+#include "unit_test_commands.h"
 
 /*****************************************************************************
  * @brief   Adds shell commands.

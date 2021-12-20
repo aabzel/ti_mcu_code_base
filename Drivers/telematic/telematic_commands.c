@@ -43,8 +43,8 @@ bool lora_sent_command(int32_t argc, char* argv[]) {
         res = false;
         (void)tx_array_len;
         (void)timeout_s;
-        res = tbfp_send_cmd(tx_array, tx_array_len, IF_LORA );
-        if(res){
+        res = tbfp_send_cmd(tx_array, tx_array_len, IF_LORA);
+        if(res) {
             LOG_INFO(SYS, "OK");
         }
     }
@@ -52,22 +52,21 @@ bool lora_sent_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-
-bool ping_command(int32_t argc, char* argv[]){
+bool ping_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t interface = IF_LORA;
-    if (0 == argc) {
+    if(0 == argc) {
         res = true;
         interface = IF_LORA;
     }
 
-    if (1 == argc) {
+    if(1 == argc) {
         res = try_str2uint8(argv[0], &interface);
     }
 
-    if (res) {
-        res = tbfp_send_ping(FRAME_ID_PING,(Interfaces_t) interface);
-        if (res) {
+    if(res) {
+        res = tbfp_send_ping(FRAME_ID_PING, (Interfaces_t)interface);
+        if(res) {
             LOG_INFO(SYS, "OK");
         } else {
             LOG_ERROR(SYS, "Err");
@@ -78,12 +77,12 @@ bool ping_command(int32_t argc, char* argv[]){
     return res;
 }
 
-bool chat_command(int32_t argc, char* argv[]){
+bool chat_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t tx_array[LORA_MAX_FRAME_SIZE] = {0};
     memset(tx_array, 0x00, sizeof(tx_array));
     uint32_t tx_array_len = 0;
-    uint8_t lifetime =0;
+    uint8_t lifetime = 0;
     if(1 <= argc) {
         res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);
         if(false == res) {
@@ -103,15 +102,13 @@ bool chat_command(int32_t argc, char* argv[]){
     }
 
     if(res) {
-        res = tbfp_send_chat(tx_array, tx_array_len,IF_LORA, lifetime);
+        res = tbfp_send_chat(tx_array, tx_array_len, IF_LORA, lifetime);
         if(res) {
-            LOG_INFO(SYS, "ok [%s]",tx_array);
-            res = print_mem(tx_array,tx_array_len,false,true,true,false);
+            LOG_INFO(SYS, "ok [%s]", tx_array);
+            res = print_mem(tx_array, tx_array_len, false, true, true, false);
         } else {
             LOG_ERROR(SYS, "chat error");
         }
     }
     return res;
 }
-
-

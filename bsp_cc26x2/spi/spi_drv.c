@@ -83,8 +83,7 @@ static SPI_CallbackFxn spiCallbackFunctions[SPI_CNT] = {
 
 #endif
 
-const static uint32_t SpiBaseLut[2] = {SSI0_BASE,
-                                       SSI1_BASE };
+const static uint32_t SpiBaseLut[2] = {SSI0_BASE, SSI1_BASE};
 
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SPI_CallbackFxn transferCallbackFxn) {
     bool res = false;

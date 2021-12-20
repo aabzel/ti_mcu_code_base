@@ -358,42 +358,42 @@ bool try_strl2uint32(const char u32l_str[], int32_t u32l_str_len, uint32_t* u32l
     return u32l_success;
 }
 
-static bool skip_prefix_spaces(const char str[],  int32_t len, uint32_t *start_index){
+static bool skip_prefix_spaces(const char str[], int32_t len, uint32_t* start_index) {
     bool res = false;
-    if(str&& (0<len)&&start_index){
+    if(str && (0 < len) && start_index) {
         uint32_t shift = 0;
-        while((' '==str[0]) && (shift<len)){
+        while((' ' == str[0]) && (shift < len)) {
             shift++;
             str++;
         }
-        *start_index=shift;
+        *start_index = shift;
         res = true;
     }
     return res;
 }
 
-bool try_strl2month(const char str[], int32_t* mon_value){
+bool try_strl2month(const char str[], int32_t* mon_value) {
     bool res = true;
-    if(strstr(str,"Dec")){
-        *mon_value=11;
-    }else{
+    if(strstr(str, "Dec")) {
+        *mon_value = 11;
+    } else {
         res = false;
     }
     return res;
 }
 
 bool try_strl2int32(const char s32l_str[], int32_t s32l_str_len, int32_t* s32l_value) {
-    //printf("\n%s() index %u len %u status %u",__FUNCTION__,s32l_str,s32l_str_len);
+    // printf("\n%s() index %u len %u status %u",__FUNCTION__,s32l_str,s32l_str_len);
     bool s32l_success = true;
     bool s32l_str_not_empty = true;
     int32_t s32l_len = s32l_str_len;
     if(NULL != s32l_value) {
         *s32l_value = 0;
     }
-    uint32_t start_index=0;
-    bool res=skip_prefix_spaces(s32l_str, s32l_str_len, &start_index);
-    if (res) {
-        s32l_len-=start_index;
+    uint32_t start_index = 0;
+    bool res = skip_prefix_spaces(s32l_str, s32l_str_len, &start_index);
+    if(res) {
+        s32l_len -= start_index;
     }
     s32l_str_not_empty = get_str_len(&s32l_str[start_index], &s32l_len);
     if(s32l_str_not_empty == false) {
@@ -403,7 +403,8 @@ bool try_strl2int32(const char s32l_str[], int32_t s32l_str_len, int32_t* s32l_v
     if(s32l_success == true) {
         uint8_t out_shift = 0U;
         if(is_hex_str(&s32l_str[start_index], s32l_len, &out_shift) == true) {
-            s32l_success = try_strl2int32_hex(&s32l_str[out_shift+start_index], s32l_len - ((int32_t)out_shift), s32l_value);
+            s32l_success =
+                try_strl2int32_hex(&s32l_str[out_shift + start_index], s32l_len - ((int32_t)out_shift), s32l_value);
         } else {
             s32l_success = try_strl2int32_dec(&s32l_str[start_index], s32l_len, s32l_value);
         }
@@ -466,7 +467,7 @@ bool try_strl2uint32_dec(const char u32_dec_str[], int32_t u32_dec_str_len, uint
 bool try_strl2int32_dec(const char s32_dec_str[], int32_t s32_dec_str_len, int32_t* s32_dec_value) {
     int64_t s32l_dec_result = 0;
 #ifdef HAS_CONVERT_DEBUG
-    printf("\n%s() str:[%s] len [%u]",__FUNCTION__, s32_dec_str, s32_dec_str_len);
+    printf("\n%s() str:[%s] len [%u]", __FUNCTION__, s32_dec_str, s32_dec_str_len);
 #endif
     bool s32l_dec_success = try_strl2int64_dec(s32_dec_str, s32_dec_str_len, &s32l_dec_result);
 

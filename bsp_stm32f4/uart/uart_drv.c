@@ -66,9 +66,9 @@ static uint8_t get_uart_index(USART_TypeDef* USARTx) {
 }
 #endif
 
-static bool init_uart(uint8_t uart_num, char *name) {
+static bool init_uart(uint8_t uart_num, char* name) {
     bool res = false;
-    strncpy(huart[uart_num].name, name,sizeof(huart[uart_num].name));
+    strncpy(huart[uart_num].name, name, sizeof(huart[uart_num].name));
     huart[uart_num].rx_buff = (volatile uint8_t*)&rx_buff[uart_num][0];
     huart[uart_num].rx_buff_size = sizeof(rx_buff[uart_num][0]);
     huart[uart_num].uart_h.Init.BaudRate = CLI_UART_BAUD_RATE;
@@ -99,7 +99,7 @@ static bool init_uart(uint8_t uart_num, char *name) {
 
 bool uart_init(void) {
     bool res = true;
-    res = init_uart(UART_NUM_CLI,"CLI") && res;
+    res = init_uart(UART_NUM_CLI, "CLI") && res;
     if(res) {
         res = uart_send_banner(UART_NUM_CLI, 'v');
     }
@@ -221,8 +221,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* uart_handle) {
     if(USART6 == uart_handle->Instance) {
         huart[5].rx_cnt++;
         huart[5].rx_int = true;
-        HAL_UART_Receive_IT(&huart[5].uart_h, (uint8_t*)huart[5].rx_buff,
-                            huart[5].rx_buff_size);
+        HAL_UART_Receive_IT(&huart[5].uart_h, (uint8_t*)huart[5].rx_buff, huart[5].rx_buff_size);
 #ifdef HAS_CLI
         uart_string_reader_rx_callback(&cmd_reader, huart[5].rx_buff[0]);
 #endif /*HAS_CLI*/
@@ -260,76 +259,73 @@ static const uint32_t UartClockLUT[UART_COUNT] = {
     /*5  USART6  */ APB2_CLOCK_HZ,
 };
 
-uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa,
-                            uint16_t* fraction, uint8_t* over_sampling) {
+uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling) {
     bool res = true;
     uint32_t baud_rate_reg = 0;
     uint32_t control_register1 = 0;
     uint32_t baud_rate = 0;
-    switch (uart_num) {
-        case 0:
-            baud_rate_reg = USART1->BRR;
-            control_register1 = USART1->CR1;
-            break;
-        case 1:
-            baud_rate_reg = USART2->BRR;
-            control_register1 = USART2->CR1;
-            break;
-        case 2:
-            baud_rate_reg = USART3->BRR;
-            control_register1 = USART3->CR1;
-            break;
-        case 3:
-            baud_rate_reg = UART4->BRR;
-            control_register1 = UART4->CR1;
-            break;
-        case 4:
-            baud_rate_reg = UART5->BRR;
-            control_register1 = UART5->CR1;
-            break;
-        case 5:
-            baud_rate_reg = USART6->BRR;
-            control_register1 = USART6->CR1;
-            break;
-        case 6:
+    switch(uart_num) {
+    case 0:
+        baud_rate_reg = USART1->BRR;
+        control_register1 = USART1->CR1;
+        break;
+    case 1:
+        baud_rate_reg = USART2->BRR;
+        control_register1 = USART2->CR1;
+        break;
+    case 2:
+        baud_rate_reg = USART3->BRR;
+        control_register1 = USART3->CR1;
+        break;
+    case 3:
+        baud_rate_reg = UART4->BRR;
+        control_register1 = UART4->CR1;
+        break;
+    case 4:
+        baud_rate_reg = UART5->BRR;
+        control_register1 = UART5->CR1;
+        break;
+    case 5:
+        baud_rate_reg = USART6->BRR;
+        control_register1 = USART6->CR1;
+        break;
+    case 6:
 #ifdef UART7
-            baud_rate_reg = UART7->BRR;
-            control_register1 = UART7->CR1;
+        baud_rate_reg = UART7->BRR;
+        control_register1 = UART7->CR1;
 #endif
-            break;
-        case 7:
+        break;
+    case 7:
 #ifdef UART8
-            baud_rate_reg = UART8->BRR;
-            control_register1 = UART8->CR1;
+        baud_rate_reg = UART8->BRR;
+        control_register1 = UART8->CR1;
 #endif
-            break;
-        case 8:
+        break;
+    case 8:
 #ifdef UART9
-            baud_rate_reg = UART9->BRR;
-            control_register1 = UART9->CR1;
+        baud_rate_reg = UART9->BRR;
+        control_register1 = UART9->CR1;
 #endif
-            break;
-        case 9:
+        break;
+    case 9:
 #ifdef UART10
-            baud_rate_reg = UART10->BRR;
-            control_register1 = UART10->CR1;
+        baud_rate_reg = UART10->BRR;
+        control_register1 = UART10->CR1;
 #endif
-            break;
-        default:
-            res = false;
-            break;
+        break;
+    default:
+        res = false;
+        break;
     }
-    if (true == res) {
+    if(true == res) {
         (*fraction) = MASK_4BIT & baud_rate_reg;
         (*mantissa) = MASK_12BIT & (baud_rate_reg >> 4);
-        if (BIT_15 == (control_register1 & BIT_15)) {
+        if(BIT_15 == (control_register1 & BIT_15)) {
             (*over_sampling) = 8U;
         } else {
             (*over_sampling) = 16U;
         }
-        baud_rate =
-            UartClockLUT[uart_num] /
-            ((*over_sampling) * ((*mantissa) + (*fraction) / (*over_sampling)));
+        baud_rate = UartClockLUT[uart_num] / ((*over_sampling) * ((*mantissa) + (*fraction) / (*over_sampling)));
     }
 
     return baud_rate;

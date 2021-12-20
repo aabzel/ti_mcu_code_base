@@ -87,7 +87,7 @@ bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
     return res;
 }
 
-static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interfaces_t interface,uint8_t lifetime) {
+static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interfaces_t interface, uint8_t lifetime) {
     bool res = false;
     if(out_array && (0 < payload_len) && (payload_len < TBFP_MAX_PAYLOAD)) {
         TbfHeader_t header;
@@ -127,7 +127,7 @@ bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     if(tx_array && (0 < len)) {
         uint8_t frame[256] = "";
         uint32_t frame_len = TBFP_SIZE_HEADER + len;
-        res = tbfp_make_header(frame, len, interface,0);
+        res = tbfp_make_header(frame, len, interface, 0);
         if(res) {
             memcpy(&frame[TBFP_INDEX_PAYLOAD], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
@@ -153,10 +153,7 @@ bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     return res;
 }
 
-static bool tbfp_send_text(uint8_t payload_id,
-                           uint8_t* tx_array,
-                           uint32_t len,
-                           Interfaces_t interface,
+static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, Interfaces_t interface,
                            uint8_t lifetime) {
     bool res = false;
     if(tx_array && (0 < len)) {
@@ -199,7 +196,7 @@ bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uin
 
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface) {
     bool res = false;
-    res = tbfp_send_text(FRAME_ID_CMD, tx_array, len, interface,0);
+    res = tbfp_send_text(FRAME_ID_CMD, tx_array, len, interface, 0);
     return res;
 }
 
@@ -402,7 +399,8 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
 #ifdef HAS_TBFP_FLOW_CONTROL
 #ifdef X86_64
-        printf("\n1 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num, inHeader.snum,TbfpProtocol[interface].con_flow);
+        printf("\n1 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num,
+               inHeader.snum, TbfpProtocol[interface].con_flow);
 #endif
         if((TbfpProtocol[interface].prev_s_num + 1) == inHeader.snum) {
             /*Flow ok*/
@@ -434,7 +432,8 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         }
         TbfpProtocol[interface].prev_s_num = inHeader.snum;
 #ifdef X86_64
-        printf("\n2 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num, inHeader.snum,TbfpProtocol[interface].con_flow);
+        printf("\n2 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num,
+               inHeader.snum, TbfpProtocol[interface].con_flow);
 #endif
 #endif /*HAS_TBFP_FLOW_CONTROL*/
         res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
