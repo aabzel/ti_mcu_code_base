@@ -32,8 +32,6 @@ typedef enum eSpiName_t {
     SPI_CNT = 2
 } SpiName_t;
 
-extern SpiInstance_t SpiInstance[SPI_CNT];
-
 bool spi_init(void);
 bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len);
 bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len);

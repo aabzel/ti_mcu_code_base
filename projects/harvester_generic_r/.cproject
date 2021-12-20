@@ -152,6 +152,7 @@
 									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
+									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
 									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>

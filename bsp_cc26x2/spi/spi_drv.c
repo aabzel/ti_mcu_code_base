@@ -13,22 +13,6 @@
 #include "gpio_drv.h"
 #include "sys_config.h"
 
-SpiInstance_t SpiInstance[SPI_CNT] = {{
-                                          .SpiHandle = NULL,
-                                          .rx_byte_cnt = 0,
-                                          .tx_byte_cnt = 0,
-                                          .base_addr = SSI0_BASE,
-                                          .init_done = false,
-                                      },
-                                      {
-                                          .SpiHandle = NULL,
-                                          .rx_byte_cnt = 0,
-                                          .tx_byte_cnt = 0,
-                                          .base_addr = SSI1_BASE,
-                                          .name = "unued",
-                                          .init_done = false,
-                                      }};
-
 const uint_least8_t SPI_count = SPI_CNT;
 
 SPICC26X2DMA_Object spiCC26X2DMAObjects[SPI_CNT];
@@ -99,6 +83,9 @@ static SPI_CallbackFxn spiCallbackFunctions[SPI_CNT] = {
 
 #endif
 
+const static uint32_t SpiBaseLut[2] = {SSI0_BASE,
+                                       SSI1_BASE };
+
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SPI_CallbackFxn transferCallbackFxn) {
     bool res = false;
     SpiInstance[spi_num].init_done = false;
@@ -108,9 +95,9 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SP
     SpiInstance[spi_num].rx_byte_cnt = 0;
     SpiInstance[spi_num].tx_byte_cnt = 0;
     SpiInstance[spi_num].it_done = true;
-
+    SpiInstance[spi_num].base_addr = SpiBaseLut[spi_num];
     SpiInstance[spi_num].SpiParams.bitRate = bit_rate;
-    SpiInstance[spi_num].SpiParams.dataSize = 8; //(bits)
+    SpiInstance[spi_num].SpiParams.dataSize = 8;
     SpiInstance[spi_num].SpiParams.frameFormat = SPI_POL0_PHA0;
     SpiInstance[spi_num].SpiParams.mode = SPI_MASTER;
     SpiInstance[spi_num].SpiParams.transferMode = SPI_MODE_BLOCKING;

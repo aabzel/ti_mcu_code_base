@@ -39,6 +39,8 @@
 #define DIO_TDO 16U
 #define DIO_TDI 17U
 
+#define SPI_COUNT 1
+
 #define VOL_DIV_SCALE_PWR 11.0f
 #define VOL_DIV_SCALE_ACC 1.47619f
 

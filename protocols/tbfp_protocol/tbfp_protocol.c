@@ -49,7 +49,9 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
     if(instance) {
         memset(instance, 0x0, sizeof(TbfpProtocol_t));
         instance->interface = interface;
+#ifdef HAS_TBFP_FLOW_CONTROL
         instance->prev_s_num = 0xFFFF;
+#endif
         instance->rx_pkt_cnt = 0;
         res = true;
     }
