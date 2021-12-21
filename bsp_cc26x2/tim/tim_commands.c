@@ -17,10 +17,14 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         res = true;
         const table_col_t cols[] = {{5, "GPT"},   {5, "width"},  {5, "tim"},
-                                    {14, "Val"},  {7, "%"},
+                                    {14, "Val"},
+                                    {12, "Val"},
                                     {8, "PSC"},
                                     {8, "tickUs"},
-                                    {14, "load"}, {14, "match"}, {8, "It"},  {10, "periodMs"}};
+                                    {14, "load"}, {14, "match"}, {8, "It"},
+                                    {10, "periodMs"},
+                                    {7, "%"}
+        };
         uint8_t part = 0, tim_base_id = 0, width = 0;
         uint32_t val = 0, load = 0, match = 0;
         uint32_t prescaler = 0;
@@ -30,7 +34,7 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
 
             for(part = 0; part < 2; part++) {
                 val = TimerValueGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
-                prescaler = TimerPrescaleGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
+                //prescaler = TimerPrescaleGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
                 load = TimerLoadGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
                 match = TimerMatchGet(TimBaseLut[tim_base_id], TimInstLUT[part]);
                 calc_period = tim_calc_real_period_s(SYS_FREQ, prescaler, load);
@@ -40,13 +44,16 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
                 io_printf("  %2u " TSEP, width);
                 io_printf("  %s  " TSEP, (0 == part) ? "A" : "B");
                 io_printf(" %12u " TSEP, val);
-                io_printf(" %4.2f " TSEP, ((float)(100*val))/((float)load));
+                io_printf(" 0x%08x " TSEP, val);
+                uint64_t val64 =((uint64_t)100UL)*((uint64_t)val);
+                uint64_t load64 = (uint64_t)load;
                 io_printf(" %6u " TSEP, prescaler);
-                io_printf(" %6u " TSEP, prescaler*1000000/SYS_FREQ);
+                io_printf(" %6u " TSEP, (prescaler+1)*1000000/SYS_FREQ);
                 io_printf(" %12u " TSEP, load);
                 io_printf(" %12u " TSEP, match);
                 io_printf(" %6u " TSEP, TimerItem[tim_base_id * 2 + part].tim_it_cnt);
                 io_printf(" %6.1f " TSEP, calc_period * 1000.0f);
+                io_printf(" %llu " TSEP, (val64/(load64) ));
 
                 io_printf(CRLF);
             }
@@ -62,16 +69,26 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
 
 bool tim_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
+    static uint32_t up_time_s_prev= 0;
+    static uint32_t up_time_ms_prev= 0;
+    static uint32_t up_time_us_prev= 0;
     if(0 == argc) {
         res = true;
         const table_col_t cols[] = {{5, "num"}, {14, "Val"}, {14, "rVal"}};
         uint8_t tim_num = 0;
         uint32_t val = 0, fRval = 0;
+        uint32_t up_time_us = tim_get_us();
 
-        uint32_t up_time_us= tim_get_us();
-        io_printf("UpTimeUs %u " CRLF, up_time_us);
-        io_printf("UpTimeMs %u " CRLF, up_time_us/1000);
-        io_printf("UpTimeS %u " CRLF,  up_time_us/1000000);
+        uint32_t up_time_s_diff= (up_time_us/1000000)-up_time_s_prev;
+        uint32_t up_time_ms_diff= (up_time_us/1000)-up_time_ms_prev;
+        uint32_t up_time_us_diff= up_time_us-up_time_us_prev;
+
+        io_printf("UpTimeUs %u+%u" CRLF,up_time_us ,up_time_us_diff);
+        io_printf("UpTimeMs %u+%u" CRLF,up_time_us/1000 ,up_time_ms_diff);
+        io_printf("UpTimeS %u+%u" CRLF, up_time_us/1000000,up_time_s_diff);
+        up_time_s_prev = up_time_us/1000000;
+        up_time_ms_prev = up_time_us/1000;
+        up_time_us_prev = up_time_us;
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         for(tim_num = 0; tim_num < ARRAY_SIZE(TimerItem); tim_num++) {
             if(TimerItem[tim_num].hTimer) {

@@ -21,11 +21,12 @@ https://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/tirtos/2_20_
 #include "clocks.h"
 #include "float_utils.h"
 #include "log.h"
+#include "sys_config.h"
 
 Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT] = {
-    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 4294960},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 89478},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 2},
-    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 60000U},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 1000U},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 100},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 5, .period_ms = 1000},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 500},
@@ -193,7 +194,6 @@ bool tim_calc_registers(uint32_t period_ms, uint32_t cpu_clock, uint32_t prescal
     float cpu_period = 1.0f / ((float)cpu_clock);
     float calc_period = 0.0f;
     float des_period = (((float)period_ms) / ((float)1000.0f));
-
     load = (uint32_t)(des_period / ((float)cpu_period * ((float)(prescaler + 1U))));
     if(max_val < load) {
         res = false;
@@ -237,16 +237,27 @@ static bool tim_init_item(uint32_t index, uint32_t period_ms, uint8_t cnt_period
     if(res) {
         uint32_t prescaler = 0;
         GPTimerCC26XX_Value load_val = 0;
-        prescaler = cnt_period_us * CLOCK_FOR_US;
-        res = tim_calc_registers(period_ms, SYS_FREQ, prescaler, &load_val, 0xFFFFFFFF);
+        prescaler = 0;
+#ifdef HAS_TIM16BIT
+        if(TIM_MAX_PSC < prescaler ){
+            LOG_INFO(TIM, "TIM%u TooBigPsc %u", index, prescaler);
+            prescaler = TIM_MAX_PSC;
+        }
+        LOG_INFO(TIM, "TIM%u SetPrescaler %u",index, prescaler);
+#endif
+        LOG_INFO(TIM, "TIM%u DesPrescaler %u",index, prescaler);
+        res = tim_calc_registers(period_ms, SYS_FREQ, prescaler, &load_val, 0xFFFFFFFE);
         if(res) {
+            LOG_INFO(TIM, "TIM%u SetLoad %u", index, load_val);
             GPTimerCC26XX_setLoadValue(TimerItem[index].hTimer, load_val);
-            TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
-            TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
+            //TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler-1);
+            //TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler-1);
             GPTimerCC26XX_registerInterrupt(TimerItem[index].hTimer, timerCallback[index], GPT_INT_TIMEOUT);
             GPTimerCC26XX_start(TimerItem[index].hTimer);
-            //TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
-            //TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler);
+           // TimerPrescaleSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler-1);
+            //TimerEnable(uint32_t ui32Base, uint32_t ui32Timer);
+           // (TimBaseLut[tim_base_id], TimInstLUT[part]);
+            //TimerPrescaleMatchSet(gptimerCC26xxHWAttrs[index].baseAddr, TimInstLUT[index % 2], prescaler-1);
         } else {
             LOG_ERROR(TIM, "Unable to set timer %u", index);
             res = false;
@@ -283,7 +294,8 @@ uint8_t tim_get_width(uint32_t tim_base) {
 }
 
 uint32_t tim_get_us(void){
-    bool time_us = 0;
+    uint32_t time_us = 0;
     time_us = TimerValueGet(GPT0_BASE, TIMER_A);
+    time_us = time_us/CLOCK_FOR_US;
     return time_us;
 }

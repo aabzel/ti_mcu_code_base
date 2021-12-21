@@ -40,6 +40,8 @@
 #define DIO_TDI 17U
 
 #define SPI_COUNT 1
+#define SYS_FREQ 48000000U
+#define CLOCK_FOR_US (SYS_FREQ / 1000000U)
 
 #define VOL_DIV_SCALE_PWR 11.0f
 #define VOL_DIV_SCALE_ACC 1.47619f

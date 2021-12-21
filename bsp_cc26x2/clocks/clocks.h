@@ -10,8 +10,6 @@ extern "C" {
 
 #include "sys_config.h"
 
-#define SYS_FREQ 48000000U
-#define CLOCK_FOR_US (SYS_FREQ / 1000000U)
 
 #define COUNTER_FREQ (SYS_FREQ / 1000000U)
 

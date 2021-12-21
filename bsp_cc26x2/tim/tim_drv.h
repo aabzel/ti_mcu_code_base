@@ -5,6 +5,9 @@
 #include <stdint.h>
 
 #include <ti/drivers/timer/GPTimerCC26XX.h>
+
+#define TIM_MAX_PSC 255
+#define XTALL_TICKS_IN_1US (SYS_FREQ/1000000)
 /*!
  *  @def    BOARD_GPTimerName
  *  @brief  Enum of GPTimer parts
