@@ -80,3 +80,13 @@ bool pwr_set_save_mode_command(int32_t argc, char *argv[]) {
 }
 
 
+bool pwr_reboot_command(int32_t argc, char *argv[]){
+    bool res = false;
+    if(0==argc){
+        res = gpio_set_state(DIO_3V3_CTRL , 1);
+    }else{
+        LOG_ERROR(LG_PWR, "Usage: hwReboot");
+    }
+    return res;
+}
+

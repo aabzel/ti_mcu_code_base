@@ -124,12 +124,14 @@ bool gpio_init(void) {
 #endif /* HAS_BOOTLOADER */
 
 #ifdef HAS_HARVESTER
+        GPIO_setConfig(CONF_GPIO_3V3_CTRL, gpio_get_cfg_dio(DIO_PWR_MUX_CTRL));
         GPIO_setConfig(CONF_GPIO_PWR_MUX_CTRL, gpio_get_cfg_dio(DIO_PWR_MUX_CTRL));
         GPIO_setConfig(CONF_GPIO_LEN, gpio_get_cfg_dio(DIO_LEN));
         GPIO_setConfig(CONF_GPIO_BATT_SCL, gpio_get_cfg_dio(DIO_BATT_SCL));
         GPIO_setConfig(CONF_GPIO_BATT_SDA, gpio_get_cfg_dio(DIO_BATT_SDA));
         GPIO_writeDio(DIO_LEN, 0);
         GPIO_writeDio(DIO_PWR_MUX_CTRL, 0);
+        GPIO_writeDio(DIO_3V3_CTRL, 0);
 #endif /*HAS_HARVESTER*/
 
 #ifdef LAUNCHXL_CC26X2R1

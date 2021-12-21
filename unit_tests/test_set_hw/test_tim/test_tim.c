@@ -3,6 +3,7 @@
 #include "clocks.h"
 #include "tim_drv.h"
 //#include "sys_config.h"
+#include "none_blocking_pause.h"
 #include "unit_test_check.h"
 
 bool test_tim_us(void) {

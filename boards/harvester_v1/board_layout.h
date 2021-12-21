@@ -11,8 +11,8 @@
 #error "that wile only for CC26CC MCUs"
 #endif /*USE_HAL_DRIVER*/
 
-#define DIO_CNT 27
-#define GPIO_COUNT 17U
+#define DIO_CNT 28
+#define GPIO_COUNT 18U
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {
@@ -26,6 +26,7 @@ typedef struct xPin_t {
 } Pin_t;
 
 
+#define CONF_GPIO_3V3_CTRL 17
 #define CONF_GPIO_BATT_SCL 13
 #define CONF_GPIO_BATT_SDA 14
 #define CONF_GPIO_CAN_RST 15
