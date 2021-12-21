@@ -150,8 +150,8 @@ extern "C" {
     FLASH_FS_COMMANDS                                                                                                  \
     FLASH_NVS_COMMANDS                                                                                                 \
     HEALTH_MONITOR_COMMANDS                                                                                            \
-    TELEMATIC_COMMANDS                                                 \
-    TBFP_COMMANDS \
+    TELEMATIC_COMMANDS                                                                                          \
+    TBFP_COMMANDS                                                              \
     LED_COMMANDS                                                                                                       \
     LOG_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
