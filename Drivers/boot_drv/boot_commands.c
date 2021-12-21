@@ -27,6 +27,7 @@
 #include "table_utils.h"
 #include "writer_config.h"
 
+#ifdef HAS_BOOTLOADER
 static bool boot_scan_app(void) {
     bool res = false;
     bool res1 = false;
@@ -57,7 +58,9 @@ static bool boot_scan_app(void) {
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
 }
+#endif
 
+#ifdef HAS_BOOTLOADER
 static bool parse_bl_config(uint32_t reg_val) {
     uint32_t sub_val = 0;
     sub_val = extract_subval_from_32bit(reg_val, 7, 0);
@@ -72,11 +75,12 @@ static bool parse_bl_config(uint32_t reg_val) {
     io_printf("Boot loader is %sabled" CRLF, (0xC5 == sub_val) ? "en" : "dis");
     return true;
 }
+#endif
 
+#ifdef HAS_BOOTLOADER
 bool boot_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
-        //+CCFG_O_BL_CONFIG
         uint32_t reg_val;
         reg_val = read_addr_32bit(CCFG_BASE + CCFG_O_BL_CONFIG);
         res = parse_bl_config(reg_val);
@@ -86,7 +90,9 @@ bool boot_diag_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif
 
+#ifdef HAS_BOOTLOADER
 bool boot_jump_addr_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint32_t app_start_address = 0;
@@ -103,7 +109,9 @@ bool boot_jump_addr_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif
 
+#ifdef HAS_BOOTLOADER
 bool bool_erase_app_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
@@ -119,7 +127,9 @@ bool bool_erase_app_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif
 
+#ifdef HAS_BOOTLOADER
 bool bool_launch_app_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
@@ -135,7 +145,9 @@ bool bool_launch_app_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif
 
+#ifdef HAS_GENERIC
 bool boot_jump_boot_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
@@ -151,3 +163,4 @@ bool boot_jump_boot_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif

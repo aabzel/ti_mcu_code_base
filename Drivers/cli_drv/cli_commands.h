@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-#ifdef HAS_LED
+#ifdef HAS_LED_COMMANDS
 #include "led_commands.h"
 #else
 #define LED_COMMANDS
