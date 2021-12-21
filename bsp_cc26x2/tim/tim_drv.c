@@ -23,7 +23,7 @@ https://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/tirtos/2_20_
 #include "log.h"
 
 Timer_t TimerItem[BOARD_GPTIMERPARTSCOUNT] = {
-    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 3600000},
+    {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 4294960},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 2},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 60000U},
     {.hTimer = NULL, .tim_it_cnt = 0, .cnt_period_us = 1, .period_ms = 100},
@@ -280,4 +280,10 @@ uint8_t tim_get_width(uint32_t tim_base) {
         break;
     }
     return width;
+}
+
+uint32_t tim_get_us(void){
+    bool time_us = 0;
+    time_us = TimerValueGet(GPT0_BASE, TIMER_A);
+    return time_us;
 }

@@ -8,7 +8,6 @@
 #include "io_utils.h"
 
 
-
 bool print_time_date(struct tm* time_date) {
     bool res = false;
     if(NULL != time_date) {

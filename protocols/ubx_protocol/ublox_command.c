@@ -11,6 +11,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "table_utils.h"
+#include "time_diag.h"
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
 #include "writer_config.h"

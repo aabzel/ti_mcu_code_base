@@ -9,6 +9,7 @@
 #include "io_utils.h"
 #include "log.h"
 #include "table_utils.h"
+#include "time_diag.h"
 #include "nmea_diag.h"
 #include "nmea_protocol.h"
 #include "writer_config.h"

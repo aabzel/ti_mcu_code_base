@@ -55,6 +55,9 @@ struct tm* time_get_time(void) {
     res = is_valid_time_date(&ZedF9P.time_date);
     if(res){
         time = &ZedF9P.time_date;
+        if(RTK_BASE==ZedF9P.rtk_mode){
+          res = false;
+        }
     }
 #endif
     if(false==res){
@@ -305,3 +308,93 @@ bool time_data_parse(struct tm* date_time, char* str) {
     }
     return res;
 }
+
+/*13:32:47*/
+bool time_parse(struct tm* date_time, char* str) {
+    bool res = false;
+    if(date_time && str) {
+#ifdef HAS_RTC
+        LOG_INFO(RTC,"init time by [%s]",str);
+#endif
+        uint32_t cnt = 0;
+        res = try_strl2int32(&str[6], 2, &date_time->tm_sec);
+        if(res) {
+            cnt++;
+        } else {
+#ifdef X86_64
+            printf("\n[e] ErrParse sec [%s]", &str[6]);
+#endif
+        }
+
+        res = try_strl2int32(&str[3], 2, &date_time->tm_min);
+        if(res) {
+            cnt++;
+        } else {
+#ifdef X86_64
+            printf("\n[e] ErrParse min [%s]", &str[3]);
+#endif
+        }
+
+        res = try_strl2int32(&str[0], 2, &date_time->tm_hour);
+        if(res) {
+            cnt++;
+        } else {
+#ifdef X86_64
+            printf("\n[e] ErrParse hour [%s]", &str[0]);
+#endif
+        }
+
+        if(3 == cnt) {
+            res = true;
+        } else {
+            res = false;
+        }
+    }
+    return res;
+}
+//Dec 21 2021
+bool date_parse(struct tm* date_time, char* str) {
+    bool res = false;
+    if(date_time && str) {
+#ifdef HAS_RTC
+        LOG_INFO(RTC,"init time by [%s]",str);
+#endif
+        uint32_t cnt = 0;
+
+        res = try_strl2month(&str[0], &date_time->tm_mon);
+        if(res) {
+            cnt++;
+        } else {
+#ifdef X86_64
+            printf("\n[e] ErrParse mon [%s]", &str[0]);
+#endif
+        }
+
+        res = try_strl2int32(&str[4], 2, &date_time->tm_mday);
+        if(res) {
+            cnt++;
+        } else {
+#ifdef X86_64
+            printf("\n[e] ErrParse mday [%s]", &str[4]);
+#endif
+        }
+        res = try_strl2int32(&str[7], 4, &date_time->tm_year);
+        if(res) {
+            cnt++;
+        } else {
+#ifdef X86_64
+            printf("\n[e] ErrParse year [%s]", &str[7]);
+#endif
+        }
+
+        if(3 == cnt) {
+            res = true;
+        } else {
+            res = false;
+        }
+    }
+    return res;
+}
+
+
+

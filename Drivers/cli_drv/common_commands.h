@@ -53,7 +53,7 @@
 #define TCAN4550_TI_TI_COMMANDS
 #endif
 
-#ifdef HAS_RTC
+#ifdef HAS_RTC_COMMANDS
 #include "rtc_commands.h"
 #else
 #define RTC_COMMANDS

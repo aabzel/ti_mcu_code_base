@@ -23,6 +23,7 @@
 #include "sys_config.h"
 #include "task_config.h"
 #include "task_info.h"
+#include "time_diag.h"
 #include "time_utils.h"
 #ifdef HAS_RTCM3
 #include "rtcm3_protocol.h"
@@ -99,6 +100,9 @@ bool zed_f9p_uptate_nmea(void) {
     if(res) {
         if(first_time) {
             LOG_INFO(ZED_F9P, "SpotValidTime!");
+#ifdef HAS_CALENDAR
+            calendar_settime(&NmeaData.time_date);
+#endif /*HAS_CALENDAR*/
             print_time_date(&NmeaData.time_date);
             first_time = false;
         }
@@ -190,12 +194,7 @@ bool zed_f9p_proc(void) {
         res = false;
         break;
     }
-#ifdef HAS_CALENDAR
-    res=is_valid_time_date(&ZedF9P.time_date);
-    if(res){
-       calendar_settime(&ZedF9P.time_date);
-    }
-#endif
+
     res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
     if(res) {
         ZedF9P.coordinate_last = ZedF9P.coordinate_cur;

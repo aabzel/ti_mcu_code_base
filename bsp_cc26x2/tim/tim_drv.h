@@ -53,4 +53,7 @@ bool tim_init(void);
 float tim_calc_real_period_s(uint32_t cpu_clock, uint32_t prescaler, uint32_t laod);
 bool tim_calc_registers(uint32_t period_ms, uint32_t cpu_clock, uint32_t prescaler, uint32_t* out_load,
                         uint32_t max_val);
+
+uint32_t tim_get_us(void);
+
 #endif /* TIM_DRV_H  */

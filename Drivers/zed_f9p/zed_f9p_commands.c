@@ -7,6 +7,7 @@
 #include "flash_fs.h"
 #include "gnss_diag.h"
 #include "io_utils.h"
+#include "time_diag.h"
 #include "log.h"
 #include "param_ids.h"
 #include "zed_f9p_drv.h"

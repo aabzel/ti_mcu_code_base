@@ -16,8 +16,11 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        const table_col_t cols[] = {{5, "GPT"},   {5, "width"},  {5, "tim"}, {14, "Val"},     {8, "PSC"},
-                                    {14, "load"}, {14, "match"}, {8, "It"},  {8, "period_ms"}};
+        const table_col_t cols[] = {{5, "GPT"},   {5, "width"},  {5, "tim"},
+                                    {14, "Val"},  {7, "%"},
+                                    {8, "PSC"},
+                                    {8, "tickUs"},
+                                    {14, "load"}, {14, "match"}, {8, "It"},  {10, "periodMs"}};
         uint8_t part = 0, tim_base_id = 0, width = 0;
         uint32_t val = 0, load = 0, match = 0;
         uint32_t prescaler = 0;
@@ -37,7 +40,9 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
                 io_printf("  %2u " TSEP, width);
                 io_printf("  %s  " TSEP, (0 == part) ? "A" : "B");
                 io_printf(" %12u " TSEP, val);
+                io_printf(" %4.2f " TSEP, ((float)(100*val))/((float)load));
                 io_printf(" %6u " TSEP, prescaler);
+                io_printf(" %6u " TSEP, prescaler*1000000/SYS_FREQ);
                 io_printf(" %12u " TSEP, load);
                 io_printf(" %12u " TSEP, match);
                 io_printf(" %6u " TSEP, TimerItem[tim_base_id * 2 + part].tim_it_cnt);
@@ -62,6 +67,11 @@ bool tim_diag_command(int32_t argc, char* argv[]) {
         const table_col_t cols[] = {{5, "num"}, {14, "Val"}, {14, "rVal"}};
         uint8_t tim_num = 0;
         uint32_t val = 0, fRval = 0;
+
+        uint32_t up_time_us= tim_get_us();
+        io_printf("UpTimeUs %u " CRLF, up_time_us);
+        io_printf("UpTimeMs %u " CRLF, up_time_us/1000);
+        io_printf("UpTimeS %u " CRLF,  up_time_us/1000000);
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
         for(tim_num = 0; tim_num < ARRAY_SIZE(TimerItem); tim_num++) {
             if(TimerItem[tim_num].hTimer) {

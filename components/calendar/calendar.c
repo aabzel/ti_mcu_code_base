@@ -157,7 +157,17 @@ uint32_t calendar_settime(struct tm* date_time) {
 bool calendar_init(void) {
     bool res = false;
     struct tm date_time;
-    res = time_data_parse(&date_time, __TIMESTAMP__);
+#if 0
+    res = time_date_parse(&date_time, __TIMESTAMP__);
+    if(res) {
+        calendar_settime(&date_time);
+    }
+#endif
+    res = time_parse(&date_time, __TIME__);
+    if(res) {
+        calendar_settime(&date_time);
+    }
+    res = date_parse(&date_time, __DATE__);
     if(res) {
         calendar_settime(&date_time);
     }

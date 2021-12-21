@@ -47,11 +47,11 @@ bool health_monotor_proc(void) {
     float vKl30 = 0.0;
     vKl30 = adc_get_value_by_dio(DIO_KL30_ADC, true);
     if(vKl30 < KL30_UNDERVOL_ERRPR_THRESHOLD_V) {
-        LOG_ERROR(HMOM, "vKl30 %f too low", vKl30);
+        LOG_ERROR(HMOM, "vKl30 %7.3f<%7.3f too low", vKl30, KL30_UNDERVOL_ERRPR_THRESHOLD_V);
         res = false;
     } else {
         if(vKl30 < KL30_UNDERVOL_WARNING_THRESHOLD_V) {
-            LOG_WARNING(HMOM, "vKl30 %f low", vKl30);
+            LOG_WARNING(HMOM, "vKl30 %7.3f<%7.3f low", vKl30, KL30_UNDERVOL_WARNING_THRESHOLD_V);
         }
         res = true;
     }
