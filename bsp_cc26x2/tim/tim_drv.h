@@ -58,5 +58,6 @@ bool tim_calc_registers(uint32_t period_ms, uint32_t cpu_clock, uint32_t prescal
                         uint32_t max_val);
 
 uint32_t tim_get_us(void);
+uint32_t tim_get_ms(void);
 
 #endif /* TIM_DRV_H  */

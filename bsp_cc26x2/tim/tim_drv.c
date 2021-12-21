@@ -299,3 +299,11 @@ uint32_t tim_get_us(void){
     time_us = time_us/CLOCK_FOR_US;
     return time_us;
 }
+
+uint32_t tim_get_ms(void){
+    uint32_t time_ms = 0;
+    time_ms = TimerValueGet(GPT0_BASE, TIMER_A);
+    time_ms = time_ms/(CLOCK_FOR_US*1000);
+    return time_ms;
+}
+

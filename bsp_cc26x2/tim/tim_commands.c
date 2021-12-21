@@ -19,11 +19,11 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
         const table_col_t cols[] = {{5, "GPT"},   {5, "width"},  {5, "tim"},
                                     {14, "Val"},
                                     {12, "Val"},
-                                    {8, "PSC"},
+                                    {5, "PSC"},
                                     {8, "tickUs"},
                                     {14, "load"}, {14, "match"}, {8, "It"},
+                                    {4, "%"},
                                     {10, "periodMs"},
-                                    {7, "%"}
         };
         uint8_t part = 0, tim_base_id = 0, width = 0;
         uint32_t val = 0, load = 0, match = 0;
@@ -47,13 +47,13 @@ bool tim_diag_ll_command(int32_t argc, char* argv[]) {
                 io_printf(" 0x%08x " TSEP, val);
                 uint64_t val64 =((uint64_t)100UL)*((uint64_t)val);
                 uint64_t load64 = (uint64_t)load;
-                io_printf(" %6u " TSEP, prescaler);
+                io_printf(" %3u " TSEP, prescaler);
                 io_printf(" %6u " TSEP, (prescaler+1)*1000000/SYS_FREQ);
                 io_printf(" %12u " TSEP, load);
                 io_printf(" %12u " TSEP, match);
                 io_printf(" %6u " TSEP, TimerItem[tim_base_id * 2 + part].tim_it_cnt);
-                io_printf(" %6.1f " TSEP, calc_period * 1000.0f);
                 io_printf(" %llu " TSEP, (val64/(load64) ));
+                io_printf(" %7.1f " TSEP, calc_period * 1000.0f);
 
                 io_printf(CRLF);
             }

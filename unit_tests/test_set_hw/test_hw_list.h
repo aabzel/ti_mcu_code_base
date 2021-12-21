@@ -44,6 +44,12 @@ extern "C" {
 #define TEST_SUIT_SPI
 #endif
 
+#ifdef HAS_TEST_TIM
+#include "test_tim.h"
+#else
+#define TEST_SUIT_TIM
+#endif
+
 #ifdef HAS_TEST_UART
 #include "test_uart.h"
 #else
@@ -80,6 +86,7 @@ bool test_clock_ms(void);
 	TEST_SUIT_GPIO \
 	TEST_SUIT_ZED_F9P \
 	TEST_SUIT_TCAN4550 \
+	TEST_SUIT_TIM \
 	TEST_SUIT_FLASH_FS \
     TEST_SUIT_SPI \
 	TEST_SUIT_SX1262 \
