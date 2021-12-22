@@ -59,7 +59,7 @@ void shell_prompt(void); /*TODO: replace to cli_prompt*/
         SHELL_CMD("repeat", "rpt", cmd_repeat, "Repeat any command N time with period"),                               \
         SHELL_CMD("calc", "calc", cmd_calc, "Calculator of data types"),                                               \
         SHELL_CMD("ascii", "ascii", cmd_ascii, "Print ascii"),                                                         \
-        SHELL_CMD("find_addr", "fadr", cmd_find_addr, "Find address by value"),                                        \
+        SHELL_CMD("find_addr", "fadr", cmd_find_addr, "Find address by value"),
 
 
 #define COMMANDS_END SHELL_CMD(NULL, NULL, NULL, NULL)

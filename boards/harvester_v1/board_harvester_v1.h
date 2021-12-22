@@ -36,8 +36,6 @@
 #define DIO_TDO 16U
 #define DIO_UART_CLI_RX	13U
 #define DIO_UART_CLI_TX	12U
-#define DIO_TDO 16U
-#define DIO_TDI 17U
 
 #define SPI_COUNT 1
 #define SYS_FREQ 48000000U
