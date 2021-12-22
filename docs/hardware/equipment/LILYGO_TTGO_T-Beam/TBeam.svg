@@ -18,12 +18,41 @@
      id="defs865">
     <marker
        style="overflow:visible"
-       id="marker3335"
+       id="marker1319"
        refX="0.0"
        refY="0.0"
        orient="auto"
        inkscape:stockid="Arrow1Lstart"
        inkscape:isstock="true">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1317" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1225"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1223" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker3335"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
       <path
          transform="scale(0.8) translate(12.5,0)"
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
@@ -37,7 +66,8 @@
        refY="0.0"
        orient="auto"
        inkscape:stockid="Arrow1Lend"
-       inkscape:isstock="true">
+       inkscape:isstock="true"
+       inkscape:collect="always">
       <path
          transform="scale(0.8) rotate(180) translate(12.5,0)"
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
@@ -232,17 +262,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="791.70576"
-     inkscape:cy="257.50195"
+     inkscape:zoom="1.4"
+     inkscape:cx="597.7916"
+     inkscape:cy="611.45987"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
-     inkscape:window-x="2552"
-     inkscape:window-y="-8"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
+     inkscape:window-y="-11"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true">
@@ -303,7 +333,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -911,7 +941,7 @@
          id="tspan2705"
          x="213.28108"
          y="-6.0135641"
-         style="stroke-width:0.264583"></tspan></text>
+         style="stroke-width:0.264583" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.95121px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0737805"
@@ -963,7 +993,23 @@
          x="216.83586"
          y="82.794579"
          style="stroke-width:0.132769">SPI</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.189902px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 169.33333,151.56845 v 38.55357"
+       id="path1214" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker1225);marker-start:url(#marker1319)"
+       d="m 169.42782,185.49181 h 13.22917"
+       id="path1216" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 171.12872,173.39657 -4.25224,4.25224"
+       id="path1433" />
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer7"
+     inkscape:label="i2c" />
   <g
      inkscape:groupmode="layer"
      id="layer5"
@@ -1079,6 +1125,13 @@
          x="103.25679"
          y="208.30553"
          style="stroke-width:0.0671374">8 MByte</tspan></text>
+    <rect
+       style="opacity:0.998;fill:#f2f2f2;stroke:#000000;stroke-width:0.4;fill-opacity:1;stroke-opacity:1"
+       id="rect1200"
+       width="49.325893"
+       height="39.6875"
+       x="182.94048"
+       y="166.6875" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1574,24 +1627,24 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="98.273804"
-       y="128.5119"
+       x="90.525291"
+       y="114.33779"
        id="text3484"><tspan
          sodipodi:role="line"
          id="tspan3482"
-         x="98.273804"
-         y="128.5119"
+         x="90.525291"
+         y="114.33779"
          style="stroke-width:0.264583">Bluetooth </tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="100.54166"
-       y="138.90625"
+       x="90.903267"
+       y="125.29911"
        id="text3488"><tspan
          sodipodi:role="line"
          id="tspan3486"
-         x="100.54166"
-         y="138.90625"
+         x="90.903267"
+         y="125.29911"
          style="stroke-width:0.264583">WiFi</tspan></text>
     <text
        xml:space="preserve"
@@ -1670,6 +1723,61 @@
          x="222.85953"
          y="54.890102"
          style="stroke-width:0.0919687">16 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.91233px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.147809"
+       x="184.60222"
+       y="173.25775"
+       id="text1204"><tspan
+         sodipodi:role="line"
+         id="tspan1202"
+         x="184.60222"
+         y="173.25775"
+         style="stroke-width:0.147809">U7002</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="186.25055"
+       y="188.12862"
+       id="text1208"><tspan
+         sodipodi:role="line"
+         id="tspan1206"
+         x="186.25055"
+         y="188.12862"
+         style="stroke-width:0.264583">AXP192</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.73734px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.143434"
+       x="211.33632"
+       y="173.58904"
+       id="text1212"><tspan
+         sodipodi:role="line"
+         id="tspan1210"
+         x="211.33632"
+         y="173.58904"
+         style="stroke-width:0.143434">48 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.80216px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.120054"
+       x="170.06712"
+       y="183.87279"
+       id="text1220"><tspan
+         sodipodi:role="line"
+         id="tspan1218"
+         x="170.06712"
+         y="183.87279"
+         style="stroke-width:0.120054">i2c</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="161.8683"
+       y="172.54611"
+       id="text1431"><tspan
+         sodipodi:role="line"
+         id="tspan1429"
+         x="161.8683"
+         y="172.54611"
+         style="stroke-width:0.264583">2</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
