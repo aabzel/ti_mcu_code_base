@@ -77,7 +77,8 @@
 #include <devinfoservice.h>
 #include <profiles/project_zero/button_service.h>
 #include <profiles/project_zero/led_service.h>
-#include <profiles/project_zero/data_service.h>
+//#include <profiles/project_zero/data_service.h>
+#include "cli_service.h"
 #include <profiles/oad/cc26xx/oad.h>
 
 /* Includes needed for reverting to factory and erasing external flash */
@@ -371,9 +372,9 @@ static void ProjectZero_LedService_ValueChangeHandler(
     pzCharacteristicData_t *pCharData);
 static void ProjectZero_ButtonService_CfgChangeHandler(
     pzCharacteristicData_t *pCharData);
-static void ProjectZero_DataService_ValueChangeHandler(
+static void ProjectZero_CliService_ValueChangeHandler(
     pzCharacteristicData_t *pCharData);
-static void ProjectZero_DataService_CfgChangeHandler(
+static void ProjectZero_CliService_CfgChangeHandler(
     pzCharacteristicData_t *pCharData);
 
 /* Stack or profile callback function */
@@ -393,7 +394,7 @@ static void ProjectZero_LedService_ValueChangeCB(uint16_t connHandle,
                                                  uint8_t paramID,
                                                  uint16_t len,
                                                  uint8_t *pValue);
-static void ProjectZero_DataService_ValueChangeCB(uint16_t connHandle,
+static void ProjectZero_CliService_ValueChangeCB(uint16_t connHandle,
                                                   uint8_t paramID,
                                                   uint16_t len,
                                                   uint8_t *pValue);
@@ -401,7 +402,7 @@ static void ProjectZero_ButtonService_CfgChangeCB(uint16_t connHandle,
                                                   uint8_t paramID,
                                                   uint16_t len,
                                                   uint8_t *pValue);
-static void ProjectZero_DataService_CfgChangeCB(uint16_t connHandle,
+static void ProjectZero_CliService_CfgChangeCB(uint16_t connHandle,
                                                 uint8_t paramID,
                                                 uint16_t len,
                                                 uint8_t *pValue);
@@ -484,10 +485,10 @@ static ButtonServiceCBs_t ProjectZero_Button_ServiceCBs =
 
 // Data Service callback handler.
 // The type Data_ServiceCBs_t is defined in data_service.h
-static DataServiceCBs_t ProjectZero_Data_ServiceCBs =
+static CliServiceCBs_t ProjectZero_Data_ServiceCBs =
 {
-    .pfnChangeCb = ProjectZero_DataService_ValueChangeCB,  // Characteristic value change callback handler
-    .pfnCfgChangeCb = ProjectZero_DataService_CfgChangeCB, // Noti/ind configuration callback handler
+    .pfnChangeCb = ProjectZero_CliService_ValueChangeCB,  // Characteristic value change callback handler
+    .pfnCfgChangeCb = ProjectZero_CliService_CfgChangeCB, // Noti/ind configuration callback handler
 };
 
 // OAD Service callback handler.
@@ -622,7 +623,7 @@ static void ProjectZero_init(void)
     // Add services to GATT server and give ID of this task for Indication acks.
     LedService_AddService(selfEntity);
     ButtonService_AddService(selfEntity);
-    DataService_AddService(selfEntity);
+    CliService_AddService(selfEntity);
 
     // Open the OAD module and add the OAD service to the application
     if(OAD_SUCCESS != OAD_open(OAD_DEFAULT_INACTIVITY_TIME))
@@ -657,7 +658,7 @@ static void ProjectZero_init(void)
     // can generate events (writes received) to the application
     LedService_RegisterAppCBs(&ProjectZero_LED_ServiceCBs);
     ButtonService_RegisterAppCBs(&ProjectZero_Button_ServiceCBs);
-    DataService_RegisterAppCBs(&ProjectZero_Data_ServiceCBs);
+    CliService_RegisterAppCBs(&ProjectZero_Data_ServiceCBs);
 
     // Placeholder variable for characteristic intialization
     uint8_t initVal[40] = {0};
@@ -672,8 +673,8 @@ static void ProjectZero_init(void)
     ButtonService_SetParameter(BS_BUTTON1_ID, BS_BUTTON1_LEN, initVal);
 
     // Initalization of characteristics in Data_Service that can provide data.
-    DataService_SetParameter(DS_STRING_ID, sizeof(initString), initString);
-    DataService_SetParameter(DS_STREAM_ID, DS_STREAM_LEN, initVal);
+    CliService_SetParameter(CS_STRING_ID, sizeof(initString), initString);
+    CliService_SetParameter(CS_STREAM_ID, CS_STREAM_LEN, initVal);
 
     // Start Bond Manager and register callback
     VOID GAPBondMgr_Register(&ProjectZero_BondMgrCBs);
@@ -1020,8 +1021,8 @@ static void ProjectZero_processApplicationMessage(pzMsg_t *pMsg)
             case BUTTON_SERVICE_SERV_UUID:
                 ProjectZero_ButtonService_CfgChangeHandler(pCharData);
                 break;
-            case DATA_SERVICE_SERV_UUID:
-                ProjectZero_DataService_CfgChangeHandler(pCharData);
+            case CLI_SERVICE_SERV_UUID:
+                ProjectZero_CliService_CfgChangeHandler(pCharData);
                 break;
           }
           break;
@@ -2204,22 +2205,22 @@ void ProjectZero_ButtonService_CfgChangeHandler(
  *
  * @return  None.
  */
-void ProjectZero_DataService_ValueChangeHandler(
+void ProjectZero_CliService_ValueChangeHandler(
     pzCharacteristicData_t *pCharData)
 {
     // Value to hold the received string for printing via Log, as Log printouts
     // happen in the Idle task, and so need to refer to a global/static variable.
-    static uint8_t received_string[DS_STRING_LEN] = {0};
+    static uint8_t received_string[CS_STRING_LEN] = {0};
 
     switch(pCharData->paramID)
     {
-    case DS_STRING_ID:
+    case CS_STRING_ID:
         // Do something useful with pCharData->data here
         // -------------------------
         // Copy received data to holder array, ensuring NULL termination.
-        memset(received_string, 0, DS_STRING_LEN);
+        memset(received_string, 0, CS_STRING_LEN);
         memcpy(received_string, pCharData->data,
-               MIN(pCharData->dataLen, DS_STRING_LEN - 1));
+               MIN(pCharData->dataLen, CS_STRING_LEN - 1));
         // Needed to copy before log statement, as the holder array remains after
         // the pCharData message has been freed and reused for something else.
         Log_info3("Value Change msg: %s %s: %s",
@@ -2228,7 +2229,7 @@ void ProjectZero_DataService_ValueChangeHandler(
                   (uintptr_t)received_string);
         break;
 
-    case DS_STREAM_ID:
+    case CS_STREAM_ID:
         Log_info3("Value Change msg: Data Service Stream: %02x:%02x:%02x...",
                   pCharData->data[0],
                   pCharData->data[1],
@@ -2251,7 +2252,7 @@ void ProjectZero_DataService_ValueChangeHandler(
  *
  * @return  None.
  */
-void ProjectZero_DataService_CfgChangeHandler(pzCharacteristicData_t *pCharData)
+void ProjectZero_CliService_CfgChangeHandler(pzCharacteristicData_t *pCharData)
 {
     // Cast received data to uint16, as that's the format for CCCD writes.
     uint16_t configValue = *(uint16_t *)pCharData->data;
@@ -2275,7 +2276,7 @@ void ProjectZero_DataService_CfgChangeHandler(pzCharacteristicData_t *pCharData)
 
     switch(pCharData->paramID)
     {
-    case DS_STREAM_ID:
+    case CS_STREAM_ID:
         Log_info3("CCCD Change msg: %s %s: %s",
                   (uintptr_t)"Data Service",
                   (uintptr_t)"Stream",
@@ -2451,7 +2452,7 @@ static void ProjectZero_LedService_ValueChangeCB(uint16_t connHandle,
 }
 
 /*********************************************************************
- * @fn      ProjectZero_DataService_ValueChangeCB
+ * @fn      ProjectZero_CliService_ValueChangeCB
  *
  * @brief   Callback for characteristic change when a peer writes to us
  *
@@ -2460,7 +2461,7 @@ static void ProjectZero_LedService_ValueChangeCB(uint16_t connHandle,
  *          len - length of the data written
  *          pValue - pointer to the data written
  */
-static void ProjectZero_DataService_ValueChangeCB(uint16_t connHandle,
+static void ProjectZero_CliService_ValueChangeCB(uint16_t connHandle,
                                                   uint8_t paramID, uint16_t len,
                                                   uint8_t *pValue)
 {
@@ -2473,7 +2474,7 @@ static void ProjectZero_DataService_ValueChangeCB(uint16_t connHandle,
 
     if(pValChange != NULL)
     {
-        pValChange->svcUUID = DATA_SERVICE_SERV_UUID;
+        pValChange->svcUUID = CLI_SERVICE_SERV_UUID;
         pValChange->paramID = paramID;
         memcpy(pValChange->data, pValue, len);
         pValChange->dataLen = len;
@@ -2521,7 +2522,7 @@ static void ProjectZero_ButtonService_CfgChangeCB(uint16_t connHandle,
 }
 
 /*********************************************************************
- * @fn      ProjectZero_DataService_CfgChangeCB
+ * @fn      ProjectZero_CliService_CfgChangeCB
  *
  * @brief   Callback for when a peer enables or disables the CCCD attribute,
  *          indicating they are interested in notifications or indications.
@@ -2531,7 +2532,7 @@ static void ProjectZero_ButtonService_CfgChangeCB(uint16_t connHandle,
  *          len - length of the data written
  *          pValue - pointer to the data written
  */
-static void ProjectZero_DataService_CfgChangeCB(uint16_t connHandle,
+static void ProjectZero_CliService_CfgChangeCB(uint16_t connHandle,
                                                 uint8_t paramID, uint16_t len,
                                                 uint8_t *pValue)
 {
@@ -2543,7 +2544,7 @@ static void ProjectZero_DataService_CfgChangeCB(uint16_t connHandle,
 
     if(pValChange != NULL)
     {
-        pValChange->svcUUID = DATA_SERVICE_SERV_UUID;
+        pValChange->svcUUID = CLI_SERVICE_SERV_UUID;
         pValChange->paramID = paramID;
         memcpy(pValChange->data, pValue, len);
         pValChange->dataLen = len;
