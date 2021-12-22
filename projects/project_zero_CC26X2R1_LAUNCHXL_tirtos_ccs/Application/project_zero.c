@@ -1069,11 +1069,13 @@ static void ProjectZero_processApplicationMessage(pzMsg_t *pMsg)
       break;
 
       case PZ_CONN_EVT:
+          Log_info0("ConnEvent");
         ProjectZero_processConnEvt((Gap_ConnEventRpt_t *)(pMsg->pData));
         break;
 
       case PZ_READ_RPA_EVT:
       {
+          Log_info0("ReadRpaEvent");
         uint8_t* pRpaNew;
         // Need static so string persists until printed in idle thread.
         static uint8_t rpaAddrStr[3 * B_ADDR_LEN + 1];
