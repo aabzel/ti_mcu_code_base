@@ -122,8 +122,8 @@ bool sw_init(void) {
 #endif /*HAS_FLASH_FS*/
 
 #ifdef HAS_PARAM
-    res = try_init(param_init(), "param") && res;//
-#endif /*HAS_PARAM*/
+    res = try_init(param_init(), "param") && res; //
+#endif                                            /*HAS_PARAM*/
 
 #ifdef HAS_PWR_MUX
     res = try_init(pwr_src_init(), "PWR_MUX") && res;

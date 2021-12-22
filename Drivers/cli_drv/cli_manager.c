@@ -29,7 +29,7 @@ bool cli_echo = true;
 bool cli_output = true;
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
-#ifndef X86_64
+#ifdef HAS_MCU
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
 #endif
 

@@ -8,10 +8,10 @@
 #include "convert.h"
 #include "data_utils.h"
 //#include "gnss_diag.h"
-#include "time_diag.h"
 #include "log.h"
 #include "rtc_drv.h"
 #include "table_utils.h"
+#include "time_diag.h"
 #include "time_utils.h"
 
 bool rtc_disable_command(int32_t argc, char* argv[]) {

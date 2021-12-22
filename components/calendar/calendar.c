@@ -4,8 +4,8 @@
 #include <time.h>
 
 #ifdef HAS_MCU
-#include "time_diag.h"
 #include "log.h"
+#include "time_diag.h"
 #endif
 #include "time_utils.h"
 #ifdef HAS_RTC
@@ -144,7 +144,7 @@ static uint32_t struct_to_counter(struct tm* t) {
 uint32_t calendar_settime(struct tm* date_time) {
 #ifdef HAS_RTC
     LOG_INFO(RTC, "init RTC by");
-    print_time_date( date_time);
+    print_time_date(date_time);
 #endif
     sec = struct_to_counter(date_time);
 

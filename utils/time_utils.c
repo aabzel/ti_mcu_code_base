@@ -49,21 +49,21 @@ bool parse_time_from_val(uint32_t packed_time, struct tm* tm_stamp) {
 
 struct tm* time_get_time(void) {
     bool res = false;
-    (void) res;
+    (void)res;
     struct tm* time = NULL;
 #ifdef HAS_ZED_F9P
     res = is_valid_time_date(&ZedF9P.time_date);
-    if(res){
+    if(res) {
         time = &ZedF9P.time_date;
-        if(RTK_BASE==ZedF9P.rtk_mode){
-          res = false;
+        if(RTK_BASE == ZedF9P.rtk_mode) {
+            res = false;
         }
     }
 #endif
-    if(false==res){
+    if(false == res) {
 #ifdef HAS_RTC
-        res= calendar_gettime(&SwRtc.date_time);
-        if(res){
+        res = calendar_gettime(&SwRtc.date_time);
+        if(res) {
             time = &SwRtc.date_time;
         }
 #endif
@@ -235,8 +235,6 @@ bool time_get_time_str(char* str, uint32_t size) {
     return res;
 }
 
-
-
 /*000000000011111111112222*/
 /*012345678901234567890123*/
 /*Tue Dec  7 15:34:46 2021*/
@@ -244,7 +242,7 @@ bool time_data_parse(struct tm* date_time, char* str) {
     bool res = false;
     if(date_time && str) {
 #ifdef HAS_RTC
-        LOG_INFO(RTC,"init time by [%s]",str);
+        LOG_INFO(RTC, "init time by [%s]", str);
 #endif
         uint32_t cnt = 0;
         res = try_strl2int32(&str[17], 2, &date_time->tm_sec);
@@ -314,7 +312,7 @@ bool time_parse(struct tm* date_time, char* str) {
     bool res = false;
     if(date_time && str) {
 #ifdef HAS_RTC
-        LOG_INFO(RTC,"init time by [%s]",str);
+        LOG_INFO(RTC, "init time by [%s]", str);
 #endif
         uint32_t cnt = 0;
         res = try_strl2int32(&str[6], 2, &date_time->tm_sec);
@@ -352,12 +350,12 @@ bool time_parse(struct tm* date_time, char* str) {
     }
     return res;
 }
-//Dec 21 2021
+// Dec 21 2021
 bool date_parse(struct tm* date_time, char* str) {
     bool res = false;
     if(date_time && str) {
 #ifdef HAS_RTC
-        LOG_INFO(RTC,"init time by [%s]",str);
+        LOG_INFO(RTC, "init time by [%s]", str);
 #endif
         uint32_t cnt = 0;
 
@@ -395,6 +393,3 @@ bool date_parse(struct tm* date_time, char* str) {
     }
     return res;
 }
-
-
-

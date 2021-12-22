@@ -150,8 +150,8 @@ extern "C" {
     FLASH_FS_COMMANDS                                                                                                  \
     FLASH_NVS_COMMANDS                                                                                                 \
     HEALTH_MONITOR_COMMANDS                                                                                            \
-    TELEMATIC_COMMANDS                                                                                          \
-    TBFP_COMMANDS                                                              \
+    TELEMATIC_COMMANDS                                                                                                 \
+    TBFP_COMMANDS                                                                                                      \
     LED_COMMANDS                                                                                                       \
     LOG_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
@@ -160,9 +160,9 @@ extern "C" {
     PARAM_COMMANDS                                                                                                     \
     PWR_MUX_COMMANDS                                                                                                   \
     RF_COMMANDS                                                                                                        \
-    RTCM3_COMMANDS    \
+    RTCM3_COMMANDS                                                                                                     \
     SX1262_COMMANDS                                                                                                    \
-    SYSTEM_COMMANDS \
+    SYSTEM_COMMANDS                                                                                                    \
     TRNG_COMMANDS                                                                                                      \
     UBLOX_COMMANDS                 \
     ZED_F9P_COMMANDS

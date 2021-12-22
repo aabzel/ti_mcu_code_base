@@ -7,9 +7,9 @@
 #include "flash_fs.h"
 #include "gnss_diag.h"
 #include "io_utils.h"
-#include "time_diag.h"
 #include "log.h"
 #include "param_ids.h"
+#include "time_diag.h"
 #include "zed_f9p_drv.h"
 
 bool zed_f9p_diag_command(int32_t argc, char* argv[]) {
