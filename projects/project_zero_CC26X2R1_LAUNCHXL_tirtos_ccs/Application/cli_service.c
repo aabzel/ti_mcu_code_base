@@ -461,14 +461,12 @@ static bStatus_t cli_service_ReadAttrCB(uint16_t connHandle,
         return(ATT_ERR_ATTR_NOT_FOUND);
     }
     // Check bounds and return the value
-    if(offset > valueLen)   // Prevent malicious ATT ReadBlob offsets.
-    {
+    if(valueLen < offset ){   // Prevent malicious ATT ReadBlob offsets.
         Log_error0("An invalid offset was requested.");
         status = ATT_ERR_INVALID_OFFSET;
-    }
-    else
-    {
+    } else {
         *pLen = MIN(maxLen, valueLen - offset); // Transmit as much as possible
+        Log_info3("Data:[%s] Len:%u OffSet:%u",pAttr->pValue + offset, *pLen, offset);
         memcpy(pValue, pAttr->pValue + offset, *pLen);
     }
 
@@ -501,7 +499,7 @@ static bStatus_t cli_service_WriteAttrCB(uint16_t connHandle,
     uint16_t writeLenMin;
     uint16_t writeLenMax;
     uint16_t *pValueLenVar;
-
+    Log_info2("WriteAttr: Value:[%s] Len:%u",pValue, len);
     // See if request is regarding a Client Characterisic Configuration
     if(ATT_BT_UUID_SIZE == pAttr->type.len && GATT_CLIENT_CHAR_CFG_UUID ==
        *(uint16_t *)pAttr->type.uuid)

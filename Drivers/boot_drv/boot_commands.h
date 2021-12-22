@@ -17,7 +17,7 @@ bool boot_jump_addr_command(int32_t argc, char* argv[]);
 bool bool_launch_app_command(int32_t argc, char* argv[]);
 
 #define BOOT_COMMANDS_FOR_BOOT                                                                                         \
-        SHELL_CMD("jump", "jm", boot_jump_addr_command, "jump to address"),                                            \
+    SHELL_CMD("jump", "jm", boot_jump_addr_command, "jump to address"),                                                \
         SHELL_CMD("launch", "la", bool_launch_app_command, "launch app"),                                              \
         SHELL_CMD("erase_app", "ea", bool_erase_app_command, "Erase application"),                                     \
         SHELL_CMD("boot_diag", "bd", boot_diag_command, "Boot diag"),

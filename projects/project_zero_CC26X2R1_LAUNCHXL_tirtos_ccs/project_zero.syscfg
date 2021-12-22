@@ -161,11 +161,11 @@ ble.deviceRole = "PERIPHERAL_CFG";
 ble.lockProject = true;
 if(lpName == "LP_CC2652RB")
 {
-    ble.deviceName = "Project Zero BAW"
+    ble.deviceName = "Harvester BAW"
 }
 else
 {
-    ble.deviceName = "Project Zero";
+    ble.deviceName = "Harvester";
 }
 ble.addressMode = "ADDRMODE_PUBLIC";
 
@@ -197,11 +197,11 @@ ble.advSet1.advData1.GAP_ADTYPE_LOCAL_NAME_COMPLETE = true;
 // Complete Local Name
 if(lpName == "LP_CC2652RB")
 {
-    ble.advSet1.advData1.completeLocalName = "Project Zero BAW";
+    ble.advSet1.advData1.completeLocalName = "Harvester BAW";
 }
 else
 {
-    ble.advSet1.advData1.completeLocalName = "Project Zero";
+    ble.advSet1.advData1.completeLocalName = "Harvester";
 }
 // More 128-bit UUIDs available
 ble.advSet1.scanRes1.GAP_ADTYPE_128BIT_MORE = true;
