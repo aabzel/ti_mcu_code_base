@@ -69,7 +69,7 @@ extern "C" {
 #define FLASH_NVS_COMMANDS
 #endif
 
-#ifdef HAS_HEALTH_MONITOR_CMD
+#ifdef HAS_HEALTH_MONITOR_COMMANDS
 #include "health_monitor_command.h"
 #else
 #define HEALTH_MONITOR_COMMANDS

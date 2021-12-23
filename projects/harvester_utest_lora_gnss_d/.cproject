@@ -154,6 +154,7 @@
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER_V1"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
+									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR_COMMANDS"/>
 									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_LEGAL_BAND_CHECK"/>
