@@ -166,6 +166,9 @@ const char *facility2str(log_facility_t facility) {
   case LG_RTC:
     facility_str = "RTC";
     break;
+  case RTCM:
+    facility_str = "RTCM";
+    break;
   case SYS:
     facility_str = "SYS";
     break;

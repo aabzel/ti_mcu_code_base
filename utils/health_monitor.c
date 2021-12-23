@@ -36,6 +36,13 @@ bool health_monotor_init(void) {
     bool res = true;
     memset(&HealthMon, 0x00, sizeof(HealthMon));
 
+#ifdef HAS_RELAESE
+    HealthMon.power = true;
+#endif
+
+#ifdef HAS_DEBUG
+    HealthMon.power = false;
+#endif
     return res;
 }
 
@@ -44,16 +51,18 @@ bool health_monotor_init(void) {
 bool health_monotor_proc(void) {
     bool res = false;
 #ifdef HAS_ADC
-    float vKl30 = 0.0;
-    vKl30 = adc_get_value_by_dio(DIO_KL30_ADC, true);
-    if(vKl30 < KL30_UNDERVOL_ERRPR_THRESHOLD_V) {
-        LOG_ERROR(HMOM, "vKl30 %7.3f<%7.3f too low", vKl30, KL30_UNDERVOL_ERRPR_THRESHOLD_V);
-        res = false;
-    } else {
-        if(vKl30 < KL30_UNDERVOL_WARNING_THRESHOLD_V) {
-            LOG_WARNING(HMOM, "vKl30 %7.3f<%7.3f low", vKl30, KL30_UNDERVOL_WARNING_THRESHOLD_V);
+    if(HealthMon.power) {
+        float vKl30 = 0.0;
+        vKl30 = adc_get_value_by_dio(DIO_KL30_ADC, true);
+        if(vKl30 < KL30_UNDERVOL_ERRPR_THRESHOLD_V) {
+            LOG_ERROR(HMOM, "vKl30 %7.3f<%7.3f too low", vKl30, KL30_UNDERVOL_ERRPR_THRESHOLD_V);
+            res = false;
+        } else {
+            if(vKl30 < KL30_UNDERVOL_WARNING_THRESHOLD_V) {
+                LOG_WARNING(HMOM, "vKl30 %7.3f<%7.3f low", vKl30, KL30_UNDERVOL_WARNING_THRESHOLD_V);
+            }
+            res = true;
         }
-        res = true;
     }
 #endif /*HAS_ADC*/
 

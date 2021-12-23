@@ -25,11 +25,9 @@ bool systick_set_command(int32_t argc, char* argv[]) {
         res = true;
         uint32_t period24bit = 0;
 
-        if(true == res) {
-            res = try_str2uint32(argv[0], &period24bit);
-            if(false == res) {
-                LOG_ERROR(SYS, "Unable to extract period %s", argv[0]);
-            }
+        res = try_str2uint32(argv[0], &period24bit);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to extract period %s", argv[0]);
         }
 
         if(true == res) {

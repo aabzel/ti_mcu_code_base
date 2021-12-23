@@ -63,6 +63,7 @@ typedef enum eLog_facility_t {
   LORA,
   NVS,
   TIM,
+  RTCM,
   RF,
   RTC,
   SPI,

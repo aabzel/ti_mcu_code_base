@@ -16,6 +16,7 @@ extern "C" {
 
 typedef struct xHealthMon_t {
     bool init_error;
+    bool power;
     uint32_t error_cnt;
     uint32_t crc_error_cnt;
 } HealthMon_t;

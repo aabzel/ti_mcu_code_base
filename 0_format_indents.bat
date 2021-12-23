@@ -6,6 +6,9 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 rem set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 set format_tool="C:\cygwin64\bin\clang-format.exe"
 
+
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\health_monitor_command.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\health_monitor_command.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\boot_drv\boot_commands.h
 
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_cc26x2\rtc\rtc_drv.c
