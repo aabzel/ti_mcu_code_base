@@ -157,7 +157,7 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
             res = tbfp_proc_full(instance->parser.fix_frame, frame_len + TBFP_SIZE_CRC, instance->interface);
         } else {
 #ifdef HAS_MCU
-            LOG_DEBUG(TBFP, "SN:0x%04x %u crc err read:0x%02x", instance->parser.s_num, instance->parser.s_num,
+            LOG_ERROR(TBFP, "SN:0x%04x %u crc err read:0x%02x", instance->parser.s_num, instance->parser.s_num,
                       instance->parser.read_crc8);
 #endif
             instance->crc_err_cnt++;
