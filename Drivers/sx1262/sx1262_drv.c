@@ -1510,7 +1510,7 @@ static inline bool sx1262_poll_status(void) {
 #ifdef HAS_LORA
                 res = lora_proc_payload(rx_payload, rx_size);
 #endif /*HAS_LORA*/
-                led_blink(&Led[LED_INDEX_RED], 10);
+                //led_blink(&Led[LED_INDEX_RED], 10);
 
             } else {
                 LOG_INFO(LORA, "DataReadErr");

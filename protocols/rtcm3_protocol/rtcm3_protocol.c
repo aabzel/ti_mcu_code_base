@@ -9,6 +9,7 @@
 #include "debug_info.h"
 #include "io_utils.h"
 #ifdef HAS_MCU
+#include "led_drv.h"
 #include "log.h"
 #endif
 
@@ -173,6 +174,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 
             if((IF_LORA == instance->interface) || (IF_RS232 == instance->interface)) {
 #ifdef HAS_UART1
+                led_blink(&Led[LED_INDEX_RED], 10);
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                 if(false == res) {
                     instance->uart_lost_pkt_cnt++;
