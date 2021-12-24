@@ -17,6 +17,62 @@
   <defs
      id="defs865">
     <marker
+       style="overflow:visible"
+       id="marker1760"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1758" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1750"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1748" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1596"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1594" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1586"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1584" />
+    </marker>
+    <marker
        style="overflow:visible;"
        id="marker1417"
        refX="0.0"
@@ -326,11 +382,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="433.64758"
-     inkscape:cy="652.98298"
+     inkscape:zoom="2.8"
+     inkscape:cx="395.50849"
+     inkscape:cy="280.96707"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -523,7 +579,7 @@
          y="24.768511"
          style="stroke-width:0.166276">+3V3</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.166276px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.166276px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1586);marker-start:url(#marker1750)"
        d="M 98.523199,67.259998 V 84.837763"
        id="path1719" />
     <rect
@@ -904,6 +960,21 @@
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 151.85193,174.05803 -5.24442,5.24442"
        id="path1271" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 97.286108,74.635015 2.555764,2.555764"
+       id="path1948" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.37633px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.109408"
+       x="95.704613"
+       y="80.615166"
+       id="text1952"><tspan
+         sodipodi:role="line"
+         id="tspan1950"
+         x="95.704613"
+         y="80.615166"
+         style="stroke-width:0.109408">2</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -918,11 +989,11 @@
      id="layer3"
      inkscape:label="chips">
     <rect
-       style="opacity:0.998;fill:#f9f9f9;stroke:#000000;stroke-width:0.231949"
+       style="opacity:0.998;fill:#f9f9f9;stroke:#000000;stroke-width:0.22923"
        id="rect1436"
-       width="39.722095"
+       width="38.796261"
        height="23.807091"
-       x="85.966728"
+       x="86.892563"
        y="42.826359" />
     <rect
        style="opacity:0.998;fill:#ff8080;stroke:#000000;stroke-width:0.499999;stroke-miterlimit:4;stroke-dasharray:none"
@@ -1147,25 +1218,25 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:6.65102px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.166276"
-       x="87.347275"
-       y="55.265301"
+       x="87.881813"
+       y="52.793056"
        id="text1478"><tspan
          sodipodi:role="line"
          id="tspan1476"
-         x="87.347275"
-         y="55.265301"
+         x="87.881813"
+         y="52.793056"
          style="stroke-width:0.166276">CP2104</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:6.65102px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.166276"
-       x="86.372292"
-       y="48.24575"
+       style="font-style:normal;font-weight:normal;font-size:4.30474px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.107619"
+       x="87.845749"
+       y="46.504375"
        id="text1713"><tspan
          sodipodi:role="line"
          id="tspan1711"
-         x="86.372292"
-         y="48.24575"
-         style="stroke-width:0.166276">U10</tspan></text>
+         x="87.845749"
+         y="46.504375"
+         style="stroke-width:0.107619">U10</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.81227px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0703069"
@@ -1176,7 +1247,7 @@
          id="tspan1715"
          x="116.09648"
          y="46.314884"
-         style="stroke-width:0.0703069">24 pin</tspan></text>
+         style="stroke-width:0.0703069">25 pin</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 24.655614,96.350663 h 6.681739"
@@ -1829,6 +1900,77 @@
          x="88.980286"
          y="214.40666"
          style="font-size:3.52778px;stroke-width:0.264583">23 bit Addr</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.46944px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="88.434624"
+       y="56.327057"
+       id="text1559"><tspan
+         sodipodi:role="line"
+         id="tspan1557"
+         x="88.434624"
+         y="56.327057"
+         style="font-size:2.46944px;stroke-width:0.264583">USB-TO-UART BRIDGE</tspan><tspan
+         sodipodi:role="line"
+         x="88.434624"
+         y="59.413857"
+         style="font-size:2.46944px;stroke-width:0.264583"
+         id="tspan1561" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="65.200897"
+       y="52.538689"
+       id="text1566"><tspan
+         sodipodi:role="line"
+         id="tspan1564"
+         x="65.200897"
+         y="52.538689"
+         style="font-size:3.52778px;stroke-width:0.264583">full-speed </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="65.956841"
+       y="59.720238"
+       id="text1570"><tspan
+         sodipodi:role="line"
+         id="tspan1568"
+         x="65.956841"
+         y="59.720238"
+         style="font-size:3.52778px;stroke-width:0.264583">12 Mbps</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="89.01339"
+       y="62.744045"
+       id="text1574"><tspan
+         sodipodi:role="line"
+         id="tspan1572"
+         x="89.01339"
+         y="62.744045"
+         style="font-size:3.52778px;stroke-width:0.264583">2 Mbits</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.46944px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="106.21131"
+       y="65.389877"
+       id="text1578"><tspan
+         sodipodi:role="line"
+         id="tspan1576"
+         x="106.21131"
+         y="65.389877"
+         style="font-size:2.46944px;stroke-width:0.264583"> –40 to +85 °C</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="88.824402"
+       y="65.389877"
+       id="text1582"><tspan
+         sodipodi:role="line"
+         id="tspan1580"
+         x="88.824402"
+         y="65.389877"
+         style="font-size:1.05833px;stroke-width:0.264583">Silicon Laboratories Inc.</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1859,7 +2001,7 @@
        x="47.573978"
        y="51.31575" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1596);marker-start:url(#marker1760)"
        d="M 60.536547,55.057521 H 85.927151"
        id="path3002" />
   </g>
