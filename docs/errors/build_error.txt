@@ -1,0 +1,13 @@
+ain_tirtos.c", line 43: fatal error #1965: cannot open source file "ti/sysbios/BIOS.h"
+
+find . -name "BIOS.h"
+./kernel/tirtos/packages/ti/sysbios/BIOS.h
+
+
+c:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52/kernel/tirtos/packages/ti/sysbios/BIOS.h
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/tirtos/packages/ti/sysbios
+
+${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/kernel/tirtos/packages
+
+
+find . -name "std.h"

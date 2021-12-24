@@ -1,0 +1,44 @@
+
+
+Есть модуль U-Blox ZED-F9P H9200308901  (плата №5 )
+Есть модуль U-Blox ZED-F9P H9200308871  (плата №4 )
+NMEA протокол  модуля H9200308901 и H9200308871 не отправляет GNSS координаты ни в USB ни в UART1
+В сообщении  GLL пусто 
+ ??:??:??  $GNGLL,,,,,,V,N*7A
+На другой плате (№2) c этой же антенной, но с модулем U-Blox ZED-F9P H9200308900 21/18 MNEA GLL пакеты корректные. Значит антенна в порядке. А U-Blox ZED-F9P не посылает координаты. На плате №4 аналогичный сбой. 
+Кто является диллером? 
+Надо сдать модули U-Blox ZED-F9P H9200308901 и H9200308871 на проверку дистрибьютору.
+Кто дистрибьютор чипов U-Blox для ИТЕЛМА?
+
+ubd 
+ubs class id payload
+ubs 0x0a 0x09
+ubs 0x01 0x22
+SAFEBOOT_GNSS_N
+
+lack of resp
+ubs 0x0a 0x04
+ubs 0x0a 0x02
+ubs 0x01 0x13
+ubs 1 7
+ubs 0x01 0x35 
+ubs 0x01 0x21
+
+Вот рабочая конфигурация:
+Software version: EXT CORE 1.00 (61b2dd)
+Hardware version: 00190000
+FWVER=HPG 1.12
+PROTVER=27.11
+
+
+Вот бажный модуль
+
+ 
+
+
+
+
+ $PUBX,00,000739.00,0000.00000,N,00000.00000,E,0.000,NF,5303317,3750011,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*20
+ 
+ $PUBX,00,time,lat,NS,long,EW,altRef,navStat,hAcc,vAcc,SOG,COG,vVel,diffAge,HDOP,VDOP ↲
+,TDOP,numSvs,reserved,DR,*cs\r\n

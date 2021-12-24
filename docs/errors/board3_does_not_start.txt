@@ -1,0 +1,33 @@
+Пришла плата №3 с производства.
+Подали питания и светодиоды HeartBeat не мигают.
+PowerOn log не появился в RS232.
+Плата потребляет  12.1V*0.05A=0.605W
+Консоль не отвечает.
+
+На проводе VCC_MCU TP55 есть напряжение 3,38V
+
+На проводе nRESET 3,33V
+
+JTAG отладчик не видит плату
+
+
+
+Error connecting to the target:
+(Error -242 @ 0x0)
+A router subpath could not be accessed.
+The board configuration file is probably incorrect.
+(Emulation package 9.4.0.00129)
+
+
+Причина
+VDDS = 3.38V VDDR(TP32) 0.114V Нет внутреннего питания на микромхеме. DCOUPL 0V
+
+
+Решение:
+Не известно
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+
+
+Good day
+
+I did perform GNSS RTK evaluation.
+When I plotted NMEA RTK Fixed coordinate on the map I spotted several locations.
+Each RTK Fixed session started in new location. The deviation bettwenn locations was 33meters.
+
+Is that a normal case for Ublox ZED F9P.
