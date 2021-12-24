@@ -48,7 +48,9 @@ bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool
 #else
     instance->lora_fwd = lora_fwd;
 #endif /*HAS_DEBUG*/
+#ifdef HAS_MCU
     LOG_DEBUG(RTCM, "Init");
+#endif
     instance->interface = interface;
     return true;
 }
@@ -62,7 +64,9 @@ static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte)
 #ifdef HAS_DEBUG
         instance->preamble_cnt++;
 #endif
+#ifdef HAS_MCU
         LOG_DEBUG(RTCM, "Preamble");
+#endif
         res = true;
     } else {
         rtcm3_reset_rx(instance);
@@ -82,7 +86,9 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         instance->rx_frame[2] = rx_byte;
         instance->exp_len.len8[0] = rx_byte;
         instance->load_len = 3;
+#ifdef HAS_MCU
         LOG_DEBUG(RTCM, "ExpLen %u", instance->exp_len.field.len);
+#endif
 #ifdef X86_64
         printf("\n   exp len %u", instance->exp_len.field.len);
 #endif
@@ -149,7 +155,9 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         res = crc24_q_check(&instance->rx_frame[0], frame_length, instance->read_crc);
         if(true == res) {
             res = true;
+#ifdef HAS_MCU
             LOG_DEBUG(RTCM, "CRCok");
+#endif
             instance->rx_state = RTCM3_RX_DONE;
             instance->rx_pkt_cnt++;
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
@@ -188,7 +196,9 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 
             rtcm3_reset_rx(instance);
         } else {
+#ifdef HAS_MCU
             LOG_ERROR(RTCM, "CrcErr");
+#endif
             instance->crc_err_cnt++;
             rtcm3_reset_rx(instance);
         }
