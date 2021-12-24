@@ -17,13 +17,42 @@
   <defs
      id="defs865">
     <marker
+       style="overflow:visible;"
+       id="marker1417"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1415" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1281"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1279" />
+    </marker>
+    <marker
        style="overflow:visible"
        id="marker2081"
        refX="0.0"
        refY="0.0"
        orient="auto"
        inkscape:stockid="Arrow1Lstart"
-       inkscape:isstock="true">
+       inkscape:isstock="true"
+       inkscape:collect="always">
       <path
          transform="scale(0.8) translate(12.5,0)"
          style="fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1;fill:#0000ff;fill-opacity:1"
@@ -37,7 +66,8 @@
        refY="0.0"
        orient="auto"
        inkscape:stockid="Arrow1Lend"
-       inkscape:isstock="true">
+       inkscape:isstock="true"
+       inkscape:collect="always">
       <path
          transform="scale(0.8) rotate(180) translate(12.5,0)"
          style="fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1;fill:#0000ff;fill-opacity:1"
@@ -296,11 +326,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
-     inkscape:cx="398.00453"
-     inkscape:cy="666.46791"
+     inkscape:zoom="3.959798"
+     inkscape:cx="433.64758"
+     inkscape:cy="652.98298"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -323,7 +353,7 @@
        orientation="1,0"
        id="guide1529" />
     <sodipodi:guide
-       position="107.04145,-14.773673"
+       position="95.25,-7.9977678"
        orientation="1,0"
        id="guide1635" />
     <sodipodi:guide
@@ -358,6 +388,10 @@
        position="122.03489,24.760757"
        orientation="1,0"
        id="guide3476" />
+    <sodipodi:guide
+       position="75.868772,51.50838"
+       orientation="1,0"
+       id="guide1253" />
   </sodipodi:namedview>
   <metadata
      id="metadata868">
@@ -453,15 +487,10 @@
        d="m 75.868774,139.17572 v 19.3159 H 64.27924 v 11.58953"
        id="path1593" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.166276px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 149.75033,150.93322 V 199.8733"
+       style="fill:none;stroke:#000000;stroke-width:0.166;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-start:url(#marker1281);marker-end:url(#marker1417)"
+       d="m 149.75033,150.93322 0,49.38529 -27.71544,0.0893"
        id="path1595"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.285775px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 149.75033,199.8733 -27.71544,0.20045"
-       id="path1599"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter1933);stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker2223)"
        d="M 3.1025173,-9.8085854 H 68.64631"
@@ -841,14 +870,40 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="126.24404"
-       y="196.45312"
+       x="126.811"
+       y="198.532"
        id="text1715"><tspan
          sodipodi:role="line"
          id="tspan1713"
-         x="126.24404"
-         y="196.45312"
-         style="font-size:3.52778px;stroke-width:0.264583">SDIO</tspan></text>
+         x="126.811"
+         y="198.532"
+         style="font-size:3.52778px;stroke-width:0.264583">QPI </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="123.59821"
+       y="203.72916"
+       id="text1254"><tspan
+         sodipodi:role="line"
+         id="tspan1252"
+         x="123.59821"
+         y="203.72916"
+         style="font-size:3.52778px;stroke-width:0.264583">104Mhz</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="140.13467"
+       y="175.00298"
+       id="text1269"><tspan
+         sodipodi:role="line"
+         id="tspan1267"
+         x="140.13467"
+         y="175.00298"
+         style="stroke-width:0.264583">5</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.85193,174.05803 -5.24442,5.24442"
+       id="path1271" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1354,25 +1409,25 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.37859px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0844651"
-       x="88.10463"
-       y="192.83978"
+       x="87.837357"
+       y="193.50795"
        id="text1589"><tspan
          sodipodi:role="line"
          id="tspan1587"
-         x="88.10463"
-         y="192.83978"
+         x="87.837357"
+         y="193.50795"
          style="stroke-width:0.0844651">U4</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.80874px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0702188"
-       x="114.20393"
-       y="192.63005"
+       style="font-style:normal;font-weight:normal;font-size:4.39671px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.109918"
+       x="110.36813"
+       y="193.83653"
        id="text1603"><tspan
          sodipodi:role="line"
          id="tspan1601"
-         x="114.20393"
-         y="192.63005"
-         style="stroke-width:0.0702188">8 pin</tspan></text>
+         x="110.36813"
+         y="193.83653"
+         style="stroke-width:0.109918">8 pin</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.62343px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.190586"
@@ -1387,35 +1442,35 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.59809px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.114952"
-       x="88.615051"
-       y="170.32643"
+       x="87.646194"
+       y="170.30972"
        id="text1474"><tspan
          sodipodi:role="line"
          id="tspan1472"
-         x="88.615051"
-         y="170.32643"
+         x="87.646194"
+         y="170.30972"
          style="stroke-width:0.114952">Flash</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.51149px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0877875"
-       x="113.02305"
-       y="164.94919"
+       style="font-style:normal;font-weight:normal;font-size:5.20201px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.130051"
+       x="108.93956"
+       y="166.23358"
        id="text1607"><tspan
          sodipodi:role="line"
          id="tspan1605"
-         x="113.02305"
-         y="164.94919"
-         style="stroke-width:0.0877875">8 pin</tspan></text>
+         x="108.93956"
+         y="166.23358"
+         style="stroke-width:0.130051">8 pin</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.68931px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.092233"
-       x="88.359695"
-       y="165.69423"
+       x="87.741638"
+       y="165.56059"
        id="text1639"><tspan
          sodipodi:role="line"
          id="tspan1637"
-         x="88.359695"
-         y="165.69423"
+         x="87.741638"
+         y="165.56059"
          style="stroke-width:0.092233">U6</tspan></text>
     <text
        xml:space="preserve"
@@ -1453,13 +1508,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.96544px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0991364"
-       x="88.345535"
-       y="209.03822"
+       x="88.182259"
+       y="206.81705"
        id="text3492"><tspan
          sodipodi:role="line"
          id="tspan3490"
-         x="88.345535"
-         y="209.03822"
+         x="88.182259"
+         y="206.81705"
          style="stroke-width:0.0991364">PSRAM </tspan></text>
     <text
        xml:space="preserve"
@@ -1678,13 +1733,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="87.729019"
-       y="177.0605"
+       x="87.845947"
+       y="177.01039"
        id="text1719"><tspan
          sodipodi:role="line"
          id="tspan1717"
-         x="87.729019"
-         y="177.0605"
+         x="87.845947"
+         y="177.01039"
          style="font-size:7.05556px;stroke-width:0.264583">W25Q32</tspan></text>
     <text
        xml:space="preserve"
@@ -1711,13 +1766,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="88.068451"
-       y="182.56248"
+       x="87.867996"
+       y="182.64601"
        id="text1243"><tspan
          sodipodi:role="line"
          id="tspan1241"
-         x="88.068451"
-         y="182.56248"
+         x="87.867996"
+         y="182.64601"
          style="font-size:4.23333px;stroke-width:0.264583">4Mbyte</tspan></text>
     <text
        xml:space="preserve"
@@ -1741,6 +1796,39 @@
          x="101.76588"
          y="160.75673"
          style="font-size:2.4642px;stroke-width:0.924074">120MHz</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.66203px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.399303"
+       x="88.613235"
+       y="210.25896"
+       id="text1250"><tspan
+         sodipodi:role="line"
+         id="tspan1248"
+         x="88.613235"
+         y="210.25896"
+         style="font-size:2.66203px;stroke-width:0.399303">64Mbit = 8MByte</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="106.7991"
+       y="220.41464"
+       id="text1258"><tspan
+         sodipodi:role="line"
+         x="106.7991"
+         y="220.41464"
+         style="font-size:1.76389px;stroke-width:0.264583"
+         id="tspan1260">‐25°C to +85°C</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="88.980286"
+       y="214.40666"
+       id="text1275"><tspan
+         sodipodi:role="line"
+         id="tspan1273"
+         x="88.980286"
+         y="214.40666"
+         style="font-size:3.52778px;stroke-width:0.264583">23 bit Addr</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
