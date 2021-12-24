@@ -17,6 +17,8 @@ extern "C" {
 #include "ubx_protocol.h"
 
 #ifdef HAS_MCU
+#define UBX_SEND_TRY 15
+#define UBX_SEND_TIME_OUT_MS 2000
 #define UBX_UART_NUM UART_NUM_ZED_F9P
 #define UBX_PERIOD_US S_2_US(3)
 #define UBX_RX_TIME_OUT_MS S_2_MS(15)
@@ -84,6 +86,7 @@ typedef struct xNavInfo_t {
 
 extern NavInfo_t NavInfo;
 bool ubx_proc(void);
+bool ubx_send_message_ack(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
 bool ubx_driver_init(void);
 bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers);

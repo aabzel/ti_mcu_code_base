@@ -164,6 +164,7 @@ typedef struct xUbloxProtocol_t {
 #endif
     uint16_t read_crc;
     volatile uint32_t ack_cnt;
+    volatile bool ack;
     uint8_t rx_state;
     uint8_t rx_frame[UBX_RX_FRAME_SIZE];
     uint8_t fix_frame[UBX_RX_FRAME_SIZE];

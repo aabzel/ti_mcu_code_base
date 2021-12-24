@@ -27,29 +27,52 @@ bool ubx_driver_init(void) {
     return res;
 }
 
+
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len) {
-    bool res = true;
-    static uint8_t tx_array[256] = {0};
-    uint16_t tx_array_len = 0U;
-    uint16_t crc16 = 0U;
-    tx_array[0] = UBX_SYN_0;
-    tx_array[1] = UBX_SYN_1;
-    tx_array[2] = class_num;
-    tx_array[3] = id;
-    memcpy(&tx_array[4], &len, 2);
-    if((0 < len) && (NULL != payload)) {
+    bool res = false;
+    if((NULL != payload) && (0<len)){
+        res = true;
+        static uint8_t tx_array[256] = {0};
+        uint16_t tx_array_len = 0U;
+        uint16_t crc16 = 0U;
+        tx_array[0] = UBX_SYN_0;
+        tx_array[1] = UBX_SYN_1;
+        tx_array[2] = class_num;
+        tx_array[3] = id;
+        memcpy(&tx_array[4], &len, 2);
         memcpy(&tx_array[6], payload, len);
-    }
-    tx_array_len = len + UBX_HEADER_SIZE + UBX_CRC_SIZE;
-    crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
-    memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
-    if(res) {
+        tx_array_len = len + UBX_HEADER_SIZE + UBX_CRC_SIZE;
+        crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
+        UbloxProtocol.ack = false;
+        memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
+
         res = uart_send(UBX_UART_NUM, tx_array, tx_array_len, true);
         if(res) {
             UbloxProtocol.tx_pkt_cnt++;
         }
     }
     return res;
+}
+
+
+bool ubx_send_message_ack(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len) {
+    bool out_res = false;
+    bool res = false;
+    uint32_t i = 0;
+    for(i=0; i < UBX_SEND_TRY; i++) {
+      res = ubx_send_message( class_num,  id, payload, len);
+      res = ubx_wait_ack(UBX_SEND_TIME_OUT_MS);
+      if(res){
+          out_res = true;
+          break;
+      }else{
+#ifdef HAS_MCU
+          LOG_WARNING(UBX,"WaitAckTimeOut:%u",i);
+#endif
+      }
+    }
+
+    return out_res;
 }
 
 #define UBX_KEY_SIZE 4
@@ -204,6 +227,7 @@ static bool ubx_proc_ack_frame(void) {
     case UBX_ACK_ACK:
         LOG_NOTICE(UBX, "Ack");
         UbloxProtocol.ack_cnt++;
+        UbloxProtocol.ack = true;
         res = true;
         break;
     case UBX_ACK_NAK:
@@ -303,7 +327,10 @@ bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t la
         print_mem(val, val_len, true, false, true, true);
         memcpy(&payload[8], val, val_len);
         payload_len = 8 + val_len;
-        res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
+        res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
+        if (false == res) {
+            LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", UBX_CLA_CFG, UBX_ID_CFG_SET_VAL);
+        }
     }
     return res;
 }

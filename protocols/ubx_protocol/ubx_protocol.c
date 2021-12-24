@@ -274,14 +274,11 @@ uint8_t ubx_keyid_2len(uint32_t key_id) {
 #ifdef HAS_MCU
 bool ubx_wait_ack(uint32_t wait_pause_ms) {
     bool res = false, loop = true;
-    uint32_t start_ms = 0U, curr_ms = 0U, ack_cnt_diff = 0;
+    uint32_t start_ms = 0U, curr_ms = 0U;
     start_ms = get_time_ms32();
-    uint32_t ack_cnt_init = UbloxProtocol.ack_cnt;
     uint64_t loop_start_time_us = 0;
     while(loop) {
-
-        ack_cnt_diff = UbloxProtocol.ack_cnt - ack_cnt_init;
-        if(0 < ack_cnt_diff) {
+        if(true == UbloxProtocol.ack) {
             res = true;
             loop = false;
         }

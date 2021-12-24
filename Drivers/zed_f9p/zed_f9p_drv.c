@@ -230,6 +230,9 @@ static const keyValItem_t BaseCfgLut[] = {
 };
 #endif
 
+
+#define METER_TO_MM(METER) (METER*1000)
+
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) {
     bool res = false, out_res = true;
     res = is_valid_gnss_coordinates(coordinate_base);
@@ -250,27 +253,14 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
             LOG_ERROR(ZED_F9P, "Set Dflt error");
             out_res = false;
         }
-        uint8_t cnt = 0;
         uint32_t i = 0;
         for(i = 0; i < ARRAY_SIZE(BaseCfgLut); i++) {
-            bool loop = true;
-            cnt = 0;
-            do {
-                cnt++;
                 res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
-                                      ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM) &&
-                      res;
-                res = ubx_wait_ack(600) && res;
-                if(res) {
-                    loop = false;
-                }
-                if(RETRANSMITT_CNT < cnt) {
-                    loop = false;
+                                      ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM);
+                if(false==res){
                     LOG_ERROR(ZED_F9P, "Set 0x%x error", BaseCfgLut[i].key_id);
                     out_res = false;
-                    res = false;
                 }
-            } while(loop);
         }
         /*Write base station antenna coordinates*/
         // UBX-CFG-TMODE3 (0x06 0x71)
@@ -282,16 +272,18 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         data.ecefXOrLat = 1e7 * coordinate_base.latitude;
         data.ecefYOrLon = 1e7 * coordinate_base.longitude;
         data.ecefZOrAlt = altitude_sea_lev_m * 100;
-        res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
+        data.fixedPosAcc = METER_TO_MM(2);
+        res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
         if(false == res) {
             LOG_ERROR(ZED_F9P, "SetBaseDotErr");
             out_res = false;
+        }else{
+            LOG_INFO(ZED_F9P, "SetBaseDotOk");
         }
 
         ZedF9P.rtk_mode = RTK_BASE;
         task_data[TASK_ID_NMEA].on = false;
 #ifdef HAS_RTCM3
-
         if(IF_LORA == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].lora_fwd = true;
             Rtcm3Protocol[IF_UART1].rs232_fwd = false;
@@ -301,7 +293,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
             Rtcm3Protocol[IF_UART1].rs232_fwd = true;
         }
 #endif /*HAS_RTCM3*/
-#endif
+#endif /*HAS_UBLOX*/
     } else {
         LOG_ERROR(ZED_F9P, "InvalBaseGNSScoordinate");
     }
