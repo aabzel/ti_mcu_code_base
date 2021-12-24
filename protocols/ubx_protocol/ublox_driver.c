@@ -396,10 +396,7 @@ bool ubx_set_rate(uint16_t meas_rate_ms, uint16_t time_ref) {
         data.navRate = 1;
         data.timeRef = time_ref;
         print_mem((uint8_t*)&data, sizeof(data), true, false, true, true);
-        res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_RATE, (uint8_t*)&data, sizeof(data));
-        if(res) {
-            res = ubx_wait_ack(3000);
-        }
+        res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_RATE, (uint8_t*)&data, sizeof(data));
     }
     return res;
 }

@@ -327,30 +327,14 @@ bool zed_f9p_deploy_rover(void) {
     }
 
     uint32_t i = 0;
-    uint8_t cnt = 0;
     for(i = 0; i < ARRAY_SIZE(RoverCfgLut); i++) {
-        bool loop = true;
-        cnt = 0;
-        do {
-            cnt++;
             res = ubx_cfg_set_val(RoverCfgLut[i].key_id, (uint8_t*)&RoverCfgLut[i].u_value.u8[0],
                                   ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM);
             if(false == res) {
                 LOG_ERROR(ZED_F9P, "Key:0x%08x set Error", RoverCfgLut[i].key_id);
-            }
-            res = ubx_wait_ack(900);
-            if(res) {
-                loop = false;
-            } else {
-                LOG_ERROR(ZED_F9P, "noAck");
-            }
-            if(RETRANSMITT_CNT < cnt) {
-                loop = false;
-                res = false;
-                LOG_ERROR(ZED_F9P, "Set 0x%08x error", RoverCfgLut[i].key_id);
                 out_res = false;
             }
-        } while(loop);
+
     }
     /*adjust output rate*/
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_UTC);
