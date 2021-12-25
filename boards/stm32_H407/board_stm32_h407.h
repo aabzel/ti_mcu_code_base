@@ -7,7 +7,7 @@
 #define SPI_COUNT 3
 
 #define APB2_CLOCK_HZ 84000000
-#define APB1_CLOCK_HZ 142000000
+#define APB1_CLOCK_HZ 42000000
 
 #define DIO_SX1262_SS (gpio_port_pin2pad(PORT_B,7))
 #define DIO_SX1262_BUSY (gpio_port_pin2pad(PORT_B,9))

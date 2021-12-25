@@ -7,6 +7,7 @@
 
 #include "bit_utils.h"
 #include "clocks.h"
+#include "sys_config.h"
 #include "gpio_drv.h"
 #include "stm32f4xx_hal.h"
 
@@ -63,8 +64,18 @@ static SPI_TypeDef* spi_num_2_base(SpiName_t spi_num) {
     return Instance;
 }
 
+static uint32_t BitRate2Prescaler(uint32_t bit_rate, uint32_t bus_freq){
+    uint32_t prescaler = 0;
+    uint32_t i = 0;
+    for(i=1;i<=8;i++){
+
+    }
+    return prescaler;
+}
+
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
     bool res = false;
+    uint32_t prescaler =BitRate2Prescaler(bit_rate,APB1_CLOCK_HZ);
     SpiInstance[spi_num - 1].handle.Init.Mode = SPI_MODE_MASTER;
     SpiInstance[spi_num - 1].handle.Instance = spi_num_2_base(spi_num);
     SpiInstance[spi_num - 1].handle.Init.Direction = SPI_DIRECTION_2LINES;
@@ -72,7 +83,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
     SpiInstance[spi_num - 1].handle.Init.CLKPolarity = SPI_POLARITY_LOW;
     SpiInstance[spi_num - 1].handle.Init.CLKPhase = SPI_PHASE_1EDGE;
     SpiInstance[spi_num - 1].handle.Init.NSS = SPI_NSS_SOFT;
-    SpiInstance[spi_num - 1].handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+    SpiInstance[spi_num - 1].handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
     SpiInstance[spi_num - 1].handle.Init.FirstBit = SPI_FIRSTBIT_MSB;
     SpiInstance[spi_num - 1].handle.Init.TIMode = SPI_TIMODE_DISABLE;
     SpiInstance[spi_num - 1].handle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;

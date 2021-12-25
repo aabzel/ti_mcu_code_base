@@ -13,7 +13,7 @@ extern "C" {
 #include "sys_config.h"
 
 #define SPI1_BIT_RATE_HZ  100000
-#define SPI2_BIT_RATE_HZ 3000000
+#define SPI2_BIT_RATE_HZ 1000000
 
 typedef enum eSpiName_t {
     SPI_UNDEF_INX = 0,
