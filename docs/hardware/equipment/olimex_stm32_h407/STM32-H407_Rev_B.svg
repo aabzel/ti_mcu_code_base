@@ -209,10 +209,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="287.63764"
-     inkscape:cy="320.26412"
+     inkscape:cx="509.8712"
+     inkscape:cy="401.07632"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1146,14 +1146,14 @@
          style="stroke-width:0.264583">STM32F407ZGT6</tspan></text>
     <text
        xml:space="preserve"
-       style="display:inline;font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="107.72321"
-       y="75.40625"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="101.84328"
+       y="73.000824"
        id="text21"><tspan
          sodipodi:role="line"
          id="tspan19"
-         x="107.72321"
-         y="75.40625"
+         x="101.84328"
+         y="73.000824"
          style="stroke-width:0.264583">U5</tspan></text>
     <text
        xml:space="preserve"

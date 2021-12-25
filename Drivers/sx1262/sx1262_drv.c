@@ -38,6 +38,7 @@ speed up to 16 MHz
 #include "spi_drv.h"
 #include "sx1262_diag.h"
 #include "sys_config.h"
+#include "task_info.h"
 
 #ifndef HAS_SPI
 #error "SX1262 requires SPI driver"
@@ -226,7 +227,7 @@ static bool check_sync_word(uint64_t sync_word) {
             }
         }
     }
-    return true;
+    return res;
 }
 
 static bool sx1262_is_exist(void) {
@@ -1067,6 +1068,9 @@ bool sx1262_init(void) {
         res = sx1262_start_rx(0xFFFFFF) && res;
     } else {
         LOG_ERROR(LORA, "SX1262 link error");
+    }
+    if(false==res){
+        task_data[TASK_ID_LORA].on=false;
     }
     return res;
 }

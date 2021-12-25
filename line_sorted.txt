@@ -1,41 +1,18 @@
-									<listOptionValue builtIn="false" value="CC26X2"/>
-									<listOptionValue builtIn="false" value="CC26XX"/>
-									<listOptionValue builtIn="false" value="DeviceFamily_CC26X2"/>
-									<listOptionValue builtIn="false" value="HAS_ADC"/>
-									<listOptionValue builtIn="false" value="HAS_BOOT"/>
-									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
-									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
-									<listOptionValue builtIn="false" value="HAS_CLI"/>
-									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
-									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
-									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
-									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
-									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
-									<listOptionValue builtIn="false" value="HAS_GPIO"/>
-									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
-									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
-									<listOptionValue builtIn="false" value="HAS_LED"/>
-									<listOptionValue builtIn="false" value="HAS_MCU"/>
-									<listOptionValue builtIn="false" value="HAS_NMEA"/>
-									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
-									<listOptionValue builtIn="false" value="HAS_PARAM"/>
-									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
-									<listOptionValue builtIn="false" value="HAS_RS232"/>
-									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
-									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_NMEA_PROTO"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_FIFO"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS_GNSS"/>
-									<listOptionValue builtIn="false" value="HAS_UART"/>
-									<listOptionValue builtIn="false" value="HAS_UART0"/>
-									<listOptionValue builtIn="false" value="HAS_UART1"/>
-									<listOptionValue builtIn="false" value="HAS_UBX_PTOTO"/>
-									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
-									<listOptionValue builtIn="false" value="NORTOS"/>
+                    <name>CCDefines</name>
+                    <state>HAS_CLI</state>
+                    <state>HAS_CORTEX_M4</state>
+                    <state>HAS_DEBUG</state>
+                    <state>HAS_GPIO</state>
+                    <state>HAS_IAR</state>
+                    <state>HAS_INTERRUPT</state>
+                    <state>HAS_MCU</state>
+                    <state>HAS_SPI</state>
+                    <state>HAS_SPI2</state>
+                    <state>HAS_SX1262</state>
+                    <state>HAS_TASKS</state>
+                    <state>HAS_UART</state>
+                    <state>HAS_USART6</state>
+                    <state>NORTOS</state>
+                    <state>STM32F407xx</state>
+                    <state>STM32F4xx</state>
+                    <state>USE_HAL_DRIVER</state>

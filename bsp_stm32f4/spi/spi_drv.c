@@ -227,7 +227,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle) {
 #endif
 
 #ifdef HAS_SPI2
-    if(spiHandle->Instance == SPI2) {
+    if(SPI2==spiHandle->Instance) {
         __HAL_RCC_SPI2_CLK_ENABLE();
         HAL_NVIC_SetPriority(SPI2_IRQn, 7, 0);
         HAL_NVIC_EnableIRQ(SPI2_IRQn);
