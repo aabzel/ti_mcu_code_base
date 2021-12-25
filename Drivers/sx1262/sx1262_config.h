@@ -14,7 +14,7 @@ extern "C" {
 #define DFLT_LORA_CR LORA_CR_4_8
 #define DFLT_OUT_POWER 22 /*dBm*/
 
-#define SX1262_SPI_NUM 0
+//#define SX1262_SPI_NUM 0
 #define SYNC_WORD 0x1122334455667788
 
 #define RX_BASE_ADDRESS 0x00
