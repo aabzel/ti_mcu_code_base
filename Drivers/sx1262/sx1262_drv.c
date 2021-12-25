@@ -224,8 +224,10 @@ static bool check_sync_word(uint64_t sync_word) {
         if(res) {
             if(sync_word == read_sync_word) {
                 res = true;
-            }else{
+            } else {
+                LOG_ERROR(LORA,"Set:0x%llx Read:0x%llx",sync_word, read_sync_word);
                 res = false;
+
             }
         }
     }

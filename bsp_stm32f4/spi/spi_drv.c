@@ -168,11 +168,19 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
         break;
     }
     if(res) {
+        SpiInstance[spi_num - 1].tx_int = false;
         status = HAL_SPI_Transmit_IT(&SpiInstance[spi_num - 1].handle, tx_array, tx_array_len);
         if(HAL_OK == status) {
             res = true;
         }
+        uint32_t cnt = 0;
         SpiInstance[spi_num - 1].tx_byte_cnt += tx_array_len;
+        while(false==SpiInstance[spi_num - 1].tx_int){
+            cnt++;
+            if(0x0FFFFFFF<cnt){
+                res = false;
+            }
+        }
     }
     return res;
 }
@@ -198,11 +206,20 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
         break;
     }
     if(res) {
+        SpiInstance[spi_num - 1].rx_int = false;
         status = HAL_SPI_Receive_IT(&SpiInstance[spi_num - 1].handle, rx_array, rx_array_len);
         if(HAL_OK == status) {
             res = true;
         }
         SpiInstance[spi_num - 1].rx_byte_cnt += rx_array_len;
+        //wait_end
+        uint32_t cnt = 0;
+        while(false==SpiInstance[spi_num - 1].rx_int){
+            cnt++;
+            if(0x0FFFFFFF<cnt){
+                res = false;
+            }
+        }
     }
 
     return res;
@@ -321,6 +338,7 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* hspi) {
     }
 #endif
     if(res) {
+        SpiInstance[spi_num - 1].tx_int = true;
         SpiInstance[spi_num - 1].tx_cnt++;
     }
 }
@@ -339,6 +357,7 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef* hspi) {
     }
 #endif
     if(res) {
+        SpiInstance[spi_num - 1].rxtx_int = true;
         SpiInstance[spi_num - 1].rxtx_cnt++;
     }
 }
@@ -357,6 +376,7 @@ void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef* hspi) {
     }
 #endif
     if(res) {
+        SpiInstance[spi_num - 1].rx_int = true;
         SpiInstance[spi_num - 1].rx_cnt++;
     }
 }
