@@ -13,6 +13,7 @@ speed up to 16 MHz
 #include <stdlib.h>
 #include <string.h>
 
+#include "array.h"
 #include "bit_utils.h"
 #include "board_layout.h"
 #include "byte_utils.h"
@@ -1070,7 +1071,7 @@ bool sx1262_init(void) {
     return res;
 }
 
-bool sx1262_set_tx(uint32_t timeout_s) {
+static bool sx1262_set_tx(uint32_t timeout_s) {
     bool res = true;
     uint8_t buff[3];
     /*from senior byte to junior byte*/
@@ -1104,7 +1105,9 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
             Sx1262Instance.tx_start_time_stamp_ms = get_time_ms32();
 #endif /*HAS_SX1262_BIT_RATE*/
             /*TODO: Set Red Led on*/
+#ifdef HAS_LED
             led_on(&Led[LED_INDEX_RED]);
+#endif
             res = sx1262_set_tx(timeout_s);
             if(res) {
                 Sx1262Instance.tx_size_max = max8u(Sx1262Instance.tx_size_max, tx_len);
@@ -1536,7 +1539,9 @@ static inline bool sx1262_poll_status(void) {
             break;
         case COM_STAT_COM_TX_DONE: {
             Sx1262Instance.tx_done = true;
+#ifdef HAS_LED
             led_off(&Led[LED_INDEX_RED]);
+#endif
 #ifdef HAS_SX1262_BIT_RATE
             float tx_real_bit_rate = 0.0;
             uint32_t tx_duration_ms = 0;

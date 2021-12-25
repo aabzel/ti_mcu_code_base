@@ -45,6 +45,8 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint32_t rx_size) {
 
 bool lora_init(void) {
     bool res = false;
+    LoRaInterface.max_distance = 0.0;
+#ifdef HAS_FLASH_FS
     uint16_t value_len = 0;
     res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance, 8, &value_len);
     if(false == res) {
@@ -54,6 +56,7 @@ bool lora_init(void) {
             LOG_ERROR(PARAM, "SetDfltMaxLinkDistError");
         }
     }
+#endif
     LoRaInterface.tx_ok_cnt = 0;
     LoRaInterface.tx_done_cnt = 0;
     res = fifo_arr_init(&LoRaInterface.FiFoLoRaTx, &ArrLoRaTxNode[0], ARRAY_SIZE(ArrLoRaTxNode));
