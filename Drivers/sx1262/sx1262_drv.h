@@ -235,11 +235,14 @@ typedef struct xSx1262_t {
 } Sx1262_t;
 
 extern Sx1262_t Sx1262Instance;
-
+#ifdef HAS_SX1262_DEBUG
 extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
+#endif
 
 float dbm2watts(int32_t dbm);
 bool is_valid_bandwidth(BandWidth_t bandwidth);
+bool is_valid_spreading_factor(SpreadingFactor_t Spreading_factor);
+bool is_valid_coding_rate(LoRaCodingRate_t coding_rate);
 bool is_power_valid(int8_t power);
 
 bool sx1262_get_dev_err(uint16_t* op_error);
