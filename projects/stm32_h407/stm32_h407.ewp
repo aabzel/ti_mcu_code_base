@@ -224,23 +224,25 @@
                 </option>
                 <option>
                     <name>CCDefines</name>
-                    <state>USE_HAL_DRIVER</state>
-                    <state>NORTOS</state>
-                    <state>HAS_GPIO</state>
-                    <state>HAS_SX1262</state>
-                    <state>HAS_INTERRUPT</state>
-                    <state>HAS_IAR</state>
-                    <state>STM32F407xx</state>
-                    <state>HAS_DEBUG</state>
-                    <state>HAS_TASKS</state>
-                    <state>HAS_MCU</state>
-                    <state>HAS_UART</state>
-                    <state>HAS_USART6</state>
-                    <state>STM32F4xx</state>
-                    <state>HAS_SPI</state>
-                    <state>HAS_SPI2</state>
                     <state>HAS_CLI</state>
                     <state>HAS_CORTEX_M4</state>
+                    <state>HAS_DEBUG</state>
+                    <state>HAS_GPIO</state>
+                    <state>HAS_IAR</state>
+                    <state>HAS_LORA</state>
+                    <state>HAS_INTERRUPT</state>
+                    <state>HAS_MCU</state>
+                    <state>HAS_SPI</state>
+                    <state>HAS_SPI2</state>
+                    <state>HAS_SX1262</state>
+                    <state>HAS_SX1262_DEBUG</state>
+                    <state>HAS_TASKS</state>
+                    <state>HAS_UART</state>
+                    <state>HAS_USART6</state>
+                    <state>NORTOS</state>
+                    <state>STM32F407xx</state>
+                    <state>STM32F4xx</state>
+                    <state>USE_HAL_DRIVER</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1278,6 +1280,24 @@
             <name>flash_nvs</name>
             <file>
                 <name>$PROJ_DIR$\..\..\bsp_stm32f4\flash_nvs\flash_nvs_drv.c</name>
+            </file>
+        </group>
+        <group>
+            <name>LoRa</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\lora\lora_commands.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\lora\lora_commands.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\lora\lora_defs.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\lora\lora_drv.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\lora\lora_drv.h</name>
             </file>
         </group>
         <group>
