@@ -179,6 +179,7 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
             cnt++;
             if(0x0FFFFFFF<cnt){
                 res = false;
+                break;
             }
         }
     }
@@ -218,6 +219,7 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
             cnt++;
             if(0x0FFFFFFF<cnt){
                 res = false;
+                break;
             }
         }
     }
