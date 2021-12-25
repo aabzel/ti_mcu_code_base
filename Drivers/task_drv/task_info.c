@@ -24,7 +24,7 @@ uint64_t loop_duration_max_us = 0;
 #endif /*HAS_DEBUG*/
 
 #ifdef SYS_TASKS
-#define TASK(task_name) {.name = #task_name},
+#define TASK(task_name) {.name = #task_name, .on=true,},
 task_data_t task_data[] = {
     SYS_TASKS
 #undef TASK
@@ -130,7 +130,7 @@ bool task_init(void) {
         task_data[id].run_time_max = 0;
         task_data[id].start_period_min = UINT64_MAX;
         task_data[id].start_period_max = 0;
-        task_data[id].on=true;
+        //task_data[id].on=true;
     }
     total_time0_us = get_time_us();
     total_time_ms0 = get_time_ms64();

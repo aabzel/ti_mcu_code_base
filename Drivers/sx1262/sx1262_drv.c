@@ -224,6 +224,8 @@ static bool check_sync_word(uint64_t sync_word) {
         if(res) {
             if(sync_word == read_sync_word) {
                 res = true;
+            }else{
+                res = false;
             }
         }
     }

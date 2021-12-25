@@ -11,6 +11,7 @@
 #include "clocks.h"
 #include "sys_config.h"
 #include "gpio_drv.h"
+#include "log.h"
 #include "stm32f4xx_hal.h"
 #include "utils_math.h"
 
@@ -86,6 +87,7 @@ static uint32_t Index2prescaler(uint8_t prescaler_index){
 
 static uint32_t BitRate2Prescaler(int32_t bit_rate, int32_t bus_freq){
     uint32_t prescaler = 0;
+    LOG_INFO(SPI,"bitRate:%u bi/s",bit_rate);
     uint8_t final_prescaler_index = 8;
     int32_t cur_bit_rate = 0;
     int32_t cur_bit_rate_error=INT_MAX;
@@ -98,15 +100,18 @@ static uint32_t BitRate2Prescaler(int32_t bit_rate, int32_t bus_freq){
             min_abs_bit_rate_error = cur_bit_rate_error;
             final_prescaler_index = i;
         }
-
     }
+    cur_bit_rate = bus_freq/int_pow(2,final_prescaler_index);
+    LOG_INFO(SPI,"Prescaler:%u",int_pow(2,final_prescaler_index));
+    LOG_INFO(SPI,"RealClock:%u Hz",cur_bit_rate);
+    LOG_INFO(SPI,"ClockErr:%d Hz",abs(bit_rate-cur_bit_rate));
     prescaler = Index2prescaler(final_prescaler_index);
     return prescaler;
 }
 
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
     bool res = false;
-    uint32_t prescaler =BitRate2Prescaler(bit_rate,APB1_CLOCK_HZ);
+    uint32_t prescaler = BitRate2Prescaler(bit_rate,APB1_CLOCK_HZ);
     SpiInstance[spi_num - 1].handle.Init.Mode = SPI_MODE_MASTER;
     SpiInstance[spi_num - 1].handle.Instance = spi_num_2_base(spi_num);
     SpiInstance[spi_num - 1].handle.Init.Direction = SPI_DIRECTION_2LINES;
