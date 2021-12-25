@@ -566,7 +566,7 @@ bool sx1262_clear_fifo(void) {
     return res;
 }
 
-static bool is_valid_spreading_factor(SpreadingFactor_t Spreading_factor) {
+bool is_valid_spreading_factor(SpreadingFactor_t Spreading_factor) {
     bool res = false;
     switch(Spreading_factor) {
     case SF5:
@@ -600,7 +600,7 @@ static bool is_valid_spreading_factor(SpreadingFactor_t Spreading_factor) {
     return res;
 }
 
-static bool is_valid_coding_rate(LoRaCodingRate_t coding_rate) {
+bool is_valid_coding_rate(LoRaCodingRate_t coding_rate) {
     bool res = false;
     switch(coding_rate) {
     case LORA_CR_4_5:
@@ -1086,7 +1086,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
     bool res = true;
     if(Sx1262Instance.tx_done) {
         Sx1262Instance.tx_done = false;
-        if((NULL != tx_buf) && (0 < tx_len) && (tx_len <= TX_SIZE)) {
+        if((NULL != tx_buf) && (0 < tx_len)) {
             res = sx1262_clear_fifo();
             // sx1262_set_tx_len(tx_len); /*Error*/
             res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
