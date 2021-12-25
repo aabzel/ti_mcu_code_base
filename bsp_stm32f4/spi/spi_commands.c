@@ -132,3 +132,13 @@ bool spi_read_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+
+bool spi_init_command(int32_t argc, char* argv[]){
+    bool res=spi_init();
+    if(res){
+        LOG_INFO(SPI, "Ok");
+    }else{
+        LOG_ERROR(SPI, "InitErr");
+    }
+    return res;
+}
