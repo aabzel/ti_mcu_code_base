@@ -187,7 +187,7 @@ bool process_shell_cmd(char* cmd_line) {
 #ifdef HAS_CLI_CMD_HISTORY
     memset(prev_cmd, 0x00, sizeof(prev_cmd));
     if(strlen(cmd_line) < sizeof(prev_cmd)) {
-        memcpy(prev_cmd, cmd_line, strlen(cmd_line));
+        strncpy(prev_cmd, cmd_line, sizeof(prev_cmd));
     }
 #endif
     static int shell_argc = 0;
