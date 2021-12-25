@@ -1502,6 +1502,15 @@
             </file>
         </group>
         <group>
+            <name>utils_math</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\utils\utils_math\utils_math.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\utils\utils_math\utils_math.h</name>
+            </file>
+        </group>
+        <group>
             <name>utils_string</name>
             <file>
                 <name>$PROJ_DIR$\..\..\utils\utils_string\convert.c</name>

@@ -10,6 +10,7 @@ extern "C" {
 
 uint8_t pwm_sample_calc_num(uint32_t cut_tick_ms, uint32_t period_ms, uint8_t duty, int32_t phase_ms);
 uint8_t pwm_sample_calc(uint32_t cur_time_ms, float freq, uint32_t phase_ms, float duty_cycle) ;
+uint32_t int_pow(uint32_t base, uint32_t exp);
 
 #ifdef __cplusplus
 }

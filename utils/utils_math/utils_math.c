@@ -44,3 +44,15 @@ uint8_t pwm_sample_calc_num(uint32_t cut_tick_ms, uint32_t period_ms, uint8_t du
     return val;
 }
 
+uint32_t int_pow(uint32_t base, uint32_t exp){
+    uint32_t result = 1;
+    while (exp) {
+        if (exp % 2){
+           result *= base;
+        }
+        exp /= 2;
+        base *= base;
+    }
+    return result;
+}
+

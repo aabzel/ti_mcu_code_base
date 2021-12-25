@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <limits.h>
 #include <string.h>
 
 #include "bit_utils.h"
@@ -10,6 +12,7 @@
 #include "sys_config.h"
 #include "gpio_drv.h"
 #include "stm32f4xx_hal.h"
+#include "utils_math.h"
 
 static SpiName_t spi_base_2_num(SPI_TypeDef* Instance) {
     SpiName_t spi_num = (SpiName_t)0;
@@ -64,12 +67,40 @@ static SPI_TypeDef* spi_num_2_base(SpiName_t spi_num) {
     return Instance;
 }
 
-static uint32_t BitRate2Prescaler(uint32_t bit_rate, uint32_t bus_freq){
+static uint32_t Index2prescaler(uint8_t prescaler_index){
+    uint32_t prescaler=SPI_BAUDRATEPRESCALER_256;
+    switch(prescaler_index){
+        case 1:prescaler=SPI_BAUDRATEPRESCALER_2; break;
+        case 2:prescaler=SPI_BAUDRATEPRESCALER_4; break;
+        case 3:prescaler=SPI_BAUDRATEPRESCALER_8; break;
+        case 4:prescaler=SPI_BAUDRATEPRESCALER_16; break;
+        case 5:prescaler=SPI_BAUDRATEPRESCALER_32; break;
+        case 6:prescaler=SPI_BAUDRATEPRESCALER_64; break;
+        case 7:prescaler=SPI_BAUDRATEPRESCALER_128; break;
+        case 8:prescaler=SPI_BAUDRATEPRESCALER_256; break;
+        default:prescaler=SPI_BAUDRATEPRESCALER_256;
+        break;
+    }
+    return prescaler;
+}
+
+static uint32_t BitRate2Prescaler(int32_t bit_rate, int32_t bus_freq){
     uint32_t prescaler = 0;
+    uint8_t final_prescaler_index = 8;
+    int32_t cur_bit_rate = 0;
+    int32_t cur_bit_rate_error=INT_MAX;
+    int32_t min_abs_bit_rate_error=INT_MAX;
     uint32_t i = 0;
     for(i=1;i<=8;i++){
+        cur_bit_rate = bus_freq/int_pow(2,i);
+        cur_bit_rate_error = abs(cur_bit_rate-bit_rate);
+        if(cur_bit_rate_error < min_abs_bit_rate_error){
+            min_abs_bit_rate_error = cur_bit_rate_error;
+            final_prescaler_index = i;
+        }
 
     }
+    prescaler = Index2prescaler(final_prescaler_index);
     return prescaler;
 }
 
