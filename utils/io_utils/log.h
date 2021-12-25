@@ -46,7 +46,6 @@ typedef uint8_t log_facility_t;
 typedef enum eLog_facility_t {
   UNKNOWN_FACILITY=0,
   LG_ADC,
-  LG_RTC,
   BATT ,
   CAN,
   BOOT,
@@ -65,7 +64,7 @@ typedef enum eLog_facility_t {
   TIM,
   RTCM,
   RF,
-  RTC,
+  LG_RTC,
   SPI,
   PARAM,
   LG_PWR,

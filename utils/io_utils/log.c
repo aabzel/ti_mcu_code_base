@@ -151,9 +151,6 @@ const char *facility2str(log_facility_t facility) {
   case BATT:
     facility_str = "BATT";
     break;
-  case RTC:
-    facility_str = "RTC";
-    break;
   case BOOT:
     facility_str = "BOOT";
     break;
