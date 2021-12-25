@@ -732,7 +732,7 @@ bool sx1262_test_command(int32_t argc, char* argv[]) {
         Sx1262Instance.tx_done_cnt = 0;
         Sx1262Instance.rx_done_cnt = 0;
         for(try_num = 1; try_num <= try_cnt; try_num++) {
-            snprintf(tx_array, sizeof(tx_array), "ping_%u", try_num);
+            snprintf((char *)tx_array, sizeof(tx_array), "ping_%u", try_num);
             tx_array_len = (uint16_t)strlen((char*)tx_array) + 1U;
             LOG_INFO(LORA, "send %u/%u [%s] pause %u ms", try_num, try_cnt, tx_array, wait_pause_ms);
             res = sx1262_start_tx(tx_array, tx_array_len, 0);
@@ -759,7 +759,7 @@ bool sx1262_statistic_command(int32_t argc, char* argv[]) {
 }
 
 #ifdef HAS_DEBUG
-bool sx1262_calc_diag(char* key_word1, char* key_word2) {
+static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
     bool res = false;
     uint8_t sf = 0, cr = 0, bw = 0;
     static const table_col_t cols[] = {{5, "No"},     {7, "SF,Ch/s"}, {8, "BW,kHz"},    {5, "CR"},       {9, "bit/s"},

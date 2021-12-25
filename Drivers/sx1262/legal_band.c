@@ -12,7 +12,7 @@ static bool is_in_range(uint32_t val, uint32_t down, uint32_t up) {
     return res;
 }
 
-bool is_band_legal_one(uint32_t frequency_hz, uint32_t bandwidth_hz, uint32_t down, uint32_t up) {
+static bool is_band_legal_one(uint32_t frequency_hz, uint32_t bandwidth_hz, uint32_t down, uint32_t up) {
     bool res = true;
 
     uint32_t frequency_min = frequency_hz - bandwidth_hz / 2;

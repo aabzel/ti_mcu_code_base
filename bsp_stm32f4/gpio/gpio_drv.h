@@ -45,9 +45,11 @@ typedef struct xPin_t {
 
 GPIO_TypeDef *Port2PortPtr(uint8_t port_num);
 bool gpio_init(void);
+uint8_t gpio_port_pin2pad(Port_t port, uint8_t pin);
 uint32_t PinNum2PinMask(uint8_t pin_num);
 Port_t PortLetter2PortNum(char port);
 bool gpio_get_state(uint8_t io_pin, uint8_t* logic_level);
+uint32_t gpio_read(uint8_t pad_num);
 bool gpio_set_state(uint8_t io_pin, uint8_t logic_level);
 bool is_edge_irq_en(uint8_t dio_pin);
 bool gpio_toggle(uint8_t io_pin);

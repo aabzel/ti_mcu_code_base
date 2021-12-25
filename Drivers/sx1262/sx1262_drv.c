@@ -61,12 +61,16 @@ speed up to 16 MHz
 bool sx1262_chip_select(bool state) {
     bool res = false;
     if(true == state) {
-        GPIO_writeDio(DIO_SX1262_SS, 0);
-        GPIO_writeDio(DIO_CAN_SS, 1);
+        gpio_set_state(DIO_SX1262_SS, 0);
+#ifdef HAS_CAN
+        gpio_set_state(DIO_CAN_SS, 1);
+#endif
         res = true;
     } else if(false == state) {
-        GPIO_writeDio(DIO_SX1262_SS, 1);
-        GPIO_writeDio(DIO_CAN_SS, 1);
+        gpio_set_state(DIO_SX1262_SS, 1);
+#ifdef HAS_CAN
+        gpio_set_state(DIO_CAN_SS, 1);
+#endif
         res = true;
     } else {
         res = false;
@@ -146,7 +150,7 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
     uint32_t busy_value = 0;
     start_ms = get_time_ms32();
     while(loop) {
-        busy_value = GPIO_readDio(DIO_SX1262_BUSY);
+        busy_value = gpio_read(DIO_SX1262_BUSY);
         if(0 == busy_value) {
             res = true;
             loop = false;
@@ -224,7 +228,7 @@ static bool check_sync_word(uint64_t sync_word) {
     return true;
 }
 
-bool sx1262_is_exist(void) {
+static bool sx1262_is_exist(void) {
     bool res = false;
     res = check_sync_word(0x0012345678abcdef);
     if(true == res) {
@@ -774,7 +778,7 @@ static bool calc_power_param(uint8_t output_power_dbm, uint8_t* pa_duty_cycle, u
     return res;
 }
 
-bool sx1262_conf_tx(int8_t output_power_dbm) {
+static bool sx1262_conf_tx(int8_t output_power_dbm) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
@@ -817,6 +821,7 @@ bool sx1262_wakeup(void) {
 
 static bool sx1262_init_gpio(void) {
     bool res = true;
+#ifdef CC26X2
     GPIO_setConfig(CONF_GPIO_LORA_RST, gpio_get_cfg_dio(DIO_SX1262_RST));
     GPIO_setConfig(CONF_GPIO_LORA_CS, gpio_get_cfg_dio(DIO_SX1262_SS));
     GPIO_setConfig(CONF_GPIO_LORA_BSY, gpio_get_cfg_dio(DIO_SX1262_BUSY));
@@ -825,19 +830,19 @@ static bool sx1262_init_gpio(void) {
     GPIO_setCallback(CONF_GPIO_LORA_INT, dio28_fall_call_back);
 
     GPIO_enableInt(CONF_GPIO_LORA_INT);
+#endif
 
-    GPIO_writeDio(DIO_SX1262_SS, 1);
-    GPIO_writeDio(DIO_SX1262_RST, 1);
-
+    gpio_set_state(DIO_SX1262_SS, 1);
+    gpio_set_state(DIO_SX1262_RST, 1);
     return res;
 }
 bool sx1262_reset(void) {
     bool res = true;
-    GPIO_writeDio(DIO_SX1262_RST, 1);
+    gpio_set_state(DIO_SX1262_RST, 1);
     wait_ms(20);
-    GPIO_writeDio(DIO_SX1262_RST, 0);
+    gpio_set_state(DIO_SX1262_RST, 0);
     wait_ms(50);
-    GPIO_writeDio(DIO_SX1262_RST, 1);
+    gpio_set_state(DIO_SX1262_RST, 1);
     wait_ms(20);
     return res;
 }
@@ -858,7 +863,7 @@ float dbm2watts(int32_t dbm) {
     return watts;
 }
 
-bool sx1262_load_params(Sx1262_t* sx1262Instance) {
+static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     bool res = true;
     sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
@@ -1023,7 +1028,7 @@ bool sx1262_init(void) {
                  Sx1262Instance.rf_frequency_hz + bandwidth_hz / 2);
     }
 #endif /*HAS_LEGAL_BAND_CHECK*/
-    GPIO_writeDio(DIO_SX1262_SS, 1);
+    gpio_set_state(DIO_SX1262_SS, 1);
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
 
@@ -1607,10 +1612,10 @@ static inline bool sx1262_sync_registers(void) {
         Sx1262Instance.get_sync_word = tempSx1262Instance.get_sync_word;
     }
 
-    Sx1262Instance.wire_int = (uint8_t)GPIO_readDio(DIO_SX1262_INT);
-    Sx1262Instance.wire_busy = (uint8_t)GPIO_readDio(DIO_SX1262_BUSY);
-    Sx1262Instance.wire_nss = (uint8_t)GPIO_readDio(DIO_SX1262_SS);
-    Sx1262Instance.wire_rst = (uint8_t)GPIO_readDio(DIO_SX1262_RST);
+    Sx1262Instance.wire_int = (uint8_t)gpio_read(DIO_SX1262_INT);
+    Sx1262Instance.wire_busy = (uint8_t)gpio_read(DIO_SX1262_BUSY);
+    Sx1262Instance.wire_nss = (uint8_t)gpio_read(DIO_SX1262_SS);
+    Sx1262Instance.wire_rst = (uint8_t)gpio_read(DIO_SX1262_RST);
 
     tempSx1262Instance.packet_type = PACKET_TYPE_UNDEF;
     res = sx1262_get_packet_type(&tempSx1262Instance.packet_type);

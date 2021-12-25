@@ -3,7 +3,8 @@
 
 #include "task_config_base.h"
 
-#define SYS_TASKS               \
+#define SYS_TASKS           \
   TASKS_BASE                \
+  TASK(SX1262)              \
 
 #endif /* TASKS_CONFIG_H */

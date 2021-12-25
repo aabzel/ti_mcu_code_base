@@ -102,6 +102,22 @@ bool gpio_get_state(uint8_t pad_num, uint8_t* logic_level) {
     return true;
 }
 
+uint32_t gpio_read(uint8_t pad_num) {
+    uint32_t ret=0;
+    Pad_t pad;
+    pad.byte = pad_num;
+    GPIO_PinState value = HAL_GPIO_ReadPin(Port2PortPtr(pad.port), 1<<pad.pin);
+    ret = (uint32_t)value;
+    return ret;
+}
+
+uint8_t gpio_port_pin2pad(Port_t port, uint8_t pin){
+    Pad_t pad={0};
+    pad.port = port;
+    pad.pin= pin;
+    return pad.byte;
+}
+
 bool gpio_set_state(uint8_t pad_num, uint8_t logic_level) {
     Pad_t pad;
     pad.byte = pad_num;

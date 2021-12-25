@@ -227,6 +227,7 @@
                     <state>USE_HAL_DRIVER</state>
                     <state>NORTOS</state>
                     <state>HAS_GPIO</state>
+                    <state>HAS_SX1262</state>
                     <state>HAS_INTERRUPT</state>
                     <state>HAS_IAR</state>
                     <state>STM32F407xx</state>
@@ -398,6 +399,9 @@
                     <state>$PROJ_DIR$</state>
                     <state>$PROJ_DIR$\..\..\bsp_stm32f4\interrupt</state>
                     <state>$PROJ_DIR$\..\..\bsp_stm32f4\spi</state>
+                    <state>$PROJ_DIR$\..\..\Drivers\sx1262</state>
+                    <state>$PROJ_DIR$\..\..\Drivers</state>
+                    <state>$PROJ_DIR$\..\..\Drivers\lora</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1283,6 +1287,42 @@
             </excluded>
             <file>
                 <name>$PROJ_DIR$\..\..\Drivers\params\param_ids.c</name>
+            </file>
+        </group>
+        <group>
+            <name>sx1262</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\gfsk_defs.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\legal_band.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\legal_band.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_commands.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_commands.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_config.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_diag.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_diag.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_drv.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_drv.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_op_codes.h</name>
             </file>
         </group>
         <group>
