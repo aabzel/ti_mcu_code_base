@@ -13,6 +13,14 @@ uint8_t uint16_to_uint8_limiter(uint16_t in_val) {
     return out_val;
 }
 
+uint32_t ceil4byte(uint32_t val){
+    uint32_t out_val=val;
+    while((out_val & 3) != 0){
+        out_val++;
+    }
+    return out_val;
+}
+
 uint8_t uint8_limiter(uint8_t in_val, uint8_t up_val) {
     uint8_t out_val = up_val;
     if(in_val <= up_val) {

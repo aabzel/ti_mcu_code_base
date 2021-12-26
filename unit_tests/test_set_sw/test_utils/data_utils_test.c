@@ -25,7 +25,9 @@ bool test_extract_digit(void) {
 
 /*tsr data_utils+*/
 bool test_data_utils(void) {
-
+  EXPECT_EQ( 8,ceil4byte(7));
+  EXPECT_EQ( 4,ceil4byte(4));
+  EXPECT_EQ( 8,ceil4byte(8));
   EXPECT_EQ( 1,ipow(2,0));
   EXPECT_EQ( 2,ipow(2,1));
   EXPECT_EQ( 32,ipow(2,5));

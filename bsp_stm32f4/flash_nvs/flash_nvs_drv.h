@@ -8,11 +8,6 @@
 
 #define MIN_SIZE_OF_ITEM (sizeof(mmItem_t)+QWORD_LEN)
 
-#define CONFIG_NVSINTERNAL 0
-#define CONFIG_TI_DRIVERS_NVS_COUNT 1
-#define CONFIG_NVS_COUNT 1
-#define NVS_BUFF_SIZE 64
-
 #define FLASH_WR_TIME_MS 20
 
 
