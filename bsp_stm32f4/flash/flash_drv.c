@@ -102,6 +102,20 @@ bool flash_find_spare_region(uint32_t* out_addr, uint32_t size) {
     return res;
 }
 
+/**
+ *     @brief    erase specified flash sectors
+ *
+ *     @param    bankNo - number of flash bank to be erased
+ *     @param    sector - first sector that should be erased
+ *     @param    amount - number of sectors that should be erased
+ *     @retval    MM_RET code
+ */
+bool mmiFlashErase(uint32_t bankNo, uint32_t sector, uint32_t amount) {
+    bool res = true;
+
+    return res;
+}
+
 /*
 Sector 0  0x08000000 - 0x08003FFF 0x04000 16  Kbytes
 Sector 1  0x08004000 - 0x08007FFF 0x04000 16  Kbytes
@@ -116,12 +130,45 @@ Sector 9  0x080a0000 - 0x080bffff 0x20000 128 Kbytes
 Sector 10 0x080c0000 - 0x080dffff 0x20000 128 Kbytes
 Sector 11 0x080E0000 - 0x080FFFFF 0x20000 128 Kbytes
 */
+static bool Addr2SectorSize(uint32_t addr, uint32_t *sector, uint32_t *sec_size){
+    bool res = false;
+    return res;
+}
+
 
 bool flash_errase(uint32_t addr, uint32_t size){
     bool res = false;
     res=is_errased(addr, size) ;
+    uint32_t sector=0;
+    uint32_t sec_cnt=0;
     if(false==res){
+        uint32_t sec_size=0;
+        res=Addr2SectorSize(  addr, &sector, &sec_size);
+    }
+    if(res){
+        if(size<sec_size){
+            sec_cnt=1;
+        }else{
+            sec_cnt=2;
+        }
+    }
 
+    if(res){
+        FLASH_EraseInitTypeDef EraseInitStruct;
+        uint32_t SectorError = 0;
+        EraseInitStruct.Banks = FLASH_BANK_1;
+        EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
+        EraseInitStruct.Sector = sector;
+        EraseInitStruct.NbSectors = sec_cnt;
+        EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+
+        /* actual erase flash */
+        HAL_FLASH_Unlock();
+        HAL_StatusTypeDef ret = HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError) ;
+        HAL_FLASH_Lock();
+        if ( HAL_OK !=ret) {
+            res =  false;
+        }
     }
     return res;
 }
