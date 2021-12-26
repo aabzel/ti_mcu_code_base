@@ -62,6 +62,7 @@ typedef union uType8Union_t {
     BitField8_t bits8;
 } Type8Union_t;
 
+uint32_t ceil4byte(uint32_t val);
 bool hex2ascii(uint8_t* in_hex, uint32_t hex_len, uint8_t* out_ascii, uint32_t ascii_len);
 const char* get_spaces_str(uint32_t spaces_length);
 float ms2Hz(uint16_t ms);

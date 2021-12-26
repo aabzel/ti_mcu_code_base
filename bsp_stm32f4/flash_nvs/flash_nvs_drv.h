@@ -8,9 +8,6 @@
 
 #define MIN_SIZE_OF_ITEM (sizeof(mmItem_t)+QWORD_LEN)
 
-#define FLASH_WR_TIME_MS 20
-
-
 bool flash_nvs_init(void);
 bool flash_nvs_erase(uint32_t addr, uint32_t array_len);
 bool flash_nvs_write(uint32_t addr, uint8_t* array, uint32_t array_len);
