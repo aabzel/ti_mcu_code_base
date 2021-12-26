@@ -1303,6 +1303,9 @@
         <group>
             <name>params</name>
             <file>
+                <name>$PROJ_DIR$\..\..\Drivers\params\param_commands.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\Drivers\params\param_ids.c</name>
             </file>
         </group>

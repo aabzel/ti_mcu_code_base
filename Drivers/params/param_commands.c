@@ -53,7 +53,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                 snprintf(temp_str, sizeof(temp_str), "%s %12s " TSEP, temp_str, ParamArray[i].name);
                 snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].len);
                 uint16_t value_len = 0;
-                uint8_t value[ParamArray[i].len];
+                uint8_t value[100];
                 res = mm_get(ParamArray[i].id, value, ParamArray[i].len, &value_len);
                 if(true == res) {
                     if(ParamArray[i].len == value_len) {
