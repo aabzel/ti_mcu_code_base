@@ -8,7 +8,7 @@
 #include "bit_utils.h"
 #include "data_utils.h"
 #include "none_blocking_pause.h"
-
+#include "stm32f4xx_hal.h"
 
 bool flash_init(void) {
     bool res = false;
@@ -31,8 +31,25 @@ bool flash_read(uint32_t in_flash_addr, uint8_t* rx_array, uint32_t array_len) {
     return res;
 }
 
-bool flash_wr(uint32_t flash_addr, uint8_t* wr_array, uint32_t array_len) {
-    bool res = false;
+bool flash_wr(uint32_t flash_addr, uint32_t* wr_array, uint32_t len) {
+    bool res = true;
+    /* ensure that data is 4 bytes aligned */
+    if ((len & 3) != 0) {
+        res=false;
+    }else{
+        uint32_t i = 0, j = 0;
+        /* write data to flash */
+        HAL_FLASH_Unlock();
+        for (i = 0, j = 0; j < len; i++, j += QWORD_LEN) {
+            if (HAL_OK==HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, flash_addr, wr_array[i])) {
+                flash_addr += QWORD_LEN;
+            } else {
+                HAL_FLASH_Lock();
+                return false;
+            }
+        }
+        HAL_FLASH_Lock();
+    }
     return res;
 }
 

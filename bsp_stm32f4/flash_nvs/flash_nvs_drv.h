@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
 #define CONFIG_NVSINTERNAL 0
 #define CONFIG_TI_DRIVERS_NVS_COUNT 1
 #define CONFIG_NVS_COUNT 1
