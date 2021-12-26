@@ -23,7 +23,7 @@
 #include "table_utils.h"
 #include "writer_config.h"
 
-bool print_page_stat(FlashPageFs_t* page, uint8_t num) {
+static bool print_page_stat(FlashPageFs_t* page, uint8_t num) {
     bool res = false;
     if(page) {
         res = true;

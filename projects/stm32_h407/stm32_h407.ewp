@@ -227,11 +227,13 @@
                     <state>HAS_CLI</state>
                     <state>HAS_CORTEX_M4</state>
                     <state>HAS_DEBUG</state>
+                    <state>HAS_FLASH_FS</state>
                     <state>HAS_GPIO</state>
                     <state>HAS_IAR</state>
                     <state>HAS_LORA</state>
                     <state>HAS_INTERRUPT</state>
                     <state>HAS_MCU</state>
+                    <state>HAS_PARAM</state>
                     <state>HAS_SPI</state>
                     <state>HAS_SPI2</state>
                     <state>HAS_SX1262</state>
@@ -1264,9 +1266,6 @@
         </group>
         <group>
             <name>flash_fs</name>
-            <excluded>
-                <configuration>stm32_h407</configuration>
-            </excluded>
             <file>
                 <name>$PROJ_DIR$\..\..\Drivers\flash_fs\flash_fs.c</name>
             </file>
@@ -1303,9 +1302,6 @@
         </group>
         <group>
             <name>params</name>
-            <excluded>
-                <configuration>stm32_h407</configuration>
-            </excluded>
             <file>
                 <name>$PROJ_DIR$\..\..\Drivers\params\param_ids.c</name>
             </file>
