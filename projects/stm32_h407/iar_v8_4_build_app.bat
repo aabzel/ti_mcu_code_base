@@ -1,5 +1,5 @@
 echo off
-
+cls
 set build_name=stm32_h407
 echo build_name=%build_name%
 

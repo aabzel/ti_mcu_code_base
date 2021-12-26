@@ -102,20 +102,6 @@ bool flash_find_spare_region(uint32_t* out_addr, uint32_t size) {
     return res;
 }
 
-/**
- *     @brief    erase specified flash sectors
- *
- *     @param    bankNo - number of flash bank to be erased
- *     @param    sector - first sector that should be erased
- *     @param    amount - number of sectors that should be erased
- *     @retval    MM_RET code
- */
-bool mmiFlashErase(uint32_t bankNo, uint32_t sector, uint32_t amount) {
-    bool res = true;
-
-    return res;
-}
-
 /*
 Sector 0  0x08000000 - 0x08003FFF 0x04000 16  Kbytes
 Sector 1  0x08004000 - 0x08007FFF 0x04000 16  Kbytes
@@ -131,7 +117,48 @@ Sector 10 0x080c0000 - 0x080dffff 0x20000 128 Kbytes
 Sector 11 0x080E0000 - 0x080FFFFF 0x20000 128 Kbytes
 */
 static bool Addr2SectorSize(uint32_t addr, uint32_t *sector, uint32_t *sec_size){
-    bool res = false;
+    bool res = true;
+    if((0x08000000<=addr)&&(addr<=0x08003FFF)){
+        *sector=0;
+        *sec_size=16*K_BYTES;
+    }else if((0x08004000<=addr)&&(addr<=0x08007FFF)){
+        *sector=1;
+        *sec_size=16*K_BYTES;
+    }else if((0x08008000<=addr)&&(addr<=0x0800BFFF)){
+        *sector=2;
+        *sec_size=16*K_BYTES;
+    }else if((0x0800C000<=addr)&&(addr<=0x0800FFFF)){
+        *sector=3;
+        *sec_size=16*K_BYTES;
+    }else if((0x08010000<=addr)&&(addr<=0x0801FFFF)){
+        *sector=4;
+        *sec_size=64*K_BYTES;
+    }else if((0x08020000<=addr)&&(addr<=0x0803FFFF)){
+        *sector=5;
+        *sec_size=128*K_BYTES;
+    }else if((0x08040000<=addr)&&(addr<=0x0805FFFF)){
+        *sector=6;
+        *sec_size=128*K_BYTES;
+    }else if((0x08060000<=addr)&&(addr<=0x0807ffff)){
+        *sector=7;
+        *sec_size=128*K_BYTES;
+    }else if((0x08080000<=addr)&&(addr<=0x0809ffff)){
+        *sector=8;
+        *sec_size=128*K_BYTES;
+    }else if((0x080a0000<=addr)&&(addr<=0x080bffff)){
+        *sector=9;
+        *sec_size=128*K_BYTES;
+    }else if((0x080c0000<=addr)&&(addr<=0x080dffff)){
+        *sector=10;
+        *sec_size=128*K_BYTES;
+    }else if((0x080E0000<=addr)&&(addr<=0x080FFFFF)){
+        *sector=11;
+        *sec_size=128*K_BYTES;
+    }else{
+        res = false;
+        *sector=12;
+        *sec_size=0;
+    }
     return res;
 }
 
@@ -141,12 +168,12 @@ bool flash_errase(uint32_t addr, uint32_t size){
     res=is_errased(addr, size) ;
     uint32_t sector=0;
     uint32_t sec_cnt=0;
-    if(false==res){
+    if(false==res) {
         uint32_t sec_size=0;
-        res=Addr2SectorSize(  addr, &sector, &sec_size);
+        res=Addr2SectorSize(addr, &sector, &sec_size);
     }
     if(res){
-        if(size<sec_size){
+        if(size<=sec_size){
             sec_cnt=1;
         }else{
             sec_cnt=2;
