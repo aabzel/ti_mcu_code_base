@@ -35,6 +35,7 @@
 #define FLASH_SECTOR_SIZE (128*K_BYTES)
 
 bool flash_init(void);
+bool flash_errase(uint32_t addr, uint32_t len);
 bool flash_wr(uint32_t addr, uint32_t* array, uint32_t array_len);
 bool flash_read(uint32_t in_flash_addr, uint8_t* rx_array, uint32_t array_len);
 bool is_errased(uint32_t addr, uint32_t size);

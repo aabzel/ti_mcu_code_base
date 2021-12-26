@@ -103,16 +103,25 @@ bool flash_find_spare_region(uint32_t* out_addr, uint32_t size) {
 }
 
 /*
-Sector 0 0x08000000 - 0x08003FFF 16 Kbytes
-Sector 1 0x08004000 - 0x08007FFF 16 Kbytes
-Sector 2 0x08008000 - 0x0800BFFF 16 Kbytes
-Sector 3 0x0800C000 - 0x0800FFFF 16 Kbyte
-Sector 4 0x08010000 - 0x0801FFFF 64 Kbytes
-Sector 5 0x08020000 - 0x0803FFFF 128 Kbytes
-Sector 6 0x08040000 - 0x0805FFFF 128 Kbytes
-Sector 7 128 Kbytes
-Sector 8 128 Kbytes
-Sector 9 128 Kbytes
-Sector 10 128 Kbytes
-Sector 11 0x080E0000 - 0x080FFFFF 128 Kbytes
+Sector 0  0x08000000 - 0x08003FFF 0x04000 16  Kbytes
+Sector 1  0x08004000 - 0x08007FFF 0x04000 16  Kbytes
+Sector 2  0x08008000 - 0x0800BFFF 0x04000 16  Kbytes
+Sector 3  0x0800C000 - 0x0800FFFF 0x04000 16  Kbyte
+Sector 4  0x08010000 - 0x0801FFFF 0x10000 64  Kbytes
+Sector 5  0x08020000 - 0x0803FFFF 0x20000 128 Kbytes
+Sector 6  0x08040000 - 0x0805FFFF 0x20000 128 Kbytes
+Sector 7  0x08060000 - 0x0807ffff 0x20000 128 Kbytes
+Sector 8  0x08080000 - 0x0809ffff 0x20000 128 Kbytes
+Sector 9  0x080a0000 - 0x080bffff 0x20000 128 Kbytes
+Sector 10 0x080c0000 - 0x080dffff 0x20000 128 Kbytes
+Sector 11 0x080E0000 - 0x080FFFFF 0x20000 128 Kbytes
 */
+
+bool flash_errase(uint32_t addr, uint32_t size){
+    bool res = false;
+    res=is_errased(addr, size) ;
+    if(false==res){
+
+    }
+    return res;
+}
