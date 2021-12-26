@@ -31,17 +31,43 @@ bool flash_read(uint32_t in_flash_addr, uint8_t* rx_array, uint32_t array_len) {
     return res;
 }
 
-bool flash_wr(uint32_t flash_addr, uint32_t* wr_array, uint32_t len) {
+bool flash_wr(uint32_t flash_addr, uint8_t* wr_array, uint32_t byte_size) {
     bool res = true;
+    uint32_t j = 0;
+    /* write data to flash */
+    HAL_FLASH_Unlock();
+    for (j = 0; j < byte_size; j++) {
+        if (HAL_OK==HAL_FLASH_Program(FLASH_TYPEPROGRAM_BYTE, flash_addr, wr_array[j])) {
+            flash_addr += 1;
+        } else {
+            HAL_FLASH_Lock();
+            return false;
+        }
+    }
+    HAL_FLASH_Lock();
+
+    return res;
+}
+
+bool flash_wr4(uint32_t flash_addr, uint32_t* wr_array, uint32_t byte_size) {
+    bool res = true;
+    uint32_t flash_write_temp[MAX_SINGLE_WRITE_SIZE/4];
+    memset(flash_write_temp,0xff,sizeof(flash_write_temp));
+    if(byte_size<sizeof(flash_write_temp)){
+        memcpy(flash_write_temp,wr_array,byte_size);
+    }else{
+        res = false;
+    }
     /* ensure that data is 4 bytes aligned */
-    if ((len & 3) != 0) {
+    if ((byte_size & 3) != 0) {
         res=false;
+        byte_size=ceil4byte(byte_size);
     }else{
         uint32_t i = 0, j = 0;
         /* write data to flash */
         HAL_FLASH_Unlock();
-        for (i = 0, j = 0; j < len; i++, j += QWORD_LEN) {
-            if (HAL_OK==HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, flash_addr, wr_array[i])) {
+        for (i = 0, j = 0; j < byte_size; i++, j += QWORD_LEN) {
+            if (HAL_OK==HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, flash_addr, flash_write_temp[i])) {
                 flash_addr += QWORD_LEN;
             } else {
                 HAL_FLASH_Lock();
