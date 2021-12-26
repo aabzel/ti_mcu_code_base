@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "flash_drv.h"
+
+#define MIN_SIZE_OF_ITEM (sizeof(mmItem_t)+QWORD_LEN)
 
 #define CONFIG_NVSINTERNAL 0
 #define CONFIG_TI_DRIVERS_NVS_COUNT 1
