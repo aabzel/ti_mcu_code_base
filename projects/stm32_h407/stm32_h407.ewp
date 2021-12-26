@@ -224,27 +224,28 @@
                 </option>
                 <option>
                     <name>CCDefines</name>
+                    <state>HAS_CLI_CMD_HISTORY</state>
                     <state>HAS_CLI</state>
                     <state>HAS_CORTEX_M4</state>
                     <state>HAS_DEBUG</state>
                     <state>HAS_FLASH_FS</state>
                     <state>HAS_GPIO</state>
                     <state>HAS_IAR</state>
-                    <state>HAS_LORA</state>
                     <state>HAS_INTERRUPT</state>
+                    <state>HAS_LORA</state>
                     <state>HAS_MCU</state>
                     <state>HAS_PARAM</state>
                     <state>HAS_SPI</state>
                     <state>HAS_SPI2</state>
-                    <state>HAS_SX1262</state>
                     <state>HAS_SX1262_DEBUG</state>
+                    <state>HAS_SX1262</state>
                     <state>HAS_TASKS</state>
                     <state>HAS_UART</state>
                     <state>HAS_USART6</state>
                     <state>NORTOS</state>
                     <state>STM32F407xx</state>
-                    <state>SX1262_SPI_NUM=2</state>
                     <state>STM32F4xx</state>
+                    <state>SX1262_SPI_NUM=2</state>
                     <state>USE_HAL_DRIVER</state>
                 </option>
                 <option>
