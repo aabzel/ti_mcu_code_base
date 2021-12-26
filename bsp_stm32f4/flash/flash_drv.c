@@ -162,39 +162,38 @@ static bool Addr2SectorSize(uint32_t addr, uint32_t *sector, uint32_t *sec_size)
     return res;
 }
 
-
 bool flash_errase(uint32_t addr, uint32_t size){
     bool res = false;
-    res=is_errased(addr, size) ;
-    uint32_t sector=0;
-    uint32_t sec_cnt=0;
+    uint32_t sector = 0;
+    uint32_t sec_cnt = 0;
+    uint32_t sec_size = 0;
+    res = is_errased(addr, size) ;
     if(false==res) {
-        uint32_t sec_size=0;
         res=Addr2SectorSize(addr, &sector, &sec_size);
-    }
-    if(res){
-        if(size<=sec_size){
-            sec_cnt=1;
-        }else{
-            sec_cnt=2;
+        if(res){
+            if(size<=sec_size){
+                sec_cnt=1;
+            }else{
+                sec_cnt=2;
+            }
         }
-    }
 
-    if(res){
-        FLASH_EraseInitTypeDef EraseInitStruct;
-        uint32_t SectorError = 0;
-        EraseInitStruct.Banks = FLASH_BANK_1;
-        EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
-        EraseInitStruct.Sector = sector;
-        EraseInitStruct.NbSectors = sec_cnt;
-        EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+        if(res){
+            FLASH_EraseInitTypeDef EraseInitStruct;
+            uint32_t SectorError = 0;
+            EraseInitStruct.Banks = FLASH_BANK_1;
+            EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
+            EraseInitStruct.Sector = sector;
+            EraseInitStruct.NbSectors = sec_cnt;
+            EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
 
-        /* actual erase flash */
-        HAL_FLASH_Unlock();
-        HAL_StatusTypeDef ret = HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError) ;
-        HAL_FLASH_Lock();
-        if ( HAL_OK !=ret) {
-            res =  false;
+            /* actual erase flash */
+            HAL_FLASH_Unlock();
+            HAL_StatusTypeDef ret = HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError) ;
+            HAL_FLASH_Lock();
+            if ( HAL_OK !=ret) {
+                res =  false;
+            }
         }
     }
     return res;

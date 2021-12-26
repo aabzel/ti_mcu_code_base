@@ -4,6 +4,7 @@
 
 #include "flash_drv.h"
 
+#if 0
 #define FLASH_FS_PAGE_SIZE  (2*FLASH_SECTOR_SIZE)
 #define NVS_SIZE (2*FLASH_FS_PAGE_SIZE) /*Must be double multiple of FLASH_SECTOR_SIZE*/
 #define NVS_SIZE_PAGES (NVS_SIZE/FLASH_SECTOR_SIZE)
@@ -20,5 +21,5 @@
 /* page 2 */
 #define MEMORY_MANAGER2_OFFSET	(NVS_FLASH_START+FLASH_FS_PAGE_SIZE)
 #define MEMORY_MANAGER2_LENGTH	FLASH_FS_PAGE_SIZE
-
+#endif
 #endif /* NVS_MEMORY_LAYOUT_H */
