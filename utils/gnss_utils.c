@@ -12,6 +12,7 @@
 #endif
 
 #define D2R (M_PI / 180.0)
+#define R2D (180/M_PI)
 
 double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2){
     double distance = 0.0f;
@@ -67,10 +68,25 @@ GnssCoordinate_t gnss_encode_deg2mm(GnssCoordinate_t dot_dd){
     return ret_dot_mm;
 }
 
-double gnss_calc_azimuth(GnssCoordinate_t rover,
-                         GnssCoordinate_t beacon){
-    double azimuth_deg=0;
-    /*TODO: */
+static double gnss_calc_azimuth_rad(GnssCoordinate_t rover,
+                         GnssCoordinate_t point_of_interest){
+    double longitudinal_diff = point_of_interest.longitude - rover.longitude;
+    double latitudinal_diff = point_of_interest.latitude - rover.latitude;
+    double azimuth = (M_PI/2)-atan(latitudinal_diff/ longitudinal_diff);
+
+    if (longitudinal_diff < 0.0){
+        azimuth = azimuth + M_PI;
+    }else if (latitudinal_diff < 0.0){
+        azimuth = M_PI;
+    }
+    return azimuth;
+}
+
+
+double gnss_calc_azimuth_deg(GnssCoordinate_t rover,
+                         GnssCoordinate_t point_of_interest){
+    double azimuth_deg =R2D*gnss_calc_azimuth_rad(rover,point_of_interest);
+
     return azimuth_deg;
 }
 

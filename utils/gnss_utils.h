@@ -10,8 +10,8 @@ extern "C" {
 #include <time.h>
 
 typedef struct xGnssCoordinate_t{
-    double latitude;    /* Latitude (degrees and minutes) */
-    double longitude;    /* Longitude (degrees and minutes) */
+    double latitude;    /* Latitude (degrees and minutes) широта*/
+    double longitude;    /* Longitude (degrees and minutes) долгота*/
 /*} __attribute__((packed)) GnssCoordinate_t; Cause Fault ISR*/
 } GnssCoordinate_t;
 
@@ -31,7 +31,7 @@ bool is_valid_gnss_coordinates(GnssCoordinate_t dot);
 double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2);
 double gnss_encoding_2_degrees(double in_ddmm_mmmmm);
 GnssCoordinate_t encode_gnss_coordinates(GnssCoordinate_t dot_ddmm);
-double gnss_calc_azimuth(GnssCoordinate_t rover,
+double gnss_calc_azimuth_deg(GnssCoordinate_t rover,
                          GnssCoordinate_t beacon);
 #ifdef __cplusplus
 }

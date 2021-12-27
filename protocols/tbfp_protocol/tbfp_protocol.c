@@ -42,6 +42,10 @@
 #include "zed_f9p_drv.h"
 #endif
 
+#ifdef X86_64
+#include <stdio.h>
+#endif
+
 TbfpProtocol_t TbfpProtocol[3] = {0};
 
 bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
