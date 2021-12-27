@@ -45,7 +45,6 @@ extern "C" {
 #endif
 
 #ifdef HAS_TEST_NMEA_PROTO
-#include "test_gnss_utils.h"
 #include "test_nmea_proto.h"
 #else
 #define TEST_SUIT_NMEA_PROTO

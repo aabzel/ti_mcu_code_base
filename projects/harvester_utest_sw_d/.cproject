@@ -111,6 +111,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_cli"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_fifo"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_gnss_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_nmea_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_rtcm3_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_string"/>
@@ -167,8 +168,9 @@
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_FIFO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_TBFP"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UBLOX_PROTO"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS"/>
+									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_UTILS_GNSS"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART0"/>
