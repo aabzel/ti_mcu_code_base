@@ -143,7 +143,7 @@ static uint32_t struct_to_counter(struct tm* t) {
 
 uint32_t calendar_settime(struct tm* date_time) {
 #ifdef HAS_RTC
-    LOG_INFO(RTC, "init RTC by");
+    LOG_INFO(LG_RTC, "init RTC by");
     print_time_date(date_time);
 #endif
     sec = struct_to_counter(date_time);

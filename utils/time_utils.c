@@ -242,7 +242,7 @@ bool time_data_parse(struct tm* date_time, char* str) {
     bool res = false;
     if(date_time && str) {
 #ifdef HAS_RTC
-        LOG_INFO(RTC, "init time by [%s]", str);
+        LOG_INFO(LG_RTC, "init time by [%s]", str);
 #endif
         uint32_t cnt = 0;
         res = try_strl2int32(&str[17], 2, &date_time->tm_sec);
@@ -312,7 +312,7 @@ bool time_parse(struct tm* date_time, char* str) {
     bool res = false;
     if(date_time && str) {
 #ifdef HAS_RTC
-        LOG_INFO(RTC, "init time by [%s]", str);
+        LOG_INFO(LG_RTC, "init time by [%s]", str);
 #endif
         uint32_t cnt = 0;
         res = try_strl2int32(&str[6], 2, &date_time->tm_sec);
@@ -355,7 +355,7 @@ bool date_parse(struct tm* date_time, char* str) {
     bool res = false;
     if(date_time && str) {
 #ifdef HAS_RTC
-        LOG_INFO(RTC, "init time by [%s]", str);
+        LOG_INFO(LG_RTC, "init time by [%s]", str);
 #endif
         uint32_t cnt = 0;
 
