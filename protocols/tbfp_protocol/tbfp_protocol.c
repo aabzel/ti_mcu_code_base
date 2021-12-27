@@ -261,11 +261,13 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
             res = tbfp_send_ping(FRAME_ID_PONG, interface);
         }
 #ifdef HAS_ZED_F9P
-        double cur_dist = 0;
+        double cur_dist = 0.0;
+        double azimuth = 0.0;
         if(is_valid_gnss_coordinates(pingFrame.coordinate)) {
             if(is_valid_gnss_coordinates(ZedF9P.coordinate_cur)) {
                 cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
-                LOG_INFO(LORA, "LinkDistance %f m", cur_dist);
+                azimuth = gnss_calc_azimuth_deg(ZedF9P.coordinate_cur, pingFrame.coordinate);
+                LOG_INFO(LORA, "LinkDistance %3.3f m %4.1f deg", cur_dist, azimuth);
             } else {
                 LOG_ERROR(LORA, "InvalidLocalGNSSDot");
             }
