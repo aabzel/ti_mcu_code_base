@@ -13,7 +13,7 @@ extern "C" {
 
 bool print_coordinate(GnssCoordinate_t coordinate, bool one_line);
 bool print_velocity(GnssVelocity_t velocity);
-char* coordinate2str(GnssCoordinate_t* value);
+char* coordinate2str(void* value);
 
 #ifdef __cplusplus
 }

@@ -37,7 +37,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
     /**/ {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
     /**/ {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
-    /**/ {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
+    /*10*/ {PAR_ID_INV_IQ, 1, UINT8, "InvIQ"},
     /**/ {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},                /*1-stay in boot 0-launch App*/
     /**/ {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},                /*num*/
     /**/ {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},         /*Flash Addr*/
@@ -46,7 +46,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
     /**/ {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
     /**/ {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
-    /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},   /*Max LoRa bit/rate*/
+    /*19*/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},   /*Max LoRa bit/rate*/
     /**/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
     /**/ {PAR_ID_RTK_FIX_LONG, 4, UINT32, "FTKFixedTime"}, /*RTK fixed max duration*/
     /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"},      /**/
@@ -213,52 +213,54 @@ bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* ou
     return res;
 }
 
-const char* param_val2str(uint16_t id, uint8_t* value) {
+const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
     const char* name = "---";
+    if (value && (0<size)) {
 
-#ifdef HAS_SX1262
-    static char temp_name[100] = "---";
-    if(PAR_ID_LORA_OUT_POWER == id) {
-        float watts = dbm2watts((uint32_t)*value);
-        snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
-        name = temp_name;
-    }
-    if(PAR_ID_LORA_SF == id) {
-        name = spreading_factor2str((uint8_t)*value);
-    }
-    if(PAR_ID_LORA_CR == id) {
-        name = coding_rate2str((LoRaCodingRate_t)*value);
-    }
-    if(PAR_ID_LORA_MAX_BIT_RATE == id) {
-        Type64Union_t un64;
-        memcpy(&un64, value, sizeof(Type64Union_t));
-        name = bit_rate2str(un64.d64);
-    }
-    if(PAR_ID_LORA_BW == id) {
-        name = bandwidth2str((uint8_t)*value);
-    }
-#endif /*HAS_SX1262*/
-    if(PAR_ID_BOOT_CMD == id) {
-        name = boot_cmd2str((uint8_t)*value);
-    }
+    #ifdef HAS_SX1262
+        static char temp_name[100] = "---";
+        if(PAR_ID_LORA_OUT_POWER == id) {
+            float watts = dbm2watts((uint32_t)*value);
+            snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
+            name = temp_name;
+        }
+        if(PAR_ID_LORA_SF == id) {
+            name = spreading_factor2str((uint8_t)*value);
+        }
+        if(PAR_ID_LORA_CR == id) {
+            name = coding_rate2str((LoRaCodingRate_t)*value);
+        }
+        if(PAR_ID_LORA_MAX_BIT_RATE == id) {
+            Type64Union_t un64;
+            memcpy(&un64, value, sizeof(Type64Union_t));
+            name = bit_rate2str(un64.d64);
+        }
+        if(PAR_ID_LORA_BW == id) {
+            name = bandwidth2str((uint8_t)*value);
+        }
+    #endif /*HAS_SX1262*/
+        if(PAR_ID_BOOT_CMD == id) {
+            name = boot_cmd2str((uint8_t)*value);
+        }
 
-#ifdef HAS_PWR_MUX
-    if(PAR_ID_PWR_SRC == id) {
-        name = pwr_source2str((PwrSource_t)*value);
-    }
-#endif
+    #ifdef HAS_PWR_MUX
+        if(PAR_ID_PWR_SRC == id) {
+            name = pwr_source2str((PwrSource_t)*value);
+        }
+    #endif
 
-#ifdef HAS_ZED_F9P
-    if(PAR_ID_RTK_MODE == id) {
-        name = rtk_mode2str((uint8_t)*value);
+    #ifdef HAS_ZED_F9P
+        if(PAR_ID_RTK_MODE == id) {
+            name = rtk_mode2str((uint8_t)*value);
+        }
+        if(PAR_ID_RTK_CHANNEL == id) {
+            name = interface2str((Interfaces_t)*value);
+        }
+        if(PAR_ID_BASE_LOCATION == id) {
+            name = coordinate2str((void*)value);
+        }
+    #endif /*HAS_ZED_F9P*/
     }
-    if(PAR_ID_RTK_CHANNEL == id) {
-        name = interface2str((Interfaces_t)*value);
-    }
-    if(PAR_ID_BASE_LOCATION == id) {
-        name = coordinate2str((GnssCoordinate_t*)value);
-    }
-#endif /*HAS_ZED_F9P*/
     return name;
 }
 

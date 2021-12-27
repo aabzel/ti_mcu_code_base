@@ -20,10 +20,12 @@ bool print_coordinate(GnssCoordinate_t coordinate, bool one_line) {
     return res;
 }
 
-char* coordinate2str(GnssCoordinate_t* value) {
+char* coordinate2str(void* value) {
     static char str[100] = "";
+    GnssCoordinate_t dot={0,0};
+    memcpy(&dot,value,sizeof(GnssCoordinate_t));
     if(value) {
-        snprintf(str, sizeof(str), "%f %f", value->latitude, value->longitude);
+        snprintf(str, sizeof(str), "%f %f", dot.latitude, dot.longitude);
     }
     return str;
 }

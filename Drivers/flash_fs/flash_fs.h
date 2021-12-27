@@ -16,7 +16,7 @@
 
 #define QWORD_LEN 4
 #define MM_INVALID_ID 0xFFFF
-#define FLASH_FS_PERIOD_US SEC_2_US(2)
+#define FLASH_FS_PERIOD_US MIN_2_US(5)
 #define FLASH_FS_MAX_FILE_SIZE 256
 
 typedef struct xFlashFsPage_t {

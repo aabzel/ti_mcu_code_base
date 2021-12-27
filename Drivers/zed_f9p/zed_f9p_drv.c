@@ -241,7 +241,6 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
 #ifdef HAS_UBLOX
         task_data[TASK_ID_UART0_FWD].on = false;
         task_data[TASK_ID_UART1_FWD].on = false;
-        task_data[TASK_ID_FLASH_FS].on = false;
         /*
           perform settings from here
           https://www.youtube.com/watch?v=FpkUXmM7mrc
@@ -315,7 +314,6 @@ bool zed_f9p_deploy_rover(void) {
 #endif
     task_data[TASK_ID_PARAM].on = false;
     task_data[TASK_ID_UBX].on = false;
-    task_data[TASK_ID_FLASH_FS].on = false;
     /*
       perform settings from here
       https://www.youtube.com/watch?v=FpkUXmM7mrc
