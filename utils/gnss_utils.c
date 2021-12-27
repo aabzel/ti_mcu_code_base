@@ -66,3 +66,11 @@ GnssCoordinate_t gnss_encode_deg2mm(GnssCoordinate_t dot_dd){
 
     return ret_dot_mm;
 }
+
+double gnss_calc_azimuth(GnssCoordinate_t rover,
+                         GnssCoordinate_t beacon){
+    double azimuth_deg=0;
+    /*TODO: */
+    return azimuth_deg;
+}
+

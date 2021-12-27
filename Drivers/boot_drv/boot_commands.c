@@ -21,6 +21,7 @@
 #include "flash_drv.h"
 #include "io_utils.h"
 #include "log.h"
+#include "memory_layout.h"
 #include "ostream.h"
 #include "read_mem.h"
 #include "sys_config.h"

@@ -31,6 +31,8 @@ bool is_valid_gnss_coordinates(GnssCoordinate_t dot);
 double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2);
 double gnss_encoding_2_degrees(double in_ddmm_mmmmm);
 GnssCoordinate_t encode_gnss_coordinates(GnssCoordinate_t dot_ddmm);
+double gnss_calc_azimuth(GnssCoordinate_t rover,
+                         GnssCoordinate_t beacon);
 #ifdef __cplusplus
 }
 #endif
