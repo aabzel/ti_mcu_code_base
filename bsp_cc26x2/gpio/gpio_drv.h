@@ -41,6 +41,7 @@ bool is_edge_irq_en(uint8_t dio_pin);
 // bool proc_led(void);
 inline bool is_dio(uint8_t dio_pin);
 uint32_t gpio_get_alter_fun(uint8_t dio_pin);
+uint8_t gpio_read(uint8_t dio_number);
 uint8_t get_aux_num(uint8_t io_pin);
 uint8_t get_mcu_pin(uint8_t io_pin);
 #endif /* INIT_GPIO_H  */

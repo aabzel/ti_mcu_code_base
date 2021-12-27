@@ -161,9 +161,17 @@ bool gpio_init(void) {
 }
 
 bool gpio_get_state(uint8_t dio_number, uint8_t* logic_level) {
-    uint32_t value = GPIO_readDio((uint32_t)dio_number);
-    (*logic_level) = (uint8_t)value;
-    return true;
+    bool res = false;
+    if(logic_level) {
+      uint32_t value = GPIO_readDio((uint32_t)dio_number);
+      (*logic_level) = (uint8_t)value;
+      res = true;
+    }
+    return res;
+}
+
+uint8_t gpio_read(uint8_t dio_number){
+    return (uint8_t) GPIO_readDio((uint32_t)dio_number);
 }
 
 bool gpio_set_state(uint8_t dio_number, uint8_t logic_level) {
