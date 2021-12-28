@@ -881,6 +881,16 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 
 #ifdef HAS_FLASH_FS
     uint16_t file_len = 0;
+
+    res = mm_get(PAR_ID_LORA_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word,
+                 sizeof(sx1262Instance->set_sync_word), &file_len);
+    if(res && (8==file_len)){
+        LOG_INFO(LORA, "Set SyncWord from params 0x%llx", sx1262Instance->set_sync_word);
+    }else{
+        LOG_WARNING(LORA, "Set default SyncWord [%u] %s", DFLT_SYNC_WORD);
+        sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
+    }
+
 #ifdef HAS_SX1262_BIT_RATE
     res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&sx1262Instance->tx_max_bit_rate,
                  sizeof(sx1262Instance->tx_max_bit_rate), &file_len);
@@ -1065,7 +1075,7 @@ bool sx1262_init(void) {
 
         res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
 
-        Sx1262Instance.set_sync_word = SYNC_WORD;
+        //Sx1262Instance.set_sync_word = SYNC_WORD;
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
 
         Sx1262Instance.sync_reg = true;
