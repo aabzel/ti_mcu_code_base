@@ -14,6 +14,7 @@ extern "C" {
 #define DFLT_LORA_CR LORA_CR_4_8
 #define DFLT_OUT_POWER 22 /*dBm*/
 
+#define DFLT_PREAMBLE_LEN 8
 #define DFLT_SYNC_WORD 0x0000000000000034
 
 #define RX_BASE_ADDRESS 0x00

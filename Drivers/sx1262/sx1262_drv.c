@@ -206,7 +206,7 @@ bool sx1262_is_connected(void) {
     }
 
     res = sx1262_get_sync_word(&read_sync_word);
-    if((SYNC_WORD == read_sync_word) && (true == res)) {
+    if((Sx1262Instance.set_sync_word == read_sync_word) && (true == res)) {
         res = true;
     } else {
         res = false;
@@ -871,10 +871,12 @@ float dbm2watts(int32_t dbm) {
 
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     bool res = true;
+    sx1262Instance->packet_param.proto.lora.preamble_length = DFLT_PREAMBLE_LEN;
     sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
     sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
     sx1262Instance->mod_params.spreading_factor = DFLT_SF;
+    sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
 #ifdef HAS_SX1262_BIT_RATE
     sx1262Instance->tx_max_bit_rate = 0.0;
 #endif
@@ -882,12 +884,22 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #ifdef HAS_FLASH_FS
     uint16_t file_len = 0;
 
-    res = mm_get(PAR_ID_LORA_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word,
+    res = mm_get(PAR_ID_PREAMBLE_LENGTH, (uint8_t*)&sx1262Instance->packet_param.proto.lora.preamble_length,
+                 sizeof(sx1262Instance->packet_param.proto.lora.preamble_length), &file_len);
+    if(res && (2==file_len)){
+        LOG_INFO(LORA, "SetPreamLenFromParams %u", sx1262Instance->packet_param.proto.lora.preamble_length);
+    } else {
+        LOG_WARNING(LORA, "SetDefaultPreamLen [%u]", DFLT_PREAMBLE_LEN);
+        sx1262Instance->packet_param.proto.lora.preamble_length = DFLT_PREAMBLE_LEN;
+    }
+
+
+    res = mm_get(PAR_ID_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word,
                  sizeof(sx1262Instance->set_sync_word), &file_len);
     if(res && (8==file_len)){
         LOG_INFO(LORA, "Set SyncWord from params 0x%llx", sx1262Instance->set_sync_word);
     }else{
-        LOG_WARNING(LORA, "Set default SyncWord [%u] %s", DFLT_SYNC_WORD);
+        LOG_WARNING(LORA, "Set default SyncWord [%u]", DFLT_SYNC_WORD);
         sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
     }
 
@@ -995,7 +1007,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 static bool sx1262_set_tx_len(uint8_t payload_length) {
     bool res = false;
     Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
-    Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
+    //Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
     Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
     Sx1262Instance.packet_param.proto.lora.payload_length = payload_length;
     Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
