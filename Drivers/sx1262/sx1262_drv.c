@@ -705,14 +705,13 @@ bool sx1262_set_sync_word(uint64_t sync_word) {
     return res;
 }
 
-
 bool sx1262_set_lora_sync_word(uint16_t sync_word) {
     bool res = true;
     Type16Union_t var16bit;
     var16bit.u16 = sync_word;
     var16bit.u16 = reverse_byte_order_uint16(var16bit.u16);
-    res = sx1262_write_reg(LORA_SYNC_WORD_LSB, var16bit.u8[0]) && res;
-    res = sx1262_write_reg(LORA_SYNC_WORD_MSB, var16bit.u8[1]) && res;
+    res = sx1262_write_reg(LORA_SYNC_WORD_MSB, var16bit.u8[0]) && res;
+    res = sx1262_write_reg(LORA_SYNC_WORD_LSB, var16bit.u8[1]) && res;
     return res;
 }
 
