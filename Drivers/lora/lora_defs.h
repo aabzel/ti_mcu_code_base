@@ -42,8 +42,10 @@ typedef enum eSpreadingFactor_t {
 /*
 Table 13-69: LoRa® PacketParam5 - CRCType
 CRCType Description*/
-#define LORA_CRC_OFF 0x00
-#define LORA_CRC_ON 0x01
+typedef enum eLoRaCrcType_t{
+   LORA_CRC_OFF = 0x00,
+   LORA_CRC_ON = 0x01,
+}LoRaCrcType_t;
 
 #define STANDARD_IQ_SETUP 0x00
 #define INVERTED_IQ_SETUP 0x01

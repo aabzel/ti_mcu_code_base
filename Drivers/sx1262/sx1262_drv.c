@@ -871,7 +871,12 @@ float dbm2watts(int32_t dbm) {
 
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     bool res = true;
+    sx1262Instance->packet_param.packet_type = PACKET_TYPE_LORA;
+    sx1262Instance->packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
+    sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
+    sx1262Instance->packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
     sx1262Instance->packet_param.proto.lora.preamble_length = DFLT_PREAMBLE_LEN;
+
     sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
     sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
@@ -883,6 +888,15 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 
 #ifdef HAS_FLASH_FS
     uint16_t file_len = 0;
+
+    res = mm_get(PAR_ID_CRC_TYPE, (uint8_t*)&sx1262Instance->packet_param.proto.lora.crc_type,
+                 sizeof(sx1262Instance->packet_param.proto.lora.crc_type), &file_len);
+    if(res && (1==file_len)){
+        LOG_INFO(LORA, "SetCrcTypeFromParams %u", sx1262Instance->packet_param.proto.lora.crc_type);
+    } else {
+        LOG_WARNING(LORA, "SetDefaultCrcType [%u]", LORA_CRC_ON);
+        sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
+    }
 
     res = mm_get(PAR_ID_PREAMBLE_LENGTH, (uint8_t*)&sx1262Instance->packet_param.proto.lora.preamble_length,
                  sizeof(sx1262Instance->packet_param.proto.lora.preamble_length), &file_len);
