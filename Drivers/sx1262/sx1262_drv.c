@@ -1343,7 +1343,7 @@ bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora) {
     return res;
 }
 
-#define COM_STAT_COM_TX_DONE 0x6 /*Command TX done5 */
+
 
 static bool sx1262_proc_irq_status(uint16_t irq_status) {
     bool res = false;
@@ -1566,17 +1566,17 @@ static inline bool sx1262_poll_status(void) {
     Sx1262_t tempSx1262Instance = {0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
 
-    res = sx1262_get_status(&tempSx1262Instance.dev_status);
+    res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
         res = true;
-        Sx1262Instance.dev_status = tempSx1262Instance.dev_status;
+        Sx1262Instance.dev_status.byte = tempSx1262Instance.dev_status.byte;
 
-        Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
+        //Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
         uint8_t rx_payload[RX_SIZE + 1] = {0};
         memset(rx_payload, 0x00, sizeof(rx_payload));
         uint16_t rx_size = 0;
         uint32_t read_cnt = 0;
-        switch(Sx1262Instance.com_stat) {
+        switch(Sx1262Instance.dev_status.command_status) {
         case COM_STAT_DATA_AVAIL: {
             Sx1262Instance.rx_done_cnt++;
 
@@ -1640,9 +1640,9 @@ static inline bool sx1262_poll_status(void) {
             res = false;
             break;
         }
-        Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
+       // Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
 
-        res = sx1262_proc_chip_mode(Sx1262Instance.chip_mode);
+        res = sx1262_proc_chip_mode((ChipMode_t) Sx1262Instance.dev_status.chip_mode);
 
         res = sx1262_reset_stats();
     }

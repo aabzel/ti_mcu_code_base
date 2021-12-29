@@ -64,7 +64,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         LOG_INFO(LORA, "Tframe %f s", t_frame);
 #endif
         // float rssi_watts=0.0;
-        LOG_INFO(LORA, "chip mode: [%u] %s", Sx1262Instance.chip_mode, chip_mode2str(Sx1262Instance.chip_mode));
+        LOG_INFO(LORA, "ChipMode: [%u] %s", Sx1262Instance.dev_status.chip_mode, chip_mode2str(Sx1262Instance.dev_status.chip_mode));
         // float rssi_inst = dbm2watts((int32_t) Sx1262Instance.rssi_inst);
         LOG_INFO(LORA, "RssiInst: %d dBm=%8.7f mW", Sx1262Instance.rssi_inst,
                  1000.0 * dbm2watts((int32_t)Sx1262Instance.rssi_inst));
@@ -80,8 +80,8 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         LOG_INFO(LORA, "rx_payload_len: %u byte", Sx1262Instance.rx_payload_len);
         LOG_INFO(LORA, "rx_buffer_pointer: %u 0x%x", Sx1262Instance.rx_buffer_pointer,
                  Sx1262Instance.rx_buffer_pointer);
-        LOG_INFO(LORA, "data aval cnt: %u", Sx1262Instance.data_aval_cnt);
-        LOG_INFO(LORA, "data rate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
+        LOG_INFO(LORA, "DataAval cnt: %u", Sx1262Instance.data_aval_cnt);
+        LOG_INFO(LORA, "DataRate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
         io_printf("int cnt: %u" CRLF, Sx1262Instance.int_cnt);
         LOG_INFO(LORA, "busyCnt: %u", Sx1262Instance.busy_cnt);
         io_printf("debug: %u" CRLF, Sx1262Instance.debug);
@@ -89,7 +89,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("showAscii: %u" CRLF, Sx1262Instance.show_ascii);
         io_printf("isPacket: %u" CRLF, Sx1262Instance.is_packet);
         io_printf("status: %u" CRLF, Sx1262Instance.status);
-        LOG_INFO(LORA, "cmd stat: [%u] %s", Sx1262Instance.com_stat, cmd_stat2str(Sx1262Instance.com_stat));
+        LOG_INFO(LORA, "cmdStat: [%u] %s", Sx1262Instance.dev_status.command_status, cmd_stat2str(Sx1262Instance.dev_status.command_status));
         printf_pack_stat(&Sx1262Instance.lora, "LoRA");
         parse_op_error(Sx1262Instance.op_error);
         parse_irq_stat(Sx1262Instance.irq_stat);

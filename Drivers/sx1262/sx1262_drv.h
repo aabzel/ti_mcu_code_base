@@ -14,6 +14,7 @@
 #include "lora_defs.h"
 #include "sx1262_config.h"
 #include "sx1262_op_codes.h"
+#include "sx1262_types.h"
 
 #define PACK_SIZE_BYTES 16
 
@@ -78,12 +79,6 @@ typedef enum eRadioIrqMasks_t {
     IRQ_MASK_RADIO_ALL = 0xFFFF
 } RadioIrqMasks_t;
 
-/*Status Bytes Definition*/
-#define COM_STAT_DATA_AVAIL 0x2   /*Data is available to host*/
-#define COM_STAT_COM_TIMEOUT 0x3  /*Command timeout2 */
-#define COM_STAT_COM_PROC_ERR 0x4 /*Command processing error3*/
-#define COM_STAT_EXE_ERR 0x5      /*Failure to execute command4*/
-#define COM_STAT_COM_TX_DONE 0x6  /*Command TX done5 */
 
 /* OpError Bits */
 #define OP_ERR_BIT_RC64K_CALIB_ERR 0 /*RC64k calibration failed */
@@ -192,8 +187,8 @@ typedef struct xSx1262_t {
     uint16_t op_error;
     uint16_t irq_stat;
     uint8_t status;
-    uint8_t dev_status;
-    uint8_t com_stat;
+    Sx1262Status_t dev_status;
+   // uint8_t com_stat;
     uint8_t rx_payload_len;
     uint8_t rx_buffer_pointer;
     uint8_t rx_status;
@@ -219,7 +214,7 @@ typedef struct xSx1262_t {
     uint8_t rx_size_max;
     uint8_t tx_size_max;
     uint32_t tx_done_cnt;
-    ChipMode_t chip_mode;
+    //ChipMode_t chip_mode;
     PaketStat_t gfsk;
     PaketStat_t lora;
     Sx1262IrqCnt_t irq_cnt;

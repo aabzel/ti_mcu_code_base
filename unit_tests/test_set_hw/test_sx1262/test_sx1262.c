@@ -28,6 +28,9 @@ bool test_sx1262_sync_word(void) {
 
 bool test_sx1262_status(void){
     /*TODO: */
+    Sx1262Status_t status;
+    EXPECT_EQ(1, sizeof(Sx1262Status_t));
+    EXPECT_TRUE(sx1262_get_status(&status.byte));
     return true;
 }
 
