@@ -218,12 +218,15 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
     const char* name = "---";
     if (value && (0<size)) {
 
-    #ifdef HAS_SX1262
+#ifdef HAS_SX1262
         static char temp_name[100] = "---";
         if(PAR_ID_LORA_OUT_POWER == id) {
             float watts = dbm2watts((uint32_t)*value);
             snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
             name = temp_name;
+        }
+        if(PAR_ID_CRC_TYPE == id) {
+            name = LoraCrcType2Str((uint8_t)*value);
         }
         if(PAR_ID_LORA_SF == id) {
             name = spreading_factor2str((uint8_t)*value);

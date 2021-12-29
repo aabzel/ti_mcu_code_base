@@ -33,7 +33,7 @@ const char* cmd_stat2str(uint8_t cmd_stat) {
         name = "TxDone";
         break;
     default:
-        name = "error";
+        name = "Err";
         break;
     }
     return name;
@@ -77,7 +77,7 @@ const char* chip_mode2str(uint8_t chip_mode) {
         name = "TX";
         break;
     default:
-        name = "error";
+        name = "Err";
         break;
     }
     return name;
@@ -296,6 +296,22 @@ char* bit_rate2str(double bit_s) {
     return name;
 }
 
+const char* LoraCrcType2Str(uint8_t crc_type){
+    const char* name = "undef";
+    switch(crc_type) {
+    case LORA_CRC_OFF:
+        name = "Off";
+        break;
+    case LORA_CRC_ON:
+        name = "On";
+        break;
+    default:
+        name = "Err";
+        break;
+    }
+    return name;
+}
+
 const char* coding_rate2str(LoRaCodingRate_t coding_rate) {
     const char* name = "undef";
     switch(coding_rate) {
@@ -312,7 +328,7 @@ const char* coding_rate2str(LoRaCodingRate_t coding_rate) {
         name = "4/8";
         break;
     default:
-        name = "error";
+        name = "Err";
         break;
     }
     return name;

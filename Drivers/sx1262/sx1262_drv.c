@@ -892,9 +892,13 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     res = mm_get(PAR_ID_CRC_TYPE, (uint8_t*)&sx1262Instance->packet_param.proto.lora.crc_type,
                  sizeof(sx1262Instance->packet_param.proto.lora.crc_type), &file_len);
     if(res && (1==file_len)){
-        LOG_INFO(LORA, "SetCrcTypeFromParams %u", sx1262Instance->packet_param.proto.lora.crc_type);
+        LOG_INFO(LORA, "SetCrcTypeFromParams %u %s",
+                 sx1262Instance->packet_param.proto.lora.crc_type,
+                 LoraCrcType2Str(sx1262Instance->packet_param.proto.lora.crc_type));
     } else {
-        LOG_WARNING(LORA, "SetDefaultCrcType [%u]", LORA_CRC_ON);
+        LOG_WARNING(LORA, "SetDefaultCrcType [%u] %s",
+                    LORA_CRC_ON,
+                    LoraCrcType2Str(LORA_CRC_ON));
         sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
     }
 
