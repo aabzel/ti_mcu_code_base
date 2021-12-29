@@ -296,6 +296,22 @@ char* bit_rate2str(double bit_s) {
     return name;
 }
 
+const char* LoraHeaderType2Str(uint8_t header_type){
+    const char* name = "undef";
+    switch(header_type) {
+    case LORA_VAR_LEN_PACT:
+        name = "ValLen";
+        break;
+    case LORA_FIX_LEN_PAC:
+        name = "FixLen";
+        break;
+    default:
+        name = "Err";
+        break;
+    }
+    return name;
+}
+
 const char* LoraCrcType2Str(uint8_t crc_type){
     const char* name = "undef";
     switch(crc_type) {

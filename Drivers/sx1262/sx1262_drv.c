@@ -889,6 +889,20 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #ifdef HAS_FLASH_FS
     uint16_t file_len = 0;
 
+    res = mm_get(PAR_ID_HEADER_TYPE, (uint8_t*)&sx1262Instance->packet_param.proto.lora.header_type,
+                 sizeof(sx1262Instance->packet_param.proto.lora.header_type), &file_len);
+    if(res && (1==file_len)) {
+        LOG_INFO(LORA, "SetCrcTypeFromParams %u %s",
+                 sx1262Instance->packet_param.proto.lora.header_type,
+                 LoraHeaderType2Str(sx1262Instance->packet_param.proto.lora.header_type));
+    } else {
+        LOG_WARNING(LORA, "SetDefaultCrcType [%u] %s",
+                    LORA_CRC_ON,
+                    LoraHeaderType2Str(LORA_VAR_LEN_PACT));
+        sx1262Instance->packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
+    }
+
+
     res = mm_get(PAR_ID_CRC_TYPE, (uint8_t*)&sx1262Instance->packet_param.proto.lora.crc_type,
                  sizeof(sx1262Instance->packet_param.proto.lora.crc_type), &file_len);
     if(res && (1==file_len)){

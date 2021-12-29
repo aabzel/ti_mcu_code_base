@@ -225,6 +225,10 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
             name = temp_name;
         }
+
+        if(PAR_ID_HEADER_TYPE == id) {
+            name = LoraHeaderType2Str((uint8_t)*value);
+        }
         if(PAR_ID_CRC_TYPE == id) {
             name = LoraCrcType2Str((uint8_t)*value);
         }

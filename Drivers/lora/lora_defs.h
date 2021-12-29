@@ -54,8 +54,11 @@ typedef enum eLoRaCrcType_t{
  * Table 13-67: LoRa® PacketParam3 - HeaderType
  * HeaderType Description
  */
-#define LORA_VAR_LEN_PACT 0x00 /*(explicit header)*/
-#define LORA_FIX_LEN_PAC 0x01 /*(implicit header)*/
+typedef enum eLoRaHeaderType_t{
+   LORA_VAR_LEN_PACT= 0x00, /*(explicit header)*/
+   LORA_FIX_LEN_PAC= 0x01, /*(implicit header)*/
+}LoRaHeaderType_t;
+
 
 typedef struct xLoRaPacketParam_t {
     uint16_t preamble_length;
