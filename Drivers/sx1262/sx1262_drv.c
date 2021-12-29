@@ -1024,7 +1024,7 @@ bool sx1262_init(void) {
 
         //Sx1262Instance.set_sync_word = SYNC_WORD;
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
-        res = sx1262_get_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
+        res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
 
         Sx1262Instance.sync_reg = true;
         res = sx1262_start_rx(0xFFFFFF) && res;
