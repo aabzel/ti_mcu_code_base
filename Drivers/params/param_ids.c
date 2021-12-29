@@ -56,6 +56,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_GNSS_PERIOD, 2, UINT16, "GnssPer"},
     /**/ {PAR_ID_BASE_ALT, 8, DOUBLE, "BaseAlt"},
     /**/ {PAR_ID_SYNC_WORD, 8, UINT64, "SyncWord"},
+    /**/ {PAR_ID_LORA_SYNC_WORD, 2, UINT16, "LoRaSyncWord"},
 };
 
 bool param_init(void) {

@@ -83,6 +83,8 @@ typedef struct xSx1262_t {
     uint32_t tx_done_time_stamp_ms;
     uint32_t busy_cnt;
     uint32_t rand_num;
+    uint16_t lora_sync_word_set;
+    uint16_t lora_sync_word_get;
     uint16_t op_error;
     uint16_t irq_stat;
     uint8_t status;

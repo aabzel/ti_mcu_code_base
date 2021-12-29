@@ -705,6 +705,18 @@ bool sx1262_set_sync_word(uint64_t sync_word) {
     return res;
 }
 
+
+bool sx1262_set_lora_sync_word(uint16_t sync_word) {
+    bool res = true;
+    Type16Union_t var16bit;
+    var16bit.u16 = sync_word;
+    var16bit.u16 = reverse_byte_order_uint16(var16bit.u16);
+    res = sx1262_write_reg(LORA_SYNC_WORD_LSB, var16bit.u8[0]) && res;
+    res = sx1262_write_reg(LORA_SYNC_WORD_MSB, var16bit.u8[1]) && res;
+    return res;
+}
+
+
 /*
   SetSleep
   The command SetSleep(...) is used to set the device in SLEEP mode with the lowest current consumption possible. This
@@ -912,6 +924,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType" ,LORA_CRC_ON, LoraCrcType2Str);
     LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen" ,DFLT_PREAMBLE_LEN, PreambleLen2Str);
     LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
+    LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
     LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp" ,IQ_SETUP_STANDARD, IqSetUp2Str);
     LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate" ,DFLT_LORA_CR, coding_rate2str);
     LOAD_PARAM(PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth" ,DFLT_LORA_BW, bandwidth2str);
@@ -1011,6 +1024,7 @@ bool sx1262_init(void) {
 
         //Sx1262Instance.set_sync_word = SYNC_WORD;
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
+        res = sx1262_get_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
 
         Sx1262Instance.sync_reg = true;
         res = sx1262_start_rx(0xFFFFFF) && res;
@@ -1086,6 +1100,21 @@ bool sx1262_get_sync_word(uint64_t* sync_word) {
         res = sx1262_read_reg(SYNC_WORD_6, &var64bit.u8[6]) && res;
         res = sx1262_read_reg(SYNC_WORD_7, &var64bit.u8[7]) && res;
         *sync_word = reverse_byte_order_uint64(var64bit.u64);
+    } else {
+        res = false;
+    }
+    return res;
+}
+
+bool sx1262_get_lora_sync_word(uint16_t* sync_word) {
+    bool res = true;
+    if(sync_word) {
+        res = true;
+        Type16Union_t var16bit = {0};
+        res = sx1262_read_reg(LORA_SYNC_WORD_LSB, &var16bit.u8[0]) && res;
+        res = sx1262_read_reg(LORA_SYNC_WORD_MSB, &var16bit.u8[1]) && res;
+
+        *sync_word = reverse_byte_order_uint16(var16bit.u16);
     } else {
         res = false;
     }

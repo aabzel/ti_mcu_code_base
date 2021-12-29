@@ -15,6 +15,7 @@
 #include "sx1262_config.h"
 #include "sx1262_op_codes.h"
 #include "sx1262_types.h"
+#include "sx1262_registers.h"
 
 #define PACK_SIZE_BYTES 16
 
@@ -31,21 +32,6 @@
 #define SX1262_REG_CNT 26U
 #define OPCODE_SIZE 1
 #define MHZ_TO_FRF 1048576 /* ((float)XTAL_FREQ_HZ))*10000000.0f)*/
-
-/* Regiser Name       Address*/
-#define SYNC_WORD_0 0x06C0
-#define SYNC_WORD_1 0x06C1
-#define SYNC_WORD_2 0x06C2
-#define SYNC_WORD_3 0x06C3
-#define SYNC_WORD_4 0x06C4
-#define SYNC_WORD_5 0x06C5
-#define SYNC_WORD_6 0x06C6
-#define SYNC_WORD_7 0x06C7
-#define RAND_NUM_GEN_0 0x0819
-#define RAND_NUM_GEN_1 0x081A
-#define RAND_NUM_GEN_2 0x081B
-#define RAND_NUM_GEN_3 0x081C
-
 
 extern Sx1262_t Sx1262Instance;
 #ifdef HAS_SX1262_DEBUG
@@ -70,6 +56,7 @@ bool sx1262_get_rxbuff_status(uint8_t* PayloadLengthRx, uint8_t* RxStartBufferPo
 bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora);
 bool sx1262_get_status(uint8_t* out_status);
 bool sx1262_get_sync_word(uint64_t* sync_word);
+bool sx1262_get_lora_sync_word(uint16_t* sync_word);
 bool sx1262_init(void);
 bool sx1262_int_isr(Sx1262_t* sx1262Instance);
 bool sx1262_is_connected(void);
@@ -88,6 +75,7 @@ bool sx1262_set_buffer_base_addr(uint8_t tx_addr, uint8_t rx_addr);
 bool sx1262_set_crc_polynomial(uint16_t polynomial);
 bool sx1262_set_crc_seed(uint16_t seed);
 bool sx1262_set_dio_irq_params(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask);
+bool sx1262_set_lora_sync_word(uint16_t sync_word) ;
 bool sx1262_set_modulation_params(ModulationParams_t* modParams);
 bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_sel, uint8_t pa_lut);
 bool sx1262_set_packet_params(PacketParam_t* packParam);
