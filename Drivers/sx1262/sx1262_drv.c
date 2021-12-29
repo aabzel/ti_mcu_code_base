@@ -869,6 +869,9 @@ float dbm2watts(int32_t dbm) {
     return watts;
 }
 
+
+
+
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     bool res = true;
     sx1262Instance->packet_param.packet_type = PACKET_TYPE_LORA;
