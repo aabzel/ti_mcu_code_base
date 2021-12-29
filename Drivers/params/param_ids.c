@@ -246,10 +246,10 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         if(PAR_ID_LORA_MAX_BIT_RATE == id) {
             Type64Union_t un64;
             memcpy(&un64, value, sizeof(Type64Union_t));
-            name = bit_rate2str(un64.d64);
+            name = BitRate2Str(un64.d64);
         }
         if(PAR_ID_LORA_BW == id) {
-            name = bandwidth2str((uint8_t)*value);
+            name = BitRate2Str((uint8_t)*value);
         }
     #endif /*HAS_SX1262*/
         if(PAR_ID_BOOT_CMD == id) {

@@ -11,13 +11,16 @@ extern "C" {
 #include "lora_defs.h"
 #include "sx1262_drv.h"
 
+char* SyncWord2Str(uint64_t syn_word);
+char* RfFreq2num(uint32_t rf_freq);
+char* PreambleLen2Str(uint16_t pre_len);
+char* BitRate2Str(double bit_rate);
 const char* PacketType2Str(uint8_t packet_type);
 const char* LoraHeaderType2Str(uint8_t header_type);
 const char* LoraCrcType2Str(uint8_t crc_type);
 uint32_t bandwidth2num(BandWidth_t bandwidth);
 bool parse_dev_stat(uint8_t dev_stat);
 bool parse_irq_stat(uint16_t irq_stat);
-char* bit_rate2str(double bit_s);
 bool parse_op_error(uint16_t op_error);
 bool print_int_diag(Sx1262IrqCnt_t* irq_cnt);
 bool printf_pack_stat(PaketStat_t* pack_stat, char* name);

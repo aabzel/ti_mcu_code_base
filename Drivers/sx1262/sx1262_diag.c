@@ -290,9 +290,27 @@ const char* bandwidth2str(uint8_t bandwidth) {
     return name;
 }
 
-char* bit_rate2str(double bit_s) {
+char* BitRate2Str(double bit_s) {
     static char name[30] = "";
     snprintf(name, sizeof(name), "%7.1f Byte/s", bit_s / 8.0);
+    return name;
+}
+
+char* RfFreq2num(uint32_t rf_freq){
+    static char name[30] = "";
+    snprintf(name, sizeof(name), "%u Hz=%f MHz", rf_freq, ((float )rf_freq)/1000000.0f);
+    return name;
+}
+
+char* SyncWord2Str(uint64_t syn_word){
+    static char name[30] = "";
+    snprintf(name, sizeof(name), "0x%llx", syn_word);
+    return name;
+}
+
+char* PreambleLen2Str(uint16_t pre_len){
+    static char name[30] = "";
+    snprintf(name, sizeof(name), "%u Byte", pre_len);
     return name;
 }
 
