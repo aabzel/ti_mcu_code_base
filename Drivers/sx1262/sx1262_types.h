@@ -26,11 +26,11 @@ typedef struct xModulationParams_t {
 
 
 typedef struct xLoRaPacketParam_t {
-    uint16_t preamble_length;
-    uint8_t header_type;
-    uint8_t payload_length;
-    uint8_t crc_type;
-    uint8_t invert_iq;
+    uint16_t preamble_length;/*PacketParam1 PacketParam2 */
+    uint8_t header_type; /*PacketParam3*/
+    uint8_t payload_length;/*PacketParam4*/
+    uint8_t crc_type;/*PacketParam5*/
+    uint8_t invert_iq; /*PacketParam6*/
 } LoRaPacketParam_t;
 
 

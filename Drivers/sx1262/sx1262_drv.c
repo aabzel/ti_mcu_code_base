@@ -879,7 +879,7 @@ float dbm2watts(int32_t dbm) {
       if((true==res) && ((EXP_LEN)==file_len)) {                                              \
           LOG_INFO(LORA, "Set"VAR_NAME"FromParams %u [%s]", VARIABLE, PARSER_FUNC(VARIABLE)); \
       } else {                                                                                \
-          LOG_WARNING(LORA, "SetDflt"VAR_NAME" %u [%s]", LORA_CRC_ON, PARSER_FUNC(DEF_VAL));  \
+          LOG_WARNING(LORA, "SetDflt"VAR_NAME" %u [%s]", VARIABLE, PARSER_FUNC(DEF_VAL));     \
           VARIABLE = DEF_VAL ;                                                                \
           res = false;                                                                        \
           out_res = false;                                                                    \
@@ -894,6 +894,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
     sx1262Instance->packet_param.proto.lora.invert_iq = IQ_SETUP_STANDARD;
     sx1262Instance->packet_param.proto.lora.preamble_length = DFLT_PREAMBLE_LEN;
+    sx1262Instance->packet_param.proto.lora.payload_length = 255;
 
     sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
@@ -905,37 +906,35 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #endif
 
 #ifdef HAS_FLASH_FS
+    LOAD_PARAM(PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen" ,255, PayloadLen2Str);
     LOAD_PARAM(PAR_ID_PACKET_TYPE, sx1262Instance->packet_param.packet_type, 1, "PktType" ,PACKET_TYPE_LORA, PacketType2Str);
     LOAD_PARAM(PAR_ID_HEADER_TYPE, sx1262Instance->packet_param.proto.lora.header_type, 1, "HeaderType" ,LORA_VAR_LEN_PACT, LoraHeaderType2Str);
     LOAD_PARAM(PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType" ,LORA_CRC_ON, LoraCrcType2Str);
     LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen" ,DFLT_PREAMBLE_LEN, PreambleLen2Str);
     LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
     LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp" ,IQ_SETUP_STANDARD, IqSetUp2Str);
-
-#ifdef HAS_SX1262_BIT_RATE
-    LOAD_PARAM(PAR_ID_LORA_MAX_BIT_RATE, sx1262Instance->tx_max_bit_rate, 8, "SyncWord" ,0.0, BitRate2Str);
-#endif /*HAS_SX1262_BIT_RATE*/
     LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate" ,DFLT_LORA_CR, coding_rate2str);
     LOAD_PARAM(PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth" ,DFLT_LORA_BW, bandwidth2str);
     LOAD_PARAM(PAR_ID_LORA_SF, sx1262Instance->mod_params.spreading_factor, 1, "SpreadingFactor" ,DFLT_SF, spreading_factor2num);
-    LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 1, "RfFreq" ,DFLT_FREQ_MHZ, RfFreq2num);
+    LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 1, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
     LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr" ,DFLT_OUT_POWER, dbm2watts);
+#ifdef HAS_SX1262_BIT_RATE
+   // LOAD_PARAM(PAR_ID_LORA_MAX_BIT_RATE, sx1262Instance->tx_max_bit_rate, 8, "BitRate" ,0.0, BitRate2Str);
+    uint16_t file_len = 0;
+    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&sx1262Instance->tx_max_bit_rate,  sizeof(sx1262Instance->tx_max_bit_rate), &file_len);
+    if((true==res) && (8==file_len)) {
+        LOG_INFO(LORA, "SetBitRateFromParams [%s]",BitRate2Str(sx1262Instance->tx_max_bit_rate));
+    } else {
+        LOG_WARNING(LORA, "SetDfltBitRate [%s]", BitRate2Str(0.0));
+        sx1262Instance->tx_max_bit_rate = 0.0 ;
+        out_res = false;
+  }
+#endif /*HAS_SX1262_BIT_RATE*/
 #endif /*HAS_FLASH_FS*/
     return out_res;
 }
 
-static bool sx1262_set_tx_len(uint8_t payload_length) {
-    bool res = false;
-    //Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
-    //Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
-    //Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
-    Sx1262Instance.packet_param.proto.lora.payload_length = payload_length;
-    //Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
-    //Sx1262Instance.packet_param.proto.lora.invert_iq = IQ_SETUP_STANDARD;
 
-    res = sx1262_set_packet_params(&Sx1262Instance.packet_param);
-    return res;
-}
 
 bool sx1262_init(void) {
     bool res = true;
@@ -1003,7 +1002,7 @@ bool sx1262_init(void) {
             LOG_ERROR(LORA, "SX1262SetModParErr");
         }
 
-        res = sx1262_set_tx_len(255) && res;
+        res = sx1262_set_packet_params(&Sx1262Instance.packet_param)&& res;
 
         res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
         res = sx1262_conf_rx() && res;

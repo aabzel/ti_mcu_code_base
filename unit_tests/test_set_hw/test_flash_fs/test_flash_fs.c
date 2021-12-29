@@ -98,7 +98,7 @@ bool test_flash_fs_toggle(void) {
     uint32_t spare_cnt = 0;
 
     EXPECT_TRUE(mm_get_active_page(&read_mm_page_start, &read_mm_page_len));
-    EXPECT_GR(MEMORY_MANAGER1_LENGTH / 2, read_mm_page_len, 0U);
+    EXPECT_GR(MEMORY_MANAGER1_LENGTH / 2, read_mm_page_len);
     origin_file_cnt = mm_cnt_files(read_mm_page_start, read_mm_page_len, &spare_cnt);
 
     exp_mm_page_start = calc_toggle_exp_page(read_mm_page_start);
@@ -106,7 +106,7 @@ bool test_flash_fs_toggle(void) {
 
     EXPECT_TRUE(mm_get_active_page(&read_mm_page_start, &read_mm_page_len));
     EXPECT_EQ(exp_mm_page_start, read_mm_page_start);
-    EXPECT_GR(MEMORY_MANAGER1_LENGTH / 2, read_mm_page_len, 1);
+    EXPECT_GR(MEMORY_MANAGER1_LENGTH / 2, read_mm_page_len);
 
     new_file_cnt = mm_cnt_files(read_mm_page_start, read_mm_page_len, &spare_cnt);
     EXPECT_EQ(new_file_cnt, origin_file_cnt);

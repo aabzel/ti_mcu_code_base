@@ -283,7 +283,7 @@ uint32_t bandwidth2num(BandWidth_t bandwidth) {
     return band_width;
 }
 
-const char* bandwidth2str(uint8_t bandwidth) {
+char* bandwidth2str(uint8_t bandwidth) {
     static char name[40] = "";
     uint32_t band_width = bandwidth2num((BandWidth_t)bandwidth);
     snprintf(name, sizeof(name), "%u Hz", band_width);
@@ -296,9 +296,9 @@ char* BitRate2Str(double bit_s) {
     return name;
 }
 
-char* RfFreq2num(uint32_t rf_freq){
+char* RfFreq2Str(uint32_t rf_freq){
     static char name[30] = "";
-    snprintf(name, sizeof(name), "%u Hz=%f MHz", rf_freq, ((float )rf_freq)/1000000.0f);
+    snprintf(name, sizeof(name), "%u Hz=%f MHz", rf_freq, ((double)rf_freq)/1000000.0);
     return name;
 }
 
@@ -328,6 +328,12 @@ const char* IqSetUp2Str(uint8_t iq_setup){
         break;
     }
     return name;
+}
+
+char* PayloadLen2Str(uint8_t size){
+   static char name[30] = "";
+   snprintf(name, sizeof(name), "%u Byte", size);
+   return name;
 }
 
 const char* PacketType2Str(uint8_t packet_type){

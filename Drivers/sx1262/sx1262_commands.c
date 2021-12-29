@@ -547,6 +547,8 @@ bool sx1262_clear_fifo_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+
+#ifdef HAS_SX1262_EX_DEBUG
 bool sx1262_set_modulation_command(int32_t argc, char* argv[]) {
     bool res = false;
     ModulationParams_t modParams;
@@ -574,7 +576,9 @@ bool sx1262_set_modulation_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif
 
+#ifdef HAS_SX1262_EX_DEBUG
 bool sx1262_set_packet_param_command(int32_t argc, char* argv[]) {
     bool res = false;
     PacketParam_t packetParam;
@@ -607,6 +611,7 @@ bool sx1262_set_packet_param_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif
 
 bool sx1262_write_reg_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -758,7 +763,7 @@ bool sx1262_statistic_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-#ifdef HAS_DEBUG
+#ifdef HAS_SX1262_EX_DEBUG
 static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
     bool res = false;
     uint8_t sf = 0, cr = 0, bw = 0;
@@ -804,7 +809,9 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
 }
+#endif
 
+#ifdef HAS_SX1262_EX_DEBUG
 bool sx1262_calc_command(int32_t argc, char* argv[]) {
     bool res = false;
     char keyWord1[20] = "";
@@ -830,4 +837,5 @@ bool sx1262_calc_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
-#endif
+#endif /*HAS_SX1262_EX_DEBUG*/
+

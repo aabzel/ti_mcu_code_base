@@ -156,7 +156,7 @@
         }                                                                                                              \
     } while(0);
 
-#define EXPECT_GR(val1, val2, id)                                                                                      \
+#define EXPECT_GR_64(val1, val2, id)                                                                                      \
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                          \
         /*int val2 = val2; */                                                                                          \
@@ -170,6 +170,17 @@
         }                                                                                                              \
     } while(0);
 
-
+#define EXPECT_GR(val1, val2)                                                                                      \
+    do {                                                                                                               \
+        /*int val1 = vala; */                                                                                          \
+        /*int val2 = val2; */                                                                                          \
+        if((val2) <= (val1)) {                                                                                         \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: %u val2: %u", __FUNCTION__, __LINE__, val1, val2);                  \
+            LOG_ERROR(SYS, "%s():Line: %d in val1: 0x%x val2: 0x%x", __FUNCTION__, __LINE__, val1, val2);              \
+            return false;                                                                                              \
+        } else {                                                                                                       \
+            /*printf ("\n OK!\n");  */                                                                                 \
+        }                                                                                                              \
+    } while(0);
 
 #endif /* UNIT_TEST_CHECK_CORTEX_M_H */

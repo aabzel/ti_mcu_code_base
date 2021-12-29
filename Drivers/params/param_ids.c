@@ -226,11 +226,27 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
             name = temp_name;
         }
+        if( PAR_ID_LORA_FREQ == id){
+            uint32_t freq=0;
+            memcpy(&freq,value,4);
+            name =  RfFreq2Str(freq);
+        }
 
         if(PAR_ID_PACKET_TYPE == id){
             name = PacketType2Str((uint8_t)*value);
         }
 
+        if(PAR_ID_PAYLOAD_LENGTH == id){
+            name = PayloadLen2Str((uint8_t)*value);
+        }
+
+        if(PAR_ID_PREAMBLE_LENGTH == id){
+            name = PreambleLen2Str ((uint16_t)*value);
+        }
+
+        if( PAR_ID_IQ_SETUP == id){
+            name = IqSetUp2Str((uint8_t)*value);
+        }
         if(PAR_ID_HEADER_TYPE == id) {
             name = LoraHeaderType2Str((uint8_t)*value);
         }
@@ -249,18 +265,18 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             name = BitRate2Str(un64.d64);
         }
         if(PAR_ID_LORA_BW == id) {
-            name = BitRate2Str((uint8_t)*value);
+            name = bandwidth2str ((BandWidth_t)*value);
         }
-    #endif /*HAS_SX1262*/
+#endif /*HAS_SX1262*/
         if(PAR_ID_BOOT_CMD == id) {
             name = boot_cmd2str((uint8_t)*value);
         }
 
-    #ifdef HAS_PWR_MUX
+#ifdef HAS_PWR_MUX
         if(PAR_ID_PWR_SRC == id) {
             name = pwr_source2str((PwrSource_t)*value);
         }
-    #endif
+#endif /*HAS_PWR_MUX*/
 
     #ifdef HAS_ZED_F9P
         if(PAR_ID_RTK_MODE == id) {

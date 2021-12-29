@@ -26,8 +26,6 @@ bool sx1262_statistic_command(int32_t argc, char* argv[]);
 bool sx1262_send_opcode_command(int32_t argc, char* argv[]);
 bool sx1262_set_freq_command(int32_t argc, char* argv[]);
 bool sx1262_set_irq_command(int32_t argc, char* argv[]);
-bool sx1262_set_modulation_command(int32_t argc, char* argv[]);
-bool sx1262_set_packet_param_command(int32_t argc, char* argv[]);
 bool sx1262_set_sync_word_command(int32_t argc, char* argv[]);
 bool sx1262_sleep_command(int32_t argc, char* argv[]);
 bool sx1262_tx_command(int32_t argc, char* argv[]);
@@ -42,7 +40,6 @@ bool sx1262_write_reg_command(int32_t argc, char* argv[]);
         SHELL_CMD("sx1262_test", "sxs", sx1262_test_command, "SX1262 test"),                                           \
         SHELL_CMD("sx1262_fifo", "sxrf", sx1262_read_fifo_command, "SX1262 read FIFO"),                                \
         SHELL_CMD("sx1262_int_diag", "sxid", sx1262_int_diag_command, "SX1262 interrupts diag"),                       \
-        SHELL_CMD("sx1262_mod", "sxmd", sx1262_set_modulation_command, "SX1262 modulation"),                           \
         SHELL_CMD("sx1262_opcode", "sxo", sx1262_send_opcode_command, "SX1262 send opcode"),                           \
         SHELL_CMD("sx1262_read_rx_data", "sxrp", sx1262_read_rx_payload_command, "SX1262 read rx data"),               \
         SHELL_CMD("sx1262_reg_map", "sxm", sx1262_reg_map_command, "SX1262 reg map"),                                  \
@@ -52,14 +49,19 @@ bool sx1262_write_reg_command(int32_t argc, char* argv[]);
         SHELL_CMD("sx1262_rx", "sxr", sx1262_rx_command, "SX1262 receive"),                                            \
         SHELL_CMD("sx1262_set_freq", "sxsf", sx1262_set_freq_command, "SX1262 set freq"),                              \
         SHELL_CMD("sx1262_set_irq", "sxir", sx1262_set_irq_command, "SX1262 set IRQ"),                                 \
-        SHELL_CMD("sx1262_set_pack_param", "sxpp", sx1262_set_packet_param_command, "SX1262 set packet param"),        \
         SHELL_CMD("sx1262_sleep", "sxs", sx1262_sleep_command, "SX1262 sleep"),                                        \
         SHELL_CMD("sx1262_sync", "sxssw", sx1262_set_sync_word_command, "SX1262 set sync word"),                       \
         SHELL_CMD("sx1262_tx", "sxt", sx1262_tx_command, "SX1262 transmit"),
 
-#ifdef HAS_DEBUG
+#ifdef HAS_SX1262_EX_DEBUG
+bool sx1262_set_packet_param_command(int32_t argc, char* argv[]);
+bool sx1262_set_modulation_command(int32_t argc, char* argv[]);
 bool sx1262_calc_command(int32_t argc, char* argv[]);
-#define SX1262_COMMANDS_DEBUG SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),
+
+#define SX1262_COMMANDS_DEBUG                                                                                          \
+        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                           \
+        SHELL_CMD("sx1262_set_pack_param", "sxpp", sx1262_set_packet_param_command, "SX1262 set packet param"),        \
+        SHELL_CMD("sx1262_mod", "sxmd", sx1262_set_modulation_command, "SX1262 modulation"),
 #else
 #define SX1262_COMMANDS_DEBUG
 #endif

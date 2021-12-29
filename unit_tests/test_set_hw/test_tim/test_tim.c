@@ -15,7 +15,7 @@ bool test_tim_us(void) {
     pause_1us();
     for(i = 0; i < 10000; i++) {
         up_time_us_cur = tim_get_us();
-        EXPECT_GR(up_time_us_prev, up_time_us_cur, i);
+        EXPECT_GR_64(up_time_us_prev, up_time_us_cur, i);
         pause_1us();
         pause_1us();
         up_time_us_prev = up_time_us_cur;
@@ -31,7 +31,7 @@ bool test_tim_ms(void) {
     pause_1ms();
     for(i = 0; i < 500; i++) {
         up_time_ms_cur = tim_get_ms();
-        EXPECT_GR(up_time_ms_prev, up_time_ms_cur, i);
+        EXPECT_GR_64(up_time_ms_prev, up_time_ms_cur, i);
         pause_1ms();
         pause_1ms();
         up_time_ms_prev = up_time_ms_cur;

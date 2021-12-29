@@ -10,7 +10,7 @@
 
 #include "bit_utils.h"
 #include "board_layout.h"
-#include "gfsk_defs.h"
+#include "gfsk_types.h"
 #include "lora_constants.h"
 #include "sx1262_config.h"
 #include "sx1262_op_codes.h"

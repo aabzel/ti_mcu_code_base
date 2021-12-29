@@ -11,9 +11,11 @@ extern "C" {
 #include "lora_constants.h"
 #include "sx1262_drv.h"
 
+
+char* PayloadLen2Str(uint8_t size);
 const char* IqSetUp2Str(uint8_t iq_setup);
 char* SyncWord2Str(uint64_t syn_word);
-char* RfFreq2num(uint32_t rf_freq);
+char* RfFreq2Str(uint32_t rf_freq);
 char* PreambleLen2Str(uint16_t pre_len);
 char* BitRate2Str(double bit_rate);
 const char* PacketType2Str(uint8_t packet_type);
@@ -30,7 +32,7 @@ const char* chip_mode2str(uint8_t chip_mode);
 const char* cmd_stat2str(uint8_t cmd_stat);
 const char* pack_type2str(RadioPacketType_t packet_type);
 const char* coding_rate2str(LoRaCodingRate_t coding_rate);
-const char* bandwidth2str(uint8_t bandwidth);
+char* bandwidth2str(uint8_t bandwidth);
 const char* spreading_factor2str(uint8_t spreading_factor);
 
 #ifdef __cplusplus

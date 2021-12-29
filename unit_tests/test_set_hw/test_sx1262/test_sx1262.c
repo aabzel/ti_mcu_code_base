@@ -94,7 +94,7 @@ bool test_sx1262_rx_addr(void) {
     EXPECT_TRUE(sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS));
     //EXPECT_TRUE( wait_in_loop_ms(100));
     EXPECT_TRUE(sx1262_get_rxbuff_status(&payload_length_rx, &read_rx_addr));
-    EXPECT_GR(0,payload_length_rx,0);
+    EXPECT_GR(0,payload_length_rx);
     EXPECT_EQ(RX_BASE_ADDRESS, read_rx_addr); /*Error*/
     return true;
 }

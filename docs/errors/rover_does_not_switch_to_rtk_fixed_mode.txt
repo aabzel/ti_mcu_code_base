@@ -28,8 +28,12 @@
 Решение:
 Надо увеличивать битовую скорость LoRa трансивара.
 
+https://learn.sparkfun.com/tutorials/setting-up-a-rover-base-rtk-system
 
 
+Link
+
+https://portal.u-blox.com/s/question/0D52p0000AcVdsQCQS/rtk-fixed-unestable?_ga=2.141852085.601315084.1640784704-930762798.1627465201
 
 
 
