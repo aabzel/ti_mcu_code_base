@@ -8,9 +8,10 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "lora_defs.h"
+#include "lora_constants.h"
 #include "sx1262_drv.h"
 
+const char* IqSetUp2Str(uint8_t iq_setup);
 char* SyncWord2Str(uint64_t syn_word);
 char* RfFreq2num(uint32_t rf_freq);
 char* PreambleLen2Str(uint16_t pre_len);

@@ -673,15 +673,17 @@ bool is_valid_bandwidth(BandWidth_t bandwidth) {
   be interpreted differently by the chip.
 */
 bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
-    bool res = false;
-    res = is_valid_bandwidth((BandWidth_t)modParams->band_width);
-    if(res) {
+    bool res = false, res1= false, res2= false, res3= false;
+    res1 = is_valid_bandwidth(modParams->band_width);
+    res2 = is_valid_coding_rate(modParams->coding_rate);
+    res3 = is_valid_spreading_factor(modParams->spreading_factor);
+    if(res1 && res2 && res3) {
         uint8_t tx_array[8];
         memset(tx_array, 0xFF, sizeof(tx_array));
         tx_array[0] = modParams->spreading_factor;
         tx_array[1] = modParams->band_width;
         tx_array[2] = modParams->coding_rate;
-        tx_array[3] = 0x00; // Low Data Rate Optimization (LDRO) LDRO LowDataRateOptimize 0:OFF; 1:ON;
+        tx_array[3] = 0x00; // Low Data Rate Optimization (LDRO) LDRO LowDataRateOptimize 0:OFF; 1:ON; TODO
         res = sx1262_send_opcode(OPCODE_SET_MODULATION_PARAMS, tx_array, sizeof(tx_array), NULL, 0);
     }
     return res;
@@ -880,16 +882,17 @@ float dbm2watts(int32_t dbm) {
           LOG_WARNING(LORA, "SetDflt"VAR_NAME" %u [%s]", LORA_CRC_ON, PARSER_FUNC(DEF_VAL));  \
           VARIABLE = DEF_VAL ;                                                                \
           res = false;                                                                        \
-      }                                                                                       \
+          out_res = false;                                                                    \
+    }                                                                                         \
   }while(0);
 
 
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
-    bool res = true;
+    bool res = true, out_res = true;
     sx1262Instance->packet_param.packet_type = PACKET_TYPE_LORA;
     sx1262Instance->packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
     sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
-    sx1262Instance->packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
+    sx1262Instance->packet_param.proto.lora.invert_iq = IQ_SETUP_STANDARD;
     sx1262Instance->packet_param.proto.lora.preamble_length = DFLT_PREAMBLE_LEN;
 
     sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
@@ -907,6 +910,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType" ,LORA_CRC_ON, LoraCrcType2Str);
     LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen" ,DFLT_PREAMBLE_LEN, PreambleLen2Str);
     LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
+    LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp" ,IQ_SETUP_STANDARD, IqSetUp2Str);
 
 #ifdef HAS_SX1262_BIT_RATE
     LOAD_PARAM(PAR_ID_LORA_MAX_BIT_RATE, sx1262Instance->tx_max_bit_rate, 8, "SyncWord" ,0.0, BitRate2Str);
@@ -917,17 +921,17 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 1, "RfFreq" ,DFLT_FREQ_MHZ, RfFreq2num);
     LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr" ,DFLT_OUT_POWER, dbm2watts);
 #endif /*HAS_FLASH_FS*/
-    return res;
+    return out_res;
 }
 
 static bool sx1262_set_tx_len(uint8_t payload_length) {
     bool res = false;
-    Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
+    //Sx1262Instance.packet_param.packet_type = PACKET_TYPE_LORA;
     //Sx1262Instance.packet_param.proto.lora.preamble_length = 8;
-    Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
+    //Sx1262Instance.packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
     Sx1262Instance.packet_param.proto.lora.payload_length = payload_length;
-    Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
-    Sx1262Instance.packet_param.proto.lora.invert_iq = STANDARD_IQ_SETUP;
+    //Sx1262Instance.packet_param.proto.lora.crc_type = LORA_CRC_ON;
+    //Sx1262Instance.packet_param.proto.lora.invert_iq = IQ_SETUP_STANDARD;
 
     res = sx1262_set_packet_params(&Sx1262Instance.packet_param);
     return res;
@@ -995,6 +999,9 @@ bool sx1262_init(void) {
         res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
         res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
+        if(false==res){
+            LOG_ERROR(LORA, "SX1262SetModParErr");
+        }
 
         res = sx1262_set_tx_len(255) && res;
 

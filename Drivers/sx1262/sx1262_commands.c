@@ -583,7 +583,7 @@ bool sx1262_set_packet_param_command(int32_t argc, char* argv[]) {
     packetParam.proto.lora.header_type = LORA_VAR_LEN_PACT;
     packetParam.proto.lora.payload_length = 255;
     packetParam.proto.lora.crc_type = LORA_CRC_ON;
-    packetParam.proto.lora.invert_iq = STANDARD_IQ_SETUP;
+    packetParam.proto.lora.invert_iq = IQ_SETUP_STANDARD;
     if(0 == argc) {
         res = true;
         packetParam.packet_type = PACKET_TYPE_LORA;
@@ -591,7 +591,7 @@ bool sx1262_set_packet_param_command(int32_t argc, char* argv[]) {
         packetParam.proto.lora.header_type = LORA_VAR_LEN_PACT;
         packetParam.proto.lora.payload_length = 255;
         packetParam.proto.lora.crc_type = LORA_CRC_ON;
-        packetParam.proto.lora.invert_iq = STANDARD_IQ_SETUP;
+        packetParam.proto.lora.invert_iq = IQ_SETUP_STANDARD;
     }
 
     if(0 < argc) {

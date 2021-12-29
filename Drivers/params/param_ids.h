@@ -21,8 +21,8 @@ typedef enum eId_t {
     PAR_ID_CRC_TYPE = 8,   /*On Off*/
     PAR_ID_PACKET_TYPE = 28, /* GFSK / LoRa*/
     PAR_ID_HEADER_TYPE = 9, /*Variable length packet / Fixed length packet*/
-    PAR_ID_INV_IQ = 10,
     PAR_ID_APP_START = 11, /*Flash address*/
+    PAR_ID_IQ_SETUP = 10,
     PAR_ID_BOOT_CMD = 12,
     PAR_ID_BOOT_CNT = 13, /*To spot hangs on in App*/
     PAR_ID_APP_STATUS = 14,

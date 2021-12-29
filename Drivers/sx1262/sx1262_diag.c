@@ -314,6 +314,22 @@ char* PreambleLen2Str(uint16_t pre_len){
     return name;
 }
 
+const char* IqSetUp2Str(uint8_t iq_setup){
+    const char* name = "undef";
+    switch(iq_setup) {
+    case  IQ_SETUP_STANDARD:
+        name = "Std";
+        break;
+    case  IQ_SETUP_INVERTED:
+        name = "Inv";
+        break;
+    default:
+        name = "Err";
+        break;
+    }
+    return name;
+}
+
 const char* PacketType2Str(uint8_t packet_type){
     const char* name = "undef";
     switch(packet_type) {
