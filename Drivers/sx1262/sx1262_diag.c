@@ -314,6 +314,12 @@ char* SyncWord2Str(uint64_t syn_word){
     return name;
 }
 
+char* LoRaSyncWord2Str(uint16_t syn_word){
+    static char name[30] = "";
+    snprintf(name, sizeof(name), "0x%04x", syn_word);
+    return name;
+}
+
 char* PreambleLen2Str(uint16_t pre_len){
     static char name[30] = "";
     snprintf(name, sizeof(name), "%u Byte", pre_len);

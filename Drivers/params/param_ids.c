@@ -232,6 +232,9 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             memcpy(&freq,value,4);
             name =  RfFreq2Str(freq);
         }
+        if(PAR_ID_LORA_SYNC_WORD==id){
+            name =  ((uint16_t)*value);
+        }
 
         if(PAR_ID_PACKET_TYPE == id){
             name = PacketType2Str((uint8_t)*value);
