@@ -924,7 +924,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType" ,LORA_CRC_ON, LoraCrcType2Str);
     LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen" ,DFLT_PREAMBLE_LEN, PreambleLen2Str);
     LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
-    LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
+    LOAD_PARAM(PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD, LoRaSyncWord2Str);
     LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp" ,IQ_SETUP_STANDARD, IqSetUp2Str);
     LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate" ,DFLT_LORA_CR, coding_rate2str);
     LOAD_PARAM(PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth" ,DFLT_LORA_BW, bandwidth2str);

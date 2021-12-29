@@ -233,7 +233,7 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             name =  RfFreq2Str(freq);
         }
         if(PAR_ID_LORA_SYNC_WORD==id){
-            name =  ((uint16_t)*value);
+            name = LoRaSyncWord2Str ((uint16_t)*value);
         }
 
         if(PAR_ID_PACKET_TYPE == id){
