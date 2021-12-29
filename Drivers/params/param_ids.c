@@ -282,6 +282,11 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         if(PAR_ID_RTK_MODE == id) {
             name = rtk_mode2str((uint8_t)*value);
         }
+        if(  PAR_ID_RTK_FIX_LONG== id) {
+            uint32_t time_ms=0;
+            memcpy(&time_ms,value,4);
+            name =  RtkFixDur2str(time_ms);
+        }
         if(PAR_ID_RTK_CHANNEL == id) {
             name = interface2str((Interfaces_t)*value);
         }
