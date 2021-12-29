@@ -308,6 +308,13 @@ char* RfFreq2Str(uint32_t rf_freq){
     return name;
 }
 
+char* dbm2wattsStr(int32_t dbm){
+    static char name[30] = "";
+    float watts = dbm2watts(dbm);
+    snprintf(name, sizeof(name), "%f W", watts);
+    return name;
+}
+
 char* SyncWord2Str(uint64_t syn_word){
     static char name[30] = "";
     snprintf(name, sizeof(name), "0x%llx", syn_word);
