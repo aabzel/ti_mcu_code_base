@@ -928,7 +928,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate" ,DFLT_LORA_CR, coding_rate2str);
     LOAD_PARAM(PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth" ,DFLT_LORA_BW, bandwidth2str);
     LOAD_PARAM(PAR_ID_LORA_SF, sx1262Instance->mod_params.spreading_factor, 1, "SpreadingFactor" ,DFLT_SF, spreading_factor2num);
-    LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 1, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
+    LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 4, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
     LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr" ,DFLT_OUT_POWER, dbm2watts);
 #ifdef HAS_SX1262_BIT_RATE
    // LOAD_PARAM(PAR_ID_LORA_MAX_BIT_RATE, sx1262Instance->tx_max_bit_rate, 8, "BitRate" ,0.0, BitRate2Str);
