@@ -11,7 +11,7 @@ extern "C" {
 #include "lora_constants.h"
 #include "sx1262_drv.h"
 
-
+char* LinkDist2str(double bit_s);
 char* PayloadLen2Str(uint8_t size);
 const char* IqSetUp2Str(uint8_t iq_setup);
 char* SyncWord2Str(uint64_t syn_word);

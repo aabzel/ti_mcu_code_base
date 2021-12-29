@@ -253,6 +253,9 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         if(PAR_ID_CRC_TYPE == id) {
             name = LoraCrcType2Str((uint8_t)*value);
         }
+        if(PAR_ID_LORA_MAX_LINK_DIST== id){
+            name = LinkDist2str((double)*value);
+        }
         if(PAR_ID_LORA_SF == id) {
             name = spreading_factor2str((uint8_t)*value);
         }

@@ -1,6 +1,7 @@
 #include "zed_f9p_diag.h"
  
 #include <stdint.h>
+#include <stdio.h>
 
 #include "zed_f9p_drv.h"
 

@@ -290,6 +290,12 @@ char* bandwidth2str(uint8_t bandwidth) {
     return name;
 }
 
+char* LinkDist2str(double bit_s) {
+    static char name[30] = "";
+    snprintf(name, sizeof(name), "%7.3fKm", bit_s / 1000.0);
+    return name;
+}
+
 char* BitRate2Str(double bit_s) {
     static char name[30] = "";
     snprintf(name, sizeof(name), "%7.1f Byte/s", bit_s / 8.0);
