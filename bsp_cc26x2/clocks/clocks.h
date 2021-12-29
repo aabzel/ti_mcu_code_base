@@ -22,7 +22,6 @@ extern "C" {
 #define MIN_2_MS(MIN) ((MIN)*60U * 1000U)
 #define S_2_MS(S) ((S)*1000U)
 #define S_2_US(SEC) ((uint32_t)(1000000.0 * ((float)SEC)))
-#define MIN_2_US(MIN) ((uint32_t)(60000000 * (MIN)))
 #define MS_2_S(ms) ((((double)ms) / 1000.0))
 #define MS_2_MIN(ms) (ms / (1000 * 60))
 
