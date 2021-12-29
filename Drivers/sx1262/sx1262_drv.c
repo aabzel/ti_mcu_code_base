@@ -889,14 +889,28 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #ifdef HAS_FLASH_FS
     uint16_t file_len = 0;
 
+    res = mm_get(PAR_ID_PACKET_TYPE, (uint8_t*)&sx1262Instance->packet_param.packet_type,
+                 sizeof(sx1262Instance->packet_param.packet_type), &file_len);
+    if(res && (1==file_len)) {
+        LOG_INFO(LORA, "SetPktTypeFromParams %u %s",
+                 sx1262Instance->packet_param.packet_type,
+                 PacketType2Str(sx1262Instance->packet_param.packet_type));
+    } else {
+        LOG_WARNING(LORA, "SetDfltPktType [%u] %s",
+                    LORA_CRC_ON,
+                    PacketType2Str(PACKET_TYPE_LORA ));
+        sx1262Instance->packet_param.packet_type = PACKET_TYPE_LORA ;
+    }
+
+
     res = mm_get(PAR_ID_HEADER_TYPE, (uint8_t*)&sx1262Instance->packet_param.proto.lora.header_type,
                  sizeof(sx1262Instance->packet_param.proto.lora.header_type), &file_len);
     if(res && (1==file_len)) {
-        LOG_INFO(LORA, "SetCrcTypeFromParams %u %s",
+        LOG_INFO(LORA, "SetHeaderTypeFromParams %u %s",
                  sx1262Instance->packet_param.proto.lora.header_type,
                  LoraHeaderType2Str(sx1262Instance->packet_param.proto.lora.header_type));
     } else {
-        LOG_WARNING(LORA, "SetDefaultCrcType [%u] %s",
+        LOG_WARNING(LORA, "SetDfltHeaderType [%u] %s",
                     LORA_CRC_ON,
                     LoraHeaderType2Str(LORA_VAR_LEN_PACT));
         sx1262Instance->packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
@@ -910,7 +924,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sx1262Instance->packet_param.proto.lora.crc_type,
                  LoraCrcType2Str(sx1262Instance->packet_param.proto.lora.crc_type));
     } else {
-        LOG_WARNING(LORA, "SetDefaultCrcType [%u] %s",
+        LOG_WARNING(LORA, "SetDfltCrcType [%u] %s",
                     LORA_CRC_ON,
                     LoraCrcType2Str(LORA_CRC_ON));
         sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
@@ -921,7 +935,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     if(res && (2==file_len)){
         LOG_INFO(LORA, "SetPreamLenFromParams %u", sx1262Instance->packet_param.proto.lora.preamble_length);
     } else {
-        LOG_WARNING(LORA, "SetDefaultPreamLen [%u]", DFLT_PREAMBLE_LEN);
+        LOG_WARNING(LORA, "SetDfltPreamLen [%u]", DFLT_PREAMBLE_LEN);
         sx1262Instance->packet_param.proto.lora.preamble_length = DFLT_PREAMBLE_LEN;
     }
 
@@ -931,7 +945,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     if(res && (8==file_len)){
         LOG_INFO(LORA, "Set SyncWord from params 0x%llx", sx1262Instance->set_sync_word);
     }else{
-        LOG_WARNING(LORA, "Set default SyncWord [%u]", DFLT_SYNC_WORD);
+        LOG_WARNING(LORA, "SetDflt SyncWord [%u]", DFLT_SYNC_WORD);
         sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
     }
 
@@ -941,6 +955,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     if(res) {
         LOG_INFO(LORA, "load max bit rate %f bit/s", sx1262Instance->tx_max_bit_rate);
     } else {
+        sx1262Instance->tx_max_bit_rate = 0.0;
         res = false;
     }
 #endif
@@ -948,7 +963,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
                  sizeof(sx1262Instance->mod_params.coding_rate), &file_len);
     if((true == res) && (1 == file_len)) {
         if(true == is_valid_coding_rate(sx1262Instance->mod_params.coding_rate)) {
-            LOG_INFO(LORA, "Set coding_rate from params [%u] %s", sx1262Instance->mod_params.coding_rate,
+            LOG_INFO(LORA, "SetCodingRateFromParams [%u] %s", sx1262Instance->mod_params.coding_rate,
                      coding_rate2str(sx1262Instance->mod_params.coding_rate));
         } else {
             res = false;
@@ -957,7 +972,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
         res = false;
     }
     if(false == res) {
-        LOG_WARNING(LORA, "Set default coding rate [%u] %s", DFLT_LORA_CR, coding_rate2str(DFLT_LORA_CR));
+        LOG_WARNING(LORA, "SetDfltCodingRate [%u] %s", DFLT_LORA_CR, coding_rate2str(DFLT_LORA_CR));
         sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
         res = true;
     }
@@ -975,7 +990,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
         res = false;
     }
     if(false == res) {
-        LOG_WARNING(LORA, "Set default bandwidth [%u] %7.3f kHz", DFLT_LORA_BW,
+        LOG_WARNING(LORA, "SetDflt bandwidth [%u] %7.3f kHz", DFLT_LORA_BW,
                     ((float)bandwidth2num(DFLT_LORA_BW)) / 100.0f);
         sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
         res = true;
@@ -997,7 +1012,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 
     if(false == res) {
 #ifdef HAS_SX1262_DEBUG
-        LOG_WARNING(LORA, "Set default spreading_factor [%u] %u Chips/Symbol", DFLT_SF, spreading_factor2num(DFLT_SF));
+        LOG_WARNING(LORA, "SetDflt spreading_factor [%u] %u Chips/Symbol", DFLT_SF, spreading_factor2num(DFLT_SF));
 #endif
         sx1262Instance->mod_params.spreading_factor = DFLT_SF;
         res = true;
@@ -1011,7 +1026,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #endif
     } else {
 #ifdef HAS_SX1262_DEBUG
-        LOG_WARNING(LORA, "Set default freq %u Hz", DFLT_FREQ_MHZ);
+        LOG_WARNING(LORA, "SetDflt freq %u Hz", DFLT_FREQ_MHZ);
 #endif
         sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
         res = true;
@@ -1026,7 +1041,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #endif
     } else {
 #ifdef HAS_SX1262_DEBUG
-        LOG_WARNING(LORA, "Set default output power [%u] %d dBm %f W", DFLT_OUT_POWER, DFLT_OUT_POWER,
+        LOG_WARNING(LORA, "SetDflt output power [%u] %d dBm %f W", DFLT_OUT_POWER, DFLT_OUT_POWER,
                     dbm2watts(DFLT_OUT_POWER));
 #endif
         sx1262Instance->output_power = DFLT_OUT_POWER;
@@ -1239,7 +1254,7 @@ bool sx1262_get_dev_err(uint16_t* op_error) {
   The command GetPacketType() returns the current operating packet type of the radio.
 */
 
-bool sx1262_get_packet_type(RadioPacketType_t* packet_type) {
+bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     bool res = false;
     uint8_t rx_array[3];
     memset(rx_array, 0x00, sizeof(rx_array));

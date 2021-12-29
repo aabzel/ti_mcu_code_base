@@ -33,6 +33,7 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
     /**/ {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
     /**/ {PAR_ID_LORA_BW, 1, UINT8, "BW"},               /*Hz*/
+    /**/ {PAR_ID_PACKET_TYPE, 1 , UINT8, "PktType"},     /* GFSK / LoRa*/
     /**/ {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
     /**/ {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
     /**/ {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
@@ -224,6 +225,10 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             float watts = dbm2watts((uint32_t)*value);
             snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
             name = temp_name;
+        }
+
+        if(PAR_ID_PACKET_TYPE == id){
+            name = PacketType2Str((uint8_t)*value);
         }
 
         if(PAR_ID_HEADER_TYPE == id) {

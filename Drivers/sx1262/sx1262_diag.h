@@ -11,6 +11,7 @@ extern "C" {
 #include "lora_defs.h"
 #include "sx1262_drv.h"
 
+const char* PacketType2Str(uint8_t packet_type);
 const char* LoraHeaderType2Str(uint8_t header_type);
 const char* LoraCrcType2Str(uint8_t crc_type);
 uint32_t bandwidth2num(BandWidth_t bandwidth);

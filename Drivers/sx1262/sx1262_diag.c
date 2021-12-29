@@ -296,6 +296,22 @@ char* bit_rate2str(double bit_s) {
     return name;
 }
 
+const char* PacketType2Str(uint8_t packet_type){
+    const char* name = "undef";
+    switch(packet_type) {
+    case PACKET_TYPE_GFSK:
+        name = "GFSK";
+        break;
+    case PACKET_TYPE_LORA:
+        name = "LoRa";
+        break;
+    default:
+        name = "Err";
+        break;
+    }
+    return name;
+}
+
 const char* LoraHeaderType2Str(uint8_t header_type){
     const char* name = "undef";
     switch(header_type) {

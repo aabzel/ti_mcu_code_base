@@ -118,13 +118,7 @@ typedef enum eStandbyMode_t {
 #define REG_MODE_ONLY_LDO 0x00  /*used for all modes*/
 #define REG_MODE_DC_DC_LDO 0x01 /*used for STBY_XOSC,FS, RX and TX modes*/
 
-/*PacketType Definition*/
-typedef enum eRadioPacketTypes_t {
-    PACKET_TYPE_GFSK = 0x00, /*GFSK packet type*/
-    PACKET_TYPE_LORA = 0x01, /*LORA mode*/
-    PACKET_TYPE_NONE = 0x0F,
-    PACKET_TYPE_UNDEF = 0xFF
-} RadioPacketType_t;
+
 
 typedef enum eOutputPower_t { OP_14_DBM = 0, OP_17_DBM = 1, OP_20_DBM = 2, OP_22_DBM = 3, OP_UNDEF = 4 } OutputPower_t;
 
@@ -249,7 +243,7 @@ bool sx1262_get_dev_err(uint16_t* op_error);
 bool sx1262_get_irq_status(uint16_t* irq_stat);
 bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, int8_t* RssiPkt, uint8_t* SnrPkt,
                               int8_t* SignalRssiPkt);
-bool sx1262_get_packet_type(RadioPacketType_t* packet_type);
+bool sx1262_get_packet_type(RadioPacketType_t* const packet_type);
 bool sx1262_get_rand(uint32_t* rand_num);
 bool sx1262_get_rssi_inst(int8_t* rssi_inst);
 bool sx1262_get_rx_payload(uint8_t* payload, uint16_t* size, uint16_t max_size, uint8_t* crc8);

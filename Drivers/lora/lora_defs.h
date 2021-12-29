@@ -19,6 +19,14 @@ typedef enum eBandWidth_t {
     /*lack code 0x07!*/
 } BandWidth_t;
 
+/*PacketType Definition*/
+typedef enum eRadioPacketTypes_t {
+    PACKET_TYPE_GFSK = 0x00, /*GFSK packet type*/
+    PACKET_TYPE_LORA = 0x01, /*LORA mode*/
+    PACKET_TYPE_NONE = 0x0F,
+    PACKET_TYPE_UNDEF = 0xFF
+} RadioPacketType_t;
+
 /*Table 13-49: LoRa® ModParam3 - Coding Rate*/
 typedef enum eLoRaCodingRate_t {
     LORA_CR_4_5 = 0x01, /**/

@@ -7,7 +7,7 @@
 #include "clocks.h"
 #include "param_types.h"
 
-#define PARAM_CNT 27U
+#define PARAM_CNT 28U
 #define PARAM_PERIOD_US S_2_US(3)
 
 typedef enum eId_t {
@@ -19,6 +19,7 @@ typedef enum eId_t {
     PAR_ID_PREAMBLE_LENGTH = 6, /*byte*/
     PAR_ID_PAYLOAD_LENGTH = 7,  /*byte*/
     PAR_ID_CRC_TYPE = 8,   /*On Off*/
+    PAR_ID_PACKET_TYPE = 28, /* GFSK / LoRa*/
     PAR_ID_HEADER_TYPE = 9, /*Variable length packet / Fixed length packet*/
     PAR_ID_INV_IQ = 10,
     PAR_ID_APP_START = 11, /*Flash address*/
