@@ -67,10 +67,12 @@ bool health_monotor_proc(void) {
 #endif /*HAS_ADC*/
 
 #ifdef HAS_SX1262
+#ifdef HAS_RTCM3
     if((Sx1262Instance.bit_rate / 8) < MIM_LORA_THROUGHPUT_BYTE_S) {
         LOG_ERROR(HMOM, "LoRaByteRate too low %f byte/s", Sx1262Instance.bit_rate / 8);
         res = false;
     }
+#endif
 #endif
 
     if(HealthMon.init_error) {
