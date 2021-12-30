@@ -81,7 +81,7 @@ bool health_monotor_proc(void) {
 
 #ifdef HAS_LORA
     if(LoRaInterface.tx_err_cnt) {
-        LOG_ERROR(HMOM, "LoRaRxError");
+        LOG_ERROR(HMOM, "LoRaTxError");
     }
 #endif
 

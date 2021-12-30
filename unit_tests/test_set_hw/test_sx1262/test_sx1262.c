@@ -130,6 +130,7 @@ bool test_sx1262_rand(void) {
 }
 
 bool test_sx1262_types(void) {
+    EXPECT_EQ(1, sizeof(Sx1262Status_t));
     EXPECT_EQ(1, sizeof(LoRaCodingRate_t));
     EXPECT_EQ(6, sizeof(LoRaPacketParam_t));
     EXPECT_EQ(1, sizeof(BandWidth_t));
