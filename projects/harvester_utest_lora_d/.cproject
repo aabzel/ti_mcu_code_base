@@ -179,6 +179,7 @@
 									<listOptionValue builtIn="false" value="HAS_UART1"/>
 									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
+									<listOptionValue builtIn="false" value="HAS_WDT"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.954922929" name="Target processor version (--silicon_version, -mv)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.7M4" valueType="enumerated"/>
@@ -289,7 +290,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="boards/stm32_H407|unit_tests/test_set_hw/test_system|utils/utils_string/str_utils_ex.c|utils/win_utils|utils/utils_files|unit_tests/test_set_hw/test_can|unit_tests/test_set_hw/test_zed_f9p|protocols/ubx_protocol|protocols/j1939|protocols/nmea_protocol|protocols/rtcm3_protocol|Drivers/zed_f9p|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/fifo_char_buffer.c|unit_tests/test_set_sw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="boards/stm32_H407|unit_tests/test_set_hw/test_system|utils/utils_string/str_utils_ex.c|utils/win_utils|utils/utils_files|unit_tests/test_set_hw/test_can|unit_tests/test_set_hw/test_zed_f9p|protocols/ubx_protocol|protocols/j1939|protocols/nmea_protocol|protocols/rtcm3_protocol|Drivers/zed_f9p|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
