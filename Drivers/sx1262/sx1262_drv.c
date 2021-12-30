@@ -922,7 +922,6 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_HEADER_TYPE, sx1262Instance->packet_param.proto.lora.header_type, 1, "HeaderType" ,LORA_VAR_LEN_PACT, LoraHeaderType2Str);
     LOAD_PARAM(PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType" ,LORA_CRC_ON, LoraCrcType2Str);
     LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen" ,DFLT_PREAMBLE_LEN, PreambleLen2Str);
-    LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
     LOAD_PARAM(PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD, LoRaSyncWord2Str);
     LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp" ,IQ_SETUP_STANDARD, IqSetUp2Str);
     LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate" ,DFLT_LORA_CR, coding_rate2str);
@@ -930,9 +929,24 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_LORA_SF, sx1262Instance->mod_params.spreading_factor, 1, "SpreadingFactor" ,DFLT_SF, spreading_factor2str);
     LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 4, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
     LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr" ,DFLT_OUT_POWER, dbm2wattsStr);
+    //LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
+
+    uint16_t file_len = 0;
+    res = mm_get(PAR_ID_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word,  sizeof(sx1262Instance->set_sync_word), &file_len);
+    if((true==res) && ((8)==file_len)) {
+        LOG_INFO(LORA, "SetSyncWordFromParams %llu [%s]", sx1262Instance->set_sync_word, SyncWord2Str(sx1262Instance->set_sync_word));
+    } else {
+        LOG_WARNING(LORA, "SetDfltSyncWord %llu [%s]", sx1262Instance->set_sync_word, SyncWord2Str(DFLT_SYNC_WORD));
+        sx1262Instance->set_sync_word = DFLT_SYNC_WORD ;
+        res = false;
+        out_res = false;
+    }
+
+
+
 #ifdef HAS_SX1262_BIT_RATE
    // LOAD_PARAM(PAR_ID_LORA_MAX_BIT_RATE, sx1262Instance->tx_max_bit_rate, 8, "BitRate" ,0.0, BitRate2Str);
-    uint16_t file_len = 0;
+
     res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&sx1262Instance->tx_max_bit_rate,  sizeof(sx1262Instance->tx_max_bit_rate), &file_len);
     if((true==res) && (8==file_len)) {
         LOG_INFO(LORA, "SetBitRateFromParams [%s]",BitRate2Str(sx1262Instance->tx_max_bit_rate));
