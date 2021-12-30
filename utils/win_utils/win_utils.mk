@@ -6,5 +6,6 @@ INCDIR			+= -I$(WIN_UTILS_DIR)
 OPT += -DWIN_UTILS
 OPT += -DDEBUG_SERIAL
 
+SOURCES_C += $(WIN_UTILS_DIR)/cli_wrappers.c
 SOURCES_C += $(WIN_UTILS_DIR)/scan_serial_port.c
 SOURCES_C += $(WIN_UTILS_DIR)/win_utils.c

@@ -1,10 +1,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <wchar.h>
+#include <windows.h>
 
+#include "cli_wrappers.h"
 #include "log.h"
 #include "array.h"
-#include "cli_wrappers.h"
 #include "convert.h"
 #include "io_utils.h"
 #include "macro_utils.h"
@@ -14,9 +16,8 @@
 #define VERSION 2
 
 bool LoadConfigToTarget(char* file_name){
-    printf("\n[d]%s() %s:", __FUNCTION__,file_name);
-#ifdef HAS_DEBUG
-#endif
+    LOG_DEBUG(SYS,"%s() %s:", __FUNCTION__,file_name);
+
     bool res = false;
     FILE *inFilePrt = NULL;
     inFilePrt = fopen(file_name, "r");
@@ -25,15 +26,13 @@ bool LoadConfigToTarget(char* file_name){
         uint32_t line = 0;
         char curFileStr[500];
         while (NULL != fgets(curFileStr, sizeof(curFileStr), inFilePrt)) {
-            printf ("\n>[%s]", curFileStr);
-#ifdef DEBUG_IN_FILE_STR
-#endif
+            LOG_DEBUG(SYS,"[%s]", curFileStr);
             if(0<strlen(curFileStr)){
                 res = cli_cmd_send(hComm, curFileStr, strlen(curFileStr));
                 if(false==res){
-                    printf ("\n[e] CLI send error [%s]", curFileStr);
+                    LOG_ERROR(SYS,"CLI send error [%s]", curFileStr);
                 }else{
-                    printf ("\n[*] CLI send OK");
+                    LOG_INFO(SYS,"[*] CLI send OK");
                 }
             }
             line++;
@@ -41,25 +40,30 @@ bool LoadConfigToTarget(char* file_name){
         fclose (inFilePrt);
         res = true;
     }else{
-        printf ("\n[e] Unable to open file [%s]", file_name);
+        LOG_ERROR(SYS,"Unable to open file [%s]", file_name);
     }
     return res;
 }
 
+
 int main(int argc, char* argv[]) {
     int ret = 0;
+    cli_win_color_enable();
+    set_log_level(SYS, LOG_LEVEL_DEBUG);
+    set_log_level(COM, LOG_LEVEL_DEBUG);
+
     bool target_connected = false;
     bool res = false;
-    printf("\n[d] argc:%d",argc);
-    printf("\n[*] Firmware Configurator:");
-    printf("\n[*] Version: %u", VERSION);
+    LOG_DEBUG(SYS,"argc:%d",argc);
+    LOG_INFO(SYS,"Firmware Configurator:");
+    LOG_INFO(SYS,"Version: %u", VERSION);
 
     if(argc < 3) {
-        printf("\n[e] Lack of config");
+        LOG_ERROR(SYS,"Lack of config");
         ret = 1;
         res = false;
     } else {
-        printf("\n[d] config file [%s]",argv[3]);
+        LOG_DEBUG(SYS,"config file [%s]",argv[3]);
         res = true;
     }
 
@@ -67,7 +71,7 @@ int main(int argc, char* argv[]) {
     if(res) {
         res = try_str2uint32(argv[2], &baud_rate);
         if(false == res) {
-            printf("\n[e] Unable to extract baud_rate %s", argv[2]);
+            LOG_ERROR(SYS,"Unable to extract baud_rate %s", argv[2]);
         }else{
             res = init_serial(argv[1], baud_rate);
         }
@@ -76,9 +80,9 @@ int main(int argc, char* argv[]) {
     if(res) {
         target_connected = is_target_connected();
         if(target_connected) {
-            printf("\n[*] Spot target");
+            LOG_INFO(SYS,"Spot target");
         } else {
-            printf("\n[e] Target Disconnected");
+            LOG_ERROR(SYS,"Target Disconnected");
         }
     }
 
@@ -89,15 +93,15 @@ int main(int argc, char* argv[]) {
     if (3<=argc) {
         res = LoadConfigToTarget(argv[3]);
         if(false==res){
-            printf("\n[e] Config Load Error");
+            LOG_ERROR(SYS,"Config Load Error");
         } else {
-            printf("\n[*] Config Ok");
+            LOG_INFO(SYS,"Config Ok");
         }
     } else {
-        printf("\n[e] Error");
+        LOG_ERROR(SYS,"Error");
     }
 
     CloseHandle(hComm);
-    LOG_INFO(SYS,"\n[*] End of program");
+    LOG_INFO(SYS,"End of program");
     return ret;
 }
