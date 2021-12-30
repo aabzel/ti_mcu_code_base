@@ -10,16 +10,22 @@
 extern "C" {
 #endif
 
-typedef enum eLog_level_t{
-  LOG_LEVEL_UNKNOWN = -4,
-  LOG_LEVEL_PARANOID = -3,
-  LOG_LEVEL_DEBUG = -2,
-  LOG_LEVEL_NOTICE = -1,
-  LOG_LEVEL_INFO = 0,
-  LOG_LEVEL_WARNING = 1,
-  LOG_LEVEL_ERROR = 2,
-  LOG_LEVEL_CRITICAL = 3,
-  LOG_LEVEL_LAST = LOG_LEVEL_CRITICAL
+#ifdef X86_64
+#define io_vprintf vprintf
+#define io_printf printf
+#define io_putstr puts
+#endif
+
+typedef enum eLog_level_t {
+    LOG_LEVEL_UNKNOWN = -4,
+    LOG_LEVEL_PARANOID = -3,
+    LOG_LEVEL_DEBUG = -2,
+    LOG_LEVEL_NOTICE = -1,
+    LOG_LEVEL_INFO = 0,
+    LOG_LEVEL_WARNING = 1,
+    LOG_LEVEL_ERROR = 2,
+    LOG_LEVEL_CRITICAL = 3,
+    LOG_LEVEL_LAST = LOG_LEVEL_CRITICAL
 } log_level_t;
 
 #ifdef STM32F413xx
@@ -44,36 +50,37 @@ typedef uint8_t log_facility_t;
 #define ALL_FACILITY 17
 #else
 typedef enum eLog_facility_t {
-  UNKNOWN_FACILITY=0,
-  LG_ADC,
-  BATT ,
-  CAN,
-  BOOT,
-  LG_DAC,
-  DIAG,
-  I2C,
-  INT,
-  NMEA,
-  HMOM,
-  TEST,
-  TBFP,
-  LG_FLASH,
-  FLASH_FS,
-  LORA,
-  NVS,
-  TIM,
-  RTCM,
-  RF,
-  LG_RTC,
-  SPI,
-  PARAM,
-  LG_PWR,
-  ZED_F9P,
-  LG_RNG,
-  SYS,
-  UBX,
-  UART,
-  ALL_FACILITY
+    UNKNOWN_FACILITY = 0,
+    LG_ADC,
+    BATT,
+    CAN,
+    COM,
+    BOOT,
+    LG_DAC,
+    DIAG,
+    I2C,
+    LG_INT,
+    NMEA,
+    HMOM,
+    TEST,
+    TBFP,
+    LG_FLASH,
+    FLASH_FS,
+    LORA,
+    NVS,
+    TIM,
+    RTCM,
+    RF,
+    LG_RTC,
+    SPI,
+    PARAM,
+    LG_PWR,
+    ZED_F9P,
+    LG_RNG,
+    SYS,
+    UBX,
+    UART,
+    ALL_FACILITY
 } log_facility_t;
 #endif /*STM32F413xx*/
 
@@ -91,19 +98,18 @@ bool log_write_begin(log_level_t level, log_facility_t facility);
 void log_write_end(void);
 bool set_log_level(log_facility_t facility, log_level_t level);
 log_level_t get_log_level(log_facility_t facility);
-const char *log_level_color(log_level_t level);
-const char *facility2str(log_facility_t facility);
-
-void log_write_(log_level_t level, log_facility_t facility, const char *format,
-                ...);
-
-void LOG_PARN(log_facility_t facility, const char *format, ...);
-void LOG_DEBUG(log_facility_t facility, const char *format, ...);
-void LOG_NOTICE(log_facility_t facility, const char *format, ...);
-void LOG_INFO(log_facility_t facility, const char *format, ...);
-void LOG_WARNING(log_facility_t facility, const char *format, ...);
-void LOG_ERROR(log_facility_t facility, const char *format, ...);
-void LOG_CRITICAL(log_facility_t facility, const char *format, ...);
+const char* log_level_color(log_level_t level);
+const char* facility2str(log_facility_t facility);
+#if 0
+void log_write_(log_level_t level, log_facility_t facility, const char* format, ...);
+#endif
+void LOG_PARN(log_facility_t facility, const char* format, ...);
+void LOG_DEBUG(log_facility_t facility, const char* format, ...);
+void LOG_NOTICE(log_facility_t facility, const char* format, ...);
+void LOG_INFO(log_facility_t facility, const char* format, ...);
+void LOG_WARNING(log_facility_t facility, const char* format, ...);
+void LOG_ERROR(log_facility_t facility, const char* format, ...);
+void LOG_CRITICAL(log_facility_t facility, const char* format, ...);
 
 #define SET_SYS_FACILITY (SYS)
 

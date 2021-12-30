@@ -40,14 +40,14 @@ bool it_diag_command(int32_t argc, char* argv[]) {
     if(1 == argc) {
         res = try_str2uint32(argv[0], &index);
         if(false == res) {
-            LOG_ERROR(INT, "Unable to parse index");
+            LOG_ERROR(LG_INT, "Unable to parse index");
         }
         int32_t ret = IntPriorityGet(index);
         res = IntPendGet(index);
-        LOG_INFO(INT, "index:%u priority:%d=0x%x %s pending", index, ret, ret, (true == res) ? "" : "not");
+        LOG_INFO(LG_INT, "index:%u priority:%d=0x%x %s pending", index, ret, ret, (true == res) ? "" : "not");
         res = true;
     } else if(false == res) {
-        LOG_ERROR(INT, "Usage: itd indexVectorTable");
+        LOG_ERROR(LG_INT, "Usage: itd indexVectorTable");
     }
 
     return res;

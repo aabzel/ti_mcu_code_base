@@ -2,27 +2,34 @@
 
 #include <stdio.h>
 
+#ifdef HAS_MCU
 #include "sys.h"
 #include "uart_drv.h"
-#include "writer_generic.h"
 #include "uart_common.h"
 #include "writer_config.h"
+#include "writer_generic.h"
+#endif
 
+
+
+#ifdef HAS_MCU
 print_callback_t print_callback_f;
-
-#ifndef X86_64
 void io_putstr(const char *str) {
   if (huart[UART_NUM_CLI].init_done) {
     oputs(&curWriterPtr->s, str);
   }
 }
+#endif
 
+#ifdef HAS_MCU
 void io_putchar(char ch) {
   if (huart[UART_NUM_CLI].init_done) {
     (&curWriterPtr->s)->f_putch(&curWriterPtr->s, ch);
   }
 }
+#endif
 
+#ifdef HAS_MCU
 void io_printf(const char *format, ...) {
   if (huart[UART_NUM_CLI].init_done) {
     va_list vlist;
@@ -31,7 +38,9 @@ void io_printf(const char *format, ...) {
     va_end(vlist);
   }
 }
+#endif
 
+#ifdef HAS_MCU
 void io_vprintf(const char *format, va_list vlist) {
     ovprintf(&curWriterPtr->s, format, vlist);
 }
@@ -44,12 +53,14 @@ bool is_printf_clean(void) {
   }
   return true;
 }
+#endif
 
+#ifdef HAS_MCU
 void io_putstrln(const char *str) {
   io_putstr(str);
   io_putstr(CRLF);
 }
-#endif /*not X86_64*/
+
 
 void wait_for_printf(void) {
   if (huart[UART_NUM_CLI].init_done) {
@@ -72,6 +83,7 @@ bool flush_printf(void) {
   }
   return res;
 }
+#endif
 
 //static  ostream_t *get_console_stream(void) { return &curWriterPtr->s; }
 

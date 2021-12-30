@@ -50,10 +50,10 @@ void dump_unit_test_all(void) {
         const unit_test_info_t* ui = get_unit_test(index);
         if(ui != NULL) {
 #ifdef HAS_CLI
-            io_puts(ui->name);
-            io_puts(".");
-            io_puts(rx_utoa32(index + 1U));
-            io_puts(CRLF);
+            io_putstr(ui->name);
+            io_putstr(".");
+            io_putstr(rx_utoa32(index + 1U));
+            io_putstr(CRLF);
 #endif /*HAS_CLI*/
         }
     }
@@ -69,11 +69,11 @@ void dump_unit_test_key(const char* key) {
         if(ui != NULL) {
             if(NULL != str_case_str(ui->name, key)) {
 #ifdef HAS_CLI
-                io_puts(ui->name);
-                io_puts(".");
-                io_puts(rx_utoa32(index + 1U));
-                io_puts(CRLF);
-                io_flush();
+                io_putstr(ui->name);
+                io_putstr(".");
+                io_putstr(rx_utoa32(index + 1U));
+                io_putstr(CRLF);
+                //io_flush();
 #endif /*HAS_CLI*/
             }
         }
@@ -213,14 +213,14 @@ bool unit_tests_run(const char* key) {
     if(0U == count) {
 #ifdef HAS_CLI
         io_printf(VT_SETCOLOR_RED "Test %s not found!" CRLF, key);
-        io_puts("!ERRTEST" VT_SETCOLOR_NORMAL CRLF);
+        io_putstr("!ERRTEST" VT_SETCOLOR_NORMAL CRLF);
 #endif /*HAS_CLI*/
     }
 #ifdef HAS_CLI
     if(1U < count) {
         failed_tests_print();
     }
-    io_flush();
+    //io_flush();
 #endif /*HAS_CLI*/
     return res;
 }

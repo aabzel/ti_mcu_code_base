@@ -31,23 +31,23 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"},    /*num*/
     /**/ {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"},      /*Hz*/
     /**/ {PAR_ID_LORA_SF, 1, UINT8, "SF"},               /*Chips / Symbol*/
-    /*4*/ {PAR_ID_LORA_CR, 1, UINT8, "CR"},               /*in raw bits/total bits*/
+    /*4*/ {PAR_ID_LORA_CR, 1, UINT8, "CR"},              /*in raw bits/total bits*/
     /**/ {PAR_ID_LORA_BW, 1, UINT8, "BW"},               /*Hz*/
-    /**/ {PAR_ID_PACKET_TYPE, 1 , UINT8, "PktType"},     /* GFSK / LoRa*/
+    /**/ {PAR_ID_PACKET_TYPE, 1, UINT8, "PktType"},      /* GFSK / LoRa*/
     /**/ {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
     /**/ {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
     /**/ {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
-    /*10*/{PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
+    /*10*/ {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
     /**/ {PAR_ID_IQ_SETUP, 1, UINT8, "IQSetUp"},
-    /**/ {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},                /*1-stay in boot 0-launch App*/
-    /**/ {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},                /*num*/
-    /**/ {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},         /*Flash Addr*/
-    /**/ {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},            /*Flash Addr*/
-    /**/ {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},          /*loRa output power*/
-    /**/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                  /*Power Source*/
-    /**/ {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},               /*Time Zone*/
+    /**/ {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},                  /*1-stay in boot 0-launch App*/
+    /**/ {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},                  /*num*/
+    /**/ {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"},           /*Flash Addr*/
+    /**/ {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},              /*Flash Addr*/
+    /**/ {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"},            /*loRa output power*/
+    /**/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},                    /*Power Source*/
+    /**/ {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},                 /*Time Zone*/
     /*19*/ {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
-    /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},   /*Max LoRa bit/rate*/
+    /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"},     /*Max LoRa bit/rate*/
     /**/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
     /**/ {PAR_ID_RTK_FIX_LONG, 4, UINT32, "FTKFixedTime"}, /*RTK fixed max duration*/
     /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"},      /**/
@@ -218,7 +218,7 @@ bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* ou
 
 const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
     const char* name = "---";
-    if (value && (0<size)) {
+    if(value && (0 < size)) {
 
 #ifdef HAS_SX1262
         static char temp_name[100] = "---";
@@ -227,30 +227,30 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
             name = temp_name;
         }
-        if( PAR_ID_LORA_FREQ == id){
-            uint32_t freq=0;
-            memcpy(&freq,value,4);
-            name =  RfFreq2Str(freq);
+        if(PAR_ID_LORA_FREQ == id) {
+            uint32_t freq = 0;
+            memcpy(&freq, value, 4);
+            name = RfFreq2Str(freq);
         }
-        if(PAR_ID_LORA_SYNC_WORD==id){
-            name = LoRaSyncWord2Str ((uint16_t)*value);
+        if(PAR_ID_LORA_SYNC_WORD == id) {
+            name = LoRaSyncWord2Str((uint16_t)*value);
         }
-        if(PAR_ID_SYNC_WORD==id){
-            name = SyncWord2Str ((uint64_t)*value);
+        if(PAR_ID_SYNC_WORD == id) {
+            name = SyncWord2Str((uint64_t)*value);
         }
-        if(PAR_ID_PACKET_TYPE == id){
+        if(PAR_ID_PACKET_TYPE == id) {
             name = PacketType2Str((uint8_t)*value);
         }
 
-        if(PAR_ID_PAYLOAD_LENGTH == id){
+        if(PAR_ID_PAYLOAD_LENGTH == id) {
             name = PayloadLen2Str((uint8_t)*value);
         }
 
-        if(PAR_ID_PREAMBLE_LENGTH == id){
-            name = PreambleLen2Str ((uint16_t)*value);
+        if(PAR_ID_PREAMBLE_LENGTH == id) {
+            name = PreambleLen2Str((uint16_t)*value);
         }
 
-        if( PAR_ID_IQ_SETUP == id){
+        if(PAR_ID_IQ_SETUP == id) {
             name = IqSetUp2Str((uint8_t)*value);
         }
         if(PAR_ID_HEADER_TYPE == id) {
@@ -259,7 +259,7 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         if(PAR_ID_CRC_TYPE == id) {
             name = LoraCrcType2Str((uint8_t)*value);
         }
-        if(PAR_ID_LORA_MAX_LINK_DIST== id){
+        if(PAR_ID_LORA_MAX_LINK_DIST == id) {
             name = LinkDist2str((double)*value);
         }
         if(PAR_ID_LORA_SF == id) {
@@ -274,7 +274,7 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             name = BitRate2Str(un64.d64);
         }
         if(PAR_ID_LORA_BW == id) {
-            name = bandwidth2str ((BandWidth_t)*value);
+            name = bandwidth2str((BandWidth_t)*value);
         }
 #endif /*HAS_SX1262*/
         if(PAR_ID_BOOT_CMD == id) {
@@ -287,14 +287,14 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         }
 #endif /*HAS_PWR_MUX*/
 
-    #ifdef HAS_ZED_F9P
+#ifdef HAS_ZED_F9P
         if(PAR_ID_RTK_MODE == id) {
             name = rtk_mode2str((uint8_t)*value);
         }
-        if(  PAR_ID_RTK_FIX_LONG== id) {
-            uint32_t time_ms=0;
-            memcpy(&time_ms,value,4);
-            name =  RtkFixDur2str(time_ms);
+        if(PAR_ID_RTK_FIX_LONG == id) {
+            uint32_t time_ms = 0;
+            memcpy(&time_ms, value, 4);
+            name = RtkFixDur2str(time_ms);
         }
         if(PAR_ID_RTK_CHANNEL == id) {
             name = interface2str((Interfaces_t)*value);
@@ -302,7 +302,7 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         if(PAR_ID_BASE_LOCATION == id) {
             name = coordinate2str((void*)value);
         }
-    #endif /*HAS_ZED_F9P*/
+#endif /*HAS_ZED_F9P*/
     }
     return name;
 }

@@ -66,16 +66,17 @@ bool unit_test_run(uint32_t index) {
 #endif
         if(false == test_res) {
 #ifdef HAS_CLI
-            io_puts("!ERRTEST" CRLF);
-            io_flush();
+            io_putstr("!ERRTEST" CRLF);
 #endif
             add_to_failed(index);
         } else {
 #ifdef HAS_CLI
-            io_puts("!OKTEST" CRLF);
-            io_flush();
+            io_putstr("!OKTEST" CRLF);
 #endif
         }
+#ifdef HAS_CLI
+        //io_flush();
+#endif
 
 #ifdef HAS_NORTOS
         wait_in_loop_ms(10);
@@ -99,9 +100,9 @@ void failed_tests_print(void) {
             const unit_test_info_t* ui = get_unit_test(failed_tests[index]);
             io_printf("Failed: %s.%" PRIu32 CRLF, ui->name, failed_tests[index] + 1U);
         }
-        io_puts(VT_SETCOLOR_NORMAL);
+        io_putstr(VT_SETCOLOR_NORMAL);
     } else {
-        io_puts(VT_SETCOLOR_GREEN "All tests passed!" VT_SETCOLOR_NORMAL CRLF);
+        io_putstr(VT_SETCOLOR_GREEN "All tests passed!" VT_SETCOLOR_NORMAL CRLF);
     }
 }
 #endif /*HAS_CLI*/

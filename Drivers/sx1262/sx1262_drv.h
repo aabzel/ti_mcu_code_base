@@ -14,8 +14,8 @@
 #include "lora_constants.h"
 #include "sx1262_config.h"
 #include "sx1262_op_codes.h"
-#include "sx1262_types.h"
 #include "sx1262_registers.h"
+#include "sx1262_types.h"
 
 #define PACK_SIZE_BYTES 16
 
@@ -75,7 +75,7 @@ bool sx1262_set_buffer_base_addr(uint8_t tx_addr, uint8_t rx_addr);
 bool sx1262_set_crc_polynomial(uint16_t polynomial);
 bool sx1262_set_crc_seed(uint16_t seed);
 bool sx1262_set_dio_irq_params(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask);
-bool sx1262_set_lora_sync_word(uint16_t sync_word) ;
+bool sx1262_set_lora_sync_word(uint16_t sync_word);
 bool sx1262_set_modulation_params(ModulationParams_t* modParams);
 bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_sel, uint8_t pa_lut);
 bool sx1262_set_packet_params(PacketParam_t* packParam);

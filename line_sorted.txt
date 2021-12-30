@@ -1,24 +1,34 @@
-                    <name>CCDefines</name>
-                    <state>HAS_CLI_CMD_HISTORY</state>
-                    <state>HAS_CLI</state>
-                    <state>HAS_CORTEX_M4</state>
-                    <state>HAS_DEBUG</state>
-                    <state>HAS_FLASH_FS</state>
-                    <state>HAS_GPIO</state>
-                    <state>HAS_IAR</state>
-                    <state>HAS_INTERRUPT</state>
-                    <state>HAS_LORA</state>
-                    <state>HAS_MCU</state>
-                    <state>HAS_PARAM</state>
-                    <state>HAS_SPI</state>
-                    <state>HAS_SPI2</state>
-                    <state>HAS_SX1262_DEBUG</state>
-                    <state>HAS_SX1262</state>
-                    <state>HAS_TASKS</state>
-                    <state>HAS_UART</state>
-                    <state>HAS_USART6</state>
-                    <state>NORTOS</state>
-                    <state>STM32F407xx</state>
-                    <state>STM32F4xx</state>
-                    <state>SX1262_SPI_NUM=2</state>
-                    <state>USE_HAL_DRIVER</state>
+          Drivers/flash_fs/flash_fs_commands.c
+          Drivers/flash_fs/flash_fs_commands.h
+          Drivers/params/param_commands.c
+          Drivers/params/param_ids.c
+          Drivers/params/param_ids.h
+          Drivers/sx1262/sx1262_commands.c
+          Drivers/sx1262/sx1262_commands.h
+          Drivers/sx1262/sx1262_diag.c
+          Drivers/sx1262/sx1262_diag.h
+          Drivers/sx1262/sx1262_drv.c
+          Drivers/sx1262/sx1262_drv.h
+          Drivers/zed_f9p/zed_f9p_drv.c
+          bsp_cc26x2/gpio/gpio_drv.c
+          bsp_cc26x2/interrupt/interrupt_commands.c
+          bsp_stm32f4/spi/spi_drv.c
+          clean_temp.bat
+          line_sorted.txt
+          protocols/ubx_protocol/ublox_driver.c
+          unit_tests/unit_test.c
+          utils/crc/crc24_q.c
+          utils/data_utils.c
+          utils/health_monitor_command.c
+          utils/io_utils/io_utils.c
+          utils/io_utils/io_utils.h
+          utils/io_utils/io_utils.mk
+          utils/io_utils/log.c
+          utils/io_utils/log.h
+          utils/io_utils/terminal_codes.h
+git add         0_format_indents.bat
+git add   projects/fw_configurator_debug/2_run.bat
+git add   projects/fw_configurator_debug/Makefile
+git add   projects/fw_configurator_debug/main.c
+git add   utils/win_utils/scan_serial_port.c
+git add   utils/win_utils/win_utils.mk

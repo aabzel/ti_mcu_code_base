@@ -56,7 +56,7 @@ bool crc24_q_check(const uint8_t* const in_data, uint32_t const length, uint32_t
     crc24_calc = calc_crc24_q(in_data, length);
     if(crc24_calc == crc24_read) {
         res = true;
-    }else{
+    } else {
 #ifdef HAS_MCU
         LOG_ERROR(RTCM, "CrcErr Calc: 0x%08x Read: 0x%08x", crc24_calc, crc24_read);
 #endif

@@ -59,7 +59,7 @@ bool sx1262_set_modulation_command(int32_t argc, char* argv[]);
 bool sx1262_calc_command(int32_t argc, char* argv[]);
 
 #define SX1262_COMMANDS_DEBUG                                                                                          \
-        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                           \
+    SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                               \
         SHELL_CMD("sx1262_set_pack_param", "sxpp", sx1262_set_packet_param_command, "SX1262 set packet param"),        \
         SHELL_CMD("sx1262_mod", "sxmd", sx1262_set_modulation_command, "SX1262 modulation"),
 #else

@@ -27,10 +27,9 @@ bool ubx_driver_init(void) {
     return res;
 }
 
-
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len) {
     bool res = false;
-    if((NULL != payload) && (0<len)){
+    if((NULL != payload) && (0 < len)) {
         res = true;
         static uint8_t tx_array[256] = {0};
         uint16_t tx_array_len = 0U;
@@ -54,22 +53,21 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
     return res;
 }
 
-
 bool ubx_send_message_ack(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len) {
     bool out_res = false;
     bool res = false;
     uint32_t i = 0;
-    for(i=0; i < UBX_SEND_TRY; i++) {
-      res = ubx_send_message( class_num,  id, payload, len);
-      res = ubx_wait_ack(UBX_SEND_TIME_OUT_MS);
-      if(res){
-          out_res = true;
-          break;
-      }else{
+    for(i = 0; i < UBX_SEND_TRY; i++) {
+        res = ubx_send_message(class_num, id, payload, len);
+        res = ubx_wait_ack(UBX_SEND_TIME_OUT_MS);
+        if(res) {
+            out_res = true;
+            break;
+        } else {
 #ifdef HAS_MCU
-          LOG_WARNING(UBX,"WaitAckTimeOut:%u",i);
+            LOG_WARNING(UBX, "WaitAckTimeOut:%u", i);
 #endif
-      }
+        }
     }
 
     return out_res;
@@ -328,7 +326,7 @@ bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t la
         memcpy(&payload[8], val, val_len);
         payload_len = 8 + val_len;
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
-        if (false == res) {
+        if(false == res) {
             LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", UBX_CLA_CFG, UBX_ID_CFG_SET_VAL);
         }
     }

@@ -1,18 +1,18 @@
 #include "spi_drv.h"
 
+#include <limits.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <limits.h>
 #include <string.h>
 
 #include "bit_utils.h"
 #include "clocks.h"
-#include "sys_config.h"
 #include "gpio_drv.h"
 #include "log.h"
 #include "stm32f4xx_hal.h"
+#include "sys_config.h"
 #include "utils_math.h"
 
 static SpiName_t spi_base_2_num(SPI_TypeDef* Instance) {
@@ -68,50 +68,67 @@ static SPI_TypeDef* spi_num_2_base(SpiName_t spi_num) {
     return Instance;
 }
 
-static uint32_t Index2prescaler(uint8_t prescaler_index){
-    uint32_t prescaler=SPI_BAUDRATEPRESCALER_256;
-    switch(prescaler_index){
-        case 1:prescaler=SPI_BAUDRATEPRESCALER_2; break;
-        case 2:prescaler=SPI_BAUDRATEPRESCALER_4; break;
-        case 3:prescaler=SPI_BAUDRATEPRESCALER_8; break;
-        case 4:prescaler=SPI_BAUDRATEPRESCALER_16; break;
-        case 5:prescaler=SPI_BAUDRATEPRESCALER_32; break;
-        case 6:prescaler=SPI_BAUDRATEPRESCALER_64; break;
-        case 7:prescaler=SPI_BAUDRATEPRESCALER_128; break;
-        case 8:prescaler=SPI_BAUDRATEPRESCALER_256; break;
-        default:prescaler=SPI_BAUDRATEPRESCALER_256;
+static uint32_t Index2prescaler(uint8_t prescaler_index) {
+    uint32_t prescaler = SPI_BAUDRATEPRESCALER_256;
+    switch(prescaler_index) {
+    case 1:
+        prescaler = SPI_BAUDRATEPRESCALER_2;
+        break;
+    case 2:
+        prescaler = SPI_BAUDRATEPRESCALER_4;
+        break;
+    case 3:
+        prescaler = SPI_BAUDRATEPRESCALER_8;
+        break;
+    case 4:
+        prescaler = SPI_BAUDRATEPRESCALER_16;
+        break;
+    case 5:
+        prescaler = SPI_BAUDRATEPRESCALER_32;
+        break;
+    case 6:
+        prescaler = SPI_BAUDRATEPRESCALER_64;
+        break;
+    case 7:
+        prescaler = SPI_BAUDRATEPRESCALER_128;
+        break;
+    case 8:
+        prescaler = SPI_BAUDRATEPRESCALER_256;
+        break;
+    default:
+        prescaler = SPI_BAUDRATEPRESCALER_256;
         break;
     }
     return prescaler;
 }
 
-static uint32_t BitRate2Prescaler(int32_t bit_rate, int32_t bus_freq){
+static uint32_t BitRate2Prescaler(int32_t bit_rate, int32_t bus_freq) {
     uint32_t prescaler = 0;
-    LOG_INFO(SPI,"bitRate:%u bi/s",bit_rate);
+    LOG_INFO(SPI, "bitRate:%u bi/s", bit_rate);
     uint8_t final_prescaler_index = 8;
     int32_t cur_bit_rate = 0;
-    int32_t cur_bit_rate_error=INT_MAX;
-    int32_t min_abs_bit_rate_error=INT_MAX;
+    int32_t cur_bit_rate_error = INT_MAX;
+    int32_t min_abs_bit_rate_error = INT_MAX;
     uint32_t i = 0;
-    for(i=1;i<=8;i++){
-        cur_bit_rate = bus_freq/int_pow(2,i);
-        cur_bit_rate_error = abs(cur_bit_rate-bit_rate);
-        if(cur_bit_rate_error < min_abs_bit_rate_error){
+    for(i = 1; i <= 8; i++) {
+        cur_bit_rate = bus_freq / int_pow(2, i);
+        cur_bit_rate_error = abs(cur_bit_rate - bit_rate);
+        if(cur_bit_rate_error < min_abs_bit_rate_error) {
             min_abs_bit_rate_error = cur_bit_rate_error;
             final_prescaler_index = i;
         }
     }
-    cur_bit_rate = bus_freq/int_pow(2,final_prescaler_index);
-    LOG_INFO(SPI,"Prescaler:%u",int_pow(2,final_prescaler_index));
-    LOG_INFO(SPI,"RealClock:%u Hz",cur_bit_rate);
-    LOG_INFO(SPI,"ClockErr:%d Hz",abs(bit_rate-cur_bit_rate));
+    cur_bit_rate = bus_freq / int_pow(2, final_prescaler_index);
+    LOG_INFO(SPI, "Prescaler:%u", int_pow(2, final_prescaler_index));
+    LOG_INFO(SPI, "RealClock:%u Hz", cur_bit_rate);
+    LOG_INFO(SPI, "ClockErr:%d Hz", abs(bit_rate - cur_bit_rate));
     prescaler = Index2prescaler(final_prescaler_index);
     return prescaler;
 }
 
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
     bool res = false;
-    uint32_t prescaler = BitRate2Prescaler(bit_rate,APB1_CLOCK_HZ);
+    uint32_t prescaler = BitRate2Prescaler(bit_rate, APB1_CLOCK_HZ);
     SpiInstance[spi_num - 1].handle.Init.Mode = SPI_MODE_MASTER;
     SpiInstance[spi_num - 1].handle.Instance = spi_num_2_base(spi_num);
     SpiInstance[spi_num - 1].handle.Init.Direction = SPI_DIRECTION_2LINES;
@@ -175,9 +192,9 @@ bool spi_write(SpiName_t spi_num, uint8_t* tx_array, uint16_t tx_array_len) {
         }
         uint32_t cnt = 0;
         SpiInstance[spi_num - 1].tx_byte_cnt += tx_array_len;
-        while(false==SpiInstance[spi_num - 1].tx_int){
+        while(false == SpiInstance[spi_num - 1].tx_int) {
             cnt++;
-            if(0x0FFFFFFF<cnt){
+            if(0x0FFFFFFF < cnt) {
                 res = false;
                 break;
             }
@@ -213,11 +230,11 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
             res = true;
         }
         SpiInstance[spi_num - 1].rx_byte_cnt += rx_array_len;
-        //wait_end
+        // wait_end
         uint32_t cnt = 0;
-        while(false==SpiInstance[spi_num - 1].rx_int){
+        while(false == SpiInstance[spi_num - 1].rx_int) {
             cnt++;
-            if(0x0FFFFFFF<cnt){
+            if(0x0FFFFFFF < cnt) {
                 res = false;
                 break;
             }
@@ -293,7 +310,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle) {
 #endif
 
 #ifdef HAS_SPI2
-    if(SPI2==spiHandle->Instance) {
+    if(SPI2 == spiHandle->Instance) {
         __HAL_RCC_SPI2_CLK_ENABLE();
         HAL_NVIC_SetPriority(SPI2_IRQn, 7, 0);
         HAL_NVIC_EnableIRQ(SPI2_IRQn);

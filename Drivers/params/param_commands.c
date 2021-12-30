@@ -53,7 +53,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                 snprintf(temp_str, sizeof(temp_str), "%s %12s " TSEP, temp_str, ParamArray[i].name);
                 snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].len);
                 uint16_t value_len = 0;
-                uint8_t value[100]={0};
+                uint8_t value[100] = {0};
                 res = mm_get(ParamArray[i].id, value, ParamArray[i].len, &value_len);
                 if(true == res) {
                     if(ParamArray[i].len == value_len) {
@@ -66,7 +66,8 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                 }
 
                 snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, valStr);
-                snprintf(temp_str, sizeof(temp_str), "%s %15s " TSEP, temp_str, param_val2str(ParamArray[i].id, value, sizeof(value)));
+                snprintf(temp_str, sizeof(temp_str), "%s %15s " TSEP, temp_str,
+                         param_val2str(ParamArray[i].id, value, sizeof(value)));
                 snprintf(temp_str, sizeof(temp_str), "%s", temp_str);
                 if(is_contain(temp_str, keyWord1, keyWord2)) {
                     io_printf(TSEP " %3u ", num);

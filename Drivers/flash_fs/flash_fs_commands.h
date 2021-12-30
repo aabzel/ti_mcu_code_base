@@ -21,7 +21,7 @@ bool cmd_flash_fs_format(int32_t argc, char* argv[]);
 #define FLASH_FS_COMMANDS                                                                                              \
     SHELL_CMD("flash_fs_diag", "ffd", cmd_flash_fs_diag, "Flash FS diag"),                                             \
         SHELL_CMD("flash_fs_inval", "ffi", cmd_flash_fs_inval, "Flash FS invalidate"),                                 \
-        SHELL_CMD("flash_fs_init", "ffin", cmd_flash_fs_init, "Flash FS init"),                                 \
+        SHELL_CMD("flash_fs_init", "ffin", cmd_flash_fs_init, "Flash FS init"),                                        \
         SHELL_CMD("flash_fs_toggle_page", "fft", cmd_flash_fs_toggle_page, "Flash FS toggle page"),                    \
         SHELL_CMD("flash_fs_scan", "ffc", cmd_flash_fs_scan, "Flash FS scan"),                                         \
         SHELL_CMD("flash_fs_get", "ffg", cmd_flash_fs_get, "Flash FS get"),                                            \

@@ -225,9 +225,8 @@ static bool check_sync_word(uint64_t sync_word) {
             if(sync_word == read_sync_word) {
                 res = true;
             } else {
-                LOG_ERROR(LORA,"Set:0x%llx Read:0x%llx",sync_word, read_sync_word);
+                LOG_ERROR(LORA, "Set:0x%llx Read:0x%llx", sync_word, read_sync_word);
                 res = false;
-
             }
         }
     }
@@ -673,7 +672,7 @@ bool is_valid_bandwidth(BandWidth_t bandwidth) {
   be interpreted differently by the chip.
 */
 bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
-    bool res = false, res1= false, res2= false, res3= false;
+    bool res = false, res1 = false, res2 = false, res3 = false;
     res1 = is_valid_bandwidth(modParams->band_width);
     res2 = is_valid_coding_rate(modParams->coding_rate);
     res3 = is_valid_spreading_factor(modParams->spreading_factor);
@@ -714,7 +713,6 @@ bool sx1262_set_lora_sync_word(uint16_t sync_word) {
     res = sx1262_write_reg(LORA_SYNC_WORD_LSB, var16bit.u8[1]) && res;
     return res;
 }
-
 
 /*
   SetSleep
@@ -882,21 +880,19 @@ float dbm2watts(int32_t dbm) {
     return watts;
 }
 
-
-#define LOAD_PARAM(PAR_ID, VARIABLE, EXP_LEN, VAR_NAME ,DEF_VAL, PARSER_FUNC)                 \
-  do{                                                                                         \
-      uint16_t file_len = 0;                                                                  \
-      res = mm_get(PAR_ID, (uint8_t*)&VARIABLE,  sizeof(VARIABLE), &file_len);                \
-      if((true==res) && ((EXP_LEN)==file_len)) {                                              \
-          LOG_INFO(LORA, "Set"VAR_NAME"FromParams %u [%s]", VARIABLE, PARSER_FUNC(VARIABLE)); \
-      } else {                                                                                \
-          LOG_WARNING(LORA, "SetDflt"VAR_NAME" %u [%s]", VARIABLE, PARSER_FUNC(DEF_VAL));     \
-          VARIABLE = DEF_VAL ;                                                                \
-          res = false;                                                                        \
-          out_res = false;                                                                    \
-    }                                                                                         \
-  }while(0);
-
+#define LOAD_PARAM(PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                                          \
+    do {                                                                                                               \
+        uint16_t file_len = 0;                                                                                         \
+        res = mm_get(PAR_ID, (uint8_t*)&VARIABLE, sizeof(VARIABLE), &file_len);                                        \
+        if((true == res) && ((EXP_LEN) == file_len)) {                                                                 \
+            LOG_INFO(LORA, "Set" VAR_NAME "FromParams %u [%s]", VARIABLE, PARSER_FUNC(VARIABLE));                      \
+        } else {                                                                                                       \
+            LOG_WARNING(LORA, "SetDflt" VAR_NAME " %u [%s]", VARIABLE, PARSER_FUNC(DEF_VAL));                          \
+            VARIABLE = DEF_VAL;                                                                                        \
+            res = false;                                                                                               \
+            out_res = false;                                                                                           \
+        }                                                                                                              \
+    } while(0);
 
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     bool res = true, out_res = true;
@@ -917,50 +913,57 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #endif
 
 #ifdef HAS_FLASH_FS
-    LOAD_PARAM(PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen" ,255, PayloadLen2Str);
-    LOAD_PARAM(PAR_ID_PACKET_TYPE, sx1262Instance->packet_param.packet_type, 1, "PktType" ,PACKET_TYPE_LORA, PacketType2Str);
-    LOAD_PARAM(PAR_ID_HEADER_TYPE, sx1262Instance->packet_param.proto.lora.header_type, 1, "HeaderType" ,LORA_VAR_LEN_PACT, LoraHeaderType2Str);
-    LOAD_PARAM(PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType" ,LORA_CRC_ON, LoraCrcType2Str);
-    LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen" ,DFLT_PREAMBLE_LEN, PreambleLen2Str);
-    LOAD_PARAM(PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD, LoRaSyncWord2Str);
-    LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp" ,IQ_SETUP_STANDARD, IqSetUp2Str);
-    LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate" ,DFLT_LORA_CR, coding_rate2str);
-    LOAD_PARAM(PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth" ,DFLT_LORA_BW, bandwidth2str);
-    LOAD_PARAM(PAR_ID_LORA_SF, sx1262Instance->mod_params.spreading_factor, 1, "SpreadingFactor" ,DFLT_SF, spreading_factor2str);
+    LOAD_PARAM(PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen", 255,
+               PayloadLen2Str);
+    LOAD_PARAM(PAR_ID_PACKET_TYPE, sx1262Instance->packet_param.packet_type, 1, "PktType", PACKET_TYPE_LORA,
+               PacketType2Str);
+    LOAD_PARAM(PAR_ID_HEADER_TYPE, sx1262Instance->packet_param.proto.lora.header_type, 1, "HeaderType",
+               LORA_VAR_LEN_PACT, LoraHeaderType2Str);
+    LOAD_PARAM(PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType", LORA_CRC_ON,
+               LoraCrcType2Str);
+    LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen",
+               DFLT_PREAMBLE_LEN, PreambleLen2Str);
+    LOAD_PARAM(PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD,
+               LoRaSyncWord2Str);
+    LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp", IQ_SETUP_STANDARD,
+               IqSetUp2Str);
+    LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate", DFLT_LORA_CR, coding_rate2str);
+    LOAD_PARAM(PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth", DFLT_LORA_BW, bandwidth2str);
+    LOAD_PARAM(PAR_ID_LORA_SF, sx1262Instance->mod_params.spreading_factor, 1, "SpreadingFactor", DFLT_SF,
+               spreading_factor2str);
     LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 4, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
-    LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr" ,DFLT_OUT_POWER, dbm2wattsStr);
-    //LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
+    LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr", DFLT_OUT_POWER, dbm2wattsStr);
+    // LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
 
     uint16_t file_len = 0;
-    res = mm_get(PAR_ID_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word,  sizeof(sx1262Instance->set_sync_word), &file_len);
-    if((true==res) && ((8)==file_len)) {
-        LOG_INFO(LORA, "SetSyncWordFromParams %llu [%s]", sx1262Instance->set_sync_word, SyncWord2Str(sx1262Instance->set_sync_word));
+    res = mm_get(PAR_ID_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word, sizeof(sx1262Instance->set_sync_word),
+                 &file_len);
+    if((true == res) && ((8) == file_len)) {
+        LOG_INFO(LORA, "SetSyncWordFromParams %llu [%s]", sx1262Instance->set_sync_word,
+                 SyncWord2Str(sx1262Instance->set_sync_word));
     } else {
         LOG_WARNING(LORA, "SetDfltSyncWord %llu [%s]", sx1262Instance->set_sync_word, SyncWord2Str(DFLT_SYNC_WORD));
-        sx1262Instance->set_sync_word = DFLT_SYNC_WORD ;
+        sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
         res = false;
         out_res = false;
     }
 
-
-
 #ifdef HAS_SX1262_BIT_RATE
-   // LOAD_PARAM(PAR_ID_LORA_MAX_BIT_RATE, sx1262Instance->tx_max_bit_rate, 8, "BitRate" ,0.0, BitRate2Str);
+    // LOAD_PARAM(PAR_ID_LORA_MAX_BIT_RATE, sx1262Instance->tx_max_bit_rate, 8, "BitRate" ,0.0, BitRate2Str);
 
-    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&sx1262Instance->tx_max_bit_rate,  sizeof(sx1262Instance->tx_max_bit_rate), &file_len);
-    if((true==res) && (8==file_len)) {
-        LOG_INFO(LORA, "SetBitRateFromParams [%s]",BitRate2Str(sx1262Instance->tx_max_bit_rate));
+    res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&sx1262Instance->tx_max_bit_rate,
+                 sizeof(sx1262Instance->tx_max_bit_rate), &file_len);
+    if((true == res) && (8 == file_len)) {
+        LOG_INFO(LORA, "SetBitRateFromParams [%s]", BitRate2Str(sx1262Instance->tx_max_bit_rate));
     } else {
         LOG_WARNING(LORA, "SetDfltBitRate [%s]", BitRate2Str(0.0));
-        sx1262Instance->tx_max_bit_rate = 0.0 ;
+        sx1262Instance->tx_max_bit_rate = 0.0;
         out_res = false;
-  }
+    }
 #endif /*HAS_SX1262_BIT_RATE*/
 #endif /*HAS_FLASH_FS*/
     return out_res;
 }
-
-
 
 bool sx1262_init(void) {
     bool res = true;
@@ -1024,18 +1027,18 @@ bool sx1262_init(void) {
         res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
         res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
-        if(false==res){
+        if(false == res) {
             LOG_ERROR(LORA, "SX1262SetModParErr");
         }
 
-        res = sx1262_set_packet_params(&Sx1262Instance.packet_param)&& res;
+        res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
 
         res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
         res = sx1262_conf_rx() && res;
 
         res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
 
-        //Sx1262Instance.set_sync_word = SYNC_WORD;
+        // Sx1262Instance.set_sync_word = SYNC_WORD;
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
         res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
 
@@ -1044,8 +1047,8 @@ bool sx1262_init(void) {
     } else {
         LOG_ERROR(LORA, "SX1262 link error");
     }
-    if(false==res){
-        task_data[TASK_ID_LORA].on=false;
+    if(false == res) {
+        task_data[TASK_ID_LORA].on = false;
     }
     return res;
 }
@@ -1082,7 +1085,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
 #ifdef HAS_SX1262_BIT_RATE
             Sx1262Instance.tx_last_size = tx_len;
             Sx1262Instance.tx_start_time_stamp_ms = get_time_ms32();
-#endif /*HAS_SX1262_BIT_RATE*/
+#endif      /*HAS_SX1262_BIT_RATE*/
             /*TODO: Set Red Led on*/
 #ifdef HAS_LED
             led_on(&Led[LED_INDEX_RED]);
@@ -1259,8 +1262,6 @@ bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora) {
     }
     return res;
 }
-
-
 
 static bool sx1262_proc_irq_status(uint16_t irq_status) {
     bool res = false;
@@ -1488,7 +1489,7 @@ static inline bool sx1262_poll_status(void) {
         res = true;
         Sx1262Instance.dev_status.byte = tempSx1262Instance.dev_status.byte;
 
-        //Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
+        // Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
         uint8_t rx_payload[RX_SIZE + 1] = {0};
         memset(rx_payload, 0x00, sizeof(rx_payload));
         uint16_t rx_size = 0;
@@ -1557,9 +1558,9 @@ static inline bool sx1262_poll_status(void) {
             res = false;
             break;
         }
-       // Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
+        // Sx1262Instance.chip_mode = (ChipMode_t)extract_subval_from_8bit(tempSx1262Instance.dev_status, 6, 4);
 
-        res = sx1262_proc_chip_mode((ChipMode_t) Sx1262Instance.dev_status.chip_mode);
+        res = sx1262_proc_chip_mode((ChipMode_t)Sx1262Instance.dev_status.chip_mode);
 
         res = sx1262_reset_stats();
     }

@@ -230,8 +230,7 @@ static const keyValItem_t BaseCfgLut[] = {
 };
 #endif
 
-
-#define METER_TO_MM(METER) (METER*1000)
+#define METER_TO_MM(METER) (METER * 1000)
 
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) {
     bool res = false, out_res = true;
@@ -254,12 +253,12 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         }
         uint32_t i = 0;
         for(i = 0; i < ARRAY_SIZE(BaseCfgLut); i++) {
-                res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
-                                      ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM);
-                if(false==res){
-                    LOG_ERROR(ZED_F9P, "Set 0x%x error", BaseCfgLut[i].key_id);
-                    out_res = false;
-                }
+            res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
+                                  ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM);
+            if(false == res) {
+                LOG_ERROR(ZED_F9P, "Set 0x%x error", BaseCfgLut[i].key_id);
+                out_res = false;
+            }
         }
         /*Write base station antenna coordinates*/
         // UBX-CFG-TMODE3 (0x06 0x71)
@@ -276,7 +275,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         if(false == res) {
             LOG_ERROR(ZED_F9P, "SetBaseDotErr");
             out_res = false;
-        }else{
+        } else {
             LOG_INFO(ZED_F9P, "SetBaseDotOk");
         }
 
@@ -326,13 +325,12 @@ bool zed_f9p_deploy_rover(void) {
 
     uint32_t i = 0;
     for(i = 0; i < ARRAY_SIZE(RoverCfgLut); i++) {
-            res = ubx_cfg_set_val(RoverCfgLut[i].key_id, (uint8_t*)&RoverCfgLut[i].u_value.u8[0],
-                                  ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM);
-            if(false == res) {
-                LOG_ERROR(ZED_F9P, "Key:0x%08x set Error", RoverCfgLut[i].key_id);
-                out_res = false;
-            }
-
+        res = ubx_cfg_set_val(RoverCfgLut[i].key_id, (uint8_t*)&RoverCfgLut[i].u_value.u8[0],
+                              ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM);
+        if(false == res) {
+            LOG_ERROR(ZED_F9P, "Key:0x%08x set Error", RoverCfgLut[i].key_id);
+            out_res = false;
+        }
     }
     /*adjust output rate*/
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_UTC);

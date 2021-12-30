@@ -302,44 +302,44 @@ char* BitRate2Str(double bit_s) {
     return name;
 }
 
-char* RfFreq2Str(uint32_t rf_freq){
+char* RfFreq2Str(uint32_t rf_freq) {
     static char name[30] = "";
-    snprintf(name, sizeof(name), "%u Hz=%f MHz", rf_freq, ((double)rf_freq)/1000000.0);
+    snprintf(name, sizeof(name), "%u Hz=%f MHz", rf_freq, ((double)rf_freq) / 1000000.0);
     return name;
 }
 
-char* dbm2wattsStr(int32_t dbm){
+char* dbm2wattsStr(int32_t dbm) {
     static char name[30] = "";
     float watts = dbm2watts(dbm);
     snprintf(name, sizeof(name), "%f W", watts);
     return name;
 }
 
-char* SyncWord2Str(uint64_t syn_word){
+char* SyncWord2Str(uint64_t syn_word) {
     static char name[30] = "";
     snprintf(name, sizeof(name), "0x%llx", syn_word);
     return name;
 }
 
-char* LoRaSyncWord2Str(uint16_t syn_word){
+char* LoRaSyncWord2Str(uint16_t syn_word) {
     static char name[30] = "";
     snprintf(name, sizeof(name), "0x%04x", syn_word);
     return name;
 }
 
-char* PreambleLen2Str(uint16_t pre_len){
+char* PreambleLen2Str(uint16_t pre_len) {
     static char name[30] = "";
     snprintf(name, sizeof(name), "%u Byte", pre_len);
     return name;
 }
 
-const char* IqSetUp2Str(uint8_t iq_setup){
+const char* IqSetUp2Str(uint8_t iq_setup) {
     const char* name = "undef";
     switch(iq_setup) {
-    case  IQ_SETUP_STANDARD:
+    case IQ_SETUP_STANDARD:
         name = "Std";
         break;
-    case  IQ_SETUP_INVERTED:
+    case IQ_SETUP_INVERTED:
         name = "Inv";
         break;
     default:
@@ -349,13 +349,13 @@ const char* IqSetUp2Str(uint8_t iq_setup){
     return name;
 }
 
-char* PayloadLen2Str(uint8_t size){
-   static char name[30] = "";
-   snprintf(name, sizeof(name), "%u Byte", size);
-   return name;
+char* PayloadLen2Str(uint8_t size) {
+    static char name[30] = "";
+    snprintf(name, sizeof(name), "%u Byte", size);
+    return name;
 }
 
-const char* PacketType2Str(uint8_t packet_type){
+const char* PacketType2Str(uint8_t packet_type) {
     const char* name = "undef";
     switch(packet_type) {
     case PACKET_TYPE_GFSK:
@@ -371,7 +371,7 @@ const char* PacketType2Str(uint8_t packet_type){
     return name;
 }
 
-const char* LoraHeaderType2Str(uint8_t header_type){
+const char* LoraHeaderType2Str(uint8_t header_type) {
     const char* name = "undef";
     switch(header_type) {
     case LORA_VAR_LEN_PACT:
@@ -387,7 +387,7 @@ const char* LoraHeaderType2Str(uint8_t header_type){
     return name;
 }
 
-const char* LoraCrcType2Str(uint8_t crc_type){
+const char* LoraCrcType2Str(uint8_t crc_type) {
     const char* name = "undef";
     switch(crc_type) {
     case LORA_CRC_OFF:

@@ -372,13 +372,13 @@ bool cmd_flash_fs_scan(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool cmd_flash_fs_init(int32_t argc, char* argv[]){
+bool cmd_flash_fs_init(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = flash_fs_init();
         if(false == res) {
             LOG_ERROR(FLASH_FS, "InitErr");
-        }else{
+        } else {
             LOG_INFO(FLASH_FS, "InitOk");
         }
     }

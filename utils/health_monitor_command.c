@@ -9,7 +9,7 @@
 
 bool health_monitor_command(int32_t argc, char* argv[]) {
     bool res = false;
-    if(0 == argc){
+    if(0 == argc) {
         res = true;
     }
     if(1 <= argc) {
@@ -18,9 +18,9 @@ bool health_monitor_command(int32_t argc, char* argv[]) {
             LOG_ERROR(SYS, "Unable to extract power %s", argv[0]);
         }
     }
-    io_printf( "diag voltage %u" CRLF, HealthMon.power);
-    io_printf( "init error %u" CRLF, HealthMon.init_error);
-    io_printf( "crc error code %u" CRLF, HealthMon.crc_error_cnt);
-    io_printf( "error cnt %u" CRLF, HealthMon.error_cnt);
+    io_printf("diag voltage %u" CRLF, HealthMon.power);
+    io_printf("init error %u" CRLF, HealthMon.init_error);
+    io_printf("crc error code %u" CRLF, HealthMon.crc_error_cnt);
+    io_printf("error cnt %u" CRLF, HealthMon.error_cnt);
     return res;
 }
