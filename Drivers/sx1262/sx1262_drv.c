@@ -1127,8 +1127,8 @@ bool sx1262_get_lora_sync_word(uint16_t* sync_word) {
     if(sync_word) {
         res = true;
         Type16Union_t var16bit = {0};
-        res = sx1262_read_reg(LORA_SYNC_WORD_LSB, &var16bit.u8[0]) && res;
-        res = sx1262_read_reg(LORA_SYNC_WORD_MSB, &var16bit.u8[1]) && res;
+        res = sx1262_read_reg(LORA_SYNC_WORD_LSB, &var16bit.u8[1]) && res;
+        res = sx1262_read_reg(LORA_SYNC_WORD_MSB, &var16bit.u8[0]) && res;
 
         *sync_word = reverse_byte_order_uint16(var16bit.u16);
     } else {

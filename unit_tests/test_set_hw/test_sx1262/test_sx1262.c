@@ -14,6 +14,28 @@ static bool test_one_sync_word(uint64_t sync_word) {
     return true;
 }
 
+
+
+static bool test_one_lora_sync_word(uint16_t sync_word) {
+    uint16_t read_sync_word = 0;
+    EXPECT_TRUE(sx1262_set_lora_sync_word(sync_word));
+    EXPECT_TRUE(sx1262_get_lora_sync_word(&read_sync_word));
+    EXPECT_EQ(sync_word, read_sync_word);
+    return true;
+}
+
+bool test_sx1262_lora_sync_word(void){
+    uint16_t orig_sync_word = 0;
+    EXPECT_TRUE(sx1262_get_lora_sync_word(&orig_sync_word));
+
+    EXPECT_TRUE(test_one_lora_sync_word(0x0012));
+    EXPECT_TRUE(test_one_lora_sync_word(0x1122));
+    EXPECT_TRUE(test_one_lora_sync_word(0x9988));
+
+    EXPECT_TRUE(sx1262_set_lora_sync_word(orig_sync_word));
+    return false;
+}
+
 bool test_sx1262_sync_word(void) {
     uint64_t orig_sync_word = 0;
     EXPECT_TRUE(sx1262_get_sync_word(&orig_sync_word));
