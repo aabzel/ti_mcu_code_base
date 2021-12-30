@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
         res = cli_wrp_parse_fw_version();
     }
 
-    if (3<=argc) {
+    if (3<=argc && target_connected) {
         res = LoadConfigToTarget(argv[3]);
         if(false==res){
             LOG_ERROR(SYS,"Config Load Error");
@@ -101,7 +101,9 @@ int main(int argc, char* argv[]) {
         LOG_ERROR(SYS,"Error");
     }
 
-    res=cli_wrp_restore_target();
+    if(target_connected){
+        res=cli_wrp_restore_target();
+    }
 
     CloseHandle(hComm);
     LOG_INFO(SYS,"End of program");
