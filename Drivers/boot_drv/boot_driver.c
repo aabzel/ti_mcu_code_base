@@ -236,7 +236,7 @@ bool boot_proc(void) {
                 LOG_ERROR(BOOT, "Unable to reset boot cnt");
             } else {
                 res = true;
-                LOG_INFO(BOOT, "App loaded fine!");
+                LOG_INFO(BOOT, "AppLoadedFine!");
             }
         }
         fine_start_event = true;

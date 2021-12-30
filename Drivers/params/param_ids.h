@@ -24,7 +24,7 @@ typedef enum eId_t {
     PAR_ID_APP_START = 11,      /*Flash address*/
     PAR_ID_IQ_SETUP = 10,
     PAR_ID_BOOT_CMD = 12,
-    PAR_ID_BOOT_CNT = 13, /*To spot hangs on in App*/
+    PAR_ID_BOOT_CNT = 13,       /*To spot hangs on in App*/
     PAR_ID_APP_STATUS = 14,
     PAR_ID_PWR_SRC = 15,        /*power source Battary XP3(1) or external XP1(0)*/
     PAR_ID_LORA_OUT_POWER = 16, /*output power*/
@@ -33,11 +33,11 @@ typedef enum eId_t {
     PAR_ID_LORA_MAX_BIT_RATE = 19,
     PAR_ID_BASE_LOCATION = 20,
     PAR_ID_RTK_MODE = 21,
-    PAR_ID_BASE_ALT = 22, /* Base station altitude above sea level*/
+    PAR_ID_BASE_ALT = 22,       /* Base station altitude above sea level*/
     PAR_ID_GNSS_PERIOD = 23,
     PAR_ID_RTK_CHANNEL = 24,
     PAR_ID_SERIAL_NUM = 25,
-    PAR_ID_RTK_FIX_LONG = 26, /*Max Duration in RTK fixed mode*/
+    PAR_ID_RTK_FIX_LONG = 26,   /*Max Duration in RTK fixed mode*/
     PAR_ID_SYNC_WORD = 27,
     PAR_ID_LORA_SYNC_WORD = 29,
     PAR_ID_TEST_START = 100,
