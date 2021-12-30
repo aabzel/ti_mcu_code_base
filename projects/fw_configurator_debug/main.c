@@ -101,6 +101,8 @@ int main(int argc, char* argv[]) {
         LOG_ERROR(SYS,"Error");
     }
 
+    res=cli_wrp_restore_target();
+
     CloseHandle(hComm);
     LOG_INFO(SYS,"End of program");
     return ret;
