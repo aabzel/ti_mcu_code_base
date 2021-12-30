@@ -375,7 +375,7 @@ const char* LoraHeaderType2Str(uint8_t header_type) {
     const char* name = "undef";
     switch(header_type) {
     case LORA_VAR_LEN_PACT:
-        name = "ValLen";
+        name = "VarLen";
         break;
     case LORA_FIX_LEN_PAC:
         name = "FixLen";
