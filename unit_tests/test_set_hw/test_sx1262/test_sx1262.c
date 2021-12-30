@@ -33,7 +33,7 @@ bool test_sx1262_lora_sync_word(void){
     EXPECT_TRUE(test_one_lora_sync_word(0x9988));
 
     EXPECT_TRUE(sx1262_set_lora_sync_word(orig_sync_word));
-    return false;
+    return true;
 }
 
 bool test_sx1262_sync_word(void) {

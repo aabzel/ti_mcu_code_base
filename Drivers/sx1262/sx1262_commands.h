@@ -29,6 +29,7 @@ bool sx1262_set_irq_command(int32_t argc, char* argv[]);
 bool sx1262_set_sync_word_command(int32_t argc, char* argv[]);
 bool sx1262_sleep_command(int32_t argc, char* argv[]);
 bool sx1262_tx_command(int32_t argc, char* argv[]);
+bool sx1262_mute_command(int32_t argc, char* argv[]);
 bool sx1262_write_reg_command(int32_t argc, char* argv[]);
 
 #define SX1262_COMMANDS_BASE                                                                                           \
@@ -43,6 +44,7 @@ bool sx1262_write_reg_command(int32_t argc, char* argv[]);
         SHELL_CMD("sx1262_opcode", "sxo", sx1262_send_opcode_command, "SX1262 send opcode"),                           \
         SHELL_CMD("sx1262_read_rx_data", "sxrp", sx1262_read_rx_payload_command, "SX1262 read rx data"),               \
         SHELL_CMD("sx1262_reg_map", "sxm", sx1262_reg_map_command, "SX1262 reg map"),                                  \
+        SHELL_CMD("sx1262_mute", "sxu", sx1262_mute_command, "SX1262 mute"),                                           \
         SHELL_CMD("sx1262_reg_rd", "sxrr", sx1262_read_reg_command, "SX1262 read reg"),                                \
         SHELL_CMD("sx1262_reg_wr", "sxwr", sx1262_write_reg_command, "SX1262 write reg"),                              \
         SHELL_CMD("sx1262_reset", "sxrt", sx1262_reset_command, "SX1262 reset"),                                       \
