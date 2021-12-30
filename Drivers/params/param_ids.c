@@ -236,7 +236,9 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             name = LoRaSyncWord2Str((uint16_t)*value);
         }
         if(PAR_ID_SYNC_WORD == id) {
-            name = SyncWord2Str((uint64_t)*value);
+            uint64_t sync_word = 0;
+            memcpy(&sync_word, value, 8);
+            name = SyncWord2Str(sync_word);
         }
         if(PAR_ID_PACKET_TYPE == id) {
             name = PacketType2Str((uint8_t)*value);
