@@ -1570,6 +1570,7 @@ static inline bool sx1262_poll_status(void) {
         case COM_STAT_COM_PROC_ERR:
             /*Too frequent call*/
             // LOG_ERROR(LORA,"Error");
+            Sx1262Instance.processing_error++;
             res = false;
             break;
         case COM_STAT_EXE_ERR:

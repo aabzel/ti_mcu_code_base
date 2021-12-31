@@ -72,6 +72,7 @@ typedef struct xSx1262_t {
     uint64_t set_sync_word;
     uint64_t get_sync_word;
     uint32_t int_cnt;
+    uint32_t processing_error;
     uint32_t rf_frequency_hz;
     uint32_t data_aval_cnt;
     float bit_rate;
