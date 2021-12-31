@@ -417,7 +417,7 @@ bool sx1262_start_rx(uint32_t timeout_s) {
     tx_array[2] = MASK_8BIT & (timeout_s);
 
     res = sx1262_send_opcode(OPCODE_SET_RX, tx_array, sizeof(tx_array), NULL, 0) && res;
-
+    LOG_DEBUG(LORA, "StartRx");
     return res;
 }
 
@@ -819,7 +819,7 @@ static bool sx1262_conf_tx(int8_t output_power_dbm) {
 
     return res;
 }
-
+#if 0
 bool sx1262_conf_rx(void) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
@@ -827,6 +827,7 @@ bool sx1262_conf_rx(void) {
     // res = sx1262_start_rx(0xFFFFFF) && res;
     return res;
 }
+#endif
 
 bool sx1262_wakeup(void) {
     uint8_t status = 0;
@@ -1035,7 +1036,7 @@ bool sx1262_init(void) {
         res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
 
         res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
-        res = sx1262_conf_rx() && res;
+        //res = sx1262_conf_rx() && res;
 
         res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
 
