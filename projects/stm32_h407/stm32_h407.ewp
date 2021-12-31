@@ -230,6 +230,7 @@
                     <state>HAS_DEBUG</state>
                     <state>HAS_FLASH_FS</state>
                     <state>HAS_GPIO</state>
+                    <state>HAS_HW_TESTS</state>
                     <state>HAS_IAR</state>
                     <state>HAS_INTERRUPT</state>
                     <state>HAS_LORA</state>
@@ -243,6 +244,7 @@
                     <state>HAS_TASKS</state>
                     <state>HAS_TBFP_FLOW_CONTROL</state>
                     <state>HAS_TBFP</state>
+                    <state>HAS_TBFP_RETRANSMIT</state>
                     <state>HAS_TEST_FLASH_FS</state>
                     <state>HAS_TEST_SX1262</state>
                     <state>HAS_UART</state>
@@ -1516,6 +1518,12 @@
             <group>
                 <name>test_uart</name>
             </group>
+            <file>
+                <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_hw_list.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_hw_list.h</name>
+            </file>
         </group>
         <group>
             <name>test_set_sw</name>
@@ -1569,22 +1577,49 @@
             <name>$PROJ_DIR$\..\..\unit_tests\print_buffer.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_hw_list.c</name>
+            <name>$PROJ_DIR$\..\..\unit_tests\print_buffer.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_hw_list.h</name>
+            <name>$PROJ_DIR$\..\..\unit_tests\test_lib.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\unit_tests\test_list.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\test_list.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\tmp_log_level.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\unit_tests\unit_test.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test_check.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test_check_cortex_m.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\unit_tests\unit_test_commands.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test_commands.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test_info.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test_macro.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\unit_tests\unit_test_run.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test_run.h</name>
         </file>
     </group>
     <group>

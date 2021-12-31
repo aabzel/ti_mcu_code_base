@@ -214,7 +214,7 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
 #ifdef HAS_BLE
     pingFrame.mac = get_ble_mac();
 #endif
-    memset(&pingFrame.coordinate, 0xFF, sizeof(GnssCoordinate_t));
+    memset((void *)&pingFrame.coordinate, 0xFF, sizeof(GnssCoordinate_t));
 #ifdef HAS_ZED_F9P
     pingFrame.time_stamp = mktime(&ZedF9P.time_date);
 
