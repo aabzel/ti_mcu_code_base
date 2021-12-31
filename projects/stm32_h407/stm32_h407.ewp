@@ -242,6 +242,7 @@
                     <state>HAS_SX1262_DEBUG</state>
                     <state>HAS_SX1262</state>
                     <state>HAS_TASKS</state>
+                    <state>HAS_TELEMATIC</state>
                     <state>HAS_TBFP_FLOW_CONTROL</state>
                     <state>HAS_TBFP</state>
                     <state>HAS_TBFP_RETRANSMIT</state>
@@ -400,6 +401,7 @@
                     <state>$PROJ_DIR$/../../Drivers/flash_fs</state>
                     <state>$PROJ_DIR$/../../Drivers/params</state>
                     <state>$PROJ_DIR$/../../Drivers/task_drv</state>
+                    <state>$PROJ_DIR$/../../Drivers/telematic</state>
                     <state>$PROJ_DIR$/../../Drivers/lora</state>
                     <state>$PROJ_DIR$/../../Drivers/sx1262</state>
                     <state>$PROJ_DIR$/../../Drivers</state>
