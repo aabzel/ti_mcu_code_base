@@ -45,6 +45,12 @@
 
 #define IQR_ALL_INT MASK_10BIT
 
+/*Rx Gain Configuration*/
+typedef enum eRxGain_t{
+    RXGAIN_POWER_SAVING = 0x94,
+    RXGAIN_BOOSTED = 0x96,
+    RXGAIN_UNDEF = 0x00,
+}RxGain_t;
 
 /*StdbyConfig Value Description*/
 typedef enum eStandbyMode_t {

@@ -130,6 +130,25 @@ bool test_sx1262_rand(void) {
     return true;
 }
 
+static bool test_sx1262_rx_gain_one(RxGain_t rx_gain) {
+    RxGain_t read_rx_gain = RXGAIN_UNDEF;
+    EXPECT_TRUE(sx1262_set_rx_gain(rx_gain));
+    EXPECT_TRUE(sx1262_get_rx_gain(&read_rx_gain));
+    EXPECT_EQ(rx_gain, read_rx_gain);
+    return true;
+}
+
+bool test_sx1262_rx_gain(void){
+    RxGain_t orig_rx_gain = RXGAIN_UNDEF;
+    EXPECT_TRUE(sx1262_get_rx_gain(&orig_rx_gain));
+
+    EXPECT_TRUE(test_sx1262_rx_gain_one(RXGAIN_POWER_SAVING));
+    EXPECT_TRUE(test_sx1262_rx_gain_one(RXGAIN_BOOSTED));
+
+    EXPECT_TRUE(sx1262_set_rx_gain(orig_rx_gain));
+    return true;
+}
+
 bool test_sx1262_types(void) {
     EXPECT_EQ(1, sizeof(Sx1262Status_t));
     EXPECT_EQ(1, sizeof(LoRaCodingRate_t));

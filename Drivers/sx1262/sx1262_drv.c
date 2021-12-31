@@ -408,8 +408,7 @@ bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
     res = sx1262_clear_fifo() && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-    // SX126xHal_WriteReg( REG_RX_GAIN, (uint8_t *)0x96 ); // max LNA gain, increase current by ~2mA for around ~3dB in
-    // sensivity
+    res = sx1262_set_rx_gain(RXGAIN_BOOSTED)&& res;
     uint8_t tx_array[3];
     /*from senior byte to junior byte*/
     tx_array[0] = MASK_8BIT & (timeout_s >> 16);
@@ -714,6 +713,19 @@ bool sx1262_set_lora_sync_word(uint16_t sync_word) {
     return res;
 }
 
+bool sx1262_set_rx_gain(RxGain_t rx_gain){
+    bool res = false;
+    res = sx1262_write_reg(RX_GAIN, (uint8_t) rx_gain);
+    return res;
+}
+
+bool sx1262_get_rx_gain(RxGain_t *rx_gain){
+    bool res = false;
+    if(rx_gain) {
+        res = sx1262_read_reg(RX_GAIN,(uint8_t *) rx_gain);
+    }
+    return res;
+}
 /*
   SetSleep
   The command SetSleep(...) is used to set the device in SLEEP mode with the lowest current consumption possible. This
