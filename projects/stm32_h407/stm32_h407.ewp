@@ -237,6 +237,7 @@
                     <state>HAS_PARAM</state>
                     <state>HAS_SPI</state>
                     <state>HAS_SPI2</state>
+                    <state>HAS_SW_TESTS</state>
                     <state>HAS_SX1262_DEBUG</state>
                     <state>HAS_SX1262</state>
                     <state>HAS_TASKS</state>
@@ -406,6 +407,7 @@
                     <state>$PROJ_DIR$/../../STM32F4xx_HAL_Driver/Inc</state>
                     <state>$PROJ_DIR$/../../unit_tests/test_set_hw/test_sx1262</state>
                     <state>$PROJ_DIR$/../../unit_tests/test_set_hw</state>
+                    <state>$PROJ_DIR$/../../unit_tests/test_set_sw</state>
                     <state>$PROJ_DIR$/../../unit_tests</state>
                     <state>$PROJ_DIR$/../../utils/crc</state>
                     <state>$PROJ_DIR$/../../utils/fifo</state>
@@ -417,6 +419,7 @@
                     <state>$PROJ_DIR$/../..</state>
                     <state>$PROJ_DIR$/Core</state>
                     <state>$PROJ_DIR$</state>
+                    <state>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_flash_fs</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1555,6 +1558,12 @@
                     <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_tbfp_proto\test_tbfp_proto.h</name>
                 </file>
             </group>
+            <file>
+                <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_sw_list.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_sw_list.h</name>
+            </file>
         </group>
         <file>
             <name>$PROJ_DIR$\..\..\unit_tests\print_buffer.c</name>
