@@ -1371,6 +1371,21 @@
                 <name>$PROJ_DIR$\..\..\Drivers\task_drv\task_info.c</name>
             </file>
         </group>
+        <group>
+            <name>telematic</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\telematic\telematic_commands.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\telematic\telematic_commands.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\telematic\telematic_drv.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\telematic\telematic_drv.h</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>protocols</name>
