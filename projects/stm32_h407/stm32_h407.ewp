@@ -226,6 +226,7 @@
                     <name>CCDefines</name>
                     <state>HAS_CLI_CMD_HISTORY</state>
                     <state>HAS_CLI</state>
+                    <state>HAS_TEST_SX1262</state>
                     <state>HAS_CORTEX_M4</state>
                     <state>HAS_DEBUG</state>
                     <state>HAS_FLASH_FS</state>
@@ -408,6 +409,9 @@
                     <state>$PROJ_DIR$\..\..\Drivers\sx1262</state>
                     <state>$PROJ_DIR$\..\..\Drivers</state>
                     <state>$PROJ_DIR$\..\..\Drivers\lora</state>
+                    <state>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_sx1262</state>
+                    <state>$PROJ_DIR$\..\..\unit_tests\test_set_hw</state>
+                    <state>$PROJ_DIR$\..\..\unit_tests</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1435,6 +1439,45 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_sdmmc.c</name>
+        </file>
+    </group>
+    <group>
+        <name>unit_test</name>
+        <group>
+            <name>test_set_hw</name>
+            <group>
+                <name>test_flash</name>
+            </group>
+            <group>
+                <name>test_flash_fs</name>
+            </group>
+            <group>
+                <name>test_gpio</name>
+            </group>
+            <group>
+                <name>test_spi</name>
+            </group>
+            <group>
+                <name>test_sx1262</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_sx1262\test_sx1262.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_sx1262\test_sx1262.h</name>
+                </file>
+            </group>
+            <group>
+                <name>test_tim</name>
+            </group>
+            <group>
+                <name>test_uart</name>
+            </group>
+        </group>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_hw_list.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_hw_list.h</name>
         </file>
     </group>
     <group>
