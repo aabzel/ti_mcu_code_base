@@ -750,7 +750,7 @@ bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_
     res = sx1262_send_opcode(OPCODE_SET_PA_CONFIG, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
-
+/*WriteBuffer*/
 bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len) {
     bool res = false;
     if((NULL != payload) && (payload_len <= FIFO_SIZE)) {
@@ -1090,7 +1090,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
         if(Sx1262Instance.tx_done) {
             Sx1262Instance.tx_done = false;
             if((NULL != tx_buf) && (0 < tx_len)) {
-                res = sx1262_clear_fifo();
+                //res = sx1262_clear_fifo();
                 // sx1262_set_tx_len(tx_len); /*Error*/
                 res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
                 res = sx1262_set_payload(tx_buf, tx_len) && res;
@@ -1217,8 +1217,9 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
 bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
     if(NULL != out_status) {
+        uint8_t tx_array=0;
         uint8_t rx_array[2] = {0xFF, 0xFF};
-        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
+        res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
         *out_status = rx_array[1];
     }
     return res;
@@ -1509,7 +1510,7 @@ static bool sx1262_sync_rssi(void) {
 
 static inline bool sx1262_proc_data_aval(void){
     bool res = false;
-    uint32_t read_cnt = 0;
+
     uint16_t rx_size = 0;
     uint8_t rx_payload[RX_SIZE + 1] = {0};
     memset(rx_payload, 0x00, sizeof(rx_payload));
@@ -1519,18 +1520,22 @@ static inline bool sx1262_proc_data_aval(void){
     uint8_t cur_crc8 = 0;
     res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE, &cur_crc8);
     if(res) {
-        read_cnt++;
-        Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
+        res = is_arr_pat(rx_payload, rx_size, 0x00) ;
+        if(false==res){
+            res = sx1262_clear_fifo();
 
-        if(Sx1262Instance.debug) {
-            LOG_INFO(LORA, "rx %u byte try:%u", rx_size, read_cnt);
-            res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true,
-                            Sx1262Instance.is_packet);
-        }
+            Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
+
+            if(Sx1262Instance.debug) {
+                LOG_INFO(LORA, "rx %u byte", rx_size);
+                res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true,
+                                Sx1262Instance.is_packet);
+            }
 #ifdef HAS_LORA
-        res = lora_proc_payload(rx_payload, rx_size);
+            res = lora_proc_payload(rx_payload, rx_size);
 #endif /*HAS_LORA*/
         // led_blink(&Led[LED_INDEX_RED], 10);
+        }
 
     } else {
         LOG_INFO(LORA, "DataReadErr");
@@ -1556,6 +1561,7 @@ static inline bool sx1262_poll_status(void) {
         switch(Sx1262Instance.dev_status.command_status) {
         case COM_STAT_DATA_AVAIL: {
             res = sx1262_proc_data_aval();
+            res = sx1262_start_rx(0xFFFFFF);
         } break;
         case COM_STAT_COM_TIMEOUT:
             LOG_WARNING(LORA, "time out");
