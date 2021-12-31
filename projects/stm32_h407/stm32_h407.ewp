@@ -242,8 +242,10 @@
                     <state>HAS_TASKS</state>
                     <state>HAS_TBFP_FLOW_CONTROL</state>
                     <state>HAS_TBFP</state>
+                    <state>HAS_TEST_FLASH_FS</state>
                     <state>HAS_TEST_SX1262</state>
                     <state>HAS_UART</state>
+                    <state>HAS_UNIT_TEST</state>
                     <state>HAS_USART6</state>
                     <state>NORTOS</state>
                     <state>STM32F407xx</state>
@@ -1555,10 +1557,25 @@
             </group>
         </group>
         <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\print_buffer.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_hw_list.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_hw_list.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\test_list.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test_commands.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\unit_tests\unit_test_run.c</name>
         </file>
     </group>
     <group>
