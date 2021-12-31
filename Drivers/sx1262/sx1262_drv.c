@@ -969,7 +969,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 bool sx1262_init(void) {
     bool res = true;
 #ifdef HAS_DEBUG
-    res = set_log_level(LORA, LOG_LEVEL_INFO);
+    //res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     // Sx1262Instance.debug = true;
     // Sx1262Instance.show_ascii = true;
 #else

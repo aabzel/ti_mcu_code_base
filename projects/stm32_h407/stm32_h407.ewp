@@ -243,8 +243,8 @@
                     <state>HAS_SX1262</state>
                     <state>HAS_TASKS</state>
                     <state>HAS_TELEMATIC</state>
-                    <state>HAS_TBFP_FLOW_CONTROL</state>
                     <state>HAS_TBFP</state>
+                    <state>HAS_TBFP_FLOW_CONTROL</state>
                     <state>HAS_TBFP_RETRANSMIT</state>
                     <state>HAS_TEST_FLASH_FS</state>
                     <state>HAS_TEST_SX1262</state>
