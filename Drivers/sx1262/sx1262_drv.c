@@ -1381,7 +1381,9 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     static uint32_t chip_mode_xosc = 0;
     static uint32_t chip_mode_fs = 0;
     static uint32_t chip_mode_tx = 0;
-    LOG_DEBUG(LORA, "ChipMode %u %s", chip_mode, chip_mode2str(chip_mode));
+    if(chip_mode!=prev_chip_mode){
+       LOG_DEBUG(LORA, "ChipMode %u %s", chip_mode, chip_mode2str(chip_mode));
+    }
 
     switch(chip_mode) {
     case CHP_MODE_STBY_RC: {
