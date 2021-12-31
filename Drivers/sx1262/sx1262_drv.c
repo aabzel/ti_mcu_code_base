@@ -1486,6 +1486,37 @@ static bool sx1262_sync_rssi(void) {
     return res;
 }
 
+static inline bool sx1262_proc_data_aval(void){
+    bool res = false;
+    uint32_t read_cnt = 0;
+    uint16_t rx_size = 0;
+    uint8_t rx_payload[RX_SIZE + 1] = {0};
+    memset(rx_payload, 0x00, sizeof(rx_payload));
+    Sx1262Instance.rx_done_cnt++;
+
+    rx_size = 0;
+    uint8_t cur_crc8 = 0;
+    res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE, &cur_crc8);
+    if(res) {
+        read_cnt++;
+        Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
+
+        if(Sx1262Instance.debug) {
+            LOG_INFO(LORA, "rx %u byte try:%u", rx_size, read_cnt);
+            res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true,
+                            Sx1262Instance.is_packet);
+        }
+#ifdef HAS_LORA
+        res = lora_proc_payload(rx_payload, rx_size);
+#endif /*HAS_LORA*/
+        // led_blink(&Led[LED_INDEX_RED], 10);
+
+    } else {
+        LOG_INFO(LORA, "DataReadErr");
+    }
+    return res;
+}
+
 static inline bool sx1262_poll_status(void) {
     bool res = false;
     Sx1262_t tempSx1262Instance = {0};
@@ -1494,37 +1525,16 @@ static inline bool sx1262_poll_status(void) {
     res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
         res = true;
+        static uint8_t stat_byte_prev=0;
         Sx1262Instance.dev_status.byte = tempSx1262Instance.dev_status.byte;
-
+        if(Sx1262Instance.dev_status.byte != stat_byte_prev){
+            LOG_DEBUG(LORA, "Status:0x%02x",Sx1262Instance.dev_status.byte); /**/
+        }
+        stat_byte_prev = Sx1262Instance.dev_status.byte ;
         // Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
-        uint8_t rx_payload[RX_SIZE + 1] = {0};
-        memset(rx_payload, 0x00, sizeof(rx_payload));
-        uint16_t rx_size = 0;
-        uint32_t read_cnt = 0;
         switch(Sx1262Instance.dev_status.command_status) {
         case COM_STAT_DATA_AVAIL: {
-            Sx1262Instance.rx_done_cnt++;
-
-            rx_size = 0;
-            uint8_t cur_crc8 = 0;
-            res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE, &cur_crc8);
-            if(res) {
-                read_cnt++;
-                Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
-
-                if(Sx1262Instance.debug) {
-                    LOG_INFO(LORA, "rx %u byte try:%u", rx_size, read_cnt);
-                    res = print_mem(rx_payload, rx_size, Sx1262Instance.show_bin, Sx1262Instance.show_ascii, true,
-                                    Sx1262Instance.is_packet);
-                }
-#ifdef HAS_LORA
-                res = lora_proc_payload(rx_payload, rx_size);
-#endif /*HAS_LORA*/
-                // led_blink(&Led[LED_INDEX_RED], 10);
-
-            } else {
-                LOG_INFO(LORA, "DataReadErr");
-            }
+            res = sx1262_proc_data_aval();
         } break;
         case COM_STAT_COM_TIMEOUT:
             LOG_WARNING(LORA, "time out");

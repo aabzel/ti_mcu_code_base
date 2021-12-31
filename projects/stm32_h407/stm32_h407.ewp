@@ -239,6 +239,7 @@
                     <state>HAS_SPI</state>
                     <state>HAS_SPI2</state>
                     <state>HAS_SW_TESTS</state>
+                    <state>HAS_SX1262_BIT_RATE</state>
                     <state>HAS_SX1262_DEBUG</state>
                     <state>HAS_SX1262</state>
                     <state>HAS_TASKS</state>
