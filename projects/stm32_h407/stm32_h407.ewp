@@ -1623,6 +1623,9 @@
                 <name>$PROJ_DIR$\..\..\utils\io_utils\writer_generic.c</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\..\utils\io_utils\writer_lora.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\utils\io_utils\writer_uart.c</name>
             </file>
         </group>
