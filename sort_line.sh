@@ -1,1 +1,1 @@
-sort line_sorted.txt -o line_sorted.txt
+sort sorted_lines.txt -o sorted_lines.txt

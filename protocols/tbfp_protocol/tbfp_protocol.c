@@ -211,7 +211,7 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
     uint32_t tx_frame_len = 0;
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
-#ifdef HAS_MCU
+#ifdef HAS_BLE
     pingFrame.mac = get_ble_mac();
 #endif
     memset(&pingFrame.coordinate, 0xFF, sizeof(GnssCoordinate_t));

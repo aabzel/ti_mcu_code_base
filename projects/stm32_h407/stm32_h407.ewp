@@ -226,7 +226,6 @@
                     <name>CCDefines</name>
                     <state>HAS_CLI_CMD_HISTORY</state>
                     <state>HAS_CLI</state>
-                    <state>HAS_TEST_SX1262</state>
                     <state>HAS_CORTEX_M4</state>
                     <state>HAS_DEBUG</state>
                     <state>HAS_FLASH_FS</state>
@@ -241,6 +240,9 @@
                     <state>HAS_SX1262_DEBUG</state>
                     <state>HAS_SX1262</state>
                     <state>HAS_TASKS</state>
+                    <state>HAS_TBFP_FLOW_CONTROL</state>
+                    <state>HAS_TBFP</state>
+                    <state>HAS_TEST_SX1262</state>
                     <state>HAS_UART</state>
                     <state>HAS_USART6</state>
                     <state>NORTOS</state>
@@ -381,6 +383,8 @@
                     <state>$PROJ_DIR$/../../bsp_stm32f4/spi</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4/tim</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4/uart</state>
+                    <state>$PROJ_DIR$/../../bsp_stm32f4/interrupt</state>
+                    <state>$PROJ_DIR$/../../bsp_stm32f4/spi</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4</state>
                     <state>$PROJ_DIR$/../../CMSIS/Device/ST/STM32F4xx/Include</state>
                     <state>$PROJ_DIR$/../../CMSIS/Include</state>
@@ -391,9 +395,16 @@
                     <state>$PROJ_DIR$/../../Drivers/flash_fs</state>
                     <state>$PROJ_DIR$/../../Drivers/params</state>
                     <state>$PROJ_DIR$/../../Drivers/task_drv</state>
+                    <state>$PROJ_DIR$/../../Drivers/lora</state>
+                    <state>$PROJ_DIR$/../../Drivers/sx1262</state>
                     <state>$PROJ_DIR$/../../Drivers</state>
+                    <state>$PROJ_DIR$/../../protocols</state>
+                    <state>$PROJ_DIR$/../../protocols/tbfp_protocol</state>
                     <state>$PROJ_DIR$/../../STM32F4xx_HAL_Driver/Inc/Legacy</state>
                     <state>$PROJ_DIR$/../../STM32F4xx_HAL_Driver/Inc</state>
+                    <state>$PROJ_DIR$/../../unit_tests/test_set_hw/test_sx1262</state>
+                    <state>$PROJ_DIR$/../../unit_tests/test_set_hw</state>
+                    <state>$PROJ_DIR$/../../unit_tests</state>
                     <state>$PROJ_DIR$/../../utils/crc</state>
                     <state>$PROJ_DIR$/../../utils/fifo</state>
                     <state>$PROJ_DIR$/../../utils/io_utils</state>
@@ -404,14 +415,6 @@
                     <state>$PROJ_DIR$/../..</state>
                     <state>$PROJ_DIR$/Core</state>
                     <state>$PROJ_DIR$</state>
-                    <state>$PROJ_DIR$\..\..\bsp_stm32f4\interrupt</state>
-                    <state>$PROJ_DIR$\..\..\bsp_stm32f4\spi</state>
-                    <state>$PROJ_DIR$\..\..\Drivers\sx1262</state>
-                    <state>$PROJ_DIR$\..\..\Drivers</state>
-                    <state>$PROJ_DIR$\..\..\Drivers\lora</state>
-                    <state>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_sx1262</state>
-                    <state>$PROJ_DIR$\..\..\unit_tests\test_set_hw</state>
-                    <state>$PROJ_DIR$\..\..\unit_tests</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1361,6 +1364,36 @@
         </group>
     </group>
     <group>
+        <name>protocols</name>
+        <group>
+            <name>tbfp_protocol</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\protocols\tbfp_protocol\tbfp_commands.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\protocols\tbfp_protocol\tbfp_commands.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\protocols\tbfp_protocol\tbfp_diag.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\protocols\tbfp_protocol\tbfp_diag.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\protocols\tbfp_protocol\tbfp_protocol.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\protocols\tbfp_protocol\tbfp_protocol.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\protocols\tbfp_protocol\tbfp_protocol_parser.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\protocols\tbfp_protocol\tbfp_protocol_parser.h</name>
+            </file>
+        </group>
+    </group>
+    <group>
         <name>STM32F4xx_HAL_Driver</name>
         <file>
             <name>$PROJ_DIR$\..\..\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c</name>
@@ -1450,6 +1483,12 @@
             </group>
             <group>
                 <name>test_flash_fs</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_flash_fs\test_flash_fs.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_flash_fs\test_flash_fs.h</name>
+                </file>
             </group>
             <group>
                 <name>test_gpio</name>
@@ -1471,6 +1510,48 @@
             </group>
             <group>
                 <name>test_uart</name>
+            </group>
+        </group>
+        <group>
+            <name>test_set_sw</name>
+            <group>
+                <name>test_crc</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_crc\test_crc.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_crc\test_crc.h</name>
+                </file>
+            </group>
+            <group>
+                <name>test_fifo</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_fifo\test_fifo_array.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_fifo\test_fifo_array.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_fifo\test_fifo_char.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_fifo\test_fifo_char.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_fifo\test_fifo_indexer.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_fifo\test_fifo_indexer.h</name>
+                </file>
+            </group>
+            <group>
+                <name>test_tbfp_proto</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_tbfp_proto\test_tbfp_proto.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\unit_tests\test_set_sw\test_tbfp_proto\test_tbfp_proto.h</name>
+                </file>
             </group>
         </group>
         <file>
