@@ -27,6 +27,7 @@ static bool test_one_lora_sync_word(uint16_t sync_word) {
 bool test_sx1262_lora_sync_word(void){
     uint16_t orig_sync_word = 0;
     EXPECT_TRUE(sx1262_get_lora_sync_word(&orig_sync_word));
+    EXPECT_EQ(0x1424, orig_sync_word);
 
     EXPECT_TRUE(test_one_lora_sync_word(0x0012));
     EXPECT_TRUE(test_one_lora_sync_word(0x1122));
