@@ -21,16 +21,16 @@
 #include "table_utils.h"
 #include "writer_config.h"
 
-bool sx1262_mute_command(int32_t argc, char* argv[]){
+bool sx1262_mute_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(1 == argc) {
         res = try_str2bool(argv[0], &Sx1262Instance.tx_mute);
         if(false == res) {
             LOG_ERROR(LORA, "UnableToParse tx_mute %s", argv[0]);
-        }else{
+        } else {
             LOG_INFO(LORA, "%u", Sx1262Instance.tx_mute);
         }
-    }else{
+    } else {
         LOG_ERROR(LORA, "Usage: sxu state");
     }
     return res;

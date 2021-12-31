@@ -43,6 +43,7 @@ void delay_us(uint32_t delay_in_us);
 
 uint64_t sw_pause_ms(uint32_t delay_in_ms);
 uint32_t clock_get_tick_ms(void);
+
 bool SystemClockConfig(void);
 #ifdef __cplusplus
 }

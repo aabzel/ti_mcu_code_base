@@ -1067,8 +1067,8 @@ static bool sx1262_set_tx(uint32_t timeout_s) {
 
 bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
     bool res = true;
-    if(false==Sx1262Instance.tx_mute){
-        if(Sx1262Instance.tx_done ) {
+    if(false == Sx1262Instance.tx_mute) {
+        if(Sx1262Instance.tx_done) {
             Sx1262Instance.tx_done = false;
             if((NULL != tx_buf) && (0 < tx_len)) {
                 res = sx1262_clear_fifo();
@@ -1084,14 +1084,14 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
             }
             if(res) {
                 // res = sx1262_write_buffer(offset, tx_buf, tx_len) && res;
-    #ifdef HAS_SX1262_BIT_RATE
+#ifdef HAS_SX1262_BIT_RATE
                 Sx1262Instance.tx_last_size = tx_len;
                 Sx1262Instance.tx_start_time_stamp_ms = get_time_ms32();
-    #endif      /*HAS_SX1262_BIT_RATE*/
+#endif          /*HAS_SX1262_BIT_RATE*/
                 /*TODO: Set Red Led on*/
-    #ifdef HAS_LED
+#ifdef HAS_LED
                 led_on(&Led[LED_INDEX_RED]);
-    #endif
+#endif
                 res = sx1262_set_tx(timeout_s);
                 if(res) {
                     Sx1262Instance.tx_size_max = max8u(Sx1262Instance.tx_size_max, tx_len);
@@ -1101,7 +1101,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
             LOG_ERROR(LORA, "TxBusy");
             res = false;
         }
-    }else{
+    } else {
         LOG_ERROR(LORA, "TxMute");
         res = false;
     }

@@ -15,8 +15,8 @@ bool cmd_unit_test_list(int32_t argc, char* argv[]) {
     LOG_INFO(SYS, "%s() key %u", __FUNCTION__, argc);
     if((0 != argc) && (1 != argc)) {
         io_putstr(""
-                "Usage: tsa - Print all test" CRLF
-                "Usage: tsa sample - Print all test that contain sub name \"sample\"" CRLF);
+                  "Usage: tsa - Print all test" CRLF
+                  "Usage: tsa sample - Print all test that contain sub name \"sample\"" CRLF);
         res = false;
     }
     if(0 == argc) {
@@ -26,7 +26,7 @@ bool cmd_unit_test_list(int32_t argc, char* argv[]) {
         dump_unit_test_key(argv[0]);
     }
     io_putstr("!OKTEST" CRLF);
-    //io_flush();
+    // io_flush();
     return res;
 }
 

@@ -73,7 +73,7 @@ void dump_unit_test_key(const char* key) {
                 io_putstr(".");
                 io_putstr(rx_utoa32(index + 1U));
                 io_putstr(CRLF);
-                //io_flush();
+                // io_flush();
 #endif /*HAS_CLI*/
             }
         }
@@ -220,7 +220,7 @@ bool unit_tests_run(const char* key) {
     if(1U < count) {
         failed_tests_print();
     }
-    //io_flush();
+    // io_flush();
 #endif /*HAS_CLI*/
     return res;
 }

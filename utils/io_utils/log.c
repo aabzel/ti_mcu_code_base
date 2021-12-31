@@ -129,7 +129,7 @@ log_level_t get_log_level(log_facility_t facility) {
 static bool is_log_enabled(log_level_t level, log_facility_t facility) {
     bool res = true;
     if(level < get_log_level(facility)) {
-        res =  false;
+        res = false;
     }
     return res;
 }

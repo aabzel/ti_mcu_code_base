@@ -75,7 +75,7 @@ bool unit_test_run(uint32_t index) {
 #endif
         }
 #ifdef HAS_CLI
-        //io_flush();
+        // io_flush();
 #endif
 
 #ifdef HAS_NORTOS
