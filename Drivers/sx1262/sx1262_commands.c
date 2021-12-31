@@ -82,8 +82,8 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         LOG_INFO(LORA, "ChipMode: [%u] %s", Sx1262Instance.dev_status.chip_mode,
                  chip_mode2str(Sx1262Instance.dev_status.chip_mode));
         // float rssi_inst = dbm2watts((int32_t) Sx1262Instance.rssi_inst);
-        LOG_INFO(LORA, "RssiInst: %d dBm=%8.7f mW", Sx1262Instance.rssi_inst,
-                 1000.0 * dbm2watts((int32_t)Sx1262Instance.rssi_inst));
+        LOG_INFO(LORA, "RssiInst: %d dBm=%8.7f uW", Sx1262Instance.rssi_inst,
+                 1000000.0 * dbm2watts((int32_t)Sx1262Instance.rssi_inst));
         LOG_INFO(LORA, "RssiPkt: %d=%8.7f uW", Sx1262Instance.rssi_pkt,
                  1000000.0 * dbm2watts((int32_t)Sx1262Instance.rssi_pkt));
         LOG_INFO(LORA, "SnrPkt: %u", Sx1262Instance.snr_pkt);

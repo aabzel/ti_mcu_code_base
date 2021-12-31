@@ -1010,11 +1010,21 @@ bool sx1262_init(void) {
     res = sx1262_init_gpio() && res;
     res = sx1262_reset() && res;
 
-    res = sx1262_is_exist();
+    res = sx1262_wait_on_busy(1000);
+    if(false == res) {
+         LOG_ERROR(LORA, "ChipBusy");
+    }
+
+    if(res){
+       res = sx1262_is_exist();
+    }
     if(true == res) {
         res = sx1262_wakeup() && res;
 
         res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
+
+        res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
+
         res = sx1262_set_regulator_mode(REG_MODE_DC_DC_LDO) && res;
 
         res = sx1262_clear_fifo() && res;
@@ -1026,7 +1036,6 @@ bool sx1262_init(void) {
 
         res = sx1262_set_standby(STDBY_XOSC);
 
-        res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
         res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
         if(false == res) {
@@ -1035,14 +1044,17 @@ bool sx1262_init(void) {
 
         res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
 
+        res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
+
+        res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
+        res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
+
+        res = sx1262_start_rx(0xFFFFFF) && res;
+
         res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
         //res = sx1262_conf_rx() && res;
 
-        res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
-
         // Sx1262Instance.set_sync_word = SYNC_WORD;
-        res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
-        res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
 
         Sx1262Instance.sync_reg = true;
         res = sx1262_start_rx(0xFFFFFF) && res;
@@ -1369,6 +1381,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     static uint32_t chip_mode_xosc = 0;
     static uint32_t chip_mode_fs = 0;
     static uint32_t chip_mode_tx = 0;
+    LOG_DEBUG(LORA, "ChipMode %u %s", chip_mode, chip_mode2str(chip_mode));
 
     switch(chip_mode) {
     case CHP_MODE_STBY_RC: {

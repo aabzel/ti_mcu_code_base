@@ -58,22 +58,22 @@ const char* pack_type2str(RadioPacketType_t packet_type) {
 const char* chip_mode2str(uint8_t chip_mode) {
     const char* name = "undef";
     switch(chip_mode) {
-    case 0:
+    case CHP_MODE_UNDEF:
         name = "unUsed";
         break;
-    case 2:
+    case CHP_MODE_STBY_RC:
         name = "STBY_RC";
         break;
-    case 3:
+    case CHP_MODE_STBY_XOSC:
         name = "STBY_XOSC";
         break;
-    case 4:
+    case CHP_MODE_FS:
         name = "FS";
         break;
-    case 5:
+    case CHP_MODE_RX:
         name = "RX";
         break;
-    case 6:
+    case CHP_MODE_TX:
         name = "TX";
         break;
     default:
