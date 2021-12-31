@@ -3,9 +3,10 @@
 
 #include <stdint.h>
 
-
-#define REG_MODE_ONLY_LDO 0x00  /*used for all modes*/
-#define REG_MODE_DC_DC_LDO 0x01 /*used for STBY_XOSC,FS, RX and TX modes*/
+typedef enum eRegulatorMode_t{
+   REG_MODE_ONLY_LDO= 0x00,  /*used for all modes*/
+   REG_MODE_DC_DC_LDO= 0x01, /*used for STBY_XOSC,FS, RX and TX modes*/
+}RegulatorMode_t;
 
 #define DEV_SEL_SX1262 0
 #define DEV_SEL_SX1261 1

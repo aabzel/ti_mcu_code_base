@@ -180,10 +180,6 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
 #define WR_REG_PAYLOAD_SZ (3)
 bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val) {
     bool res = true;
-#if 0
-    uint8_t rx_array[WR_REG_PAYLOAD_SZ];
-    memset(rx_array, 0x00, sizeof(rx_array));
-#endif
     uint8_t tx_array[WR_REG_PAYLOAD_SZ];
     memset(tx_array, 0x00, sizeof(tx_array));
     uint16_t reg_addr_be = reverse_byte_order_uint16(reg_addr);
@@ -295,7 +291,6 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
     bool res = false;
     if((tx_array_len + OPCODE_SIZE) < (2 * FIFO_SIZE)) {
         res = true;
-        /*VLA prohibited here because heap can meet stack in unpredictable time*/
         static uint8_t tempTxArray[2 * FIFO_SIZE];
         tempTxArray[0] = op_code;
         uint16_t temp_tx_arr_len = tx_array_len + OPCODE_SIZE;
@@ -538,9 +533,8 @@ bool sx1262_clear_dev_error(void) {
     bool res = false;
     uint8_t rx_array[2];
     memset(rx_array, 0x00, sizeof(rx_array));
-    uint8_t tx_array[2];
-    memset(tx_array, 0x00, sizeof(tx_array));
-    res = sx1262_send_opcode(OPCODE_CLEAR_DEVICE_ERRORS, tx_array, sizeof(tx_array), rx_array, sizeof(rx_array));
+    uint8_t tx_array=0x00;
+    res = sx1262_send_opcode(OPCODE_CLEAR_DEVICE_ERRORS, &tx_array, 1, rx_array, sizeof(rx_array));
     if(res) {
         Sx1262Instance.status = rx_array[0];
     }
@@ -676,8 +670,8 @@ bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
     res2 = is_valid_coding_rate(modParams->coding_rate);
     res3 = is_valid_spreading_factor(modParams->spreading_factor);
     if(res1 && res2 && res3) {
-        uint8_t tx_array[8];
-        memset(tx_array, 0xFF, sizeof(tx_array));
+        uint8_t tx_array[8];/**/
+        memset(tx_array, 0x00, sizeof(tx_array));
         tx_array[0] = modParams->spreading_factor;
         tx_array[1] = modParams->band_width;
         tx_array[2] = modParams->coding_rate;
@@ -1037,7 +1031,7 @@ bool sx1262_init(void) {
 
         res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
-        res = sx1262_set_regulator_mode(REG_MODE_DC_DC_LDO) && res;
+        res = sx1262_set_regulator_mode(REG_MODE_ONLY_LDO) && res;
 
         res = sx1262_clear_fifo() && res;
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
