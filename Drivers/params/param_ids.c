@@ -56,6 +56,8 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_GNSS_PERIOD, 2, UINT16, "GnssPer"},
     /**/ {PAR_ID_BASE_ALT, 8, DOUBLE, "BaseAlt"},
     /**/ {PAR_ID_LOW_DATA_RATE, 1, UINT8, "LowDataRate"},
+    /**/ {PAR_ID_LORA_CRC_INIT, 2, UINT16, "CrcInit"}, /*CRC Initial Value*/
+    /**/ {PAR_ID_LORA_CRC_POLY, 2, UINT16, "CrcPoly"}, /*CRC Polynomial*/
     /**/ {PAR_ID_SYNC_WORD, 8, UINT64, "SyncWord"},
     /**/ {PAR_ID_LORA_SYNC_WORD, 2, UINT16, "LoRaSyncWord"},
 };
@@ -236,7 +238,7 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         if(PAR_ID_LORA_SYNC_WORD == id) {
             uint16_t sync_word = 0;
             memcpy(&sync_word, value, 2);
-            name = LoRaSyncWord2Str(sync_word);
+            name = HexWord2Str(sync_word);
         }
         if(PAR_ID_SYNC_WORD == id) {
             uint64_t sync_word = 0;

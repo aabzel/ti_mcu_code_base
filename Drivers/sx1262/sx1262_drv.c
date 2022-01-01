@@ -37,6 +37,7 @@ speed up to 16 MHz
 #endif
 #include "spi_drv.h"
 #include "sx1262_diag.h"
+#include "sx1262_registers.h"
 #include "sys_config.h"
 #include "task_info.h"
 
@@ -80,22 +81,6 @@ bool sx1262_chip_select(bool state) {
     return res;
 }
 
-#define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
-    do {                                                                                                               \
-        res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(0);                                                                                  \
-        if(true == res) {                                                                                              \
-            res = true;                                                                                                \
-            res = sx1262_chip_select(true);                                                                            \
-            res = wait_ms(2);                                                                                          \
-            res = CALL_BACK;                                                                                           \
-            res = wait_ms(2);                                                                                          \
-            res = sx1262_chip_select(false);                                                                           \
-        } else {                                                                                                       \
-            Sx1262Instance.busy_cnt++;                                                                                 \
-            res = false;                                                                                               \
-        }                                                                                                              \
-    } while(0);
 
 #define GET_4_BYTE_OPCODE(OP_CODE, OUT_VAL_16_BIT)                                                                     \
     do {                                                                                                               \
@@ -169,25 +154,6 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
     return res;
 }
 
-/*
-  WriteRegister
-
-  The command WriteRegister(...) allows writing a block of bytes in a data memory
-  space starting at a specific address. The address is auto incremented after each
-  data byte so that data is stored in contiguous memory locations. The SPI data
-  transfer is described in the following table.
-*/
-#define WR_REG_PAYLOAD_SZ (3)
-bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val) {
-    bool res = true;
-    uint8_t tx_array[WR_REG_PAYLOAD_SZ];
-    memset(tx_array, 0x00, sizeof(tx_array));
-    uint16_t reg_addr_be = reverse_byte_order_uint16(reg_addr);
-    memcpy(&tx_array[0], &reg_addr_be, sizeof(reg_addr_be));
-    tx_array[2] = reg_val;
-    res = sx1262_send_opcode(OPCODE_WRITE_REGISTER, tx_array, sizeof(tx_array), NULL, 0);
-    return res;
-}
 
 bool sx1262_is_connected(void) {
     bool res = false;
@@ -240,51 +206,6 @@ static bool sx1262_is_exist(void) {
     return res;
 }
 
-/*TODO: rewrite*/
-#define READ_REG_HEADER_SZ 3
-static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
-    bool res = false;
-    if(NULL != reg_val) {
-        res = true;
-        *reg_val = 0xFF;
-        uint8_t tx_array[4] = {0};
-        memset(tx_array, 0x00, sizeof(tx_array));
-        Type16Union_t temp_reg_val;
-        temp_reg_val.u16 = 0;
-        tx_array[0] = OPCODE_READ_REGISTER;
-        uint16_t reg_addr_nbo = reverse_byte_order_uint16(reg_addr);
-        memcpy(&tx_array[1], &reg_addr_nbo, sizeof(reg_addr_nbo));
-        res = spi_write((SpiName_t)SX1262_SPI_NUM, tx_array, READ_REG_HEADER_SZ) && res;
-        res = spi_read((SpiName_t)SX1262_SPI_NUM, (uint8_t*)&temp_reg_val.u16, sizeof(temp_reg_val.u16)) && res;
-        temp_reg_val.u16 = reverse_byte_order_uint16(temp_reg_val.u16);
-        *reg_val = temp_reg_val.u8[0];
-    } else {
-        res = false;
-    }
-
-    return res;
-}
-
-bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val) {
-    bool res = false;
-    SX1262_CHIP_SELECT(sx1262_read_reg_proc(reg_addr, reg_val));
-#if 0
-    res = false;
-    res = sx1262_wait_on_busy(0);
-    if(true == res) {
-        res = true;
-        res = sx1262_chip_select(true);
-        res = wait_ms(2);
-        res = sx1262_read_reg_proc(reg_addr, reg_val);
-        res = wait_ms(2);
-        res = sx1262_chip_select(false);
-    } else {
-        Sx1262Instance.busy_cnt++;
-        res = false;
-    }
-#endif
-    return res;
-}
 
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
@@ -681,45 +602,7 @@ bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
     return res;
 }
 
-bool sx1262_set_sync_word(uint64_t sync_word) {
-    bool res = true;
-    Type64Union_t var64bit;
-    var64bit.u64 = sync_word;
-    var64bit.u64 = reverse_byte_order_uint64(var64bit.u64);
-    res = sx1262_write_reg(SYNC_WORD_0, var64bit.u8[0]) && res;
-    res = sx1262_write_reg(SYNC_WORD_1, var64bit.u8[1]) && res;
-    res = sx1262_write_reg(SYNC_WORD_2, var64bit.u8[2]) && res;
-    res = sx1262_write_reg(SYNC_WORD_3, var64bit.u8[3]) && res;
-    res = sx1262_write_reg(SYNC_WORD_4, var64bit.u8[4]) && res;
-    res = sx1262_write_reg(SYNC_WORD_5, var64bit.u8[5]) && res;
-    res = sx1262_write_reg(SYNC_WORD_6, var64bit.u8[6]) && res;
-    res = sx1262_write_reg(SYNC_WORD_7, var64bit.u8[7]) && res;
-    return res;
-}
 
-bool sx1262_set_lora_sync_word(uint16_t sync_word) {
-    bool res = true;
-    Type16Union_t var16bit;
-    var16bit.u16 = sync_word;
-    var16bit.u16 = reverse_byte_order_uint16(var16bit.u16);
-    res = sx1262_write_reg(LORA_SYNC_WORD_MSB, var16bit.u8[0]) && res;
-    res = sx1262_write_reg(LORA_SYNC_WORD_LSB, var16bit.u8[1]) && res;
-    return res;
-}
-
-bool sx1262_set_rx_gain(RxGain_t rx_gain){
-    bool res = false;
-    res = sx1262_write_reg(RX_GAIN, (uint8_t) rx_gain);
-    return res;
-}
-
-bool sx1262_get_rx_gain(RxGain_t *rx_gain){
-    bool res = false;
-    if(rx_gain) {
-        res = sx1262_read_reg(RX_GAIN,(uint8_t *) rx_gain);
-    }
-    return res;
-}
 /*
   SetSleep
   The command SetSleep(...) is used to set the device in SLEEP mode with the lowest current consumption possible. This
@@ -921,6 +804,9 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #endif
 
 #ifdef HAS_FLASH_FS
+    LOAD_PARAM(PAR_ID_LORA_CRC_INIT,sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
+    LOAD_PARAM(PAR_ID_LORA_CRC_POLY,sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
+
     LOAD_PARAM(PAR_ID_LOW_DATA_RATE,sx1262Instance->mod_params.low_data_rate_optimization, 1, "LowDataRateOpt", LDRO_OFF,
                LowDataRateOpt2Str);
     LOAD_PARAM(PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen", 255,
@@ -934,7 +820,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen",
                DFLT_PREAMBLE_LEN, PreambleLen2Str);
     LOAD_PARAM(PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD,
-               LoRaSyncWord2Str);
+               HexWord2Str);
     LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp", IQ_SETUP_STANDARD,
                IqSetUp2Str);
     LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate", DFLT_LORA_CR, coding_rate2str);
@@ -1055,6 +941,8 @@ bool sx1262_init(void) {
 
         res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
 
+        res = sx1262_set_crc_poly(Sx1262Instance.crc_poly) && res;
+        res = sx1262_set_crc_seed(Sx1262Instance.crc_init) && res;
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
         res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
 
@@ -1129,56 +1017,8 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
     return res;
 }
 
-bool sx1262_get_sync_word(uint64_t* sync_word) {
-    bool res = true;
-    if(sync_word) {
-        res = true;
-        Type64Union_t var64bit = {0};
-        res = sx1262_read_reg(SYNC_WORD_0, &var64bit.u8[0]) && res;
-        res = sx1262_read_reg(SYNC_WORD_1, &var64bit.u8[1]) && res;
-        res = sx1262_read_reg(SYNC_WORD_2, &var64bit.u8[2]) && res;
-        res = sx1262_read_reg(SYNC_WORD_3, &var64bit.u8[3]) && res;
-        res = sx1262_read_reg(SYNC_WORD_4, &var64bit.u8[4]) && res;
-        res = sx1262_read_reg(SYNC_WORD_5, &var64bit.u8[5]) && res;
-        res = sx1262_read_reg(SYNC_WORD_6, &var64bit.u8[6]) && res;
-        res = sx1262_read_reg(SYNC_WORD_7, &var64bit.u8[7]) && res;
-        *sync_word = reverse_byte_order_uint64(var64bit.u64);
-    } else {
-        res = false;
-    }
-    return res;
-}
 
-bool sx1262_get_lora_sync_word(uint16_t* sync_word) {
-    bool res = true;
-    if(sync_word) {
-        res = true;
-        Type16Union_t var16bit = {0};
-        res = sx1262_read_reg(LORA_SYNC_WORD_LSB, &var16bit.u8[1]) && res;
-        res = sx1262_read_reg(LORA_SYNC_WORD_MSB, &var16bit.u8[0]) && res;
 
-        *sync_word = reverse_byte_order_uint16(var16bit.u16);
-    } else {
-        res = false;
-    }
-    return res;
-}
-
-bool sx1262_get_rand(uint32_t* rand_num) {
-    bool res = true;
-    if(rand_num) {
-        res = true;
-        Type32Union_t var32bit = {0};
-        res = sx1262_read_reg(RAND_NUM_GEN_0, &var32bit.u8[0]) && res;
-        res = sx1262_read_reg(RAND_NUM_GEN_1, &var32bit.u8[1]) && res;
-        res = sx1262_read_reg(RAND_NUM_GEN_2, &var32bit.u8[2]) && res;
-        res = sx1262_read_reg(RAND_NUM_GEN_3, &var32bit.u8[3]) && res;
-        *rand_num = var32bit.u32;
-    } else {
-        res = false;
-    }
-    return res;
-}
 
 bool sx1262_get_irq_status(uint16_t* out_irq_stat) {
     bool res = false;
@@ -1786,3 +1626,6 @@ float lora_calc_max_frame_tx_time(uint8_t sf_code, uint8_t bw_code, uint8_t cr_c
     return t_frame;
 }
 #endif
+
+
+

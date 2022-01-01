@@ -86,6 +86,8 @@ typedef struct xSx1262_t {
     uint32_t rand_num;
     uint16_t lora_sync_word_set;
     uint16_t lora_sync_word_get;
+    uint16_t crc_init;
+    uint16_t crc_poly;
     uint16_t op_error;
     uint16_t irq_stat;
     uint8_t status;

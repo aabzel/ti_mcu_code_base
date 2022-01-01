@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "sx1262_drv.h"
+#include "sx1262_registers.h"
 #include "unit_test_check.h"
 #include "none_blocking_pause.h"
 
@@ -148,6 +149,49 @@ bool test_sx1262_rx_gain(void){
     EXPECT_TRUE(sx1262_set_rx_gain(orig_rx_gain));
     return true;
 }
+
+static bool test_crc_poly(uint16_t crc_poly) {
+    uint16_t read_crc_poly = 0;
+    EXPECT_TRUE(sx1262_set_crc_poly(crc_poly));
+    EXPECT_TRUE(sx1262_get_crc_poly(&read_crc_poly));
+    EXPECT_EQ(crc_poly, read_crc_poly);
+    return true;
+}
+
+bool test_sx1262_crc_poly(void){
+    uint16_t orig_crc_poly = 0;
+    EXPECT_TRUE(sx1262_get_crc_poly(&orig_crc_poly));
+
+    EXPECT_TRUE(test_crc_poly(0xaa55));
+    EXPECT_TRUE(test_crc_poly(0x55aa));
+    EXPECT_TRUE(test_crc_poly(0x1234));
+
+    EXPECT_TRUE(sx1262_set_crc_poly(orig_crc_poly));
+
+    return true;
+}
+
+static bool test_crc_init(uint16_t crc_init) {
+    uint16_t read_crc_init = 0;
+    EXPECT_TRUE(sx1262_set_crc_seed(crc_init));
+    EXPECT_TRUE(sx1262_get_crc_seed(&read_crc_init));
+    EXPECT_EQ(crc_init, read_crc_init);
+    return true;
+}
+
+bool test_sx1262_crc_init(void){
+    uint16_t orig_crc_init = 0;
+    EXPECT_TRUE(sx1262_get_crc_seed(&orig_crc_init));
+
+    EXPECT_TRUE(test_crc_init(0xaa55));
+    EXPECT_TRUE(test_crc_init(0x55aa));
+    EXPECT_TRUE(test_crc_init(0x1234));
+
+    EXPECT_TRUE(sx1262_set_crc_seed(orig_crc_init));
+
+    return true;
+}
+
 
 bool test_sx1262_types(void) {
     EXPECT_EQ(1, sizeof(Sx1262Status_t));

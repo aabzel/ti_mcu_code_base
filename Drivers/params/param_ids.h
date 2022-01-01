@@ -7,7 +7,7 @@
 #include "clocks.h"
 #include "param_types.h"
 
-#define PARAM_CNT 30U
+#define PARAM_CNT 32U
 #define PARAM_PERIOD_US S_2_US(3)
 
 typedef enum eId_t {
@@ -40,6 +40,8 @@ typedef enum eId_t {
     PAR_ID_RTK_FIX_LONG = 26, /*Max Duration in RTK fixed mode*/
     PAR_ID_SYNC_WORD = 27,
     PAR_ID_LORA_SYNC_WORD = 29,
+    PAR_ID_LORA_CRC_INIT = 32,
+    PAR_ID_LORA_CRC_POLY = 31,
     PAR_ID_LOW_DATA_RATE = 30,
     PAR_ID_TEST_START = 100,
     PAR_ID_TEST_END = 200,

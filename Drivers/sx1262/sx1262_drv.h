@@ -38,6 +38,23 @@ extern Sx1262_t Sx1262Instance;
 extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 #endif
 
+#define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
+    do {                                                                                                               \
+        res = false;                                                                                                   \
+        res = sx1262_wait_on_busy(0);                                                                                  \
+        if(true == res) {                                                                                              \
+            res = true;                                                                                                \
+            res = sx1262_chip_select(true);                                                                            \
+            res = wait_ms(2);                                                                                          \
+            res = CALL_BACK;                                                                                           \
+            res = wait_ms(2);                                                                                          \
+            res = sx1262_chip_select(false);                                                                           \
+        } else {                                                                                                       \
+            Sx1262Instance.busy_cnt++;                                                                                 \
+            res = false;                                                                                               \
+        }                                                                                                              \
+    } while(0);
+
 float dbm2watts(int32_t dbm);
 bool is_valid_bandwidth(BandWidth_t bandwidth);
 bool is_valid_spreading_factor(SpreadingFactor_t Spreading_factor);
@@ -49,19 +66,15 @@ bool sx1262_get_irq_status(uint16_t* irq_stat);
 bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, int8_t* RssiPkt, uint8_t* SnrPkt,
                               int8_t* SignalRssiPkt);
 bool sx1262_get_packet_type(RadioPacketType_t* const packet_type);
-bool sx1262_get_rand(uint32_t* rand_num);
 bool sx1262_get_rssi_inst(int8_t* rssi_inst);
 bool sx1262_get_rx_payload(uint8_t* payload, uint16_t* size, uint16_t max_size, uint8_t* crc8);
 bool sx1262_get_rxbuff_status(uint8_t* PayloadLengthRx, uint8_t* RxStartBufferPointer);
 bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora);
 bool sx1262_get_status(uint8_t* out_status);
-bool sx1262_get_sync_word(uint64_t* sync_word);
-bool sx1262_get_lora_sync_word(uint16_t* sync_word);
 bool sx1262_init(void);
 bool sx1262_int_isr(Sx1262_t* sx1262Instance);
 bool sx1262_is_connected(void);
 bool sx1262_process(void);
-bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val);
 bool sx1262_reset(void);
 bool sx1262_reset_stats(void);
 bool sx1262_clear_dev_error(void);
@@ -75,7 +88,6 @@ bool sx1262_set_buffer_base_addr(uint8_t tx_addr, uint8_t rx_addr);
 bool sx1262_set_crc_polynomial(uint16_t polynomial);
 bool sx1262_set_crc_seed(uint16_t seed);
 bool sx1262_set_dio_irq_params(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask);
-bool sx1262_set_lora_sync_word(uint16_t sync_word);
 bool sx1262_set_modulation_params(ModulationParams_t* modParams);
 bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_sel, uint8_t pa_lut);
 bool sx1262_set_packet_params(PacketParam_t* packParam);
@@ -84,8 +96,7 @@ bool sx1262_set_payload(uint8_t* payload, uint8_t size);
 bool sx1262_set_regulator_mode(uint8_t reg_mode_param);
 bool sx1262_set_rf_frequency(uint32_t rf_frequency_hz, uint32_t freq_xtal_hz);
 bool sx1262_set_sleep(uint8_t sleep_config);
-bool sx1262_set_rx_gain(RxGain_t rx_gain);
-bool sx1262_get_rx_gain(RxGain_t *rx_gain);
+
 bool sx1262_set_standby(StandbyMode_t stdby_config);
 bool sx1262_set_sync_word(uint64_t sync_word);
 bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time);

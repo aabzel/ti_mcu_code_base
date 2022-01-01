@@ -1362,6 +1362,9 @@
             <file>
                 <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_op_codes.h</name>
             </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\sx1262\sx1262_registers.c</name>
+            </file>
         </group>
         <group>
             <name>task_drv</name>

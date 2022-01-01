@@ -1,8 +1,17 @@
 #ifndef SX1262_REGISTERS_H
 #define SX1262_REGISTERS_H
 
+#include <stdbool.h>
+#include <stdint.h>
+
+#include "sx1262_constants.h"
 /* Register Table */
 /* Regiser Name     Address*/
+#define CRC_INIT_MSB 0x06BC
+#define CRC_INIT_LSB 0x06BD
+#define CRC_POLYNOMIAL_MSB 0x06BE
+#define CRC_POLYNOMIAL_LSB 0x06BF
+
 #define SYNC_WORD_0 0x06C0
 #define SYNC_WORD_1 0x06C1
 #define SYNC_WORD_2 0x06C2
@@ -23,5 +32,20 @@
 
 #define OCP_CONFIGURATION 0x08E7
 #define XTB_TRIM 0x0912
+
+bool sx1262_get_crc_poly(uint16_t *polynomial);
+bool sx1262_get_crc_seed(uint16_t *seed);
+bool sx1262_get_lora_sync_word(uint16_t* sync_word);
+bool sx1262_get_rand(uint32_t* rand_num);
+bool sx1262_get_rx_gain(RxGain_t *rx_gain);
+bool sx1262_get_sync_word(uint64_t* sync_word);
+bool sx1262_read_reg(uint16_t reg_addr, uint8_t* reg_val);
+bool sx1262_set_crc_poly(uint16_t polynomial);
+bool sx1262_set_crc_seed(uint16_t seed);
+bool sx1262_set_lora_sync_word(uint16_t sync_word);
+bool sx1262_set_rx_gain(RxGain_t rx_gain);
+bool sx1262_set_sync_word(uint64_t sync_word) ;
+bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val);
+
 
 #endif /* SX1262_REGISTERS_H  */
