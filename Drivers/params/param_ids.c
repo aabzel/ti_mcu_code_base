@@ -236,10 +236,24 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             name = RfFreq2Str(freq);
         }
         if(PAR_ID_LORA_SYNC_WORD == id) {
-            uint16_t sync_word = 0;
-            memcpy(&sync_word, value, 2);
-            name = HexWord2Str(sync_word);
+            uint16_t word = 0;
+            memcpy(&word, value, 2);
+            name = HexWord2Str(word);
         }
+
+        if(PAR_ID_LORA_CRC_POLY == id) {
+            uint16_t word = 0;
+            memcpy(&word, value, 2);
+            name = HexWord2Str(word);
+        }
+
+        if(PAR_ID_LORA_CRC_INIT == id) {
+            uint16_t word = 0;
+            memcpy(&word, value, 2);
+            name = HexWord2Str(word);
+        }
+
+
         if(PAR_ID_SYNC_WORD == id) {
             uint64_t sync_word = 0;
             memcpy(&sync_word, value, 8);

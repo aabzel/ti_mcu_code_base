@@ -15,8 +15,6 @@ static bool test_one_sync_word(uint64_t sync_word) {
     return true;
 }
 
-
-
 static bool test_one_lora_sync_word(uint16_t sync_word) {
     uint16_t read_sync_word = 0;
     EXPECT_TRUE(sx1262_set_lora_sync_word(sync_word));
