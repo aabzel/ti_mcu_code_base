@@ -916,7 +916,7 @@ bool sx1262_init(void) {
     if(true == res) {
         res = sx1262_wakeup() && res;
 
-        res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
+        res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
 
         res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
@@ -927,7 +927,7 @@ bool sx1262_init(void) {
 
         res = sx1262_clear_dev_error() && res;
 
-        res = sx1262_set_packet_type(PACKET_TYPE_LORA) && res;
+        res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
 
         res = sx1262_set_standby(STDBY_XOSC);
 
@@ -1044,8 +1044,7 @@ bool sx1262_get_dev_err(uint16_t* op_error) {
 bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     bool res = false;
     uint8_t rx_array[3];
-    memset(rx_array, 0x00, sizeof(rx_array));
-
+    memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL,  0, rx_array, sizeof(rx_array));
     if(res) {
         Sx1262Instance.status = rx_array[1];
