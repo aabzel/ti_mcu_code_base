@@ -1047,8 +1047,8 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL,  0, rx_array, sizeof(rx_array));
     if(res) {
-        Sx1262Instance.status = rx_array[1];
-        *packet_type = (RadioPacketType_t)rx_array[2];
+        Sx1262Instance.status = rx_array[0];
+        *packet_type = (RadioPacketType_t)rx_array[1];
     } else {
         *packet_type = PACKET_TYPE_NONE;
     }
