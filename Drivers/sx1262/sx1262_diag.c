@@ -355,6 +355,23 @@ char* PayloadLen2Str(uint8_t size) {
     return name;
 }
 
+const char* LowDataRateOpt2Str(uint8_t packet_type) {
+    const char* name = "undef";
+    switch(packet_type) {
+    case LDRO_OFF:
+        name = "Off";
+        break;
+    case LDRO_ON:
+        name = "On";
+        break;
+    default:
+        name = "Err";
+        break;
+    }
+    return name;
+}
+
+
 const char* PacketType2Str(uint8_t packet_type) {
     const char* name = "undef";
     switch(packet_type) {

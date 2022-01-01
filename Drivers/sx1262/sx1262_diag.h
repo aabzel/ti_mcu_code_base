@@ -11,6 +11,7 @@ extern "C" {
 #include "lora_constants.h"
 #include "sx1262_drv.h"
 
+const char* LowDataRateOpt2Str(uint8_t packet_type);
 char* dbm2wattsStr(int32_t dbm);
 char* LoRaSyncWord2Str(uint16_t syn_word);
 char* LinkDist2str(double bit_s);

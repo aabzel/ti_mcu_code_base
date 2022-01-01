@@ -21,7 +21,7 @@ typedef struct xModulationParams_t {
     BandWidth_t band_width;
     SpreadingFactor_t spreading_factor;
     LoRaCodingRate_t coding_rate;
-    uint8_t low_data_rate_optimization; //(LDRO)
+    LowDataRateOpt_t low_data_rate_optimization; //(LDRO)
 } ModulationParams_t;
 
 

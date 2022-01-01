@@ -675,7 +675,7 @@ bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
         tx_array[0] = modParams->spreading_factor;
         tx_array[1] = modParams->band_width;
         tx_array[2] = modParams->coding_rate;
-        tx_array[3] = 0x00; // Low Data Rate Optimization (LDRO) LDRO LowDataRateOptimize 0:OFF; 1:ON; TODO
+        tx_array[3] = modParams->low_data_rate_optimization; // Low Data Rate Optimization (LDRO) LDRO LowDataRateOptimize 0:OFF; 1:ON; TODO
         res = sx1262_send_opcode(OPCODE_SET_MODULATION_PARAMS, tx_array, sizeof(tx_array), NULL, 0);
     }
     return res;
@@ -914,12 +914,15 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
     sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
     sx1262Instance->mod_params.spreading_factor = DFLT_SF;
+    sx1262Instance->mod_params.low_data_rate_optimization=LDRO_OFF;
     sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
 #ifdef HAS_SX1262_BIT_RATE
     sx1262Instance->tx_max_bit_rate = 0.0;
 #endif
 
 #ifdef HAS_FLASH_FS
+    LOAD_PARAM(PAR_ID_LOW_DATA_RATE,sx1262Instance->mod_params.low_data_rate_optimization, 1, "LowDataRateOpt", LDRO_OFF,
+               LowDataRateOpt2Str);
     LOAD_PARAM(PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen", 255,
                PayloadLen2Str);
     LOAD_PARAM(PAR_ID_PACKET_TYPE, sx1262Instance->packet_param.packet_type, 1, "PktType", PACKET_TYPE_LORA,
@@ -1091,7 +1094,6 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
             Sx1262Instance.tx_done = false;
             if((NULL != tx_buf) && (0 < tx_len)) {
                 //res = sx1262_clear_fifo();
-                // sx1262_set_tx_len(tx_len); /*Error*/
                 res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
                 res = sx1262_set_payload(tx_buf, tx_len) && res;
                 LOG_DEBUG(LORA, "TxLen:%u", tx_len);
@@ -1203,7 +1205,8 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     bool res = false;
     uint8_t rx_array[3];
     memset(rx_array, 0x00, sizeof(rx_array));
-    res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, sizeof(rx_array));
+
+    res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL,  0, rx_array, sizeof(rx_array));
     if(res) {
         Sx1262Instance.status = rx_array[1];
         *packet_type = (RadioPacketType_t)rx_array[2];
