@@ -132,45 +132,41 @@ bool parse_op_error(uint16_t op_error) {
     return res;
 }
 
-bool parse_irq_stat(uint16_t irq_stat) {
+bool parse_irq_stat(Sx1262IRQs_t irq_stat) {
     bool res = false;
-    io_printf("irq_stat: 0x%04x 0b%s" CRLF, irq_stat, utoa_bin16(irq_stat));
-    if((1 << IRQ_BIT_TXDONE) == (irq_stat & (1 << IRQ_BIT_TXDONE))) {
-        LOG_INFO(LORA, "TX done");
-        res = true;
+
+    LOG_INFO(LORA,"irq_stat: 0x%04x 0b%s" CRLF, irq_stat.word, utoa_bin16(irq_stat.word));
+    if(irq_stat.TxDone){
+        LOG_INFO(LORA, "0 TX done");
     }
-    if((1 << IRQ_BIT_RXDONE) == (irq_stat & (1 << IRQ_BIT_RXDONE))) {
-        LOG_INFO(LORA, "RX done");
-        res = true;
+    if(irq_stat.RxDone){
+        LOG_INFO(LORA, "1 RX done");
     }
-    if((1 << IRQ_BIT_PREAMBLEDETECTED) == (irq_stat & (1 << IRQ_BIT_PREAMBLEDETECTED))) {
-        LOG_NOTICE(LORA, "preamble detected");
-        res = true;
+    if(irq_stat.PreambleDetected){
+        LOG_INFO(LORA, "2 preambleDetected");
     }
-    if((1 << IRQ_BIT_SYNCWORDVALID) == (irq_stat & (1 << IRQ_BIT_SYNCWORDVALID))) {
-        LOG_NOTICE(LORA, "sync word valid");
-        res = true;
+    if(irq_stat.SyncWordValid){
+        LOG_INFO(LORA, "3 sync wordValid");
     }
-    if((1 << IRQ_BIT_HEADERVALID) == (irq_stat & (1 << IRQ_BIT_HEADERVALID))) {
-        LOG_NOTICE(LORA, "LoRa header received");
-        res = true;
+    if(irq_stat.HeaderValid){
+        LOG_INFO(LORA, "4 LoRa headerReceived");
     }
-    if((1 << IRQ_BIT_CRCERR) == (irq_stat & (1 << IRQ_BIT_CRCERR))) {
-        LOG_NOTICE(LORA, "Wrong CRC received");
-        res = true;
+    if(irq_stat.HeaderErr){
+        LOG_INFO(LORA, "5 LoRa headerCRCError");
     }
-    if((1 << IRQ_BIT_CADDONE) == (irq_stat & (1 << IRQ_BIT_CADDONE))) {
-        LOG_NOTICE(LORA, "Channel activity detection finished");
-        res = true;
+    if(irq_stat.CrcErr){
+        LOG_INFO(LORA, "6 Wrong CRCreceived");
     }
-    if((1 << IRQ_BIT_CADDETECTED) == (irq_stat & (1 << IRQ_BIT_CADDETECTED))) {
-        LOG_NOTICE(LORA, "Channel activity detected ");
-        res = true;
+    if(irq_stat.CadDone){
+        LOG_INFO(LORA, "7 ChannelActivityDetectionFinished");
     }
-    if((1 << IRQ_BIT_TIMEOUT) == (irq_stat & (1 << IRQ_BIT_TIMEOUT))) {
-        LOG_WARNING(LORA, "Rx or Tx timeout");
-        res = true;
+    if(irq_stat.CadDetected){
+        LOG_INFO(LORA, "8 ChannelActivityDetected");
     }
+    if(irq_stat.Timeout){
+        LOG_INFO(LORA, "9 RxOrTxTimeout");
+    }
+
     return res;
 }
 

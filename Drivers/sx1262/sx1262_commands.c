@@ -99,6 +99,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         LOG_INFO(LORA, "DataAval cnt: %u", Sx1262Instance.data_aval_cnt);
         LOG_INFO(LORA, "DataRate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
         io_printf("int cnt: %u" CRLF, Sx1262Instance.int_cnt);
+
         LOG_INFO(LORA, "busyCnt: %u", Sx1262Instance.busy_cnt);
         io_printf("debug: %u" CRLF, Sx1262Instance.debug);
         io_printf("showBin: %u" CRLF, Sx1262Instance.show_bin);

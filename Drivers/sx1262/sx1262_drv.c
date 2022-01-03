@@ -471,6 +471,7 @@ bool sx1262_clear_dev_error(void) {
 }
 /*
   ClearIrqStatus 0x02
+  sxo 0x02 0xFFFF 0
   This command clears an IRQ flag in the IRQ register.
   */
 bool sx1262_clear_irq(uint16_t clear_irq_param) {
@@ -478,6 +479,7 @@ bool sx1262_clear_irq(uint16_t clear_irq_param) {
     uint16_t clear_irq_param_be;
     uint8_t tx_array[2];
     memset(tx_array, 0x00, sizeof(tx_array));
+    //clear_irq_param_be=clear_irq_param;
     clear_irq_param_be = reverse_byte_order_uint16(clear_irq_param);
     memcpy(tx_array, &clear_irq_param_be, sizeof(uint16_t));
     res = sx1262_send_opcode(OPCODE_CLEAR_IRQ_STATUS, tx_array, sizeof(tx_array), NULL, 0);
@@ -947,7 +949,7 @@ bool sx1262_init(void) {
 
         res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
 
-        res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
+        res = sx1262_set_dio_irq_params(IQR_MAIN_INT, IQR_MAIN_INT, IQR_MAIN_INT, IQR_MAIN_INT) && res;
         res =  sx1262_set_dio2_as_rf_switch_ctrl(DIO2_RF_SW)&& res;
 
         res = sx1262_set_crc_poly(Sx1262Instance.crc_poly) && res;
@@ -1026,14 +1028,24 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
     return res;
 }
 
-
-
-
-bool sx1262_get_irq_status(uint16_t* out_irq_stat) {
+/*GetIrqStatus
+ * sxo 0x12 0 4
+ * sxo 0x12 0x000000 4*/
+bool sx1262_get_irq_status(Sx1262IRQs_t* out_irq_stat) {
     bool res = false;
-    GET_4_BYTE_OPCODE(OPCODE_GET_IRQ_STATUS, out_irq_stat);
+    uint8_t rx_array[4];
+    memset(rx_array, 0xFF, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_GET_IRQ_STATUS, NULL,  0, rx_array, sizeof(rx_array));
+    if(res) {
+        uint16_t irq_stat = 0;
+        Sx1262Instance.status = rx_array[1];
+        memcpy(&irq_stat, &rx_array[2], 2);
+       // irq_stat = reverse_byte_order_uint16(irq_stat);
+        out_irq_stat->word = irq_stat;
+    }
     return res;
 }
+
 
 /*
   GetDeviceErrors
@@ -1140,49 +1152,52 @@ bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora) {
     return res;
 }
 
-static bool sx1262_proc_irq_status(uint16_t irq_status) {
+static bool sx1262_proc_irq_status(Sx1262IRQs_t*  irq_status) {
     bool res = false;
-    if(0 < (MASK_10BIT & irq_status)) {
-        Sx1262Instance.irq_cnt.total += (uint16_t)count_set_bits((uint32_t)MASK_10BIT & irq_status);
+    Sx1262IRQs_t irq;
+    irq.word = 0;
+    if(0 < (MASK_10BIT & irq_status->word)) {
+        Sx1262Instance.irq_cnt.total += (uint16_t)count_set_bits((uint32_t)MASK_10BIT & irq_status->word);
         res = true;
     }
 
-    if((1 << IRQ_BIT_TXDONE) == (irq_status & (1 << IRQ_BIT_TXDONE))) {
+    if(irq_status->TxDone) {
         Sx1262Instance.irq_cnt.tx_done++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_TXDONE);
+        irq.TxDone =1;
     }
-    if((1 << IRQ_BIT_RXDONE) == (irq_status & (1 << IRQ_BIT_RXDONE))) {
+    if(irq_status->RxDone) {
         Sx1262Instance.irq_cnt.rx_done++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_RXDONE);
+        irq.RxDone = 1;
     }
-    if((1 << IRQ_BIT_PREAMBLEDETECTED) == (irq_status & (1 << IRQ_BIT_PREAMBLEDETECTED))) {
+    if(irq_status->PreambleDetected) {
         Sx1262Instance.irq_cnt.preamble_detected++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_PREAMBLEDETECTED);
+        irq.PreambleDetected=1;
     }
-    if((1 << IRQ_BIT_SYNCWORDVALID) == (irq_status & (1 << IRQ_BIT_SYNCWORDVALID))) {
+    if(irq_status->SyncWordValid) {
         Sx1262Instance.irq_cnt.syncword_valid++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_SYNCWORDVALID);
+        irq.SyncWordValid=1;
     }
-    if((1 << IRQ_BIT_HEADERVALID) == (irq_status & (1 << IRQ_BIT_HEADERVALID))) {
+    if(irq_status->HeaderValid) {
         Sx1262Instance.irq_cnt.header_valid++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_HEADERVALID);
+        irq.HeaderValid=1;
     }
-    if((1 << IRQ_BIT_CRCERR) == (irq_status & (1 << IRQ_BIT_CRCERR))) {
+    if(irq_status->CrcErr) {
         Sx1262Instance.irq_cnt.crc_err++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_CRCERR);
+        irq.CrcErr=1;
     }
-    if((1 << IRQ_BIT_CADDONE) == (irq_status & (1 << IRQ_BIT_CADDONE))) {
+    if(irq_status->CadDone) {
         Sx1262Instance.irq_cnt.cad_done++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_CADDONE);
+        irq.CadDone =1;
     }
-    if((1 << IRQ_BIT_CADDETECTED) == (irq_status & (1 << IRQ_BIT_CADDETECTED))) {
+    if(irq_status->CadDetected) {
         Sx1262Instance.irq_cnt.cad_detected++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_CADDETECTED);
+        irq.CadDetected=1;
     }
-    if((1 << IRQ_BIT_TIMEOUT) == (irq_status & (1 << IRQ_BIT_TIMEOUT))) {
+    if(irq_status->Timeout) {
         Sx1262Instance.irq_cnt.timeout++;
-        res = sx1262_clear_irq(1 << IRQ_BIT_TIMEOUT);
+        irq.Timeout=1;
     }
+    res = sx1262_clear_irq(0xFFFF);
     return res;
 }
 
@@ -1495,11 +1510,12 @@ static inline bool sx1262_sync_registers(void) {
     }
 #endif /*HAS_SX1262_POLL*/
 
-    tempSx1262Instance.irq_stat = 0;
+    tempSx1262Instance.irq_stat.word = 0;
     res = sx1262_get_irq_status(&tempSx1262Instance.irq_stat);
     if(res) {
         Sx1262Instance.irq_stat = tempSx1262Instance.irq_stat;
-        sx1262_proc_irq_status(tempSx1262Instance.irq_stat);
+        sx1262_proc_irq_status(&tempSx1262Instance.irq_stat);
+       // Sx1262Instance.irq_stat.word = 0;
     }
 
     tempSx1262Instance.get_sync_word = 0;

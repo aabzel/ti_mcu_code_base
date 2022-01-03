@@ -68,6 +68,23 @@ typedef union uSx1262Status_t{
       };
 } Sx1262Status_t;
 
+typedef union uSx1262IRQs_t{
+      uint16_t word;
+      struct {
+          uint8_t TxDone :1;       /*bit 0*/
+          uint8_t RxDone:1;        /*bit 1*/
+          uint8_t PreambleDetected:1; /*bit 2*/
+          uint8_t SyncWordValid:1; /*bit 3*/
+          uint8_t HeaderValid:1;  /*bit 4*/
+          uint8_t HeaderErr:1;    /*bit 5*/
+          uint8_t CrcErr:1;       /*bit 6*/
+          uint8_t CadDone:1;      /*bit 7*/
+          uint8_t CadDetected:1;  /*bit 8*/
+          uint8_t Timeout:1;      /*bit 9*/
+      };
+} Sx1262IRQs_t;
+
+
 typedef struct xSx1262_t {
     uint64_t set_sync_word;
     uint64_t get_sync_word;
@@ -89,7 +106,7 @@ typedef struct xSx1262_t {
     uint16_t crc_init;
     uint16_t crc_poly;
     uint16_t op_error;
-    uint16_t irq_stat;
+    Sx1262IRQs_t irq_stat;
     uint8_t status;
     Sx1262Status_t dev_status;
    // uint8_t com_stat;

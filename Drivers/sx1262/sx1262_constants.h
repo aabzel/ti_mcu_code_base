@@ -41,6 +41,7 @@
 #define IRQ_BIT_TIMEOUT 9          /* Rx or Tx timeout All */
 
 #define IQR_ALL_INT MASK_10BIT
+#define IQR_MAIN_INT MASK_7BIT
 
 typedef enum eRegulatorMode_t{
    REG_MODE_ONLY_LDO= 0x00,  /*used for all modes*/

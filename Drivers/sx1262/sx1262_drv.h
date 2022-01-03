@@ -62,7 +62,7 @@ bool is_valid_coding_rate(LoRaCodingRate_t coding_rate);
 bool is_power_valid(int8_t power);
 
 bool sx1262_get_dev_err(uint16_t* op_error);
-bool sx1262_get_irq_status(uint16_t* irq_stat);
+bool sx1262_get_irq_status(Sx1262IRQs_t* irq_stat);
 bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, int8_t* RssiPkt, uint8_t* SnrPkt,
                               int8_t* SignalRssiPkt);
 bool sx1262_get_packet_type(RadioPacketType_t* const packet_type);

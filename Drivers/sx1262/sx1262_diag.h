@@ -26,7 +26,7 @@ const char* LoraHeaderType2Str(uint8_t header_type);
 const char* LoraCrcType2Str(uint8_t crc_type);
 uint32_t bandwidth2num(BandWidth_t bandwidth);
 bool parse_dev_stat(uint8_t dev_stat);
-bool parse_irq_stat(uint16_t irq_stat);
+bool parse_irq_stat(Sx1262IRQs_t irq_stat);
 bool parse_op_error(uint16_t op_error);
 bool print_int_diag(Sx1262IrqCnt_t* irq_cnt);
 bool printf_pack_stat(PaketStat_t* pack_stat, char* name);
