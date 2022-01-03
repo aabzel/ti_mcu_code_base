@@ -362,6 +362,14 @@ bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time) {
     return res;
 }
 
+/*SetDIO2AsRfSwitchCtrl*/
+bool sx1262_set_dio2_as_rf_switch_ctrl(Dio2Mode_t mode){
+    bool res = false;
+    uint8_t tx_array[1] = {0};
+    tx_array[0] = (uint8_t) mode;
+    res = sx1262_send_opcode(OPCODE_SET_DIO2_AS_RFSWITCH , tx_array, sizeof(tx_array), NULL, 0);
+    return res;
+}
 /* SetPacketParams
  * This command is used to set the parameters of the packet handling block.
  * */
@@ -940,6 +948,7 @@ bool sx1262_init(void) {
         res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
 
         res = sx1262_set_dio_irq_params(IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT, IQR_ALL_INT) && res;
+        res =  sx1262_set_dio2_as_rf_switch_ctrl(DIO2_RF_SW)&& res;
 
         res = sx1262_set_crc_poly(Sx1262Instance.crc_poly) && res;
         res = sx1262_set_crc_seed(Sx1262Instance.crc_init) && res;

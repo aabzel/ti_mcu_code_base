@@ -3,10 +3,6 @@
 
 #include <stdint.h>
 
-typedef enum eRegulatorMode_t{
-   REG_MODE_ONLY_LDO= 0x00,  /*used for all modes*/
-   REG_MODE_DC_DC_LDO= 0x01, /*used for STBY_XOSC,FS, RX and TX modes*/
-}RegulatorMode_t;
 
 #define DEV_SEL_SX1262 0
 #define DEV_SEL_SX1261 1
@@ -45,6 +41,17 @@ typedef enum eRegulatorMode_t{
 #define IRQ_BIT_TIMEOUT 9          /* Rx or Tx timeout All */
 
 #define IQR_ALL_INT MASK_10BIT
+
+typedef enum eRegulatorMode_t{
+   REG_MODE_ONLY_LDO= 0x00,  /*used for all modes*/
+   REG_MODE_DC_DC_LDO= 0x01, /*used for STBY_XOSC,FS, RX and TX modes*/
+}RegulatorMode_t;
+
+/*controlling the external RX switch*/
+typedef enum eDio2Mode_t{
+    DIO2_FREE=0,
+    DIO2_RF_SW=1,
+}Dio2Mode_t;
 
 /*Rx Gain Configuration*/
 typedef enum eRxGain_t{
