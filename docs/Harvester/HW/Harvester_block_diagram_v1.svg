@@ -17,6 +17,34 @@
   <defs
      id="defs2">
     <marker
+       style="overflow:visible;"
+       id="marker3235"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path3233" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker2523"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(0.4,0,0,0.4,4,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path2521" />
+    </marker>
+    <marker
        style="overflow:visible"
        id="marker6017"
        refX="0"
@@ -1577,9 +1605,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.828427"
-     inkscape:cx="605.71731"
-     inkscape:cy="328.97956"
+     inkscape:zoom="45.254832"
+     inkscape:cx="254.71736"
+     inkscape:cy="325.13403"
      inkscape:document-units="mm"
      inkscape:current-layer="layer3"
      inkscape:document-rotation="0"
@@ -1709,6 +1737,32 @@
        height="13.737016"
        x="188.58621"
        y="61.961975" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.616138px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0924207"
+       x="62.688877"
+       y="86.845978"
+       id="text2515"><tspan
+         sodipodi:role="line"
+         id="tspan2513"
+         x="62.688877"
+         y="86.845978"
+         style="font-size:0.616138px;stroke-width:0.0924207">RISIGN_EDGE</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.827572px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.124136"
+       x="45.437515"
+       y="86.932739"
+       id="text2519"><tspan
+         sodipodi:role="line"
+         id="tspan2517"
+         x="45.437515"
+         y="86.932739"
+         style="font-size:0.827572px;stroke-width:0.124136">DIO1</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 67.118062,86.972848 h 0.520341 v -0.643117 h 0.760047"
+       id="path3915" />
   </g>
   <g
      inkscape:label="Layer 1"
@@ -2336,16 +2390,16 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.682038px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.255765"
-       x="48.317299"
-       y="86.90889"
+       x="49.112427"
+       y="86.862114"
        id="text2635"><tspan
          sodipodi:role="line"
          id="tspan2633"
-         x="48.317299"
-         y="86.90889"
+         x="49.112427"
+         y="86.862114"
          style="font-size:0.682038px;stroke-width:0.255765">LoRa_INT</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.1363;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1378-0);marker-start:url(#marker5807)"
+       style="fill:none;stroke:#000000;stroke-width:0.136;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:;marker-start:url(#marker2523)"
        d="M 78.04322,87.182767 45.17167,87.20671 45.12391,75.698993"
        id="path1386-7"
        sodipodi:nodetypes="ccc" />
@@ -3193,15 +3247,15 @@
          y="88.225655">DIO_29</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:0.453067px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.113267"
-       x="55.13316"
-       y="86.950935"
+       style="font-style:normal;font-weight:normal;font-size:0.683005px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.170752"
+       x="55.110592"
+       y="86.896706"
        id="text13860-1-0"><tspan
          sodipodi:role="line"
          id="tspan13858-7-2"
-         style="font-size:0.453067px;stroke-width:0.113267"
-         x="55.13316"
-         y="86.950935">DIO_28</tspan></text>
+         style="font-size:0.683005px;stroke-width:0.170752"
+         x="55.110592"
+         y="86.896706">DIO_28</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.453067px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.113267"

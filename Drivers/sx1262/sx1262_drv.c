@@ -100,7 +100,12 @@ bool sx1262_chip_select(bool state) {
 Sx1262_t Sx1262Instance = {0};
 
 #ifdef HAS_SX1262_DEBUG
-const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
+const xSx1262Reg_t RegMap[] = {
+                               {0x0580, "DIOxOutputEnable"},
+                               {0x0583, "DIOxInputEnable"},
+                               {0x0584, "DIOxPullUpControl"},
+                               {0x0585, "DIOxPullDownControl"},
+                               {0x06B8, "WhiteningInitValMSB"},
                                              {0x06B9, "WhiteningInitValLSB"},
                                              {0x06BC, "CRCMSBInitVal0"},
                                              {0x06BD, "CRCLSBInitVal1"},
@@ -116,16 +121,23 @@ const xSx1262Reg_t RegMap[SX1262_REG_CNT] = {{0x06B8, "WhiteningInitValMSB"},
                                              {SYNC_WORD_7, "SyncWord7"},
                                              {0x06CD, "NodeAddr"},
                                              {0x06CE, "BroadcastAddr"},
+                                             {0x0736, "IQpolaritySetup"},
                                              {0x0740, "LoRaSyncWordMSB"},
                                              {0x0741, "LoRaSyncWordLSB"},
                                              {RAND_NUM_GEN_0, "RandNumGen0"},
                                              {RAND_NUM_GEN_1, "RandNumGen1"},
                                              {RAND_NUM_GEN_2, "RandNumGen2"},
                                              {RAND_NUM_GEN_3, "RandNumGen3"},
+                                             {0x0889, "TxModulation"},
                                              {0x08AC, "RxGain"},
+                                             {0x08D8, "TxClampConfig"},
                                              {0x08E7, "OCPConfig"},
+                                             {0x0902, "RTCcontrol"},
                                              {0x0911, "XTAtrim"},
-                                             {0x0912, "XTBtrim"}};
+                                             {0x0912, "XTBtrim"},
+                                             {0x920, "DIO3outputVoltageControl"},
+                                             {0x944, "EventMask"},
+};
 #endif /*HAS_SX1262_DEBUG*/
 
 bool sx1262_wait_on_busy(uint32_t time_out_ms) {
