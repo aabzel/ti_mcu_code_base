@@ -29,7 +29,7 @@
 #define SX1262_PERIOD_US 300U
 
 #define FREQ_DIV 33554432U // 0x02000000 ( double )pow( 2.0, 25.0 )
-#define SX1262_REG_CNT 26U
+#define SX1262_REG_CNT 36U
 #define OPCODE_SIZE 1
 #define MHZ_TO_FRF 1048576 /* ((float)XTAL_FREQ_HZ))*10000000.0f)*/
 
