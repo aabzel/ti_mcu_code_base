@@ -1,11 +1,7 @@
 #include "led_drv.h"
 
-#ifdef CC26XX
-#include <gpio.h>
-#include <stddef.h>
 #include <stdint.h>
-#include <ti/drivers/GPIO.h>
-#endif /*CC26XX*/
+#include <stddef.h>
 
 #include "clocks.h"
 #include "data_utils.h"
