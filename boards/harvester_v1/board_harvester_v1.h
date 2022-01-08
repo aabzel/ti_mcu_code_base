@@ -44,6 +44,7 @@
 
 #define VOL_DIV_SCALE_PWR 11.0f
 #define VOL_DIV_SCALE_ACC 1.47619f
+#define LED_COUNT 2
 
 #define BOARD_NAME "Harvester"
 #define MCU_NAME "CC2642R1F"

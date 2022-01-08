@@ -1,9 +1,11 @@
 #include "led_drv.h"
 
+#ifdef CC26XX
 #include <gpio.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <ti/drivers/GPIO.h>
+#endif /*CC26XX*/
 
 #include "clocks.h"
 #include "data_utils.h"
@@ -13,11 +15,15 @@
 #endif /*HAS_HEALTH_MONITOR*/
 #include "utils_math.h"
 
-Led_t Led[LED_CNT];
+Led_t Led[LED_COUNT];
 
 static void test_leds(void) {
-    GPIO_writeDio(DIO_LED_RED, 1);
-    GPIO_writeDio(DIO_LED_GREEN, 1);
+#ifdef DIO_LED_RED
+    gpio_set_state(DIO_LED_RED, 1);
+#endif
+#ifdef DIO_LED_GREEN
+    gpio_set_state(DIO_LED_GREEN, 1);
+#endif
 }
 
 bool led_blink(Led_t *inLed, uint32_t duration_ms){
@@ -38,11 +44,13 @@ bool led_init(void) {
     Led[LED_INDEX_GREEN].mode = LED_MODE_PWM;
     Led[LED_INDEX_GREEN].dio_num = DIO_LED_GREEN;
 
+#ifdef DIO_LED_RED
     Led[LED_INDEX_RED].period_ms = LED_RED_PERIOD_MS;
     Led[LED_INDEX_RED].duty = LED_RED_DUTY;
     Led[LED_INDEX_RED].phase_ms = LED_RED_PHASE;
     Led[LED_INDEX_RED].mode = LED_MODE_NONE;
     Led[LED_INDEX_RED].dio_num = DIO_LED_RED;
+#endif
 
     test_leds();
 
@@ -95,12 +103,14 @@ bool proc_leds(void) {
     bool res = true;
     uint16_t i=0;
     for(i=0;i<ARRAY_SIZE(Led);i++){
-        res=proc_led(&Led[i])&&res;
+        res = proc_led(&Led[i])&&res;
     }
 
 #ifdef HAS_HEALTH_MONITOR
     if(HealthMon.init_error) {
+#ifdef DIO_LED_RED
         Led[LED_INDEX_RED].mode = LED_MODE_PWM;
+#endif
     }
 #endif /*HAS_HEALTH_MONITOR*/
     return res;

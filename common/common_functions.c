@@ -4,9 +4,9 @@
 
 #include "clocks.h"
 
-#ifdef HAS_LED
+//#ifdef HAS_LED
 #include "led_drv.h"
-#endif /*HAS_LED*/
+//#endif /*HAS_LED*/
 
 #ifdef HAS_ADC
 #include "adc_drv.h"

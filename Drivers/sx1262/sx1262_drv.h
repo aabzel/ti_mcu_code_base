@@ -86,6 +86,12 @@ bool sx1262_conf_rx(void);
 bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
                         uint16_t rx_array_len);
 bool sx1262_set_buffer_base_addr(uint8_t tx_addr, uint8_t rx_addr);
+bool sx1262_set_cad(void);
+bool sx1262_set_cad_params(CadNunSym_t cad_symbol_num,
+                           uint8_t cad_det_peak,/*See App Application note AN1200.48 */
+                           uint8_t cad_det_min,/*See App Application note AN1200.48 */
+                           CadExtMode_t  cad_exit_mode,
+                           uint16_t cad_timeout);
 bool sx1262_set_crc_polynomial(uint16_t polynomial);
 bool sx1262_set_crc_seed(uint16_t seed);
 bool sx1262_set_dio_irq_params(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask);

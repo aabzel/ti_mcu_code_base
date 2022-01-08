@@ -53,7 +53,6 @@ uint32_t gpio_read(uint8_t pad_num);
 bool gpio_set_state(uint8_t io_pin, uint8_t logic_level);
 bool is_edge_irq_en(uint8_t dio_pin);
 bool gpio_toggle(uint8_t io_pin);
-bool proc_led(void);
 uint8_t get_mcu_pin(uint8_t io_pin);
 uint8_t get_aux_num(uint8_t io_pin);
 bool gpio_init_one(Pin_t *pinInstance);

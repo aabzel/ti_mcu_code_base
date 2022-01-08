@@ -540,6 +540,32 @@ bool is_valid_spreading_factor(SpreadingFactor_t Spreading_factor) {
     return res;
 }
 
+/*SetCadParams*/
+bool sx1262_set_cad_params(CadNunSym_t cad_symbol_num,
+                           uint8_t cad_det_peak,/*See App Application note AN1200.48 */
+                           uint8_t cad_det_min,/*See App Application note AN1200.48 */
+                           CadExtMode_t  cad_exit_mode,
+                           uint16_t cad_timeout){
+    bool res = false;
+    uint8_t tx_array[7];/**/
+    memset(tx_array, 0x00, sizeof(tx_array));
+    tx_array[0]=(uint8_t) cad_symbol_num;
+    tx_array[1]=(uint8_t) cad_det_peak;
+    tx_array[2]=(uint8_t) cad_det_min;
+    tx_array[3]=(uint8_t) cad_exit_mode;
+    memcpy(&tx_array[4],&cad_timeout,2);
+    res = sx1262_send_opcode(OPCODE_SET_CAD_PARAM, tx_array, sizeof(tx_array), NULL, 0);
+    return res;
+}
+
+
+
+bool sx1262_set_cad(void){
+    bool res = false;
+    res = sx1262_send_opcode(OPCODE_SET_CAD, NULL, 0, NULL, 0);
+    return res;
+}
+
 bool is_valid_coding_rate(LoRaCodingRate_t coding_rate) {
     bool res = false;
     switch(coding_rate) {
@@ -1021,7 +1047,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
                 Sx1262Instance.tx_start_time_stamp_ms = get_time_ms32();
 #endif          /*HAS_SX1262_BIT_RATE*/
                 /*TODO: Set Red Led on*/
-#ifdef HAS_LED
+#ifdef LED_INDEX_RED
                 led_on(&Led[LED_INDEX_RED]);
 #endif
                 res = sx1262_set_tx(timeout_s);
@@ -1166,8 +1192,9 @@ bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora) {
 
 static bool sx1262_proc_irq_status(Sx1262IRQs_t*  irq_status) {
     bool res = false;
-    Sx1262IRQs_t irq;
-    irq.word = 0;
+   // Sx1262IRQs_t irq;
+   // (void) irq;
+   // irq.word = 0;
     if(0 < (MASK_10BIT & irq_status->word)) {
         Sx1262Instance.irq_cnt.total += (uint16_t)count_set_bits((uint32_t)MASK_10BIT & irq_status->word);
         res = true;
@@ -1175,39 +1202,39 @@ static bool sx1262_proc_irq_status(Sx1262IRQs_t*  irq_status) {
 
     if(irq_status->TxDone) {
         Sx1262Instance.irq_cnt.tx_done++;
-        irq.TxDone =1;
+      //  irq.TxDone =1;
     }
     if(irq_status->RxDone) {
         Sx1262Instance.irq_cnt.rx_done++;
-        irq.RxDone = 1;
+      //  irq.RxDone = 1;
     }
     if(irq_status->PreambleDetected) {
         Sx1262Instance.irq_cnt.preamble_detected++;
-        irq.PreambleDetected=1;
+      //  irq.PreambleDetected=1;
     }
     if(irq_status->SyncWordValid) {
         Sx1262Instance.irq_cnt.syncword_valid++;
-        irq.SyncWordValid=1;
+      //  irq.SyncWordValid=1;
     }
     if(irq_status->HeaderValid) {
         Sx1262Instance.irq_cnt.header_valid++;
-        irq.HeaderValid=1;
+       // irq.HeaderValid=1;
     }
     if(irq_status->CrcErr) {
         Sx1262Instance.irq_cnt.crc_err++;
-        irq.CrcErr=1;
+      //  irq.CrcErr=1;
     }
     if(irq_status->CadDone) {
         Sx1262Instance.irq_cnt.cad_done++;
-        irq.CadDone =1;
+      //  irq.CadDone =1;
     }
     if(irq_status->CadDetected) {
         Sx1262Instance.irq_cnt.cad_detected++;
-        irq.CadDetected=1;
+      //  irq.CadDetected=1;
     }
     if(irq_status->Timeout) {
         Sx1262Instance.irq_cnt.timeout++;
-        irq.Timeout=1;
+      //  irq.Timeout=1;
     }
     res = sx1262_clear_irq(0xFFFF);
     return res;
@@ -1457,7 +1484,7 @@ static inline bool sx1262_poll_status(void) {
             break;
         case COM_STAT_COM_TX_DONE: {
             Sx1262Instance.tx_done = true;
-#ifdef HAS_LED
+#ifdef LED_INDEX_RED
             led_off(&Led[LED_INDEX_RED]);
 #endif
 #ifdef HAS_SX1262_BIT_RATE

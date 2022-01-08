@@ -233,6 +233,7 @@
                     <state>HAS_HW_TESTS</state>
                     <state>HAS_IAR</state>
                     <state>HAS_INTERRUPT</state>
+                    <state>HAS_LED</state>
                     <state>HAS_LORA</state>
                     <state>HAS_MCU</state>
                     <state>HAS_PARAM</state>
@@ -387,11 +388,11 @@
                     <state>$PROJ_DIR$/../../bsp_stm32f4/flash_nvs</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4/flash</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4/gpio</state>
+                    <state>$PROJ_DIR$/../../bsp_stm32f4/interrupt</state>
+                    <state>$PROJ_DIR$/../../bsp_stm32f4/spi</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4/spi</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4/tim</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4/uart</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/interrupt</state>
-                    <state>$PROJ_DIR$/../../bsp_stm32f4/spi</state>
                     <state>$PROJ_DIR$/../../bsp_stm32f4</state>
                     <state>$PROJ_DIR$/../../CMSIS/Device/ST/STM32F4xx/Include</state>
                     <state>$PROJ_DIR$/../../CMSIS/Include</state>
@@ -400,14 +401,15 @@
                     <state>$PROJ_DIR$/../../Drivers/boot_drv</state>
                     <state>$PROJ_DIR$/../../Drivers/cli_drv</state>
                     <state>$PROJ_DIR$/../../Drivers/flash_fs</state>
+                    <state>$PROJ_DIR$/../../Drivers/led_drv</state>
+                    <state>$PROJ_DIR$/../../Drivers/lora</state>
                     <state>$PROJ_DIR$/../../Drivers/params</state>
+                    <state>$PROJ_DIR$/../../Drivers/sx1262</state>
                     <state>$PROJ_DIR$/../../Drivers/task_drv</state>
                     <state>$PROJ_DIR$/../../Drivers/telematic</state>
-                    <state>$PROJ_DIR$/../../Drivers/lora</state>
-                    <state>$PROJ_DIR$/../../Drivers/sx1262</state>
                     <state>$PROJ_DIR$/../../Drivers</state>
-                    <state>$PROJ_DIR$/../../protocols</state>
                     <state>$PROJ_DIR$/../../protocols/tbfp_protocol</state>
+                    <state>$PROJ_DIR$/../../protocols</state>
                     <state>$PROJ_DIR$/../../STM32F4xx_HAL_Driver/Inc/Legacy</state>
                     <state>$PROJ_DIR$/../../STM32F4xx_HAL_Driver/Inc</state>
                     <state>$PROJ_DIR$/../../unit_tests/test_set_hw/test_sx1262</state>
@@ -423,8 +425,8 @@
                     <state>$PROJ_DIR$/../../utils</state>
                     <state>$PROJ_DIR$/../..</state>
                     <state>$PROJ_DIR$/Core</state>
-                    <state>$PROJ_DIR$</state>
                     <state>$PROJ_DIR$\..\..\unit_tests\test_set_hw\test_flash_fs</state>
+                    <state>$PROJ_DIR$</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1298,6 +1300,15 @@
             <name>flash_nvs</name>
             <file>
                 <name>$PROJ_DIR$\..\..\bsp_stm32f4\flash_nvs\flash_nvs_drv.c</name>
+            </file>
+        </group>
+        <group>
+            <name>led_drv</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\led_drv\led_commands.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\Drivers\led_drv\led_drv.c</name>
             </file>
         </group>
         <group>

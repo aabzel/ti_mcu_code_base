@@ -15,6 +15,9 @@
 #define DIO_SX1262_RST (gpio_port_pin2pad(PORT_G,1))
 #define DIO_SX1262_INT (gpio_port_pin2pad(PORT_D,0))
 
+#define LED_COUNT 1
+#define DIO_LED_GREEN (gpio_port_pin2pad(PORT_C, 13))
+
 #define RAM_SIZE (192 * K_BYTES)
 #define ROM_SIZE ( 1024 * K_BYTES)
 

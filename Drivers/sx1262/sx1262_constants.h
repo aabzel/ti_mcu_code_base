@@ -43,6 +43,25 @@
 #define IQR_ALL_INT MASK_10BIT
 #define IQR_MAIN_INT MASK_7BIT
 
+
+typedef enum eCadNunSym_t{
+    CAD_ON_1_SYMB =0x00, /* 1  Symbol*/
+    CAD_ON_2_SYMB =0x01, /* 2  Symbols*/
+    CAD_ON_4_SYMB =0x02, /* 4  Symbols*/
+    CAD_ON_8_SYMB =0x03, /* 8  Symbols*/
+    CAD_ON_16_SYMB =0x04, /* 16 Symbols*/
+    CAD_UNDEF=0x05,
+}CadNunSym_t;
+
+
+typedef enum eCadExtMode_t{
+    CAD_ONLY =0x00, /*The chip performs the CAD operation in LoRa®. Once done and whatever the
+activity on the channel, the chip goes back to STBY_RC mode.*/
+    CAD_RX =0x01,/*The chip performs a CAD operation and if an activity is detected, it stays in RX until
+a packet is detected or the timer reaches the timeout defined by
+cadTimeout * 15.625 us*/
+}CadExtMode_t;
+
 typedef enum eRegulatorMode_t{
    REG_MODE_ONLY_LDO= 0x00,  /*used for all modes*/
    REG_MODE_DC_DC_LDO= 0x01, /*used for STBY_XOSC,FS, RX and TX modes*/
