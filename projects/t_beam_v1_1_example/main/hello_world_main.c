@@ -22,7 +22,7 @@ void app_main(void)
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
 
-    //uart_init();
+    uart_init();
     printf("This is %s chip with %d CPU core(s), WiFi%s%s, ",
             CONFIG_IDF_TARGET,
             chip_info.cores,

@@ -19,5 +19,15 @@
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/common</locationURI>
 		</link>
+		<link>
+			<name>tBeamV1_1</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/boards/tBeamV1_1</locationURI>
+		</link>
+		<link>
+			<name>utils</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/utils</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>
