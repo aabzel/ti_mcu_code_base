@@ -1,0 +1,25 @@
+graph graphname {
+rankdir=LR;
+    NVIC -- UART;
+    DMA -- UART;
+	Regs--Flash;
+    Regs -- UART;
+    GPIO -- UART;
+	DMA--ADC;
+    DMA -- SPI;
+    NVIC -- SPI;
+	GPIO--DAC;
+    Regs -- SPI;
+	Regs--SysTick;
+	SPI--SX1262;
+	GPIO--SX1262;
+	SPI--TCAM4550;
+	UART--CLI;
+	CLOCK--CLI;
+	GPIO--ADC;
+	Regs--NVIC;
+    GPIO -- SPI;
+    RAM -- CRC;
+    Flash -- NVS;
+    NVS -- FlashFs;
+}
