@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>t_beam_v1_1_example</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>bsp_esp32</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/bsp_esp32</locationURI>
+		</link>
+		<link>
+			<name>common</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/common</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
