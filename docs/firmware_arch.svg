@@ -35,9 +35,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.0028457"
-     inkscape:cx="567.30557"
-     inkscape:cy="567.07759"
+     inkscape:zoom="0.50142285"
+     inkscape:cx="183.77601"
+     inkscape:cy="337.94375"
      inkscape:window-width="1920"
      inkscape:window-height="986"
      inkscape:window-x="2037"
@@ -216,6 +216,21 @@
        d="m 236.9973,116.93894 h -51.78525 v 75.02853 H 148.5 v -79.14976 l -4.17424,0.19787 v 78.95189 l -50.673752,0 0,-78.96058 -2.891645,-0.24765 0,79.20823 -11.006912,0 2e-6,-62.68341 -4.850502,-0.13992 0.09328,62.82333 H 49.996267 l -0.131915,-42.34512 -13.521418,-0.26384 0.06596,42.60896 H 18.591636 v 10.89663 l 230.696204,-0.0182 v -10.87843 h -4.63535 l 0.13958,-19.81965 -2.50015,-0.28195 -0.27984,20.1016 h -5.47421 z"
        id="path941"
        sodipodi:nodetypes="ccccccccccccccccccccccccccccc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 185.27641,101.2076 113.49279,98.308974"
+       id="path934" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:17.5514px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.438785"
+       x="35.710091"
+       y="47.28701"
+       id="text939"><tspan
+         sodipodi:role="line"
+         id="tspan937"
+         x="35.710091"
+         y="47.28701"
+         style="stroke-width:0.438785">rewrite with dot</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

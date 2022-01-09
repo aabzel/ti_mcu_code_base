@@ -7,22 +7,34 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 #include <stdio.h>
+#include <stdbool.h>
+
 #include "sdkconfig.h"
+#include "common_functions.h"
+#include "io_utils.h"
+#include "debug_info.h"
+#include "log.h"
 #include "uart_drv.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_spi_flash.h"
 
-void app_main(void)
-{
+void app_main(void){
+    bool res=false;
     printf("Hello world!\n");
 
     /* Print chip information */
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
 
-    uart_init();
+
+    res = try_init(sys_init(), "SYS") && res;
+
+    LOG_INFO(SYS, "init [%s]", (true == res) ? "OK!" : "Error!");
+ 
+    io_printf("Firmware launched!" CRLF);
+    print_version();
     printf("This is %s chip with %d CPU core(s), WiFi%s%s, ",
             CONFIG_IDF_TARGET,
             chip_info.cores,
@@ -36,6 +48,7 @@ void app_main(void)
 
     printf("Minimum free heap size: %d bytes\n", esp_get_minimum_free_heap_size());
 
+    super_main_loop();
     for (int i = 10; i >= 0; i--) {
         printf("Restarting in %d seconds...\n", i);
         vTaskDelay(1000 / portTICK_PERIOD_MS);

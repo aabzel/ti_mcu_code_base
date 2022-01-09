@@ -10,7 +10,9 @@
 
 #include "io_utils.h"
 #ifdef HAS_MCU
+#ifdef HAS_CLOCK
 #include "clocks.h"
+#endif
 #endif
 #include "sys.h"
 #include "terminal_codes.h"
@@ -227,7 +229,7 @@ bool log_write_begin(log_level_t level, log_facility_t facility) {
 
     if(is_log_enabled(level, facility)) {
         uint64_t now = 0;
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
         now = get_time_ms64();
 #endif
         if(log_colored) {

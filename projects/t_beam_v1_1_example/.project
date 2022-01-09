@@ -10,6 +10,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Drivers</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/Drivers</locationURI>
+		</link>
+		<link>
 			<name>bsp_esp32</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/bsp_esp32</locationURI>

@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "sys_config.h"
+
 #include "fifo_char.h"
 
 #ifdef DeviceFamily_CC26X2
@@ -50,9 +52,9 @@ typedef struct xUartHandle_t {
   UART_Handle uart_h;
   UART_Params uartParams;
 #endif
-#ifdef  USE_HAL_DRIVER 
   volatile uint32_t rx_cnt;
   volatile uint32_t tx_cnt;
+#ifdef  USE_HAL_DRIVER 
   UART_HandleTypeDef uart_h;
 #endif /*USE_HAL_DRIVER*/
 #ifdef  HAS_MCU

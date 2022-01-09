@@ -27,7 +27,9 @@ uint32_t g_uart_rx_cnt = 0;
 
 #define BUF_SIZE (1024)
 
-uart_config_t uart_config = {
+static intr_handle_t handle_console;
+
+uart_config_t UartConfig = {
     .baud_rate = ECHO_UART_BAUD_RATE,
     .data_bits = UART_DATA_8_BITS,
     .parity    = UART_PARITY_DISABLE,
@@ -36,6 +38,11 @@ uart_config_t uart_config = {
     .source_clk = UART_SCLK_APB,
 };
 
+bool usart_set_baudrate(uint8_t uart_num, uint16_t baudrate){
+    bool res = false;
+    return res;
+}
+
 
 
 static bool init_uart(uint8_t uart_num, char* name) {
@@ -43,6 +50,27 @@ static bool init_uart(uint8_t uart_num, char* name) {
   
     return res;
 }
+// Receive buffer to collect incoming data
+uint8_t rxbuf[256];
+/*
+ * Define UART interrupt subroutine to ackowledge interrupt
+ */
+static void IRAM_ATTR uart_intr_handle(void *arg){
+	uint8_t data[128];
+	size_t length = 0;
+	uart_get_buffered_data_len(UART_NUM_CLI, (size_t*)&length);
+	if(0<length){
+    	length =(size_t) uart_read_bytes(UART_NUM_CLI, data, length, 100);
+    	int i=0;
+    	for(i=0;i<length;i++){
+#ifdef HAS_CLI
+            uart_string_reader_rx_callback(&cmd_reader, data[i]);
+#endif /*HAS_CLI*/
+
+    	}
+	}
+}
+
 
 bool uart_init(void) {
     bool res = true;
@@ -53,8 +81,14 @@ bool uart_init(void) {
 #endif
 
     ESP_ERROR_CHECK(uart_driver_install(UART_NUM_CLI, BUF_SIZE * 2, 0, 0, NULL, intr_alloc_flags));
-    ESP_ERROR_CHECK(uart_param_config(UART_NUM_CLI, &uart_config));
+    ESP_ERROR_CHECK(uart_param_config(UART_NUM_CLI, &UartConfig));
     ESP_ERROR_CHECK(uart_set_pin(UART_NUM_CLI, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS));
+
+	// register new UART subroutine
+	ESP_ERROR_CHECK(uart_isr_register(UART_NUM_CLI, uart_intr_handle, NULL, ESP_INTR_FLAG_IRAM, &handle_console));
+
+	// enable RX interrupt
+	ESP_ERROR_CHECK(uart_enable_rx_intr(UART_NUM_CLI));
 
     char str[20] = "0";
     snprintf(str, sizeof(str), "UART%u", UART_NUM_CLI);
@@ -79,7 +113,7 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wai
 
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     bool res = false;
-
+    uart_read_bytes(UART_NUM_CLI, out_array, array_len, 100);
     return res;
 }
 

@@ -5,6 +5,7 @@
 #include "base_cmd.h"
 #include "convert.h"
 #include "data_utils.h"
+#include "io_utils.h"
 #include "log.h"
 #include "ostream.h"
 #include "table_utils.h"
@@ -104,7 +105,7 @@ bool uart_init_command(int32_t argc, char* argv[]) {
         }
 
         if(true == res) {
-            res = uart_set_baudrate(uart_num, baudrate);
+            res = usart_set_baudrate(uart_num, baudrate);
             if(false == res) {
                 LOG_ERROR(UART, "Unable to set baudrate");
             }

@@ -19,10 +19,10 @@
 
 bool sys_init(void);
 bool try_init(bool status, char* message);
-#ifdef NORTOS
+#ifdef SUPER_LOOP
 void super_loop(uint64_t loop_start_time);
 void custom_loop(uint64_t loop_start_time);
 void super_main_loop(void);
-#endif /*NORTOS*/
+#endif /*SUPER_LOOP*/
 
 #endif /* COMMON_LOOP_H */

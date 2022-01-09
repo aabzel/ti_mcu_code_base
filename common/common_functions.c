@@ -2,11 +2,12 @@
 
 #include <inttypes.h>
 
+#ifdef HAS_CLOCK
 #include "clocks.h"
-
-//#ifdef HAS_LED
+#endif
+#ifdef HAS_LED
 #include "led_drv.h"
-//#endif /*HAS_LED*/
+#endif /*HAS_LED*/
 
 #ifdef HAS_ADC
 #include "adc_drv.h"
@@ -99,7 +100,7 @@ bool sys_init(void) {
     return res;
 }
 
-#ifdef NORTOS
+#ifdef SUPER_LOOP
 void super_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_DEBUG
     iteration_cnt++;
@@ -194,7 +195,7 @@ void super_loop(uint64_t loop_start_time_us) {
 }
 #endif /*NORTOS*/
 
-#ifdef NORTOS
+#ifdef SUPER_LOOP
 _Noreturn void super_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
     uint64_t loop_start_time_us = 0;

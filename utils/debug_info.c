@@ -5,7 +5,9 @@
 
 #include "byte_utils.h"
 #include "convert.h"
+#ifdef HAS_CRC
 #include "crc32.h"
+#endif
 #include "data_utils.h"
 #include "io_utils.h"
 
