@@ -35,12 +35,12 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.50142285"
-     inkscape:cx="183.77601"
-     inkscape:cy="337.94375"
-     inkscape:window-width="1920"
-     inkscape:window-height="986"
-     inkscape:window-x="2037"
+     inkscape:zoom="1.0028457"
+     inkscape:cx="475.43183"
+     inkscape:cy="531.93847"
+     inkscape:window-width="1755"
+     inkscape:window-height="893"
+     inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer6"
@@ -451,9 +451,10 @@
   <g
      inkscape:groupmode="layer"
      id="layer5"
-     inkscape:label="NVIC">
+     inkscape:label="NVIC"
+     style="display:none">
     <path
-       style="fill:#ffd3ff;fill-opacity:1;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="opacity:0.996;fill:#ffd3ff;fill-opacity:1;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 18.469221,189.6956 H 249.28784 v -15.03846 h -44.4474 l 1e-5,-61.86744 -7.18248,-0.01 0.0933,61.87737 h -55.59422 v -61.6049 l -8.78968,0.19788 0.0215,61.40702 H 99.201036 l 3e-6,-61.70384 H 95.6393 l -3e-6,61.70384 H 18.469221 Z"
        id="path936"
        sodipodi:nodetypes="ccccccccccccccccc" />
