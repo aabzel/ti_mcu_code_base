@@ -109,7 +109,8 @@ bool print_version(void) {
 #endif /*USE_HAL_DRIVER*/
     io_printf("branch: %s" CRLF, GIT_BRANCH);
     io_printf("lastCommit: %s" CRLF, GIT_LAST_COMMIT_HASH);
-#ifdef HAS_FLASH
+
+#if defined(HAS_CRC) && defined( HAS_FLASH)
     all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
 #endif /*HAS_FLASH*/
     io_printf("FlashCRC32: 0x%08X" CRLF, all_flash_crc);
