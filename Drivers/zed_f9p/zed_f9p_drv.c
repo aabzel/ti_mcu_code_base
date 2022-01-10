@@ -309,8 +309,9 @@ static const keyValItem_t RoverCfgLut[] = {
 #endif
 
 bool zed_f9p_deploy_rover(void) {
-    bool res = false, out_res = true;
+    bool out_res = true;
 #ifdef HAS_UBLOX
+    bool res = false;
 #ifdef HAS_SX1262
     Sx1262Instance.sync_reg = false;
 #endif
