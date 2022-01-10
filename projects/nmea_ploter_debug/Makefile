@@ -43,7 +43,6 @@ EXECUTABLE=nmea_ploter_d
 include $(PROJECT_ROOT)code_base.mk
 include $(PROJECT_ROOT)protocols/nmea_protocol/nmea_protocol.mk
 
-include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 #include $(PROJECT_ROOT)tests/tests.mk
