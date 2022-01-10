@@ -9,17 +9,19 @@
 #include <TemperatureCC26X2.h>
 #endif /*CC26X2*/
 
+#include "common_functions.h"
 #ifdef NORTOS
 /*mandatory space NoRTOS uses stdint*/
 #ifdef CC26XX
 #include <NoRTOS.h>
 #endif /*CC26XX*/
-#include "common_functions.h"
 #endif /*NORTOS*/
 
 #include "health_monitor.h"
+#ifdef HAS_CLOCK
 #include "clocks.h"
 #include "sys_tick.h"
+#endif
 
 #ifdef HAS_ADC
 #include "adc_drv.h"
@@ -128,7 +130,6 @@ bool hw_init(void) {
 #ifdef HAS_GPIO
   res = gpio_init() && res;
 #endif /*HAS_GPIO*/
-
 
 #ifdef HAS_UART
   res = try_init(uart_init(),"UART") && res;

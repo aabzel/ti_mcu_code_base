@@ -3,10 +3,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifdef NORTOS
+#ifdef HAS_SUPER_LOOP
 #include "common_functions.h"
 #include "task_info.h"
-#endif /*NORTOS*/
+#endif /*HAS_SUPER_LOOP*/
 
 #ifdef HAS_EXT_RAM_EMUL
 #include "ext_ram_sim_drv.h"

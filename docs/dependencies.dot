@@ -53,6 +53,7 @@ digraph graphname {
     TBFP->LORA;
     TIM->RTC;
     TIM->WDT;
+    Flash->BootLoader;
     UART->BootLoader;
     UART->CLI;
     UART->NMEA;

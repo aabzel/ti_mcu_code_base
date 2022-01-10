@@ -10,7 +10,9 @@
 #include "boot_cfg.h"
 #endif
 #include "cli_manager.h"
+#ifdef HAS_CLOCK
 #include "clocks.h"
+#endif
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
@@ -243,7 +245,9 @@ bool cmd_wd_test(int32_t argc, char* argv[]) {
     }
     LOG_WARNING(SYS, "Delay for %" PRIu32 " ms", delay_in_ms);
     flush_printf();
+#ifdef HAS_CLOCK
     delay_ms(delay_in_ms);
+#endif
     return true;
 }
 
@@ -259,14 +263,17 @@ bool cmd_wd_test_hw(int32_t argc, char* argv[]) {
     }
     LOG_WARNING(SYS, "Delay for %" PRIu32 " ms", delay_in_ms);
     flush_printf();
-    {
-        uint32_t end_time = get_time_ms32() + delay_in_ms;
-        while(get_time_ms32() <= end_time) {
+    
+    uint32_t end_time =0;
+#ifdef HAS_CLOCK
+    end_time = get_time_ms32() + delay_in_ms;
+    while(get_time_ms32() <= end_time) {
 #ifdef HAS_SWT
-            wdt_reset_sw();
+        wdt_reset_sw();
 #endif
-        }
     }
+#endif /*HAS_CLOCK*/
+    
     return true;
 }
 

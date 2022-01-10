@@ -3,13 +3,13 @@
 #include <inttypes.h>
 
 #include "base_cmd.h"
+#ifdef HAS_CLOCK
 #include "clocks.h"
+#include "sys_tick.h"
+#endif
 #include "data_utils.h"
-//#include "diag_page_nums.h"
-//#include "diag_report.h"
 #include "flash_drv.h"
 #include "sys.h"
-#include "sys_tick.h"
 #include "table_utils.h"
 #include "writer_generic.h"
 
@@ -55,7 +55,10 @@ static bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
     if(taskItem){
         taskItem->start_count++;
         uint64_t stop = 0, delta = 0, period = 0;
+        uint64_t start = 0;
+#ifdef HAS_CLOCK
         uint64_t start = get_time_us();
+#endif
         if(taskItem->start_time_prev < start) {
             period = start - taskItem->start_time_prev;
             res = true;
@@ -74,7 +77,11 @@ static bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
         }else{
             res = false;
         }
+#ifdef HAS_CLOCK
         stop = get_time_us();
+#else
+        stop =0;
+#endif
         if(start < stop) {
             delta = stop - start;
             res = true;
@@ -132,8 +139,13 @@ bool task_init(void) {
         task_data[id].start_period_max = 0;
         //task_data[id].on=true;
     }
+#ifdef HAS_CLOCK
     total_time0_us = get_time_us();
     total_time_ms0 = get_time_ms64();
+#else
+    total_time0_us = 0;
+    total_time_ms0 = 0;
+#endif
 
     return true;
 }

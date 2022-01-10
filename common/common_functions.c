@@ -42,7 +42,7 @@
 #include "log.h"
 #include "sw_init.h"
 #include "sys_config.h"
-#ifdef NORTOS
+#ifdef HAS_SUPER_LOOP
 #include "task_info.h"
 #endif
 #include "uart_drv.h"
@@ -197,13 +197,21 @@ void super_loop(uint64_t loop_start_time_us) {
 
 #ifdef HAS_SUPER_LOOP
 _Noreturn void super_main_loop(void) {
+#ifdef HAS_CLOCK
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
+#else
+    io_printf("Main Task started" CRLF);
+#endif
     uint64_t loop_start_time_us = 0;
 #ifdef HAS_DEBUG
     uint64_t prev_loop_start_time_us = 0;
 #endif /*HAS_DEBUG*/
     for(;;) {
+        loop_start_time_us=0;
+#ifdef HAS_CLOCK
         loop_start_time_us = get_time_us();
+#endif /*HAS_CLOCK*/
+
 #ifdef HAS_DEBUG
 #ifdef LAUNCHXL_CC26X2R1
         gpio_toggle(COM_LOOP_SENSOR_DIO_NO);

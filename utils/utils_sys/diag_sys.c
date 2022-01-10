@@ -13,14 +13,16 @@
 #include "cmsis_os.h"
 #include "stm32f4xx_hal.h"
 #endif /*STM32F413xx*/
-
+#ifdef NORTOS
 extern void main(void);
+#endif
 
 void print_sysinfo(void) {
     io_printf("Reset handler: 0x%x " CRLF, *((uint32_t*)0x00000004));
     // io_printf("addr of SystemInit() 0x%p" CRLF, SystemInit);
+#ifdef NORTOS
     io_printf("addr of main() 0x%p" CRLF, main);
-
+#endif
     io_printf("RAM: %u Byte" CRLF, RAM_SIZE);
     io_printf("Flash: %u Byte" CRLF, ROM_SIZE);
     io_printf("RAM addr:   0x%08x....0x%08x " CRLF, RAM_START, RAM_END);

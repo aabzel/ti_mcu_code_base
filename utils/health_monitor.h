@@ -8,7 +8,9 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef HAS_CLOCK
 #include "clocks.h"
+#endif
 
 #define HEAL_MON_PERIOD_US (S_2_US(1))
 #define KL30_UNDERVOL_ERRPR_THRESHOLD_V 4.0f

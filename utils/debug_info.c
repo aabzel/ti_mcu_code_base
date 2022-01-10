@@ -19,7 +19,9 @@
 #include "core_driver.h"
 #endif
 #include "boot_cfg.h"
+#ifdef HAS_DEV_ID
 #include "device_id.h"
+#endif
 #include "oprintf.h"
 #include "sys_config.h"
 #include "table_utils.h"
@@ -33,8 +35,9 @@
 #include <stdio.h>
 #define io_printf printf
 #endif
-
+#ifdef NORTOS
 extern int main(void);
+#endif
 static bool stack_dir(int32_t* main_local_addr) {
     bool res = false;
     int32_t fun_local = 0;
@@ -104,7 +107,7 @@ bool print_version(void) {
     io_printf("StdCver: %u" CRLF, __STDC_VERSION__);
     io_printf("board: %s" CRLF, BOARD_NAME);
     io_printf("MCU: %s" CRLF, MCU_NAME);
-#ifndef USE_HAL_DRIVER
+#ifdef HAS_DEV_ID
     uint32_t cpi_id = cpu_get_id();
 #endif /*USE_HAL_DRIVER*/
     io_printf("branch: %s" CRLF, GIT_BRANCH);
@@ -114,7 +117,9 @@ bool print_version(void) {
     all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
 #endif /*HAS_FLASH*/
     io_printf("FlashCRC32: 0x%08X" CRLF, all_flash_crc);
+	#ifdef NORTOS
     io_printf("main(): 0x%08p" CRLF, main);
+	#endif
 #ifdef __TI_COMPILER_VERSION__
     io_printf("TIcompilerVer %u" CRLF, __TI_COMPILER_VERSION__);
 #endif
@@ -123,11 +128,11 @@ bool print_version(void) {
     io_printf("GCC" CRLF);
 #endif /**/
 
-#ifndef USE_HAL_DRIVER
+#ifdef HAS_DEV_ID
     io_printf("Serial: 0x%" PRIX64 " " CRLF, get_device_serial());
     uint64_t ble_mac = get_ble_mac();
     io_printf("MAC: 0x%" PRIX64 CRLF, ble_mac);
-#endif /*USE_HAL_DRIVER*/
+#endif /*HAS_DEV_ID*/
     io_printf("TG: @aabdev" CRLF);
     io_printf("Made in Russia" CRLF);
 
@@ -143,7 +148,9 @@ void print_sys_info(void) {
     io_printf("AppStackEnd: 0x%x " CRLF, top_stack_val);
     io_printf("Boot reset handler: 0x%x " CRLF, *((uint32_t*)(0x00000004)));
     io_printf("App  reset handler: 0x%x " CRLF, *((uint32_t*)(APP_START_ADDRESS + 4)));
+#ifdef NORTOS
     io_printf("addr of main() 0x08%p" CRLF, main);
+#endif
     explore_stack_dir();
 }
 #endif /*HAS_MCU*/
@@ -473,7 +480,7 @@ bool print_bit_representation(uint32_t val) {
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_FLASH
 static bool print_text_addresses(uint32_t cur_stack_val, uint32_t top_stack_val) {
     bool res = false;
     bool out_res = false;
@@ -494,7 +501,7 @@ static bool print_text_addresses(uint32_t cur_stack_val, uint32_t top_stack_val)
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_FLASH
 bool parse_stack(void) {
     bool res = false;
     uint32_t cur_stack_val = (uint32_t)&res;

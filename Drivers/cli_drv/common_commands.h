@@ -83,7 +83,7 @@
 #define FLASH_COMMANDS
 #endif
 
-#ifdef HAS_UART
+#ifdef HAS_UART_COMMANDS
 #include "uart_commands.h"
 #else
 #define UART_COMMANDS
