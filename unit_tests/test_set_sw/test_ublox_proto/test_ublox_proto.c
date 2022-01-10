@@ -1,8 +1,8 @@
 #include "test_ublox_proto.h"
 
 #ifdef X86_64
-#include <stdio.h>
-#include "log.c"
+//#include <stdio.h>
+#include "log.h"
 #endif
 
 #include "array.h"

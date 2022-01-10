@@ -9,8 +9,11 @@ extern "C" {
 
 bool test_calendar_parse_time(void);
 bool test_calendar_set_get(void);
+bool test_calendar_set_get_all(void) ;
 
-#define TEST_SUIT_CALENDAR {"CalendarParseTime", test_calendar_parse_time}, {"CalendarSetGet", test_calendar_set_get},
+#define TEST_SUIT_CALENDAR {"CalendarParseTime", test_calendar_parse_time},\
+  {"CalendarSetGet", test_calendar_set_get},\
+  {"CalendarSetGet", test_calendar_set_get_all},
 
 #ifdef __cplusplus
 }

@@ -54,6 +54,7 @@ typedef enum eLog_facility_t {
     LG_ADC,
     BATT,
     CAN,
+    LG_CAL,
     COM,
     BOOT,
     LG_DAC,

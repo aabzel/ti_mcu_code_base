@@ -206,6 +206,9 @@ const char* facility2str(log_facility_t facility) {
     case CAN:
         facility_str = "CAN";
         break;
+    case LG_CAL:
+        facility_str = "CALENDAR";
+        break;
 #ifdef X86_64
     case COM:
         facility_str = "COM";

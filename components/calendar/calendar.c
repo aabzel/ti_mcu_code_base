@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <time.h>
 
-#ifdef HAS_MCU
 #include "log.h"
+#ifdef HAS_MCU
 #include "time_diag.h"
 #endif
 #include "time_utils.h"
@@ -15,7 +15,7 @@
 #define FIRSTYEAR 2000 // start year
 #define FIRSTDAY 6     // 0 = Sunday
 
-static uint32_t sec;
+static uint32_t g_sec;
 
 static const uint8_t DaysInMonth[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 /*
@@ -73,7 +73,7 @@ static bool counter_to_struct(uint32_t sec, struct tm* t) {
             day -= DaysInMonth[month - 1];
         }
 
-        t->tm_mon = month;    // 0..11
+        t->tm_mon = month-1;    // 0..11
         t->tm_mday = day + 1; // 1..31
         res = true;
     }
@@ -82,7 +82,7 @@ static bool counter_to_struct(uint32_t sec, struct tm* t) {
 
 bool calendar_gettime(struct tm* date_time) {
     uint32_t cur_sec = 0;
-    cur_sec = sec; /*For tests on PC */
+    cur_sec = g_sec; /*For tests on PC */
 #ifdef HAS_RTC
     cur_sec = SwRtc.raw_sec;
 #endif
@@ -116,7 +116,7 @@ static uint32_t struct_to_counter(struct tm* t) {
     counter -= 730485UL;
 
     /* Make month an array index */
-    idx = t->tm_mon - 1;
+    idx = t->tm_mon;
 
     /* Loop thru each month, adding the days */
     for(i = 0; i < idx; i++) {
@@ -125,7 +125,7 @@ static uint32_t struct_to_counter(struct tm* t) {
 
     /* Leap year? adjust February */
     if((year % 400) == 0 || ((year % 4) == 0 && (year % 100) != 0)) {
-        ;
+        LOG_DEBUG(LG_CAL,"leap year:%u",year);
     } else {
         if(1 < t->tm_mon) {
             counter--;
@@ -137,21 +137,25 @@ static uint32_t struct_to_counter(struct tm* t) {
 
     /* Convert to seconds, add all the other stuff */
     counter = (counter - 1) * 86400L + (uint32_t)t->tm_hour * 3600 + (uint32_t)t->tm_min * 60 + t->tm_sec;
-
+    LOG_DEBUG(LG_CAL,"counter:%u=0x%x",counter,counter);
     return counter;
 }
 
 uint32_t calendar_settime(struct tm* date_time) {
+    bool res =  false;
 #ifdef HAS_RTC
-    LOG_INFO(LG_RTC, "init RTC by");
     print_time_date(date_time);
 #endif
-    sec = struct_to_counter(date_time);
-
+    res = is_valid_time_date(date_time);
+    if(res){
+      LOG_DEBUG(LG_CAL, "valid date time");
+      g_sec = struct_to_counter(date_time);
 #ifdef HAS_RTC
-    SwRtc.raw_sec = sec;
+      SwRtc.raw_sec = g_sec;
 #endif
-    return sec;
+    }
+
+    return g_sec;
 }
 
 bool calendar_init(void) {

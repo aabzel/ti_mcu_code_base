@@ -15,6 +15,7 @@ int main(int argc, char* argv[]) {
     bool res = false;
     win_color_enable();
     set_log_level(SYS, LOG_LEVEL_DEBUG);
+    //set_log_level(LG_CAL, LOG_LEVEL_DEBUG);
     LOG_INFO(SYS,"Test Code Base:");
     LOG_INFO(SYS,"STDC_VER : %u", __STDC_VERSION__);
 
