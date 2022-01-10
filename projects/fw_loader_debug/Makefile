@@ -42,7 +42,7 @@ LFLAGS= -static -lm
 EXECUTABLE=fw_loader_d
 
 include $(PROJECT_ROOT)code_base.mk
-include $(PROJECT_ROOT)utils/win_utils/win_utils.mk
+#include $(PROJECT_ROOT)utils/win_utils/win_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 #include $(PROJECT_ROOT)tests/tests.mk
