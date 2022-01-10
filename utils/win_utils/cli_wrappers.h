@@ -7,6 +7,7 @@
 
 #define READ_PAUSE_S 0.3f
 #define WRIRE_PAUSE_S 0.4f
+#define FLASH_WR_CHUNK_SIZE 64U /*byte*/
 
 void cli_win_color_enable(void);
 bool cli_cmd_send(HANDLE hComm, char* txBuffer, uint32_t tx_buff_len);

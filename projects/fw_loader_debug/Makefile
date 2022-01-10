@@ -12,6 +12,7 @@ SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
 OBJDIR := $(SRC_PATH)obj
 # the compiler to use
 #CC = clang
+#CC = gcc
 CC = C:\MinGW\bin\gcc.exe
 
 # compiler flags:
@@ -42,12 +43,12 @@ EXECUTABLE=fw_loader_d
 
 include $(PROJECT_ROOT)code_base.mk
 include $(PROJECT_ROOT)utils/win_utils/win_utils.mk
-include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
+#include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
 #include $(PROJECT_ROOT)tests/tests.mk
 SOURCES_C += main.c
-SOURCES_C += cli_wrappers.c
+#SOURCES_C += cli_wrappers.c
 SOURCES_C += fw_update.c
 # the name to use for both the target source file, and the output file:
 #include $(PROJECT_ROOT)system_explore/system_explore.mk

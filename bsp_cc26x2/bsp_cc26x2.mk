@@ -5,6 +5,7 @@ BSP_CC26X2_DIR = $(PROJECT_ROOT)bsp_cc26x2
 INCDIR += -I$(BSP_CC26X2_DIR)
 
 include $(BSP_CC26X2_DIR)/flash/flash.mk
+include $(BSP_CC26X2_DIR)/flash_nvs/flash_nvs.mk
 
 
 

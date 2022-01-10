@@ -1,9 +1,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <windows.h>
 
 #include "array.h"
 #include "cli_wrappers.h"
+#include "log.h"
 #include "convert.h"
 #include "fw_update.h"
 #include "io_utils.h"
@@ -15,10 +17,14 @@
 
 int main(int argc, char* argv[]) {
     int ret = 0;
+    cli_win_color_enable();
+    set_log_level(SYS, LOG_LEVEL_DEBUG);
+    set_log_level(COM, LOG_LEVEL_DEBUG);
     bool target_connected = false;
     bool res = false;
-    printf("\n[*] Firmware loader:");
-    printf("\n[*] Version: %u", VERSION);
+    LOG_DEBUG(SYS,"argc:%d",argc);
+    LOG_INFO(SYS,"Firmware loader:");
+    LOG_INFO(SYS,"Version: %u", VERSION);
 
     if(argc < 3) {
         printf("\n[e] Lack of firmware");
@@ -119,5 +125,6 @@ int main(int argc, char* argv[]) {
 #endif
 
     CloseHandle(hComm);
+    LOG_INFO(SYS,"End of program");
     return ret;
 }
