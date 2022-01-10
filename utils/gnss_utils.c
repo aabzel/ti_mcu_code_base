@@ -41,7 +41,6 @@ bool is_valid_gnss_coordinates(GnssCoordinate_t dot){
     return res ;
 }
 
-
 double gnss_encoding_2_degrees( double in_ddmm_mmmmm){
     double ddmm_mmmmm = in_ddmm_mmmmm;
     double mm_mmmmm = 0.0;

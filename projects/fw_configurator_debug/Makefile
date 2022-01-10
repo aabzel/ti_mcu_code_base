@@ -26,7 +26,7 @@ CFLAGS  += -O0
 #CFLAGS  += -Wall
 #CFLAGS  +=-pedantic
 #CFLAGS += -ftime-report
-
+HAS_SERIAL_PORT=Y
 HAS_X86_64=Y
 #OPT += -DSORT_LIST
 OPT += -DHAS_UTESTS

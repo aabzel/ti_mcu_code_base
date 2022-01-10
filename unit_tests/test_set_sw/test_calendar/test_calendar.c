@@ -18,6 +18,11 @@ bool test_calendar_parse_time(void) {
     EXPECT_EQ(7, date_time.tm_mday);
     EXPECT_EQ(11, date_time.tm_mon);
     EXPECT_EQ(2021, date_time.tm_year);
+
+    EXPECT_TRUE(date_parse(&date_time, "Jan 10 2022"));
+    EXPECT_EQ(10, date_time.tm_mday);
+    EXPECT_EQ(0, date_time.tm_mon);
+    EXPECT_EQ(2022, date_time.tm_year);
     return true;
 }
 

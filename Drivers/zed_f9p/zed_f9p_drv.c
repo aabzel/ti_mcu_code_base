@@ -272,7 +272,8 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         data.ecefXOrLat = 1e7 * coordinate_base.latitude;
         data.ecefYOrLon = 1e7 * coordinate_base.longitude;
         data.ecefZOrAlt = altitude_sea_lev_m * 100;
-        data.fixedPosAcc = METER_TO_MM(1);
+        data.fixedPosAcc = 10*METER_TO_MM(1);
+        data.svinAccLimit= 10*METER_TO_MM(1);
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
         if(false == res) {
             LOG_ERROR(ZED_F9P, "SetBaseDotErr");
@@ -400,10 +401,10 @@ bool zed_f9p_load_params(void) {
         LOG_ERROR(ZED_F9P, "GetRTKchanErr");
         res = false;
     }
-
+    ZedF9P.coordinate_base.latitude=0.0;
+    ZedF9P.coordinate_base.longitude=0.0;
     switch(ZedF9P.rtk_mode) {
     case RTK_BASE_SURVEY_IN :
-        break;
     case RTK_BASE_FIX:{
         res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
         if(res && (16 == file_len)) {
@@ -461,6 +462,7 @@ bool zed_f9p_init(void) {
             res = zed_f9p_deploy_rover();
             break;
         default:
+            LOG_ERROR(ZED_F9P, "rtkMode:%u=%s",ZedF9P.rtk_mode,rtk_mode2str(ZedF9P.rtk_mode));
             res = false;
             break;
         }

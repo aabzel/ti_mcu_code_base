@@ -170,10 +170,14 @@ bool calendar_init(void) {
     res = time_parse(&date_time, __TIME__);
     if(res) {
         calendar_settime(&date_time);
+    }else{
+        LOG_ERROR(LG_CAL, "TimeParseErr");
     }
     res = date_parse(&date_time, __DATE__);
     if(res) {
         calendar_settime(&date_time);
+    }else{
+        LOG_ERROR(LG_CAL, "DateParseErr");
     }
     return res;
 }
