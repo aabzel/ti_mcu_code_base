@@ -35,15 +35,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.836476"
-     inkscape:cx="365.55394"
-     inkscape:cy="378.80935"
+     inkscape:zoom="4.0113828"
+     inkscape:cx="342.74009"
+     inkscape:cy="369.49736"
      inkscape:window-width="1920"
      inkscape:window-height="986"
      inkscape:window-x="2037"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer6"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:document-rotation="0">
@@ -2212,17 +2212,6 @@
        sodipodi:nodetypes="ccc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.12774px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0281937"
-       x="63.111526"
-       y="155.40927"
-       id="text9105"><tspan
-         sodipodi:role="line"
-         id="tspan9103"
-         style="stroke-width:0.0281937"
-         x="63.111526"
-         y="155.40927">armhex.exe</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.77816px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.0444541"
        x="66.718681"
        y="159.54813"
@@ -2811,7 +2800,7 @@
        id="rect8255"
        width="8.877965"
        height="4.2745752"
-       x="62.06319"
+       x="61.887363"
        y="153.20804" />
     <rect
        style="fill:#e6e6e6;stroke:#000000;stroke-width:0.251137;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -2835,7 +2824,7 @@
        x="82.466225"
        y="171.20177" />
     <rect
-       style="opacity:0.998;fill:none;stroke:#000000;stroke-width:0.19557;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.998;fill:#f2f2f2;stroke:#000000;stroke-width:0.19557;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1551"
        width="24.399704"
        height="5.9124246"
@@ -2856,7 +2845,7 @@
        x="91.459953"
        y="56.200531" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.125733"
+       style="fill:#ececec;stroke:#000000;stroke-width:0.125733"
        id="rect7491"
        width="24.24514"
        height="7.6562638"
@@ -3201,17 +3190,6 @@
          y="169.77313">*.out</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.22061px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0555155"
-       x="52.294868"
-       y="58.851124"
-       id="text1852"><tspan
-         sodipodi:role="line"
-         id="tspan1850"
-         x="52.294868"
-         y="58.851124"
-         style="stroke-width:0.0555155">Eclipse</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.41111px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="93.092331"
        y="58.858978"
@@ -3314,28 +3292,6 @@
        d="M 79.611468,44.899378 V 97.848891 H 59.710769"
        id="path25840"
        sodipodi:nodetypes="ccc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.91167px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0727919"
-       x="57.756199"
-       y="77.923721"
-       id="text1555"><tspan
-         sodipodi:role="line"
-         id="tspan1553"
-         x="57.756199"
-         y="77.923721"
-         style="stroke-width:0.0727919">gmake</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.9223px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.219172"
-       x="53.424812"
-       y="88.494225"
-       id="text8243"><tspan
-         sodipodi:role="line"
-         id="tspan8241"
-         style="font-size:2.9223px;stroke-width:0.219172"
-         x="53.424812"
-         y="88.494225">SysConfig </tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.14769px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0286924"
@@ -4359,14 +4315,14 @@
        id="path2116" />
     <text
        xml:space="preserve"
-       style="display:inline;font-style:normal;font-weight:normal;font-size:1.94576px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0486442"
-       x="109.67896"
-       y="91.112633"
+       style="font-style:normal;font-weight:normal;font-size:1.94576px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0486442"
+       x="109.48109"
+       y="96.12545"
        id="text2730-2"><tspan
          sodipodi:role="line"
          id="tspan2728-4"
-         x="109.67896"
-         y="91.112633"
+         x="109.48109"
+         y="96.12545"
          style="stroke-width:0.0486442">*.svg</tspan></text>
     <text
        xml:space="preserve"
@@ -4456,5 +4412,49 @@
          x="109.45155"
          y="106.85762"
          style="stroke-width:0.0486442">*.svg</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.22061px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0555155"
+       x="52.294868"
+       y="58.851124"
+       id="text1852"><tspan
+         sodipodi:role="line"
+         id="tspan1850"
+         x="52.294868"
+         y="58.851124"
+         style="stroke-width:0.0555155">Eclipse</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.91167px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0727919"
+       x="57.756199"
+       y="77.923721"
+       id="text1555"><tspan
+         sodipodi:role="line"
+         id="tspan1553"
+         x="57.756199"
+         y="77.923721"
+         style="stroke-width:0.0727919">gmake</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.9223px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.219172"
+       x="53.424812"
+       y="88.494225"
+       id="text8243"><tspan
+         sodipodi:role="line"
+         id="tspan8241"
+         style="font-size:2.9223px;stroke-width:0.219172"
+         x="53.424812"
+         y="88.494225">SysConfig </tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.12774px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0281937"
+       x="63.111526"
+       y="155.40927"
+       id="text9105"><tspan
+         sodipodi:role="line"
+         id="tspan9103"
+         style="stroke-width:0.0281937"
+         x="63.111526"
+         y="155.40927">armhex.exe</tspan></text>
   </g>
 </svg>
