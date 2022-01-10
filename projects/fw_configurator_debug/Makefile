@@ -44,11 +44,9 @@ LFLAGS= -static -lm
 EXECUTABLE=fw_configurator_d
 
 include $(PROJECT_ROOT)code_base.mk
-include $(PROJECT_ROOT)utils/win_utils/win_utils.mk
-#include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
-#include $(PROJECT_ROOT)tests/tests.mk
+
 SOURCES_C += main.c
 # the name to use for both the target source file, and the output file:
 #include $(PROJECT_ROOT)system_explore/system_explore.mk
