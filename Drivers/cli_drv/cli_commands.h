@@ -51,7 +51,7 @@ extern "C" {
 #define BMP180_COMMANDS
 #endif
 
-#ifdef HAS_BQ25171_Q1
+#ifdef HAS_BQ25171_Q1_COMMANDS
 #include "bq25171_q1_commands.h"
 #else
 #define BQ25171_Q1_COMMANDS
@@ -99,7 +99,7 @@ extern "C" {
 #define PARAM_COMMANDS
 #endif
 
-#ifdef HAS_PWR_MUX
+#ifdef HAS_PWR_MUX_COMMANDS
 #include "pwr_mux_commands.h"
 #else
 #define PWR_MUX_COMMANDS
@@ -111,7 +111,7 @@ extern "C" {
 #define TRNG_COMMANDS
 #endif
 
-#ifdef HAS_SYSTEM
+#ifdef HAS_SYSTEM_COMMANDS
 #include "system_commands.h"
 #else
 #define SYSTEM_COMMANDS

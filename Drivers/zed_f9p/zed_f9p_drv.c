@@ -180,7 +180,8 @@ bool zed_f9p_proc(void) {
     bool res = false;
 
     switch(ZedF9P.rtk_mode) {
-    case RTK_BASE: {
+    case RTK_BASE_SURVEY_IN:
+    case RTK_BASE_FIX:{
         res = zed_f9p_proc_base();
     } break;
 
@@ -232,7 +233,7 @@ static const keyValItem_t BaseCfgLut[] = {
 
 #define METER_TO_MM(METER) (METER * 1000)
 
-bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m) {
+bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m, RTKmode_t receiver_mode) {
     bool res = false, out_res = true;
     res = is_valid_gnss_coordinates(coordinate_base);
     if(res) {
@@ -264,13 +265,14 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         // UBX-CFG-TMODE3 (0x06 0x71)
         UbxCfgTmode3Data_t_t data;
         data.version = 0;
-        data.mode = MODE_FIXED;
+        data.svin_min_dur_s = MIN_2_SEC(4);
+        data.mode = receiver_mode; /**/
         data.lla = 0x01; /*Position is given in LAT/LON/ALT*/
 
         data.ecefXOrLat = 1e7 * coordinate_base.latitude;
         data.ecefYOrLon = 1e7 * coordinate_base.longitude;
         data.ecefZOrAlt = altitude_sea_lev_m * 100;
-        data.fixedPosAcc = METER_TO_MM(2);
+        data.fixedPosAcc = METER_TO_MM(1);
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
         if(false == res) {
             LOG_ERROR(ZED_F9P, "SetBaseDotErr");
@@ -279,7 +281,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
             LOG_INFO(ZED_F9P, "SetBaseDotOk");
         }
 
-        ZedF9P.rtk_mode = RTK_BASE;
+        ZedF9P.rtk_mode = receiver_mode;
         task_data[TASK_ID_NMEA].on = false;
 #ifdef HAS_RTCM3
         if(IF_LORA == ZedF9P.channel) {
@@ -400,7 +402,9 @@ bool zed_f9p_load_params(void) {
     }
 
     switch(ZedF9P.rtk_mode) {
-    case RTK_BASE: {
+    case RTK_BASE_SURVEY_IN :
+        break;
+    case RTK_BASE_FIX:{
         res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
         if(res && (16 == file_len)) {
             LOG_INFO(ZED_F9P, "RTKBaseLocLoadOk");
@@ -449,8 +453,9 @@ bool zed_f9p_init(void) {
         case RTK_NONE:
             res = true;
             break;
-        case RTK_BASE:
-            res = zed_f9p_deploy_base(ZedF9P.coordinate_base, ZedF9P.alt_base);
+        case RTK_BASE_SURVEY_IN:
+        case RTK_BASE_FIX:
+            res = zed_f9p_deploy_base(ZedF9P.coordinate_base, ZedF9P.alt_base, ZedF9P.rtk_mode);
             break;
         case RTK_ROVER:
             res = zed_f9p_deploy_rover();

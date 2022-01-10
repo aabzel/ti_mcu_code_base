@@ -2,6 +2,7 @@
 
 #ifdef X86_64
 #include <stdio.h>
+#include "log.c"
 #endif
 
 #include "array.h"
@@ -63,7 +64,7 @@ bool test_ublox_proto_err_len(void) {
   
 bool test_ublox_proto_types(void) {
 #ifdef X86_64
-   printf("\n%s()",__FUNCTION__);
+   LOG_INFO(SYS,"%s()",__FUNCTION__);
 #endif
    EXPECT_EQ(4, sizeof(ConfigurationKeyID_t));
    EXPECT_EQ(13, sizeof(UbxCfgCfg_t));

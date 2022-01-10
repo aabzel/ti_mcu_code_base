@@ -109,7 +109,7 @@ typedef struct xUbxCfgTmode3Data_t {
                               flags above. Must be in the range -99..+99.*/
     uint8_t reserved1;     /*19 Fixed position 3D accuracy*/
     uint32_t fixedPosAcc;  /*20 Fixed position 3D accuracy*/
-    uint32_t svinMinDur;   /*24 Survey-in minimum duration*/
+    uint32_t svin_min_dur_s;   /*24 Survey-in minimum duration in seconds*/
     uint32_t svinAccLimit; /*28 Survey-in position accuracy limit*/
     uint8_t reserved2[8];  /*32 Fixed position 3D accuracy*/
 } UbxCfgTmode3Data_t_t;

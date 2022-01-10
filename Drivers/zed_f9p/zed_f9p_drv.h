@@ -12,9 +12,10 @@
 #define DFLT_GNSS_PER_MS 1000U
 #define RETRANSMITT_CNT 15
 typedef enum eRTKmode_t {
-    RTK_NONE = 0,
-    RTK_BASE = 1,
-    RTK_ROVER = 2,
+    RTK_ROVER = 0,
+    RTK_BASE_SURVEY_IN = 1,
+    RTK_BASE_FIX = 2,
+    RTK_NONE = 3,
 } RTKmode_t;
 
 typedef enum eTimeSystem_t {
@@ -45,6 +46,6 @@ bool zed_f9p_init(void);
 bool zed_f9p_load_params(void);
 bool zed_f9p_proc(void);
 bool zed_f9p_deploy_rover(void);
-bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m);
+bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m, RTKmode_t receiver_mode);
 
 #endif /* ZED_F9P_DRV_H  */

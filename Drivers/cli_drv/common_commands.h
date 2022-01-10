@@ -59,7 +59,7 @@
 #define RTC_COMMANDS
 #endif
 
-#ifdef HAS_SPI
+#ifdef HAS_SPI_COMMANDS
 #include "spi_commands.h"
 #else
 #define SPI_COMMANDS
@@ -102,7 +102,7 @@
 #define I2C_COMMANDS
 #endif
 
-#ifdef HAS_WDT
+#ifdef HAS_WDT_COMMANDS
 #include "watchdog_commands.h"
 #else
 #define WDT_COMMANDS

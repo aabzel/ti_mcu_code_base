@@ -18,8 +18,11 @@ const char *rtk_mode2str(uint8_t rtk_code) {
     case RTK_NONE:
         name ="Norm";
         break;
-    case RTK_BASE:
-        name ="Base";
+    case RTK_BASE_SURVEY_IN:
+        name ="BaseSurveyIn";
+        break;
+    case RTK_BASE_FIX:
+        name ="BaseFix";
         break;
     case RTK_ROVER:
         name ="Rover";
