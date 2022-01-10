@@ -94,24 +94,24 @@ typedef struct xLayers_t {
 
 /*3.10.21 UBX-CFG-TMODE3 (0x06 0x71)*/
 typedef struct xUbxCfgTmode3Data_t {
-    uint8_t version;       /*0  Message version (0x00 for this version)*/
-    uint8_t reserved0;     /*1  Reserved*/
-    uint8_t mode;          /*2  Receiver Mode:*/
-    uint8_t lla;           /*3  Position is given in LAT/LON/ALT (default is ECEF)*/
-    int32_t ecefXOrLat;    /*4  WGS84 ECEF X coordinate (or latitude) of the ARP position, depending on flags above*/
-    int32_t ecefYOrLon;    /*8  WGS84 ECEF Y coordinate (or longitude) of the ARP position, depending on flags above*/
-    int32_t ecefZOrAlt;    /*12 WGS84 ECEF Z coordinate (or altitude) of the ARP position, depending on flags above*/
-    int8_t ecefXOrLatHP;   /*16 High-precision WGS84 ECEF X coordinate (or latitude) of the ARP position, depending on
-                              flags above.*/
-    int8_t ecefYOrLonHP;   /*17 High-precision WGS84 ECEF Y coordinate (or longitude) of the ARP position, depending on
-                              flags above.*/
-    int8_t ecefZOrAltHP;   /*18 High-precision WGS84 ECEF Z coordinate (or altitude) of the ARP position, depending on
-                              flags above. Must be in the range -99..+99.*/
-    uint8_t reserved1;     /*19 Fixed position 3D accuracy*/
-    uint32_t fixedPosAcc;  /*20 Fixed position 3D accuracy*/
-    uint32_t svin_min_dur_s;   /*24 Survey-in minimum duration in seconds*/
-    uint32_t svinAccLimit; /*28 Survey-in position accuracy limit*/
-    uint8_t reserved2[8];  /*32 Fixed position 3D accuracy*/
+    uint8_t version;      /*0  Message version (0x00 for this version)*/
+    uint8_t reserved0;    /*1  Reserved*/
+    uint8_t mode;         /*2  Receiver Mode:*/
+    uint8_t lla;          /*3  Position is given in LAT/LON/ALT (default is ECEF)*/
+    int32_t ecefXOrLat;   /*4  WGS84 ECEF X coordinate (or latitude) of the ARP position, depending on flags above*/
+    int32_t ecefYOrLon;   /*8  WGS84 ECEF Y coordinate (or longitude) of the ARP position, depending on flags above*/
+    int32_t ecefZOrAlt;   /*12 WGS84 ECEF Z coordinate (or altitude) of the ARP position, depending on flags above*/
+    int8_t ecefXOrLatHP;  /*16 High-precision WGS84 ECEF X coordinate (or latitude) of the ARP position, depending on
+                             flags above.*/
+    int8_t ecefYOrLonHP;  /*17 High-precision WGS84 ECEF Y coordinate (or longitude) of the ARP position, depending on
+                             flags above.*/
+    int8_t ecefZOrAltHP;  /*18 High-precision WGS84 ECEF Z coordinate (or altitude) of the ARP position, depending on
+                             flags above. Must be in the range -99..+99.*/
+    uint8_t reserved1;    /*19 Fixed position 3D accuracy*/
+    uint32_t fixedPosAcc; /*20 Fixed position 3D accuracy*/
+    uint32_t svin_min_dur_s; /*24 Survey-in minimum duration in seconds*/
+    uint32_t svinAccLimit;   /*28 Survey-in position accuracy limit*/
+    uint8_t reserved2[8];    /*32 Fixed position 3D accuracy*/
 } UbxCfgTmode3Data_t_t;
 
 /*3.10.2 UBX-CFG-CFG (0x06 0x09)*/

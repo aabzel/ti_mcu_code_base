@@ -110,7 +110,7 @@ bool print_version(void) {
     io_printf("branch: %s" CRLF, GIT_BRANCH);
     io_printf("lastCommit: %s" CRLF, GIT_LAST_COMMIT_HASH);
 
-#if defined(HAS_CRC) && defined( HAS_FLASH)
+#if defined(HAS_CRC) && defined(HAS_FLASH)
     all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
 #endif /*HAS_FLASH*/
     io_printf("FlashCRC32: 0x%08X" CRLF, all_flash_crc);

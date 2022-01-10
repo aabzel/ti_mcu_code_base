@@ -1,7 +1,7 @@
 #include "led_drv.h"
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #include "clocks.h"
 #include "data_utils.h"
@@ -22,11 +22,11 @@ static void test_leds(void) {
 #endif
 }
 
-bool led_blink(Led_t *inLed, uint32_t duration_ms){
+bool led_blink(Led_t* inLed, uint32_t duration_ms) {
     bool res = false;
-    if(inLed && (0<duration_ms)){
+    if(inLed && (0 < duration_ms)) {
         inLed->on_time_ms = get_time_ms32();
-        inLed->duration_ms= duration_ms;
+        inLed->duration_ms = duration_ms;
         inLed->mode = LED_MODE_BLINK;
         res = gpio_set_state(inLed->dio_num, 1);
     }
@@ -53,39 +53,36 @@ bool led_init(void) {
     return true;
 }
 
-static bool proc_led(Led_t *inLed){
+static bool proc_led(Led_t* inLed) {
     bool res = false;
-    if(inLed){
+    if(inLed) {
         uint32_t cur_time_ms = get_time_ms32();
         uint8_t val = 0;
-        switch(inLed->mode){
-            case LED_MODE_ON: {
-                val = 1;
+        switch(inLed->mode) {
+        case LED_MODE_ON: {
+            val = 1;
+            res = true;
+        } break;
+        case LED_MODE_OFF: {
+            val = 0;
+            res = true;
+        } break;
+        case LED_MODE_BLINK: {
+            uint32_t cur_duration_ms = 0;
+            cur_duration_ms = cur_time_ms - inLed->on_time_ms;
+            if(inLed->duration_ms < cur_duration_ms) {
                 res = true;
-            }break;
-            case LED_MODE_OFF: {
                 val = 0;
-                res = true;
-            }break;
-            case LED_MODE_BLINK: {
-                uint32_t cur_duration_ms = 0;
-                cur_duration_ms = cur_time_ms - inLed->on_time_ms;
-                if(inLed->duration_ms < cur_duration_ms ){
-                    res = true;
-                    val = 0;
-                    inLed->mode = LED_MODE_NONE;
-                }
-            }break;
-            case LED_MODE_PWM: {
-                val  = pwm_sample_calc_num(cur_time_ms,
-                                           inLed->period_ms,
-                                           inLed->duty,
-                                           inLed->phase_ms);
-                res = true;
-            }break;
-            default: {
-                res = false;
-            }break;
+                inLed->mode = LED_MODE_NONE;
+            }
+        } break;
+        case LED_MODE_PWM: {
+            val = pwm_sample_calc_num(cur_time_ms, inLed->period_ms, inLed->duty, inLed->phase_ms);
+            res = true;
+        } break;
+        default: {
+            res = false;
+        } break;
         }
 
         if(res) {
@@ -97,9 +94,9 @@ static bool proc_led(Led_t *inLed){
 
 bool proc_leds(void) {
     bool res = true;
-    uint16_t i=0;
-    for(i=0;i<ARRAY_SIZE(Led);i++){
-        res = proc_led(&Led[i])&&res;
+    uint16_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(Led); i++) {
+        res = proc_led(&Led[i]) && res;
     }
 
 #ifdef HAS_HEALTH_MONITOR
@@ -112,18 +109,18 @@ bool proc_leds(void) {
     return res;
 }
 
-bool led_on(Led_t *inLed){
+bool led_on(Led_t* inLed) {
     bool res = false;
-    if(inLed){
+    if(inLed) {
         res = true;
         inLed->mode = LED_MODE_ON;
     }
     return res;
 }
 
-bool led_off(Led_t *inLed){
+bool led_off(Led_t* inLed) {
     bool res = false;
-    if(inLed){
+    if(inLed) {
         res = true;
         inLed->mode = LED_MODE_OFF;
     }

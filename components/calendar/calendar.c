@@ -73,8 +73,8 @@ static bool counter_to_struct(uint32_t sec, struct tm* t) {
             day -= DaysInMonth[month - 1];
         }
 
-        t->tm_mon = month-1;    // 0..11
-        t->tm_mday = day + 1; // 1..31
+        t->tm_mon = month - 1; // 0..11
+        t->tm_mday = day + 1;  // 1..31
         res = true;
     }
     return res;
@@ -125,7 +125,7 @@ static uint32_t struct_to_counter(struct tm* t) {
 
     /* Leap year? adjust February */
     if((year % 400) == 0 || ((year % 4) == 0 && (year % 100) != 0)) {
-        LOG_DEBUG(LG_CAL,"leap year:%u",year);
+        LOG_DEBUG(LG_CAL, "leap year:%u", year);
     } else {
         if(1 < t->tm_mon) {
             counter--;
@@ -137,21 +137,21 @@ static uint32_t struct_to_counter(struct tm* t) {
 
     /* Convert to seconds, add all the other stuff */
     counter = (counter - 1) * 86400L + (uint32_t)t->tm_hour * 3600 + (uint32_t)t->tm_min * 60 + t->tm_sec;
-    LOG_DEBUG(LG_CAL,"counter:%u=0x%x",counter,counter);
+    LOG_DEBUG(LG_CAL, "counter:%u=0x%x", counter, counter);
     return counter;
 }
 
 uint32_t calendar_settime(struct tm* date_time) {
-    bool res =  false;
+    bool res = false;
 #ifdef HAS_RTC
     print_time_date(date_time);
 #endif
     res = is_valid_time_date(date_time);
-    if(res){
-      LOG_DEBUG(LG_CAL, "valid date time");
-      g_sec = struct_to_counter(date_time);
+    if(res) {
+        LOG_DEBUG(LG_CAL, "valid date time");
+        g_sec = struct_to_counter(date_time);
 #ifdef HAS_RTC
-      SwRtc.raw_sec = g_sec;
+        SwRtc.raw_sec = g_sec;
 #endif
     }
 
@@ -170,13 +170,13 @@ bool calendar_init(void) {
     res = time_parse(&date_time, __TIME__);
     if(res) {
         calendar_settime(&date_time);
-    }else{
+    } else {
         LOG_ERROR(LG_CAL, "TimeParseErr");
     }
     res = date_parse(&date_time, __DATE__);
     if(res) {
         calendar_settime(&date_time);
-    }else{
+    } else {
         LOG_ERROR(LG_CAL, "DateParseErr");
     }
     return res;

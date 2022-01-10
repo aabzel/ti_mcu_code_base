@@ -135,35 +135,35 @@ bool parse_op_error(uint16_t op_error) {
 bool parse_irq_stat(Sx1262IRQs_t irq_stat) {
     bool res = false;
 
-    LOG_INFO(LORA,"irq_stat: 0x%04x 0b%s" CRLF, irq_stat.word, utoa_bin16(irq_stat.word));
-    if(irq_stat.TxDone){
+    LOG_INFO(LORA, "irq_stat: 0x%04x 0b%s" CRLF, irq_stat.word, utoa_bin16(irq_stat.word));
+    if(irq_stat.TxDone) {
         LOG_INFO(LORA, "0 TX done");
     }
-    if(irq_stat.RxDone){
+    if(irq_stat.RxDone) {
         LOG_INFO(LORA, "1 RX done");
     }
-    if(irq_stat.PreambleDetected){
+    if(irq_stat.PreambleDetected) {
         LOG_INFO(LORA, "2 preambleDetected");
     }
-    if(irq_stat.SyncWordValid){
+    if(irq_stat.SyncWordValid) {
         LOG_INFO(LORA, "3 sync wordValid");
     }
-    if(irq_stat.HeaderValid){
+    if(irq_stat.HeaderValid) {
         LOG_INFO(LORA, "4 LoRa headerReceived");
     }
-    if(irq_stat.HeaderErr){
+    if(irq_stat.HeaderErr) {
         LOG_INFO(LORA, "5 LoRa headerCRCError");
     }
-    if(irq_stat.CrcErr){
+    if(irq_stat.CrcErr) {
         LOG_INFO(LORA, "6 Wrong CRCreceived");
     }
-    if(irq_stat.CadDone){
+    if(irq_stat.CadDone) {
         LOG_INFO(LORA, "7 ChannelActivityDetectionFinished");
     }
-    if(irq_stat.CadDetected){
+    if(irq_stat.CadDetected) {
         LOG_INFO(LORA, "8 ChannelActivityDetected");
     }
-    if(irq_stat.Timeout){
+    if(irq_stat.Timeout) {
         LOG_INFO(LORA, "9 RxOrTxTimeout");
     }
 
@@ -366,7 +366,6 @@ const char* LowDataRateOpt2Str(uint8_t packet_type) {
     }
     return name;
 }
-
 
 const char* PacketType2Str(uint8_t packet_type) {
     const char* name = "undef";

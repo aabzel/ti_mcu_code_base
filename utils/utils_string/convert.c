@@ -376,27 +376,27 @@ bool try_strl2month(const char str[], int32_t* mon_value) {
     bool res = true;
     if(strstr(str, "Dec")) {
         *mon_value = 11;
-    }else if(strstr(str, "Jan")){
+    } else if(strstr(str, "Jan")) {
         *mon_value = 0;
-    }else if(strstr(str, "Fed")){
+    } else if(strstr(str, "Fed")) {
         *mon_value = 1;
-    }else if(strstr(str, "Mar")){
+    } else if(strstr(str, "Mar")) {
         *mon_value = 2;
-    }else if(strstr(str, "Apr")){
+    } else if(strstr(str, "Apr")) {
         *mon_value = 3;
-    }else if(strstr(str, "May")){
+    } else if(strstr(str, "May")) {
         *mon_value = 4;
-    }else if(strstr(str, "Jun")){
+    } else if(strstr(str, "Jun")) {
         *mon_value = 5;
-    }else if(strstr(str, "Jul")){
+    } else if(strstr(str, "Jul")) {
         *mon_value = 6;
-    }else if(strstr(str, "Aug")){
+    } else if(strstr(str, "Aug")) {
         *mon_value = 7;
-    }else if(strstr(str, "Sep")){
+    } else if(strstr(str, "Sep")) {
         *mon_value = 8;
-    }else if(strstr(str, "Oct")){
+    } else if(strstr(str, "Oct")) {
         *mon_value = 9;
-    }else if(strstr(str, "Nov")){
+    } else if(strstr(str, "Nov")) {
         *mon_value = 10;
     } else {
         res = false;

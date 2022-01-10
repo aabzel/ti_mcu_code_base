@@ -19,8 +19,6 @@
 #include "str_utils.h"
 #include "str_utils_ex.h"
 
-
-
 bool cli_wrp_errase_app(void) {
     bool res = false;
 #ifdef HAS_FW_UPDATE_DEBUG
@@ -138,7 +136,7 @@ bool cli_cmd_send(HANDLE hComm, char* txBuffer, uint32_t tx_buff_len) {
 bool cli_wrp_flash_write(uint32_t base_addr, uint8_t* chunk_data, uint32_t size) {
     bool res = false;
 #ifdef HAS_FW_UPDATE_DEBUG
-    LOG_DEBUG(SYS,"%s(): size: %u", __FUNCTION__, size);
+    LOG_DEBUG(SYS, "%s(): size: %u", __FUNCTION__, size);
 #endif
     char txBuffer[1000] = "";
     if(FLASH_WR_CHUNK_SIZE == size) {
@@ -162,19 +160,19 @@ bool cli_wrp_flash_write(uint32_t base_addr, uint8_t* chunk_data, uint32_t size)
                         res = true;
                     } else {
                         printf("\n[e] flash write status error");
-                        LOG_ERROR(SYS,"Target output: [%s] len:%u", rxBuffer, real_rx_len);
+                        LOG_ERROR(SYS, "Target output: [%s] len:%u", rxBuffer, real_rx_len);
                         res = false;
                     }
                 } else {
-                    LOG_ERROR(SYS,"flash write response len error");
+                    LOG_ERROR(SYS, "flash write response len error");
                     res = false;
                 }
             } else {
-                LOG_ERROR(SYS,"flash write response read error");
+                LOG_ERROR(SYS, "flash write response read error");
                 res = false;
             }
         } else {
-            LOG_ERROR(SYS,"hex2ascii error");
+            LOG_ERROR(SYS, "hex2ascii error");
             res = false;
         }
     }
@@ -184,7 +182,7 @@ bool cli_wrp_flash_write(uint32_t base_addr, uint8_t* chunk_data, uint32_t size)
 bool cli_wrp_flash_read(uint32_t addr, uint8_t* out_array, uint32_t len) {
     bool res = false;
 #ifdef HAS_FW_UPDATE_DEBUG
-    LOG_DEBUG(SYS,"%s(): addr:0x%x len:%u", __FUNCTION__, addr, len);
+    LOG_DEBUG(SYS, "%s(): addr:0x%x len:%u", __FUNCTION__, addr, len);
 #endif
     char txBuffer[1000] = "";
     snprintf(txBuffer, sizeof(txBuffer), "fr 0x%08x %u" CRLF, addr, len);
@@ -199,11 +197,11 @@ bool cli_wrp_flash_read(uint32_t addr, uint8_t* out_array, uint32_t len) {
     res = com_receive_str(hComm, rxBuffer, sizeof(rxBuffer), &real_rx_len);
     if((2 * len) < real_rx_len) {
 #ifdef HAS_FW_UPDATE_DEBUG
-        LOG_INFO(COM,"[%s] readLen: %u", rxBuffer, real_rx_len);
+        LOG_INFO(COM, "[%s] readLen: %u", rxBuffer, real_rx_len);
 #endif
         bool res_data = parse_lhex_array_after_prefix("0x", 0, rxBuffer, out_array, len);
         if(false == res_data) {
-            LOG_ERROR(SYS,"parse data error");
+            LOG_ERROR(SYS, "parse data error");
         }
 #ifdef HAS_FW_UPDATE_DEBUG
         print_mem(out_array, len, true, false, true, false);
@@ -211,33 +209,32 @@ bool cli_wrp_flash_read(uint32_t addr, uint8_t* out_array, uint32_t len) {
         Type16Union_t un16 = {0};
         bool res_crc = parse_lhex_array_after_prefix("0x", 1, rxBuffer, &un16.u8[0], 2);
         if(false == res_crc) {
-            LOG_ERROR(SYS,"parse crc16 array error");
+            LOG_ERROR(SYS, "parse crc16 array error");
         }
         if(res_crc && res_data) {
             crc16_read = reverse_byte_order_uint16(un16.u16);
             crc16_calc = calc_crc16_ccitt_false(out_array, len);
             if(crc16_calc == crc16_read) {
 #ifdef HAS_FW_UPDATE_DEBUG
-                LOG_INFO(SYS,"CRC16 Ok");
+                LOG_INFO(SYS, "CRC16 Ok");
 #endif
                 res = true;
             } else {
-                LOG_ERROR(SYS,"CRC16 error read: 0x%04x calc: 0x%04x", crc16_read, crc16_calc);
+                LOG_ERROR(SYS, "CRC16 error read: 0x%04x calc: 0x%04x", crc16_read, crc16_calc);
                 res = false;
             }
         }
     } else {
-        LOG_ERROR(SYS,"Lack of read data error len: %u", real_rx_len);
-        LOG_INFO(COM,"[%s] readLen: %u", rxBuffer, real_rx_len);
+        LOG_ERROR(SYS, "Lack of read data error len: %u", real_rx_len);
+        LOG_INFO(COM, "[%s] readLen: %u", rxBuffer, real_rx_len);
     }
     return res;
 }
 
-
 bool cli_wrp_flash_write_verify(uint32_t base_addr, uint8_t* chunk_data, uint32_t size) {
     bool res = false;
 #ifdef HAS_FW_UPDATE_DEBUG
-    LOG_DEBUG(SYS,"%s(): size: %u", __FUNCTION__, size);
+    LOG_DEBUG(SYS, "%s(): size: %u", __FUNCTION__, size);
 #endif
     res = cli_wrp_flash_write(base_addr, chunk_data, size);
     if(res && (FLASH_WR_CHUNK_SIZE == size)) {
@@ -249,15 +246,15 @@ bool cli_wrp_flash_write_verify(uint32_t base_addr, uint8_t* chunk_data, uint32_
             if(0 == ret) {
                 res = true;
             } else {
-                LOG_ERROR(SYS,"flash read data unmatch error");
+                LOG_ERROR(SYS, "flash read data unmatch error");
                 res = false;
             }
         } else {
-            LOG_ERROR(SYS,"flash read error");
+            LOG_ERROR(SYS, "flash read error");
             res = false;
         }
     } else {
-        LOG_ERROR(SYS,"flash write error size: %u", size);
+        LOG_ERROR(SYS, "flash write error size: %u", size);
     }
     return res;
 }

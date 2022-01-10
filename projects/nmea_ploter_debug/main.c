@@ -4,9 +4,9 @@
 #include <stdlib.h>
 
 #include "array.h"
+#include "log.h"
 #include "macro_utils.h"
 #include "nmea_plot.h"
-#include "log.h"
 #include "nmea_protocol.h"
 #include "utils_file.h"
 #include "win_utils.h"
@@ -18,16 +18,16 @@ int main(int argc, char* argv[]) {
     int ret = 0;
     win_color_enable();
     set_log_level(SYS, LOG_LEVEL_DEBUG);
-    LOG_INFO(SYS,"NmeaPlotter:");
-    LOG_INFO(SYS,"Version: %u", VERSION);
+    LOG_INFO(SYS, "NmeaPlotter:");
+    LOG_INFO(SYS, "Version: %u", VERSION);
 
     if(argc < 2) {
-        LOG_ERROR(SYS," Lack of file");
+        LOG_ERROR(SYS, " Lack of file");
         res = false;
         ret = 1;
     } else {
-        LOG_INFO(SYS,"In file %s", argv[1]);
-        LOG_INFO(SYS," Out file %s", argv[2]);
+        LOG_INFO(SYS, "In file %s", argv[1]);
+        LOG_INFO(SYS, " Out file %s", argv[2]);
         res = true;
     }
 

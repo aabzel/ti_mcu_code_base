@@ -55,7 +55,7 @@ struct tm* time_get_time(void) {
     res = is_valid_time_date(&ZedF9P.time_date);
     if(res) {
         time = &ZedF9P.time_date;
-        if((RTK_BASE_FIX == ZedF9P.rtk_mode)||(RTK_BASE_SURVEY_IN == ZedF9P.rtk_mode)) {
+        if((RTK_BASE_FIX == ZedF9P.rtk_mode) || (RTK_BASE_SURVEY_IN == ZedF9P.rtk_mode)) {
             res = false;
         }
     }

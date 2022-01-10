@@ -181,7 +181,7 @@ bool zed_f9p_proc(void) {
 
     switch(ZedF9P.rtk_mode) {
     case RTK_BASE_SURVEY_IN:
-    case RTK_BASE_FIX:{
+    case RTK_BASE_FIX: {
         res = zed_f9p_proc_base();
     } break;
 
@@ -267,13 +267,13 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         data.version = 0;
         data.svin_min_dur_s = MIN_2_SEC(4);
         data.mode = receiver_mode; /**/
-        data.lla = 0x01; /*Position is given in LAT/LON/ALT*/
+        data.lla = 0x01;           /*Position is given in LAT/LON/ALT*/
 
         data.ecefXOrLat = 1e7 * coordinate_base.latitude;
         data.ecefYOrLon = 1e7 * coordinate_base.longitude;
         data.ecefZOrAlt = altitude_sea_lev_m * 100;
-        data.fixedPosAcc = 10*METER_TO_MM(1);
-        data.svinAccLimit= 10*METER_TO_MM(1);
+        data.fixedPosAcc = 10 * METER_TO_MM(1);
+        data.svinAccLimit = 10 * METER_TO_MM(1);
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
         if(false == res) {
             LOG_ERROR(ZED_F9P, "SetBaseDotErr");
@@ -401,11 +401,11 @@ bool zed_f9p_load_params(void) {
         LOG_ERROR(ZED_F9P, "GetRTKchanErr");
         res = false;
     }
-    ZedF9P.coordinate_base.latitude=0.0;
-    ZedF9P.coordinate_base.longitude=0.0;
+    ZedF9P.coordinate_base.latitude = 0.0;
+    ZedF9P.coordinate_base.longitude = 0.0;
     switch(ZedF9P.rtk_mode) {
-    case RTK_BASE_SURVEY_IN :
-    case RTK_BASE_FIX:{
+    case RTK_BASE_SURVEY_IN:
+    case RTK_BASE_FIX: {
         res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
         if(res && (16 == file_len)) {
             LOG_INFO(ZED_F9P, "RTKBaseLocLoadOk");
@@ -462,7 +462,7 @@ bool zed_f9p_init(void) {
             res = zed_f9p_deploy_rover();
             break;
         default:
-            LOG_ERROR(ZED_F9P, "rtkMode:%u=%s",ZedF9P.rtk_mode,rtk_mode2str(ZedF9P.rtk_mode));
+            LOG_ERROR(ZED_F9P, "rtkMode:%u=%s", ZedF9P.rtk_mode, rtk_mode2str(ZedF9P.rtk_mode));
             res = false;
             break;
         }

@@ -81,7 +81,6 @@ bool sx1262_chip_select(bool state) {
     return res;
 }
 
-
 #define GET_4_BYTE_OPCODE(OP_CODE, OUT_VAL_16_BIT)                                                                     \
     do {                                                                                                               \
         if(OUT_VAL_16_BIT) {                                                                                           \
@@ -101,42 +100,42 @@ Sx1262_t Sx1262Instance = {0};
 
 #ifdef HAS_SX1262_DEBUG
 const xSx1262Reg_t RegMap[] = {
-                               {0x0580, "DIOxOutputEnable"},
-                               {0x0583, "DIOxInputEnable"},
-                               {0x0584, "DIOxPullUpControl"},
-                               {0x0585, "DIOxPullDownControl"},
-                               {0x06B8, "WhiteningInitValMSB"},
-                                             {0x06B9, "WhiteningInitValLSB"},
-                                             {0x06BC, "CRCMSBInitVal0"},
-                                             {0x06BD, "CRCLSBInitVal1"},
-                                             {0x06BE, "CRCMSBpolynomVal0"},
-                                             {0x06BF, "CRCLSBpolynomVal1"},
-                                             {SYNC_WORD_0, "SyncWord0"},
-                                             {SYNC_WORD_1, "SyncWord1"},
-                                             {SYNC_WORD_2, "SyncWord2"},
-                                             {SYNC_WORD_3, "SyncWord3"},
-                                             {SYNC_WORD_4, "SyncWord4"},
-                                             {SYNC_WORD_5, "SyncWord5"},
-                                             {SYNC_WORD_6, "SyncWord6"},
-                                             {SYNC_WORD_7, "SyncWord7"},
-                                             {0x06CD, "NodeAddr"},
-                                             {0x06CE, "BroadcastAddr"},
-                                             {0x0736, "IQpolaritySetup"},
-                                             {0x0740, "LoRaSyncWordMSB"},
-                                             {0x0741, "LoRaSyncWordLSB"},
-                                             {RAND_NUM_GEN_0, "RandNumGen0"},
-                                             {RAND_NUM_GEN_1, "RandNumGen1"},
-                                             {RAND_NUM_GEN_2, "RandNumGen2"},
-                                             {RAND_NUM_GEN_3, "RandNumGen3"},
-                                             {0x0889, "TxModulation"},
-                                             {0x08AC, "RxGain"},
-                                             {0x08D8, "TxClampConfig"},
-                                             {0x08E7, "OCPConfig"},
-                                             {0x0902, "RTCcontrol"},
-                                             {0x0911, "XTAtrim"},
-                                             {0x0912, "XTBtrim"},
-                                             {0x920, "DIO3outputVoltageControl"},
-                                             {0x944, "EventMask"},
+    {0x0580, "DIOxOutputEnable"},
+    {0x0583, "DIOxInputEnable"},
+    {0x0584, "DIOxPullUpControl"},
+    {0x0585, "DIOxPullDownControl"},
+    {0x06B8, "WhiteningInitValMSB"},
+    {0x06B9, "WhiteningInitValLSB"},
+    {0x06BC, "CRCMSBInitVal0"},
+    {0x06BD, "CRCLSBInitVal1"},
+    {0x06BE, "CRCMSBpolynomVal0"},
+    {0x06BF, "CRCLSBpolynomVal1"},
+    {SYNC_WORD_0, "SyncWord0"},
+    {SYNC_WORD_1, "SyncWord1"},
+    {SYNC_WORD_2, "SyncWord2"},
+    {SYNC_WORD_3, "SyncWord3"},
+    {SYNC_WORD_4, "SyncWord4"},
+    {SYNC_WORD_5, "SyncWord5"},
+    {SYNC_WORD_6, "SyncWord6"},
+    {SYNC_WORD_7, "SyncWord7"},
+    {0x06CD, "NodeAddr"},
+    {0x06CE, "BroadcastAddr"},
+    {0x0736, "IQpolaritySetup"},
+    {0x0740, "LoRaSyncWordMSB"},
+    {0x0741, "LoRaSyncWordLSB"},
+    {RAND_NUM_GEN_0, "RandNumGen0"},
+    {RAND_NUM_GEN_1, "RandNumGen1"},
+    {RAND_NUM_GEN_2, "RandNumGen2"},
+    {RAND_NUM_GEN_3, "RandNumGen3"},
+    {0x0889, "TxModulation"},
+    {0x08AC, "RxGain"},
+    {0x08D8, "TxClampConfig"},
+    {0x08E7, "OCPConfig"},
+    {0x0902, "RTCcontrol"},
+    {0x0911, "XTAtrim"},
+    {0x0912, "XTBtrim"},
+    {0x920, "DIO3outputVoltageControl"},
+    {0x944, "EventMask"},
 };
 #endif /*HAS_SX1262_DEBUG*/
 
@@ -165,7 +164,6 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
     }
     return res;
 }
-
 
 bool sx1262_is_connected(void) {
     bool res = false;
@@ -217,7 +215,6 @@ static bool sx1262_is_exist(void) {
     }
     return res;
 }
-
 
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
@@ -336,7 +333,7 @@ bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
     res = sx1262_clear_fifo() && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-    res = sx1262_set_rx_gain(RXGAIN_BOOSTED)&& res;
+    res = sx1262_set_rx_gain(RXGAIN_BOOSTED) && res;
     uint8_t tx_array[3];
     /*from senior byte to junior byte*/
     tx_array[0] = MASK_8BIT & (timeout_s >> 16);
@@ -375,11 +372,11 @@ bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time) {
 }
 
 /*SetDIO2AsRfSwitchCtrl*/
-bool sx1262_set_dio2_as_rf_switch_ctrl(Dio2Mode_t mode){
+bool sx1262_set_dio2_as_rf_switch_ctrl(Dio2Mode_t mode) {
     bool res = false;
     uint8_t tx_array[1] = {0};
-    tx_array[0] = (uint8_t) mode;
-    res = sx1262_send_opcode(OPCODE_SET_DIO2_AS_RFSWITCH , tx_array, sizeof(tx_array), NULL, 0);
+    tx_array[0] = (uint8_t)mode;
+    res = sx1262_send_opcode(OPCODE_SET_DIO2_AS_RFSWITCH, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
 /* SetPacketParams
@@ -474,7 +471,7 @@ bool sx1262_clear_dev_error(void) {
     bool res = false;
     uint8_t rx_array[2];
     memset(rx_array, 0x00, sizeof(rx_array));
-    uint8_t tx_array=0x00;
+    uint8_t tx_array = 0x00;
     res = sx1262_send_opcode(OPCODE_CLEAR_DEVICE_ERRORS, &tx_array, 1, rx_array, sizeof(rx_array));
     if(res) {
         Sx1262Instance.status = rx_array[0];
@@ -491,7 +488,7 @@ bool sx1262_clear_irq(uint16_t clear_irq_param) {
     uint16_t clear_irq_param_be;
     uint8_t tx_array[2];
     memset(tx_array, 0x00, sizeof(tx_array));
-    //clear_irq_param_be=clear_irq_param;
+    // clear_irq_param_be=clear_irq_param;
     clear_irq_param_be = reverse_byte_order_uint16(clear_irq_param);
     memcpy(tx_array, &clear_irq_param_be, sizeof(uint16_t));
     res = sx1262_send_opcode(OPCODE_CLEAR_IRQ_STATUS, tx_array, sizeof(tx_array), NULL, 0);
@@ -541,26 +538,22 @@ bool is_valid_spreading_factor(SpreadingFactor_t Spreading_factor) {
 }
 
 /*SetCadParams*/
-bool sx1262_set_cad_params(CadNunSym_t cad_symbol_num,
-                           uint8_t cad_det_peak,/*See App Application note AN1200.48 */
-                           uint8_t cad_det_min,/*See App Application note AN1200.48 */
-                           CadExtMode_t  cad_exit_mode,
-                           uint16_t cad_timeout){
+bool sx1262_set_cad_params(CadNunSym_t cad_symbol_num, uint8_t cad_det_peak, /*See App Application note AN1200.48 */
+                           uint8_t cad_det_min,                              /*See App Application note AN1200.48 */
+                           CadExtMode_t cad_exit_mode, uint16_t cad_timeout) {
     bool res = false;
-    uint8_t tx_array[7];/**/
+    uint8_t tx_array[7]; /**/
     memset(tx_array, 0x00, sizeof(tx_array));
-    tx_array[0]=(uint8_t) cad_symbol_num;
-    tx_array[1]=(uint8_t) cad_det_peak;
-    tx_array[2]=(uint8_t) cad_det_min;
-    tx_array[3]=(uint8_t) cad_exit_mode;
-    memcpy(&tx_array[4],&cad_timeout,2);
+    tx_array[0] = (uint8_t)cad_symbol_num;
+    tx_array[1] = (uint8_t)cad_det_peak;
+    tx_array[2] = (uint8_t)cad_det_min;
+    tx_array[3] = (uint8_t)cad_exit_mode;
+    memcpy(&tx_array[4], &cad_timeout, 2);
     res = sx1262_send_opcode(OPCODE_SET_CAD_PARAM, tx_array, sizeof(tx_array), NULL, 0);
     return res;
 }
 
-
-
-bool sx1262_set_cad(void){
+bool sx1262_set_cad(void) {
     bool res = false;
     res = sx1262_send_opcode(OPCODE_SET_CAD, NULL, 0, NULL, 0);
     return res;
@@ -639,17 +632,17 @@ bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
     res2 = is_valid_coding_rate(modParams->coding_rate);
     res3 = is_valid_spreading_factor(modParams->spreading_factor);
     if(res1 && res2 && res3) {
-        uint8_t tx_array[8];/**/
+        uint8_t tx_array[8]; /**/
         memset(tx_array, 0x00, sizeof(tx_array));
         tx_array[0] = modParams->spreading_factor;
         tx_array[1] = modParams->band_width;
         tx_array[2] = modParams->coding_rate;
-        tx_array[3] = modParams->low_data_rate_optimization; // Low Data Rate Optimization (LDRO) LDRO LowDataRateOptimize 0:OFF; 1:ON; TODO
+        tx_array[3] = modParams->low_data_rate_optimization; // Low Data Rate Optimization (LDRO) LDRO
+                                                             // LowDataRateOptimize 0:OFF; 1:ON; TODO
         res = sx1262_send_opcode(OPCODE_SET_MODULATION_PARAMS, tx_array, sizeof(tx_array), NULL, 0);
     }
     return res;
 }
-
 
 /*
   SetSleep
@@ -845,18 +838,18 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
     sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
     sx1262Instance->mod_params.spreading_factor = DFLT_SF;
-    sx1262Instance->mod_params.low_data_rate_optimization=LDRO_OFF;
+    sx1262Instance->mod_params.low_data_rate_optimization = LDRO_OFF;
     sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
 #ifdef HAS_SX1262_BIT_RATE
     sx1262Instance->tx_max_bit_rate = 0.0;
 #endif
 
 #ifdef HAS_FLASH_FS
-    LOAD_PARAM(PAR_ID_LORA_CRC_INIT,sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
-    LOAD_PARAM(PAR_ID_LORA_CRC_POLY,sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
+    LOAD_PARAM(PAR_ID_LORA_CRC_INIT, sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
+    LOAD_PARAM(PAR_ID_LORA_CRC_POLY, sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
 
-    LOAD_PARAM(PAR_ID_LOW_DATA_RATE,sx1262Instance->mod_params.low_data_rate_optimization, 1, "LowDataRateOpt", LDRO_OFF,
-               LowDataRateOpt2Str);
+    LOAD_PARAM(PAR_ID_LOW_DATA_RATE, sx1262Instance->mod_params.low_data_rate_optimization, 1, "LowDataRateOpt",
+               LDRO_OFF, LowDataRateOpt2Str);
     LOAD_PARAM(PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen", 255,
                PayloadLen2Str);
     LOAD_PARAM(PAR_ID_PACKET_TYPE, sx1262Instance->packet_param.packet_type, 1, "PktType", PACKET_TYPE_LORA,
@@ -912,7 +905,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 bool sx1262_init(void) {
     bool res = true;
 #ifdef HAS_DEBUG
-    //res = set_log_level(LORA, LOG_LEVEL_DEBUG);
+    // res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     // Sx1262Instance.debug = true;
     // Sx1262Instance.show_ascii = true;
 #else
@@ -955,11 +948,11 @@ bool sx1262_init(void) {
 
     res = sx1262_wait_on_busy(1000);
     if(false == res) {
-         LOG_ERROR(LORA, "ChipBusy");
+        LOG_ERROR(LORA, "ChipBusy");
     }
 
-    if(res){
-       res = sx1262_is_exist();
+    if(res) {
+        res = sx1262_is_exist();
     }
     if(true == res) {
         res = sx1262_wakeup() && res;
@@ -979,7 +972,6 @@ bool sx1262_init(void) {
 
         res = sx1262_set_standby(STDBY_XOSC);
 
-
         res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
         if(false == res) {
             LOG_ERROR(LORA, "SX1262SetModParErr");
@@ -988,7 +980,7 @@ bool sx1262_init(void) {
         res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
 
         res = sx1262_set_dio_irq_params(IQR_MAIN_INT, IQR_MAIN_INT, IQR_MAIN_INT, IQR_MAIN_INT) && res;
-        res =  sx1262_set_dio2_as_rf_switch_ctrl(DIO2_RF_SW)&& res;
+        res = sx1262_set_dio2_as_rf_switch_ctrl(DIO2_RF_SW) && res;
 
         res = sx1262_set_crc_poly(Sx1262Instance.crc_poly) && res;
         res = sx1262_set_crc_seed(Sx1262Instance.crc_init) && res;
@@ -998,7 +990,7 @@ bool sx1262_init(void) {
         res = sx1262_start_rx(0xFFFFFF) && res;
 
         res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
-        //res = sx1262_conf_rx() && res;
+        // res = sx1262_conf_rx() && res;
 
         // Sx1262Instance.set_sync_word = SYNC_WORD;
 
@@ -1030,7 +1022,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
         if(Sx1262Instance.tx_done) {
             Sx1262Instance.tx_done = false;
             if((NULL != tx_buf) && (0 < tx_len)) {
-                //res = sx1262_clear_fifo();
+                // res = sx1262_clear_fifo();
                 res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
                 res = sx1262_set_payload(tx_buf, tx_len) && res;
                 LOG_DEBUG(LORA, "TxLen:%u", tx_len);
@@ -1073,17 +1065,16 @@ bool sx1262_get_irq_status(Sx1262IRQs_t* out_irq_stat) {
     bool res = false;
     uint8_t rx_array[4];
     memset(rx_array, 0xFF, sizeof(rx_array));
-    res = sx1262_send_opcode(OPCODE_GET_IRQ_STATUS, NULL,  0, rx_array, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_GET_IRQ_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
         uint16_t irq_stat = 0;
         Sx1262Instance.status = rx_array[1];
         memcpy(&irq_stat, &rx_array[2], 2);
-       // irq_stat = reverse_byte_order_uint16(irq_stat);
+        // irq_stat = reverse_byte_order_uint16(irq_stat);
         out_irq_stat->word = irq_stat;
     }
     return res;
 }
-
 
 /*
   GetDeviceErrors
@@ -1104,7 +1095,7 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     bool res = false;
     uint8_t rx_array[3];
     memset(rx_array, 0xFF, sizeof(rx_array));
-    res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL,  0, rx_array, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
         Sx1262Instance.status = rx_array[0];
         *packet_type = (RadioPacketType_t)rx_array[1];
@@ -1118,7 +1109,7 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
 bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
     if(NULL != out_status) {
-        uint8_t tx_array=0;
+        uint8_t tx_array = 0;
         uint8_t rx_array[2] = {0xFF, 0xFF};
         res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
         *out_status = rx_array[1];
@@ -1190,11 +1181,11 @@ bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora) {
     return res;
 }
 
-static bool sx1262_proc_irq_status(Sx1262IRQs_t*  irq_status) {
+static bool sx1262_proc_irq_status(Sx1262IRQs_t* irq_status) {
     bool res = false;
-   // Sx1262IRQs_t irq;
-   // (void) irq;
-   // irq.word = 0;
+    // Sx1262IRQs_t irq;
+    // (void) irq;
+    // irq.word = 0;
     if(0 < (MASK_10BIT & irq_status->word)) {
         Sx1262Instance.irq_cnt.total += (uint16_t)count_set_bits((uint32_t)MASK_10BIT & irq_status->word);
         res = true;
@@ -1202,39 +1193,39 @@ static bool sx1262_proc_irq_status(Sx1262IRQs_t*  irq_status) {
 
     if(irq_status->TxDone) {
         Sx1262Instance.irq_cnt.tx_done++;
-      //  irq.TxDone =1;
+        //  irq.TxDone =1;
     }
     if(irq_status->RxDone) {
         Sx1262Instance.irq_cnt.rx_done++;
-      //  irq.RxDone = 1;
+        //  irq.RxDone = 1;
     }
     if(irq_status->PreambleDetected) {
         Sx1262Instance.irq_cnt.preamble_detected++;
-      //  irq.PreambleDetected=1;
+        //  irq.PreambleDetected=1;
     }
     if(irq_status->SyncWordValid) {
         Sx1262Instance.irq_cnt.syncword_valid++;
-      //  irq.SyncWordValid=1;
+        //  irq.SyncWordValid=1;
     }
     if(irq_status->HeaderValid) {
         Sx1262Instance.irq_cnt.header_valid++;
-       // irq.HeaderValid=1;
+        // irq.HeaderValid=1;
     }
     if(irq_status->CrcErr) {
         Sx1262Instance.irq_cnt.crc_err++;
-      //  irq.CrcErr=1;
+        //  irq.CrcErr=1;
     }
     if(irq_status->CadDone) {
         Sx1262Instance.irq_cnt.cad_done++;
-      //  irq.CadDone =1;
+        //  irq.CadDone =1;
     }
     if(irq_status->CadDetected) {
         Sx1262Instance.irq_cnt.cad_detected++;
-      //  irq.CadDetected=1;
+        //  irq.CadDetected=1;
     }
     if(irq_status->Timeout) {
         Sx1262Instance.irq_cnt.timeout++;
-      //  irq.Timeout=1;
+        //  irq.Timeout=1;
     }
     res = sx1262_clear_irq(0xFFFF);
     return res;
@@ -1293,8 +1284,8 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     static uint32_t chip_mode_xosc = 0;
     static uint32_t chip_mode_fs = 0;
     static uint32_t chip_mode_tx = 0;
-    if(chip_mode!=prev_chip_mode){
-       LOG_DEBUG(LORA, "ChipMode %u %s", chip_mode, chip_mode2str(chip_mode));
+    if(chip_mode != prev_chip_mode) {
+        LOG_DEBUG(LORA, "ChipMode %u %s", chip_mode, chip_mode2str(chip_mode));
     }
 
     switch(chip_mode) {
@@ -1413,7 +1404,7 @@ static bool sx1262_sync_rssi(void) {
     return res;
 }
 
-static inline bool sx1262_proc_data_aval(void){
+static inline bool sx1262_proc_data_aval(void) {
     bool res = false;
 
     uint16_t rx_size = 0;
@@ -1425,8 +1416,8 @@ static inline bool sx1262_proc_data_aval(void){
     uint8_t cur_crc8 = 0;
     res = sx1262_get_rx_payload(rx_payload, &rx_size, RX_SIZE, &cur_crc8);
     if(res) {
-        res = is_arr_pat(rx_payload, rx_size, 0x00) ;
-        if(false==res){
+        res = is_arr_pat(rx_payload, rx_size, 0x00);
+        if(false == res) {
             res = sx1262_clear_fifo();
 
             Sx1262Instance.rx_size_max = max8u(Sx1262Instance.rx_size_max, rx_size);
@@ -1439,7 +1430,7 @@ static inline bool sx1262_proc_data_aval(void){
 #ifdef HAS_LORA
             res = lora_proc_payload(rx_payload, rx_size);
 #endif /*HAS_LORA*/
-        // led_blink(&Led[LED_INDEX_RED], 10);
+            // led_blink(&Led[LED_INDEX_RED], 10);
         }
 
     } else {
@@ -1456,12 +1447,12 @@ static inline bool sx1262_poll_status(void) {
     res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
         res = true;
-        static uint8_t stat_byte_prev=0;
+        static uint8_t stat_byte_prev = 0;
         Sx1262Instance.dev_status.byte = tempSx1262Instance.dev_status.byte;
-        if(Sx1262Instance.dev_status.byte != stat_byte_prev){
-            LOG_DEBUG(LORA, "Status:0x%02x",Sx1262Instance.dev_status.byte); /**/
+        if(Sx1262Instance.dev_status.byte != stat_byte_prev) {
+            LOG_DEBUG(LORA, "Status:0x%02x", Sx1262Instance.dev_status.byte); /**/
         }
-        stat_byte_prev = Sx1262Instance.dev_status.byte ;
+        stat_byte_prev = Sx1262Instance.dev_status.byte;
         // Sx1262Instance.com_stat = extract_subval_from_8bit(tempSx1262Instance.dev_status, 3, 1);
         switch(Sx1262Instance.dev_status.command_status) {
         case COM_STAT_DATA_AVAIL: {
@@ -1554,7 +1545,7 @@ static inline bool sx1262_sync_registers(void) {
     if(res) {
         Sx1262Instance.irq_stat = tempSx1262Instance.irq_stat;
         sx1262_proc_irq_status(&tempSx1262Instance.irq_stat);
-       // Sx1262Instance.irq_stat.word = 0;
+        // Sx1262Instance.irq_stat.word = 0;
     }
 
     tempSx1262Instance.get_sync_word = 0;
@@ -1689,6 +1680,3 @@ float lora_calc_max_frame_tx_time(uint8_t sf_code, uint8_t bw_code, uint8_t cr_c
     return t_frame;
 }
 #endif
-
-
-

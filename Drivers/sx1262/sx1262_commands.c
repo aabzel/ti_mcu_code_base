@@ -106,7 +106,7 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         io_printf("showAscii: %u" CRLF, Sx1262Instance.show_ascii);
         io_printf("isPacket: %u" CRLF, Sx1262Instance.is_packet);
         io_printf("status: %u" CRLF, Sx1262Instance.status);
-        if(0<Sx1262Instance.processing_error){
+        if(0 < Sx1262Instance.processing_error) {
             LOG_ERROR(LORA, "ProcErr: %u", Sx1262Instance.processing_error);
         }
         LOG_INFO(LORA, "cmdStat: [%u] %s", Sx1262Instance.dev_status.command_status,
