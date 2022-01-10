@@ -4,8 +4,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "sys_config.h"
-
 #include "fifo_char.h"
 
 #ifdef DeviceFamily_CC26X2

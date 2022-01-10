@@ -8,6 +8,7 @@ include $(UTILS_DIR)/utils_string/utils_string.mk
 include $(UTILS_DIR)/crc/crc.mk
 include $(UTILS_DIR)/fifo/fifo.mk
 include $(UTILS_DIR)/io_utils/io_utils.mk
+include $(UTILS_DIR)/win_utils/win_utils.mk
 
 SOURCES_C += $(UTILS_DIR)/array.c
 SOURCES_C += $(UTILS_DIR)/bit_utils.c

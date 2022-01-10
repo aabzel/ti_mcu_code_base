@@ -9,7 +9,6 @@
 #define WRIRE_PAUSE_S 0.4f
 #define FLASH_WR_CHUNK_SIZE 64U /*byte*/
 
-void cli_win_color_enable(void);
 bool cli_cmd_send(HANDLE hComm, char* txBuffer, uint32_t tx_buff_len);
 bool is_target_connected(void);
 bool cli_wrp_flash_write_verify(uint32_t base_addr, uint8_t* chunk_data, uint32_t size);

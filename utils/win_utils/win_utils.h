@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 void clear_tui(void);
-
+void win_color_enable(void);
 
 #ifdef __cplusplus
 }

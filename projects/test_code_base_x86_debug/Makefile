@@ -56,7 +56,6 @@ include $(PROJECT_ROOT)code_base.mk
 include $(PROJECT_ROOT)common/common.mk
 include $(PROJECT_ROOT)protocols/protocols.mk
 include $(PROJECT_ROOT)utils/utils_files/utils_files.mk
-include $(PROJECT_ROOT)utils/io_utils/io_utils.mk
 include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)unit_tests/unit_test.mk
 #include $(PROJECT_ROOT)tests/tests.mk

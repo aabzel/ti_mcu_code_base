@@ -17,7 +17,7 @@
 
 int main(int argc, char* argv[]) {
     int ret = 0;
-    cli_win_color_enable();
+    win_color_enable();
     set_log_level(SYS, LOG_LEVEL_DEBUG);
     set_log_level(COM, LOG_LEVEL_DEBUG);
     bool target_connected = false;

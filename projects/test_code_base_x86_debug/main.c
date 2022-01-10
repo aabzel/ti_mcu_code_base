@@ -3,19 +3,23 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "log.h"
 #include "test_list.h"
 #include "test_rtcm3_proto.h"
 #include "unit_test_check.h"
 #include "unit_test_run.h"
+#include "win_utils.h"
 
 int main(int argc, char* argv[]) {
     int ret = 0;
     bool res = false;
-    printf("test code base!\n");
-    printf("STDC_VER : %u \n", __STDC_VERSION__);
+    win_color_enable();
+    set_log_level(SYS, LOG_LEVEL_DEBUG);
+    LOG_INFO(SYS,"Test Code Base:");
+    LOG_INFO(SYS,"STDC_VER : %u", __STDC_VERSION__);
 
     uint32_t cnt = get_test_list_cnt();
-    printf("number of tests: %u\n", cnt);
+    LOG_INFO(SYS,"number of tests: %u", cnt);
     bool rest_res = false;
     uint32_t failed_cnt = 0, total = 0;
     uint32_t passed_cnt = 0;
@@ -26,17 +30,17 @@ int main(int argc, char* argv[]) {
         if(false == rest_res) {
             failed_cnt++;
             ui = get_unit_test(index);
-            printf("\n[e]    nTests failed index: %u [%s]\n", index, ui->name);
+            LOG_ERROR(SYS,"Tests failed index: %u [%s]", index, ui->name);
         } else {
             passed_cnt++;
         }
         total++;
     };
     if(0 < failed_cnt) {
-        printf("\n\n\n[e] Tests Failure: %u/%u\n", failed_cnt, total);
+        LOG_ERROR(SYS,"Tests Failure: %u/%u", failed_cnt, total);
     } else {
-        printf("\n\n\n[*] Tests Passed: %u \n", total);
+        LOG_INFO(SYS,"Tests Passed: %u", total);
     }
-    printf("\nEnd program.\n");
+    LOG_INFO(SYS,"End program.");
     return ret;
 }
