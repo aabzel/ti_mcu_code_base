@@ -19,6 +19,7 @@ digraph graphname {
     GPIO->GPIO_PWM;
     GPIO->LED;
     GPIO->PWR;
+	ADC->PWR;
     GPIO->RS232;
     GPIO->SX1262;
     I2C->PWR;
@@ -55,6 +56,9 @@ digraph graphname {
     TIM->WDT;
     Flash->BootLoader;
     UART->BootLoader;
+    FlashFs->BootLoader;
+    CLI->BootLoader;
+    RS232->BootLoader;
     UART->CLI;
     UART->NMEA;
     UART->RS232;
