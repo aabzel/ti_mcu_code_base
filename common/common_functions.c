@@ -100,7 +100,7 @@ bool sys_init(void) {
     return res;
 }
 
-#ifdef SUPER_LOOP
+#ifdef HAS_SUPER_LOOP
 void super_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_DEBUG
     iteration_cnt++;
@@ -195,7 +195,7 @@ void super_loop(uint64_t loop_start_time_us) {
 }
 #endif /*NORTOS*/
 
-#ifdef SUPER_LOOP
+#ifdef HAS_SUPER_LOOP
 _Noreturn void super_main_loop(void) {
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
     uint64_t loop_start_time_us = 0;
