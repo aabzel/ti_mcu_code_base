@@ -57,7 +57,7 @@ static bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
         uint64_t stop = 0, delta = 0, period = 0;
         uint64_t start = 0;
 #ifdef HAS_CLOCK
-        uint64_t start = get_time_us();
+        start = get_time_us();
 #endif
         if(taskItem->start_time_prev < start) {
             period = start - taskItem->start_time_prev;

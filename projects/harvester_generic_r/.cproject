@@ -62,6 +62,7 @@
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/calendar"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/system"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
@@ -122,6 +123,7 @@
 									<listOptionValue builtIn="false" value="HAS_BOOT"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
+									<listOptionValue builtIn="false" value="HAS_CALENDAR"/>
 									<listOptionValue builtIn="false" value="HAS_CLI"/>
 									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
