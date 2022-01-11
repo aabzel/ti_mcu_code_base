@@ -1,0 +1,87 @@
+Bluetooth Low Energy Fundamentals
+https://dev.ti.com/tirex/explore/node?node=AAliBv1MZ54NaV.m2AIT8w__krol.2c__LATEST
+
+
+Task 1 – Run ProjectZero Project
+https://dev.ti.com/tirex/explore/node?node=AAliBv1MZ54NaV.m2AIT8w__krol.2c__LATEST
+
+
+Мохаммада Афане "Intro to Bluetooth Low Energy" 
+
+
+Не получается запустить Project Zero.
+
+
+
+A project implements a simple Bluetooth Low Energy peripheral device with LED, Button and Data service. This project is also used as a training tool in SimpleLink Academy.
+
+
+
+Сколько потоков в примере Project Zero?
+Какова структура первичного 31 байтного пакета адвертайзинга в BLE?
+
+Примечание: длина первичного пакета адвертайзинга ограничена 31 байтами. Длина вторичного пакета адвертайзинга может составлять до 254 байт.
+
+
+Начиная с Bluetooth 4.0 (2010) появился Bluetooth Low Energy (BLE)
+
+Bluetooth Classic (BR/EDR),
+
+Используется для потоковых приложений, таких как трансляция аудио и передача файлов
+
+Использует 79 радиоканалов
+
+BLE
+
+Используется в сенсорах, управлении устройствами и приложениях, не требующих передачи больших объемов данных
+
+Обнаружение происходит на 3 каналах, что приводит к более быстрому обнаружению и установке соединения по сравнению с Bluetooth Classic
+
+Каждоен устройство посылает широковещательные пакеты по 3м каналам.
+
+ 2.400 - 2.4835 ГГц.
+Весь частотный диапазон поделен на 40 каналов по 2 МГц каждый.
+
+Максимальная скорость передачи данных по радиоканалу (начиная с Bluetooth версии 5) 2Мбит/с.
+
+Типичная дальность передачи: 10-30 метров.
+
+Типичное потребление BLE-трансивера во время передачи данных как правило не превышает 15 мА.
+
+Robin Heydon «Bluetooth low energy the developers handbook»
+David Kammer «Bluetooth Application Developers Guide»
+Albert Huang «Bluetooth for Programmers»
+Архипкин В.Я. «Bluetooth Технические требования практическая реализация»
+
+BlueTooth это Half duplex или Full-duplex?
+Диагностика BlueTooth 
+-Показать MAC адрес
+Как из UART показать состояние BLE  Advertising  Scanning(посулает широковещательные пакеты) Connected Standby
+
+
+
+БВН должен быть периферийным BLE устройством чтобы не расходовать заряд источника питания.
+
+
+
+Bluetooth Low Energy Fundamentals
+https://dev.ti.com/tirex/explore/node?node=AOZPTHcoiaMuxsUw15jDDQ__BSEc4rl__LATEST
+(прочитано)
+
+
+PACKET-SNIFFER
+SmartRF Protocol Packet Sniffer
+https://www.ti.com/tool/PACKET-SNIFFER
+https://www.ti.com/tool/PACKET-SNIFFER#tech-docs
+Packet Sniffer
+http://software-dl.ti.com/simplelink/esd/simplelink_cc13x2_26x2_sdk/3.40.00.02/exports/docs/zigbee/html/zigbee/packet_sniffer.html
+
+Bluetooth low energy Custom Profile
+https://dev.ti.com/tirex/explore/node?node=ACAn8XZNDy1n1bEFwSDnJQ__BSEc4rl__LATEST
+
+
+Online UUID Generator
+https://www.uuidgenerator.net/versi
+
+для работы с Btool надо прошить плату проектом ble5 host_test 
+
