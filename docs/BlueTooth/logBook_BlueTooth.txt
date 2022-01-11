@@ -1,20 +1,19 @@
 Bluetooth Low Energy Fundamentals
 https://dev.ti.com/tirex/explore/node?node=AAliBv1MZ54NaV.m2AIT8w__krol.2c__LATEST
 
+Как отлаживать BlueTooth? 
+Используемый частотный диапазон 2.400 - 2.4835 ГГц.
+В приложении BLE Scanner смотри на RSSI( должен быть до 93 dBm).
+Утилита BTool должна показывать MAC адрес peripheral device и устанавливать соединение с peripheral device.
+
 
 Task 1 – Run ProjectZero Project
 https://dev.ti.com/tirex/explore/node?node=AAliBv1MZ54NaV.m2AIT8w__krol.2c__LATEST
 
-
 Мохаммада Афане "Intro to Bluetooth Low Energy" 
 
 
-Не получается запустить Project Zero.
-
-
-
 A project implements a simple Bluetooth Low Energy peripheral device with LED, Button and Data service. This project is also used as a training tool in SimpleLink Academy.
-
 
 
 Сколько потоков в примере Project Zero?
@@ -22,15 +21,10 @@ A project implements a simple Bluetooth Low Energy peripheral device with LED, B
 
 Примечание: длина первичного пакета адвертайзинга ограничена 31 байтами. Длина вторичного пакета адвертайзинга может составлять до 254 байт.
 
-
 Начиная с Bluetooth 4.0 (2010) появился Bluetooth Low Energy (BLE)
-
 Bluetooth Classic (BR/EDR),
-
 Используется для потоковых приложений, таких как трансляция аудио и передача файлов
-
 Использует 79 радиоканалов
-
 BLE
 
 Используется в сенсорах, управлении устройствами и приложениях, не требующих передачи больших объемов данных
@@ -58,16 +52,11 @@ BlueTooth это Half duplex или Full-duplex?
 -Показать MAC адрес
 Как из UART показать состояние BLE  Advertising  Scanning(посулает широковещательные пакеты) Connected Standby
 
-
-
 БВН должен быть периферийным BLE устройством чтобы не расходовать заряд источника питания.
-
-
 
 Bluetooth Low Energy Fundamentals
 https://dev.ti.com/tirex/explore/node?node=AOZPTHcoiaMuxsUw15jDDQ__BSEc4rl__LATEST
 (прочитано)
-
 
 PACKET-SNIFFER
 SmartRF Protocol Packet Sniffer
