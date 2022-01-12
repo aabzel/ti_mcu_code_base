@@ -6,6 +6,10 @@
 
 #include "sys_tick.h"
 
+bool clock_init(void){
+    return true;
+}
+
 bool delay_ms(uint32_t delay_in_ms) {
     bool res = false;
     uint32_t init_time_in_ms = g_up_time_ms;

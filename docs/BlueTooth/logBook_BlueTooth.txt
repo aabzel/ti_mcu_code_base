@@ -4,6 +4,9 @@ https://dev.ti.com/tirex/explore/node?node=AAliBv1MZ54NaV.m2AIT8w__krol.2c__LATE
 Как отлаживать BlueTooth? 
 Используемый частотный диапазон 2.400 - 2.4835 ГГц.
 В приложении BLE Scanner смотри на RSSI( должен быть до 93 dBm).
+На нормальной плате, когда плата придвинута вплотную к смартфону то приложение BLE Scanner должен показывать  -15...-20 dBm.
+
+
 Утилита BTool должна показывать MAC адрес peripheral device и устанавливать соединение с peripheral device.
 
 

@@ -20,7 +20,7 @@ extern "C" {
 #define io_putchar putchar
 #endif
 
-#ifdef HAS_PRINTF
+#ifdef HAS_CUSTOM_PRINTF
 void io_vprintf(const char* format, va_list vlist);
 void wait_for_printf(void);
 bool flush_printf(void);

@@ -124,7 +124,9 @@ bool hw_init(void) {
    SystemClockConfig();
 #endif
 #ifdef NORTOS  
+#ifdef HAS_SYSTIC
    SysTickInit();
+#endif
 #endif /*NORTOS*/
 
 #ifdef HAS_INTERRUPT
