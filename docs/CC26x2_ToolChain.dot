@@ -1,26 +1,54 @@
-digraph graphname {
+digraph  graphname {
     rankdir=LR;
+
+
+	subgraph clusterJVM  {
+	   label="JVM"
+	   JVM[shape="none"][style="invis"][label=""];
+	    subgraph clusterCSS  {
+	       label="CodeComposerStudio"
+	       CCS[shape="none"][style="invis"][label=""];
+           Eclipse [label="Eclipse.exe"];
+        }
+    }
+
+	    subgraph clusterSDK  {
+	       label="SDK"
+	       SDK[shape="none"][style="invis"][label=""];
+	       dslite [label="dslite.bat"];
+	SysConfig  [label="SysConfig"];
+	compiler[label="armcl.exe"];
+	Linker [label="armcl.exe"];
+	gmake[label="gmake.exe"]
+	srfprog[label="srfprog.exe"];
+	armhex[label="armhex.exe"];
+    Preprocessor[label="armcl.exe"];
+        }
+		
+	Preprocessor->compiler[label="*.pp"];
 	clangformat [label="clang-format.exe"];
     Notepadpp [label="NotePad++.exe"];
 	dot [label="dot.exe"];
 	chrome [label="chrome.exe"];
+	Notepadpp->Preprocessor[label="*.c *.h"];
 	Inkscape [label="Inkscape.exe"];
-    Eclipse [label="Eclipse.exe"];
-	gmake[label="gmake.exe"]
-	armcl[label="armcl.exe"];
-	srfprog[label="srfprog.exe"];
-	armcl->armcl[label=".obj"];
+	SysConfig->Eclipse[label="*.c *.h"];
+	Eclipse->Linker[label="*.cmd"];
+	Notepadpp->Linker[label="*.cmd"];
+	compiler->Linker[label=".obj"];
+	Indef->Linker[label="*.a"];
 	hex2bin[label="hex2bin.exe"];
-	armhex[label="armhex.exe"];
-    dslite[label="dslite.bat"];
+	gmake->Preprocessor;
 	armhex->hex2bin[label="*.hex"];
-	Notepadpp->Eclipse[label=".cproject"];
+	Eclipse->Notepadpp[label=".cproject"];
     Eclipse->Eclipse [label=".cproject"];
     Notepadpp->Notepadpp[label="*.c *.h"];
     Notepadpp->clangformat[label="*.c *.h"];
 	clangformat->Notepadpp[label="*.c *.h"];
 	Notepadpp->dot[label="*.dot"];
-	armcl->armhex[label="*.hex"];
+	Linker->armhex[label="*.hex"];
+	armhex->dslite[label="*.hex"];
+	CCS->dslite[label="*.ccxml"];
 	hex2bin->srfprog[label="*.bin"];
 	dot->chrome[label="*.svg"];
 	Eclipse->gmake[label="*.mk"];
