@@ -4,6 +4,7 @@ digraph graphname {
     CLOCK->GPIO_PWM
     CLOCK->LED;
     CLOCK->TASK;
+    Flash->TASK;
     CRC->FlashFs;
     CRC -> TBFP;
     DMA->SPI;
