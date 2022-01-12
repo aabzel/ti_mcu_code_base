@@ -1,57 +1,78 @@
 digraph  graphname {
     rankdir=LR;
-
-
-	subgraph clusterJVM  {
-	   label="JVM"
-	   JVM[shape="none"][style="invis"][label=""];
-	    subgraph clusterCSS  {
-	       label="CodeComposerStudio"
-	       CCS[shape="none"][style="invis"][label=""];
-           Eclipse [label="Eclipse.exe"];
+    subgraph clusterWIN10  {
+		label="Windows10"
+		WIN10[shape="none"][style="invis"][label=""];
+    	subgraph clusterJVM  {
+    	   label="JVM"
+    	   JVM[shape="none"][style="invis"][label=""];
+    	    subgraph clusterCSS  {
+    	       label="CodeComposerStudio"
+    	       CCS[shape="none"][style="invis"][label=""];
+               Eclipse [label="Eclipse.exe"];
+    		   eclipsec[label="eclipsec.exe"];
+            }
         }
-    }
-
-	    subgraph clusterSDK  {
-	       label="SDK"
-	       SDK[shape="none"][style="invis"][label=""];
-	       dslite [label="dslite.bat"];
-	SysConfig  [label="SysConfig"];
-	compiler[label="armcl.exe"];
-	Linker [label="armcl.exe"];
-	gmake[label="gmake.exe"]
-	srfprog[label="srfprog.exe"];
-	armhex[label="armhex.exe"];
-    Preprocessor[label="armcl.exe"];
-        }
-		
-	Preprocessor->compiler[label="*.pp"];
-	clangformat [label="clang-format.exe"];
-    Notepadpp [label="NotePad++.exe"];
-	dot [label="dot.exe"];
-	chrome [label="chrome.exe"];
-	Notepadpp->Preprocessor[label="*.c *.h"];
-	Inkscape [label="Inkscape.exe"];
-	SysConfig->Eclipse[label="*.c *.h"];
-	Eclipse->Linker[label="*.cmd"];
-	Notepadpp->Linker[label="*.cmd"];
-	compiler->Linker[label=".obj"];
-	Indef->Linker[label="*.a"];
-	hex2bin[label="hex2bin.exe"];
-	gmake->Preprocessor;
-	armhex->hex2bin[label="*.hex"];
-	Eclipse->Notepadpp[label=".cproject"];
-    Eclipse->Eclipse [label=".cproject"];
-    Notepadpp->Notepadpp[label="*.c *.h"];
-    Notepadpp->clangformat[label="*.c *.h"];
-	clangformat->Notepadpp[label="*.c *.h"];
-	Notepadpp->dot[label="*.dot"];
-	Linker->armhex[label="*.hex"];
-	armhex->dslite[label="*.hex"];
-	CCS->dslite[label="*.ccxml"];
-	hex2bin->srfprog[label="*.bin"];
-	dot->chrome[label="*.svg"];
-	Eclipse->gmake[label="*.mk"];
-	Eclipse->gmake[label="Makefile"];
-	dot->Inkscape[label="*.svg"];
+        GIT [label="git.exe"];
+    	clangformat [label="clang-format.exe"];
+        Notepadpp [label="Notepad++.exe"];
+    	chrome [label="chrome.exe"];
+    	Inkscape [label="Inkscape.exe"];
+		Teraterm [label="Teraterm.exe"];
+		putty [label="PuTTY.exe"];
+    	dot [label="dot.exe"];
+    	    subgraph clusterSDK  {
+    	       label="SDK"
+    	       SDK[shape="none"][style="invis"][label=""];
+		       dbgjtag
+			   oad_image_tool
+    	       dslite [label="dslite.bat"];
+    	       SysConfig  [label="SysConfig"];
+    	       compiler[label="armcl.exe"];
+    	       Linker [label="armcl.exe"];
+    	       gmake[label="gmake.exe"]
+    	       srfprog[label="srfprog.exe"];
+    	       armhex[label="armhex.exe"];
+               Preprocessor[label="armcl.exe"];
+    		   tiobj2bin[label="tiobj2bin.bat"];
+    		   xdsdfu[label="xdsdfu.exe"];
+            }
+    	GIT->GIT[label=".ccsproject"];
+    	GIT->GIT[label="*.c"];
+    	GIT->GIT[label="*.h"];
+    	GIT->GIT[label="*.cmd"];
+    	GIT->GIT[label=".cproject"];
+    	GIT->GIT[label=".project"];
+    
+        Eclipse->eclipsec[label=".cproject .ccsproject .project"];
+    	Preprocessor->compiler[label="*.pp"];
+    	Notepadpp->Preprocessor[label="*.c/*.h"];
+    	SysConfig->Eclipse[label="*.c/*.h"];
+    	CCS->SysConfig [label="*.syscfg"];
+        SysConfig->Notepadpp[label="*.c/*.h"];
+    	Eclipse->Linker[label="*.cmd"];
+    	Notepadpp->Linker[label="*.cmd"];
+    	compiler->Linker[label=".obj"];
+    	Indef->Linker[label="*.a"];
+    	hex2bin[label="hex2bin.exe"];
+    	gmake->Preprocessor;
+    	armhex->hex2bin[label="*.hex"];
+    	Eclipse->Notepadpp[label=".cproject"];
+        Eclipse->Eclipse [label=".cproject"];
+        Notepadpp->Notepadpp[label="*.c *.h"];
+        Notepadpp->clangformat[label="*.c *.h"];
+    	clangformat->Notepadpp[label="*.c *.h"];
+    	Notepadpp->dot[label="*.dot"];
+    	Linker->armhex[label="*.hex"];
+    	armhex->dslite[label="*.hex"];
+    	CCS->dslite[label="*.ccxml"];
+    	hex2bin->srfprog[label="*.bin"];
+    	dot->chrome[label="*.svg"];
+    	eclipsec->gmake[label="*.mk"];
+    	eclipsec->gmake[label="Makefile"];
+    	dot->Inkscape[label="*.svg"];
+    	Linker->tiobj2bin[label="*.out"];
+    	tiobj2bin->xdsdfu[label="*.bin"];
+	//[label="*.xscfg"];
+	}
 }

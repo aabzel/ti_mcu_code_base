@@ -5,6 +5,9 @@ digraph graphname {
     CLOCK->LED;
     CLOCK->TASK;
     Flash->TASK;
+	ICall->BLE;
+	TI_RTOS->BLE;
+	CRC32->OAD;
     CRC->FlashFs;
     CRC -> TBFP;
     DMA->SPI;

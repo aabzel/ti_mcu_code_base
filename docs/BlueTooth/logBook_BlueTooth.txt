@@ -110,3 +110,12 @@ HM-10
 project_zero_CC26X2R1_LAUNCHXL_tirtos_ccs
 в 
 cc26x2_ble_d
+
+
+Зачем нужны файлы с расшиением *.xscfg?
+Они присутствуют в примере project zero?
+Какая утилита генегирует файлы *.xscfg?
+Какая утилита читаен файлы *.xscfg?
+
+
+.cfg files are kernel configuration files.
