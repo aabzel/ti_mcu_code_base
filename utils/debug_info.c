@@ -104,7 +104,7 @@ bool print_version(void) {
     io_printf("Time: %s" CRLF, __TIME__);
     io_printf("TimeStamp: %s" CRLF, __TIMESTAMP__);
     io_printf("Cstd: %u" CRLF, __STDC__);
-    io_printf("StdCver: %u" CRLF, __STDC_VERSION__);
+    io_printf("StdCver: %lu" CRLF, __STDC_VERSION__);
     io_printf("board: %s" CRLF, BOARD_NAME);
     io_printf("MCU: %s" CRLF, MCU_NAME);
 #ifdef HAS_DEV_ID
@@ -167,8 +167,8 @@ static bool print_u16_un(U16_bit_t un) {
 
 bool print_u64_un(U64_bit_t un) {
     uint8_t i = 0;
-    io_printf("un 0x%16x 0b_%s" CRLF, un.u64, utoa_bin64(un.u64));
-    io_printf("s64: %d " CRLF, un.s64);
+    io_printf("un 0x%16llx 0b_%s" CRLF, un.u64, utoa_bin64(un.u64));
+    io_printf("s64: %lld " CRLF, un.s64);
     io_printf("u64: %llu " CRLF, un.u64);
 
     for(i = 0; i < 2; i++) {
@@ -229,7 +229,7 @@ bool print_64bit_types(void* val) {
     return true;
 }
 
-#ifdef HAS_MCU
+#if defined( HAS_MCU) && !defined(ESP32)
 bool print_vector_table(uint32_t vectors_table_base) {
     uint32_t* addres = 0;
     uint32_t offset = 0, num = 0;
@@ -377,7 +377,7 @@ bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint
         uint8_t* ptr = (uint8_t*)start_addr;
         for(ptr = (uint8_t*)start_addr; ptr < ((uint8_t*)end_addr); ptr++) {
             if((*ptr) == value) {
-                io_printf("%u: address *(0x%08p): 0x%04x/%u" CRLF, cnt, ptr, value, value);
+                io_printf("%u: address *(0x%p): 0x%04x/%u" CRLF, cnt, ptr, value, value);
                 res = true;
             }
         }
@@ -388,7 +388,7 @@ bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint
         uint16_t* ptr = (uint16_t*)start_addr;
         for(ptr = (uint16_t*)start_addr; ptr < ((uint16_t*)end_addr); ptr++) {
             if((*ptr) == value) {
-                io_printf("%u: addr *(0x%08p): 0x%04x/%u" CRLF, cnt, ptr, value, value);
+                io_printf("%u: addr *(0x%p): 0x%04x/%u" CRLF, cnt, ptr, value, value);
                 res = true;
             }
         }
@@ -399,7 +399,7 @@ bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint
         uint32_t* ptr = (uint32_t*)start_addr;
         for(ptr = (uint32_t*)start_addr; ptr < ((uint32_t*)end_addr); ptr++) {
             if((*ptr) == value) {
-                io_printf("%u: addr *(0x%08p): 0x%08x/%u" CRLF, cnt, ptr, value, value);
+                io_printf("%u: addr *(0x%p): 0x%08x/%u" CRLF, cnt, ptr, value, value);
                 res = true;
             }
         }

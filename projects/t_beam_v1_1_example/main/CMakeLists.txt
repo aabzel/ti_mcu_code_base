@@ -3,7 +3,11 @@ set(PATH_INC)
 set(PATH_SRC)
 set(PATH_WORKSPACE  C:/1_job/0_NPP_IT_ELMA/code_base_workspace_esp/ti_mcu_code_base)
 
-
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/clocks/clocks.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/gpio/gpio_drv.c")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/clocks")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/gpio")
+list(APPEND PATH_INC "C:/esp/esp-idf/components/hal/include/hal")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/boards/tBeamV1_1")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32")
@@ -62,4 +66,4 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/cli_drv/log_commands.c")
 idf_component_register(SRCS "hello_world_main.c" ${PATH_SRC}
                        INCLUDE_DIRS ${PATH_INC})
 
-target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_MCU -DHAS_CLI -DHAS_SUPER_LOOP -DHAS_UART -DESP32)
+target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_MCU -DHAS_CLOCK -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SUPER_LOOP -DHAS_UART -DESP32 -DHAS_FREE_RTOS)

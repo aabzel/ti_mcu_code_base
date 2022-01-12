@@ -10,7 +10,7 @@
 #include "writer_generic.h"
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_PRIINTF
 print_callback_t print_callback_f;
 void io_putstr(const char* str) {
     if(huart[UART_NUM_CLI].init_done) {
@@ -19,7 +19,7 @@ void io_putstr(const char* str) {
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_PRIINTF
 void io_putchar(char ch) {
     if(huart[UART_NUM_CLI].init_done) {
         (&curWriterPtr->s)->f_putch(&curWriterPtr->s, ch);
@@ -27,7 +27,7 @@ void io_putchar(char ch) {
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_PRIINTF
 void io_printf(const char* format, ...) {
     if(huart[UART_NUM_CLI].init_done) {
         va_list vlist;
@@ -38,7 +38,7 @@ void io_printf(const char* format, ...) {
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_PRIINTF
 void io_vprintf(const char* format, va_list vlist) { ovprintf(&curWriterPtr->s, format, vlist); }
 
 bool is_printf_clean(void) {
@@ -51,7 +51,7 @@ bool is_printf_clean(void) {
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_PRIINTF
 void io_putstrln(const char* str) {
     io_putstr(str);
     io_putstr(CRLF);

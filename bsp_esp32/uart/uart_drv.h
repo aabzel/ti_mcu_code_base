@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "sys_config.h"
 #include "uart_common.h"
+#include "driver/uart.h"
 
 #define UART_PERIOD_US 1
 #define UART_RX_ARRAY_SIZE 500U

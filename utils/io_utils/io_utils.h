@@ -11,13 +11,16 @@ extern "C" {
 
 #define CRLF "\r\n"
 
-#ifdef X86_64
+#if defined(X86_64) || defined(ESP32)
+#include <stdio.h>
+
 #define io_vprintf vprintf
 #define io_printf printf
 #define io_putstr puts
+#define io_putchar putchar
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_PRINTF
 void io_vprintf(const char* format, va_list vlist);
 void wait_for_printf(void);
 bool flush_printf(void);
@@ -29,10 +32,6 @@ void io_putstr(const char* str);
 typedef void (*print_callback_t)(const char* str);
 #define io_stdout_stream_get get_console_stream
 #endif
-
-//#define io_puts io_putstr
-//#define io_putc io_putchar
-//#define io_flush flush_printf
 
 #ifdef __cplusplus
 }

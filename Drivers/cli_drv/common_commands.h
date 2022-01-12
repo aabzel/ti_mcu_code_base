@@ -21,7 +21,7 @@
 #define BOOT_COMMANDS
 #endif
 
-#ifdef HAS_GPIO
+#ifdef HAS_GPIO_COMMANDS
 #include "gpio_commands.h"
 #else
 #define GPIO_COMMANDS
@@ -31,6 +31,12 @@
 #include "gpio_pwm_commands.h"
 #else
 #define GPIO_PWM_COMMANDS
+#endif
+
+#ifdef HAS_CLOCK_COMMANDS
+#include "clock_commands.h"
+#else
+#define CLOCK_COMMANDS
 #endif
 
 #ifdef HAS_INTERRUPT
@@ -71,11 +77,6 @@
 #define UNIT_TEST_COMMANDS
 #endif
 
-#ifdef HAS_CLOCK
-#include "clock_commands.h"
-#else
-#define CLOCK_COMMANDS
-#endif
 
 #ifdef HAS_FLASH
 #include "flash_commands.h"
@@ -88,7 +89,7 @@
 #else
 #define UART_COMMANDS
 #endif
-
+#include "uart_drv.h"
 
 #ifdef HAS_DAC
 #include "dac_commands.h"

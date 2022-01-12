@@ -3,9 +3,11 @@
 #include <inttypes.h>
 
 #include "base_cmd.h"
+#ifdef HAS_SYSTIC
+#include "sys_tick.h"
+#endif
 #ifdef HAS_CLOCK
 #include "clocks.h"
-#include "sys_tick.h"
 #endif
 #include "data_utils.h"
 #include "flash_drv.h"
@@ -72,11 +74,15 @@ static bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
             taskItem->start_period_min = rx_min64u(taskItem->start_period_min, period);
         }
         taskItem->init = true;
+#ifdef ESP32
+        res = task_func();
+#else
         if(true==is_flash_addr((uint32_t)task_func)){
             res = task_func();
         }else{
             res = false;
         }
+#endif
 #ifdef HAS_CLOCK
         stop = get_time_us();
 #else

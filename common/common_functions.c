@@ -2,6 +2,11 @@
 
 #include <inttypes.h>
 
+#ifdef HAS_FREE_RTOS
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#endif
+
 #ifdef HAS_CLOCK
 #include "clocks.h"
 #endif
@@ -108,6 +113,7 @@ void super_loop(uint64_t loop_start_time_us) {
     if(0u == loop_start_time_us) {
         return;
     }
+
 #ifdef HAS_LED
     measure_task_interval(TASK_ID_LED, LED_POLL_PERIOD_US, proc_leds, loop_start_time_us);
 #endif /*HAS_LED*/
@@ -211,7 +217,6 @@ _Noreturn void super_main_loop(void) {
 #ifdef HAS_CLOCK
         loop_start_time_us = get_time_us();
 #endif /*HAS_CLOCK*/
-
 #ifdef HAS_DEBUG
 #ifdef LAUNCHXL_CC26X2R1
         gpio_toggle(COM_LOOP_SENSOR_DIO_NO);
@@ -222,6 +227,9 @@ _Noreturn void super_main_loop(void) {
         prev_loop_start_time_us = loop_start_time_us;
 #endif /*HAS_DEBUG*/
         super_loop(loop_start_time_us);
+#ifdef HAS_FREE_RTOS
+        vTaskDelay(5 / portTICK_PERIOD_MS);
+#endif
     }
 }
 #endif /*NORTOS*/

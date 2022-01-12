@@ -257,7 +257,7 @@ void log_write_end(void) {
 #endif
 #ifndef NO_EMBEDED
     if(log_flush) {
-#ifdef HAS_MCU
+#ifdef HAS_PRINTF
         flush_printf();
 #endif
     }

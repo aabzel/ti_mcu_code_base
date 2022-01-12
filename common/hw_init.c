@@ -18,9 +18,13 @@
 #endif /*NORTOS*/
 
 #include "health_monitor.h"
+
+#ifdef HAS_SYSTIC
+#include "sys_tick.h"
+#endif
+
 #ifdef HAS_CLOCK
 #include "clocks.h"
-#include "sys_tick.h"
 #endif
 
 #ifdef HAS_ADC
@@ -125,6 +129,10 @@ bool hw_init(void) {
 
 #ifdef HAS_INTERRUPT
   res = interrupt_init() && res;
+#endif
+
+#ifdef HAS_CLOCK
+  res = clock_init() && res;
 #endif
 
 #ifdef HAS_GPIO

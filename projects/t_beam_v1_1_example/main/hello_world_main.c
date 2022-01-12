@@ -31,16 +31,17 @@ void app_main(void){
 
     res = try_init(sys_init(), "SYS") && res;
 
+    io_printf("Firmware launched!" CRLF);
     LOG_INFO(SYS, "init [%s]", (true == res) ? "OK!" : "Error!");
  
-    io_printf("Firmware launched!" CRLF);
     print_version();
+#if 0
     printf("This is %s chip with %d CPU core(s), WiFi%s%s, ",
             CONFIG_IDF_TARGET,
             chip_info.cores,
             (chip_info.features & CHIP_FEATURE_BT) ? "/BT" : "",
             (chip_info.features & CHIP_FEATURE_BLE) ? "/BLE" : "");
-
+#endif
     printf("silicon revision %d, ", chip_info.revision);
 
     printf("%dMB %s flash\n", spi_flash_get_chip_size() / (1024 * 1024),

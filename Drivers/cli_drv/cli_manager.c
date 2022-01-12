@@ -16,11 +16,11 @@
 #include "sys_config.h"
 #include "table_utils.h"
 #include "time_utils.h"
-#include "uart_drv.h"
 #include "uart_string_reader.h"
 #include "writer_config.h"
 #include "writer_generic.h"
 #endif /*X86_64*/
+#include "uart_drv.h"
 
 #include "str_utils.h"
 #include "uart_common.h"

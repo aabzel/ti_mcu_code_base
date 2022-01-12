@@ -244,7 +244,9 @@ bool cmd_wd_test(int32_t argc, char* argv[]) {
         return false;
     }
     LOG_WARNING(SYS, "Delay for %" PRIu32 " ms", delay_in_ms);
+#ifdef HAS_PRINTF
     flush_printf();
+#endif
 #ifdef HAS_CLOCK
     delay_ms(delay_in_ms);
 #endif
@@ -262,7 +264,9 @@ bool cmd_wd_test_hw(int32_t argc, char* argv[]) {
         return false;
     }
     LOG_WARNING(SYS, "Delay for %" PRIu32 " ms", delay_in_ms);
+#ifdef HAS_PRINTF
     flush_printf();
+#endif
     
     uint32_t end_time =0;
 #ifdef HAS_CLOCK
