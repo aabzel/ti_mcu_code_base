@@ -74,3 +74,11 @@ https://www.uuidgenerator.net/versi
 
 для работы с Btool надо прошить плату проектом ble5 host_test 
 
+
+RemoteXY
+Есть BlueTooth 2.0 модуль BC417
+https://www.waveshare.com/bluetooth-master-uart-board.htm
+https://aliexpress.ru/item/32786773297.html?spm=a2g2w.productlist.0.0.a7062d50nzyEyz
+Надо покупать отдельно мастер и Slave у стройства.
+Bluetooth-модуль HC-05 
+HM-10

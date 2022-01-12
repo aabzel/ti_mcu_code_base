@@ -1,0 +1,15 @@
+How to flash cc26xx .hex from comand line
+http://software-dl.ti.com/ccs/esd/uniflash/docs/v5_0/quick_start_guide/uniflash_quick_start_guide.html
+
+ -c is specifying the config file,
+ 
+ --config
+
+Я хочу прошить hex файл прошивки на микроконтроллер сс2652r1f.
+Открыл UniFlash Quick Start Guide. Нам сказано что по мимо прошивки надо еще дополнительно указывать конфигурационный файл с расширением *.ccxml.
+Где же мне взять конфигурационный файл с расширением *.ccxml?
+Есть ли возможность прислать конфигурационный файл с расширением *.ccxml?
+
+dslite.bat
+
+Flash: 352 KByte (44 sectors)
