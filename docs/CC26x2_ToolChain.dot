@@ -1,0 +1,29 @@
+digraph graphname {
+    rankdir=LR;
+	clangformat [label="clang-format.exe"];
+    Notepadpp [label="NotePad++.exe"];
+	dot [label="dot.exe"];
+	chrome [label="chrome.exe"];
+	Inkscape [label="Inkscape.exe"];
+    Eclipse [label="Eclipse.exe"];
+	gmake[label="gmake.exe"]
+	armcl[label="armcl.exe"];
+	srfprog[label="srfprog.exe"];
+	armcl->armcl[label=".obj"];
+	hex2bin[label="hex2bin.exe"];
+	armhex[label="armhex.exe"];
+    dslite[label="dslite.bat"];
+	armhex->hex2bin[label="*.hex"];
+	Notepadpp->Eclipse[label=".cproject"];
+    Eclipse->Eclipse [label=".cproject"];
+    Notepadpp->Notepadpp[label="*.c *.h"];
+    Notepadpp->clangformat[label="*.c *.h"];
+	clangformat->Notepadpp[label="*.c *.h"];
+	Notepadpp->dot[label="*.dot"];
+	armcl->armhex[label="*.hex"];
+	hex2bin->srfprog[label="*.bin"];
+	dot->chrome[label="*.svg"];
+	Eclipse->gmake[label="*.mk"];
+	Eclipse->gmake[label="Makefile"];
+	dot->Inkscape[label="*.svg"];
+}

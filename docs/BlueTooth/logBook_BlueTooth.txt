@@ -1,10 +1,13 @@
 Bluetooth Low Energy Fundamentals
 https://dev.ti.com/tirex/explore/node?node=AAliBv1MZ54NaV.m2AIT8w__krol.2c__LATEST
 
-Как отлаживать BlueTooth? 
+1) Как отлаживать BlueTooth? 
+
 Используемый частотный диапазон 2.400 - 2.4835 ГГц.
 В приложении BLE Scanner смотри на RSSI( должен быть до 93 dBm).
-На нормальной плате, когда плата придвинута вплотную к смартфону то приложение BLE Scanner должен показывать  -15...-20 dBm.
+На нормальной плате, когда плата придвинута вплотную к смартфону то приложение BLE Scanner должен показывать  -7...-20 dBm.
+Антена у смартфона справа от экрана вверху.
+Если находится в соседней комнате то BLE Scanner будет показывать -75 dBm
 
 
 Утилита BTool должна показывать MAC адрес peripheral device и устанавливать соединение с peripheral device.
@@ -71,6 +74,7 @@ http://software-dl.ti.com/simplelink/esd/simplelink_cc13x2_26x2_sdk/3.40.00.02/e
 Bluetooth low energy Custom Profile
 https://dev.ti.com/tirex/explore/node?node=ACAn8XZNDy1n1bEFwSDnJQ__BSEc4rl__LATEST
 
+HPN_BLE
 
 Online UUID Generator
 https://www.uuidgenerator.net/versi
@@ -85,3 +89,24 @@ https://aliexpress.ru/item/32786773297.html?spm=a2g2w.productlist.0.0.a7062d50nz
 Надо покупать отдельно мастер и Slave у стройства.
 Bluetooth-модуль HC-05 
 HM-10
+
+
+
+Цель:
+Взять за основу проект Project Zero.
+
+Сделать 1 характиристику на чтение 
+и одну характеристику на записи.
+Оставить только Data Service
+
+В характиристику на запись отправлять комменды CLI.
+Из характиристики на чтение получать результат коменд CLI.
+
+Посылать коменды при помощи утилиты bTool в случае работы на компьютере. 
+В случае реботы с телефона посылать команды с помощью мобильного приложения BLE Scanner.
+
+
+Переименовать проект 
+project_zero_CC26X2R1_LAUNCHXL_tirtos_ccs
+в 
+cc26x2_ble_d

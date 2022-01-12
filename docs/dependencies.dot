@@ -8,6 +8,8 @@ digraph graphname {
     CRC->FlashFs;
     CRC -> TBFP;
     DMA->SPI;
+	GATT->BLE;
+	GAP->BLE;
     DMA->UART;
     DMA->ADC;
     FIFO->CLI;
