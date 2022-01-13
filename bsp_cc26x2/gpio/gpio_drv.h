@@ -24,6 +24,7 @@ typedef enum eDioDirr_t {
     GPIO_DIR_UNDEF = 5
 } DioDir_t;
 
+
 DioDir_t gpio_get_dir(uint8_t dio_pin);
 GPIO_PinConfig gpio_get_cfg_dio(uint8_t dio_number);
 PullMode_t gpio_get_pull_mode(uint8_t dio_pin);

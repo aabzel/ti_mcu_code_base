@@ -1,6 +1,6 @@
 #
 # This file was generated based on the configuration script:
-#     C:\1_job\0_NPP_IT_ELMA\code_base_workspace2\ti_mcu_code_base\projects\cc26x2_ble_d\project_zero_app.cfg
+#     C:\projects\code_base\projects\cc26x2_ble_d\project_zero_app.cfg
 #
 # This makefile may be included in other makefiles that need to build
 # the libraries containing the compiled source files generated as
@@ -14,7 +14,7 @@
 #
 # The absolute path to the generated source directory (at the time the
 # sources were generated) is:
-#    C:\1_job\0_NPP_IT_ELMA\code_base_workspace2\ti_mcu_code_base\projects\cc26x2_ble_d\src
+#    C:\projects\code_base\projects\cc26x2_ble_d\src
 #
 GEN_SRC_DIR ?= ../src
 

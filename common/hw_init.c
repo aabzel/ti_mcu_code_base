@@ -5,8 +5,10 @@
 
 #ifdef CC26X2
 #include <ti/drivers/Board.h>
+#ifdef HAS_TEMPERATURE
 #include <Temperature.h>
 #include <TemperatureCC26X2.h>
+#endif
 #endif /*CC26X2*/
 
 #include "common_functions.h"
@@ -116,7 +118,7 @@ bool hw_init(void) {
   #endif /*CC26X2*/
 #endif /*NORTOS*/
 
-#ifdef HAS_TEMP
+#ifdef HAS_TEMPERATURE
   Temperature_init();
 #endif /*HAS_TEMP*/
 

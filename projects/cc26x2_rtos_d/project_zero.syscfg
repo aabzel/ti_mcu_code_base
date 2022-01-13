@@ -1,0 +1,69 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --board "/ti/boards/CC26X2R1_LAUNCHXL" --rtos "tirtos" --product "simplelink_cc13xx_cc26xx_sdk@5.30.01.01"
+ * @versions {"tool":"1.10.0+2163"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const ble         = scripting.addModule("/ti/ble5stack/ble");
+const CCFG        = scripting.addModule("/ti/devices/CCFG");
+const rfdesign    = scripting.addModule("/ti/devices/radioconfig/rfdesign");
+const AESCCM      = scripting.addModule("/ti/drivers/AESCCM");
+const AESCCM1     = AESCCM.addInstance();
+const AESCTRDRBG  = scripting.addModule("/ti/drivers/AESCTRDRBG");
+const AESCTRDRBG1 = AESCTRDRBG.addInstance();
+const AESECB      = scripting.addModule("/ti/drivers/AESECB");
+const AESECB1     = AESECB.addInstance();
+const ECDH        = scripting.addModule("/ti/drivers/ECDH");
+const ECDH1       = ECDH.addInstance();
+const Power       = scripting.addModule("/ti/drivers/Power");
+const RF          = scripting.addModule("/ti/drivers/RF");
+const RTOS        = scripting.addModule("/ti/drivers/RTOS");
+const TRNG        = scripting.addModule("/ti/drivers/TRNG");
+const TRNG1       = TRNG.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+ble.lockProject                                     = true;
+ble.deviceName                                      = "Project Zero";
+ble.addressMode                                     = "ADDRMODE_PUBLIC";
+ble.disableDisplayModule                            = true;
+ble.uartLog                                         = true;
+ble.maxPDUSize                                      = 251;
+ble.maxConnNum                                      = 2;
+ble.numOfAdvSets                                    = 1;
+ble.numOfDefAdvSets                                 = 1;
+ble.radioConfig.codeExportConfig.$name              = "ti_devices_radioconfig_code_export_param0";
+ble.connUpdateParamsPeripheral.$name                = "ti_ble5stack_general_ble_conn_update_params0";
+ble.connUpdateParamsPeripheral.reqConnTo            = 2000;
+ble.connUpdateParamsPeripheral.reqMaxConnInt        = 45;
+ble.connUpdateParamsPeripheral.reqMinConnInt        = 15;
+ble.advSet1.$name                                   = "ti_ble5stack_broadcaster_advertisement_set0";
+ble.advSet1.advParam1.$name                         = "ti_ble5stack_broadcaster_advertisement_params0";
+ble.advSet1.advData1.$name                          = "ti_ble5stack_broadcaster_advertisement_data0";
+ble.advSet1.advData1.GAP_ADTYPE_FLAGS               = true;
+ble.advSet1.advData1.advertisingFlags               = ["GAP_ADTYPE_FLAGS_BREDR_NOT_SUPPORTED","GAP_ADTYPE_FLAGS_GENERAL"];
+ble.advSet1.advData1.GAP_ADTYPE_LOCAL_NAME_COMPLETE = true;
+ble.advSet1.advData1.completeLocalName              = "Project Zero";
+ble.advSet1.scanRes1.$name                          = "ti_ble5stack_broadcaster_advertisement_data1";
+ble.advSet1.scanRes1.GAP_ADTYPE_128BIT_MORE         = true;
+ble.advSet1.scanRes1.numOfUUIDs128More              = 1;
+ble.advSet1.scanRes1.UUID0128More                   = system.utils.bigInt("B000405104101100F0",16);
+
+CCFG.enableCodeGeneration = false;
+CCFG.ccfgTemplate.$name   = "ti_devices_CCFGTemplateInit0";
+
+AESCCM1.$name = "CONFIG_AESCCM0";
+
+AESCTRDRBG1.$name              = "CONFIG_AESCTRDRBG_0";
+AESCTRDRBG1.aesctrObject.$name = "CONFIG_AESCTR_0";
+
+AESECB1.$name = "CONFIG_AESECB0";
+
+ECDH1.$name = "CONFIG_ECDH0";
+
+TRNG1.$name = "CONFIG_TRNG_0";

@@ -5,7 +5,10 @@
 #include "cli_manager.h"
 
 #include <ctype.h>
-
+#ifdef HAS_TIRTOS
+#include <ti/sysbios/knl/Task.h>
+#include "common_functions.h"
+#endif
 #include "data_utils.h"
 #ifndef X86_64
 #include "base_cmd.h"
@@ -19,8 +22,8 @@
 #include "uart_string_reader.h"
 #include "writer_config.h"
 #include "writer_generic.h"
-#endif /*X86_64*/
 #include "uart_drv.h"
+#endif /*X86_64*/
 
 #include "str_utils.h"
 #include "uart_common.h"
@@ -278,6 +281,42 @@ bool cli_toggle_echo(void) {
     cli_echo = !cli_echo;
     return true;
 }
+
+#ifdef HAS_TIRTOS
+/*
+ *
+ * @brief   Application task entry point for the Project Zero.
+ *
+ * @param   a0, a1 - not used.
+ */
+static void cli_thread(UArg a0, UArg a1){
+    try_init(cli_init(),"CLI") ;
+    for(;;){
+        cli_process();
+        /*Wait 100 ms*/
+    }
+}
+#define CLI_TASK_STACK_SIZE                   2048
+#define CLI_TASK_PRIORITY                     2
+uint8_t CliTaskStack[CLI_TASK_STACK_SIZE];
+Task_Struct cliTask;
+/*
+ * @fn      bluetooth_create_task
+ *
+ * @brief   Task creation function for the Project Zero.
+ */
+void cli_create_task(void) {
+    Task_Params taskParams;
+
+    // Configure task
+    Task_Params_init(&taskParams);
+    taskParams.stack = CliTaskStack;
+    taskParams.stackSize = CLI_TASK_STACK_SIZE;
+    taskParams.priority = CLI_TASK_PRIORITY;
+
+    Task_construct(&cliTask, cli_thread, &taskParams, NULL);
+}
+#endif /*HAS_TIRTOS*/
 
 #ifdef HAS_CLI_CMD_HISTORY
 Arrow_t cli_arrows_parse(char cur_char) {

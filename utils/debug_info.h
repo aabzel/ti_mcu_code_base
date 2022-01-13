@@ -59,6 +59,8 @@ bool print_bin(uint8_t* buff, uint32_t size, uint16_t indent);
 bool print_vector_table(uint32_t vectors_table_base);
 bool print_version(void);
 void print_sys_info(void);
+void error_handler(void);
+void print_sysinfo(void);
 bool parse_stack(void);
 bool print_indent(uint16_t indent);
 

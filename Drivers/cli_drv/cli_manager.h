@@ -17,10 +17,10 @@
 #define CLI_PERIOD_MS 300U
 #define CLI_UART CONFIG_UART_0
 #define SHELL_MAX_ARG_COUNT 12
-//#define SHELL_MAX_CMD_LEN 40
 
-#define CMD_PREFIX "cmd "
-//#define PING_PREFIX "ping"
+
+//#define CMD_PREFIX "cmd "
+
 
 extern uint32_t cli_task_cnt;
 extern bool cli_init_done;
@@ -54,5 +54,8 @@ Arrow_t cli_arrows_parse(char cur_char);
 bool cli_set_echo(bool echo_val);
 bool cli_get_echo(void);
 bool cli_toggle_echo(void);
+#ifdef HAS_TIRTOS
+void cli_create_task(void);
+#endif
 
 #endif /*CLI_DRIVER_H*/

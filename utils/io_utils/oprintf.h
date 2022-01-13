@@ -12,7 +12,9 @@ extern "C" {
 #endif
 
 #ifndef X86_64
+#ifndef ssize_t
 typedef int32_t ssize_t;
+#endif
 #endif
 
 void oprintf(ostream_t* s, const char* fmt, ...);

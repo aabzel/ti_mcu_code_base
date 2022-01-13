@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifdef HAS_SUPER_LOOP
 #include "common_functions.h"
+#ifdef HAS_SUPER_LOOP
 #include "task_info.h"
 #endif /*HAS_SUPER_LOOP*/
 

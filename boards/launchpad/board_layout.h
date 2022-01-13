@@ -6,8 +6,8 @@
 
 #include "sys_config.h"
 
-#define DIO_CNT 0
-#define GPIO_COUNT 0U
+#define DIO_CNT 4
+#define GPIO_COUNT 2U
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {
@@ -20,6 +20,9 @@ typedef struct xPin_t {
     PIN_Config pinCfg;
 } Pin_t;
 
+#define LED_COUNT 2
+#define CONF_GPIO_LED_0 0
+#define CONF_GPIO_LED_1 1
 extern const Pin_t PinTable[DIO_CNT];
 
 extern GPIO_PinConfig gpioPinConfigs[GPIO_COUNT];

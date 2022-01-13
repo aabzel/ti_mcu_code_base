@@ -11,21 +11,30 @@
 #include "data_utils.h"
 #include "io_utils.h"
 
+
+#ifdef STM32F413xx
+#include "cmsis_os.h"
+#include "stm32f4xx_hal.h"
+#endif /*STM32F413xx*/
+
+
 #ifdef HAS_MCU
+#include "uart_drv.h"
 #ifdef HAS_FLASH
 #include "flash_drv.h"
 #endif
 #ifndef USE_HAL_DRIVER
 #include "core_driver.h"
 #endif
+#ifdef HAS_BOOT
 #include "boot_cfg.h"
+#endif
 #ifdef HAS_DEV_ID
 #include "device_id.h"
 #endif
 #include "oprintf.h"
-#include "sys_config.h"
 #include "table_utils.h"
-#include "uart_drv.h"
+#include "sys_config.h"
 #include "version.h"
 #include "writer_config.h"
 #include "writer_generic.h"
@@ -94,6 +103,24 @@ static bool print_fw_type(void) {
     return res;
 }
 #endif
+
+#ifdef NORTOS
+extern void main(void);
+#endif
+
+void print_sysinfo(void) {
+    io_printf("Reset handler: 0x%x " CRLF, *((uint32_t*)0x00000004));
+    // io_printf("addr of SystemInit() 0x%p" CRLF, SystemInit);
+#ifdef NORTOS
+    io_printf("addr of main() 0x%p" CRLF, main);
+#endif
+    io_printf("RAM: %u Byte" CRLF, RAM_SIZE);
+    io_printf("Flash: %u Byte" CRLF, ROM_SIZE);
+    io_printf("RAM addr:   0x%08x....0x%08x " CRLF, RAM_START, RAM_END);
+    io_printf("Flash addr: 0x%08x....0x%08x " CRLF, ROM_START, ROM_END);
+    io_printf("top-of-stack: %x " CRLF, *((uint32_t*)0x00000000));
+    io_printf("boot memory start: %x " CRLF, *((uint32_t*)0x00000004));
+}
 
 #ifdef HAS_MCU
 bool print_version(void) {
@@ -500,6 +527,14 @@ static bool print_text_addresses(uint32_t cur_stack_val, uint32_t top_stack_val)
     return out_res;
 }
 #endif
+
+void error_handler(void) {
+#ifdef STM32F413xx
+    __disable_irq();
+#endif /*STM32F413xx*/
+    while(1) {
+    }
+}
 
 #ifdef HAS_FLASH
 bool parse_stack(void) {

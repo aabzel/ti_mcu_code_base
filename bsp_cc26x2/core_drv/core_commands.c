@@ -1,21 +1,25 @@
 #include "core_commands.h"
 
+#ifdef HAS_TEMPERATURE
 #include <Temperature.h>
+#endif
 #include <inttypes.h>
 #include <stdio.h>
 #include <sys_ctrl.h>
 
 #include "array.h"
 #include "base_cmd.h"
+#ifdef HAS_BOOT
 #include "boot_cfg.h"
+#endif
 #include "convert.h"
 #include "core_driver.h"
 #include "core_utils.h"
 #include "ctype.h"
 #include "data_utils.h"
 #include "debug_info.h"
-#include "diag_page_nums.h"
-#include "diag_report.h"
+//#include "diag_page_nums.h"
+//#include "diag_report.h"
 #include "io_utils.h"
 #include "log.h"
 #include "ostream.h"

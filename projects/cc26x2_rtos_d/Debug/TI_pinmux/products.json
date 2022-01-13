@@ -1,0 +1,15 @@
+[
+  {
+    "name": "simplelink_cc13xx_cc26xx_sdk",
+    "displayName": "simplelink_cc13xx_cc26xx_sdk",
+    "version": "5.30.01.01",
+    "path": "C:\\ti\\simplelink_cc13xx_cc26xx_sdk_5_30_01_01\\.metadata\\product.json",
+    "rtos": [
+      "freertos",
+      "none",
+      "nortos",
+      "tirtos",
+      "tirtos7"
+    ]
+  }
+]

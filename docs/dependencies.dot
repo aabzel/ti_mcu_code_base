@@ -1,13 +1,23 @@
 digraph graphname {
     rankdir=LR;
+	AES;
     CLOCK->CLI;
+	UART->STREAM;
+	LORA->STREAM;
+	BLE->STREAM;
+	RS232->RTK;
+	LORA->RTK;
+	ZED_F9P->RTK;
+	STREAM->CLI
     CLOCK->GPIO_PWM
     CLOCK->LED;
     CLOCK->TASK;
     Flash->TASK;
 	ICall->BLE;
 	TI_RTOS->BLE;
-	CRC32->OAD;
+	GPIO->ExtFlash;
+	CRC32->ExtFlash;
+	ExtFlash->OAD;
     CRC->FlashFs;
     CRC -> TBFP;
     DMA->SPI;

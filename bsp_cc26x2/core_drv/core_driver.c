@@ -1,7 +1,9 @@
 #include "core_driver.h"
 
+#ifdef HAS_TEMPERATURE
 #include <Temperature.h>
 #include <TemperatureCC26X2.h>
+#endif
 #include <hw_fcfg1.h>
 #include <hw_memmap.h>
 #include <string.h>
@@ -9,7 +11,9 @@
 
 #include "array.h"
 #include "bit_utils.h"
+#ifdef HAS_BOOT
 #include "boot_cfg.h"
+#endif
 #include "data_utils.h"
 #include "read_mem.h"
 #include "sys.h"
@@ -17,10 +21,12 @@
 #include "watchdog_drv.h"
 #endif
 
+#ifdef HAS_TEMPERATURE
 const TemperatureCC26X2_Config TemperatureCC26X2_config = {
     //  .intPriority = 0xE0,
     .intPriority = (7 << 5),
 };
+#endif
 
 uint32_t cpu_get_id(void) {
     uint32_t value;

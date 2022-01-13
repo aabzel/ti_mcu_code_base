@@ -1,6 +1,8 @@
 #include "clock_commands.h"
 
+#ifdef HAS_TEMPERATURE
 #include <Temperature.h>
+#endif
 #include <ccfgread.h>
 #include <inttypes.h>
 #include <osc.h>
@@ -12,7 +14,7 @@
 #include "convert.h"
 #include "ctype.h"
 #include "data_utils.h"
-#include "diag_report.h"
+//#include "diag_report.h"
 #include "io_utils.h"
 #include "log.h"
 #include "ostream.h"
@@ -66,13 +68,15 @@ bool clock_diag_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         res = true;
         // PRCM_BASE +PRCM_O_OSCIMSC
+#ifdef HAS_TEMPERATURE
         int16_t temp_c = Temperature_getTemperature();
+        io_printf("T: %u C" CRLF, temp_c);
+#endif
         uint32_t millivolt = OSCHF_DebugGetCrystalAmplitude();
         uint32_t code = CCFGRead_XOSC_FREQ();
         uint32_t cnt = clock_incr_per_ms(100);
         io_printf("XOSC_FREQ %s" CRLF, xoscfreq2str(code));
         io_printf("increments per sec: %u" CRLF, cnt * 10);
-        io_printf("T: %u C" CRLF, temp_c);
         io_printf("CrystalAmpl: %u mV" CRLF, millivolt);
         io_printf("up_time_ms %u ms %u s %u m" CRLF, g_up_time_ms, MS_2_S(g_up_time_ms), MS_2_MIN(g_up_time_ms));
         io_printf("SysTickPeriod %u" CRLF, SysTickPeriodGet());

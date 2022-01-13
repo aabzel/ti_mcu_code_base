@@ -3,11 +3,18 @@ digraph  graphname {
     subgraph clusterWIN10  {
 		label="Windows10"
 		WIN10[shape="none"][style="invis"][label=""];
+		
     	subgraph clusterJVM  {
     	   label="JVM"
+		   /*node [style=filled];*/
+		   color=blue
     	   JVM[shape="none"][style="invis"][label=""];
     	    subgraph clusterCSS  {
+			   node [style=filled];
+		       color=red
     	       label="CodeComposerStudio"
+			   /*style=filled;*/
+               /*color=red;*/
     	       CCS[shape="none"][style="invis"][label=""];
                Eclipse [label="Eclipse.exe"];
     		   eclipsec[label="eclipsec.exe"];
@@ -22,12 +29,19 @@ digraph  graphname {
 		putty [label="PuTTY.exe"];
     	dot [label="dot.exe"];
     	    subgraph clusterSDK  {
+			   node [style=filled];
+		       color=red
     	       label="SDK"
     	       SDK[shape="none"][style="invis"][label=""];
 		       dbgjtag
 			   oad_image_tool
+	           subgraph clusterSysConfigCli  {
+		           label="sysconfig_cli.bat"
+		           SysConfigCli[shape="none"][style="invis"][label=""];
+		       	   node_exe[label="node.exe"];
+		       }
+		
     	       dslite [label="dslite.bat"];
-    	       SysConfig  [label="SysConfig"];
     	       compiler[label="armcl.exe"];
     	       Linker [label="armcl.exe"];
     	       gmake[label="gmake.exe"]
@@ -37,6 +51,10 @@ digraph  graphname {
     		   tiobj2bin[label="tiobj2bin.bat"];
     		   xdsdfu[label="xdsdfu.exe"];
             }
+		Notepadpp->SysConfigCli[label="*.syscfg" color=purple];
+    	CCS->SysConfigCli [label="*.syscfg" color=purple];
+		SysConfigCli->Notepadpp[label="*.c/*.h"];
+		SysConfigCli->Eclipse[label="*.c/*.h"];
     	GIT->GIT[label=".ccsproject"];
     	GIT->GIT[label="*.c"];
     	GIT->GIT[label="*.h"];
@@ -47,9 +65,6 @@ digraph  graphname {
         Eclipse->eclipsec[label=".cproject .ccsproject .project"];
     	Preprocessor->compiler[label="*.pp"];
     	Notepadpp->Preprocessor[label="*.c/*.h"];
-    	SysConfig->Eclipse[label="*.c/*.h"];
-    	CCS->SysConfig [label="*.syscfg"];
-        SysConfig->Notepadpp[label="*.c/*.h"];
     	Eclipse->Linker[label="*.cmd"];
     	Notepadpp->Linker[label="*.cmd"];
     	compiler->Linker[label=".obj"];

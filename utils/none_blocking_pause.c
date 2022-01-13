@@ -2,7 +2,9 @@
 
 #include "clocks.h"
 #include "common_functions.h"
+#ifdef NORTOS
 #include "task_info.h"
+#endif
 #include "timer_utils.h"
 
 /* 49 days max*/
@@ -13,12 +15,10 @@ bool wait_in_loop_ms(uint32_t wait_pause_ms) {
     bool res = false;
     start_ms = get_time_ms32();
     bool loop = true;
-    uint64_t loop_start_time_us = 0;
     while(loop) {
-
-        loop_start_time_us = get_time_us();
+#ifdef NORTOS
         super_loop(loop_start_time_us);
-
+#endif
         curr_ms = get_time_ms32();
         if(wait_pause_ms < (curr_ms - start_ms)) {
             res = true;

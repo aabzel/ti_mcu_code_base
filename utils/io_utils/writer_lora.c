@@ -2,6 +2,10 @@
 
 #include <stdbool.h>
 
+#ifndef HAS_LORA
+#error "LoRa macro must be defined"
+#endif
+
 #include "fifo_char.h"
 #include "lora_drv.h"
 #include "sys_config.h"

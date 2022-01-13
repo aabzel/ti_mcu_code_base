@@ -8,7 +8,8 @@
 #include <string.h>
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
-#include <ti/drivers/gpio/GPIOCC26XX.h>
+#include <GPIOCC26XX.h>
+#include "GPIOCC26XX_custom.h"
 #include <ti/drivers/pin/PINCC26XX.h>
 
 #include "bit_utils.h"
@@ -35,6 +36,7 @@ void gpioButtonFxn0(uint_least8_t index) {
 }
 
 #if 0
+/*TODO: */
 bool gpio_init_layout(const Pin_t* inPinTable, uint8_t size) {
     bool res = false;
     uint8_t pin = 0;

@@ -16,9 +16,10 @@
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
-#include "diag_sys.h"
 #include "io_utils.h"
+#ifdef HAS_FLASH
 #include "flash_drv.h"
+#endif
 #include "log.h"
 #include "none_blocking_pause.h"
 #include "oprintf.h"
@@ -132,9 +133,13 @@ bool cmd_write_memory(int32_t argc, char* argv[]) {
         }
 
         if(true == res) {
+#ifdef HAS_FLASH
             if(false==is_flash_addr(address)){
                 res = write_addr_32bit(address, value);
             }
+#else
+            res = write_addr_32bit(address, value);
+#endif
         }
     } else {
         LOG_ERROR(SYS, "Usage: wm: address value");

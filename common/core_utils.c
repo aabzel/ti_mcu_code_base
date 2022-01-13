@@ -4,12 +4,14 @@
 
 #include "array.h"
 #include "bit_utils.h"
+#ifdef HAS_BOOT
 #include "boot_cfg.h"
+#endif
 #include "core_driver.h"
 #include "data_utils.h"
 #include "read_mem.h"
 #include "sys.h"
-
+#include "sys_config.h"
 
 bool is_ram_addr(uint32_t address) {
     bool res = false;
