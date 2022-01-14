@@ -15,8 +15,12 @@ bool wait_in_loop_ms(uint32_t wait_pause_ms) {
     bool res = false;
     start_ms = get_time_ms32();
     bool loop = true;
+#ifdef NORTOS
+    uint64_t loop_start_time_us = 0;
+#endif
     while(loop) {
 #ifdef NORTOS
+        loop_start_time_us = get_time_us();
         super_loop(loop_start_time_us);
 #endif
         curr_ms = get_time_ms32();

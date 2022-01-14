@@ -11,6 +11,7 @@ set format_tool="C:\cygwin64\bin\clang-format.exe"
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_esp32\gpio\gpio_drv.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\bsp_esp32\gpio\gpio_drv.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\projects\fw_loader_debug\main.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\projects\harvester_generic_r\sys_config.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\common\uart_common.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\common\uart_common.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\utils\io_utils\io_utils.c

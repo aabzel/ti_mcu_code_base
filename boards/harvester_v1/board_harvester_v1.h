@@ -1,6 +1,7 @@
 #ifndef BOARD_HARVESTER_V1_H
 #define BOARD_HARVESTER_V1_H
 
+#include "cc2642R1F.h"
 /*DIO config */
 #define DIO_3V3_CTRL 21U
 #define DIO_BATT_ADC 25U

@@ -12,31 +12,6 @@
 #include "sx1262_drv.h"
 #endif
 
-bool lora_sent_queue_command(int32_t argc, char* argv[]){
-    bool res = false;
-    uint8_t tx_array[TX_SIZE] = CMD_PREFIX;
-    uint32_t tx_array_len = 0;
-    if(1 <= argc) {
-        res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);
-        if(false == res) {
-            /*treat as plane text*/
-            LOG_NOTICE(LORA, "Unable to extract hex array %s", argv[0]);
-            strncpy((char*)tx_array, argv[0], sizeof(tx_array));
-            tx_array_len = (uint16_t)strlen((char*)tx_array) + 1U;
-            res = true;
-        }
-    }
-
-    if (res) {
-        res = lora_send_queue(tx_array, tx_array_len );
-        if(false==res){
-            LOG_ERROR(LORA,"LoRa Queue put error");
-        }else{
-            LOG_INFO(LORA,"OK");
-        }
-    }
-    return res;
-}
 
 bool lora_diag_command(int32_t argc, char* argv[]){
     bool res = false;

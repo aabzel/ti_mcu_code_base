@@ -11,11 +11,10 @@ extern "C" {
 #include "cli_manager.h"
 
 bool lora_diag_command(int32_t argc, char* argv[]);
-bool lora_sent_queue_command(int32_t argc, char* argv[]);
+
 
 #define LORA_COMMANDS_BASE \
-    SHELL_CMD("lora_diag", "ld", lora_diag_command, "LoRa diag"), \
-    SHELL_CMD("lora_queue", "lq", lora_sent_queue_command, "LoRa send queue"),
+    SHELL_CMD("lora_diag", "ld", lora_diag_command, "LoRa diag"),
 
 #ifdef HAS_DEBUG
 bool lora_horizon_command(int32_t argc, char* argv[]);

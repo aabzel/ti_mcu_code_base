@@ -8,10 +8,11 @@
 #include <string.h>
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
-#include <GPIOCC26XX.h>
-#include "GPIOCC26XX_custom.h"
+#include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/pin/PINCC26XX.h>
-
+#ifdef HAD_BLE
+#include "GPIOCC26XX_custom.h"
+#endif
 #include "bit_utils.h"
 #include "board_layout.h"
 #include "data_utils.h"

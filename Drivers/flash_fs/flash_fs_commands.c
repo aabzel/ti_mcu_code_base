@@ -12,7 +12,7 @@
 #include "data_utils.h"
 #include "debug_info.h"
 //#include "diag_report.h"
-#include "diag_sys.h"
+//#include "diag_sys.h"
 #include "flash_fs.h"
 #include "flash_fs_ll.h"
 #include "io_utils.h"

@@ -104,10 +104,6 @@ static bool print_fw_type(void) {
 }
 #endif
 
-#ifdef NORTOS
-extern void main(void);
-#endif
-
 void print_sysinfo(void) {
     io_printf("Reset handler: 0x%x " CRLF, *((uint32_t*)0x00000004));
     // io_printf("addr of SystemInit() 0x%p" CRLF, SystemInit);

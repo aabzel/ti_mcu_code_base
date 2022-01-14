@@ -108,15 +108,6 @@
 #ifndef TI_DRIVERS_GPIOCC26XX_CUSTOM_H
 #define TI_DRIVERS_GPIOCC26XX_CUSTOM_H
 
-#if 0
-#include <stdint.h>
-
-#include <ti/drivers/GPIO.h>
-#include <ti/devices/DeviceFamily.h>
-
-#include DeviceFamily_constructPath(driverlib/ioc.h)
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -145,7 +136,7 @@ extern "C" {
  *  };
  *  @endcode
  */
-#ifndef GPIOCC26XX_Config
+#if !defined(GPIOCC26XX_Config)
 typedef struct {
     /*! Pointer to the board's GPIO_PinConfig array */
     GPIO_PinConfig  *pinConfigs;
@@ -174,53 +165,6 @@ typedef struct {
      */
     uint32_t intPriority;
 } GPIOCC26XX_Config;
-#endif
-#if 0
-/*!
- *  \defgroup GPIOCC26XX_PinConfigIds GPIO pin identification macros used to configure GPIO pins
- *  @{
- */
-/**
- *  @name Device specific GPIO port/pin identifiers to be used within the board's GPIO_PinConfig table.
- *  @{
-*/
-#define GPIOCC26XX_EMPTY_PIN  0xffff   /*!< @hideinitializer */
-
-#define GPIOCC26XX_DIO_00    IOID_0    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_01    IOID_1    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_02    IOID_2    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_03    IOID_3    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_04    IOID_4    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_05    IOID_5    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_06    IOID_6    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_07    IOID_7    /*!< @hideinitializer */
-
-#define GPIOCC26XX_DIO_08    IOID_8    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_09    IOID_9    /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_10    IOID_10   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_11    IOID_11   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_12    IOID_12   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_13    IOID_13   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_14    IOID_14   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_15    IOID_15   /*!< @hideinitializer */
-
-#define GPIOCC26XX_DIO_16    IOID_16   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_17    IOID_17   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_18    IOID_18   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_19    IOID_19   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_20    IOID_20   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_21    IOID_21   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_22    IOID_22   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_23    IOID_23   /*!< @hideinitializer */
-
-#define GPIOCC26XX_DIO_24    IOID_24   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_25    IOID_25   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_26    IOID_26   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_27    IOID_27   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_28    IOID_28   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_29    IOID_29   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_30    IOID_30   /*!< @hideinitializer */
-#define GPIOCC26XX_DIO_31    IOID_31   /*!< @hideinitializer */
 #endif
 
 
