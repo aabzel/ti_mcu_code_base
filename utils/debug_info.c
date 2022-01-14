@@ -104,6 +104,7 @@ static bool print_fw_type(void) {
 }
 #endif
 
+#ifdef HAS_MCU
 void print_sysinfo(void) {
     io_printf("Reset handler: 0x%x " CRLF, *((uint32_t*)0x00000004));
     // io_printf("addr of SystemInit() 0x%p" CRLF, SystemInit);
@@ -118,7 +119,6 @@ void print_sysinfo(void) {
     io_printf("boot memory start: %x " CRLF, *((uint32_t*)0x00000004));
 }
 
-#ifdef HAS_MCU
 bool print_version(void) {
     bool res = true;
     print_fw_type();
