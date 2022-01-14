@@ -52,6 +52,10 @@
 #include <intrinsics.h>
 #endif
 
+#ifndef HAS_TIRTOS
+#error "BLE component requires TIRTOS to work"
+#endif
+
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/knl/Clock.h>
 #include <ti/sysbios/knl/Event.h>

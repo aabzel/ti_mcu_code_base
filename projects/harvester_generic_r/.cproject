@@ -53,13 +53,13 @@
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/common/nv"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/devices/cc13x2_cc26x2"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13XX_CC26XX_SDK_INSTALL_DIR}/source/ti/drivers/gpio"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/gpio"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/devices/cc13x2_cc26x2/driverlib"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/power"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/rf"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/temperature"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13XX_CC26XX_SDK_INSTALL_DIR}/source/ti/drivers/gpio"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/gpio"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
@@ -91,6 +91,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash_nvs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/gpio"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/i2c"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/interrupt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rf"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rng"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rtc"/>

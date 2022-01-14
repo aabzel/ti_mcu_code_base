@@ -99,6 +99,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/watchdog"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/mcu"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/tbfp_protocol"/>
@@ -121,7 +122,6 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_rtcm3_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_tbfp_proto"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/mcu"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/fifo"/>
@@ -146,6 +146,7 @@
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4_COMMANDS"/>
+									<listOptionValue builtIn="false" value="HAS_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_CUSTOM_PRINTF"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH"/>
