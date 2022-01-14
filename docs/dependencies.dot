@@ -13,6 +13,8 @@ digraph graphname {
     CLOCK->LED;
     CLOCK->TASK;
     Flash->TASK;
+	AES->ICall;
+	TRNG->ICall;
 	ICall->BLE;
 	TI_RTOS->BLE;
 	GATT->BLE;

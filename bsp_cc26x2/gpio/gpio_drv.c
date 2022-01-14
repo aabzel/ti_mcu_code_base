@@ -10,7 +10,7 @@
 #include <ti/drivers/PIN.h>
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 #include <ti/drivers/pin/PINCC26XX.h>
-#ifdef HAD_BLE
+#ifdef HAS_BLE
 #include "GPIOCC26XX_custom.h"
 #endif
 #include "bit_utils.h"

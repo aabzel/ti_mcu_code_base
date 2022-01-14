@@ -1,6 +1,6 @@
 echo off
 echo %0
-echo Start build script
+echo Start build script....
 echo .....
 set workspace_dir=%1
 echo build_workspace_dir=%workspace_dir%

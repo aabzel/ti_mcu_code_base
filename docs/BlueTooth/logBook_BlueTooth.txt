@@ -126,3 +126,15 @@ simplelink_cc13x2_26x2_sdk_5_20_00_52
 
 нет типа данных GPIOCC26XX_Config
 simplelink_cc13xx_cc26xx_sdk_5_30_01_01
+
+
+
+Отключить SysConfig
+https://software-dl.ti.com/simplelink/esd/simplelink_cc13x2_26x2_sdk/3.40.00.02/exports/docs/ti154stack/html/sysconfig/sysconfig-disable.html
+
+
+зачем нужны .opt файлы?
+Это файлы для передачи макро-имен препроцессора.
+
+
+

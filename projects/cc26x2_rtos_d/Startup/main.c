@@ -99,7 +99,7 @@ int main(){
     /* Start tasks of external images - Priority 5 */
     ICall_createRemoteTasks();
 #endif
-    cli_create_task();
+    //cli_create_task();
     bluetooth_create_task();
 
     /* enable interrupts and start SYS/BIOS */

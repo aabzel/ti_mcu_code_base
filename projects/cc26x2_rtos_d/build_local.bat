@@ -1,4 +1,5 @@
 echo off
+echo start build script for cc26x2 rtos
 set project_dir=%cd%
 set workspace_dir=%project_dir%\..\..\
 

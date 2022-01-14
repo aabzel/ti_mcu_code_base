@@ -294,6 +294,7 @@ static void cli_thread(UArg a0, UArg a1){
     for(;;){
         cli_process();
         /*Wait 100 ms*/
+        Task_sleep(100);
     }
 }
 #define CLI_TASK_STACK_SIZE                   2048
