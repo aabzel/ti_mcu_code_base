@@ -1,6 +1,7 @@
 #ifndef BOARD_HARVESTER_CC2642_V1_H
 #define BOARD_HARVESTER_CC2642_V1_H
 
+#include "cc2642R1F.h"
 /*DIO config */
 #define DIO_3V3_CTRL 21U
 #define DIO_BATT_ADC 25U
@@ -50,6 +51,5 @@
 #define LED_INDEX_RED 1
 
 #define BOARD_NAME "Harvester"
-#define MCU_NAME "CC2642R1F"
 
 #endif /* BOARD_HARVESTER_CC2642_V1_H  */

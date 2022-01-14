@@ -3,11 +3,15 @@
 
 #include "board_cc2642_v1.h"
 #include "boot_cfg.h"
+#include "sys_config_common.h"
 
-#define UART_NUM_CLI 0U
-#define WDT_TIMEOUT_MS 10000
+/*Hardware config*/
 #define UART_COUNT 1
+#define UART_NUM_CLI 0U
 
-#define CLI_UART_BAUD_RATE 460800 /* bit/s */
+/*Software config*/
+#define APP_START_ADDRESS 0x0001A000
+#define LED_INDEX_GREEN 0
+#define LED_INDEX_RED 1
 
 #endif /* SYS_CONFIG_H  */
