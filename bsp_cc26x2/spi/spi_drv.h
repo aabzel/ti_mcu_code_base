@@ -28,7 +28,6 @@ extern SPI_Params SPI0_Params;
 typedef enum eSpiName_t {
     SPI0_INX = 0,
     SPI1_INX = 1,
-
     SPI_CNT = 2
 } SpiName_t;
 

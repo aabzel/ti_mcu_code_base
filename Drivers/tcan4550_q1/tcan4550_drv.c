@@ -147,8 +147,8 @@ static bool tcan4550_read_proc(uint16_t address, uint8_t len, uint8_t* out_array
     // tx_array[0] = OP_CODE_READ;
     //  memcpy(&tx_array[1], &address, 2);
     //  tx_array[3] = len;
-    res = spi_write(SPI0_INX, tx_array, sizeof(tx_array)) && res;
-    res = spi_read(SPI0_INX, out_array, (uint16_t)(len * 4)) && res;
+    res = spi_write((SpiName_t)CAN_SPI_NUM, tx_array, sizeof(tx_array)) && res;
+    res = spi_read((SpiName_t)CAN_SPI_NUM, out_array, (uint16_t)(len * 4)) && res;
     return res;
 }
 
@@ -200,7 +200,7 @@ bool tcan4550_send_spi_header(uint8_t opcode, uint16_t address, uint8_t words) {
     bool res = true;
     uint8_t tx_array[4] = {0};
     res = init_spi_header((HeaderCom_t*)tx_array, opcode, address, words);
-    res = spi_write(SPI0_INX, tx_array, sizeof(tx_array)) && res;
+    res = spi_write((SpiName_t)CAN_SPI_NUM, tx_array, sizeof(tx_array)) && res;
     return res;
 }
 
@@ -209,7 +209,7 @@ static bool tcan4550_read_reg_proc(uint16_t address, uint32_t* out_reg) {
     // see page 44 Figure 8-18. Read (Command OpCode 8h41)
     uint32_t read_reg;
     res = tcan4550_send_spi_header(OP_CODE_READ, address, 1);
-    res = spi_read(SPI0_INX, (uint8_t*)&read_reg, 4) && res;
+    res = spi_read((SpiName_t)CAN_SPI_NUM, (uint8_t*)&read_reg, 4) && res;
     *out_reg = reverse_byte_order_uint32(read_reg);
     return res;
 }
@@ -227,13 +227,13 @@ bool tcan4550_read_reg(uint16_t address, uint32_t* out_reg) {
 bool tcan4550_send_spi_burst(uint32_t word) {
     bool res = true;
     uint32_t tx_word = reverse_byte_order_uint32(word);
-    res = spi_write(SPI0_INX, (uint8_t*)&tx_word, sizeof(tx_word)) && res;
+    res = spi_write((SpiName_t)CAN_SPI_NUM, (uint8_t*)&tx_word, sizeof(tx_word)) && res;
     return res;
 }
 
 uint32_t tcan4550_read_spi_burst(void) {
     uint32_t rx_word = 0;
-    spi_read(SPI0_INX, (uint8_t*)&rx_word, sizeof(rx_word));
+    spi_read((SpiName_t)CAN_SPI_NUM, (uint8_t*)&rx_word, sizeof(rx_word));
     rx_word = reverse_byte_order_uint32(rx_word);
     return rx_word;
 }

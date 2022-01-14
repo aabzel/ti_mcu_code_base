@@ -8,7 +8,7 @@
 /*Hardware config*/
 #define UART_COUNT 1
 #define UART_NUM_CLI 0U
-#define MAIN_SPI_NUM 0
+
 
 /*Software config*/
 #define APP_START_ADDRESS 0x0001A000

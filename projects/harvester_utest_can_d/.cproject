@@ -173,8 +173,6 @@
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART0"/>
 									<listOptionValue builtIn="false" value="HAS_UART0_FWD"/>
-									<listOptionValue builtIn="false" value="HAS_UART1"/>
-									<listOptionValue builtIn="false" value="HAS_UART1_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
