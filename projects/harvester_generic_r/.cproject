@@ -59,7 +59,6 @@
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/power"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/rf"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/temperature"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/gpio"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
@@ -177,7 +176,6 @@
 									<listOptionValue builtIn="false" value="HAS_WDT"/>
 									<listOptionValue builtIn="false" value="HAS_ZED_F9P"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
-									<listOptionValue builtIn="false" value="SX1262_SPI_NUM=0"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEBUGGING_MODEL.1639819935" name="Debugging model" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEBUGGING_MODEL" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.DEBUGGING_MODEL.SYMDEBUG__DWARF" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT.1223819539" name="C Dialect" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.C_DIALECT.C11" valueType="enumerated"/>

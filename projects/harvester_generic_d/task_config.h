@@ -6,6 +6,7 @@
 
 #define SYS_TASKS           \
   TASKS_BASE                \
-  TASKS_HARVESTER           
+  TASKS_HARVESTER           \
+  TASK(WDT)
 
 #endif /* TASK_CONFIG_H */

@@ -11,6 +11,4 @@
 /*Software config*/
 #define APP_START_ADDRESS 0x0001A000
 
-
-
 #endif /* SYS_CONFIG_H  */
