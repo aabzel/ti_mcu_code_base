@@ -10,7 +10,6 @@
 #ifdef HAS_CLI
 #include "clocks.h"
 #include "debug_info.h"
-#include "diag_sys.h"
 #include "writer_generic.h"
 #endif /*HAS_CLI*/
 

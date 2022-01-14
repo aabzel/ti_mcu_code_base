@@ -6,7 +6,6 @@
 
 #include "clocks.h"
 #include "debug_info.h"
-#include "diag_sys.h"
 #include "io_utils.h"
 #include "none_blocking_pause.h"
 #include "unit_test_check.h"

@@ -5,9 +5,7 @@
 #include <inttypes.h>
 #include <math.h>
 #include <string.h>
-#ifdef HAS_CLI
-#include "diag_sys.h"
-#endif
+
 #include "io_utils.h"
 #include "log.h"
 #include "unit_test_run.h"
