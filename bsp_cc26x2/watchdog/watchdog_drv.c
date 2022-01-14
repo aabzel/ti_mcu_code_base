@@ -8,6 +8,8 @@
 #include <ti/drivers/Watchdog.h>
 #include <ti/drivers/watchdog/WatchdogCC26XX.h>
 
+#include "log.h"
+
 WatchDog_t WatchDog;
 static Watchdog_Handle watchdogHandle;
 
@@ -35,8 +37,9 @@ void watchdogCallback(uintptr_t watchdogHandle) {
      * reset. See the device specific watchdog driver documentation
      * for your device.
      */
-    while(1) {
-    }
+    WatchDog.time_out = true;
+    //while(1) {
+    //}
 }
 
 bool watchdog_set(uint32_t period_ms, bool status) {
@@ -66,6 +69,7 @@ bool watchdog_set(uint32_t period_ms, bool status) {
     }
     WatchDog.period_ms = period_ms;
     WatchDog.is_on = status;
+    WatchDog.time_out = false;
     return res;
 }
 
@@ -85,12 +89,16 @@ bool watchdog_init(void) {
     } else {
         res = watchdog_set(WDT_TIMEOUT_MS, true);
     }
+    WatchDog.time_out = false;
 
     return res;
 }
 
 bool proc_watchdog(void) {
     bool res = false;
+    if(WatchDog.time_out){
+        LOG_ERROR(WDT,"TimeOut");
+    }
     if(WatchDog.is_on) {
         Watchdog_clear(watchdogHandle);
         res = true;

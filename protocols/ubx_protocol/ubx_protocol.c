@@ -274,7 +274,7 @@ uint8_t ubx_keyid_2len(uint32_t key_id) {
 #ifdef HAS_MCU
 bool ubx_wait_ack(uint32_t wait_pause_ms) {
     bool res = false, loop = true;
-    uint32_t start_ms = 0U, curr_ms = 0U;
+    uint32_t start_ms = 0U, curr_ms = 0U, diff_ms=0;
     start_ms = get_time_ms32();
     uint64_t loop_start_time_us = 0;
     while(loop) {
@@ -286,7 +286,8 @@ bool ubx_wait_ack(uint32_t wait_pause_ms) {
         super_loop(loop_start_time_us);
 
         curr_ms = get_time_ms32();
-        if(wait_pause_ms < (curr_ms - start_ms)) {
+        diff_ms = curr_ms - start_ms;
+        if(wait_pause_ms < diff_ms) {
             res = false;
             loop = false;
         }

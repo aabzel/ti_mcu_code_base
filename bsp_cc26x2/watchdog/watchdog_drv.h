@@ -11,6 +11,7 @@
 
 typedef struct xWatchDog_t {
     bool is_on;
+    bool time_out;
     uint32_t period_ms;
 } WatchDog_t;
 

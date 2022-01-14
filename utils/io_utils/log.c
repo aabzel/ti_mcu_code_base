@@ -217,6 +217,9 @@ const char* facility2str(log_facility_t facility) {
     case LORA:
         facility_str = "LoRa";
         break;
+    case WDT:
+        facility_str = "WDT";
+        break;
     case ALL_FACILITY:
         facility_str = "*";
         break;

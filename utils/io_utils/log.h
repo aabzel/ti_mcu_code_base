@@ -79,6 +79,7 @@ typedef enum eLog_facility_t {
     ZED_F9P,
     LG_RNG,
     SYS,
+    WDT,
     UBX,
     UART,
     ALL_FACILITY

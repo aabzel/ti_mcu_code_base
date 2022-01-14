@@ -113,6 +113,9 @@ void super_loop(uint64_t loop_start_time_us) {
     if(0u == loop_start_time_us) {
         return;
     }
+#ifdef HAS_WDT
+    measure_task_interval(TASK_ID_WDT, 1000, proc_watchdog, loop_start_time_us);
+#endif /*HAS_WDT*/
 
 #ifdef HAS_LED
     measure_task_interval(TASK_ID_LED, LED_POLL_PERIOD_US, proc_leds, loop_start_time_us);
@@ -134,9 +137,6 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_ADC, 300000, adc_proc, loop_start_time_us);
 #endif
 
-#ifdef HAS_WDT
-    measure_task_interval(TASK_ID_WDT, 1000, proc_watchdog, loop_start_time_us);
-#endif /*HAS_WDT*/
 
 #ifdef HAS_UART
     measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us);
