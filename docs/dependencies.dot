@@ -15,14 +15,14 @@ digraph graphname {
     Flash->TASK;
 	ICall->BLE;
 	TI_RTOS->BLE;
+	GATT->BLE;
+	GAP->BLE;
 	GPIO->ExtFlash;
 	CRC32->ExtFlash;
 	ExtFlash->OAD;
     CRC->FlashFs;
     CRC -> TBFP;
     DMA->SPI;
-	GATT->BLE;
-	GAP->BLE;
     DMA->UART;
     DMA->ADC;
     FIFO->CLI;

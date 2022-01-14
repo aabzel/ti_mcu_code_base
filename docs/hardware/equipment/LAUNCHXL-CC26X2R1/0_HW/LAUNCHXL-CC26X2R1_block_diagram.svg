@@ -36,8 +36,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="15.179522"
-     inkscape:cx="485.95073"
-     inkscape:cy="533.87714"
+     inkscape:cx="512.63141"
+     inkscape:cy="534.14065"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
@@ -167,6 +167,10 @@
        position="118.27137,99.665975"
        orientation="0,-1"
        id="guide20720" />
+    <sodipodi:guide
+       position="100.69582,101.76124"
+       orientation="0,-1"
+       id="guide37144" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -2214,8 +2218,9 @@
        id="path2093" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.198409px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 140.59021,143.05444 h 1.79303"
-       id="path2095" />
+       d="m 140.59021,143.05444 h 1.09879 l -0.12474,-34.81568 -42.480825,-0.0214 0.0058,-4.68438 3.163549,0.0566"
+       id="path2095"
+       sodipodi:nodetypes="cccccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.198409px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 124.33091,91.626281 -1.01426,1.014261"
@@ -4084,5 +4089,16 @@
          style="font-size:1.76389px;fill:#800080;stroke-width:0.264583"
          x="124.41735"
          y="138.81476">ET_VREF</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.01906px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0764291"
+       x="138.97076"
+       y="142.71281"
+       id="text35422"><tspan
+         sodipodi:role="line"
+         id="tspan35420"
+         style="font-size:1.01906px;stroke-width:0.0764291"
+         x="138.97076"
+         y="142.71281">VCM</tspan></text>
   </g>
 </svg>

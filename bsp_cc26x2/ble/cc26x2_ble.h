@@ -17,6 +17,10 @@ extern "C"
 
 #include <bcomdef.h>
 
+#ifndef HAS_TIRTOS
+#error "BLE component requires TIRTOS to work"
+#endif
+
 extern void bluetooth_create_task(void);//ProjectZero_createTask
 
 #ifdef __cplusplus
