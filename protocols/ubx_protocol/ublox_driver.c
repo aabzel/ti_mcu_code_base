@@ -30,9 +30,8 @@ bool ubx_driver_init(void) {
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len) {
     bool res = false;
     if((NULL != payload) && (0 < len)) {
-        res = true;
+        res = false;
         static uint8_t tx_array[256] = {0};
-        uint16_t tx_array_len = 0U;
         uint16_t crc16 = 0U;
         tx_array[0] = UBX_SYN_0;
         tx_array[1] = UBX_SYN_1;
@@ -40,15 +39,17 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
         tx_array[3] = id;
         memcpy(&tx_array[4], &len, 2);
         memcpy(&tx_array[6], payload, len);
-        tx_array_len = len + UBX_HEADER_SIZE + UBX_CRC_SIZE;
         crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
         UbloxProtocol.ack = false;
         memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
-
+#ifdef UBX_UART_NUM
+        uint16_t tx_array_len = 0U;
+        tx_array_len = len + UBX_HEADER_SIZE + UBX_CRC_SIZE;
         res = uart_send(UBX_UART_NUM, tx_array, tx_array_len, true);
         if(res) {
             UbloxProtocol.tx_pkt_cnt++;
         }
+#endif
     }
     return res;
 }

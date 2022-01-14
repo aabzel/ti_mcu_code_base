@@ -150,6 +150,7 @@
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RELEASE"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
+									<listOptionValue builtIn="false" value="HAS_RTC"/>
 									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>

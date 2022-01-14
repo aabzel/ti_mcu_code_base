@@ -8,7 +8,6 @@
    Group: WCS, BTS
    Target Device: cc13xx_cc26xx
 
- ******************************************************************************
    
  Copyright (c) 2015-2021, Texas Instruments Incorporated
  All rights reserved.

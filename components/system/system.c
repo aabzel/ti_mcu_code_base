@@ -35,7 +35,7 @@ const char* interface2str(Interfaces_t interface) {
     return name;
 }
 
-#ifdef defined(HAS_HARVESTER_V1) && defined(UART_NUM_ZED_F9P)
+#if defined(HAS_HARVESTER_V1) && defined(UART_NUM_ZED_F9P)
 bool sys_bypass_nmea_rs232(void) {
     bool res = true;
     huart[UART_NUM_ZED_F9P].is_uart_fwd[UART_NUM_CLI] = true;

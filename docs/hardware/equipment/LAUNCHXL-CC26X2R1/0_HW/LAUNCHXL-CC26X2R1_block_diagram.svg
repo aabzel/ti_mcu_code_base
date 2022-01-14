@@ -35,9 +35,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="15.179522"
-     inkscape:cx="687.07695"
-     inkscape:cy="399.15617"
+     inkscape:zoom="10.733543"
+     inkscape:cx="968.69224"
+     inkscape:cy="352.16703"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
@@ -83,6 +83,14 @@
        position="181.62361,102.24575"
        orientation="1,0"
        id="guide63900" />
+    <sodipodi:guide
+       position="188.94425,123.3715"
+       orientation="0,-1"
+       id="guide64725" />
+    <sodipodi:guide
+       position="166.006,134.91035"
+       orientation="1,0"
+       id="guide64807" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -504,7 +512,7 @@
        width="6.1005931"
        height="4.602788"
        x="175.55779"
-       y="100.25897" />
+       y="112.95895" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.03705px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0777787"
@@ -820,7 +828,7 @@
        id="path33780" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.0765116;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1464)"
-       d="m 181.62361,102.47251 h 4.59089"
+       d="m 181.62361,115.17259 h 4.59089"
        id="path33780-8" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.146878px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1489,25 +1497,25 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.05833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="182.49503"
-       y="88.249504"
+       x="181.29234"
+       y="88.127495"
        id="text39028"><tspan
          sodipodi:role="line"
          id="tspan39026"
          style="font-size:1.05833px;stroke-width:0.264583"
-         x="182.49503"
-         y="88.249504">VDDS</tspan></text>
+         x="181.29234"
+         y="88.127495">VDDS</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1454)"
        d="m 180.99602,88.56325 h 5.29881"
        id="path40383" />
     <rect
-       style="fill:#00ff3c;stroke:#000000;stroke-width:0.078;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;fill-opacity:1"
+       style="fill:#00ff3c;fill-opacity:1;stroke:#000000;stroke-width:0.0821866;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect40407"
-       width="4.601594"
-       height="2.7714143"
-       x="176.377"
-       y="87.360558" />
+       width="4.6071062"
+       height="3.0732267"
+       x="176.37424"
+       y="86.625748" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.99299px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.149474"
@@ -1779,6 +1787,21 @@
          style="stroke-width:0.0149158"
          x="139.73294"
          y="71.713188">SN74AVC4T245RSV</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.902112px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.135317"
+       x="250.18446"
+       y="91.750801"
+       id="text68727"><tspan
+         sodipodi:role="line"
+         id="tspan68725"
+         style="font-size:0.902112px;stroke-width:0.135317"
+         x="250.18446"
+         y="91.750801">DCDC_SW</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker2069)"
+       d="m 249.23755,92.585922 h 10.69816"
+       id="path72152" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2069,24 +2092,24 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.03705px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0777787"
        x="175.82759"
-       y="101.22132"
+       y="113.92133"
        id="text25495-2"><tspan
          sodipodi:role="line"
          id="tspan25493-9"
          style="font-size:1.03705px;stroke-width:0.0777787"
          x="175.82759"
-         y="101.22132">Y2</tspan></text>
+         y="113.92133">Y2</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.03705px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0777787"
        x="175.85416"
-       y="102.3892"
+       y="115.08918"
        id="text28151-7"><tspan
          sodipodi:role="line"
          id="tspan28149-8"
          style="font-size:1.03705px;stroke-width:0.0777787"
          x="175.85416"
-         y="102.3892">48MHz</tspan></text>
+         y="115.08918">48MHz</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:0.793632px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.198409"

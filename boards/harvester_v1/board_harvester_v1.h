@@ -51,6 +51,6 @@
 #define LED_INDEX_RED 1
 
 #define BOARD_NAME "Harvester"
-#define MCU_NAME "CC2642R1F"
+
 
 #endif /* BOARD_HARVESTER_V1_H  */

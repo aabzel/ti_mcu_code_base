@@ -3,13 +3,13 @@
 
 #include "board_harvester_v1.h"
 #include "boot_cfg.h"
+#include "sys_config_common.h"
 
-#define DFLT_TIME_ZONE 3
+/*Hardware config*/
+#define UART_COUNT 1
 #define UART_NUM_CLI 0U
-#define UART_NUM_ZED_F9P 1U
-#define WDT_TIMEOUT_MS 10000U
-#define UART_COUNT 2
 
-#define CLI_UART_BAUD_RATE 460800U /* bit/s */
+/*Software config*/
+#define APP_START_ADDRESS 0x0001A000
 
 #endif /* SYS_CONFIG_H  */
