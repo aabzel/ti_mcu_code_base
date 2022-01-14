@@ -90,6 +90,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/flash_nvs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/gpio"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/i2c"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/interrupt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rf"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rng"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/rtc"/>
@@ -100,6 +101,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/watchdog"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/mcu"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/tbfp_protocol"/>
@@ -143,6 +145,7 @@
 									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
+									<listOptionValue builtIn="false" value="HAS_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_CUSTOM_PRINTF"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH"/>
@@ -151,6 +154,7 @@
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
+									<listOptionValue builtIn="false" value="HAS_HARVESTER_V1"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
@@ -296,7 +300,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="boards/tBeamV1_1|boards/stm32_H407|Drivers/telematic|protocols/nmea_protocol|protocols/rtcm3_protocol|protocols/tbfp_protocol|protocols/ubx_protocol|unit_tests/test_set_hw/test_zed_f9p|unit_tests/test_set_sw|unit_tests/test_set_sw/test_sw_list.c|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw/test_system|unit_tests/test_set_sw/test_tbfp_proto|unit_tests/test_set_sw/test_fifo|unit_tests/test_set_sw/test_utils|unit_tests/test_set_sw/test_ublox_proto|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_nmea_proto|unit_tests/test_set_sw/test_cli|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="bsp_cc26x2/ble|boards/tBeamV1_1|boards/stm32_H407|Drivers/telematic|protocols/nmea_protocol|protocols/rtcm3_protocol|protocols/tbfp_protocol|protocols/ubx_protocol|unit_tests/test_set_hw/test_zed_f9p|unit_tests/test_set_sw|unit_tests/test_set_sw/test_sw_list.c|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw/test_system|unit_tests/test_set_sw/test_tbfp_proto|unit_tests/test_set_sw/test_fifo|unit_tests/test_set_sw/test_utils|unit_tests/test_set_sw/test_ublox_proto|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_nmea_proto|unit_tests/test_set_sw/test_cli|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

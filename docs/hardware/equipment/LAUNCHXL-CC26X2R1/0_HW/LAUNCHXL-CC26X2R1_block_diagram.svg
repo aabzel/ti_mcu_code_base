@@ -35,15 +35,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.94872015"
-     inkscape:cx="944.95727"
-     inkscape:cy="502.78262"
+     inkscape:zoom="15.179522"
+     inkscape:cx="687.07695"
+     inkscape:cy="399.15617"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:document-rotation="0">
@@ -75,6 +75,14 @@
        position="0,210"
        orientation="0,297.0"
        id="guide62397" />
+    <sodipodi:guide
+       position="175.55779,106.60357"
+       orientation="1,0"
+       id="guide63898" />
+    <sodipodi:guide
+       position="181.62361,102.24575"
+       orientation="1,0"
+       id="guide63900" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -807,12 +815,12 @@
          x="77.97876"
          y="36.724617">LAUNCHXL-CC26X2R1</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.078;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1464)"
-       d="m 181.28517,109.80231 h 4.77124"
+       style="fill:none;stroke:#000000;stroke-width:0.0751827;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1464)"
+       d="m 181.62361,109.80231 h 4.4328"
        id="path33780" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.078;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1464)"
-       d="m 181.44326,102.47251 h 4.77124"
+       style="fill:none;stroke:#000000;stroke-width:0.0765116;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1464)"
+       d="m 181.62361,102.47251 h 4.59089"
        id="path33780-8" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.146878px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"

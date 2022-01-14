@@ -9,7 +9,7 @@
 #define UART_COUNT 2
 #define UART_NUM_CLI 0U
 #define UART_NUM_ZED_F9P 1U
-#define SX1262_SPI_NUM 0
+#define MAIN_SPI_NUM 0
 
 /*Software config*/
 #define APP_START_ADDRESS 0x0001A000
