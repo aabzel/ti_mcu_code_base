@@ -19,8 +19,6 @@
 #define DIO_LED_GREEN 26U
 #define DIO_LED_RED 30U/*STATUS_01*/
 #define DIO_LEN 22U
-#define DIO_MISO 2U
-#define DIO_MOSI 3U
 #define DIO_NTC    23U
 #define DIO_PG_7V0 15U
 #define DIO_PS_RS232 7U /*Enable RS232 transceiver*/

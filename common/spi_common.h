@@ -4,6 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef ESP32
+#include <spi_types.h>
+#endif
+
 #include "sys_config.h"
 
 #ifdef DeviceFamily_CC26X2
@@ -30,14 +34,17 @@ typedef struct xSpiInstance_t {
   volatile uint32_t it_cnt;
   uint32_t rx_buff_size;
   uint32_t tx_cpl_cnt;
-#ifdef DeviceFamily_CC26X2
   uint32_t base_addr;
+#ifdef DeviceFamily_CC26X2
   SPI_Handle SpiHandle;
   SPI_Params SpiParams;
 #endif
 #ifdef USE_HAL_DRIVER
   SPI_HandleTypeDef handle;
 #endif /*USE_HAL_DRIVER*/
+#ifdef ESP32
+  spi_host_device_t host_id;
+#endif
   char name[SPI_NAME_SZ_BYTE];
   bool init_done;
 }SpiInstance_t;

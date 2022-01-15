@@ -9,6 +9,7 @@
 typedef struct xPin_t {
     int16_t dio;
     uint8_t mcu_pin;
+    DioDir_t dir;
     char name[PIN_NAME_LEN];
 } Pin_t;
 
