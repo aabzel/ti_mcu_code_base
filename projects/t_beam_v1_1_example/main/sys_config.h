@@ -2,10 +2,14 @@
 #define SYS_CONFIG_H
 
 #include "t_bram_v1_1.h"
-#include "fw_config.h"
+#include "sys_config_common.h"
 
+/*Hardware config*/
+#define UART_COUNT 1
 #define UART_NUM_CLI (0)
-#define WDT_TIMEOUT_MS 10000
-#define CLI_UART_BAUD_RATE 460800 /* bit/s */
+#define MAIN_SPI_NUM 0
+
+/*Software config*/
+#define APP_START_ADDRESS 0x40000000
 
 #endif /* SYS_CONFIG_H  */
