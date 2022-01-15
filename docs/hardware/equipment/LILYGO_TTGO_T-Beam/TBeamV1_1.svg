@@ -1132,10 +1132,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="642.98123"
-     inkscape:cy="254.37143"
+     inkscape:cx="519.13678"
+     inkscape:cy="365.15979"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1366"
@@ -1154,7 +1154,7 @@
        orientation="0,297.0"
        id="guide4827" />
     <sodipodi:guide
-       position="142.30804,137.0506"
+       position="224.06901,136.83798"
        orientation="0,297.0"
        id="guide4829" />
     <sodipodi:guide
@@ -1265,17 +1265,6 @@
          x="88.035934"
          y="90.1101"
          style="fill:#ff00ff;stroke-width:0.0520795">9600 Bit/s</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.74872px;line-height:1.25;font-family:sans-serif;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.0937182"
-       x="195.28105"
-       y="64.949821"
-       id="text3536"><tspan
-         sodipodi:role="line"
-         id="tspan3534"
-         x="195.28105"
-         y="64.949821"
-         style="fill:#0000ff;stroke-width:0.0937182">SPI</tspan></text>
     <path
        style="fill:#00ffff;stroke:#00ffff;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker13352);marker-start:url(#marker7727);stroke-miterlimit:4;stroke-dasharray:none"
        d="m 176.69974,120.2566 v 27.21388"
@@ -2469,17 +2458,6 @@
        style="fill:none;stroke:#000000;stroke-width:0.186762px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker7351)"
        d="M 190.69109,60.244581 V 73.153314"
        id="path2187" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.24508px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.186762"
-       x="187.12532"
-       y="69.501663"
-       id="text2191"><tspan
-         sodipodi:role="line"
-         id="tspan2189"
-         x="187.12532"
-         y="69.501663"
-         style="font-size:1.24508px;stroke-width:0.186762">IO26</tspan></text>
     <path
        style="fill:none;stroke:#008000;stroke-width:0.226966px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1927)"
        d="m 221.70449,50.057047 h 28.38644"
@@ -2760,13 +2738,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.72447px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0681116"
-       x="120.44745"
-       y="108.96811"
+       x="120.31381"
+       y="109.10175"
        id="text12640"><tspan
          sodipodi:role="line"
          id="tspan12638"
-         x="120.44745"
-         y="108.96811"
+         x="120.31381"
+         y="109.10175"
          style="stroke-width:0.0681116">SPI 4x</tspan></text>
     <text
        xml:space="preserve"
@@ -4303,6 +4281,39 @@
          style="font-size:1.76389px;stroke-width:0.264583">SPI Slave</tspan></text>
     <text
        xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:3.74872px;line-height:1.25;font-family:sans-serif;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.0937182"
+       x="195.28105"
+       y="64.949821"
+       id="text3536"><tspan
+         sodipodi:role="line"
+         id="tspan3534"
+         x="195.28105"
+         y="64.949821"
+         style="fill:#0000ff;stroke-width:0.0937182">SPI</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.0452px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0261299"
+       x="196.81288"
+       y="76.737144"
+       id="text2131"><tspan
+         sodipodi:role="line"
+         id="tspan2129"
+         x="196.81288"
+         y="76.737144"
+         style="stroke-width:0.0261299">80 MHz</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.24508px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.186762"
+       x="187.12532"
+       y="69.501663"
+       id="text2191"><tspan
+         sodipodi:role="line"
+         id="tspan2189"
+         x="187.12532"
+         y="69.501663"
+         style="font-size:1.24508px;stroke-width:0.186762">IO26</tspan></text>
+    <text
+       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.13564px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0783912"
        x="201.88806"
        y="68.526459"
@@ -4312,6 +4323,13 @@
          x="201.88806"
          y="68.526459"
          style="fill:#0000ff;stroke-width:0.0783912">3</tspan></text>
+    <rect
+       style="opacity:0.996;fill:none;stroke:#24221c;stroke-width:0.259313"
+       id="rect2141"
+       width="13.040178"
+       height="4.7955718"
+       x="195.36646"
+       y="73.162018" />
   </g>
   <g
      inkscape:groupmode="layer"

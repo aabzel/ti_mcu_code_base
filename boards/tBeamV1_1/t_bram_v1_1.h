@@ -12,13 +12,14 @@
 #define LED_COUNT 1
 #define LED_INDEX_RED 0
 
+/*GPIO name utils*/
 #define DIO_GNSS_RXD 34 /*TXD1*/
 #define DIO_GNSS_TXD 12 /*RXD1*/
 #define DIO_LED_RED 4
 #define DIO_SPI0_MISO 19
 #define DIO_SPI0_MOSI 27
 #define DIO_SPI0_SCLK 5
-#define DIO_SX1262_BUSY ()  /*LoRa_BUSY*/
+#define DIO_SX1262_BUSY (-1)  /*LoRa_BUSY TODO explore*/
 #define DIO_SX1262_INT 23  /*LoRa_INT*/
 #define DIO_SX1262_RST 23 /*LoRa_NRESET*/
 #define DIO_SX1262_SS 18  /*SS0_LoRa*/
