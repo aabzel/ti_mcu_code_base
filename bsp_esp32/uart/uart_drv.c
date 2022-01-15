@@ -31,7 +31,7 @@ uint32_t g_uart_rx_cnt = 0;
 
 #define BUF_SIZE (1024)
 
-static intr_handle_t handle_console;
+//static intr_handle_t handle_console;
 
 uart_config_t UartConfig = {
     .baud_rate = ECHO_UART_BAUD_RATE,
@@ -47,11 +47,44 @@ bool usart_set_baudrate(uint8_t uart_num, uint16_t baudrate){
     return res;
 }
 
+static void echo_task(void *arg){
+	uint8_t data[128];
+	size_t length = 0;
+    while (1) {
+    	length = 0;
+    	uart_get_buffered_data_len(UART_NUM_CLI, (size_t*)&length);
+    	if(0<length){
+          	gpio_toggle(GPIO_NUM_4);
+        	length =(size_t) uart_read_bytes(UART_NUM_CLI, data, length, 100);
+          	int i=0;
+        	for(i=0;i<length;i++){
+            	huart[UART_NUM_CLI].tx_int = true;
+            	huart[UART_NUM_CLI].rx_int = true;
+#ifdef HAS_CLI
+                uart_string_reader_rx_callback(&cmd_reader, data[i]);
+#endif /*HAS_CLI*/
+    	    }
+    	}
+    	vTaskDelay(10 / portTICK_RATE_MS);
+	}
+}
 
+static bool init_uart_one(uint8_t uart_num, char* name) {
+    bool res = true;
+    strncpy(huart[uart_num].name, name, sizeof(huart[uart_num].name));
+    int intr_alloc_flags = 0;
+    ESP_ERROR_CHECK(uart_driver_install(uart_num, BUF_SIZE * 2, 0, 0, NULL, intr_alloc_flags));
+    ESP_ERROR_CHECK(uart_param_config(uart_num, &UartConfig));
+    ESP_ERROR_CHECK(uart_set_pin(uart_num, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS));
 
-static bool init_uart(uint8_t uart_num, char* name) {
-    bool res = false;
-  
+    // register new UART subroutine
+    //uart_isr_register(UART_NUM_CLI, uart_intr_handle, NULL, ESP_INTR_FLAG_LEVEL1, NULL);
+    // enable RX interrupt
+   	ESP_ERROR_CHECK(uart_enable_rx_intr(uart_num));
+    char str[20] = "0";
+    snprintf(str, sizeof(str), "UART%u_task", uart_num);
+    uart_write_bytes(uart_num, (const char *) str, strlen(str));
+    xTaskCreate(echo_task, str, 5000, NULL, 10, NULL);
     return res;
 }
 // Receive buffer to collect incoming data
@@ -79,51 +112,11 @@ static void IRAM_ATTR uart_intr_handle(void *arg){
 	}
 }
 #endif
-static void echo_task(void *arg){
-	uint8_t data[128];
-	size_t length = 0;
-    while (1) {
-    	length = 0;
-    	uart_get_buffered_data_len(UART_NUM_CLI, (size_t*)&length);
-    	if(0<length){
-          	gpio_toggle(GPIO_NUM_4);
-        	length =(size_t) uart_read_bytes(UART_NUM_CLI, data, length, 100);
-          	int i=0;
-        	for(i=0;i<length;i++){
-            	huart[UART_NUM_CLI].tx_int = true;
-            	huart[UART_NUM_CLI].rx_int = true;
-#ifdef HAS_CLI
-                uart_string_reader_rx_callback(&cmd_reader, data[i]);
-#endif /*HAS_CLI*/
-    	    }
-    	}
-    	vTaskDelay(10 / portTICK_RATE_MS);
-	}
-}
 
 
 bool uart_init(void) {
     bool res = true;
-    int intr_alloc_flags = 0;
-
-#if CONFIG_UART_ISR_IN_IRAM
-    intr_alloc_flags = ESP_INTR_FLAG_IRAM;
-#endif
-
-    ESP_ERROR_CHECK(uart_driver_install(UART_NUM_CLI, BUF_SIZE * 2, 0, 0, NULL, intr_alloc_flags));
-    ESP_ERROR_CHECK(uart_param_config(UART_NUM_CLI, &UartConfig));
-    ESP_ERROR_CHECK(uart_set_pin(UART_NUM_CLI, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS));
-
-	// register new UART subroutine
-	//uart_isr_register(UART_NUM_CLI, uart_intr_handle, NULL, ESP_INTR_FLAG_LEVEL1, NULL);
-
-	// enable RX interrupt
-	ESP_ERROR_CHECK(uart_enable_rx_intr(UART_NUM_CLI));
-
-    char str[20] = "0";
-    snprintf(str, sizeof(str), "UART%u", UART_NUM_CLI);
-    uart_write_bytes(UART_NUM_CLI, (const char *) str, strlen(str));
-    xTaskCreate(echo_task, "uart_echo_task", 5000, NULL, 10, NULL);
+    res = init_uart_one(UART_NUM_CLI,"CLI");
     return res;
 }
 
@@ -152,5 +145,5 @@ bool proc_uarts(void) { return true; }
 
 uint32_t uart_get_baud_rate(uint8_t uart_num, uint16_t* mantissa, uint16_t* fraction, uint8_t* over_sampling) {
     bool res = true;
-    return 0;
+    return res;
 }

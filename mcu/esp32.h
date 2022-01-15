@@ -32,7 +32,6 @@
 #define ROM_SIZE ROM0_SIZE
 #define ROM_END (ROM_START + ROM_SIZE)
 
-
 #define MCU_NAME "ESP32-DOWDQ6"
 
 #endif /* ESP32_H */

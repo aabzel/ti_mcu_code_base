@@ -5,19 +5,11 @@
 #include <stdint.h>
 
 #include "driver/gpio.h"
-
-typedef enum ePullMode_t { PULL_DOWN = 1, PULL_UP = 2, PULL_AIR = 3, PULL_UNDEF = 4 } PullMode_t;
-
-typedef enum eDioDirr_t {
-    GPIO_DIR_IN = 0,
-    GPIO_DIR_OUT = 1,
-    GPIO_DIR_INOUT = 2,
-    GPIO_DIR_NONE = 4,
-    GPIO_DIR_UNDEF = 5
-} DioDir_t;
+#include "gpio_common.h"
 
 DioDir_t gpio_get_dir(uint8_t dio_pin);
 
+bool gpio_set_pin_pull_mode(uint8_t dio_pin, PullMode_t pull_mode);
 PullMode_t gpio_get_pull_mode(uint8_t dio_pin);
 bool gpio_get_in_mode(uint8_t dio_pin);
 bool gpio_get_state(uint8_t io_pin, uint8_t* logic_level);
