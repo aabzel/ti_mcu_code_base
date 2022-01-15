@@ -1,8 +1,11 @@
 
 set(PATH_INC)
 set(PATH_SRC)
-set(PATH_WORKSPACE  C:/1_job/0_NPP_IT_ELMA/code_base_workspace_esp/ti_mcu_code_base)
+set(PATH_WORKSPACE C:/1_job/0_NPP_IT_ELMA/code_base_workspace_esp/ti_mcu_code_base)
 
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/common/spi_common.c")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/spi")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/spi/spi_drv.c")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/mcu")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/clocks/clocks.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/gpio/gpio_drv.c")

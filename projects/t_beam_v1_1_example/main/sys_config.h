@@ -5,7 +5,6 @@
 #include "sys_config_common.h"
 
 /*Hardware config*/
-#define UART_COUNT 1
 #define UART_NUM_CLI (0)
 #define MAIN_SPI_NUM 0
 
