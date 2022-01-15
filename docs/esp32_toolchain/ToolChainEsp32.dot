@@ -1,0 +1,6 @@
+digraph graphname {
+    rankdir=LR;
+	python["python.exe"]
+	esptool.py
+	UBX->ZED_F9P;
+}
