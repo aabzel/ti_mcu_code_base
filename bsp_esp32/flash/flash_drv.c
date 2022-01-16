@@ -53,8 +53,7 @@ bool is_flash_spare(uint32_t flash_addr, uint32_t size) {
 }
 
 uint32_t flash_get_first_spare_page(void) {
-    bool res = false;
-    return 0;
+    return 0xFFFFFFFF;
 }
 
 /*

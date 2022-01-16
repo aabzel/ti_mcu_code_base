@@ -67,7 +67,9 @@ static void uart0_rx_thread(void *arg){
 #endif /*HAS_CLI*/
     	    }
     	}
-    	vTaskDelay(10 / portTICK_RATE_MS);
+    	//vTaskYield();
+    	taskYIELD();
+    	//vTaskDelay(10 / portTICK_RATE_MS);
 	}
 }
 

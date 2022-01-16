@@ -228,7 +228,8 @@ _Noreturn void super_main_loop(void) {
 #endif /*HAS_DEBUG*/
         super_loop(loop_start_time_us);
 #ifdef HAS_FREE_RTOS
-        vTaskDelay(5 / portTICK_PERIOD_MS);
+        taskYIELD();
+        //vTaskDelay(5 / portTICK_PERIOD_MS);
 #endif
     }
 }
