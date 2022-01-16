@@ -3,6 +3,8 @@
 
 #include "sys_config.h"
 
+#include "gpio_common.h"
+
 #define DIO_CNT 49
 
 #define PIN_NAME_LEN 10

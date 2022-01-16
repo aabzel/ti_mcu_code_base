@@ -2,13 +2,14 @@
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "base_cmd.h"
+#include "board_layout.h"
 #include "convert.h"
 #include "ctype.h"
 #include "data_utils.h"
-#include "diag_page_nums.h"
-#include "diag_report.h"
+#include "gpio_common.h"
 #include "gpio_diag.h"
 #include "gpio_drv.h"
 #include "io_utils.h"
@@ -22,38 +23,65 @@ static bool gpio_diag(char* key_word1, char* key_word2) {
     bool res = false;
     replace_char(key_word1, '_', ' ');
     replace_char(key_word2, '_', ' ');
-    static const table_col_t cols[] = {{5, "No"},    {5, "dio"},     {5, "aux"},  {5, "pin"},  {5, "dir"},
-                                       {7, "level"}, {5, "irq"},     {6, "edge"}, {6, "pull"}, {13, "type"},
-                                       {4, "ev"},    {10, "AltFun"}, {12, "name"}};
+    static const table_col_t cols[] = {{5, "No"},
+    		{5, "dio"},
+			{5, "pin"},
+			{5, "dir"},
+            {7, "level"},
+		    {5, "irq"},
+		    {6, "edge"},
+		    {6, "pull"},
+		    {13, "type"},
+		    {10, "AltFun"},
+		    {12, "name"}};
     uint16_t num = 0;
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     uint8_t logic_level = 0xFF;
 
     uint8_t i = 0;
-    char temp_str[200] = "";
+    char line_str[300] = "";
+    char sufix_str[50]= "";
     DioDir_t gpio_dir;
     for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
         res = gpio_get_state(PinTable[i].dio, &logic_level);
         if(true == res) {
-            memset(temp_str, 0x0, sizeof(temp_str));
-            strcpy(temp_str, TSEP);
-            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].dio);
-            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].aux_pin);
-            snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, PinTable[i].mcu_pin);
-            gpio_dir = gpio_get_dir(PinTable[i].dio);
-            snprintf(temp_str, sizeof(temp_str), "%s %2s  " TSEP, temp_str, gpio_dir2str(gpio_dir));
-            snprintf(temp_str, sizeof(temp_str), "%s  %s    " TSEP, temp_str, (1 == logic_level) ? "H" : "L");
-            snprintf(temp_str, sizeof(temp_str), "%s  %s  " TSEP, temp_str, (1 == is_edge_irq_en(i)) ? "Y" : "N");
-            snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_edge(PinTable[i].dio));
-            snprintf(temp_str, sizeof(temp_str), "%s %4s " TSEP, temp_str, get_gpio_pull_mode(PinTable[i].dio));
-            snprintf(temp_str, sizeof(temp_str), "%s %11s " TSEP, temp_str, get_gpio_type(PinTable[i].dio));
-            snprintf(temp_str, sizeof(temp_str), "%s %1u  " TSEP, temp_str, GPIO_getEventDio(PinTable[i].dio));
-            snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, get_gpio_alter_fun(PinTable[i].dio));
-            snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, PinTable[i].name);
+            memset(line_str, 0x0, sizeof(line_str));
+            strcpy(line_str, TSEP);
+            //https://stackoverflow.com/questions/69519821/error-passing-argument-1-to-restrict-qualified-parameter-aliases-with-argument
+            snprintf(sufix_str, sizeof(sufix_str), "%4d " TSEP, PinTable[i].dio);
+            strncat(line_str, sufix_str, sizeof(line_str));
 
-            if(is_contain(temp_str, key_word1, key_word2)) {
+            snprintf(sufix_str, sizeof(sufix_str), "%4u " TSEP, PinTable[i].mcu_pin);
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            gpio_dir = gpio_get_dir(PinTable[i].dio);
+            snprintf(sufix_str, sizeof(sufix_str), "%2s  " TSEP, gpio_dir2str(gpio_dir));
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            snprintf(sufix_str, sizeof(sufix_str), " %s    " TSEP, (1 == logic_level) ? "H" : "L");
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            snprintf(sufix_str, sizeof(sufix_str), " %s  " TSEP, (1 == is_edge_irq_en(i)) ? "Y" : "N");
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            snprintf(sufix_str, sizeof(sufix_str), "%4s " TSEP, get_gpio_edge(PinTable[i].dio));
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            snprintf(sufix_str, sizeof(sufix_str), "%4s " TSEP, get_gpio_pull_mode(PinTable[i].dio));
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            snprintf(sufix_str, sizeof(sufix_str), "%11s " TSEP, get_gpio_type(PinTable[i].dio));
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            snprintf(sufix_str, sizeof(sufix_str), "%8s " TSEP, get_gpio_alter_fun(PinTable[i].dio));
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            snprintf(sufix_str, sizeof(sufix_str), "%10s " TSEP, PinTable[i].name);
+            strncat(line_str, sufix_str,sizeof(line_str));
+
+            if(is_contain(line_str, key_word1, key_word2)) {
                 io_printf(TSEP " %3u ", num);
-                io_printf("%s\r\n", temp_str);
+                io_printf("%s\r\n", line_str);
                 num++;
             }
         }
@@ -200,7 +228,7 @@ bool gpio_set_dir_command(int32_t argc, char* argv[]) {
     }
 
     if(2 <= argc) {
-        res = try_str2uint8(argv[1], &dio_dir);
+        res = try_str2uint8(argv[1],(uint8_t*) &dio_dir);
         if(false == res) {
             LOG_ERROR(SYS, "Unable to extract dio_dir %s", argv[1]);
         } else {

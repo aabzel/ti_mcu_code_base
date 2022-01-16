@@ -4,6 +4,8 @@ set(PATH_SRC)
 set(PATH_WORKSPACE C:/1_job/0_NPP_IT_ELMA/code_base_workspace_esp/ti_mcu_code_base)
 set(PATH_ESP_IDF C:/esp/esp-idf)
 
+
+
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/common")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/common/gpio_common.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/common/spi_common.c")
@@ -16,8 +18,10 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/clocks/clocks.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/gpio/gpio_drv.c")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/clocks")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/gpio")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/gpio/gpio_commands.c")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/boards/tBeamV1_1")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/boards/tBeamV1_1/board_layout.c")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/core_drv")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/flash")
@@ -58,13 +62,12 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/log.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/ostream.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/uart_string_reader.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_string/str_utils.c")
-
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/gpio/gpio_diag.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/writer_uart.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/time_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/bit_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/read_mem.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/byte_utils.c")
-
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/cli_drv/log_commands.c")
 
 
@@ -72,4 +75,4 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/cli_drv/log_commands.c")
 idf_component_register(SRCS "hello_world_main.c" ${PATH_SRC}
                        INCLUDE_DIRS ${PATH_INC})
 
-target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_MCU -DHAS_CLOCK -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SUPER_LOOP -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI1 -DHAS_SPI)
+target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_MCU -DHAS_CLOCK -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI1 -DHAS_SPI -Wno-stringop-overflow)
