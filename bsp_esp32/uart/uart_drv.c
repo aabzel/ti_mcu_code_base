@@ -47,14 +47,16 @@ bool usart_set_baudrate(uint8_t uart_num, uint16_t baudrate){
     return res;
 }
 
-static void echo_task(void *arg){
+static void uart0_rx_thread(void *arg){
 	uint8_t data[128];
 	size_t length = 0;
     while (1) {
     	length = 0;
     	uart_get_buffered_data_len(UART_NUM_CLI, (size_t*)&length);
     	if(0<length){
+#ifdef HAS_UART_RX_DEBUG
           	gpio_toggle(GPIO_NUM_4);
+#endif
         	length =(size_t) uart_read_bytes(UART_NUM_CLI, data, length, 100);
           	int i=0;
         	for(i=0;i<length;i++){
@@ -84,7 +86,7 @@ static bool init_uart_one(uint8_t uart_num, char* name) {
     char str[20] = "0";
     snprintf(str, sizeof(str), "UART%u_task", uart_num);
     uart_write_bytes(uart_num, (const char *) str, strlen(str));
-    xTaskCreate(echo_task, str, 5000, NULL, 10, NULL);
+    xTaskCreate(uart0_rx_thread, str, 5000, NULL, 10, NULL);
     return res;
 }
 // Receive buffer to collect incoming data

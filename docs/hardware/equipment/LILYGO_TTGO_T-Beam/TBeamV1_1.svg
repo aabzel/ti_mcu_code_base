@@ -1131,9 +1131,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="519.13678"
-     inkscape:cy="365.15979"
+     inkscape:zoom="3.959798"
+     inkscape:cx="773.15087"
+     inkscape:cy="345.2428"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
@@ -1604,17 +1604,6 @@
          x="245.56932"
          y="84.373085"
          style="stroke-width:0.131063">RED</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.24416px;line-height:1.25;font-family:sans-serif;fill:#008000;fill-opacity:1;stroke:none;stroke-width:0.0561042"
-       x="222.23846"
-       y="86.563683"
-       id="text3809"><tspan
-         sodipodi:role="line"
-         id="tspan3807"
-         x="222.23846"
-         y="86.563683"
-         style="fill:#008000;stroke-width:0.0561042">IO4</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker2591);marker-end:url(#marker2907)"
        d="m 221.7045,78.430058 14.89586,0.02706 0.011,-19.873242 13.32536,0.0024"
@@ -2904,17 +2893,6 @@
          style="font-size:3.52778px;stroke-width:0.264583">SDIO</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="169.58644"
-       y="81.65477"
-       id="text12728"><tspan
-         sodipodi:role="line"
-         id="tspan12726"
-         x="169.58644"
-         y="81.65477"
-         style="font-size:3.52778px;stroke-width:0.264583">7-stage pipeline</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.95902px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0989758"
        x="167.63603"
        y="117.85567"
@@ -3949,28 +3927,6 @@
          style="font-size:1.76389px;stroke-width:0.264583">-40°C to 85°C</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.8257px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0706425"
-       x="211.98601"
-       y="76.009483"
-       id="text1508"><tspan
-         sodipodi:role="line"
-         id="tspan1506"
-         x="211.98601"
-         y="76.009483"
-         style="stroke-width:0.0706425">49 pin</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.61849px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.115463"
-       x="205.44751"
-       y="92.960625"
-       id="text12732"><tspan
-         sodipodi:role="line"
-         id="tspan12730"
-         x="205.44751"
-         y="92.960625"
-         style="stroke-width:0.115463">FPU</tspan></text>
-    <text
-       xml:space="preserve"
        style="display:inline;font-style:normal;font-weight:normal;font-size:3.71161px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0927907"
        x="271.90204"
        y="97.650101"
@@ -4260,17 +4216,6 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="196.77719"
-       y="75.503639"
-       id="text2103"><tspan
-         sodipodi:role="line"
-         id="tspan2101"
-         x="196.77719"
-         y="75.503639"
-         style="font-size:1.76389px;stroke-width:0.264583">SPI Master</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="197.8437"
        y="59.539227"
        id="text2103-0"><tspan
@@ -4290,17 +4235,6 @@
          x="195.28105"
          y="64.949821"
          style="fill:#0000ff;stroke-width:0.0937182">SPI</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.0452px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0261299"
-       x="196.81288"
-       y="76.737144"
-       id="text2131"><tspan
-         sodipodi:role="line"
-         id="tspan2129"
-         x="196.81288"
-         y="76.737144"
-         style="stroke-width:0.0261299">80 MHz</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.24508px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.186762"
@@ -4330,6 +4264,72 @@
        height="4.7955718"
        x="195.36646"
        y="73.162018" />
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.6671px;line-height:1.25;font-family:sans-serif;fill:#008000;fill-opacity:1;stroke:none;stroke-width:0.0666777"
+       x="222.19696"
+       y="86.557693"
+       id="text3809"><tspan
+         sodipodi:role="line"
+         id="tspan3807"
+         x="222.19696"
+         y="86.557693"
+         style="fill:#008000;stroke-width:0.0666777">IO4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="169.58644"
+       y="81.65477"
+       id="text12728"><tspan
+         sodipodi:role="line"
+         id="tspan12726"
+         x="169.58644"
+         y="81.65477"
+         style="font-size:3.52778px;stroke-width:0.264583">7-stage pipeline</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.8257px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0706425"
+       x="211.98601"
+       y="76.009483"
+       id="text1508"><tspan
+         sodipodi:role="line"
+         id="tspan1506"
+         x="211.98601"
+         y="76.009483"
+         style="stroke-width:0.0706425">49 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.61849px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.115463"
+       x="205.44751"
+       y="92.960625"
+       id="text12732"><tspan
+         sodipodi:role="line"
+         id="tspan12730"
+         x="205.44751"
+         y="92.960625"
+         style="stroke-width:0.115463">FPU</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="196.77719"
+       y="75.503639"
+       id="text2103"><tspan
+         sodipodi:role="line"
+         id="tspan2101"
+         x="196.77719"
+         y="75.503639"
+         style="font-size:1.76389px;stroke-width:0.264583">SPI Master</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.0452px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0261299"
+       x="196.81288"
+       y="76.737144"
+       id="text2131"><tspan
+         sodipodi:role="line"
+         id="tspan2129"
+         x="196.81288"
+         y="76.737144"
+         style="stroke-width:0.0261299">80 MHz</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

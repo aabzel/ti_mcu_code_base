@@ -37,12 +37,16 @@ bool uart_string_reader_init(uart_string_reader_t* rdr) {
     return true;
 }
 
-void uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
-    if(rdr) {
+bool uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
+    bool res = false;
+	if(rdr) {
         if(false == fifo_push(&rdr->fifo, c)) {
             rdr->lost_char_count++;
+        }else{
+        	res = true;
         }
     }
+    return res;
 }
 
 void uart_string_reader_error_callback(uart_string_reader_t* rdr) { rdr->error_count++; }
@@ -74,6 +78,9 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
             if(character != '\n') {
                 if(cli_echo) {
                     io_putchar(character);
+#ifdef ESP32
+                    fflush(stdout);
+#endif
                 }
                 switch(character) {
                 case '\b':

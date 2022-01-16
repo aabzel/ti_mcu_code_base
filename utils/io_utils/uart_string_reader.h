@@ -12,7 +12,7 @@ extern "C" {
 
 #define UART_RX_ARRAY_SIZE 500U
 
-typedef void (*handle_string_f)(char* s);
+typedef bool (*handle_string_f)(char* s);
 
 typedef struct {
     uint16_t string_size;
@@ -30,7 +30,7 @@ extern uart_string_reader_t cmd_reader;
 
 uart_string_reader_t* get_uart_reader(void);
 bool uart_string_reader_init(uart_string_reader_t* r);
-void uart_string_reader_rx_callback(uart_string_reader_t* r, char c);
+bool uart_string_reader_rx_callback(uart_string_reader_t* r, char c);
 void uart_string_reader_error_callback(uart_string_reader_t* r);
 void uart_string_reader_proccess(uart_string_reader_t* r);
 void uart_string_reader_clear_str(uart_string_reader_t* r); /* clear current string */
