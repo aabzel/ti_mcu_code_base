@@ -30,7 +30,7 @@ const Pin_t PinTable[DIO_CNT] = {
 		{.dir=GPIO_DIR_INOUT, .dio=15, .mcu_pin=21,.name="IO15"},
 		{.dir=GPIO_DIR_INOUT, .dio=2,  .mcu_pin=22,.name="IO2"},
 		{.dir=GPIO_DIR_INOUT, .dio=0,  .mcu_pin=23,.name="IO0"},
-		{.dir=GPIO_DIR_OUT, .dio=4,  .mcu_pin=24,.name="IO4"},/*?*/
+		{.dir=GPIO_DIR_OUT, .dio=4,  .mcu_pin=24,.name="LED"},/*?*/
 		{.dir=GPIO_DIR_OUT, .dio=16, .mcu_pin=25,.name="GPIO16"},
 		{.dir=GPIO_DIR_OUT, .dio=-1, .mcu_pin=26,.name="VDD_SDIO"},
 		{.dir=GPIO_DIR_OUT, .dio=17, .mcu_pin=27,.name="GPIO17"}, /**/
