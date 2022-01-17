@@ -21,7 +21,7 @@
 #include "esp_spi_flash.h"
 
 void app_main(void){
-    bool res=false;
+    bool res = true;
     printf("Hello world!\n");
 
     /* Print chip information */

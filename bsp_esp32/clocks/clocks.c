@@ -6,12 +6,12 @@
 #include "driver/gptimer.h"
 #include "esp_log.h"
 
-    gptimer_handle_t gptimer = NULL;
-    gptimer_config_t timer_config = {
-        .clk_src = GPTIMER_CLK_SRC_APB,
-        .direction = GPTIMER_COUNT_UP,
-        .resolution_hz = 1000000, // 1MHz, 1 tick=1us
-    };
+gptimer_handle_t gptimer = NULL;
+gptimer_config_t timer_config = {
+    .clk_src = GPTIMER_CLK_SRC_APB,
+    .direction = GPTIMER_COUNT_UP,
+    .resolution_hz = 1000000, // 1MHz, 1 tick=1us
+};
 
 bool clock_init(void){
 	bool res = true;

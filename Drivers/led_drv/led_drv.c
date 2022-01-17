@@ -10,6 +10,7 @@
 #include "health_monitor.h"
 #endif /*HAS_HEALTH_MONITOR*/
 #include "utils_math.h"
+#include "sys_config.h"
 
 Led_t Led[LED_COUNT];
 
@@ -34,11 +35,13 @@ bool led_blink(Led_t* inLed, uint32_t duration_ms) {
 }
 
 bool led_init(void) {
+#ifdef DIO_LED_GREEN
     Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_MS;
     Led[LED_INDEX_GREEN].duty = LED_DUTY;
     Led[LED_INDEX_GREEN].phase_ms = LED_PHASE;
     Led[LED_INDEX_GREEN].mode = LED_MODE_PWM;
     Led[LED_INDEX_GREEN].dio_num = DIO_LED_GREEN;
+#endif
 
 #ifdef DIO_LED_RED
     Led[LED_INDEX_RED].period_ms = LED_RED_PERIOD_MS;

@@ -15,10 +15,12 @@
 #include "core_driver.h"
 #include "data_utils.h"
 #include "fifo_array.h"
+#ifdef HAS_FLASH_FS
 #include "flash_fs.h"
+#include "param_ids.h"
+#endif
 #include "log.h"
 #include "none_blocking_pause.h"
-#include "param_ids.h"
 #include "system.h"
 #ifdef HAS_RTCM3
 #include "rtcm3_protocol.h"

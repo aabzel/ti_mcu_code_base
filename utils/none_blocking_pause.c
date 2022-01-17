@@ -13,13 +13,16 @@ bool wait_in_loop_ms(uint32_t wait_pause_ms) {
     uint32_t start_ms = 0U;
     uint32_t curr_ms = 0U;
     bool res = false;
+#ifdef HAS_FREE_RTOS
+    //vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
+#endif
     start_ms = get_time_ms32();
     bool loop = true;
-#ifdef NORTOS
+#ifdef HAS_SUPER_LOOP
     uint64_t loop_start_time_us = 0;
 #endif
     while(loop) {
-#ifdef NORTOS
+#ifdef HAS_SUPER_LOOP
         loop_start_time_us = get_time_us();
         super_loop(loop_start_time_us);
 #endif

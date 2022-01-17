@@ -10,6 +10,6 @@
 
 /*Software config*/
 #define APP_START_ADDRESS 0x40000000
-#define SPI_CLK_FREQUENCY_HZ 5000000
+#define SPI_CLK_FREQUENCY_HZ 1000000
 
 #endif /* SYSTEM_CONFIG_H  */

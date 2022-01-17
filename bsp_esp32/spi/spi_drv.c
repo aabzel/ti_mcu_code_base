@@ -29,19 +29,36 @@ const static uint32_t SpiBaseLut[SPI_CNT] = {SPI0_BASE, SPI1_BASE, SPI2_BASE, SP
 //set the D/C line to the value indicated in the user field.
 void spi0_pre_transfer_callback(spi_transaction_t *transaction){
     //int dc=(int)transaction->user;
-    //gpio_set_level(PIN_NUM_DC, dc);
+	gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi1_pre_transfer_callback(spi_transaction_t *transaction){
     //int dc=(int)transaction->user;
-    //gpio_set_level(PIN_NUM_DC, dc);
+	gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi2_pre_transfer_callback(spi_transaction_t *transaction){
     //int dc=(int)transaction->user;
-    //gpio_set_level(PIN_NUM_DC, dc);
+	gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi3_pre_transfer_callback(spi_transaction_t *transaction){
     //int dc=(int)transaction->user;
-    //gpio_set_level(PIN_NUM_DC, dc);
+	gpio_set_state(DIO_SX1262_SS, 0);
+}
+
+void spi0_post_transfer_callback(spi_transaction_t *transaction){
+    //int dc=(int)transaction->user;
+	gpio_set_state(DIO_SX1262_SS, 1);
+}
+void spi1_post_transfer_callback(spi_transaction_t *transaction){
+    //int dc=(int)transaction->user;
+	gpio_set_state(DIO_SX1262_SS, 1);
+}
+void spi2_post_transfer_callback(spi_transaction_t *transaction){
+    //int dc=(int)transaction->user;
+	gpio_set_state(DIO_SX1262_SS, 1);
+}
+void spi3_post_transfer_callback(spi_transaction_t *transaction){
+    //int dc=(int)transaction->user;
+	gpio_set_state(DIO_SX1262_SS, 1);
 }
 
 const spi_device_interface_config_t SpiDevCfg[SPI_CNT]={{
@@ -50,6 +67,7 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT]={{
     .spics_io_num=DIO_SX1262_SS,               //CS pin
     .queue_size=7,                          //We want to be able to queue 7 transactions at a time
     .pre_cb=spi0_pre_transfer_callback,  //Specify pre-transfer callback to handle D/C line
+	.post_cb=spi0_post_transfer_callback,
 },
 {
     .clock_speed_hz=SPI_CLK_FREQUENCY_HZ,           //Clock out at 26 MHz
@@ -57,6 +75,7 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT]={{
     .spics_io_num=DIO_SX1262_SS,               //CS pin
     .queue_size=7,                          //We want to be able to queue 7 transactions at a time
     .pre_cb=spi1_pre_transfer_callback,  //Specify pre-transfer callback to handle D/C line
+	.post_cb=spi1_post_transfer_callback,
 },
 {
     .clock_speed_hz=SPI_CLK_FREQUENCY_HZ,           //Clock out at 26 MHz
@@ -64,6 +83,7 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT]={{
     .spics_io_num=DIO_SX1262_SS,               //CS pin
     .queue_size=7,                          //We want to be able to queue 7 transactions at a time
     .pre_cb=spi2_pre_transfer_callback,  //Specify pre-transfer callback to handle D/C line
+	.post_cb=spi2_post_transfer_callback,
 },
 {
     .clock_speed_hz=SPI_CLK_FREQUENCY_HZ,           //Clock out at 26 MHz
@@ -71,6 +91,7 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT]={{
     .spics_io_num=DIO_SX1262_SS,               //CS pin
     .queue_size=7,                          //We want to be able to queue 7 transactions at a time
     .pre_cb=spi3_pre_transfer_callback,  //Specify pre-transfer callback to handle D/C line
+	.post_cb=spi3_post_transfer_callback,
 },
 };
 
@@ -95,20 +116,20 @@ spi_bus_config_t SpiBusCfg[SPI_CNT]={
 	.max_transfer_sz =256},
 {
 	/*SPI2*/
-	.miso_io_num=-1,
-	.mosi_io_num =-1,
-	.sclk_io_num =-1,
+	.miso_io_num=DIO_SPI0_MISO,
+	.mosi_io_num =DIO_SPI0_MOSI,
+	.sclk_io_num =DIO_SPI0_SCLK,
 	.quadwp_io_num = -1,
 	.quadhd_io_num =-1,
-	.max_transfer_sz =0},
+	.max_transfer_sz =256},
 {
 	/*SPI3*/
-    .miso_io_num=-1,
-    .mosi_io_num =-1,
-	.sclk_io_num =-1,
+    .miso_io_num = DIO_SPI0_MISO,
+    .mosi_io_num =DIO_SPI0_MOSI,
+	.sclk_io_num =DIO_SPI0_SCLK,
 	.quadwp_io_num = -1,
 	.quadhd_io_num =-1,
-	.max_transfer_sz =0}
+	.max_transfer_sz =256}
 };
 
 spi_host_device_t SpiNum2HostId(SpiName_t spi_num){
@@ -133,7 +154,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
     SpiInst [spi_num].it_done = true;
     SpiInst [spi_num].base_addr = SpiBaseLut[spi_num];
 
-    esp_err_t ret=ESP_ERR_INVALID_ARG;
+    esp_err_t ret = ESP_ERR_INVALID_ARG;
     ret = spi_bus_initialize(SpiNum2HostId(spi_num), &SpiBusCfg[spi_num], SPI_DMA_CH_AUTO);
     if(ESP_OK==ret) {
     	res = true;
@@ -146,7 +167,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
 
     if(res){
         ret = spi_bus_add_device(SpiNum2HostId(spi_num),
-        		                 (const spi_device_interface_config_t *)&SpiBusCfg[spi_num],
+        		                 (const spi_device_interface_config_t *)&SpiDevCfg[spi_num],
 				                 &SpiInst[spi_num].spi_device_handle);
         if(ESP_OK==ret) {
          	res = true;
@@ -162,16 +183,16 @@ bool spi_init(void) {
     bool res = true;
 #ifdef HAS_SPI0
     res = spi_init_ll(SPI0_INX, "SPI0", SPI0_BIT_RATE_HZ) && res;
-#endif /*HAS_SPI1*/
+#endif /*HAS_SPI0*/
 #ifdef HAS_SPI1
     res = spi_init_ll(SPI1_INX, "SPI1", SPI1_BIT_RATE_HZ) && res;
 #endif /*HAS_SPI1*/
 #ifdef HAS_SPI2
     res = spi_init_ll(SPI2_INX, "SPI2", SPI2_BIT_RATE_HZ) && res;
-#endif /*HAS_SPI1*/
+#endif /*HAS_SPI2*/
 #ifdef HAS_SPI3
     res = spi_init_ll(SPI3_INX, "SPI3", SPI3_BIT_RATE_HZ) && res;
-#endif /*HAS_SPI1*/
+#endif /*HAS_SPI3*/
     return res;
 }
 

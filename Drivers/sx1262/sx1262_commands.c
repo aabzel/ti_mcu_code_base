@@ -384,17 +384,25 @@ static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
     const table_col_t cols[] = {{5, "num"}, {8, "addr"}, {6, "Val"}, {12, "Val"}, {23, "name"}};
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     char temp_str[120];
+    char suffix_str[120];
     for(i = 0; i < SX1262_REG_CNT; i++) {
         res = sx1262_read_reg(RegMap[i].addr, &reg_val);
         if(res) {
             cnt++;
         }
         strcpy(temp_str, TSEP);
-        snprintf(temp_str, sizeof(temp_str), "%s 0x%04x " TSEP, temp_str, RegMap[i].addr);
-        snprintf(temp_str, sizeof(temp_str), "%s 0x%02x " TSEP, temp_str, reg_val);
-        snprintf(temp_str, sizeof(temp_str), "%s 0b%s " TSEP, temp_str, utoa_bin8(reg_val));
-        snprintf(temp_str, sizeof(temp_str), "%s %21s " TSEP, temp_str, RegMap[i].reg_name);
-        snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
+        snprintf(suffix_str, sizeof(suffix_str), "0x%04x " TSEP, RegMap[i].addr);
+        strncat(temp_str, suffix_str, sizeof(temp_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), "0x%02x " TSEP, reg_val);
+        strncat(temp_str, suffix_str, sizeof(temp_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), "0b%s " TSEP, utoa_bin8(reg_val));
+        strncat(temp_str, suffix_str, sizeof(temp_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), "%21s " TSEP, RegMap[i].reg_name);
+        strncat(temp_str, suffix_str, sizeof(temp_str));
+
         if(is_contain(temp_str, key_word1, key_word2)) {
             io_printf(TSEP " %3u ", num);
             io_printf("%s", temp_str);

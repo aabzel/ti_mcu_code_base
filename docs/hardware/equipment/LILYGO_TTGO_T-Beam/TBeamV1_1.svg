@@ -1131,17 +1131,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="733.6581"
-     inkscape:cy="261.76216"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="772.52493"
+     inkscape:cy="257.3993"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
-     inkscape:window-x="1592"
-     inkscape:window-y="-8"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="2037"
+     inkscape:window-y="-11"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true">
@@ -1322,6 +1322,60 @@
        inkscape:transform-center-x="11.811756"
        inkscape:transform-center-y="3.4017857"
        sodipodi:nodetypes="cccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.11878px;line-height:1.25;font-family:sans-serif;display:inline;fill:#0014ff;fill-opacity:1;stroke:none;stroke-width:0.419545"
+       x="195.03003"
+       y="64.903709"
+       id="text1288"><tspan
+         sodipodi:role="line"
+         id="tspan1286"
+         x="195.03003"
+         y="64.903709"
+         style="font-size:1.11878px;fill:#0014ff;fill-opacity:1;stroke-width:0.419545">CPOL=0,</tspan><tspan
+         sodipodi:role="line"
+         x="195.03003"
+         y="66.302185"
+         style="font-size:1.11878px;fill:#0014ff;fill-opacity:1;stroke-width:0.419545"
+         id="tspan2098">CPHA=0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.02305px;line-height:1.25;font-family:sans-serif;display:inline;fill:#0600ff;fill-opacity:1;stroke:none;stroke-width:0.255765;stroke-opacity:1"
+       x="194.8183"
+       y="67.52388"
+       id="text1629"><tspan
+         sodipodi:role="line"
+         id="tspan1627"
+         x="194.8183"
+         y="67.52388"
+         style="font-size:1.02305px;fill:#0600ff;fill-opacity:1;stroke:none;stroke-width:0.255765;stroke-opacity:1">16 MHz</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.08269px;line-height:1.25;font-family:sans-serif;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.203004"
+       x="194.91356"
+       y="69.039894"
+       id="text1258-55"><tspan
+         sodipodi:role="line"
+         id="tspan1256-91"
+         x="194.91356"
+         y="69.039894"
+         style="font-size:1.08269px;fill:#0000ff;stroke-width:0.203004">full-duplex</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.08944px;line-height:1.25;font-family:sans-serif;fill:#0014ff;fill-opacity:1;stroke:none;stroke-width:0.81708"
+       x="194.83701"
+       y="70.27462"
+       id="text2133"><tspan
+         sodipodi:role="line"
+         id="tspan2131"
+         x="194.83701"
+         y="70.27462"
+         style="font-size:1.08944px;fill:#0014ff;fill-opacity:1;stroke-width:0.81708">Motorola </tspan><tspan
+         sodipodi:role="line"
+         x="194.83701"
+         y="71.636421"
+         style="font-size:1.08944px;fill:#0014ff;fill-opacity:1;stroke-width:0.81708"
+         id="tspan2124">byte order</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -3784,13 +3838,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.57239px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0393101"
-       x="213.52274"
-       y="166.23561"
+       x="214.70392"
+       y="167.51128"
        id="text5619"><tspan
          sodipodi:role="line"
          id="tspan5617"
-         x="213.52274"
-         y="166.23561"
+         x="214.70392"
+         y="167.51128"
          style="stroke-width:0.0393101">60 RUR</tspan></text>
     <text
        xml:space="preserve"
@@ -4227,13 +4281,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.62431px;line-height:1.25;font-family:sans-serif;display:inline;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.0656078"
-       x="195.35371"
-       y="64.871246"
+       x="194.93611"
+       y="63.651829"
        id="text3536"><tspan
          sodipodi:role="line"
          id="tspan3534"
-         x="195.35371"
-         y="64.871246"
+         x="194.93611"
+         y="63.651829"
          style="fill:#0000ff;stroke-width:0.0656078">SPIn</tspan></text>
     <text
        xml:space="preserve"
@@ -4330,6 +4384,28 @@
          x="196.81288"
          y="76.737144"
          style="stroke-width:0.0261299">80 MHz</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.840232px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.126035"
+       x="201.45746"
+       y="43.821163"
+       id="text2088"><tspan
+         sodipodi:role="line"
+         id="tspan2086"
+         x="201.45746"
+         y="43.821163"
+         style="font-size:0.840232px;stroke-width:0.126035">LoRa_89</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.665028px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0997543"
+       x="201.46692"
+       y="44.616749"
+       id="text2092"><tspan
+         sodipodi:role="line"
+         id="tspan2090"
+         x="201.46692"
+         y="44.616749"
+         style="font-size:0.665028px;stroke-width:0.0997543">TCX0 V1.2</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -4625,15 +4701,15 @@
          style="font-size:1.76389px;fill:#ff6600;stroke-width:0.264583;">LORA_VCC</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.37585px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0343963"
-       x="201.35378"
-       y="164.39859"
+       style="font-style:normal;font-weight:normal;font-size:1.69718px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0424296"
+       x="202.25768"
+       y="164.29382"
        id="text5794"><tspan
          sodipodi:role="line"
          id="tspan5792"
-         x="201.35378"
-         y="164.39859"
-         style="stroke-width:0.0343963">I2C Addr: 0x34</tspan></text>
+         x="202.25768"
+         y="164.29382"
+         style="stroke-width:0.0424296">I2C Addr: 0x34</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.93593px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.073398"

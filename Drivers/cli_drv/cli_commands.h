@@ -75,7 +75,7 @@ extern "C" {
 #define HEALTH_MONITOR_COMMANDS
 #endif
 
-#ifdef HAS_LORA
+#ifdef HAS_LORA_COMMANDS
 #include "lora_commands.h"
 #else
 #define LORA_COMMANDS

@@ -4,6 +4,8 @@
 #include "task_config_base.h"
 
 #define SYS_TASKS           \
-  TASKS_BASE             
+  TASKS_BASE                \
+  TASK(LORA)                \
+  TASK(SX1262)              \
 
 #endif /* TASKS_CONFIG_H */

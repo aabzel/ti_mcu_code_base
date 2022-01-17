@@ -10,8 +10,13 @@ extern "C" {
 
 #include "spi_common.h"
 
-#define SPI0_BIT_RATE_HZ 5000000 /*sx1262*/
-#define SPI1_BIT_RATE_HZ 100000
+#include "sys_config.h"
+
+
+#define SPI0_BIT_RATE_HZ SPI_CLK_FREQUENCY_HZ /*sx1262*/
+#define SPI1_BIT_RATE_HZ SPI_CLK_FREQUENCY_HZ
+#define SPI2_BIT_RATE_HZ SPI_CLK_FREQUENCY_HZ
+#define SPI3_BIT_RATE_HZ SPI_CLK_FREQUENCY_HZ
 
 #define SPI0_BASE 0x3FF43000
 #define SPI1_BASE 0x3FF42000

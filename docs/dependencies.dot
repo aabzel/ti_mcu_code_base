@@ -36,10 +36,12 @@ digraph graphname {
     GPIO->DAC;
     GPIO->GPIO_PWM;
     GPIO->LED;
+	MATH->LED;
     GPIO->PWR;
 	ADC->PWR;
     GPIO->RS232;
     GPIO->SX1262;
+	FIFO->SX1262;
     I2C->PWR;
     LORA->RTCM3;
     MATH->GPIO_PWM;

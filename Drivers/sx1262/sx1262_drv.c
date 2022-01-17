@@ -826,7 +826,7 @@ float dbm2watts(int32_t dbm) {
     } while(0);
 
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
-    bool res = true, out_res = true;
+    bool out_res = true;
     sx1262Instance->packet_param.packet_type = PACKET_TYPE_LORA;
     sx1262Instance->packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
     sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
@@ -871,7 +871,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 4, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
     LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr", DFLT_OUT_POWER, dbm2wattsStr);
     // LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
-
+    bool res = true;
     uint16_t file_len = 0;
     res = mm_get(PAR_ID_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word, sizeof(sx1262Instance->set_sync_word),
                  &file_len);

@@ -25,6 +25,11 @@
 			<locationURI>$%7BWORKSPACE_LOC%7D/common</locationURI>
 		</link>
 		<link>
+			<name>esp-idf</name>
+			<type>2</type>
+			<location>C:/esp/esp-idf</location>
+		</link>
+		<link>
 			<name>mcu</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/mcu</locationURI>

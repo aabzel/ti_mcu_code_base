@@ -13,26 +13,82 @@
 #include "gpio_common.h"
 #include "none_blocking_pause.h"
 
-//zero-initialize the config structure.
-gpio_config_t io_conf = {
-    //disable interrupt
-    .intr_type = GPIO_INTR_DISABLE,
-    //set as output mode
-    .mode = GPIO_MODE_OUTPUT,
-    //bit mask of the pins that you want to set,e.g.GPIO18/19
-    .pin_bit_mask = GPIO_SEL_4,
-    //disable pull-down mode
-    .pull_down_en = 0,
-    //disable pull-up mode
-    .pull_up_en = 0,
-};
+static gpio_mode_t GpioDir2Mode(DioDir_t dir){
+	gpio_mode_t gpio_mode = GPIO_MODE_INPUT;
+    switch(dir) {
+        case GPIO_DIR_IN:      gpio_mode = GPIO_MODE_INPUT;break;
+        case GPIO_DIR_OUT:     gpio_mode = GPIO_MODE_OUTPUT;break;
+        case GPIO_DIR_OUT_OD:  gpio_mode = GPIO_MODE_OUTPUT_OD;break;
+        case GPIO_DIR_INOUT_OD:gpio_mode = GPIO_MODE_INPUT_OUTPUT_OD; break;
+        case GPIO_DIR_INOUT:   gpio_mode = GPIO_MODE_INPUT_OUTPUT; break;
+        case GPIO_DIR_NONE:    gpio_mode = GPIO_MODE_DISABLE;break;
+        case GPIO_DIR_UNDEF:   gpio_mode = GPIO_MODE_INPUT;break;
+        default:break;
+    }
+    return gpio_mode;
+}
+
+static gpio_pullup_t is_gpio_pull_up_mode(PullMode_t pull_mode){
+	gpio_pullup_t is_pull_up = GPIO_PULLUP_DISABLE;
+	switch(pull_mode){
+	    case PULL_UP_DOWN: is_pull_up = GPIO_PULLUP_ENABLE; break;
+	    case PULL_DOWN:    is_pull_up = GPIO_PULLUP_DISABLE;break;
+	    case PULL_UP:      is_pull_up = GPIO_PULLUP_ENABLE; break;
+	    case PULL_AIR:     is_pull_up = GPIO_PULLUP_DISABLE;break;
+	    case PULL_UNDEF:   is_pull_up = GPIO_PULLUP_DISABLE;break;
+	    default:           is_pull_up = GPIO_PULLUP_DISABLE;break;
+	}
+	return is_pull_up;
+}
+
+static gpio_pulldown_t is_gpio_pull_down_mode(PullMode_t pull_mode){
+	gpio_pulldown_t is_pull_down = GPIO_PULLDOWN_DISABLE;
+	switch(pull_mode) {
+    	case PULL_UP_DOWN: is_pull_down=GPIO_PULLDOWN_ENABLE; break;
+    	case PULL_DOWN:    is_pull_down=GPIO_PULLDOWN_ENABLE; break;
+    	case PULL_UP:      is_pull_down=GPIO_PULLDOWN_DISABLE;break;
+    	case PULL_AIR:     is_pull_down=GPIO_PULLDOWN_DISABLE;break;
+    	case PULL_UNDEF:   is_pull_down=GPIO_PULLDOWN_DISABLE;break;
+    	default:           is_pull_down=GPIO_PULLDOWN_DISABLE;break;
+	}
+	return is_pull_down;
+}
 
 bool gpio_init(void) {
-    bool res = true;
-    gpio_config(&io_conf);
-    gpio_intr_disable(GPIO_NUM_4);
-	gpio_set_level(GPIO_NUM_4,(uint32_t) 0);
-    return res;
+    bool res = false;
+    gpio_config_t ioConf = {};
+    bool out_res = true;
+    uint8_t p = 0;
+    esp_err_t ret=ESP_OK;
+    uint32_t cnt=pin_get_cnt();
+    uint32_t init_cnt=0;
+    for(p=0; p<cnt; p++){
+    	if((0 <= PinTable[p].dio) && (39!=PinTable[p].dio)){
+    		init_cnt++;
+    		printf("\n\rDio %d", PinTable[p].dio);
+    		if(1==init_cnt){
+         		//p=cnt*2;
+    		}
+    		ioConf.intr_type = GPIO_INTR_DISABLE;
+    		ioConf.mode = GpioDir2Mode(PinTable[p].dir);
+ 		    ioConf.pin_bit_mask = BIT(PinTable[p].dio);
+ 		    ioConf.pull_down_en=is_gpio_pull_down_mode(PinTable[p].pull_mode);
+		    ioConf.pull_up_en=is_gpio_pull_up_mode(PinTable[p].pull_mode);
+
+		    ret = gpio_config(&ioConf); //hang on
+		    if(ESP_OK == ret) {
+                //gpio_intr_disable(PinTable[p].dio);
+                if(0<=PinTable[p].level){
+        	        gpio_set_level(PinTable[p].dio,(uint32_t) PinTable[p].level);
+                }
+    	        res = true;
+		    }else{
+		    	res = false;
+		    	out_res = false;
+		    }
+    	}
+    }
+    return out_res;
 }
 
 bool gpio_get_state(uint8_t dio_number, uint8_t* logic_level) {
@@ -95,13 +151,12 @@ bool gpio_set_pin_pull_mode(uint8_t gpio_num,
 static gpio_pull_mode_t GpioPull2Esp32Pull(PullMode_t pull_mode){
 	gpio_pull_mode_t esp32_pull=GPIO_FLOATING;
 	switch(pull_mode){
-
-	case PULL_UP_DOWN: esp32_pull=GPIO_PULLUP_PULLDOWN;break;
-	case PULL_DOWN: esp32_pull=GPIO_PULLDOWN_ONLY;break;
-	case PULL_UP: esp32_pull=GPIO_PULLUP_ONLY;break;
-	case PULL_AIR: esp32_pull=GPIO_FLOATING;break;
-	case PULL_UNDEF: esp32_pull=GPIO_FLOATING;break;
-	default: esp32_pull=GPIO_FLOATING;break;
+	    case PULL_UP_DOWN: esp32_pull=GPIO_PULLUP_PULLDOWN;break;
+	    case PULL_DOWN: esp32_pull=GPIO_PULLDOWN_ONLY;break;
+	    case PULL_UP: esp32_pull=GPIO_PULLUP_ONLY;break;
+	    case PULL_AIR: esp32_pull=GPIO_FLOATING;break;
+	    case PULL_UNDEF: esp32_pull=GPIO_FLOATING;break;
+	    default: esp32_pull=GPIO_FLOATING;break;
 	}
 	return esp32_pull;
 }
@@ -168,20 +223,6 @@ DioDir_t gpio_get_dir(uint8_t gpio_num) {
     return dir;
 }
 
-static gpio_mode_t GpioDir2Mode(DioDir_t dir){
-	gpio_mode_t gpio_mode = GPIO_MODE_INPUT;
-    switch(dir) {
-        case GPIO_DIR_IN:      gpio_mode = GPIO_MODE_INPUT;break;
-        case GPIO_DIR_OUT:     gpio_mode = GPIO_MODE_OUTPUT;break;
-        case GPIO_DIR_OUT_OD:  gpio_mode = GPIO_MODE_OUTPUT_OD;break;
-        case GPIO_DIR_INOUT_OD:gpio_mode = GPIO_MODE_INPUT_OUTPUT_OD; break;
-        case GPIO_DIR_INOUT:   gpio_mode = GPIO_MODE_INPUT_OUTPUT; break;
-        case GPIO_DIR_NONE:    gpio_mode = GPIO_MODE_DISABLE;break;
-        case GPIO_DIR_UNDEF:   gpio_mode = GPIO_MODE_INPUT;break;
-        default:break;
-    }
-    return gpio_mode;
-}
 
 bool gpio_set_dir(uint8_t gpio_num, DioDir_t des_dir) {
     bool res = false;

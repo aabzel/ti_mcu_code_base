@@ -8,8 +8,8 @@ typedef enum ePullMode_t {
 	PULL_UP = 2,
 	PULL_AIR = 3,
 	PULL_UNDEF = 4,
-    PULL_UP_DOWN=5}
-PullMode_t;
+    PULL_UP_DOWN=5,
+}PullMode_t;
 
 typedef enum eDioDirr_t {
     GPIO_DIR_IN = 0,
