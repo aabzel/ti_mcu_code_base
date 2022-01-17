@@ -28,5 +28,6 @@ extern const Pin_t PinTable[DIO_CNT];
 extern GPIO_PinConfig gpioPinConfigs[GPIO_COUNT];
 extern PIN_Config BoardGpioInitTable[GPIO_COUNT + 1];
 extern GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT];
+uint32_t pin_get_cnt(void);
 
 #endif /* BOARD_LAYOUT_H  */
