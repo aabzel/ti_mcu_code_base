@@ -379,6 +379,7 @@ bool sx1262_send_opcode_command(int32_t argc, char* argv[]) {
 
 static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
     bool res = false;
+#ifdef HAS_SX1262_DEBUG
     uint8_t i = 0, cnt = 0, num = 0;
     uint8_t reg_val = 0xFF;
     const table_col_t cols[] = {{5, "num"}, {8, "addr"}, {6, "Val"}, {12, "Val"}, {23, "name"}};
@@ -413,6 +414,7 @@ static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
     if(SX1262_REG_CNT == cnt) {
         res = true;
     }
+#endif
     return res;
 }
 

@@ -29,43 +29,43 @@ const static uint32_t SpiBaseLut[SPI_CNT] = {SPI0_BASE, SPI1_BASE, SPI2_BASE, SP
 // set the D/C line to the value indicated in the user field.
 void spi0_pre_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-    gpio_set_state(DIO_SX1262_SS, 0);
+  //  gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi1_pre_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-    gpio_set_state(DIO_SX1262_SS, 0);
+  //  gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi2_pre_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-    gpio_set_state(DIO_SX1262_SS, 0);
+  //  gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi3_pre_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-    gpio_set_state(DIO_SX1262_SS, 0);
+   // gpio_set_state(DIO_SX1262_SS, 0);
 }
 
 void spi0_post_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-    gpio_set_state(DIO_SX1262_SS, 1);
+  //  gpio_set_state(DIO_SX1262_SS, 1);
 }
 void spi1_post_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-    gpio_set_state(DIO_SX1262_SS, 1);
+  //  gpio_set_state(DIO_SX1262_SS, 1);
 }
 void spi2_post_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-    gpio_set_state(DIO_SX1262_SS, 1);
+   // gpio_set_state(DIO_SX1262_SS, 1);
 }
 void spi3_post_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-    gpio_set_state(DIO_SX1262_SS, 1);
+  //  gpio_set_state(DIO_SX1262_SS, 1);
 }
 
 const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
     {
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
-        .spics_io_num = DIO_SX1262_SS,          // CS pin
+        .spics_io_num = -1,          // CS pin
         .queue_size = 7,                        // We want to be able to queue 7 transactions at a time
         .pre_cb = spi0_pre_transfer_callback,   // Specify pre-transfer callback to handle D/C line
         .post_cb = spi0_post_transfer_callback,
@@ -73,7 +73,7 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
     {
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
-        .spics_io_num = DIO_SX1262_SS,          // CS pin
+        .spics_io_num = -1,          // CS pin
         .queue_size = 7,                        // We want to be able to queue 7 transactions at a time
         .pre_cb = spi1_pre_transfer_callback,   // Specify pre-transfer callback to handle D/C line
         .post_cb = spi1_post_transfer_callback,
@@ -81,7 +81,7 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
     {
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
-        .spics_io_num = DIO_SX1262_SS,          // CS pin
+        .spics_io_num = -1,          // CS pin
         .queue_size = 7,                        // We want to be able to queue 7 transactions at a time
         .pre_cb = spi2_pre_transfer_callback,   // Specify pre-transfer callback to handle D/C line
         .post_cb = spi2_post_transfer_callback,
@@ -89,7 +89,7 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
     {
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
-        .spics_io_num = DIO_SX1262_SS,          // CS pin
+        .spics_io_num = -1,          // CS pin
         .queue_size = 7,                        // We want to be able to queue 7 transactions at a time
         .pre_cb = spi3_pre_transfer_callback,   // Specify pre-transfer callback to handle D/C line
         .post_cb = spi3_post_transfer_callback,

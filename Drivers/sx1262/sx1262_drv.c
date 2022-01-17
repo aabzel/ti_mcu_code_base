@@ -944,11 +944,13 @@ bool sx1262_init(void) {
 #endif /*HAS_LEGAL_BAND_CHECK*/
     gpio_set_state(DIO_SX1262_SS, 1);
     res = sx1262_init_gpio() && res;
+    LOG_WARNING(LORA, "StartWaitBusy");
     res = sx1262_reset() && res;
-
-    res = sx1262_wait_on_busy(1000);
+    res = sx1262_wait_on_busy(10000);
     if(false == res) {
         LOG_ERROR(LORA, "ChipBusy");
+    }else{
+    	LOG_INFO(LORA, "ChipSpare!");
     }
 
     if(res) {

@@ -145,24 +145,31 @@ bool gpio_get_state(int8_t dio_number, uint8_t* logic_level) {
     return res;
 }
 
-uint8_t gpio_read(uint8_t dio_number) { return 0x55; }
+uint8_t gpio_read(int8_t dio_number) {
+	uint8_t logic_level = 0x55;
+	bool res = gpio_get_state( dio_number, &logic_level);
+	if (false==res) {
+		logic_level = 0xEE;
+	}
+	return logic_level;
+}
 
-bool gpio_set_state(uint8_t dio_number, uint8_t logic_level) {
+bool gpio_set_state(int8_t dio_number, uint8_t logic_level) {
     gpio_set_level(dio_number, (uint32_t) logic_level);
     return true;
 }
 
-bool is_edge_irq_en(uint8_t gpio_num) {
+bool is_edge_irq_en(int8_t gpio_num) {
     bool res = false;
     return res;
 }
 
-PullMode_t gpio_get_pull_mode(uint8_t gpio_num) {
+PullMode_t gpio_get_pull_mode(int8_t gpio_num) {
     PullMode_t pull_mode = PULL_UNDEF;
     return pull_mode;
 }
 
-bool gpio_set_pin_pull_mode(uint8_t gpio_num, PullMode_t pull_mode) {
+bool gpio_set_pin_pull_mode(int8_t gpio_num, PullMode_t pull_mode) {
     bool res = false;
     esp_err_t ret = ESP_ERR_INVALID_ARG;
     gpio_num_t gpio_n = (gpio_num_t)gpio_num;
@@ -216,7 +223,7 @@ static gpio_pull_mode_t GpioPull2Esp32Pull(PullMode_t pull_mode) {
     return esp32_pull;
 }
 
-bool gpio_set_pull(uint8_t gpio_num, PullMode_t pull_mode) {
+bool gpio_set_pull(int8_t gpio_num, PullMode_t pull_mode) {
     bool res = false;
     gpio_pull_mode_t esp32_pull = GpioPull2Esp32Pull(pull_mode);
     esp_err_t ret = gpio_set_pull_mode((gpio_num_t)gpio_num, esp32_pull);
@@ -228,24 +235,24 @@ bool gpio_set_pull(uint8_t gpio_num, PullMode_t pull_mode) {
     return res;
 }
 
-bool gpio_get_in_mode(uint8_t gpio_num) {
+bool gpio_get_in_mode(int8_t gpio_num) {
     bool res = false;
     return res;
 }
 
-bool gpio_set_in_mode(uint8_t gpio_num, bool is_in_mode) {
+bool gpio_set_in_mode(int8_t gpio_num, bool is_in_mode) {
     bool res = false;
 
     return res;
 }
 
-uint8_t get_aux_num(uint8_t io_pin) {
+uint8_t get_aux_num(int8_t io_pin) {
     uint8_t aux_pin = 0;
 
     return aux_pin;
 }
 
-bool gpio_toggle(uint8_t dio_number) {
+bool gpio_toggle(int8_t dio_number) {
     bool res = false;
     static int cur_state = 0;
     esp_err_t stat = ESP_OK;
@@ -265,15 +272,15 @@ bool gpio_toggle(uint8_t dio_number) {
     return res;
 }
 
-uint32_t gpio_get_alter_fun(uint8_t gpio_num) { return 0; }
+uint32_t gpio_get_alter_fun(int8_t gpio_num) { return 0; }
 
-DioDir_t gpio_get_dir(uint8_t gpio_num) {
+DioDir_t gpio_get_dir(int8_t gpio_num) {
     DioDir_t dir = GPIO_DIR_UNDEF;
     // TODO
     return dir;
 }
 
-bool gpio_set_dir(uint8_t gpio_num, DioDir_t des_dir) {
+bool gpio_set_dir(int8_t gpio_num, DioDir_t des_dir) {
     bool res = false;
     gpio_mode_t gpio_mode = GpioDir2Mode(des_dir);
     esp_err_t ret;
