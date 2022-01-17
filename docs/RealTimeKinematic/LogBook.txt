@@ -1,0 +1,24 @@
+The following conditions are needed to launch GNSS RTK.
+A clear view of the sky. Not indoors, not near a window, outside with nothing around. The accuracy of the entire system depends on the ability to see as many satellites as possible.
+
+GPS Antenna Ground Plate
+GPS Antenna Ground Plate
+https://www.sparkfun.com/products/17519
+
+
+XBee modules
+
+
+
+RTK GPS/GNSS with Base and Rover
+https://www.youtube.com/watch?v=Rk09oMD_I24
+
+Reach RS/RS+ — RTK over LoRa radio
+https://www.youtube.com/watch?v=4GfUDoDwEAE
+
+
+How to setup ZED-F9P RTK Base and Rover
+https://www.youtube.com/watch?v=g92GboiOkeQ&t=397s
+
+Setting up a Rover Base RTK System
+https://learn.sparkfun.com/tutorials/setting-up-a-rover-base-rtk-system
