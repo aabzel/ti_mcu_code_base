@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 
+#include "data_utils.h"
 #include "gpio_drv.h"
 #include "sys_config.h"
 #ifdef HAS_TCAN4550
@@ -14,7 +15,7 @@
 #endif
 
 /*line order does not  matters!*/
-const Pin_t PinTable[DIO_CNT] = {
+const Pin_t PinTable[] = {
  {DIO_BATT_ADC,       38,  0, "BATT_ADC", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
  {DIO_BATT_SCL,       10,  0, "BATT_SCL", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
  {DIO_BATT_SDA,       11,  0, "BATT_SDA", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
@@ -30,8 +31,8 @@ const Pin_t PinTable[DIO_CNT] = {
  {DIO_LED_GREEN,      43,  0,    "G_LED", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
  {DIO_LED_RED,        39,  0,    "R_LED", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
  {DIO_LEN,            32,  0,      "LEN", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
- {DIO_MISO,            7,  0,     "MISO", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
- {DIO_MOSI,            8,  0,     "MOSI", NULL, GPIO_CFG_OUT_STD, PIN_GPIO_OUTPUT_EN},
+ {DIO_SPI0_MISO,       7,  0,     "MISO", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
+ {DIO_SPI0_MOSI,       8,  0,     "MOSI", NULL, GPIO_CFG_OUT_STD, PIN_GPIO_OUTPUT_EN},
  {DIO_PS_RS232,       12,  0, "PS_RS232", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
  {DIO_PWR_MUX_CTRL,   20,  0,   "PwrMux", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
  {DIO_SCLK,            9,  0,     "SCLK", NULL, GPIO_CFG_OUT_STD, PIN_GPIO_OUTPUT_EN},
@@ -122,4 +123,9 @@ void dio8_fall_call_back(uint_least8_t index) {
 #ifdef HAS_TCAN4550
     tcan4550_int_isr();
 #endif
+}
+
+uint32_t pin_get_cnt(void){
+    uint32_t cnt=ARRAY_SIZE(PinTable);
+    return cnt;
 }

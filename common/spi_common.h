@@ -52,7 +52,7 @@ typedef struct xSpiInstance_t {
 }SpiInstance_t;
 
 #ifdef SPI_COUNT
-extern SpiInstance_t SpiInst[SPI_COUNT];
+extern SpiInstance_t SpiInstance[SPI_COUNT];
 #endif
 
 #endif /* SPI_COMMON_TYPE_H */

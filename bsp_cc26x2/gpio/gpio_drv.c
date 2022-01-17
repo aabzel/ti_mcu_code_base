@@ -74,7 +74,7 @@ void gpioButtonFxn1(uint_least8_t index) {
 GPIO_PinConfig gpio_get_cfg_dio(uint8_t dio_number) {
     GPIO_PinConfig gpio_pin_cfg = GPIO_CFG_IN_NOPULL;
     uint8_t i = 0;
-    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
+    for(i = 0; i < pin_get_cnt(); i++) {
         if(PinTable[i].dio == dio_number) {
             gpio_pin_cfg = PinTable[i].pinConfig;
             break;
@@ -259,34 +259,11 @@ bool gpio_set_in_mode(uint8_t dio_pin, bool is_in_mode) {
     return res;
 }
 
-uint8_t get_mcu_pin(uint8_t io_pin) {
-    uint8_t mcu_pin = 0;
-    uint8_t i = 0;
-    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
-        if(PinTable[i].dio == io_pin) {
-            mcu_pin = PinTable[i].mcu_pin;
-            break;
-        }
-    }
-    return mcu_pin;
-}
-
-const char* gpio_get_name(uint8_t io_pin) {
-    const char* pin_name = 0;
-    uint8_t i = 0;
-    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
-        if(PinTable[i].dio == io_pin) {
-            pin_name = PinTable[i].name;
-            break;
-        }
-    }
-    return pin_name;
-}
 
 uint8_t get_aux_num(uint8_t io_pin) {
     uint8_t aux_pin = 0;
     uint8_t i = 0;
-    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
+    for(i = 0; i < pin_get_cnt(); i++) {
         if(PinTable[i].dio == io_pin) {
             aux_pin = PinTable[i].aux_pin;
             break;

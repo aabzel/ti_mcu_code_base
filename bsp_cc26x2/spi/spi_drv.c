@@ -90,7 +90,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SP
     SpiInstance[spi_num].init_done = false;
     SPI_init();
     SPI_Params_init(&SpiInstance[spi_num].SpiParams);
-    strncpy(SpiInstance[spi_num].name, spi_name, SPI_NAME_SZ_BYTE);
+    strncpy(SpiInstance[spi_num].name, spi_name, SPI_NAME_SIZE_BYTE);
     SpiInstance[spi_num].rx_byte_cnt = 0;
     SpiInstance[spi_num].tx_byte_cnt = 0;
     SpiInstance[spi_num].it_done = true;

@@ -7,5 +7,5 @@
 #endif
 
 #ifdef SPI_COUNT
-SpiInstance_t SpiInst[SPI_COUNT];
+SpiInstance_t SpiInstance[SPI_COUNT];
 #endif

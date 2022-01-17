@@ -5,11 +5,10 @@
 #include <stdio.h>
 
 #include "base_cmd.h"
+#include "board_layout.h"
 #include "convert.h"
 #include "ctype.h"
 #include "data_utils.h"
-//#include "diag_page_nums.h"
-//#include "diag_report.h"
 #include "gpio_diag.h"
 #include "gpio_drv.h"
 #include "io_utils.h"
@@ -33,7 +32,7 @@ static bool gpio_diag(char* key_word1, char* key_word2) {
     uint8_t i = 0;
     char temp_str[200] = "";
     DioDir_t gpio_dir;
-    for(i = 0; i < ARRAY_SIZE(PinTable); i++) {
+    for(i = 0; i < pin_get_cnt(); i++) {
         res = gpio_get_state(PinTable[i].dio, &logic_level);
         if(true == res) {
             memset(temp_str, 0x0, sizeof(temp_str));

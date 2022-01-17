@@ -845,6 +845,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #endif
 
 #ifdef HAS_FLASH_FS
+    bool res = true;
     LOAD_PARAM(PAR_ID_LORA_CRC_INIT, sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
     LOAD_PARAM(PAR_ID_LORA_CRC_POLY, sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
 
@@ -871,7 +872,6 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 4, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
     LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr", DFLT_OUT_POWER, dbm2wattsStr);
     // LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
-    bool res = true;
     uint16_t file_len = 0;
     res = mm_get(PAR_ID_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word, sizeof(sx1262Instance->set_sync_word),
                  &file_len);
