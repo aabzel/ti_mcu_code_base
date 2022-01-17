@@ -10,7 +10,6 @@
 #error "that wile only for CC26CC MCUs"
 #endif /*USE_HAL_DRIVER*/
 
-#define DIO_CNT 29U
 #define GPIO_COUNT 23U
 
 #define PIN_NAME_LEN 10
@@ -47,12 +46,13 @@ typedef struct xPin_t {
 #define CONF_GPIO_PWR_MUX_CTRL 3
 #define CONF_GPIO_SCLK 16
 
-extern const Pin_t PinTable[DIO_CNT];
+extern const Pin_t PinTable[];
 
 extern GPIO_PinConfig gpioPinConfigs[GPIO_COUNT];
 extern PIN_Config BoardGpioInitTable[GPIO_COUNT + 1];
 extern GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT];
 
 bool io_bang_gpio_init(void);
+uint32_t pin_get_cnt(void);
 
 #endif /* BOARD_LAYOUT_H  */

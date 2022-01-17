@@ -29,3 +29,5 @@ const char* gpio_get_name(uint8_t io_pin) {
     }
     return pin_name;
 }
+
+

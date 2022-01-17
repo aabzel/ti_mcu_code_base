@@ -3,11 +3,12 @@
 #include <stdlib.h>
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 
+#include "data_utils.h"
 #include "gpio_drv.h"
 #include "sys_config.h"
 
 /*line order does not  matters!*/
-const Pin_t PinTable[DIO_CNT] = {
+const Pin_t PinTable[] = {
  {DIO_BATT_ADC,       38,  0, "BATT_ADC", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN | PIN_NOPULL},
  {DIO_BATT_SCL,       10,  0, "BATT_SCL", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW,  PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
  {DIO_BATT_SDA,       11,  0, "BATT_SDA", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW,  PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
@@ -135,4 +136,9 @@ bool io_bang_gpio_init(void){
     GPIO_writeDio(DIO_SCLK, 0);
     GPIO_writeDio(DIO_MOSI, 0);
     return true;
+}
+
+uint32_t pin_get_cnt(void){
+    uint32_t cnt = ARRAY_SIZE(PinTable);
+    return cnt;
 }

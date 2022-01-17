@@ -3,11 +3,12 @@
 #include <stdlib.h>
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 
+#include "data_utils.h"
 #include "gpio_drv.h"
 #include "sys_config.h"
 
 /*line order does not  matters!*/
-const Pin_t PinTable[DIO_CNT] = {
+const Pin_t PinTable[] = {
  {DIO_LED_GREEN,      12,  0,    "G_LED", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
  {DIO_LED_RED,        11,  0,    "R_LED", NULL, GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW, PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED},
  {DIO_UART_CLI_RX,    7,   0,   "MCU_RX", NULL, GPIO_CFG_IN_NOPULL, PIN_INPUT_EN},
@@ -34,3 +35,9 @@ GPIO_CallbackFxn gpioCallbackFunctions[GPIO_COUNT] = {
 /*0*/   NULL, /* LED Red */
 /*1*/   NULL, /* LED Green */
 };
+
+uint32_t pin_get_cnt(void){
+    uint32_t cnt = ARRAY_SIZE(PinTable);
+    return cnt;
+}
+
