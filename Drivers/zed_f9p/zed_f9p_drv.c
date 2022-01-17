@@ -206,6 +206,7 @@ bool zed_f9p_proc(void) {
     return res;
 }
 #ifdef HAS_UBLOX
+/*Radio Technical Commission for Maritime Services)*/
 static const keyValItem_t BaseCfgLut[] = {
     /*21*/ {CFG_UART1_BAUDRATE, 38400},
     /*1 */ {CFG_UART1INPROT_NMEA, 0},
@@ -214,11 +215,15 @@ static const keyValItem_t BaseCfgLut[] = {
     /*4 */ {CFG_UART1OUTPROT_NMEA, 0},
     /*5 */ {CFG_UART1OUTPROT_RTCM3X, 1},
     /*3 */ {CFG_UART1OUTPROT_UBX, 1},
-    /*7 */ {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1},
-    /*8 */ {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1},
-    /*9 */ {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1},
-    /*10*/ {CFG_MSGOUT_RTCM_3X_TYPE1124_UART1, 1},
-    /*11*/ {CFG_MSGOUT_RTCM_3X_TYPE1230_UART1, 5},
+    /*7 */ {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1}, //Output rate of the RTCM-3X-TYPE1005 Stationary RTK reference station ARP (Input/output)
+    /*8 */ {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1}, //Output rate of the RTCM-3X-TYPE1074 GPS MSM4 (Input/output)
+           {CFG_MSGOUT_RTCM_3X_TYPE1077_UART1, 1}, //Output rate of the RTCM-3X-TYPE1077 GPS MSM7 (Input/output)
+    /*9 */ {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1}, //Output rate of the RTCM-3X-TYPE1084 GLONASS MSM4 (Input/output)
+           {CFG_MSGOUT_RTCM_3X_TYPE1087_UART1, 1}, //Output rate of the RTCM-3X-TYPE1087 GLONASS MSM7 (Input/output)
+           {CFG_MSGOUT_RTCM_3X_TYPE1097_UART1, 1}, //Output rate of the RTCM-3X-TYPE1097 Galileo MSM7 (Input/output)
+           {CFG_MSGOUT_RTCM_3X_TYPE1127_UART1, 1}, //Output rate of the RTCM-3X-TYPE1127 BeiDou MSM7 (Input/output)
+    /*10*/ {CFG_MSGOUT_RTCM_3X_TYPE1124_UART1, 1}, //Output rate of the RTCM-3X-TYPE1124 BeiDou MSM4 (Input/output)
+    /*11*/ {CFG_MSGOUT_RTCM_3X_TYPE1230_UART1, 5}, //Output rate of the RTCM-3X-TYPE1230 GLONASS L1 and L2 code-phase biases (Input/output)
     /*12*/ {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1},
     /*13*/ {CFG_MSGOUT_RTCM_3X_TYPE1074_USB, 1},
     /*14*/ {CFG_MSGOUT_RTCM_3X_TYPE1084_USB, 1},
