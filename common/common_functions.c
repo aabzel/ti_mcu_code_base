@@ -137,7 +137,6 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_ADC, 300000, adc_proc, loop_start_time_us);
 #endif
 
-
 #ifdef HAS_UART
     measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us);
 #endif /*HAS_UART1*/
@@ -213,7 +212,7 @@ _Noreturn void super_main_loop(void) {
     uint64_t prev_loop_start_time_us = 0;
 #endif /*HAS_DEBUG*/
     for(;;) {
-        loop_start_time_us=0;
+        loop_start_time_us = 0;
 #ifdef HAS_CLOCK
         loop_start_time_us = get_time_us();
 #endif /*HAS_CLOCK*/
@@ -229,7 +228,7 @@ _Noreturn void super_main_loop(void) {
         super_loop(loop_start_time_us);
 #ifdef HAS_FREE_RTOS
         taskYIELD();
-        //vTaskDelay(5 / portTICK_PERIOD_MS);
+        // vTaskDelay(5 / portTICK_PERIOD_MS);
 #endif
     }
 }

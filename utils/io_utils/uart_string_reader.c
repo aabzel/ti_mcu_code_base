@@ -39,11 +39,11 @@ bool uart_string_reader_init(uart_string_reader_t* rdr) {
 
 bool uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
     bool res = false;
-	if(rdr) {
+    if(rdr) {
         if(false == fifo_push(&rdr->fifo, c)) {
             rdr->lost_char_count++;
-        }else{
-        	res = true;
+        } else {
+            res = true;
         }
     }
     return res;

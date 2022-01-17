@@ -6,9 +6,7 @@
 
 #include "sys_tick.h"
 
-bool clock_init(void){
-    return true;
-}
+bool clock_init(void) { return true; }
 
 bool delay_ms(uint32_t delay_in_ms) {
     bool res = false;

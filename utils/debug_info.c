@@ -11,12 +11,10 @@
 #include "data_utils.h"
 #include "io_utils.h"
 
-
 #ifdef STM32F413xx
 #include "cmsis_os.h"
 #include "stm32f4xx_hal.h"
 #endif /*STM32F413xx*/
-
 
 #ifdef HAS_MCU
 #include "uart_drv.h"
@@ -33,8 +31,8 @@
 #include "device_id.h"
 #endif
 #include "oprintf.h"
-#include "table_utils.h"
 #include "sys_config.h"
+#include "table_utils.h"
 #include "version.h"
 #include "writer_config.h"
 #include "writer_generic.h"
@@ -140,9 +138,9 @@ bool print_version(void) {
     all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
 #endif /*HAS_FLASH*/
     io_printf("FlashCRC32: 0x%08X" CRLF, all_flash_crc);
-	#ifdef NORTOS
+#ifdef NORTOS
     io_printf("main(): 0x%08p" CRLF, main);
-	#endif
+#endif
 #ifdef __TI_COMPILER_VERSION__
     io_printf("TIcompilerVer %u" CRLF, __TI_COMPILER_VERSION__);
 #endif
@@ -252,7 +250,7 @@ bool print_64bit_types(void* val) {
     return true;
 }
 
-#if defined( HAS_MCU) && !defined(ESP32)
+#if defined(HAS_MCU) && !defined(ESP32)
 bool print_vector_table(uint32_t vectors_table_base) {
     uint32_t* addres = 0;
     uint32_t offset = 0, num = 0;

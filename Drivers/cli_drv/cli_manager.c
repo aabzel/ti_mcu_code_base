@@ -6,8 +6,8 @@
 
 #include <ctype.h>
 #ifdef HAS_TIRTOS
-#include <ti/sysbios/knl/Task.h>
 #include "common_functions.h"
+#include <ti/sysbios/knl/Task.h>
 #endif
 #include "data_utils.h"
 #ifndef X86_64
@@ -19,10 +19,10 @@
 #include "sys_config.h"
 #include "table_utils.h"
 #include "time_utils.h"
+#include "uart_drv.h"
 #include "uart_string_reader.h"
 #include "writer_config.h"
 #include "writer_generic.h"
-#include "uart_drv.h"
 #endif /*X86_64*/
 
 #include "str_utils.h"
@@ -289,16 +289,16 @@ bool cli_toggle_echo(void) {
  *
  * @param   a0, a1 - not used.
  */
-static void cli_thread(UArg a0, UArg a1){
-    try_init(cli_init(),"CLI") ;
-    for(;;){
+static void cli_thread(UArg a0, UArg a1) {
+    try_init(cli_init(), "CLI");
+    for(;;) {
         cli_process();
         /*Wait 100 ms*/
         Task_sleep(100);
     }
 }
-#define CLI_TASK_STACK_SIZE                   2048
-#define CLI_TASK_PRIORITY                     2
+#define CLI_TASK_STACK_SIZE 2048
+#define CLI_TASK_PRIORITY 2
 uint8_t CliTaskStack[CLI_TASK_STACK_SIZE];
 Task_Struct cliTask;
 /*

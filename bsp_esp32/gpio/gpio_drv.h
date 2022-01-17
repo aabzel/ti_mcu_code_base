@@ -14,7 +14,7 @@ PullMode_t gpio_get_pull_mode(uint8_t dio_pin);
 bool gpio_get_in_mode(uint8_t dio_pin);
 bool gpio_get_state(uint8_t io_pin, uint8_t* logic_level);
 bool gpio_init(void);
-//bool gpio_init_layout(const Pin_t* PinTable, uint8_t size);
+// bool gpio_init_layout(const Pin_t* PinTable, uint8_t size);
 bool gpio_set_dir(uint8_t dio_pin, DioDir_t des_dir);
 const char* gpio_get_name(uint8_t io_pin);
 bool gpio_set_in_mode(uint8_t dio_pin, bool is_in_mode);

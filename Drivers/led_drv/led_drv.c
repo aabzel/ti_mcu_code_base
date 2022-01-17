@@ -9,8 +9,8 @@
 #ifdef HAS_HEALTH_MONITOR
 #include "health_monitor.h"
 #endif /*HAS_HEALTH_MONITOR*/
-#include "utils_math.h"
 #include "sys_config.h"
+#include "utils_math.h"
 
 Led_t Led[LED_COUNT];
 

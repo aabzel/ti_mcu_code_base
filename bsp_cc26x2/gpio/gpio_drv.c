@@ -259,7 +259,6 @@ bool gpio_set_in_mode(uint8_t dio_pin, bool is_in_mode) {
     return res;
 }
 
-
 uint8_t get_aux_num(uint8_t io_pin) {
     uint8_t aux_pin = 0;
     uint8_t i = 0;

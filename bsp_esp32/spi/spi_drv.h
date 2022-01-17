@@ -12,7 +12,6 @@ extern "C" {
 
 #include "sys_config.h"
 
-
 #define SPI0_BIT_RATE_HZ SPI_CLK_FREQUENCY_HZ /*sx1262*/
 #define SPI1_BIT_RATE_HZ SPI_CLK_FREQUENCY_HZ
 #define SPI2_BIT_RATE_HZ SPI_CLK_FREQUENCY_HZ
@@ -23,13 +22,7 @@ extern "C" {
 #define SPI2_BASE 0x3FF64000
 #define SPI3_BASE 0x3FF65000
 
-typedef enum eSpiName_t {
-    SPI0_INX = 0,
-    SPI1_INX = 1,
-	SPI2_INX = 2,
-	SPI3_INX = 3,
-    SPI_CNT = 4
-} SpiName_t;
+typedef enum eSpiName_t { SPI0_INX = 0, SPI1_INX = 1, SPI2_INX = 2, SPI3_INX = 3, SPI_CNT = 4 } SpiName_t;
 
 bool spi_init(void);
 bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len);

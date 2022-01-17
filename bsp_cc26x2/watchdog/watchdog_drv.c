@@ -38,7 +38,7 @@ void watchdogCallback(uintptr_t watchdogHandle) {
      * for your device.
      */
     WatchDog.time_out = true;
-    //while(1) {
+    // while(1) {
     //}
 }
 
@@ -96,8 +96,8 @@ bool watchdog_init(void) {
 
 bool proc_watchdog(void) {
     bool res = false;
-    if(WatchDog.time_out){
-        LOG_ERROR(WDT,"TimeOut");
+    if(WatchDog.time_out) {
+        LOG_ERROR(WDT, "TimeOut");
     }
     if(WatchDog.is_on) {
         Watchdog_clear(watchdogHandle);
