@@ -126,6 +126,6 @@ void dio8_fall_call_back(uint_least8_t index) {
 }
 
 uint32_t pin_get_cnt(void){
-    uint32_t cnt=ARRAY_SIZE(PinTable);
+    uint32_t cnt = ARRAY_SIZE(PinTable);
     return cnt;
 }
