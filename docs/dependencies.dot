@@ -16,6 +16,7 @@ digraph graphname {
 	AES->ICall;
 	TRNG->ICall;
 	ICall->BLE;
+	Radio->BLE;
 	TI_RTOS->BLE;
 	GATT->BLE;
 	GAP->BLE;
