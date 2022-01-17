@@ -92,37 +92,40 @@ static gpio_pulldown_t is_gpio_pull_down_mode(PullMode_t pull_mode) {
     }
     return is_pull_down;
 }
-
+//https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/gpio.html
 bool gpio_init(void) {
-    bool res = false;
-    gpio_config_t ioConf = {};
     bool out_res = true;
     uint8_t p = 0;
     esp_err_t ret = ESP_OK;
     uint32_t cnt = pin_get_cnt();
     uint32_t init_cnt = 0;
     for(p = 0; p < cnt; p++) {
-        if((0 <= PinTable[p].dio) && (39 != PinTable[p].dio)) {
+        if( (PIN_NO_INIT != PinTable[p].level) &&
+        		(0 <= PinTable[p].dio) &&
+				(39 != PinTable[p].dio)) {
             init_cnt++;
             printf("\n\rDio %d", PinTable[p].dio);
             if(1 == init_cnt) {
                 // p=cnt*2;
             }
+            gpio_config_t ioConf = {};
             ioConf.intr_type = GPIO_INTR_DISABLE;
             ioConf.mode = GpioDir2Mode(PinTable[p].dir);
-            ioConf.pin_bit_mask = BIT(PinTable[p].dio);
+            ioConf.pin_bit_mask = 1ULL<<(PinTable[p].dio);
             ioConf.pull_down_en = is_gpio_pull_down_mode(PinTable[p].pull_mode);
             ioConf.pull_up_en = is_gpio_pull_up_mode(PinTable[p].pull_mode);
-
+            gpio_reset_pin(PinTable[p].dio);
             ret = gpio_config(&ioConf); // hang on
+            //gpio_iomux_in(PinTable[p].dio, uint32_t signal_idx);
             if(ESP_OK == ret) {
-                // gpio_intr_disable(PinTable[p].dio);
-                if(0 <= PinTable[p].level) {
+
+                ret = gpio_intr_disable(PinTable[p].dio);
+                gpio_set_direction(PinTable[p].dio,  GpioDir2Mode(PinTable[p].dir));
+                if((0 == PinTable[p].level)||(1 == PinTable[p].level)) {
                     gpio_set_level(PinTable[p].dio, (uint32_t)PinTable[p].level);
                 }
-                res = true;
             } else {
-                res = false;
+            	 printf("\n\rDio %d Error", PinTable[p].dio);
                 out_res = false;
             }
         }
@@ -130,12 +133,14 @@ bool gpio_init(void) {
     return out_res;
 }
 
-bool gpio_get_state(uint8_t dio_number, uint8_t* logic_level) {
+bool gpio_get_state(int8_t dio_number, uint8_t* logic_level) {
     bool res = false;
     if(logic_level) {
-        int value = gpio_get_level(dio_number);
-        (*logic_level) = (uint8_t)value;
-        res = true;
+    	if(0<dio_number){
+            int value = gpio_get_level(dio_number);
+            (*logic_level) = (uint8_t)value;
+            res = true;
+    	}
     }
     return res;
 }
@@ -143,7 +148,7 @@ bool gpio_get_state(uint8_t dio_number, uint8_t* logic_level) {
 uint8_t gpio_read(uint8_t dio_number) { return 0x55; }
 
 bool gpio_set_state(uint8_t dio_number, uint8_t logic_level) {
-    gpio_set_level(dio_number, logic_level);
+    gpio_set_level(dio_number, (uint32_t) logic_level);
     return true;
 }
 

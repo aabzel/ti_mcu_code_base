@@ -1131,11 +1131,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9195959"
-     inkscape:cx="772.52493"
-     inkscape:cy="257.3993"
+     inkscape:zoom="3.959798"
+     inkscape:cx="251.60041"
+     inkscape:cy="126.24199"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer3"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -1626,15 +1626,10 @@
        d="m 124.40643,35.346664 v 4.002038 h 25.94654 v 33.804612"
        id="path1989" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.186762px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 37.002725,18.657954 H 103.49785"
-       id="path1999"
-       sodipodi:nodetypes="cc" />
-    <path
        style="fill:none;stroke:#000000;stroke-width:0.186762px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker2007)"
-       d="m 103.49785,18.389762 v 62.772012 l 14.99769,0.02135"
+       d="m 37.093967,19.862753 66.403883,-0.113497 v 61.412518 l 14.99769,0.02135"
        id="path2003"
-       sodipodi:nodetypes="ccc" />
+       sodipodi:nodetypes="cccc" />
     <rect
        style="opacity:0.998;fill:#ffffff;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect2225"
@@ -1782,28 +1777,6 @@
          x="200.72244"
          y="113.42744"
          style="stroke-width:0.0789609">Radio</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.49016px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.186762"
-       x="97.141663"
-       y="21.23189"
-       id="text3813-4"><tspan
-         sodipodi:role="line"
-         id="tspan3811-7"
-         x="97.141663"
-         y="21.23189"
-         style="font-size:2.49016px;stroke-width:0.186762">IO38</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.49016px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.186762"
-       x="44.254242"
-       y="20.840961"
-       id="text3813-5"><tspan
-         sodipodi:role="line"
-         id="tspan3811-4"
-         x="44.254242"
-         y="20.840961"
-         style="font-size:2.49016px;stroke-width:0.186762">IO38</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker5497);marker-end:url(#marker2738)"
        d="m 36.722748,52.160714 h 74.780222 v 24.568452 h 6.99257"
@@ -1826,6 +1799,17 @@
        height="18.310593"
        x="271.06439"
        y="93.954681" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.49016px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.186762"
+       x="109.38481"
+       y="80.423195"
+       id="text3813-5-3"><tspan
+         sodipodi:role="line"
+         id="tspan3811-4-2"
+         x="109.38481"
+         y="80.423195"
+         style="font-size:2.49016px;stroke-width:0.186762">IO38</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

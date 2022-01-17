@@ -7,7 +7,7 @@
 
 #include "gpio_common.h"
 
-
+#define PIN_NO_INIT 0x05
 
 #define PIN_NAME_LEN 10
 typedef struct xPin_t {

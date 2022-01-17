@@ -14,12 +14,12 @@
 
 #ifdef HAS_SPI_INT
 static void SPI0_CallBack() {
-    SpiInst[0].it_cnt++;
-    SpiInst[0].it_done = true;
+    SpiInstance[0].it_cnt++;
+    SpiInstance[0].it_done = true;
 }
 static void SPI1_CallBack() {
-    SpiInst[1].it_cnt++;
-    SpiInst[1].it_done = true;
+    SpiInstance[1].it_cnt++;
+    SpiInstance[1].it_done = true;
 }
 #endif
 
@@ -150,19 +150,19 @@ spi_host_device_t SpiNum2HostId(SpiName_t spi_num) {
 
 static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
     bool res = false;
-    SpiInst[spi_num].init_done = false;
+    SpiInstance[spi_num].init_done = false;
 
-    strncpy(SpiInst[spi_num].name, spi_name, SPI_NAME_SIZE_BYTE);
-    SpiInst[spi_num].rx_byte_cnt = 0;
-    SpiInst[spi_num].tx_byte_cnt = 0;
-    SpiInst[spi_num].it_done = true;
-    SpiInst[spi_num].base_addr = SpiBaseLut[spi_num];
+    strncpy(SpiInstance[spi_num].name, spi_name, SPI_NAME_SIZE_BYTE);
+    SpiInstance[spi_num].rx_byte_cnt = 0;
+    SpiInstance[spi_num].tx_byte_cnt = 0;
+    SpiInstance[spi_num].it_done = true;
+    SpiInstance[spi_num].base_addr = SpiBaseLut[spi_num];
 
     esp_err_t ret = ESP_ERR_INVALID_ARG;
     ret = spi_bus_initialize(SpiNum2HostId(spi_num), &SpiBusCfg[spi_num], SPI_DMA_CH_AUTO);
     if(ESP_OK == ret) {
         res = true;
-        SpiInst[spi_num].init_done = true;
+        SpiInstance[spi_num].init_done = true;
 #ifdef INIT_SPI_SEND
         uint8_t tx_buff[4] = {0x55, 0xaa, 0x55, 0xaa};
         res = spi_write(index, tx_buff, 4) && res;
@@ -171,7 +171,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
 
     if(res) {
         ret = spi_bus_add_device(SpiNum2HostId(spi_num), (const spi_device_interface_config_t*)&SpiDevCfg[spi_num],
-                                 &SpiInst[spi_num].spi_device_handle);
+                                 &SpiInstance[spi_num].spi_device_handle);
         if(ESP_OK == ret) {
             res = true;
         } else {
@@ -203,7 +203,7 @@ static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
     uint32_t cnt = 0;
     (void)spi_num;
     while(1) {
-        if(init_it_cnt < SpiInst[spi_num].it_cnt) {
+        if(init_it_cnt < SpiInstance[spi_num].it_cnt) {
             res = true;
             break;
         }
@@ -221,7 +221,7 @@ bool spi_wait_tx_done(SpiName_t spi_num) {
     (void)spi_num;
     uint32_t cnt = 0;
     while(1) {
-        if(true == SpiInst[spi_num].it_done) {
+        if(true == SpiInstance[spi_num].it_done) {
             res = true;
             break;
         }
@@ -242,17 +242,17 @@ spi_device_handle_t SpiNum2SpiHandle(SpiName_t spi_num) {
 bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
     (void)spi_num;
-    if(true == SpiInst[spi_num].init_done) {
-        SpiInst[spi_num].it_done = false;
+    if(true == SpiInstance[spi_num].init_done) {
+        SpiInstance[spi_num].it_done = false;
         spi_transaction_t Transaction;
         memset(&Transaction, 0, sizeof(Transaction)); // Zero out the transaction
 
         Transaction.length = 8 * tx_array_len; // Len is in bytes, transaction length is in bits.
         Transaction.tx_buffer = tx_array;
         Transaction.user = (void*)1; // D/C needs to be set to 1
-        if(SpiInst[spi_num].spi_device_handle) {
+        if(SpiInstance[spi_num].spi_device_handle) {
             esp_err_t ret;
-            ret = spi_device_polling_transmit(SpiInst[spi_num].spi_device_handle, &Transaction);
+            ret = spi_device_polling_transmit(SpiInstance[spi_num].spi_device_handle, &Transaction);
             if(ESP_OK == ret) {
                 res = true;
             } else {
@@ -268,16 +268,16 @@ bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t t
     if(spi_num < SPI_CNT) {
         esp_err_t ret;
         spi_transaction_t trans_desc;
-        if(true == SpiInst[spi_num].init_done) {
+        if(true == SpiInstance[spi_num].init_done) {
             spi_wait_tx_done(spi_num);
-            SpiInst[spi_num].it_done = false;
-            ret = spi_device_transmit(SpiInst[spi_num].spi_device_handle, &trans_desc);
+            SpiInstance[spi_num].it_done = false;
+            ret = spi_device_transmit(SpiInstance[spi_num].spi_device_handle, &trans_desc);
             if(ESP_OK == ret) {
                 res = true;
             } else {
                 res = false;
             }
-            //   SpiInst[spi_num].tx_byte_cnt += tx_array_len;
+            //   SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
 
         } /*true==init_done*/
     }
@@ -294,14 +294,14 @@ bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_arr
 
 static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
-    if(true == SpiInst[spi_num].init_done) {
+    if(true == SpiInstance[spi_num].init_done) {
         uint32_t init_it_cnt = 0;
 
         if(spi_num < SPI_CNT) {
-            init_it_cnt = SpiInst[spi_num].it_cnt;
+            init_it_cnt = SpiInstance[spi_num].it_cnt;
         }
         spi_wait_tx_done(spi_num);
-        SpiInst[spi_num].it_done = false;
+        SpiInstance[spi_num].it_done = false;
 
         switch(spi_num) {
         case SPI0_INX:
@@ -315,7 +315,7 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
         if(res) {
             res = spi_wait_tx(spi_num, init_it_cnt);
             if(res) {
-                SpiInst[spi_num].rx_byte_cnt += rx_array_len;
+                SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
             }
         }
     }
@@ -331,7 +331,7 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
 uint32_t spi_get_clock(SpiName_t spi_num) {
     uint32_t spi_bit_rate = 0xFF;
     (void)spi_num;
-    if(SpiInst[spi_num].init_done) {
+    if(SpiInstance[spi_num].init_done) {
     }
     return spi_bit_rate;
 }
@@ -339,7 +339,7 @@ uint32_t spi_get_clock(SpiName_t spi_num) {
 uint8_t spi_get_phase(SpiName_t spi_num) {
     uint32_t phase = 9;
     (void)spi_num;
-    if(SpiInst[spi_num].init_done) {
+    if(SpiInstance[spi_num].init_done) {
         phase = 99;
     }
     return phase;
@@ -348,7 +348,7 @@ uint8_t spi_get_phase(SpiName_t spi_num) {
 uint8_t spi_get_polarity(SpiName_t spi_num) {
     uint32_t polarity = 9;
     (void)spi_num;
-    if(SpiInst[spi_num].init_done) {
+    if(SpiInstance[spi_num].init_done) {
         polarity = 99;
     }
     return polarity;
@@ -357,7 +357,7 @@ uint8_t spi_get_polarity(SpiName_t spi_num) {
 uint8_t spi_get_data_size(SpiName_t spi_num) {
     uint32_t data_size = 0xFF;
     (void)spi_num;
-    if(SpiInst[spi_num].init_done) {
+    if(SpiInstance[spi_num].init_done) {
         data_size = 0;
     }
     return data_size;
@@ -366,7 +366,7 @@ uint8_t spi_get_data_size(SpiName_t spi_num) {
 uint8_t spi_get_transmit_int(SpiName_t spi_num) {
     uint8_t val = 0xFF;
     (void)spi_num;
-    if(SpiInst[spi_num].init_done) {
+    if(SpiInstance[spi_num].init_done) {
     }
     return val;
 }
@@ -374,7 +374,7 @@ uint8_t spi_get_transmit_int(SpiName_t spi_num) {
 uint8_t spi_get_receive_int(SpiName_t spi_num) {
     uint8_t val = 0xFF;
     (void)spi_num;
-    if(SpiInst[spi_num].init_done) {
+    if(SpiInstance[spi_num].init_done) {
     }
     return val;
 }
@@ -382,7 +382,7 @@ uint8_t spi_get_receive_int(SpiName_t spi_num) {
 uint8_t spi_get_receive_timeout_interrupt(SpiName_t spi_num) {
     uint8_t val = 0xFF;
     (void)spi_num;
-    if(SpiInst[spi_num].init_done) {
+    if(SpiInstance[spi_num].init_done) {
     }
     return val;
 }
@@ -390,7 +390,7 @@ uint8_t spi_get_receive_timeout_interrupt(SpiName_t spi_num) {
 uint8_t spi_get_receive_overrun_interrupt(SpiName_t spi_num) {
     uint8_t val = 0xFF;
     (void)spi_num;
-    if(SpiInst[spi_num].init_done) {
+    if(SpiInstance[spi_num].init_done) {
         val = 0xF0;
     }
     return val;

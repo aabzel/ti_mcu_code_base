@@ -43,6 +43,7 @@ static bool gpio_diag(char* key_word1, char* key_word2) {
     char sufix_str[50]= "";
     DioDir_t gpio_dir;
     for(i = 0; i < pin_get_cnt(); i++) {
+    	logic_level = 0;
         res = gpio_get_state(PinTable[i].dio, &logic_level);
         if(true == res) {
             memset(line_str, 0x0, sizeof(line_str));
@@ -61,7 +62,7 @@ static bool gpio_diag(char* key_word1, char* key_word2) {
             snprintf(sufix_str, sizeof(sufix_str), " %2s    " TSEP, (1 == logic_level) ? "H" : "L");
             strncat(line_str, sufix_str,sizeof(line_str));
 
-            snprintf(sufix_str, sizeof(sufix_str), " %s  " TSEP, (1 == is_edge_irq_en(i)) ? "Y" : "N");
+            snprintf(sufix_str, sizeof(sufix_str), "  %s  " TSEP, (1 == is_edge_irq_en(i)) ? "Y" : "N");
             strncat(line_str, sufix_str,sizeof(line_str));
 
             snprintf(sufix_str, sizeof(sufix_str), "%4s " TSEP, get_gpio_edge(PinTable[i].dio));

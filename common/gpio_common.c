@@ -17,7 +17,6 @@ uint8_t get_mcu_pin(uint8_t io_pin) {
     return mcu_pin;
 }
 
-
 const char* gpio_get_name(uint8_t io_pin) {
     const char* pin_name = 0;
     uint8_t i = 0;
