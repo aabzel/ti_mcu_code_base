@@ -7,7 +7,7 @@
 #include "clocks.h"
 #include "param_types.h"
 
-#define PARAM_CNT 32U
+//#define PARAM_CNT 32U
 #define PARAM_PERIOD_US S_2_US(3)
 
 typedef enum eId_t {
@@ -32,6 +32,7 @@ typedef enum eId_t {
     PAR_ID_LORA_MAX_LINK_DIST = 18,
     PAR_ID_LORA_MAX_BIT_RATE = 19,
     PAR_ID_BASE_LOCATION = 20,
+    PAR_ID_BASE_ACC = 33, /*Base Fix pos Accuracy in MM*/
     PAR_ID_RTK_MODE = 21,
     PAR_ID_BASE_ALT = 22, /* Base station altitude above sea level*/
     PAR_ID_GNSS_PERIOD = 23,
@@ -56,12 +57,13 @@ typedef struct xParamItem_t {
     /*char* units*/
 } ParamItem_t;
 
-extern const ParamItem_t ParamArray[PARAM_CNT];
+extern const ParamItem_t ParamArray[];
 
 bool param_init(void);
-ParamType_t param_get_type(Id_t id);
-bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* out_str, uint32_t str_size);
-const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size);
 bool param_proc(void);
+bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* out_str, uint32_t str_size);
+ParamType_t param_get_type(Id_t id);
+uint32_t param_get_cnt(void);
+const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size);
 
 #endif /* PARAM_IDS_H  */

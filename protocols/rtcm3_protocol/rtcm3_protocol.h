@@ -50,6 +50,8 @@ typedef struct xRtcm3Protocol_t {
     uint32_t load_len;
     uint32_t err_cnt;
 #ifdef HAS_DEBUG
+    uint32_t diff_rx_pkt_cnt;
+    uint32_t prev_rx_pkt_cnt;
     uint32_t preamble_cnt;
     uint16_t max_len;
     uint16_t min_len;

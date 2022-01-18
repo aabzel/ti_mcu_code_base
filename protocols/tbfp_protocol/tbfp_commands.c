@@ -23,6 +23,7 @@ static bool tbfp_diag(void) {
 #ifdef HAS_DEBUG
 #ifdef HAS_TBFP_FLOW_CONTROL
         {9, "maxFlow"},
+        {9, "curFlow"},
 #endif
         {9, "preCnt"},  {9, "ErCnt"}, {9, "minLen"}, {9, "maxLen"},   {7, "debug"},
 #endif /*HAS_DEBUG*/
@@ -38,6 +39,7 @@ static bool tbfp_diag(void) {
 #ifdef HAS_DEBUG
 #ifdef HAS_TBFP_FLOW_CONTROL
         io_printf(" %7u " TSEP, TbfpProtocol[interface].max_con_flow);
+        io_printf(" %7u " TSEP, TbfpProtocol[interface].con_flow);
 #endif
         io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
         io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);

@@ -35,6 +35,7 @@ typedef struct xZedF9P_t {
     uint16_t rate_ms;
     int8_t time_zone;
     RTKmode_t rtk_mode;
+    uint32_t fixed_position_3daccuracy_mm;
     Interfaces_t channel;
     // TODO:  time since update
     bool is_init;
@@ -46,6 +47,9 @@ bool zed_f9p_init(void);
 bool zed_f9p_load_params(void);
 bool zed_f9p_proc(void);
 bool zed_f9p_deploy_rover(void);
-bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m, RTKmode_t receiver_mode);
+bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base,
+                         double altitude_sea_lev_m,
+                         RTKmode_t receiver_mode,
+                         uint32_t fixed_position_3daccuracy_mm);
 
 #endif /* ZED_F9P_DRV_H  */

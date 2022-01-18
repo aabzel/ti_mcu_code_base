@@ -915,6 +915,8 @@ bool sx1262_init(void) {
 #endif
     LOG_INFO(LORA, "Init SX1262");
     Sx1262Instance.tx_mute = false;
+    Sx1262Instance.check_connectivity = true;
+    Sx1262Instance.sync_rssi = true;
     static uint8_t call_cnt = 0;
     if(0 == call_cnt) {
         memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
@@ -1507,8 +1509,9 @@ static inline bool sx1262_poll_status(void) {
 
         res = sx1262_reset_stats();
     }
-
-    sx1262_sync_rssi();
+    if(Sx1262Instance.sync_rssi){
+        sx1262_sync_rssi();
+    }
     return res;
 }
 
@@ -1604,10 +1607,10 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
                 }
 #ifdef HAS_MCU
                 free(Node.pArr);
-#endif
+#endif /*HAS_MCU*/
             }
         }
-#endif
+#endif /*HAS_PACKED_LORA_FRAME*/
         if(res) {
             if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
                 res = sx1262_start_tx(tx_buf, tx_len, 0);
@@ -1628,7 +1631,11 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
 bool sx1262_process(void) {
     bool res = false;
 
-    res = sx1262_is_connected();
+    if(Sx1262Instance.check_connectivity) {
+        res = sx1262_is_connected();
+    }else {
+        res = true;
+    }
     if(res) {
         if(BUSY_CNT_LIMIT < Sx1262Instance.busy_cnt) {
             Sx1262Instance.busy_cnt = 0;
@@ -1642,7 +1649,7 @@ bool sx1262_process(void) {
         }
 
     } else {
-        LOG_ERROR(LORA, "SX1262 SPI link lost");
+        LOG_ERROR(LORA, "Sx1262_SpiLinkLost");
         res = sx1262_init();
     }
 

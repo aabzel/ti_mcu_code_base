@@ -28,7 +28,6 @@ const char* interface2str(Interfaces_t interface) {
     case IF_BLE:
         name = "BLE";
         break;
-
     default:
         break;
     }

@@ -9,6 +9,9 @@ extern "C" {
 #include <stdint.h>
 #include <time.h>
 
+#define METER_TO_MM(METER) ((METER) * 1000)
+#define MM_TO_METER(MM) ( (MM)/1000.0 )
+
 typedef struct xGnssCoordinate_t{
     double latitude;    /* Latitude (degrees and minutes) широта*/
     double longitude;    /* Longitude (degrees and minutes) долгота*/

@@ -682,7 +682,7 @@ bool nmea_proc(void) {
                 nmea_update_rtk_fixed_duration();
             }
             if(PM_RTK_FIXED == NmeaProto.pos_mode) {
-                Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_RTK_FIXED_MS;
+                Led[LED_INDEX_GREEN].mode = LED_MODE_ON;
 #ifdef HAS_MCU
                 NmeaProto.rtk_fixed_start_ms = get_time_ms32();
 #endif

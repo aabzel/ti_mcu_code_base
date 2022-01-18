@@ -1,5 +1,6 @@
 @echo off
-set com_num=1
+cls
+set com_num=5
 set work_space_dir=%cd%\..\..\
 taskkill /IM ttermpro.exe
 fw_configurator_d.exe COM%com_num% 460800 rover.cfg

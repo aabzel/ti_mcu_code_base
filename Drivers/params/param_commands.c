@@ -47,7 +47,7 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                                                {5, "len"}, {12, "val"}, {17, "name"}};
             table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
             char temp_str[300] = "";
-            for(i = 0; i < ARRAY_SIZE(ParamArray); i++) {
+            for(i = 0; i < param_get_cnt(); i++) {
                 strcpy(temp_str, TSEP);
                 snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].id);
                 snprintf(temp_str, sizeof(temp_str), "%s %12s " TSEP, temp_str, ParamArray[i].name);

@@ -197,7 +197,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             rtcm3_reset_rx(instance);
         } else {
 #ifdef HAS_MCU
-            LOG_ERROR(RTCM, "CrcErr");
+            LOG_ERROR(RTCM, "%s CrcErr",interface2str(instance->interface));
 #endif
             instance->crc_err_cnt++;
             rtcm3_reset_rx(instance);
