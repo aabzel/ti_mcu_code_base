@@ -35,6 +35,7 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/flash/flash_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/gpio/gpio_commands.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/gpio/gpio_diag.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/gpio/gpio_drv.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/spi/spi_commands.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/spi/spi_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/sys.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/uart/uart_drv.c")
@@ -94,5 +95,5 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_string/str_utils.c")
 #target_compile_definitions(${COMPONENT_TARGET} PUBLIC "-DHAS_CLI")
 idf_component_register(SRCS "main_thread.c" ${PATH_SRC}
                        INCLUDE_DIRS ${PATH_INC})
-# -DHAS_SX1262 -DHAS_SX1262_DEBUG 
-target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_MCU -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI2  -Wno-stringop-overflow)
+# 
+target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_MCU -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI2  -Wno-stringop-overflow)

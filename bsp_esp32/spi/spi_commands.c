@@ -6,8 +6,6 @@
 #include "convert.h"
 #include "data_utils.h"
 #include "debug_info.h"
-#include "diag_page_nums.h"
-#include "diag_report.h"
 #include "log.h"
 #include "spi_drv.h"
 #include "table_utils.h"
@@ -18,20 +16,28 @@ bool spi_diag_command(int32_t argc, char* argv[]) {
     uint8_t spi_num = 0;
     static const table_col_t cols[] = {{5, "No"},   {10, "clk"}, {5, "pha"}, {5, "plo"},
                                        {5, "bits"}, {8, "tx"},   {8, "rx"},  {10, "name"}};
-    char temp_str[120];
+    char line_str[120];
+    char suffix_str[120];
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(spi_num = 0; spi_num < SPI_CNT; spi_num++) {
-        strcpy(temp_str, TSEP);
-        snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, spi_num);
-        snprintf(temp_str, sizeof(temp_str), "%s %8u " TSEP, temp_str, spi_get_clock((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s  %1u  " TSEP, temp_str, spi_get_phase((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s  %1u  " TSEP, temp_str, spi_get_polarity((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s  %2u " TSEP, temp_str, spi_get_data_size((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s %6u " TSEP, temp_str, SpiInstance[spi_num].tx_byte_cnt);
-        snprintf(temp_str, sizeof(temp_str), "%s %6u " TSEP, temp_str, SpiInstance[spi_num].rx_byte_cnt);
-        snprintf(temp_str, sizeof(temp_str), "%s %8s " TSEP, temp_str, SpiInstance[spi_num].name);
-        snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
-        io_printf("%s", temp_str);
+        strcpy(line_str, TSEP);
+        snprintf(suffix_str, sizeof(suffix_str), " %3u " TSEP,  spi_num);
+        strncat(line_str, suffix_str,sizeof(line_str));
+        snprintf(suffix_str, sizeof(suffix_str), " %8u " TSEP,  spi_get_clock((SpiName_t)spi_num));
+        strncat(line_str, suffix_str,sizeof(line_str));
+        snprintf(suffix_str, sizeof(suffix_str), "  %1u  " TSEP,  spi_get_phase((SpiName_t)spi_num));
+        strncat(line_str, suffix_str,sizeof(line_str));
+        snprintf(suffix_str, sizeof(suffix_str), "  %1u  " TSEP,  spi_get_polarity((SpiName_t)spi_num));
+        strncat(line_str, suffix_str,sizeof(line_str));
+        snprintf(suffix_str, sizeof(suffix_str), "  %2u " TSEP,  spi_get_data_size((SpiName_t)spi_num));
+        strncat(line_str, suffix_str,sizeof(line_str));
+        snprintf(suffix_str, sizeof(suffix_str), " %6u " TSEP,  SpiInstance[spi_num].tx_byte_cnt);
+        strncat(line_str, suffix_str,sizeof(line_str));
+        snprintf(suffix_str, sizeof(suffix_str), " %6u " TSEP,  SpiInstance[spi_num].rx_byte_cnt);
+        strncat(line_str, suffix_str,sizeof(line_str));
+        snprintf(suffix_str, sizeof(suffix_str), " %8s " TSEP,  SpiInstance[spi_num].name);
+        strncat(line_str, suffix_str,sizeof(line_str));
+        io_printf("%s\n\r", line_str);
     }
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
@@ -43,21 +49,33 @@ bool spi_diag_int_command(int32_t argc, char* argv[]) {
     uint8_t spi_num = 0;
     static const table_col_t cols[] = {{5, "No"},   {4, "rx"},     {4, "tx"},   {6, "it"},
                                        {6, "rxTo"}, {6, "RxOrun"}, {10, "name"}};
-    char temp_str[120];
+    char line_str[120];
+    char suffix_str[120];
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(spi_num = 0; spi_num < SPI_CNT; spi_num++) {
-        strcpy(temp_str, TSEP);
-        snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, spi_num);
-        snprintf(temp_str, sizeof(temp_str), "%s %2u " TSEP, temp_str, spi_get_receive_int((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s %2u " TSEP, temp_str, spi_get_transmit_int((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s %2u " TSEP, temp_str, SpiInstance[spi_num].it_cnt);
-        snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str,
-                 spi_get_receive_timeout_interrupt((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s %4u " TSEP, temp_str,
-                 spi_get_receive_overrun_interrupt((SpiName_t)spi_num));
-        snprintf(temp_str, sizeof(temp_str), "%s %s " TSEP, temp_str, SpiInstance[spi_num].name);
-        snprintf(temp_str, sizeof(temp_str), "%s" CRLF, temp_str);
-        io_printf("%s", temp_str);
+        strcpy(line_str, TSEP);
+        snprintf(suffix_str, sizeof(suffix_str), " %3u " TSEP,  spi_num);
+        strncat(line_str, suffix_str,sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), " %2u " TSEP,  spi_get_receive_int((SpiName_t)spi_num));
+        strncat(line_str, suffix_str,sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), " %2u " TSEP,  spi_get_transmit_int((SpiName_t)spi_num));
+        strncat(line_str, suffix_str,sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), " %2u " TSEP,  SpiInstance[spi_num].it_cnt);
+        strncat(line_str, suffix_str,sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), " %3u " TSEP,  spi_get_receive_timeout_interrupt((SpiName_t)spi_num));
+        strncat(line_str, suffix_str,sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), " %4u " TSEP,  spi_get_receive_overrun_interrupt((SpiName_t)spi_num));
+        strncat(line_str, suffix_str,sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str), " %s " TSEP,  SpiInstance[spi_num].name);
+        strncat(line_str, suffix_str,sizeof(line_str));
+
+        io_printf("%s\n\r", line_str);
     }
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 

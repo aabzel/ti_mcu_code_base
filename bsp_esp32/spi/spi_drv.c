@@ -8,6 +8,7 @@
 
 #include "bit_utils.h"
 #include "clocks.h"
+#include "log.h"
 #include "gpio_drv.h"
 #include "spi_common.h"
 #include "sys_config.h"
@@ -174,6 +175,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
                                  &SpiInstance[spi_num].spi_device_handle);
         if(ESP_OK == ret) {
             res = true;
+            SpiInstance[spi_num].init_done = true;
         } else {
             res = false;
         }
@@ -243,6 +245,7 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
     bool res = false;
     (void)spi_num;
     if(true == SpiInstance[spi_num].init_done) {
+    	LOG_DEBUG(SPI, "SPI:%u tx:%u",spi_num,tx_array_len);
         SpiInstance[spi_num].it_done = false;
         spi_transaction_t Transaction;
         memset(&Transaction, 0, sizeof(Transaction)); // Zero out the transaction
@@ -255,8 +258,10 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
             ret = spi_device_polling_transmit(SpiInstance[spi_num].spi_device_handle, &Transaction);
             if(ESP_OK == ret) {
                 res = true;
+                LOG_DEBUG(SPI, "SPItxOK");
             } else {
                 res = false;
+                LOG_ERROR(SPI, "SPI tx ");
             }
         }
     } /*true==init_done*/
@@ -267,17 +272,25 @@ bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t t
     bool res = false;
     if(spi_num < SPI_CNT) {
         esp_err_t ret;
-        spi_transaction_t trans_desc;
         if(true == SpiInstance[spi_num].init_done) {
-            spi_wait_tx_done(spi_num);
+        spi_transaction_t trans_desc = {
+            //.cmd = CMD_WRITE | (addr & ADDR_MASK),
+
+			.length=8*tx_array_len,
+            .rxlength=8*tx_array_len,
+            .flags = SPI_TRANS_USE_RXDATA,
+			.tx_buffer=tx_array,
+			.rx_buffer = NULL,
+            .user = 0,
+        };
             SpiInstance[spi_num].it_done = false;
             ret = spi_device_transmit(SpiInstance[spi_num].spi_device_handle, &trans_desc);
             if(ESP_OK == ret) {
                 res = true;
+                SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
             } else {
                 res = false;
             }
-            //   SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
 
         } /*true==init_done*/
     }
@@ -286,11 +299,11 @@ bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t t
 
 bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
-
     res = spi_wait_write_wait(spi_num, tx_array, tx_array_len);
     // res = spi_wait_write(spi_num, tx_array, tx_array_len);
     return res;
 }
+
 
 static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
@@ -303,21 +316,25 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
         spi_wait_tx_done(spi_num);
         SpiInstance[spi_num].it_done = false;
 
-        switch(spi_num) {
-        case SPI0_INX:
-            break;
-        case SPI1_INX:
-            break;
-        default:
-            res = false;
-            break;
-        }
-        if(res) {
-            res = spi_wait_tx(spi_num, init_it_cnt);
-            if(res) {
-                SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
-            }
-        }
+
+        spi_transaction_t t = {
+            .cmd = CMD_READ | (addr & ADDR_MASK),
+
+			.length=8*rx_array_len,
+            .rxlength=8*rx_array_len,
+            .flags = SPI_TRANS_USE_RXDATA,
+			.tx_buffer=NULL,
+			.rx_buffer = rx_array,
+            .user = 0,
+        };
+       esp_err_t err = spi_device_polling_transmit( SpiInstance[spi_num].spi_device_handle, &t);
+       if(ESP_OK==err){
+           SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
+           *rx_array = t.rx_data[0];
+           res = true;
+       }else{
+    	   res = false;
+       }
     }
     return res;
 }

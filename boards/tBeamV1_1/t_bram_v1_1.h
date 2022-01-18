@@ -8,7 +8,7 @@
 #define UART_COUNT 2
 
 #define SPI_COUNT 4
-#define SX1262_SPI_NUM 1
+#define SX1262_SPI_NUM 2
 #define LED_COUNT 1
 #define LED_INDEX_RED 0
 

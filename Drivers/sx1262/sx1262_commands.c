@@ -406,7 +406,7 @@ static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
 
         if(is_contain(temp_str, key_word1, key_word2)) {
             io_printf(TSEP " %3u ", num);
-            io_printf("%s", temp_str);
+            io_printf("%s\r\n", temp_str);
             num++;
         }
     }
