@@ -218,29 +218,29 @@ static const keyValItem_t BaseCfgLut[] = {
     /*3 */ {CFG_UART1OUTPROT_UBX, 1},
     /*7 */ {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1005 Stationary RTK
                                                    // reference station ARP (Input/output)
-    /*8 */ {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1074 GPS MSM4
-                                                   // (Input/output)
-    {CFG_MSGOUT_RTCM_3X_TYPE1077_UART1, 1},        // Output rate of the RTCM-3X-TYPE1077 GPS MSM7 (Input/output)
-    /*9 */ {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1084 GLONASS MSM4
-                                                   // (Input/output)
-    {CFG_MSGOUT_RTCM_3X_TYPE1087_UART1, 1},        // Output rate of the RTCM-3X-TYPE1087 GLONASS MSM7 (Input/output)
-#ifdef HAS_GALILEO
+    /*12*/ {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1},
+#ifdef HAS_GPS_CORRECTION
+    {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1074 GPS MSM4 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1074_USB, 1},
+    {CFG_MSGOUT_RTCM_3X_TYPE1077_UART1, 1}, // Output rate of the RTCM-3X-TYPE1077 GPS MSM7 (Input/output)
+#endif
+#ifdef HAS_GLONASS_CORRECTION
+    {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1084 GLONASS MSM4 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1084_USB, 1},
+    {CFG_MSGOUT_RTCM_3X_TYPE1087_UART1, 1}, // Output rate of the RTCM-3X-TYPE1087 GLONASS MSM7 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1230_UART1, 5}, // sparkfun Output rate of the RTCM-3X-TYPE1230 GLONASS L1 and L2 code-phase biases (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1230_USB, 5}, //GLONASS L1 and L2 code-phase biases (Input/output)
+#endif
+#ifdef HAS_GALILEO_CORRECTION
     {CFG_MSGOUT_RTCM_3X_TYPE1094_UART1, 1}, // Galileo MSM4 (Input/output) sparkfun recomends
     {CFG_MSGOUT_RTCM_3X_TYPE1094_USB, 1},   // Galileo MSM4 (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1097_UART1, 1}, // Galileo MSM7 (Input/output)Output rate of the RTCM-3X-TYPE1097
 #endif
-#ifdef HAS_BEI_DOU
+#ifdef HAS_BEI_DOU_CORRECTION
     {CFG_MSGOUT_RTCM_3X_TYPE1127_UART1, 1},        // Output rate of the RTCM-3X-TYPE1127 BeiDou MSM7 (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1124_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1124 BeiDou MSM4
     {CFG_MSGOUT_RTCM_3X_TYPE1124_USB, 1}, //BeiDou MSM4 (Input/output)
 #endif
-                                                   // (Input/output)
-    /*11*/ {CFG_MSGOUT_RTCM_3X_TYPE1230_UART1, 5}, // sparkfun Output rate of the RTCM-3X-TYPE1230 GLONASS L1 and L2
-                                                   // code-phase biases (Input/output)
-    /*12*/ {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1},
-    /*13*/ {CFG_MSGOUT_RTCM_3X_TYPE1074_USB, 1},
-    /*14*/ {CFG_MSGOUT_RTCM_3X_TYPE1084_USB, 1},
-    /*16*/ {CFG_MSGOUT_RTCM_3X_TYPE1230_USB, 5},
     /*19*/ {CFG_MSGOUT_UBX_NAV_PVT_USB, 1},
     /*20*/ {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1},
 };
@@ -306,6 +306,8 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
         if(IF_LORA == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].lora_fwd = true;
             Rtcm3Protocol[IF_UART1].rs232_fwd = false;
+            Sx1262Instance.check_connectivity = false;
+            Sx1262Instance.sync_rssi = false;
         }
         if(IF_RS232 == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].lora_fwd = false;

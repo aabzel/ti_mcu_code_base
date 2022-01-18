@@ -44,7 +44,7 @@ bool diag_page_tasks(ostream_t* stream) {
     oprintf(stream, "total_time %llu us" CRLF, total_time_us);
     oprintf(stream, "total_time %llu ms" CRLF, total_time_ms);
     static const table_col_t cols[] = {{4, "id"}, {11, "Task name"}, {8, "Calls/s"},   {7, "CPU[%]"},
-                                       {11, "Tavg[us]"},  {11, "Tmin[us]"}, {11, "Tmax[us]"},
+                                       {11, "Tavg[ms]"},  {11, "Tmin[ms]"}, {11, "Tmax[ms]"},
                                        {11, "Rmin[us]"},  {11, "Rmax[us]"}, {11, "RTtot[us]"},{6, "stat"}};
     float cpu_use = 0.0f;
     table_header(stream, cols, ARRAY_SIZE(cols));
@@ -60,9 +60,9 @@ bool diag_page_tasks(ostream_t* stream) {
                                task_data[id].name,
                                (uint32_t)((task_data[id].start_count * 1000) / total_time_ms),
                                cpu_use,
-                    (uint32_t)((total_time_ms * 1000) / task_data[id].start_count));
-            oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].start_period_min);
-            oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].start_period_max);
+                    (uint32_t)((total_time_ms * 1000) / task_data[id].start_count)/1000);
+            oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].start_period_min/1000);
+            oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].start_period_max/1000);
             oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].run_time_min);
             oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].run_time_max);
             oprintf(stream, " %9" PRIu64 " " TABLE_SEPARATOR, task_data[id].run_time_total);

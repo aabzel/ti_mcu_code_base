@@ -100,6 +100,8 @@ typedef struct xSx1262_t {
 #endif /*HAS_SX1262_BIT_RATE*/
     uint32_t tx_done_time_stamp_ms;
     uint32_t busy_cnt;
+    bool check_connectivity;
+    bool sync_rssi;
     uint32_t rand_num;
     uint16_t lora_sync_word_set;
     uint16_t lora_sync_word_get;
