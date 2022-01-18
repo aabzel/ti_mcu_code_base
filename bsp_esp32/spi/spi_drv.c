@@ -200,6 +200,7 @@ bool spi_init(void) {
     return res;
 }
 
+#if 0
 static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
     bool res = false;
     uint32_t cnt = 0;
@@ -217,6 +218,7 @@ static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
     }
     return res;
 }
+#endif
 
 bool spi_wait_tx_done(SpiName_t spi_num) {
     bool res = false;
@@ -248,43 +250,50 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
     	LOG_DEBUG(SPI, "SPI:%u tx:%u",spi_num,tx_array_len);
         SpiInstance[spi_num].it_done = false;
         spi_transaction_t Transaction;
-        memset(&Transaction, 0, sizeof(Transaction)); // Zero out the transaction
-
-        Transaction.length = 8 * tx_array_len; // Len is in bytes, transaction length is in bits.
-        Transaction.tx_buffer = tx_array;
-        Transaction.user = (void*)1; // D/C needs to be set to 1
-        if(SpiInstance[spi_num].spi_device_handle) {
-            esp_err_t ret;
-            ret = spi_device_polling_transmit(SpiInstance[spi_num].spi_device_handle, &Transaction);
-            if(ESP_OK == ret) {
-                res = true;
-                LOG_DEBUG(SPI, "SPItxOK");
-            } else {
-                res = false;
-                LOG_ERROR(SPI, "SPI tx ");
+        uint16_t i = 0;
+        for(i=0; i<tx_array_len; i++){
+            memset(&Transaction, 0, sizeof(Transaction)); // Zero out the transaction
+            //Transaction.user = (void*)0; // D/C needs to be set to 1
+            Transaction.flags = SPI_TRANS_USE_TXDATA;
+            Transaction.length = 8 ; // Len is in bytes, transaction length is in bits.
+            //Transaction.tx_buffer = (tx_array+i);
+            Transaction.tx_data[0]=*(tx_array+i);
+            Transaction.rx_buffer = NULL;
+            if(SpiInstance[spi_num].spi_device_handle) {
+                esp_err_t ret;
+                ret = spi_device_polling_transmit(SpiInstance[spi_num].spi_device_handle,
+                		                          &Transaction);
+                if(ESP_OK == ret) {
+                    res = true;
+                    LOG_DEBUG(SPI, "SPItxOK");
+                } else {
+                    res = false;
+                    LOG_ERROR(SPI, "SPItx");
+                }
             }
         }
     } /*true==init_done*/
     return res;
 }
 
+
+#if 0
 bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
     if(spi_num < SPI_CNT) {
         esp_err_t ret;
         if(true == SpiInstance[spi_num].init_done) {
-        spi_transaction_t trans_desc = {
-            //.cmd = CMD_WRITE | (addr & ADDR_MASK),
-
-			.length=8*tx_array_len,
-            .rxlength=8*tx_array_len,
-            .flags = SPI_TRANS_USE_RXDATA,
-			.tx_buffer=tx_array,
-			.rx_buffer = NULL,
-            .user = 0,
-        };
+            spi_transaction_t Transaction = {
+                //.cmd = CMD_WRITE | (addr & ADDR_MASK),
+	 	   	.length=8*tx_array_len,
+                .rxlength=8*tx_array_len,
+                .flags = SPI_TRANS_USE_TXDATA,
+	 	   	.tx_buffer=tx_array,
+	 	   	.rx_buffer = NULL,
+                .user = 0,
+            };
             SpiInstance[spi_num].it_done = false;
-            ret = spi_device_transmit(SpiInstance[spi_num].spi_device_handle, &trans_desc);
+            ret = spi_device_transmit(SpiInstance[spi_num].spi_device_handle, &Transaction);
             if(ESP_OK == ret) {
                 res = true;
                 SpiInstance[spi_num].tx_byte_cnt += tx_array_len;
@@ -296,6 +305,7 @@ bool spi_wait_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t t
     }
     return res;
 }
+#endif
 
 bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
@@ -308,33 +318,31 @@ bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_arr
 static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
     if(true == SpiInstance[spi_num].init_done) {
-        uint32_t init_it_cnt = 0;
-
-        if(spi_num < SPI_CNT) {
-            init_it_cnt = SpiInstance[spi_num].it_cnt;
-        }
         spi_wait_tx_done(spi_num);
         SpiInstance[spi_num].it_done = false;
+        spi_transaction_t Transaction ;
+        uint16_t i = 0;
+        for(i=0; i<rx_array_len; i++){
+        	LOG_DEBUG(SPI, "SPI read: i:%u",i);
+            memset(&Transaction, 0, sizeof(Transaction));
+            //Transaction.cmd = ;
+   	 	    //Transaction.user = 0;
+            Transaction.length=8;
+   	        //Transaction.rxlength=8;
+   	        Transaction.flags = SPI_TRANS_USE_RXDATA;
+            Transaction.tx_buffer = NULL;
+            Transaction.rx_buffer = rx_array;
 
-
-        spi_transaction_t t = {
-            .cmd = CMD_READ | (addr & ADDR_MASK),
-
-			.length=8*rx_array_len,
-            .rxlength=8*rx_array_len,
-            .flags = SPI_TRANS_USE_RXDATA,
-			.tx_buffer=NULL,
-			.rx_buffer = rx_array,
-            .user = 0,
-        };
-       esp_err_t err = spi_device_polling_transmit( SpiInstance[spi_num].spi_device_handle, &t);
-       if(ESP_OK==err){
-           SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
-           *rx_array = t.rx_data[0];
-           res = true;
-       }else{
-    	   res = false;
-       }
+            esp_err_t err = spi_device_polling_transmit( SpiInstance[spi_num].spi_device_handle, &Transaction);
+            if(ESP_OK==err){
+                SpiInstance[spi_num].rx_byte_cnt += rx_array_len;
+                *(rx_array+i) = Transaction.rx_data[0];
+                res = true;
+            }else{
+         	    res = false;
+         	   LOG_ERROR(SPI, "SPI read error i:%u",i);
+            }
+        }
     }
     return res;
 }
