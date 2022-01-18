@@ -27,7 +27,7 @@
 #endif /*HAS_ZED_F9P*/
 
 /*TODO: Sort by index for bin search in future*/
-const ParamItem_t ParamArray[PARAM_CNT] = {
+const ParamItem_t ParamArray[] = {
     /**/ {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"}, /*num*/
     /**/ {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"},   /*Hz*/
     /**/ {PAR_ID_LORA_SF, 1, UINT8, "SF"},            /*Chips / Symbol*/
@@ -57,21 +57,28 @@ const ParamItem_t ParamArray[PARAM_CNT] = {
     /**/ {PAR_ID_RTK_FIX_LONG, 4, UINT32, "FTKFixedTime"}, /*RTK fixed max duration*/
     /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"},      /**/
     /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
+    /**/ {PAR_ID_BASE_ACC, 4, UINT32, "BaseAcc"},
     /*25*/ {PAR_ID_RTK_CHANNEL, 1, UINT8, "RTKchannel"},
     /**/ {PAR_ID_GNSS_PERIOD, 2, UINT16, "GnssPer"},
     /**/ {PAR_ID_BASE_ALT, 8, DOUBLE, "BaseAlt"},
 };
 
+uint32_t param_get_cnt(void){
+    uint32_t cnt = ARRAY_SIZE(ParamArray);
+    return cnt;
+}
 bool param_init(void) {
     bool res = true;
     bool out_res = true;
-    if(PARAM_CNT != ARRAY_SIZE(ParamArray)) {
+#if 0
+    if(param_get_cnt != ARRAY_SIZE(ParamArray)) {
         LOG_ERROR(PARAM, "Param table corrupted");
         res = false;
         out_res = false;
     } else {
         res = true;
     }
+#endif
     uint16_t value_len = 0;
     uint16_t i = 0;
     for(i = 0; i < ARRAY_SIZE(ParamArray); i++) {

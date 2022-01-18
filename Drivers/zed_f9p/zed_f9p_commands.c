@@ -90,7 +90,10 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        res = zed_f9p_deploy_base(ZedF9P.coordinate_base, ZedF9P.alt_base, ZedF9P.rtk_mode);
+        res = zed_f9p_deploy_base(ZedF9P.coordinate_base,
+                                  ZedF9P.alt_base,
+                                  ZedF9P.rtk_mode,
+                                  ZedF9P.fixed_position_3daccuracy_mm);
         if(res) {
             LOG_INFO(ZED_F9P, "RtkBaseStarted");
         }
