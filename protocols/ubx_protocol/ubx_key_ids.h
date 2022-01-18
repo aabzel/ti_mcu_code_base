@@ -12,9 +12,11 @@
 #define CFG_MSGOUT_RTCM_3X_TYPE1094_UART1 0x20910369 // Galileo MSM4 (Input/output)
 #define CFG_MSGOUT_RTCM_3X_TYPE1094_USB 0x2091036b   // Galileo MSM4 (Input/output)
 #define CFG_MSGOUT_RTCM_3X_TYPE1097_UART1 0x20910319 // Galileo MSM7 (Input/output)
+#ifdef HAS_BEI_DOU
 #define CFG_MSGOUT_RTCM_3X_TYPE1124_UART1 0x2091036e // BeiDou MSM4 (Input/output)
 #define CFG_MSGOUT_RTCM_3X_TYPE1124_USB 0x20910370   // BeiDou MSM4 (Input/output)
 #define CFG_MSGOUT_RTCM_3X_TYPE1127_UART1 0x209102d7 // BeiDou MSM7 (Input/output)
+#endif
 #define CFG_MSGOUT_RTCM_3X_TYPE1230_UART1 0x20910304 // GLONASS L1 and L2 code-phase biases (Input/output)
 #define CFG_MSGOUT_RTCM_3X_TYPE1230_USB 0x20910306   // GLONASS L1 and L2 code-phase biases (Input/output)
 #define CFG_MSGOUT_UBX_NAV_PVT_USB 0x20910009

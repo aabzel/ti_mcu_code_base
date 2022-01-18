@@ -149,6 +149,7 @@
 									<listOptionValue builtIn="false" value="HAS_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_CUSTOM_PRINTF"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
+									<listOptionValue builtIn="false" value="HAS_DEV_ID"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>

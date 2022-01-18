@@ -25,6 +25,7 @@ static bool rtcm3_diag(void) {
                                        {9, "rxCnt"},
                                        {9, "crcErCnt"},
 #ifdef HAS_DEBUG
+                                       {9, "DiffRxCnt"},
                                        {9, "preCnt"},
                                        {9, "ErCnt"},
                                        {9, "minLen"},
@@ -37,12 +38,15 @@ static bool rtcm3_diag(void) {
         io_printf(" %5s " TSEP, interface2str((Interfaces_t)interface));
         io_printf("  %1u  " TSEP, Rtcm3Protocol[interface].lora_fwd);
         io_printf(" %7u " TSEP,  Rtcm3Protocol[interface].lora_lost_pkt_cnt);
-        uint32_t lora_lost_pkt = (100*Rtcm3Protocol[interface].lora_lost_pkt_cnt)/Rtcm3Protocol[interface].rx_pkt_cnt;
-        io_printf("   %3u  " TSEP,(uint32_t) lora_lost_pkt);
+        double lora_lost_pkt = ((double)100*Rtcm3Protocol[interface].lora_lost_pkt_cnt)/((double)Rtcm3Protocol[interface].rx_pkt_cnt);
+        io_printf("   %3.1f  " TSEP,(double) lora_lost_pkt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].uart_lost_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].rx_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].crc_err_cnt);
 #ifdef HAS_DEBUG
+        Rtcm3Protocol[interface].diff_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt-Rtcm3Protocol[interface].prev_rx_pkt_cnt;
+        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].diff_rx_pkt_cnt);
+        Rtcm3Protocol[interface].prev_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt;
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].preamble_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].err_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].min_len);
@@ -57,7 +61,6 @@ static bool rtcm3_diag(void) {
 
 bool rtcm3_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
-
     if(0 == argc) {
         res = true;
     } else {

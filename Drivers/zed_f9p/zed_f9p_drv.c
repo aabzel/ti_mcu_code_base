@@ -225,15 +225,17 @@ static const keyValItem_t BaseCfgLut[] = {
     {CFG_MSGOUT_RTCM_3X_TYPE1087_UART1, 1},        // Output rate of the RTCM-3X-TYPE1087 GLONASS MSM7 (Input/output)
     /*17*/ {CFG_MSGOUT_RTCM_3X_TYPE1094_UART1, 1}, // sparkfun Galileo MSM4 (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1097_UART1, 1},        // Output rate of the RTCM-3X-TYPE1097 Galileo MSM7 (Input/output)
+#ifdef    HAS_BEI_DOU
     {CFG_MSGOUT_RTCM_3X_TYPE1127_UART1, 1},        // Output rate of the RTCM-3X-TYPE1127 BeiDou MSM7 (Input/output)
-    /*10*/ {CFG_MSGOUT_RTCM_3X_TYPE1124_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1124 BeiDou MSM4
+    {CFG_MSGOUT_RTCM_3X_TYPE1124_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1124 BeiDou MSM4
+    {CFG_MSGOUT_RTCM_3X_TYPE1124_USB, 1}, //BeiDou MSM4 (Input/output)
+#endif
                                                    // (Input/output)
     /*11*/ {CFG_MSGOUT_RTCM_3X_TYPE1230_UART1, 5}, // sparkfun Output rate of the RTCM-3X-TYPE1230 GLONASS L1 and L2
                                                    // code-phase biases (Input/output)
     /*12*/ {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1},
     /*13*/ {CFG_MSGOUT_RTCM_3X_TYPE1074_USB, 1},
     /*14*/ {CFG_MSGOUT_RTCM_3X_TYPE1084_USB, 1},
-    /*15*/ {CFG_MSGOUT_RTCM_3X_TYPE1124_USB, 1},
     /*16*/ {CFG_MSGOUT_RTCM_3X_TYPE1230_USB, 5},
     /*18*/ {CFG_MSGOUT_RTCM_3X_TYPE1094_USB, 1},
     /*19*/ {CFG_MSGOUT_UBX_NAV_PVT_USB, 1},
