@@ -225,13 +225,13 @@ bool cmd_sysinfo(int32_t argc, char* argv[]) {
     } else {
         // io_printf ("up time: %u [ms] / %u [s]" CRLF, g_up_time_ms,
         // g_up_time_ms / 1000);
-        explore_stack_dir();
-        print_sysinfo();
         if(is_little_endian()) {
             io_printf("Little endian" CRLF);
         } else {
             io_printf("big endian" CRLF);
         }
+        explore_stack_dir();
+        print_sysinfo();
         res = true;
     }
 

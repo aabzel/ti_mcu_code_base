@@ -77,7 +77,6 @@
 #define UNIT_TEST_COMMANDS
 #endif
 
-
 #ifdef HAS_FLASH
 #include "flash_commands.h"
 #else
@@ -113,8 +112,8 @@
     ADC_COMMANDS                                                                                                       \
     BASE_COMMANDS                                                                                                      \
     BOOT_COMMANDS                                                                                                      \
-    CLOCK_COMMANDS                    \
-    INTERRUPT_COMMANDS                                                      \
+    CLOCK_COMMANDS                                                                                                     \
+    INTERRUPT_COMMANDS                                                                                                 \
     DAC_COMMANDS                                                                                                       \
     TCAN4550_COMMANDS                                                                                                  \
     TCAN4550_TI_TI_COMMANDS                                                                                            \

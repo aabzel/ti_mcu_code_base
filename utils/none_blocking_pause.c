@@ -6,16 +6,23 @@
 #include "task_info.h"
 #endif
 #include "timer_utils.h"
+#ifdef HAS_FREE_RTOS
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#endif
 
 /* 49 days max*/
 /*none blocking wait for self test and polling*/
 bool wait_in_loop_ms(uint32_t wait_pause_ms) {
-    uint32_t start_ms = 0U;
-    uint32_t curr_ms = 0U;
     bool res = false;
 #ifdef HAS_FREE_RTOS
-    // vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
+   vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
+   res = true;
 #endif
+
+#ifdef NORTOS
+    uint32_t start_ms = 0U;
+    uint32_t curr_ms = 0U;
     start_ms = get_time_ms32();
     bool loop = true;
 #ifdef HAS_SUPER_LOOP
@@ -33,14 +40,21 @@ bool wait_in_loop_ms(uint32_t wait_pause_ms) {
             break;
         }
     }
+#endif
     return res;
 }
 
 bool wait_ms(int32_t wait_pause_ms) {
+    bool res = false;
+#ifdef HAS_FREE_RTOS
+  	vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
+   	res = true;
+#endif /*HAS_FREE_RTOS*/
+
+#ifdef NORTOS
     uint32_t start_ms = 0U;
     uint32_t curr_ms = 0U;
     uint32_t cnt = 0;
-    bool res = false;
     start_ms = get_time_ms32();
     bool loop = true;
     int32_t diff_ms = 0;
@@ -59,6 +73,7 @@ bool wait_ms(int32_t wait_pause_ms) {
             break;
         }
     }
+#endif
     return res;
 }
 

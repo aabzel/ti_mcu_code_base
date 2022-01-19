@@ -68,8 +68,8 @@ static void uart0_rx_thread(void *arg){
     	    }
     	}
     	//vTaskYield();
-    	taskYIELD();
-    	//vTaskDelay(10 / portTICK_RATE_MS);
+    	//taskYIELD();
+    	vTaskDelay(10 / portTICK_RATE_MS);
 	}
 }
 

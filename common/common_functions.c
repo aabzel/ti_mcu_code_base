@@ -117,11 +117,11 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_WDT, 1000, proc_watchdog, loop_start_time_us);
 #endif /*HAS_WDT*/
 
-#ifdef HAS_LED
+#if HAS_LED && !defined(HAS_FREE_RTOS)
     measure_task_interval(TASK_ID_LED, LED_POLL_PERIOD_US, proc_leds, loop_start_time_us);
 #endif /*HAS_LED*/
 
-#ifdef HAS_CLI
+#if defined(HAS_CLI) && !defined(HAS_FREE_RTOS)
     measure_task_interval(TASK_ID_CLI, 1000, cli_process, loop_start_time_us);
 #endif /*HAS_CLI*/
 
@@ -166,7 +166,7 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_RF, 3000, rf_process, loop_start_time_us);
 #endif /*HAS_RF*/
 
-#ifdef HAS_SX1262
+#if defined(HAS_SX1262) && !defined(HAS_FREE_RTOS)
     measure_task_interval(TASK_ID_SX1262, SX1262_PERIOD_US, sx1262_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
 
@@ -227,8 +227,8 @@ _Noreturn void super_main_loop(void) {
 #endif /*HAS_DEBUG*/
         super_loop(loop_start_time_us);
 #ifdef HAS_FREE_RTOS
-        taskYIELD();
-        // vTaskDelay(5 / portTICK_PERIOD_MS);
+        //taskYIELD();
+        vTaskDelay(5 / portTICK_PERIOD_MS);
 #endif
     }
 }

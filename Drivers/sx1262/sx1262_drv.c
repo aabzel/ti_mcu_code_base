@@ -1032,11 +1032,11 @@ bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
     if(NULL != out_status) {
         uint8_t rx_array[2] = {0xFF, 0xFF};
-#ifdef ESP32
-        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
-#else
         uint8_t tx_array = 0;
         res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
+#ifdef ESP32
+//        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
+#else
 #endif
         *out_status = rx_array[1];
     }
@@ -1700,7 +1700,7 @@ bool sx1262_init(void) {
 
     if(true==res){
 #ifdef HAS_FREE_RTOS
-        //xTaskCreate(sx1262_thread, "sx1262", 5000, NULL, 10, NULL);
+        xTaskCreate(sx1262_thread, "sx1262", 5000, NULL, 10, NULL);
 #endif /*HAS_FREE_RTOS*/
     }
     return res;

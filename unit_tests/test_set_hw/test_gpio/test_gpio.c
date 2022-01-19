@@ -1,6 +1,6 @@
 #include "test_gpio.h"
 
-#include <gpio.h>
+//#include <gpio.h>
 #include <string.h>
 
 #include "clocks.h"
@@ -35,13 +35,19 @@ static bool test_gpio_pin(uint8_t dio_number) {
 }
 
 bool test_gpio_write(void) {
+#ifdef HAS_CAN
     EXPECT_TRUE(test_gpio_pin(DIO_CAN_SS));
     EXPECT_TRUE(test_gpio_pin(DIO_CAN_RST));
+#endif
+#ifdef HAS_GNSS
     EXPECT_TRUE(test_gpio_pin(DIO_GNSS_RST_N));
+#endif
     EXPECT_TRUE(test_gpio_pin(DIO_SX1262_RST));
     EXPECT_TRUE(test_gpio_pin(DIO_SX1262_SS));
     EXPECT_TRUE(test_gpio_pin(DIO_LED_RED));
+#ifdef DIO_LED_GREEN
     EXPECT_TRUE(test_gpio_pin(DIO_LED_GREEN));
+#endif
 
 #ifdef HAS_IO_BANG
     EXPECT_TRUE(test_gpio_pin(DIO_SCLK));
@@ -83,11 +89,14 @@ bool test_gpio_write_pwr_mux_ctrl(void) {
 }
 #endif
 
+#ifdef DIO_PS_RS232
 bool test_gpio_write_ps_rs232(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_PS_RS232));
     return true;
 }
+#endif
 
+#ifdef HAS_GNSS
 bool test_gpio_write_gnss_safeboot_n(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_GNSS_SAFEBOOT_N));
     return true;
@@ -103,40 +112,48 @@ bool test_gpio_write_gnss_int(void) {
     return true;
 }
 
+bool test_gpio_write_gnss_rst_n(void) {
+    EXPECT_TRUE(test_gpio_pin(DIO_GNSS_RST_N));
+    return true;
+}
+#endif
+
+#ifdef DIO_LED_GREEN
 bool test_gpio_write_led_green(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_LED_GREEN));
     return true;
 }
+#endif
 
 bool test_gpio_write_led_red(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_LED_RED));
     return true;
 }
 
+#ifdef HAS_CAN
 bool test_gpio_write_can_ss(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_CAN_SS));
     return true;
 }
+#endif
 
 bool test_gpio_write_sx1262_ss(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_SX1262_SS));
     return true;
 }
 
-bool test_gpio_write_gnss_rst_n(void) {
-    EXPECT_TRUE(test_gpio_pin(DIO_GNSS_RST_N));
-    return true;
-}
 
 bool test_gpio_write_sx1262_rst(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_SX1262_RST));
     return true;
 }
 
+#ifdef HAS_CAN
 bool test_gpio_write_can_rst(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_CAN_RST));
     return true;
 }
+#endif
 
 #if 0
 bool test_gpio_read(void) {

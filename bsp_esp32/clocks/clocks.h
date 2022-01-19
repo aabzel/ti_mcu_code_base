@@ -29,6 +29,8 @@ uint64_t get_time_ms64(void);
 uint64_t get_time_us(void);
 bool delay_ms(uint32_t delay_in_ms);
 void delay_us(uint32_t delay_in_us);
+void pause_1us(void );
+void pause_1ms(void);
 
 #ifdef __cplusplus
 }

@@ -44,7 +44,6 @@ extern "C" {
 #define NMEA_COMMANDS
 #endif
 
-
 #ifdef HAS_BMP180
 #include "bmp180_commands.h"
 #else

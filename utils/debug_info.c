@@ -104,7 +104,11 @@ static bool print_fw_type(void) {
 
 #ifdef HAS_MCU
 void print_sysinfo(void) {
+#ifdef HAS_CORTEX_M
     io_printf("Reset handler: 0x%x " CRLF, *((uint32_t*)0x00000004));
+    io_printf("top-of-stack: %x " CRLF, *((uint32_t*)0x00000000));
+    io_printf("boot memory start: %x " CRLF, *((uint32_t*)0x00000004));
+#endif
     // io_printf("addr of SystemInit() 0x%p" CRLF, SystemInit);
 #ifdef NORTOS
     io_printf("addr of main() 0x%p" CRLF, main);
@@ -113,8 +117,6 @@ void print_sysinfo(void) {
     io_printf("Flash: %u Byte" CRLF, ROM_SIZE);
     io_printf("RAM addr:   0x%08x....0x%08x " CRLF, RAM_START, RAM_END);
     io_printf("Flash addr: 0x%08x....0x%08x " CRLF, ROM_START, ROM_END);
-    io_printf("top-of-stack: %x " CRLF, *((uint32_t*)0x00000000));
-    io_printf("boot memory start: %x " CRLF, *((uint32_t*)0x00000004));
 }
 
 bool print_version(void) {

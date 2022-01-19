@@ -40,6 +40,11 @@
 			<locationURI>$%7BWORKSPACE_LOC%7D/boards/tBeamV1_1</locationURI>
 		</link>
 		<link>
+			<name>unit_tests</name>
+			<type>2</type>
+			<locationURI>$%7BWORKSPACE_LOC%7D/unit_tests</locationURI>
+		</link>
+		<link>
 			<name>utils</name>
 			<type>2</type>
 			<locationURI>$%7BWORKSPACE_LOC%7D/utils</locationURI>

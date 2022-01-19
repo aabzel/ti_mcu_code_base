@@ -9,6 +9,12 @@
 #include "common_functions.h"
 #include <ti/sysbios/knl/Task.h>
 #endif
+
+#ifdef HAS_FREE_RTOS
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#endif
+
 #include "data_utils.h"
 #ifndef X86_64
 #include "base_cmd.h"
@@ -98,25 +104,6 @@ static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const su
 }
 #endif
 
-#ifndef X86_64
-bool cli_init(void) {
-    bool res = false;
-    if(false == uart_string_reader_init(&cmd_reader)) {
-        cli_init_done = false;
-    } else {
-#ifdef HAS_CLI_CMD_HISTORY
-        memset(prev_cmd, 0x00, sizeof(prev_cmd));
-#endif
-        cli_cmd_len_max = 0;
-        cli_set_echo(true);
-        res = writer_init();
-        cli_output = true;
-        cli_init_done = true;
-        res = true;
-    }
-    return res;
-}
-#endif
 
 #ifndef X86_64
 bool cli_process(void) {
@@ -282,6 +269,27 @@ bool cli_toggle_echo(void) {
     return true;
 }
 
+
+#ifdef HAS_FREE_RTOS
+/*
+ * @brief   Application task entry point for the Project Zero.
+ *
+ * @param   a0, a1 - not used.
+ */
+static void cli_thread(void *arg) {
+    for(;;) {
+        cli_process();
+        /*Wait 100 ms*/
+    	vTaskDelay(100 / portTICK_RATE_MS);
+    }
+}
+
+void cli_create_task(void) {
+    xTaskCreate(cli_thread, "CLI", 5000, NULL, 10, NULL);
+}
+#endif /*HAS_TIRTOS*/
+
+
 #ifdef HAS_TIRTOS
 /*
  *
@@ -297,15 +305,12 @@ static void cli_thread(UArg a0, UArg a1) {
         Task_sleep(100);
     }
 }
+
 #define CLI_TASK_STACK_SIZE 2048
 #define CLI_TASK_PRIORITY 2
 uint8_t CliTaskStack[CLI_TASK_STACK_SIZE];
 Task_Struct cliTask;
-/*
- * @fn      bluetooth_create_task
- *
- * @brief   Task creation function for the Project Zero.
- */
+
 void cli_create_task(void) {
     Task_Params taskParams;
 
@@ -330,5 +335,25 @@ Arrow_t cli_arrows_parse(char cur_char) {
     prev_prev_char = prev_char;
     prev_char = cur_char;
     return arrow;
+}
+#endif
+
+#ifdef HAS_MCU
+bool cli_init(void) {
+    bool res = true;
+#ifdef HAS_CLI_CMD_HISTORY
+    memset(prev_cmd, 0x00, sizeof(prev_cmd));
+#endif
+    cli_cmd_len_max = 0;
+    cli_set_echo(true);
+    res = writer_init();
+    cli_output = true;
+    cli_init_done = true;
+    res = true;
+#ifdef HAS_FREE_RTOS
+    cli_create_task();
+#endif
+
+    return res;
 }
 #endif

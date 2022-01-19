@@ -39,6 +39,11 @@ uint64_t get_time_ms64(void) {
 	return (uint64_t)get_time_us()/1000;
 }
 
+void pause_1us(void ){
 
+}
 
+void pause_1ms(void){
+
+}
 

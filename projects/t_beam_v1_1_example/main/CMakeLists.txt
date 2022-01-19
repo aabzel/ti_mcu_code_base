@@ -44,6 +44,22 @@ list(APPEND PATH_INC ${PATH_WORKSPACE}"/utils/crc")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/lora")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/sx1262")
 
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_list.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/unit_test_commands.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/unit_test_run.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/unit_test.c")
+
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_spi/test_spi.c")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_spi")
+
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_gpio")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_gpio/test_gpio.c")
+
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_sx1262")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_sx1262/test_sx1262.c")
+
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/crc/crc8_sae_j1850.c")
 
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/sx1262/sx1262_registers.c")
@@ -67,6 +83,7 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/bit_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_math/utils_math.c")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/utils/utils_math")
 
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/print_buffer.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/none_blocking_pause.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/lora/lora_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/array.c")
@@ -85,6 +102,7 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/ostream.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/uart_string_reader.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/writer_config.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/writer_generic.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_hw_list.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/writer_uart.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/read_mem.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/time_utils.c")
@@ -96,4 +114,4 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_string/str_utils.c")
 idf_component_register(SRCS "main_thread.c" ${PATH_SRC}
                        INCLUDE_DIRS ${PATH_INC})
 # 
-target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_MCU -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI2  -Wno-stringop-overflow)
+target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_MCU -DHAS_TEST_GPIO -DHAS_TEST_SPI -DHAS_TEST_SX1262 -DHAS_UNIT_TEST -DHAS_HW_TESTS -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI2  -Wno-stringop-overflow)
