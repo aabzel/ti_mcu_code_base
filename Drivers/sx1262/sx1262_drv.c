@@ -13,6 +13,11 @@ speed up to 16 MHz
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef HAS_FREE_RTOS
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#endif /*HAS_FREE_RTOS*/
+
 #include "array.h"
 #include "bit_utils.h"
 #include "board_layout.h"
@@ -162,6 +167,9 @@ bool sx1262_wait_on_busy(uint32_t time_out_ms) {
             break;
         }
     }
+    if(false==res){
+    	LOG_ERROR(LORA, "WaitBusyErr");
+    }
     return res;
 }
 
@@ -195,6 +203,7 @@ static bool check_sync_word(uint64_t sync_word) {
         res = sx1262_get_sync_word(&read_sync_word);
         if(res) {
             if(sync_word == read_sync_word) {
+            	LOG_INFO(LORA, "Sx1262 Connected!");
                 res = true;
             } else {
                 LOG_ERROR(LORA, "Set:0x%llx Read:0x%llx", sync_word, read_sync_word);
@@ -234,6 +243,9 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
             res = spi_read((SpiName_t)SX1262_SPI_NUM, out_rx_array, rx_array_len) && res;
         }
     }
+    if(false==res){
+    	LOG_ERROR(LORA, "OpCodeProckError 0x%02x", op_code);
+    }
 
     return res;
 }
@@ -242,6 +254,9 @@ bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_le
                         uint16_t rx_array_len) {
     bool res = false;
     SX1262_CHIP_SELECT(sx1262_send_opcode_proc(op_code, tx_array, tx_array_len, rx_array, rx_array_len));
+    if(false==res){
+    	LOG_ERROR(LORA, "OpCodeError 0x%02x", op_code);
+    }
     return res;
 }
 /*
@@ -629,8 +644,17 @@ bool is_valid_bandwidth(BandWidth_t bandwidth) {
 bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
     bool res = false, res1 = false, res2 = false, res3 = false;
     res1 = is_valid_bandwidth(modParams->band_width);
+    if(false==res1){
+    	 LOG_ERROR(LORA, "BandWidthError %u",modParams->band_width);
+    }
     res2 = is_valid_coding_rate(modParams->coding_rate);
+    if(false==res2){
+    	 LOG_ERROR(LORA, "CodingRateError %u", modParams->coding_rate);
+    }
     res3 = is_valid_spreading_factor(modParams->spreading_factor);
+    if(false==res3){
+    	 LOG_ERROR(LORA, "SpreadingFactorError %u", modParams->spreading_factor);
+    }
     if(res1 && res2 && res3) {
         uint8_t tx_array[8]; /**/
         memset(tx_array, 0x00, sizeof(tx_array));
@@ -784,6 +808,7 @@ static bool sx1262_init_gpio(void) {
     gpio_set_state(DIO_SX1262_RST, 1);
     return res;
 }
+
 bool sx1262_reset(void) {
     bool res = true;
     gpio_set_state(DIO_SX1262_RST, 1);
@@ -833,7 +858,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->packet_param.proto.lora.invert_iq = IQ_SETUP_STANDARD;
     sx1262Instance->packet_param.proto.lora.preamble_length = DFLT_PREAMBLE_LEN;
     sx1262Instance->packet_param.proto.lora.payload_length = 255;
-
+    sx1262Instance->output_power = DFLT_OUT_POWER;
     sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
     sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
@@ -900,113 +925,6 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 #endif /*HAS_SX1262_BIT_RATE*/
 #endif /*HAS_FLASH_FS*/
     return out_res;
-}
-
-bool sx1262_init(void) {
-    bool res = true;
-#ifdef HAS_DEBUG
-    // res = set_log_level(LORA, LOG_LEVEL_DEBUG);
-    // Sx1262Instance.debug = true;
-    // Sx1262Instance.show_ascii = true;
-#else
-    Sx1262Instance.debug = false;
-    Sx1262Instance.show_bin = false;
-    res = set_log_level(LORA, LOG_LEVEL_INFO);
-#endif
-    LOG_INFO(LORA, "Init SX1262");
-    Sx1262Instance.tx_mute = false;
-    Sx1262Instance.check_connectivity = true;
-    Sx1262Instance.sync_rssi = true;
-    static uint8_t call_cnt = 0;
-    if(0 == call_cnt) {
-        memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
-    }
-    call_cnt = 1;
-    Sx1262Instance.tx_done = true;
-    res = sx1262_load_params(&Sx1262Instance);
-    if(false == res) {
-        LOG_WARNING(LORA, "LackOfParam");
-    }
-
-    Sx1262Instance.bit_rate =
-        lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
-                            Sx1262Instance.mod_params.coding_rate);
-    LOG_INFO(LORA, "data rate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
-
-#ifdef HAS_LEGAL_BAND_CHECK
-    uint32_t bandwidth_hz = bandwidth2num(Sx1262Instance.mod_params.band_width);
-    res = is_band_legal(Sx1262Instance.rf_frequency_hz, bandwidth_hz);
-    if(false == res) {
-        LOG_WARNING(LORA, "illegal frequencies %u...%u Hz", Sx1262Instance.rf_frequency_hz - bandwidth_hz / 2,
-                    Sx1262Instance.rf_frequency_hz + bandwidth_hz / 2);
-    } else {
-        LOG_INFO(LORA, "frequency setting are legal %u...%u Hz", Sx1262Instance.rf_frequency_hz - bandwidth_hz / 2,
-                 Sx1262Instance.rf_frequency_hz + bandwidth_hz / 2);
-    }
-#endif /*HAS_LEGAL_BAND_CHECK*/
-    gpio_set_state(DIO_SX1262_SS, 1);
-    res = sx1262_init_gpio() && res;
-    LOG_WARNING(LORA, "StartWaitBusy");
-    res = sx1262_reset() && res;
-    res = sx1262_wait_on_busy(10000);
-    if(false == res) {
-        LOG_ERROR(LORA, "ChipBusy");
-    }else{
-    	LOG_INFO(LORA, "ChipSpare!");
-    }
-
-    if(res) {
-        res = sx1262_is_exist();
-    }
-    if(true == res) {
-        res = sx1262_wakeup() && res;
-
-        res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
-
-        res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
-
-        res = sx1262_set_regulator_mode(REG_MODE_ONLY_LDO) && res;
-
-        res = sx1262_clear_fifo() && res;
-        res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-
-        res = sx1262_clear_dev_error() && res;
-
-        res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
-
-        res = sx1262_set_standby(STDBY_XOSC);
-
-        res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
-        if(false == res) {
-            LOG_ERROR(LORA, "SX1262SetModParErr");
-        }
-
-        res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
-
-        res = sx1262_set_dio_irq_params(IQR_MAIN_INT, IQR_MAIN_INT, IQR_MAIN_INT, IQR_MAIN_INT) && res;
-        res = sx1262_set_dio2_as_rf_switch_ctrl(DIO2_RF_SW) && res;
-
-        res = sx1262_set_crc_poly(Sx1262Instance.crc_poly) && res;
-        res = sx1262_set_crc_seed(Sx1262Instance.crc_init) && res;
-        res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
-        res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
-
-        res = sx1262_start_rx(0xFFFFFF) && res;
-
-        res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
-        // res = sx1262_conf_rx() && res;
-
-        // Sx1262Instance.set_sync_word = SYNC_WORD;
-
-        Sx1262Instance.sync_reg = true;
-        res = sx1262_start_rx(0xFFFFFF) && res;
-    } else {
-        LOG_ERROR(LORA, "SX1262 link error");
-    }
-    if(false == res) {
-        task_data[TASK_ID_LORA].on = false;
-    }
-    return res;
 }
 
 static bool sx1262_set_tx(uint32_t timeout_s) {
@@ -1113,9 +1031,13 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
 bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
     if(NULL != out_status) {
-        uint8_t tx_array = 0;
         uint8_t rx_array[2] = {0xFF, 0xFF};
+#ifdef ESP32
+        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
+#else
+        uint8_t tx_array = 0;
         res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
+#endif
         *out_status = rx_array[1];
     }
     return res;
@@ -1474,7 +1396,7 @@ static inline bool sx1262_poll_status(void) {
             res = false;
             break;
         case COM_STAT_EXE_ERR:
-            LOG_ERROR(LORA, "Failure to execute command"); /**/
+            LOG_ERROR(LORA, "FailureToExecuteCommand"); /**/
             res = false;
             break;
         case COM_STAT_COM_TX_DONE: {
@@ -1653,6 +1575,134 @@ bool sx1262_process(void) {
         res = sx1262_init();
     }
 
+    return res;
+}
+
+#ifdef HAS_FREE_RTOS
+static void sx1262_thread(void *arg){
+    while (1) {
+    	sx1262_process();
+    	//vTaskYield();
+    	//taskYIELD();
+    	vTaskDelay((SX1262_PERIOD_US/1000) / portTICK_RATE_MS);
+	}
+}
+#endif /*HAS_FREE_RTOS*/
+
+
+bool sx1262_init(void) {
+    bool res = true;
+#ifdef HAS_DEBUG
+    // res = set_log_level(LORA, LOG_LEVEL_DEBUG);
+    // Sx1262Instance.debug = true;
+    // Sx1262Instance.show_ascii = true;
+#else
+    Sx1262Instance.debug = false;
+    Sx1262Instance.show_bin = false;
+    res = set_log_level(LORA, LOG_LEVEL_INFO);
+#endif
+    LOG_INFO(LORA, "Init SX1262");
+    Sx1262Instance.tx_mute = false;
+    Sx1262Instance.check_connectivity = true;
+    Sx1262Instance.sync_rssi = true;
+    static uint8_t call_cnt = 0;
+    if(0 == call_cnt) {
+        memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
+    }
+    call_cnt = 1;
+    Sx1262Instance.tx_done = true;
+    res = sx1262_load_params(&Sx1262Instance);
+    if(false == res) {
+        LOG_WARNING(LORA, "LackOfParam");
+    }
+
+    Sx1262Instance.bit_rate =
+        lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
+                            Sx1262Instance.mod_params.coding_rate);
+    LOG_INFO(LORA, "data rate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
+
+#ifdef HAS_LEGAL_BAND_CHECK
+    uint32_t bandwidth_hz = bandwidth2num(Sx1262Instance.mod_params.band_width);
+    res = is_band_legal(Sx1262Instance.rf_frequency_hz, bandwidth_hz);
+    if(false == res) {
+        LOG_WARNING(LORA, "illegal frequencies %u...%u Hz", Sx1262Instance.rf_frequency_hz - bandwidth_hz / 2,
+                    Sx1262Instance.rf_frequency_hz + bandwidth_hz / 2);
+    } else {
+        LOG_INFO(LORA, "frequency setting are legal %u...%u Hz", Sx1262Instance.rf_frequency_hz - bandwidth_hz / 2,
+                 Sx1262Instance.rf_frequency_hz + bandwidth_hz / 2);
+    }
+#endif /*HAS_LEGAL_BAND_CHECK*/
+    gpio_set_state(DIO_SX1262_SS, 1);
+    res = sx1262_init_gpio() && res;
+    LOG_WARNING(LORA, "StartWaitBusy");
+    res = sx1262_reset() && res;
+    res = sx1262_wait_on_busy(10000);
+    if(false == res) {
+        LOG_ERROR(LORA, "ChipBusy");
+    }else{
+    	LOG_INFO(LORA, "ChipSpare!");
+    }
+
+    if(res) {
+        res = sx1262_is_exist();
+    }
+    if(true == res) {
+        res = sx1262_wakeup() && res;
+
+        res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
+
+        res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
+
+        res = sx1262_set_regulator_mode(REG_MODE_ONLY_LDO) && res;
+
+        res = sx1262_clear_fifo() && res;
+        res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
+
+        res = sx1262_clear_dev_error() && res;
+
+        res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
+
+        res = sx1262_set_standby(STDBY_XOSC);
+        if(false == res) {
+            LOG_ERROR(LORA, "SetStandByErr");
+        }
+
+        res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
+        if(false == res) {
+            LOG_ERROR(LORA, "SX1262SetModParErr");
+        }
+
+        res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
+
+        res = sx1262_set_dio_irq_params(IQR_MAIN_INT, IQR_MAIN_INT, IQR_MAIN_INT, IQR_MAIN_INT) && res;
+        res = sx1262_set_dio2_as_rf_switch_ctrl(DIO2_RF_SW) && res;
+
+        res = sx1262_set_crc_poly(Sx1262Instance.crc_poly) && res;
+        res = sx1262_set_crc_seed(Sx1262Instance.crc_init) && res;
+        res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
+        res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
+
+        res = sx1262_start_rx(0xFFFFFF) && res;
+
+        res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
+        // res = sx1262_conf_rx() && res;
+
+        // Sx1262Instance.set_sync_word = SYNC_WORD;
+
+        Sx1262Instance.sync_reg = true;
+        res = sx1262_start_rx(0xFFFFFF) && res;
+    } else {
+        LOG_ERROR(LORA, "SX1262 link error");
+    }
+    if(false == res) {
+        task_data[TASK_ID_LORA].on = false;
+    }
+
+    if(true==res){
+#ifdef HAS_FREE_RTOS
+        //xTaskCreate(sx1262_thread, "sx1262", 5000, NULL, 10, NULL);
+#endif /*HAS_FREE_RTOS*/
+    }
     return res;
 }
 

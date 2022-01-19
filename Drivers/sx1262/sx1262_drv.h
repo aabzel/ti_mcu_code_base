@@ -11,6 +11,7 @@
 #include "bit_utils.h"
 #include "board_layout.h"
 #include "gfsk_types.h"
+#include "log.h"
 #include "lora_constants.h"
 #include "sx1262_config.h"
 #include "sx1262_op_codes.h"
@@ -41,7 +42,7 @@ extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(0);                                                                                  \
+        res = sx1262_wait_on_busy(1000);                                                                                  \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             res = sx1262_chip_select(true);                                                                            \
@@ -51,6 +52,7 @@ extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
             res = sx1262_chip_select(false);                                                                           \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \
+            LOG_ERROR(LORA,"SX1262Busy");                                                                              \
             res = false;                                                                                               \
         }                                                                                                              \
     } while(0);
