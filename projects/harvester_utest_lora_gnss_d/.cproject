@@ -196,6 +196,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\boards\harvester_v1\harvester_v1.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\bsp_cc26x2\bsp.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\Drivers\zed_f9p\zed_f9p.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\utils\io_utils\io.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests\unit_tests.opt"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.425241768" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>

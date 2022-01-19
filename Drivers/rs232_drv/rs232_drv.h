@@ -7,7 +7,11 @@
 #include "clocks.h"
 #include "sys_config.h"
 
+#ifdef HAS_CLI
 #define UART_NUM_RS232 UART_NUM_CLI
+#else
+#define UART_NUM_RS232 0
+#endif
 #define RS232_PERIOD_US S_2_US(5)
 
 typedef struct xRS232_t {

@@ -2,8 +2,9 @@
 
 #include <stdbool.h>
 #include <time.h>
-
+#ifdef HAS_LOG
 #include "log.h"
+#endif
 #ifdef HAS_MCU
 #include "time_diag.h"
 #endif
@@ -125,7 +126,9 @@ static uint32_t struct_to_counter(struct tm* t) {
 
     /* Leap year? adjust February */
     if((year % 400) == 0 || ((year % 4) == 0 && (year % 100) != 0)) {
+#ifdef HAS_LOG
         LOG_DEBUG(LG_CAL, "leap year:%u", year);
+#endif
     } else {
         if(1 < t->tm_mon) {
             counter--;
@@ -137,7 +140,9 @@ static uint32_t struct_to_counter(struct tm* t) {
 
     /* Convert to seconds, add all the other stuff */
     counter = (counter - 1) * 86400L + (uint32_t)t->tm_hour * 3600 + (uint32_t)t->tm_min * 60 + t->tm_sec;
+#ifdef HAS_LOG
     LOG_DEBUG(LG_CAL, "counter:%u=0x%x", counter, counter);
+#endif
     return counter;
 }
 
@@ -148,7 +153,9 @@ uint32_t calendar_settime(struct tm* date_time) {
 #endif
     res = is_valid_time_date(date_time);
     if(res) {
+#ifdef HAS_LOG
         LOG_DEBUG(LG_CAL, "valid date time");
+#endif
         g_sec = struct_to_counter(date_time);
 #ifdef HAS_RTC
         SwRtc.raw_sec = g_sec;
@@ -171,13 +178,17 @@ bool calendar_init(void) {
     if(res) {
         calendar_settime(&date_time);
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(LG_CAL, "TimeParseErr");
+#endif
     }
     res = date_parse(&date_time, __DATE__);
     if(res) {
         calendar_settime(&date_time);
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(LG_CAL, "DateParseErr");
+#endif
     }
     return res;
 }

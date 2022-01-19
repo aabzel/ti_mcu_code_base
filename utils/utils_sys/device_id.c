@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 #include "core_driver.h"
-#include "io_utils.h"
 #include "read_mem.h"
 #include "str_utils.h"
 #include "version.h"

@@ -24,7 +24,6 @@ char* BitRate2Str(double bit_rate);
 const char* PacketType2Str(uint8_t packet_type);
 const char* LoraHeaderType2Str(uint8_t header_type);
 const char* LoraCrcType2Str(uint8_t crc_type);
-uint32_t bandwidth2num(BandWidth_t bandwidth);
 bool parse_dev_stat(uint8_t dev_stat);
 bool parse_irq_stat(Sx1262IRQs_t irq_stat);
 bool parse_op_error(uint16_t op_error);

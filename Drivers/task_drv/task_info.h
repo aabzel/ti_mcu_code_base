@@ -4,7 +4,9 @@
 #include <stdint.h>
 
 #include "data_utils.h"
+#ifdef HAS_LOG
 #include "oprintf.h"
+#endif
 #include "sys.h"
 #include "task_config.h"
 
@@ -49,7 +51,8 @@ uint64_t calc_total_run_time(void) ;
 bool task_init(void);
 bool measure_task_interval(uint16_t task_id, uint64_t interval_us, bool (*task_func)(void),
                            uint64_t loop_start_time_us);
+#ifdef HAS_LOG
 bool diag_page_tasks(ostream_t* stream);
-
+#endif
 
 #endif /* SRC_TASK_INFO_H */

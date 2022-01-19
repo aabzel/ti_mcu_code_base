@@ -8,7 +8,9 @@
 #include <ti/drivers/Watchdog.h>
 #include <ti/drivers/watchdog/WatchdogCC26XX.h>
 
+#ifdef HAS_LOG
 #include "log.h"
+#endif
 
 WatchDog_t WatchDog;
 static Watchdog_Handle watchdogHandle;
@@ -97,7 +99,9 @@ bool watchdog_init(void) {
 bool proc_watchdog(void) {
     bool res = false;
     if(WatchDog.time_out) {
+#ifdef HAS_LOG
         LOG_ERROR(WDT, "TimeOut");
+#endif
     }
     if(WatchDog.is_on) {
         Watchdog_clear(watchdogHandle);

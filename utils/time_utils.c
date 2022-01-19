@@ -16,7 +16,7 @@
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
 #endif /*HAS_ZED_F9P*/
-#ifdef HAS_MCU
+#ifdef HAS_LOG
 #include "log.h"
 #endif
 #include "convert.h"

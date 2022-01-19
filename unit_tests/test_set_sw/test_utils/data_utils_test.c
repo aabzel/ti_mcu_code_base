@@ -23,8 +23,20 @@ bool test_extract_digit(void) {
   return true;
 }
 
+typedef struct xZeroStruct_t{
+    uint16_t ff[0];
+}ZeroStruct_t;
+
+struct xZeroStruct2_t{
+    uint16_t ff[0];
+}zero_struct;
+
 /*tsr data_utils+*/
 bool test_data_utils(void) {
+  EXPECT_EQ( 0,sizeof(ZeroStruct_t)); //0 on PC
+  EXPECT_EQ( 0,sizeof(zero_struct)); //0 on PC
+  EXPECT_EQ( 8,sizeof(1.1));
+  EXPECT_EQ( 4,sizeof(1.1f));
   EXPECT_EQ( 8,ceil4byte(7));
   EXPECT_EQ( 4,ceil4byte(4));
   EXPECT_EQ( 8,ceil4byte(8));

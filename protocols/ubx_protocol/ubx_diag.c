@@ -47,7 +47,7 @@ char* class2str(uint8_t class_id) {
     }
     return name;
 }
-
+#ifdef HAS_LOG
 bool ubx_print_frame(uint8_t* frame) {
     bool res = false;
     io_printf(CRLF "%s ", class2str(frame[UBX_INDEX_CLS]));
@@ -58,3 +58,4 @@ bool ubx_print_frame(uint8_t* frame) {
     io_printf(CRLF);
     return res;
 }
+#endif

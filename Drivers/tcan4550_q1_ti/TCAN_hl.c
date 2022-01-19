@@ -3,12 +3,16 @@
 #include <stdbool.h>
 
 #include "TCAN4550.h"
+#ifdef HAS_LOG
 #include "log.h"
+#endif
 #include "tcan4550_drv.h"
 
 bool init_tcan(void) {
     bool res = true;
+#ifdef HAS_LOG
     set_log_level(CAN, LOG_LEVEL_NOTICE);
+#endif
     CanPhy.cur.int_cnt = 0;
     tcan4550_reset();
 

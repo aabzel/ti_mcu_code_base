@@ -12,8 +12,10 @@
 #include "data_utils.h"
 #include "flash_fs_ll.h"
 #include "flash_nvs_drv.h"
+#ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
+#endif
 #include "memory_layout.h"
 #include "param_ids.h"
 
@@ -354,7 +356,9 @@ bool mm_maintain(void) {
         res = true;
         if(rem_space < MIN_FILE_LEN) {
             /* we have not enough space to fit minimal payload file, turn the page */
+#ifdef HAS_LOG
             LOG_INFO(FLASH_FS, "Toggle NVS pages");
+#endif
             res = mm_turn_page(); /*Long procedure*/
         }
     }
@@ -583,27 +587,39 @@ bool flash_fs_init(void) {
     uint32_t mm_page_len = 0;
     res = mm_get_active_page(&mm_page_start, &mm_page_len);
     if(false == res) {
+#ifdef HAS_LOG
         LOG_WARNING(FLASH_FS, "format Flash FS");
+#endif
         res = mm_flash_format();
     } else {
+#ifdef HAS_LOG
         LOG_INFO(FLASH_FS, "start: 0x%08x len %u", mm_page_start, mm_page_len);
+#endif
     }
     uint16_t reboot_cnt = 0;
     uint16_t file_len = 0;
     res = mm_get(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt), &file_len);
     if(res) {
         reboot_cnt++;
+#ifdef HAS_LOG
         LOG_INFO(FLASH_FS, "reboot cnt: %u", reboot_cnt);
+#endif
         res = mm_set(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt));
         if(false == res) {
+#ifdef HAS_LOG
             LOG_ERROR(FLASH_FS, "RebootCntSetErr");
+#endif
         }
     } else {
+#ifdef HAS_LOG
         LOG_WARNING(FLASH_FS, "lack of reboot counter");
+#endif
         reboot_cnt = 0;
         res = mm_set(PAR_ID_REBOOT_CNT, (uint8_t*)&reboot_cnt, sizeof(reboot_cnt));
         if(false == res) {
+#ifdef HAS_LOG
             LOG_WARNING(FLASH_FS, "ResetRebootCounter");
+#endif
         }
     }
     return res;

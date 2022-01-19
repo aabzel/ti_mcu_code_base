@@ -80,7 +80,9 @@ digraph graphname {
     FlashFs->BootLoader;
     CLI->BootLoader;
     RS232->BootLoader;
-    UART->CLI;
+    UART->LOG;
+	LORA->LOG;
+	LOG->CLI;
     UART->NMEA;
     UART->RS232;
     UART->RTCM3;

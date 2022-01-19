@@ -11,8 +11,10 @@
 #include "common_functions.h"
 #include "task_info.h"
 #endif
+#ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
+#endif
 #include "ublox_driver.h"
 
 UbloxProtocol_t UbloxProtocol = {0};
@@ -161,12 +163,18 @@ static bool proc_ublox_wait_crc(uint8_t rx_byte) {
             UbloxProtocol.unproc_frame = true;
 #ifdef HAS_MCU
             UbloxProtocol.rx_time_stamp = get_time_ms32();
+#endif /*HAS_MCU*/
+#ifdef HAS_LOG
             LOG_DEBUG(UBX, "Rx frame class id: 0x%02x 0x%02x len %u", UbloxProtocol.fix_frame[UBX_INDEX_CLS],
                       UbloxProtocol.fix_frame[UBX_INDEX_ID], len);
+#endif
+#ifdef HAS_MCU
             res = ubx_proc_frame(&UbloxProtocol);
+#ifdef HAS_LOG
             if(res) {
                 LOG_DEBUG(UBX, "Rx proc done");
             }
+#endif
 #endif /*HAS_MCU*/
             ubx_reset_rx();
             res = true;

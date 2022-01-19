@@ -7,7 +7,10 @@
 #ifdef HAS_CLI
 #include "cli_manager.h"
 #endif
-
+#ifdef HAS_LOG
+#include "log.h"
+#include "io_utils.h"
+#endif
 #ifdef HAS_MCU
 #include "core_driver.h"
 #endif
@@ -21,8 +24,6 @@
 #endif
 #include "float_utils.h"
 #include "gnss_utils.h"
-#include "io_utils.h"
-#include "log.h"
 #ifdef HAS_LORA
 #include "lora_drv.h"
 #endif
@@ -37,7 +38,9 @@
 #endif
 #include "system.h"
 #include "tbfp_diag.h"
+#ifdef HAS_CLI
 #include "writer_config.h"
+#endif
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
 #endif
@@ -255,7 +258,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
     if(NULL != ping_payload) {
         TbfPingFrame_t pingFrame = {0};
         memcpy((void*)&pingFrame, (void*)ping_payload, sizeof(TbfPingFrame_t));
-#ifdef HAS_MCU
+#ifdef HAS_LOG
         tbfp_print_ping_frame(&pingFrame);
 #endif /*HAS_MCU*/
         if(FRAME_ID_PING == pingFrame.id) {
@@ -268,12 +271,18 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
             if(is_valid_gnss_coordinates(ZedF9P.coordinate_cur)) {
                 cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
                 azimuth = gnss_calc_azimuth_deg(ZedF9P.coordinate_cur, pingFrame.coordinate);
+#ifdef HAS_LOG
                 LOG_INFO(LORA, "LinkDistance %3.3f m %4.1f deg", cur_dist, azimuth);
+#endif
             } else {
+#ifdef HAS_LOG
                 LOG_ERROR(LORA, "InvalidLocalGNSSDot");
+#endif
             }
         } else {
+#ifdef HAS_LOG
             LOG_ERROR(LORA, "InvalidRemoteGNSSDot");
+#endif
         }
 #endif /*HAS_ZED_F9P*/
 
@@ -286,7 +295,9 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
 #if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
             res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&cur_dist, sizeof(double));
             if(false == res) {
+#ifdef HAS_LOG
                 LOG_ERROR(LORA, "UpdateMaxDist");
+#endif
             }
 #endif /*HAS_PARAM && HAS_FLASH_FS*/
             LoRaInterface.max_distance = cur_dist;
@@ -301,7 +312,9 @@ static bool tbfp_proc_chat(uint8_t* payload, uint16_t len) {
     bool res = false;
     if((NULL != payload) && (0 < len)) {
         res = true;
+#ifdef HAS_LOG
         res = print_mem(&payload[1], len - 1, false, true, true, true);
+#endif
     }
     return res;
 }
@@ -368,20 +381,20 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
             ok_cnt++;
         } else {
             err_cnt++;
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             LOG_ERROR(TBFP, "i=%u", i);
 #endif
         }
     }
     cur_rx_prk = TbfpProtocol[interface].rx_pkt_cnt - init_rx_prk;
     if(0 < cur_rx_prk) {
-#ifdef HAS_MCU
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "InPktCnt:%u in %u byte", cur_rx_prk, len);
 #endif
     } else {
 #ifdef HAS_DEBUG
         if(true == TbfpProtocol[interface].debug) {
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             LOG_ERROR(TBFP, "LackPkt:%u", len);
 #endif
             print_mem(arr, len, true, false, true, true);
@@ -415,7 +428,7 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
             TbfpProtocol[interface].max_con_flow =
                 max16(TbfpProtocol[interface].max_con_flow, TbfpProtocol[interface].con_flow);
         } else if((TbfpProtocol[interface].prev_s_num + 1) < inHeader.snum) {
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             uint32_t lost_frame_cnt = inHeader.snum - TbfpProtocol[interface].prev_s_num - 1;
             if((TbfpProtocol[interface].prev_s_num + 1) == (inHeader.snum - 1)) {
                 LOG_WARNING(TBFP, "Lost %u=%u Flow:%u", inHeader.snum - 1, lost_frame_cnt,

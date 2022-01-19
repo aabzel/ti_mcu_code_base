@@ -11,7 +11,9 @@
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
 #endif
+#ifdef HAS_CLI
 #include "log.h"
+#endif
 #include "param_types.h"
 #ifdef HAS_PWR_MUX
 #include "pwr_mux_diag.h"
@@ -91,12 +93,16 @@ bool param_init(void) {
         uint8_t value[FLASH_FS_MAX_FILE_SIZE];
         res = mm_get(ParamArray[i].id, value, ParamArray[i].len, &value_len);
         if(false == res) {
+#ifdef HAS_LOG
             LOG_WARNING(PARAM, "Param %u %s lacks in Flash FS", ParamArray[i].id, ParamArray[i].name);
+#endif
             res = true;
         } else {
             if(value_len != ParamArray[i].len) {
+#ifdef HAS_LOG
                 LOG_ERROR(PARAM, "Param %u %s len error in Flash FS RealLen:%u", ParamArray[i].id, ParamArray[i].name,
                           value_len);
+#endif
                 res = false;
                 out_res = false;
             }
@@ -345,10 +351,10 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         case PAR_ID_BASE_LOCATION : {
             name = coordinate2str((void*)value);
         }break;
+#endif /*HAS_ZED_F9P*/
         default:
             name = "UndefID";
             break;
-#endif /*HAS_ZED_F9P*/
         }// switch
     }
     return name;

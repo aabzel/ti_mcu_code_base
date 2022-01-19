@@ -8,9 +8,11 @@
 #ifdef HAS_MCU
 #include "clocks.h"
 #include "flash_fs.h"
-#include "io_utils.h"
-#include "led_drv.h"
+#ifdef HAS_LOG
 #include "log.h"
+#include "io_utils.h"
+#endif
+#include "led_drv.h"
 #include "param_ids.h"
 #endif
 
@@ -625,7 +627,7 @@ bool nmea_proc(void) {
         if(res) {
             NmeaData.time_date = NmeaData.zda.time_date;
         } else {
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             LOG_ERROR(NMEA, "InvalZdaTimeDate");
 #endif
         }
@@ -638,7 +640,7 @@ bool nmea_proc(void) {
         if(res) {
             NmeaData.time_date = NmeaData.rmc.time_date;
         } else {
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             LOG_ERROR(NMEA, "InvalidRmcTimeDate");
 #endif
         }
@@ -652,13 +654,13 @@ bool nmea_proc(void) {
             NmeaData.time_date.tm_min = NmeaData.gga.time_date.tm_min;
             NmeaData.time_date.tm_sec = NmeaData.gga.time_date.tm_sec;
         } else {
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             LOG_ERROR(NMEA, "InvalidGgaTimeDate");
 #endif
         }
     }
     /*If new coordinates had not been received in the last 3 seconds, then FW would have erased the old ones*/
-#ifdef HAS_MCU
+#ifdef HAS_LOG
     lack_of_frame_time_out_ms = (cur_time_ms - NmeaData.gnss_time_stamp);
     if(NMEA_LACK_FRAME_WARNING_TIME_OUT_MS < lack_of_frame_time_out_ms) {
         LOG_WARNING(NMEA, "LackOfFrame %u<%u s", NMEA_LACK_FRAME_WARNING_TIME_OUT_MS / 1000,

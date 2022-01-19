@@ -2,7 +2,11 @@
 
 #include <inttypes.h>
 
+#ifdef HAS_CLI
 #include "base_cmd.h"
+#include "table_utils.h"
+#include "writer_generic.h"
+#endif
 #ifdef HAS_SYSTIC
 #include "sys_tick.h"
 #endif
@@ -12,8 +16,6 @@
 #include "data_utils.h"
 #include "flash_drv.h"
 #include "sys.h"
-#include "table_utils.h"
-#include "writer_generic.h"
 
 uint64_t total_time0_us = 0;
 uint64_t total_time_ms0 = 0;

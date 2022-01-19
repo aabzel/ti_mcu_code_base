@@ -13,11 +13,15 @@
 #include "data_utils.h"
 #include "debug_info.h"
 #include "float_utils.h"
+#ifdef HAS_LOG
 #include "log.h"
+#endif
 #include "spi_drv.h"
 #include "sys_config.h"
 #include "tcan4550_diag.h"
+#ifdef HAS_CLI
 #include "writer_config.h"
+#endif
 
 const uint64_t exp_dev_id = 0x343535305443414E;
 
@@ -180,7 +184,9 @@ bool is_tcan4550_connected(void) {
 #endif
         }
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(CAN, "Unable to read reg");
+#endif
     }
     return res;
 }
@@ -916,8 +922,9 @@ bool tcan4550_configure_cccr_register(tCanRegCCctrl_t* CrtlReg) {
 
 bool tcan4550_init(void) {
     bool res = true;
+#ifdef HAS_LOG
     LOG_INFO(CAN, "init");
-
+#endif
     CanPhy.cur.int_cnt = 0;
     GPIO_writeDio(DIO_CAN_SS, 1);
     GPIO_writeDio(DIO_CAN_RST, 1);
@@ -1037,7 +1044,9 @@ bool tcan4550_init(void) {
 
 bool tcan4550_deinit(void) {
     bool res = true;
+#ifdef HAS_LOG
     LOG_WARNING(CAN, "deinit");
+#endif
     res = tcan4550_set_mode(MODE_SLEEP) && res;
     return res;
 }
@@ -1081,7 +1090,9 @@ bool tcan4550_set_bit_rate(uint32_t des_bit_rate) {
         reg.nbrp = bit_rate_prescaler;
         calc_bit_rate = tcan4550_calc_bit_rate(reg);
         if(calc_bit_rate == des_bit_rate) {
+#ifdef HAS_LOG
             LOG_INFO(CAN, "bit rate %u", calc_bit_rate);
+#endif
             res = true;
             break;
         }
@@ -1098,7 +1109,9 @@ bool tcan4550_set_bit_rate(uint32_t des_bit_rate) {
             res = tcan4550_set_lock(true) && res;
         }
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(CAN, "Unreal bit rate %u %u", des_bit_rate, nearest_bit_rate);
+#endif
     }
     return res;
 }
@@ -1113,7 +1126,9 @@ static bool tcan4550_poll_can_interrupts(void) {
 
         if(IntReg.rf0n) {
             IntReg.rf0n = 0;
+#ifdef HAS_CLI
             LOG_INFO(CAN, "Rx FIFO 0 New Message");
+#endif
             TCAN4x5x_MCAN_RX_Header MsgHeader = {0}; // Initialize to 0 or you'll get garbage
             uint8_t num_bytes = 0; // Used since the ReadNextFIFO function will return how many bytes of data were read
             uint8_t dataPayload[64] = {0}; // Used to store the received data
@@ -1121,39 +1136,53 @@ static bool tcan4550_poll_can_interrupts(void) {
             num_bytes = TCAN4x5x_MCAN_ReadNextFIFO(RXFIFO0, &MsgHeader,
                                                    dataPayload); // This will read the next element in the RX FIFO 0
             if(num_bytes) {
+#ifdef HAS_LOG
                 LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
                 print_mem(dataPayload, num_bytes, true, true, true, true);
+#endif
                 res = true;
             }
         }
         if(IntReg.rf0f) {
             IntReg.rf0f = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Rx FIFO 0 Full");
+#endif
         }
 
         if(IntReg.ped) {
             IntReg.ped = 0;
+#ifdef HAS_LOG
             LOG_ERROR(CAN, "Protocol Error in Data Phase");
+#endif
             tCanRegProtStat_t ProtoState = {0};
             res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
             if(res) {
+#ifdef HAS_LOG
                 tcan4550_parse_reg_proto_state(ProtoState.word);
+#endif
             }
         }
 
         if(IntReg.bo) {
             IntReg.bo = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Bus_Off Status");
+#endif
         }
 
         if(IntReg.ew) {
             IntReg.ew = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Warning Status");
+#endif
         }
 
         if(IntReg.ep) {
             IntReg.ep = 0;
+#ifdef HAS_LOG
             LOG_ERROR(CAN, "Error Passive");
+#endif
         }
         if(IntReg.tsw) {
             IntReg.tsw = 0;
@@ -1163,19 +1192,27 @@ static bool tcan4550_poll_can_interrupts(void) {
         }
         if(IntReg.hpm) {
             IntReg.hpm = 0;
+#ifdef HAS_LOG
             LOG_INFO(CAN, "High Priority Message");
+#endif
         }
         if(IntReg.pea) {
             IntReg.pea = 0;
+#ifdef HAS_LOG
             LOG_ERROR(CAN, "Protocol Error in Arbitration Phase");
+#endif
             tCanRegProtStat_t ProtoState = {0};
             res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
+#ifdef HAS_LOG
             if(res) {
                 tcan4550_parse_reg_proto_state(ProtoState.word);
             }
+#endif
         }
         if(IntReg.word) {
+#ifdef HAS_LOG
             LOG_ERROR(CAN, "UnProcessed Interrupt 0x%08x", IntReg.word);
+#endif
         }
 
         if(clear_bits) {
@@ -1195,89 +1232,131 @@ static bool tcan4550_poll_dev_interrupts(void) {
         clear_bits = reg.word;
         if(reg.vtwd) {
             reg.vtwd = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Global Voltage, Temp or WDTO");
+#endif
         }
         if(reg.m_can_int) {
             reg.m_can_int = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "M_CAN global INT");
+#endif
         }
         if(reg.spierr) {
             reg.spierr = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "SPI Error");
+#endif
             // TODO Explore SPI error
             tCanRegStatus_t stat_reg = {0};
             res = tcan4550_read_reg(ADDR_SPI_STATUS, &stat_reg.word);
+#ifdef HAS_LOG
             if(res) {
                 res = tcan4550_parse_reg_status(stat_reg.word);
             }
+#endif
             res = tcan4550_clear_spi_err();
         }
         if(reg.canerr) {
             reg.canerr = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "CAN Error");
+#endif
         }
         if(reg.wkrq) {
             reg.wkrq = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Wake Request");
+#endif
         }
         if(reg.globalerr) {
             reg.globalerr = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Global Error (Any Fault)");
+#endif
         }
         if(reg.candom) {
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "CAN Stuck Dominant");
+#endif
         }
         if(reg.canslnt) {
             reg.canslnt = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "CAN Silent");
+#endif
         }
         if(reg.wkerr) {
             reg.wkerr = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Wake Error");
+#endif
         }
         if(reg.lwu) {
             reg.lwu = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Local Wake Up");
+#endif
         }
         if(reg.canint) {
             reg.canint = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Can Bus Wake Up Interrupt");
+#endif
         }
         if(reg.eccerr) {
             reg.eccerr = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Uncorrectable ECC error detected");
+#endif
         }
         if(reg.wdto) {
             reg.wdto = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Watchdog Time Out");
+#endif
         }
         if(reg.tsd) {
             reg.tsd = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Thermal Shutdown ");
+#endif
         }
         if(reg.pwron) {
             reg.pwron = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Power ON");
+#endif
         }
         if(reg.uvio) {
             reg.uvio = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Under Voltage VIO");
+#endif
         }
         if(reg.uvsup) {
             reg.uvsup = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Under Voltage VSUP and UVCCOUT");
+#endif
         }
         if(reg.sms) {
             reg.sms = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "Sleep Mode Status");
+#endif
         }
         if(reg.canbusnom) {
             reg.canbusnom = 0;
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "CAN Bus normal");
+#endif
         }
 
         if(reg.word) {
+#ifdef HAS_LOG
             LOG_WARNING(CAN, "IntReg 0x%08x", reg.word);
+#endif
         }
 
         if(clear_bits) {
@@ -1300,7 +1379,9 @@ bool tcan4550_proc(void) {
     static CanDevMode_t prev_mode = MODE_UNDEF;
     CanPhy.cur.connected = is_tcan4550_connected();
     if(false == CanPhy.cur.connected) {
+#ifdef HAS_LOG
         LOG_ERROR(CAN, "TCAN4550 SPI link lost");
+#endif
         res = init_tcan();
     } else {
         tCanRegCCctrl_t ctrl_reg = {0};
@@ -1324,7 +1405,9 @@ bool tcan4550_proc(void) {
         CanPhy.cur.bit_rate = tcan4550_get_bit_rate();
         CanPhy.cur.mode = tcan4550_get_mode();
         if(prev_mode != CanPhy.cur.mode) {
+#ifdef HAS_LOG
             LOG_INFO(CAN, "new mode %s", can_mode2str(CanPhy.cur.mode));
+#endif
         }
 
         res = tcan4550_poll_interrupts();
@@ -1341,8 +1424,10 @@ bool tcan4550_proc(void) {
                 num_bytes = TCAN4x5x_MCAN_ReadNextFIFO((TCAN4x5x_MCAN_FIFO_Enum)fifo_num, &MsgHeader,
                                                        dataPayload); // This will read the next element in the RX FIFO 0
                 if(num_bytes) {
+#ifdef HAS_LOG
                     LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
                     print_mem(dataPayload, num_bytes, true, true, true, true);
+#endif
                     res = true;
                 }
             }

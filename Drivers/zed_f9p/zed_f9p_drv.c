@@ -6,13 +6,15 @@
 #ifdef HAS_CALENDAR
 #include "calendar.h"
 #endif
+#ifdef HAS_LOG
 #include "cli_manager.h"
+#include "log.h"
+#endif
 #include "clocks.h"
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
 #endif
 #include "gnss_diag.h"
-#include "log.h"
 #ifdef HAS_NMEA
 #include "nmea_protocol.h"
 #endif
@@ -41,7 +43,9 @@
 #include "ubx_key_ids.h"
 #include "ubx_protocol.h"
 #endif
+#ifdef HAS_CLI
 #include "writer_config.h"
+#endif
 #include "zed_f9p_diag.h"
 
 extern ZedF9P_t ZedF9P = {0};
@@ -56,7 +60,9 @@ static bool zed_f9p_proc_base(void) {
     if(res) {
         ZedF9P.coordinate_cur = ZedF9P.coordinate_base;
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "InvalGnssBaseDot");
+#endif
     }
 
     if(task_data[TASK_ID_NMEA].on) {
@@ -67,7 +73,9 @@ static bool zed_f9p_proc_base(void) {
     }
 
     if(IF_RS232 == ZedF9P.channel) {
+#ifdef HAS_CLI
         res = cli_set_echo(false);
+#endif
 #ifdef HAS_RTCM3
         Rtcm3Protocol[IF_UART1].lora_fwd = false;
         Rtcm3Protocol[IF_UART1].rs232_fwd = true;
@@ -100,30 +108,38 @@ bool zed_f9p_uptate_nmea(void) {
     res = is_valid_time_date(&NmeaData.time_date);
     if(res) {
         if(first_time) {
+#ifdef HAS_LOG
             LOG_INFO(ZED_F9P, "SpotValidTime!");
+            print_time_date(&NmeaData.time_date);
+#endif
 #ifdef HAS_CALENDAR
             calendar_settime(&NmeaData.time_date);
 #endif /*HAS_CALENDAR*/
-            print_time_date(&NmeaData.time_date);
             first_time = false;
         }
         ZedF9P.time_date = NmeaData.time_date;
         res_time = true;
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "InvalNmeaTimeDate");
+#endif
     }
 
     res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
     if(res) {
         if(first_gnss) {
+#ifdef HAS_LOG
             LOG_INFO(ZED_F9P, "SpotValidGNSSData!");
             print_coordinate(NmeaData.coordinate_dd, true);
+#endif
             first_gnss = false;
         }
         ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
         res_dot = true;
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "InvalNmeaGNSSDot");
+#endif
     }
 
     if(res_time && res_dot) {
@@ -146,7 +162,9 @@ static bool zed_f9p_proc_rover(void) {
 #endif
 
     if(IF_RS232 == ZedF9P.channel) {
+#ifdef HAS_CLI
         res = cli_set_echo(false);
+#endif
 #ifdef HAS_RS232
         rs232.ping = true;
 #endif
@@ -201,7 +219,9 @@ bool zed_f9p_proc(void) {
     if(res) {
         ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "Inval GNSS cur coordinate");
+#endif
     }
 
     return res;
@@ -268,7 +288,9 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
          */
         res = ubx_reset_to_dflt();
         if(false == res) {
+#ifdef HAS_LOG
             LOG_ERROR(ZED_F9P, "Set Dflt error");
+#endif
             out_res = false;
         }
         uint32_t i = 0;
@@ -295,7 +317,9 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
                 res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
                                       ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM);
                 if(false == res) {
+#ifdef HAS_LOG
                     LOG_ERROR(ZED_F9P, "Set 0x%x error", BaseCfgLut[i].key_id);
+#endif
                     out_res = false;
                 }
             }
@@ -315,10 +339,14 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
         data.svinAccLimit = 10 * fixed_position_3daccuracy_mm;
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_TMODE3, (uint8_t*)&data, sizeof(data));
         if(false == res) {
+#ifdef HAS_LOG
             LOG_ERROR(ZED_F9P, "SetBaseDotErr");
+#endif
             out_res = false;
         } else {
+#ifdef HAS_LOG
             LOG_INFO(ZED_F9P, "SetBaseDotOk");
+#endif
         }
 
         ZedF9P.rtk_mode = receiver_mode;
@@ -337,7 +365,9 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
 #endif /*HAS_RTCM3*/
 #endif /*HAS_UBLOX*/
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "InvalBaseGNSScoordinate");
+#endif
     }
     return out_res;
 }
@@ -374,7 +404,9 @@ bool zed_f9p_deploy_rover(void) {
      */
     res = ubx_reset_to_dflt();
     if(false == res) {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "Set Dflt error");
+#endif
         // out_res = false;
     }
 
@@ -386,58 +418,84 @@ bool zed_f9p_deploy_rover(void) {
                               ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM);
 
         if(false == res) {
+#ifdef HAS_LOG
             LOG_ERROR(ZED_F9P, "Key:0x%08x set Error", RoverCfgLut[i].key_id);
+#endif
             out_res = false;
         }
     }
     /*adjust output rate*/
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_UTC);
     if(false == res) {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "SetRateUtcErr");
+#endif
         out_res = false;
     }
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_GPS);
     if(false == res) {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "SetRateGpsErr");
+#endif
         out_res = false;
     }
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_GLONASS);
     if(false == res) {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "SetRateGloErr");
+#endif
         out_res = false;
     }
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_GALILEO);
     if(false == res) {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "SetRateGalErr");
+#endif
         out_res = false;
     }
     res = ubx_set_rate(ZedF9P.rate_ms, TIME_BEIDOU);
     if(false == res) {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "SetRateBeErr");
+#endif
         out_res = false;
     }
 #endif
     return out_res;
 }
-
+#ifdef HAS_LOG
 #define LOAD_PARAM_ZED(PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                                      \
     do {                                                                                                               \
         uint16_t file_len = 0;                                                                                         \
         res = mm_get(PAR_ID, (uint8_t*)&VARIABLE, sizeof(VARIABLE), &file_len);                                        \
         if((true == res) && ((EXP_LEN) == file_len)) {                                                                 \
             if((EXP_LEN)<=4) {                                                                                         \
-                LOG_INFO(ZED_F9P, "Set" VAR_NAME "FromParams %u [%s]", VARIABLE, PARSER_FUNC(VARIABLE));               \
+                HAS_LOG LOG_INFO(ZED_F9P, "Set" VAR_NAME "FromParams %u [%s]", VARIABLE, PARSER_FUNC(VARIABLE));               \
             }else{                                                                                                     \
-                LOG_INFO(ZED_F9P, "Set" VAR_NAME "FromParams [%s]", PARSER_FUNC(VARIABLE));                            \
+                HAS_LOG LOG_INFO(ZED_F9P, "Set" VAR_NAME "FromParams [%s]", PARSER_FUNC(VARIABLE));                            \
             }                                                                                                          \
         } else {                                                                                                       \
-            LOG_WARNING(ZED_F9P, "SetDflt" VAR_NAME " [%s]", PARSER_FUNC(DEF_VAL));                                    \
+            HAS_LOG LOG_WARNING(ZED_F9P, "SetDflt" VAR_NAME " [%s]", PARSER_FUNC(DEF_VAL));                                    \
             /*memcpy((void *)&VARIABLE , (void *)&DEF_VAL, EXP_LEN);*/                                                 \
             VARIABLE = DEF_VAL;                                                                                        \
             res = false;                                                                                               \
             out_res = false;                                                                                           \
         }                                                                                                              \
     } while(0)
+#else
+#define LOAD_PARAM_ZED(PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                                      \
+    do {                                                                                                               \
+        uint16_t file_len = 0;                                                                                         \
+        res = mm_get(PAR_ID, (uint8_t*)&VARIABLE, sizeof(VARIABLE), &file_len);                                        \
+        if(!((true == res) && ((EXP_LEN) == file_len))) {                                                                 \
+            VARIABLE = DEF_VAL;                                                                                        \
+            res = false;                                                                                               \
+            out_res = false;                                                                                           \
+        }                                                                                                              \
+    } while(0)
+#endif
+
+
 
 
 bool zed_f9p_load_params(void) {
@@ -486,7 +544,9 @@ bool zed_f9p_load_params(void) {
 
 bool zed_f9p_init(void) {
     bool res = true;
+#ifdef HAS_LOG
     res = set_log_level(ZED_F9P, LOG_LEVEL_INFO);
+#endif
     ZedF9P.rate_ms = DFLT_GNSS_PER_MS;
     ZedF9P.channel = IF_LORA;
     res = zed_f9p_load_params();
@@ -503,12 +563,16 @@ bool zed_f9p_init(void) {
             res = zed_f9p_deploy_rover();
             break;
         default:
+#ifdef HAS_LOG
             LOG_ERROR(ZED_F9P, "rtkMode:%u=%s", ZedF9P.rtk_mode, rtk_mode2str(ZedF9P.rtk_mode));
+#endif
             res = false;
             break;
         }
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(ZED_F9P, "ParLoadErr");
+#endif
     }
     return res;
 }

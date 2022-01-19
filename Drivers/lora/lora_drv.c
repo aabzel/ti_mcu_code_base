@@ -8,7 +8,10 @@
 #include <string.h>
 
 #include "array.h"
+#ifdef HAS_CLI
+#include "log.h"
 #include "cli_manager.h"
+#endif
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
 #endif
@@ -19,7 +22,6 @@
 #include "flash_fs.h"
 #include "param_ids.h"
 #endif
-#include "log.h"
 #include "none_blocking_pause.h"
 #include "system.h"
 #ifdef HAS_RTCM3
@@ -39,7 +41,9 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint32_t rx_size) {
 #ifdef HAS_TBFP
     res = tbfp_proc(rx_payload, rx_size, IF_LORA);
     if(false == res) {
+#ifdef HAS_LOG
         LOG_ERROR(LORA, "LoRaProcErr");
+#endif
     }
 #endif /*HAS_TBFP*/
     return res;
@@ -55,7 +59,9 @@ bool lora_init(void) {
         LoRaInterface.max_distance = 0.0;
         res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance, sizeof(double));
         if(false == res) {
+#ifdef HAS_LOG
             LOG_ERROR(PARAM, "SetDfltMaxLinkDistError");
+#endif
         }
     }
 #endif

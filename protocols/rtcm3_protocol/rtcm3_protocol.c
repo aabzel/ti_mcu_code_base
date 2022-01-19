@@ -7,10 +7,12 @@
 #include "crc24_q.h"
 #include "data_utils.h"
 #include "debug_info.h"
-#include "io_utils.h"
 #ifdef HAS_MCU
 #include "led_drv.h"
+#ifdef HAS_LOG
+#include "io_utils.h"
 #include "log.h"
+#endif
 #endif
 
 #ifdef X86_64
@@ -48,7 +50,7 @@ bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool
 #else
     instance->lora_fwd = lora_fwd;
 #endif /*HAS_DEBUG*/
-#ifdef HAS_MCU
+#ifdef HAS_LOG
     LOG_DEBUG(RTCM, "Init");
 #endif
     instance->interface = interface;
@@ -64,7 +66,7 @@ static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte)
 #ifdef HAS_DEBUG
         instance->preamble_cnt++;
 #endif
-#ifdef HAS_MCU
+#ifdef HAS_LOG
         LOG_DEBUG(RTCM, "Preamble");
 #endif
         res = true;
@@ -86,7 +88,7 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         instance->rx_frame[2] = rx_byte;
         instance->exp_len.len8[0] = rx_byte;
         instance->load_len = 3;
-#ifdef HAS_MCU
+#ifdef HAS_LOG
         LOG_DEBUG(RTCM, "ExpLen %u", instance->exp_len.field.len);
 #endif
 #ifdef X86_64
@@ -155,7 +157,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         res = crc24_q_check(&instance->rx_frame[0], frame_length, instance->read_crc);
         if(true == res) {
             res = true;
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             LOG_DEBUG(RTCM, "CRCok");
 #endif
             instance->rx_state = RTCM3_RX_DONE;
@@ -196,7 +198,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 
             rtcm3_reset_rx(instance);
         } else {
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             LOG_ERROR(RTCM, "%s CrcErr",interface2str(instance->interface));
 #endif
             instance->crc_err_cnt++;

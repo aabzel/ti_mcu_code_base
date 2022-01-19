@@ -5,11 +5,15 @@
 #ifdef HAS_ADC
 #include "adc_drv.h"
 #endif
+#ifdef HAS_CLI
 #include "cli_manager.h"
+#endif
 #include "core_utils.h"
 #include "gnss_diag.h"
 #include "gnss_utils.h"
+#ifdef HAS_LOG
 #include "log.h"
+#endif
 
 #ifdef HAS_RTCM3
 #include "rtcm3_protocol.h"
@@ -57,11 +61,15 @@ bool health_monotor_proc(void) {
         float vKl30 = 0.0;
         vKl30 = adc_get_value_by_dio(DIO_KL30_ADC, true);
         if(vKl30 < KL30_UNDERVOL_ERRPR_THRESHOLD_V) {
+#ifdef HAS_LOG
             LOG_ERROR(HMOM, "vKl30 %7.3f<%7.3f too low", vKl30, KL30_UNDERVOL_ERRPR_THRESHOLD_V);
+#endif
             res = false;
         } else {
             if(vKl30 < KL30_UNDERVOL_WARNING_THRESHOLD_V) {
+#ifdef HAS_LOG
                 LOG_WARNING(HMOM, "vKl30 %7.3f<%7.3f low", vKl30, KL30_UNDERVOL_WARNING_THRESHOLD_V);
+#endif
             }
             res = true;
         }
@@ -71,19 +79,25 @@ bool health_monotor_proc(void) {
 #ifdef HAS_SX1262
 #ifdef HAS_RTCM3
     if((Sx1262Instance.bit_rate / 8) < MIM_LORA_THROUGHPUT_BYTE_S) {
+#ifdef HAS_LOG
         LOG_ERROR(HMOM, "LoRaByteRate too low %f byte/s", Sx1262Instance.bit_rate / 8);
+#endif
         res = false;
     }
 #endif
 #endif
 
     if(HealthMon.init_error) {
+#ifdef HAS_LOG
         LOG_ERROR(HMOM, "InitError");
+#endif
     }
 
 #ifdef HAS_LORA
     if(LoRaInterface.tx_err_cnt) {
+#ifdef HAS_LOG
         LOG_ERROR(HMOM, "LoRaTxError");
+#endif
     }
 #endif
 
@@ -95,14 +109,20 @@ bool health_monotor_proc(void) {
 
     float stack_precent = stack_used();
     if(50.0 < stack_precent) {
+#ifdef HAS_LOG
         LOG_WARNING(HMOM, "StackUsed:%f %%", stack_precent);
+#endif
         if(75.0 < stack_precent) {
+#ifdef HAS_LOG
             LOG_ERROR(HMOM, "StackUsed:%f %%", stack_precent);
+#endif
         }
     }
 #ifdef HAS_UART
     if(0 < huart[UART_NUM_CLI].error_cnt) {
+#ifdef HAS_LOG
         LOG_ERROR(UART, "Error");
+#endif
         // res = init_uart_ll(UART_NUM_CLI, "CLI");
         // if(false==res){
         // }
@@ -114,7 +134,9 @@ bool health_monotor_proc(void) {
     uint32_t lora_lost_pkt_cnt_diff = 0;
     lora_lost_pkt_cnt_diff = Rtcm3Protocol[IF_UART1].lora_lost_pkt_cnt - lora_lost_pkt_cnt_prev;
     if(0 < lora_lost_pkt_cnt_diff) {
+#ifdef HAS_LOG
         LOG_WARNING(HMOM, "RTCM3 UART1 lost %u", lora_lost_pkt_cnt_diff);
+#endif
     }
     lora_lost_pkt_cnt_prev = Rtcm3Protocol[IF_UART1].lora_lost_pkt_cnt;
 #endif
@@ -125,11 +147,13 @@ bool health_monotor_proc(void) {
     bool res_nm = is_valid_time_date(&NmeaData.time_date);
     bool res_ub = is_valid_time_date(&NavInfo.date_time);
     if((false == res_eq) && res_nm && res_nm) {
+#ifdef HAS_LOG
         LOG_ERROR(HMOM, "Nmea and UBX Time different");
         LOG_INFO(HMOM, "Nmea:");
         print_time_date(&NmeaData.time_date);
         LOG_INFO(HMOM, "UBX:");
         print_time_date(&NavInfo.date_time);
+#endif
     }
 #endif
     return res;

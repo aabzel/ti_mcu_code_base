@@ -329,6 +329,7 @@ bool uart_send(uint8_t uart_num, uint8_t* array, uint16_t array_len, bool is_wai
     return res;
 }
 
+#ifdef HAS_CLI
 int cli_putchar_uart(int character) {
     int out_ch = 0;
     /*Works on little endian*/
@@ -339,6 +340,7 @@ int cli_putchar_uart(int character) {
 
     return out_ch;
 }
+#endif
 
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len) {
     bool res = false;
@@ -436,6 +438,7 @@ static bool uart_poll(uint8_t uart_index) {
     /*In case of uart interrupts fail*/
     bool res = true;
     static uint8_t rx_byte = UNLIKELY_SYMBOL1;
+#ifdef HAS_CLI
     if(true == huart[UART_NUM_CLI].rx_it_proc_done) {
         res = uart_read(uart_index, &rx_byte, 1);
         if((UNLIKELY_SYMBOL1 != rx_byte) && (UNLIKELY_SYMBOL2 != rx_byte) && (res)) {
@@ -448,6 +451,7 @@ static bool uart_poll(uint8_t uart_index) {
             res = false;
         }
     }
+#endif
     return res;
 }
 

@@ -5,8 +5,10 @@
 
 #include "byte_utils.h"
 #include "debug_info.h"
+#ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
+#endif
 #include "uart_drv.h"
 #include "ubx_protocol.h"
 #include "ubx_types.h"
@@ -22,8 +24,11 @@
 NavInfo_t NavInfo = {0};
 
 bool ubx_driver_init(void) {
+    bool res = true;
     memset(&NavInfo, 0x00, sizeof(NavInfo));
+#ifdef HAS_LOG
     bool res = set_log_level(UBX, LOG_LEVEL_NOTICE);
+#endif
     return res;
 }
 
@@ -65,7 +70,7 @@ bool ubx_send_message_ack(uint8_t class_num, uint8_t id, uint8_t* payload, uint1
             out_res = true;
             break;
         } else {
-#ifdef HAS_MCU
+#ifdef HAS_LOG
             LOG_WARNING(UBX, "WaitAckTimeOut:%u", i);
 #endif
         }
@@ -81,9 +86,11 @@ static bool ubx_config_data_parse(uint8_t* keys) {
     ConfigurationKeyID_t keyId;
     memcpy(&keyId.word, keys, UBX_KEY_SIZE);
     bytes = ubx_key_len_2bytes(keyId.size);
-    LOG_INFO(UBX, "Key: 0x%08x len %u", keyId.word, bytes);
     res = reverse_byte_order_array(&keys[4], bytes);
+#ifdef HAS_LOG
+    LOG_INFO(UBX, "Key: 0x%08x len %u", keyId.word, bytes);
     res = print_mem(&keys[4], bytes, true, false, true, false);
+#endif
     return res;
 }
 
@@ -214,7 +221,9 @@ static bool ubx_proc_nav_frame(uint8_t* frame, uint16_t len) {
         res = ubx_proc_nav_att_frame(frame + UBX_INDEX_PAYLOAD);
         break;
     default:
+#ifdef HAS_LOG
         LOG_ERROR(UBX, "Undef index 0x%x", id);
+#endif
         break;
     }
     return res;
@@ -224,7 +233,9 @@ static bool ubx_proc_ack_frame(void) {
     bool res = false;
     switch(UbloxProtocol.fix_frame[UBX_INDEX_ID]) {
     case UBX_ACK_ACK:
+#ifdef HAS_LOG
         LOG_NOTICE(UBX, "Ack");
+#endif
         UbloxProtocol.ack_cnt++;
         UbloxProtocol.ack = true;
         res = true;
@@ -256,7 +267,9 @@ static bool ubx_proc_sec_frame(uint8_t* frame, uint16_t len) {
         res = ubx_proc_sec_uniqid_frame(frame + UBX_INDEX_PAYLOAD, len);
         break;
     default:
+#ifdef HAS_CLI
         LOG_ERROR(UBX, "Undef SEC id 0x%x", id);
+#endif
         break;
     }
     return res;
@@ -266,7 +279,9 @@ bool ubx_proc_frame(UbloxProtocol_t* inst) {
     bool res = false;
     uint8_t in_class = inst->fix_frame[UBX_INDEX_CLS];
     if(inst->diag) {
+#ifdef HAS_LOG
         ubx_print_frame(inst->fix_frame);
+#endif
     }
     ubx_update_stat(in_class);
     switch(in_class) {
@@ -297,7 +312,9 @@ bool ubx_proc_frame(UbloxProtocol_t* inst) {
         res = ubx_proc_sec_frame(inst->fix_frame, inst->exp_len);
         break;
     default:
+#ifdef HAS_LOG
         LOG_ERROR(UBX, "Undef %u 0x%x", in_class, in_class);
+#endif
         break;
     }
     memset(inst->fix_frame, 0x00, UBX_RX_FRAME_SIZE);
@@ -323,12 +340,16 @@ bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t la
         payload[3] = 0;
         memcpy(&payload[4], &key_id, sizeof(key_id));
         // uint8_t key_size = ubx_keyid_2len(key_id);
+#ifdef HAS_LOG
         print_mem(val, val_len, true, false, true, true);
+#endif
         memcpy(&payload[8], val, val_len);
         payload_len = 8 + val_len;
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
         if(false == res) {
+#ifdef HAS_LOG
             LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", UBX_CLA_CFG, UBX_ID_CFG_SET_VAL);
+#endif
         }
     }
     return res;
@@ -353,9 +374,13 @@ bool ubx_proc(void) {
     static uint16_t i = 0;
     res = ubx_send_message(pollLut[i].class, pollLut[i].id, NULL, 0);
     if(false == res) {
+#ifdef HAS_LOG
         LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", pollLut[i].class, pollLut[i].id);
+#endif
     } else {
+#ifdef HAS_LOG
         LOG_DEBUG(UBX, "Send Class:0x%02x ID:0x%02x OK", pollLut[i].class, pollLut[i].id);
+#endif
     }
     i++;
     if(ARRAY_SIZE(pollLut) < i) {
@@ -365,7 +390,9 @@ bool ubx_proc(void) {
     uint32_t time_diff = 0;
     time_diff = cur_time - UbloxProtocol.rx_time_stamp;
     if(UBX_RX_TIME_OUT_MS < time_diff) {
+#ifdef HAS_LOG
         LOG_ERROR(UBX, "UBX proto link lost %f s", MS_2_S(time_diff));
+#endif
         res = false;
     }
     return res;
@@ -379,7 +406,9 @@ bool ubx_reset_to_dflt(void) {
     data.saveMask = 0x00000000;
     data.loadMask = 0x0000FFFF;
     data.deviceMask = 0x17;
+#ifdef HAS_LOG
     print_mem((uint8_t*)&data, sizeof(data), true, false, true, true);
+#endif
     res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_CFG, (uint8_t*)&data, sizeof(data));
     if(res) {
         res = ubx_wait_ack(2000);
@@ -394,7 +423,9 @@ bool ubx_set_rate(uint16_t meas_rate_ms, uint16_t time_ref) {
         data.meas_rate_ms = meas_rate_ms;
         data.navRate = 1;
         data.timeRef = time_ref;
+#ifdef HAS_LOG
         print_mem((uint8_t*)&data, sizeof(data), true, false, true, true);
+#endif
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_RATE, (uint8_t*)&data, sizeof(data));
     }
     return res;

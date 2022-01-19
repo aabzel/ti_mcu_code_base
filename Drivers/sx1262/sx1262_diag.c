@@ -237,47 +237,7 @@ bool print_int_diag(Sx1262IrqCnt_t* irq_cnt) {
     return res;
 }
 
-/*returns band_width in kHz multiplied by 100 in order to fit in 2 bytes*/
-uint32_t bandwidth2num(BandWidth_t bandwidth) {
-    uint32_t band_width = 0;
-    switch(bandwidth) {
-    case LORA_BW_7:
-        band_width = 7810;
-        break;
-    case LORA_BW_10:
-        band_width = 10420;
-        break;
-    case LORA_BW_15:
-        band_width = 15630;
-        break;
-    case LORA_BW_20:
-        band_width = 20830;
-        break;
-    case LORA_BW_31:
-        band_width = 31250;
-        break;
-    case LORA_BW_41:
-        band_width = 41670;
-        break;
-    case LORA_BW_62:
-        band_width = 62500;
-        break;
-    case LORA_BW_125:
-        band_width = 125000;
-        break;
-    case LORA_BW_250:
-        band_width = 250000;
-        break;
-    case LORA_BW_500:
-        band_width = 500000;
-        break;
 
-    default:
-        band_width = 0;
-        break;
-    }
-    return band_width;
-}
 
 char* bandwidth2str(uint8_t bandwidth) {
     static char name[40] = "";

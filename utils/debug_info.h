@@ -7,9 +7,9 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
-
+#ifdef HAS_LOG
 #include "ostream.h"
-
+#endif
 typedef union xU8_bit_t {
     uint8_t u8;
     int8_t s8;

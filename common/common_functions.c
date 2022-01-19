@@ -43,8 +43,10 @@
 #endif
 
 #include "hw_init.h"
+#ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
+#endif
 #include "sw_init.h"
 #include "sys_config.h"
 #ifdef HAS_TASKS
@@ -205,7 +207,9 @@ void super_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_SUPER_LOOP
 _Noreturn void super_main_loop(void) {
 #ifdef HAS_CLOCK
+#ifdef HAS_LOG
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
+#endif
 #else
 #ifdef HAS_LOG
     io_printf("Main Task started" CRLF);
