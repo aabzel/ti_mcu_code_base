@@ -3,6 +3,7 @@
 
 typedef enum wParamType_t {
     UINT8,
+    BOOL,
     INT8,
     UINT16,
     INT16,

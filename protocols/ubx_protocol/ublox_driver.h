@@ -49,15 +49,22 @@ typedef enum eUbxType_t {
     UBX_L = 13,
 } UbxType_t;
 
+typedef enum eSatConst_t{
+    SC_GPS=0,
+    SC_GLONASS=1,
+    SC_GALILEO=2,
+    SC_BEI_DOU=3,
+    SC_NONE=4,
+}SatConst_t;
+
+
 #if 0
 #define UBX_KEY_CNT 1
 #endif
 typedef struct xkeyValItem_t {
     uint32_t key_id;
     Type64Union_t u_value;
-#if 0
-    uint8_t type;
-#endif
+    SatConst_t satellite_constellation;
 } keyValItem_t;
 /*
 typedef struct xVariable_t{

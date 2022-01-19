@@ -13,5 +13,6 @@ const char *rtk_mode2str(uint8_t code);
 const char *rtk_channel2str(uint8_t code);
 char *Distance2str(double distance);
 char *mSec2str(uint16_t m_sec);
+char *OnOff2str(bool status);
 
 #endif /* ZED_F9P_DIAG_H  */

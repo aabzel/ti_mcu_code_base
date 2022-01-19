@@ -208,41 +208,42 @@ bool zed_f9p_proc(void) {
 }
 #ifdef HAS_UBLOX
 /*Radio Technical Commission for Maritime Services)*/
+
 static const keyValItem_t BaseCfgLut[] = {
-    /*21*/ {CFG_UART1_BAUDRATE, 38400},
-    /*1 */ {CFG_UART1INPROT_NMEA, 0},
-    /*2 */ {CFG_UART1INPROT_RTCM3X, 0},
-    /*6 */ {CFG_UART1INPROT_UBX, 1},
-    /*4 */ {CFG_UART1OUTPROT_NMEA, 0},
-    /*5 */ {CFG_UART1OUTPROT_RTCM3X, 1},
-    /*3 */ {CFG_UART1OUTPROT_UBX, 1},
-    /*7 */ {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1005 Stationary RTK
+    {CFG_UART1_BAUDRATE, 38400,SC_NONE},
+    {CFG_UART1INPROT_NMEA, 0,SC_NONE},
+    {CFG_UART1INPROT_RTCM3X, 0,SC_NONE},
+    {CFG_UART1INPROT_UBX, 1,SC_NONE},
+    {CFG_UART1OUTPROT_NMEA, 0,SC_NONE},
+    {CFG_UART1OUTPROT_RTCM3X, 1,SC_NONE},
+    {CFG_UART1OUTPROT_UBX, 1,SC_NONE},
+    {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1,SC_NONE}, // sparkfun Output rate of the RTCM-3X-TYPE1005 Stationary RTK
                                                    // reference station ARP (Input/output)
-    /*12*/ {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1},
+    /*12*/ {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1,SC_NONE},
 #ifdef HAS_GPS_CORRECTION
-    {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1074 GPS MSM4 (Input/output)
-    {CFG_MSGOUT_RTCM_3X_TYPE1074_USB, 1},
-    {CFG_MSGOUT_RTCM_3X_TYPE1077_UART1, 1}, // Output rate of the RTCM-3X-TYPE1077 GPS MSM7 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1,SC_GPS}, // sparkfun Output rate of the RTCM-3X-TYPE1074 GPS MSM4 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1074_USB, 1,SC_GPS},
+    {CFG_MSGOUT_RTCM_3X_TYPE1077_UART1, 1,SC_GPS}, // Output rate of the RTCM-3X-TYPE1077 GPS MSM7 (Input/output)
 #endif
 #ifdef HAS_GLONASS_CORRECTION
-    {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1084 GLONASS MSM4 (Input/output)
-    {CFG_MSGOUT_RTCM_3X_TYPE1084_USB, 1},
-    {CFG_MSGOUT_RTCM_3X_TYPE1087_UART1, 1}, // Output rate of the RTCM-3X-TYPE1087 GLONASS MSM7 (Input/output)
-    {CFG_MSGOUT_RTCM_3X_TYPE1230_UART1, 5}, // sparkfun Output rate of the RTCM-3X-TYPE1230 GLONASS L1 and L2 code-phase biases (Input/output)
-    {CFG_MSGOUT_RTCM_3X_TYPE1230_USB, 5}, //GLONASS L1 and L2 code-phase biases (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1,SC_GLONASS}, // sparkfun Output rate of the RTCM-3X-TYPE1084 GLONASS MSM4 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1084_USB, 1,SC_GLONASS},
+    {CFG_MSGOUT_RTCM_3X_TYPE1087_UART1, 1,SC_GLONASS}, // Output rate of the RTCM-3X-TYPE1087 GLONASS MSM7 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1230_UART1, 5,SC_GLONASS}, // sparkfun Output rate of the RTCM-3X-TYPE1230 GLONASS L1 and L2 code-phase biases (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1230_USB, 5,SC_GLONASS}, //GLONASS L1 and L2 code-phase biases (Input/output)
 #endif
 #ifdef HAS_GALILEO_CORRECTION
-    {CFG_MSGOUT_RTCM_3X_TYPE1094_UART1, 1}, // Galileo MSM4 (Input/output) sparkfun recomends
-    {CFG_MSGOUT_RTCM_3X_TYPE1094_USB, 1},   // Galileo MSM4 (Input/output)
-    {CFG_MSGOUT_RTCM_3X_TYPE1097_UART1, 1}, // Galileo MSM7 (Input/output)Output rate of the RTCM-3X-TYPE1097
+    {CFG_MSGOUT_RTCM_3X_TYPE1094_UART1, 1,SC_GALILEO}, // Galileo MSM4 (Input/output) sparkfun recomends
+    {CFG_MSGOUT_RTCM_3X_TYPE1094_USB, 1,SC_GALILEO},   // Galileo MSM4 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1097_UART1, 1,SC_GALILEO}, // Galileo MSM7 (Input/output)Output rate of the RTCM-3X-TYPE1097
 #endif
 #ifdef HAS_BEI_DOU_CORRECTION
-    {CFG_MSGOUT_RTCM_3X_TYPE1127_UART1, 1},        // Output rate of the RTCM-3X-TYPE1127 BeiDou MSM7 (Input/output)
-    {CFG_MSGOUT_RTCM_3X_TYPE1124_UART1, 1}, // sparkfun Output rate of the RTCM-3X-TYPE1124 BeiDou MSM4
-    {CFG_MSGOUT_RTCM_3X_TYPE1124_USB, 1}, //BeiDou MSM4 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1127_UART1, 1,SC_BEI_DOU},        // Output rate of the RTCM-3X-TYPE1127 BeiDou MSM7 (Input/output)
+    {CFG_MSGOUT_RTCM_3X_TYPE1124_UART1, 1,SC_BEI_DOU}, // sparkfun Output rate of the RTCM-3X-TYPE1124 BeiDou MSM4
+    {CFG_MSGOUT_RTCM_3X_TYPE1124_USB, 1,SC_BEI_DOU}, //BeiDou MSM4 (Input/output)
 #endif
-    /*19*/ {CFG_MSGOUT_UBX_NAV_PVT_USB, 1},
-    /*20*/ {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1},
+    {CFG_MSGOUT_UBX_NAV_PVT_USB, 1,SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1,SC_NONE},
 };
 #endif
 
@@ -272,11 +273,31 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
         }
         uint32_t i = 0;
         for(i = 0; i < ARRAY_SIZE(BaseCfgLut); i++) {
-            res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
-                                  ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM);
-            if(false == res) {
-                LOG_ERROR(ZED_F9P, "Set 0x%x error", BaseCfgLut[i].key_id);
-                out_res = false;
+            switch(BaseCfgLut[i].satellite_constellation){
+                case SC_GPS:
+                    res = ZedF9P.corrections.gps;
+                    break;
+                case SC_GLONASS:
+                    res = ZedF9P.corrections.glonass;
+                    break;
+                case SC_GALILEO:
+                    res = ZedF9P.corrections.galileo;
+                    break;
+                case SC_BEI_DOU:
+                    res = ZedF9P.corrections.beidou;
+                    break;
+                default:
+                    res = true;
+                    break;
+            }
+
+            if(res) {
+                res = ubx_cfg_set_val(BaseCfgLut[i].key_id, (uint8_t*)&BaseCfgLut[i].u_value.u8[0],
+                                      ubx_keyid_2len(BaseCfgLut[i].key_id), LAYER_MASK_RAM);
+                if(false == res) {
+                    LOG_ERROR(ZED_F9P, "Set 0x%x error", BaseCfgLut[i].key_id);
+                    out_res = false;
+                }
             }
         }
         /*Write base station antenna coordinates*/
@@ -322,10 +343,20 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
 }
 #ifdef HAS_UBLOX
 static const keyValItem_t RoverCfgLut[] = {
-    {CFG_UART1_BAUDRATE, 38400}, {CFG_UART1INPROT_UBX, 1},   {CFG_UART1INPROT_NMEA, 0},    {CFG_UART1INPROT_RTCM3X, 1},
-    {CFG_UART1OUTPROT_UBX, 1},   {CFG_UART1OUTPROT_NMEA, 1}, {CFG_UART1OUTPROT_RTCM3X, 0}, {CFG_USBINPROT_UBX, 1},
-    {CFG_USBINPROT_NMEA, 1},     {CFG_USBINPROT_RTCM3X, 1},  {CFG_USBOUTPROT_UBX, 1},      {CFG_USBOUTPROT_RTCM3X, 0},
+    {CFG_UART1_BAUDRATE, 38400,SC_NONE},
+    {CFG_UART1INPROT_UBX, 1,SC_NONE},
+    {CFG_UART1INPROT_NMEA, 0,SC_NONE},
+    {CFG_UART1INPROT_RTCM3X, 1,SC_NONE},
+    {CFG_UART1OUTPROT_UBX, 1,SC_NONE},
+    {CFG_UART1OUTPROT_NMEA, 1,SC_NONE},
+    {CFG_UART1OUTPROT_RTCM3X, 0,SC_NONE},
+    {CFG_USBINPROT_UBX, 1,SC_NONE},
+    {CFG_USBINPROT_NMEA, 1,SC_NONE},
+    {CFG_USBINPROT_RTCM3X, 1,SC_NONE},
+    {CFG_USBOUTPROT_UBX, 1,SC_NONE},
+    {CFG_USBOUTPROT_RTCM3X, 0,SC_NONE},
 };
+
 #endif
 
 bool zed_f9p_deploy_rover(void) {
@@ -349,8 +380,11 @@ bool zed_f9p_deploy_rover(void) {
 
     uint32_t i = 0;
     for(i = 0; i < ARRAY_SIZE(RoverCfgLut); i++) {
+
+
         res = ubx_cfg_set_val(RoverCfgLut[i].key_id, (uint8_t*)&RoverCfgLut[i].u_value.u8[0],
                               ubx_keyid_2len(RoverCfgLut[i].key_id), LAYER_MASK_RAM);
+
         if(false == res) {
             LOG_ERROR(ZED_F9P, "Key:0x%08x set Error", RoverCfgLut[i].key_id);
             out_res = false;
@@ -405,6 +439,7 @@ bool zed_f9p_deploy_rover(void) {
         }                                                                                                              \
     } while(0)
 
+
 bool zed_f9p_load_params(void) {
     bool res = true;
 #if defined(HAS_FLASH_FS) && defined(HAS_PARAM)
@@ -413,7 +448,15 @@ bool zed_f9p_load_params(void) {
     ZedF9P.coordinate_base.longitude = 0.0;
     ZedF9P.fixed_position_3daccuracy_mm = METER_TO_MM(1);
     ZedF9P.coordinate_base.latitude = 0.0;
+    ZedF9P.corrections.gps    =true;
+    ZedF9P.corrections.glonass=false;
+    ZedF9P.corrections.galileo=false;
+    ZedF9P.corrections.beidou =false;
 
+    LOAD_PARAM_ZED(PAR_ID_GPS,     ZedF9P.corrections.gps, 1, "TimeZone UTC+", 1, OnOff2str);
+    LOAD_PARAM_ZED(PAR_ID_GLONASS, ZedF9P.corrections.glonass, 1, "TimeZone UTC+", 0, OnOff2str);
+    LOAD_PARAM_ZED(PAR_ID_GALILEO, ZedF9P.corrections.galileo, 1, "TimeZone UTC+", 0, OnOff2str);
+    LOAD_PARAM_ZED(PAR_ID_BEI_DOU, ZedF9P.corrections.beidou, 1, "TimeZone UTC+", 0, OnOff2str);
     LOAD_PARAM_ZED(PAR_ID_TIME_ZONE, ZedF9P.time_zone, 1, "TimeZone UTC+", 3, uint2str);
     LOAD_PARAM_ZED(PAR_ID_BASE_ACC, ZedF9P.fixed_position_3daccuracy_mm, 4, "BaseAcc", METER_TO_MM(1), mm2str);
     LOAD_PARAM_ZED(PAR_ID_RTK_CHANNEL, ZedF9P.channel, 1, "RTKchannel", IF_LORA, interface2str);
@@ -425,16 +468,6 @@ bool zed_f9p_load_params(void) {
         GnssCoordinate_t dflt_coordinate_base ={55.678422826, 37.632228014};
         LOAD_PARAM_ZED(PAR_ID_BASE_ALT, ZedF9P.alt_base, 8, "RTKBaseAlt", 200.0 , Distance2str);
         LOAD_PARAM_ZED(PAR_ID_BASE_LOCATION, ZedF9P.coordinate_base, 16, "RTKBaseDot", dflt_coordinate_base , GnssDot2str);
-#if 0
-        res = mm_get(PAR_ID_BASE_LOCATION, (uint8_t*)&ZedF9P.coordinate_base, sizeof(GnssCoordinate_t), &file_len);
-        if(res && (16 == file_len)) {
-            LOG_INFO(ZED_F9P, "RTKBaseLocLoadOk");
-            res = print_coordinate(ZedF9P.coordinate_base, true);
-        } else {
-            LOG_ERROR(ZED_F9P, "ReadBaseLocLoadErr");
-            res = false;
-        }
-#endif
 
       } break;
       case RTK_ROVER: {

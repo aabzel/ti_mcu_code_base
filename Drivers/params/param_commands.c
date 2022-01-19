@@ -105,6 +105,7 @@ bool cmd_param_set(int32_t argc, char* argv[]) {
             uint16_t arg_len = 0;
             arg_len = (uint16_t)strlen((char*)argv[1]);
             switch(par_type) {
+            case BOOL:
             case UINT8:
                 res = try_str2uint8(argv[1], wrData);
                 if(res) {

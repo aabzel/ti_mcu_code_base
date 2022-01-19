@@ -2,7 +2,6 @@
  * NOR Flash Memory manager
  * This file contains implementation of key-val(file) map in Nor-Flash with
  * uniform deterioration of Nor Flash memory
- *
  */
 #include "flash_fs.h"
 

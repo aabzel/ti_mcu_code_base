@@ -14,7 +14,6 @@ extern const unit_test_info_t test_list[];
 
 uint32_t get_test_list_cnt(void);
 
-
 #ifdef __cplusplus
 }
 #endif

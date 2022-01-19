@@ -34,6 +34,15 @@ char *mm2str(uint32_t base_acc_mm){
     return name;
 }
 
+char *OnOff2str(bool status){
+    char *out_name ="-";
+    switch(status){
+    case true: out_name ="On";break;
+    case false: out_name ="Off";break;
+    }
+    return out_name;
+}
+
 char *uint2str(uint32_t val){
     snprintf(name, sizeof(name), "%u", val);
     return name;

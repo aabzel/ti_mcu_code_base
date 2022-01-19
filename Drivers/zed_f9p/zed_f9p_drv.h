@@ -26,6 +26,13 @@ typedef enum eTimeSystem_t {
     TIME_GALILEO = 4,
 } TimeSystem_t;
 
+typedef struct xGnssCorrections_t{
+    bool gps;
+    bool glonass;
+    bool galileo;
+    bool beidou;
+}GnssCorrections_t;
+
 typedef struct xZedF9P_t {
     struct tm time_date;
     GnssCoordinate_t coordinate_base; /*Location of RTK base station*/
@@ -33,6 +40,7 @@ typedef struct xZedF9P_t {
     GnssCoordinate_t coordinate_last;
     double alt_base;
     uint16_t rate_ms;
+    GnssCorrections_t corrections;
     int8_t time_zone;
     RTKmode_t rtk_mode;
     uint32_t fixed_position_3daccuracy_mm;

@@ -58,6 +58,12 @@ const ParamItem_t ParamArray[] = {
     /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"},      /**/
     /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
     /**/ {PAR_ID_BASE_ACC, 4, UINT32, "BaseAcc"},
+         {PAR_ID_GPS, 1, BOOL, "GpsCpr"},
+         {PAR_ID_GLONASS, 1, BOOL, "GlonassCor"},
+         {PAR_ID_GALILEO, 1, BOOL, "GalileoCor"},
+         {PAR_ID_BEI_DOU, 1, BOOL, "BeiDouCor"},
+
+
     /*25*/ {PAR_ID_RTK_CHANNEL, 1, UINT8, "RTKchannel"},
     /**/ {PAR_ID_GNSS_PERIOD, 2, UINT16, "GnssPer"},
     /**/ {PAR_ID_BASE_ALT, 8, DOUBLE, "BaseAlt"},
@@ -117,6 +123,7 @@ bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* ou
     bool res = false;
     if((NULL != value) && (NULL != out_str) && (0 < value_len) && (0 < str_size)) {
         switch(type) {
+        case BOOL:
         case UINT8:
             if(1 == value_len) {
                 Type8Union_t un8;
@@ -232,104 +239,117 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
 
 #ifdef HAS_SX1262
         static char temp_name[100] = "---";
-        if(PAR_ID_LORA_OUT_POWER == id) {
+        switch(id){
+
+        case PAR_ID_LORA_OUT_POWER : {
             float watts = dbm2watts((uint32_t)*value);
             snprintf(temp_name, sizeof(temp_name), "%f7.3 W", watts);
             name = temp_name;
-        }
-        if(PAR_ID_LORA_FREQ == id) {
+        } break;
+        case PAR_ID_LORA_FREQ : {
             uint32_t freq = 0;
             memcpy(&freq, value, 4);
             name = RfFreq2Str(freq);
-        }
-        if(PAR_ID_LORA_SYNC_WORD == id) {
+        }break;
+        case PAR_ID_LORA_SYNC_WORD : {
             uint16_t word = 0;
             memcpy(&word, value, 2);
             name = HexWord2Str(word);
-        }
+        }break;
 
-        if(PAR_ID_LORA_CRC_POLY == id) {
+        case PAR_ID_LORA_CRC_POLY : {
             uint16_t word = 0;
             memcpy(&word, value, 2);
             name = HexWord2Str(word);
-        }
+        }break;
 
-        if(PAR_ID_LORA_CRC_INIT == id) {
+        case PAR_ID_LORA_CRC_INIT : {
             uint16_t word = 0;
             memcpy(&word, value, 2);
             name = HexWord2Str(word);
-        }
+        }break;
 
-        if(PAR_ID_SYNC_WORD == id) {
+        case PAR_ID_SYNC_WORD : {
             uint64_t sync_word = 0;
             memcpy(&sync_word, value, 8);
             name = SyncWord2Str(sync_word);
-        }
-        if(PAR_ID_PACKET_TYPE == id) {
+        }break;
+        case PAR_ID_PACKET_TYPE : {
             name = PacketType2Str((uint8_t)*value);
-        }
+        }break;
 
-        if(PAR_ID_PAYLOAD_LENGTH == id) {
+        case PAR_ID_PAYLOAD_LENGTH : {
             name = PayloadLen2Str((uint8_t)*value);
-        }
+        }break;
 
-        if(PAR_ID_PREAMBLE_LENGTH == id) {
+        case PAR_ID_PREAMBLE_LENGTH : {
             name = PreambleLen2Str((uint16_t)*value);
-        }
+        }break;
 
-        if(PAR_ID_IQ_SETUP == id) {
+        case PAR_ID_IQ_SETUP : {
             name = IqSetUp2Str((uint8_t)*value);
-        }
-        if(PAR_ID_HEADER_TYPE == id) {
+        }break;
+        case PAR_ID_HEADER_TYPE : {
             name = LoraHeaderType2Str((uint8_t)*value);
-        }
-        if(PAR_ID_CRC_TYPE == id) {
+        }break;
+        case PAR_ID_CRC_TYPE : {
             name = LoraCrcType2Str((uint8_t)*value);
-        }
-        if(PAR_ID_LORA_MAX_LINK_DIST == id) {
+        }break;
+        case PAR_ID_LORA_MAX_LINK_DIST : {
             name = LinkDist2str((double)*value);
-        }
-        if(PAR_ID_LORA_SF == id) {
+        }break;
+        case PAR_ID_LORA_SF : {
             name = spreading_factor2str((uint8_t)*value);
-        }
-        if(PAR_ID_LORA_CR == id) {
+        }break;
+        case PAR_ID_LORA_CR : {
             name = coding_rate2str((LoRaCodingRate_t)*value);
-        }
-        if(PAR_ID_LORA_MAX_BIT_RATE == id) {
+        }break;
+        case PAR_ID_LORA_MAX_BIT_RATE : {
             Type64Union_t un64;
             memcpy(&un64, value, sizeof(Type64Union_t));
             name = BitRate2Str(un64.d64);
-        }
-        if(PAR_ID_LORA_BW == id) {
+        }break;
+        case PAR_ID_LORA_BW : {
             name = bandwidth2str((BandWidth_t)*value);
-        }
+        }break;
 #endif /*HAS_SX1262*/
-        if(PAR_ID_BOOT_CMD == id) {
+        case PAR_ID_BOOT_CMD : {
             name = boot_cmd2str((uint8_t)*value);
-        }
+        }break;
 
 #ifdef HAS_PWR_MUX
-        if(PAR_ID_PWR_SRC == id) {
+        case PAR_ID_PWR_SRC : {
             name = pwr_source2str((PwrSource_t)*value);
-        }
+        }break;
 #endif /*HAS_PWR_MUX*/
 
 #ifdef HAS_ZED_F9P
-        if(PAR_ID_RTK_MODE == id) {
+        case PAR_ID_GPS:
+        case PAR_ID_GLONASS:
+        case PAR_ID_GALILEO:
+        case PAR_ID_BEI_DOU:{
+            name = OnOff2str((bool) *value);
+        }break;
+
+        case PAR_ID_RTK_MODE : {
             name = rtk_mode2str((uint8_t)*value);
-        }
-        if(PAR_ID_RTK_FIX_LONG == id) {
+        }break;
+        case PAR_ID_RTK_FIX_LONG : {
             uint32_t time_ms = 0;
             memcpy(&time_ms, value, 4);
             name = RtkFixDur2str(time_ms);
-        }
-        if(PAR_ID_RTK_CHANNEL == id) {
+        }break;
+        case PAR_ID_RTK_CHANNEL : {
             name = interface2str((Interfaces_t)*value);
-        }
-        if(PAR_ID_BASE_LOCATION == id) {
+        }break;
+        case PAR_ID_BASE_LOCATION : {
             name = coordinate2str((void*)value);
-        }
+        }break;
+        default:
+            name = "UndefID";
+            break;
 #endif /*HAS_ZED_F9P*/
+        }// switch
     }
     return name;
 }

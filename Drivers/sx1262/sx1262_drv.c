@@ -1012,7 +1012,6 @@ bool sx1262_get_dev_err(uint16_t* op_error) {
   GetPacketType
   The command GetPacketType() returns the current operating packet type of the radio.
 */
-
 bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     bool res = false;
     uint8_t rx_array[3];
