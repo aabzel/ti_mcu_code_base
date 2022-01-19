@@ -4,9 +4,9 @@
 #include <stdint.h>
 
 #include "common_functions.h"
-#ifdef HAS_SUPER_LOOP
+#ifdef HAS_TASKS
 #include "task_info.h"
-#endif /*HAS_SUPER_LOOP*/
+#endif /*HAS_TASKS*/
 
 #ifdef HAS_EXT_RAM_EMUL
 #include "ext_ram_sim_drv.h"

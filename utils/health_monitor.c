@@ -28,8 +28,10 @@
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #endif
+#ifdef HAS_UART
 #include "uart_common.h"
 #include "uart_drv.h"
+#endif
 HealthMon_t HealthMon = {0};
 
 bool health_monotor_init(void) {
@@ -85,9 +87,11 @@ bool health_monotor_proc(void) {
     }
 #endif
 
+#ifdef HAS_CLI
     if(true != cli_init_done) {
         cli_init_done = true;
     }
+#endif
 
     float stack_precent = stack_used();
     if(50.0 < stack_precent) {
@@ -96,12 +100,14 @@ bool health_monotor_proc(void) {
             LOG_ERROR(HMOM, "StackUsed:%f %%", stack_precent);
         }
     }
+#ifdef HAS_UART
     if(0 < huart[UART_NUM_CLI].error_cnt) {
         LOG_ERROR(UART, "Error");
         // res = init_uart_ll(UART_NUM_CLI, "CLI");
         // if(false==res){
         // }
     }
+#endif
 
 #ifdef HAS_RTCM3
     static uint32_t lora_lost_pkt_cnt_prev = 0;

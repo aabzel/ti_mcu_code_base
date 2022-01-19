@@ -26,9 +26,10 @@
 #endif /*HAS_HEALTH_MONITOR*/
 
 #include "gpio_drv.h"
+#ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
-#include "uart_drv.h"
+#endif
 
 #ifdef HAS_BOOTLOADER
 #include "boot_driver.h"
@@ -49,14 +50,17 @@ int main(void) {
 #endif /*HAS_START_PAUSE*/
 
     res = try_init(sys_init(), "SYS") && res;
-
+#ifdef HAS_LOG
     LOG_INFO(SYS, "init [%s]", (true == res) ? "OK!" : "Error!");
+#endif
 #ifdef HAS_HEALTH_MONITOR
     HealthMon.init_error = !res;
 #endif /*HAS_HEALTH_MONITOR*/
+#ifdef HAS_LOG
     io_printf("Firmware launched!" CRLF);
     print_version();
     print_sys_info();
+#endif
 
 #ifdef HAS_BOOTLOADER
     res = boot_try_app();

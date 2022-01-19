@@ -47,10 +47,12 @@
 #include "log.h"
 #include "sw_init.h"
 #include "sys_config.h"
-#ifdef HAS_SUPER_LOOP
+#ifdef HAS_TASKS
 #include "task_info.h"
 #endif
+#ifdef HAS_UART
 #include "uart_drv.h"
+#endif
 
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
@@ -205,15 +207,19 @@ _Noreturn void super_main_loop(void) {
 #ifdef HAS_CLOCK
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
 #else
+#ifdef HAS_LOG
     io_printf("Main Task started" CRLF);
 #endif
+#endif
+#ifdef HAS_CLOCK
     uint64_t loop_start_time_us = 0;
+#endif
 #ifdef HAS_DEBUG
     uint64_t prev_loop_start_time_us = 0;
 #endif /*HAS_DEBUG*/
     for(;;) {
-        loop_start_time_us = 0;
 #ifdef HAS_CLOCK
+        loop_start_time_us = 0;
         loop_start_time_us = get_time_us();
 #endif /*HAS_CLOCK*/
 #ifdef HAS_DEBUG
@@ -225,7 +231,9 @@ _Noreturn void super_main_loop(void) {
         loop_duration_max_us = rx_max64u(loop_duration_max_us, loop_duration_us);
         prev_loop_start_time_us = loop_start_time_us;
 #endif /*HAS_DEBUG*/
+#ifdef HAS_TASKS
         super_loop(loop_start_time_us);
+#endif
 #ifdef HAS_FREE_RTOS
         //taskYIELD();
         vTaskDelay(5 / portTICK_PERIOD_MS);
@@ -236,9 +244,13 @@ _Noreturn void super_main_loop(void) {
 
 bool try_init(bool status, char* message) {
     if(false == status) {
+#ifdef HAS_LOG
         LOG_ERROR(HMOM, "init %s error", message);
+#endif
     } else {
+#ifdef HAS_LOG
         LOG_INFO(HMOM, "init %s OK", message);
+#endif
     }
     return status;
 }
