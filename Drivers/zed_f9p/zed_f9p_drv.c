@@ -355,8 +355,10 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
         if(IF_LORA == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].lora_fwd = true;
             Rtcm3Protocol[IF_UART1].rs232_fwd = false;
+#ifdef HAS_SX1262
             Sx1262Instance.check_connectivity = false;
             Sx1262Instance.sync_rssi = false;
+#endif
         }
         if(IF_RS232 == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].lora_fwd = false;
