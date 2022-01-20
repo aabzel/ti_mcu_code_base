@@ -11,7 +11,6 @@
 #ifdef DeviceFamily_CC26X2
 #include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
 #include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
-#include <ti/drivers/GPIO.h>
 #include <ti/drivers/Power.h>
 #include <ti/drivers/UART.h>
 #include <ti/drivers/power/PowerCC26X2.h>

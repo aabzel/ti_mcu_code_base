@@ -1,12 +1,14 @@
 #ifndef INIT_GPIO_H
 #define INIT_GPIO_H
 
-#include <gpio.h>
+#ifdef DeviceFamily_CC26X2
 #include <hw_memmap.h>
-#include <stdbool.h>
-#include <stdint.h>
+#include <gpio.h>
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
+#endif /*DeviceFamily_CC26X2*/
+#include <stdbool.h>
+#include <stdint.h>
 
 #include "board_layout.h"
 
