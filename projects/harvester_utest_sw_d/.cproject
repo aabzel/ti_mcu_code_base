@@ -129,15 +129,10 @@
 									<listOptionValue builtIn="false" value="HAS_BOOT"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
-									<listOptionValue builtIn="false" value="HAS_CALENDAR"/>
-									<listOptionValue builtIn="false" value="HAS_CLI"/>
-									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
-									<listOptionValue builtIn="false" value="HAS_CUSTOM_PRINTF"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
 									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
@@ -146,17 +141,12 @@
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_MCU"/>
-									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
-									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
-									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_SUPER_LOOP"/>
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_CLI"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_ARRAY"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_NMEA_PROTO"/>
@@ -170,7 +160,6 @@
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART0"/>
 									<listOptionValue builtIn="false" value="HAS_UART0_FWD"/>
-									<listOptionValue builtIn="false" value="HAS_UBX_PTOTO"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
@@ -194,6 +183,12 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.LANGUAGE_MODE.665153814" name="Language mode" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.LANGUAGE_MODE" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.LANGUAGE_MODE.RELAXED_ANSI" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CPP_DEFAULT.1568444176" name="Treat C files as C++ files (--cpp_default, -fg)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CPP_DEFAULT" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PRINTF_SUPPORT.1811364380" name="Level of printf/scanf support required (--printf_support)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PRINTF_SUPPORT" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PRINTF_SUPPORT.full" valueType="enumerated"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE.1952526525" name="Read options from specified file (--cmd_file, -@)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE" valueType="stringList">
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\software_components.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cli.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cc2642.opt"/>
+								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.425241768" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.467512831" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS.2146356311" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS"/>
@@ -294,7 +289,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/radio|bsp_cc26x2/ble|boards/tBeamV1_1|unit_tests/test_set_sw/test_string/text_convert.c|boards/stm32f4|boards/stm32_H407|bsp_cc26x2/spi|protocols/nmea_protocol/nmea_diag.c|utils/io_utils/writer_lora.c|Drivers/zed_f9p|Drivers/lora|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/sx1262|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|unit_tests/test_set_hw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="utils/io_utils/writer_can.c|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/radio|bsp_cc26x2/ble|boards/tBeamV1_1|unit_tests/test_set_sw/test_string/text_convert.c|boards/stm32f4|boards/stm32_H407|bsp_cc26x2/spi|protocols/nmea_protocol/nmea_diag.c|utils/io_utils/writer_lora.c|Drivers/zed_f9p|Drivers/lora|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/sx1262|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|unit_tests/test_set_hw|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

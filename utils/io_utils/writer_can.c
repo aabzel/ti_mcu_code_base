@@ -5,6 +5,9 @@
 #include "fifo_char.h"
 #include "sys_config.h"
 #include "can_drv.h"
+#ifndef HAS_CAN
+#error "CAN HW is not determined"
+#endif
 
 #define MAX_CAN_BLOCK 100U
 
