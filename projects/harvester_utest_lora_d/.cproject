@@ -130,15 +130,9 @@
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
 									<listOptionValue builtIn="false" value="HAS_CALENDAR"/>
-									<listOptionValue builtIn="false" value="HAS_CLI"/>
-									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
-									<listOptionValue builtIn="false" value="HAS_CORTEX_M4_COMMANDS"/>
 									<listOptionValue builtIn="false" value="HAS_CUSTOM_PRINTF"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
@@ -148,7 +142,6 @@
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
-									<listOptionValue builtIn="false" value="HAS_RS232"/>
 									<listOptionValue builtIn="false" value="HAS_RTC"/>
 									<listOptionValue builtIn="false" value="HAS_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_SPI0"/>
@@ -159,8 +152,6 @@
 									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP_RETRANSMIT"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_FLASH"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_FLASH_FS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SPI"/>
 									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
@@ -193,10 +184,12 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY.1440920769" name="Preprocess only (--preproc_only, -ppo)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE.573688216" name="Continue compilation after using -pp&lt;X&gt; options. (--preproc_with_compile, -ppa)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE" value="false" valueType="boolean"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE.920544555" name="Read options from specified file (--cmd_file, -@)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE" valueType="stringList">
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/lora.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/cc2642.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/log.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/cli.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/cc2642.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/lora.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/log.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/KeyValMap.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/rs232.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/mcu.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/options/debug.opt"/>
 								</option>
@@ -293,7 +286,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="utils/io_utils/writer_can.c|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/radio|bsp_cc26x2/ble|boards/tBeamV1_1|boards/stm32_H407|unit_tests/test_set_hw/test_system|utils/utils_string/str_utils_ex.c|utils/win_utils|utils/utils_files|unit_tests/test_set_hw/test_can|unit_tests/test_set_hw/test_zed_f9p|protocols/ubx_protocol|protocols/j1939|protocols/nmea_protocol|protocols/rtcm3_protocol|Drivers/zed_f9p|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Drivers/can|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/radio|bsp_cc26x2/ble|boards/tBeamV1_1|boards/stm32_H407|unit_tests/test_set_hw/test_system|utils/utils_string/str_utils_ex.c|utils/win_utils|utils/utils_files|unit_tests/test_set_hw/test_can|unit_tests/test_set_hw/test_zed_f9p|protocols/ubx_protocol|protocols/j1939|protocols/nmea_protocol|protocols/rtcm3_protocol|Drivers/zed_f9p|Drivers/tcan4550_q1_ti|Drivers/tcan4550_q1|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
