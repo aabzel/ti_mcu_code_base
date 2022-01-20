@@ -16,7 +16,8 @@ extern "C" {
 #include "gnss_utils.h"
 #include "ubx_protocol.h"
 
-#ifndef HAS_UART
+
+#if !defined(HAS_UART) && defined(HAS_MCU)
 #error "Ublox driver requires UART driver"
 #endif
 
