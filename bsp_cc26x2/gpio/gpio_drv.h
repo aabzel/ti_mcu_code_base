@@ -7,6 +7,7 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/PIN.h>
 #endif /*DeviceFamily_CC26X2*/
+
 #include <stdbool.h>
 #include <stdint.h>
 

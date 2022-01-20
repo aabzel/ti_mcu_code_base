@@ -21,7 +21,9 @@
 print_callback_t print_callback_f;
 void io_putstr(const char* str) {
     if(huart[UART_NUM_CLI].init_done) {
+#ifdef HAS_LOG
         oputs(&curWriterPtr->s, str);
+#endif
     }
 }
 #endif
@@ -29,7 +31,9 @@ void io_putstr(const char* str) {
 #ifdef HAS_CUSTOM_PRINTF
 void io_putchar(char ch) {
     if(huart[UART_NUM_CLI].init_done) {
+#ifdef HAS_LOG
         (&curWriterPtr->s)->f_putch(&curWriterPtr->s, ch);
+#endif
     }
 }
 #endif
@@ -39,41 +43,54 @@ void io_printf(const char* format, ...) {
     if(huart[UART_NUM_CLI].init_done) {
         va_list vlist;
         va_start(vlist, format);
+#ifdef HAS_LOG
         ovprintf(&curWriterPtr->s, format, vlist);
+#endif
         va_end(vlist);
     }
 }
 #endif
 
 #ifdef HAS_CUSTOM_PRINTF
-void io_vprintf(const char* format, va_list vlist) { ovprintf(&curWriterPtr->s, format, vlist); }
+void io_vprintf(const char* format, va_list vlist) {
+#ifdef HAS_LOG
+    ovprintf(&curWriterPtr->s, format, vlist);
+#endif
+}
 
 bool is_printf_clean(void) {
+    bool res = false;
     if(huart[UART_NUM_CLI].init_done) {
-        if(!writer_clean(curWriterPtr)) {
-            return false;
-        }
+#ifdef HAS_LOG
+        res = writer_clean(curWriterPtr);
+#endif
     }
-    return true;
+    return res;
 }
 #endif
 
 #ifdef HAS_CUSTOM_PRINTF
 void io_putstrln(const char* str) {
+#ifdef HAS_LOG
     io_putstr(str);
     io_putstr(CRLF);
+#endif
 }
 
 void wait_for_printf(void) {
+#ifdef HAS_LOG
     if(huart[UART_NUM_CLI].init_done) {
         while(!writer_half_clean(curWriterPtr)) {
         }
     }
+#endif
 }
 
 bool flush_printf(void) {
-    bool res = true;
+    bool res = false;
     if(huart[UART_NUM_CLI].init_done) {
+       res = true;
+#ifdef HAS_LOG
         uint32_t cnt = 0;
         while((false == isFromInterrupt()) && (false == writer_clean(curWriterPtr))) {
             cnt++;
@@ -82,9 +99,9 @@ bool flush_printf(void) {
                 break;
             }
         }
+#endif
     }
     return res;
 }
 #endif
 
-// static  ostream_t *get_console_stream(void) { return &curWriterPtr->s; }
