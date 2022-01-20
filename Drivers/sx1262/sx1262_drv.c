@@ -1679,7 +1679,7 @@ static void sx1262_thread(void *arg){
 #endif /*HAS_FREE_RTOS*/
 
 /*returns band_width in kHz multiplied by 100 in order to fit in 2 bytes*/
-static uint32_t bandwidth2num(BandWidth_t bandwidth) {
+uint32_t bandwidth2num(BandWidth_t bandwidth) {
     uint32_t band_width = 0;
     switch(bandwidth) {
     case LORA_BW_7:

@@ -27,7 +27,7 @@ bool ubx_driver_init(void) {
     bool res = true;
     memset(&NavInfo, 0x00, sizeof(NavInfo));
 #ifdef HAS_LOG
-    bool res = set_log_level(UBX, LOG_LEVEL_NOTICE);
+    res = set_log_level(UBX, LOG_LEVEL_NOTICE);
 #endif
     return res;
 }

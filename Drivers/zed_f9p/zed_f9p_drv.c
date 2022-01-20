@@ -470,12 +470,12 @@ bool zed_f9p_deploy_rover(void) {
         res = mm_get(PAR_ID, (uint8_t*)&VARIABLE, sizeof(VARIABLE), &file_len);                                        \
         if((true == res) && ((EXP_LEN) == file_len)) {                                                                 \
             if((EXP_LEN)<=4) {                                                                                         \
-                HAS_LOG LOG_INFO(ZED_F9P, "Set" VAR_NAME "FromParams %u [%s]", VARIABLE, PARSER_FUNC(VARIABLE));               \
+                LOG_INFO(ZED_F9P, "Set" VAR_NAME "FromParams %u [%s]", VARIABLE, PARSER_FUNC(VARIABLE));               \
             }else{                                                                                                     \
-                HAS_LOG LOG_INFO(ZED_F9P, "Set" VAR_NAME "FromParams [%s]", PARSER_FUNC(VARIABLE));                            \
+                LOG_INFO(ZED_F9P, "Set" VAR_NAME "FromParams [%s]", PARSER_FUNC(VARIABLE));                            \
             }                                                                                                          \
         } else {                                                                                                       \
-            HAS_LOG LOG_WARNING(ZED_F9P, "SetDflt" VAR_NAME " [%s]", PARSER_FUNC(DEF_VAL));                                    \
+            LOG_WARNING(ZED_F9P, "SetDflt" VAR_NAME " [%s]", PARSER_FUNC(DEF_VAL));                                    \
             /*memcpy((void *)&VARIABLE , (void *)&DEF_VAL, EXP_LEN);*/                                                 \
             VARIABLE = DEF_VAL;                                                                                        \
             res = false;                                                                                               \
@@ -511,10 +511,10 @@ bool zed_f9p_load_params(void) {
     ZedF9P.corrections.galileo=false;
     ZedF9P.corrections.beidou =false;
 
-    LOAD_PARAM_ZED(PAR_ID_GPS,     ZedF9P.corrections.gps, 1, "TimeZone UTC+", 1, OnOff2str);
-    LOAD_PARAM_ZED(PAR_ID_GLONASS, ZedF9P.corrections.glonass, 1, "TimeZone UTC+", 0, OnOff2str);
-    LOAD_PARAM_ZED(PAR_ID_GALILEO, ZedF9P.corrections.galileo, 1, "TimeZone UTC+", 0, OnOff2str);
-    LOAD_PARAM_ZED(PAR_ID_BEI_DOU, ZedF9P.corrections.beidou, 1, "TimeZone UTC+", 0, OnOff2str);
+    LOAD_PARAM_ZED(PAR_ID_GPS,     ZedF9P.corrections.gps, 1, "GpsCor", 1, OnOff2str);
+    LOAD_PARAM_ZED(PAR_ID_GLONASS, ZedF9P.corrections.glonass, 1, "GlonassCor", 0, OnOff2str);
+    LOAD_PARAM_ZED(PAR_ID_GALILEO, ZedF9P.corrections.galileo, 1, "GalileoCor", 0, OnOff2str);
+    LOAD_PARAM_ZED(PAR_ID_BEI_DOU, ZedF9P.corrections.beidou, 1, "BeiDouCor", 0, OnOff2str);
     LOAD_PARAM_ZED(PAR_ID_TIME_ZONE, ZedF9P.time_zone, 1, "TimeZone UTC+", 3, uint2str);
     LOAD_PARAM_ZED(PAR_ID_BASE_ACC, ZedF9P.fixed_position_3daccuracy_mm, 4, "BaseAcc", METER_TO_MM(1), mm2str);
     LOAD_PARAM_ZED(PAR_ID_RTK_CHANNEL, ZedF9P.channel, 1, "RTKchannel", IF_LORA, interface2str);

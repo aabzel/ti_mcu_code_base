@@ -127,8 +127,6 @@
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
 									<listOptionValue builtIn="false" value="HAS_CALENDAR"/>
-									<listOptionValue builtIn="false" value="HAS_CLI"/>
-									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_CORTEX_M4"/>
 									<listOptionValue builtIn="false" value="HAS_CRC"/>
@@ -165,7 +163,6 @@
 									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
 									<listOptionValue builtIn="false" value="HAS_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
-									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>
 									<listOptionValue builtIn="false" value="HAS_UART0"/>
 									<listOptionValue builtIn="false" value="HAS_UART0_FWD"/>
@@ -190,6 +187,10 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.ASM_LISTING.1736958041" name="Generate listing file (--asm_listing, -al)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.ASM_LISTING" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.GEN_FUNC_INFO_LISTING.1147472802" name="Generate a function information listing file (--gen_func_info_listing)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.GEN_FUNC_INFO_LISTING" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.GEN_PREPROCESSOR_LISTING.1683062283" name="Output preprocessor listing to .rl file (--gen_preprocessor_listing)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.GEN_PREPROCESSOR_LISTING" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE.273920646" name="Read options from specified file (--cmd_file, -@)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE" valueType="stringList">
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\utils\cli.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\boards\harvester_v1\harvester_v1.opt"/>
+								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.2064912726" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.2089291588" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS.1895019565" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__ASM_SRCS"/>
