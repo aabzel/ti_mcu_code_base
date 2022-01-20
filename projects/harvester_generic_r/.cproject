@@ -67,6 +67,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/system"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/can"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/led_drv"/>
@@ -181,9 +182,12 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.GEN_PREPROCESSOR_LISTING.1683062283" name="Output preprocessor listing to .rl file (--gen_preprocessor_listing)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.GEN_PREPROCESSOR_LISTING" value="true" valueType="boolean"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE.273920646" name="Read options from specified file (--cmd_file, -@)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE" valueType="stringList">
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cli.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\can.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cc2642.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\harvester_v1.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\lora.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\gnss.opt"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.2064912726" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.2089291588" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>
@@ -295,9 +299,9 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
+						<entry excluding="bsp_cc26x2/radio|bsp_cc26x2/ti_radio_config.c|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/ble|boards/tBeamV1_1|bsp_cc26x2/adc/adc_commands.c|bsp_cc26x2/tim/tim_commands.c|boards/stm32f4|boards/stm32_H407|utils/utils_string/str_utils_ex.c|utils/win_utils|utils/utils_files|boards/harvester_cc2642_v1|boards/launchpad|unit_tests|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_ublox_proto — копия"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="unit_tests/test_set_sw/test_crc — копия"/>
-						<entry excluding="bsp_cc26x2/radio|bsp_cc26x2/ti_radio_config.c|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/ble|boards/tBeamV1_1|bsp_cc26x2/adc/adc_commands.c|bsp_cc26x2/tim/tim_commands.c|protocols/nmea_protocol/nmea_diag.c|boards/stm32f4|boards/stm32_H407|utils/utils_string/str_utils_ex.c|utils/win_utils|utils/utils_files|boards/harvester_cc2642_v1|boards/launchpad|unit_tests|utils/fifo_char_buffer.c|unit_tests/test_set_sw|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -11,7 +11,6 @@
 #error "CAN HW is not determined"
 #endif
 
-
 extern generic_writer_t can_o;
 #define DBG_CAN_STREAM (&can_o.s)
 

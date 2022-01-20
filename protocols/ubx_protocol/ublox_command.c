@@ -25,7 +25,7 @@ static bool ubx_diag(void) {
     io_printf("rx state: %u" CRLF, UbloxProtocol.rx_state);
     io_printf("ack cnt: %u" CRLF, UbloxProtocol.ack_cnt);
     io_printf("diag: %u" CRLF, UbloxProtocol.diag);
-#ifdef HAS_UBX_DEBUG
+#if defined(HAS_UBX_DEBUG) && defined(HAS_DEBUG)
     io_printf("sync cnt: %u" CRLF, UbloxProtocol.sync_cnt);
     io_printf("min len: %u" CRLF, UbloxProtocol.min_len);
     io_printf("max len: %u" CRLF, UbloxProtocol.max_len);
