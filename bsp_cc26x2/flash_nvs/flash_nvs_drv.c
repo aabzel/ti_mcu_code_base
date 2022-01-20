@@ -17,6 +17,10 @@
 #include "memory_layout.h"
 #include "none_blocking_pause.h"
 
+#ifndef HAS_FLASH_NVS
+#error "Define FLASH_NVS!"
+#endif
+
 uint8_t nvs_buffer[NVS_BUFF_SIZE];
 NVS_Handle nvsHandle;
 NVS_Attrs regionAttrs;
@@ -79,7 +83,7 @@ bool flash_nvs_write(uint32_t flas_addr, uint8_t* array, uint32_t array_len) {
     int_fast16_t ret;
     if((NVS_FLASH_START <= flas_addr) && (flas_addr < (NVS_FLASH_START + NVS_SIZE))) {
         size_t offset = flas_addr - NVS_FLASH_START;
-        NVS_unlock(nvsHandle);
+        NVS_unlock(nvsHandle);// Error Here
         ret = NVS_write(nvsHandle, offset, (void*)array, (size_t)array_len, NVS_WRITE_POST_VERIFY);
         if(NVS_STATUS_SUCCESS == ret) {// Error -1
             res = true;

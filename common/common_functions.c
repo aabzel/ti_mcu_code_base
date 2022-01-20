@@ -121,7 +121,7 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_WDT, 1000, proc_watchdog, loop_start_time_us);
 #endif /*HAS_WDT*/
 
-#if HAS_LED && !defined(HAS_FREE_RTOS)
+#if defined(HAS_LED) && !defined(HAS_FREE_RTOS)
     measure_task_interval(TASK_ID_LED, LED_POLL_PERIOD_US, proc_leds, loop_start_time_us);
 #endif /*HAS_LED*/
 
