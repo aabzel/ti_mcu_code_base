@@ -22,7 +22,7 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
         instance->parser.load_len = 1;
 #ifdef HAS_DEBUG
         instance->preamble_cnt++;
-#ifdef HAS_MCU
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "Preamble");
 #endif
 #endif
