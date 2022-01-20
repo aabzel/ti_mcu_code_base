@@ -150,21 +150,15 @@
 									<listOptionValue builtIn="false" value="HAS_GLONASS_CORRECTION"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR_COMMANDS"/>
-									<listOptionValue builtIn="false" value="HAS_LEGAL_BAND_CHECK"/>
-									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA"/>
 									<listOptionValue builtIn="false" value="HAS_NMEA_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
-									<listOptionValue builtIn="false" value="HAS_PACKED_LORA_FRAME"/>
 									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_RTCM3"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_COMMANDS"/>
 									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_SUPER_LOOP"/>
 									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
-									<listOptionValue builtIn="false" value="HAS_SX1262_BIT_RATE"/>
-									<listOptionValue builtIn="false" value="HAS_SX1262_DEBUG"/>
-									<listOptionValue builtIn="false" value="HAS_SX1262_POLL"/>
 									<listOptionValue builtIn="false" value="HAS_SYSTIC"/>
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
@@ -196,7 +190,9 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\boards\harvester_v1\harvester_v1.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\bsp_cc26x2\bsp.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\Drivers\zed_f9p\zed_f9p.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\utils\io_utils\io.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\io.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cli.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\unit_tests\unit_tests.opt"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.425241768" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
