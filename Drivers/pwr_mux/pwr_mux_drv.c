@@ -46,31 +46,13 @@ bool pwr_src_set(PwrSource_t source) {
 
 bool pwr_src_init(void) {
     bool res = false;
-    PwrSource_t pwr_source = PWR_SRC_UNDEF;
-#ifdef HAS_FLASH_FS
-    uint16_t file_len = 0;
-    res = mm_get(PAR_ID_PWR_SRC, (uint8_t*)&pwr_source, sizeof(pwr_source), &file_len);
+    bool out_res = true;
+    PwrSource_t pwr_source = PWR_SRC_VCC_3V3;
+#ifdef HAS_PARAM
+    LOAD_PARAM(LG_PWR, PAR_ID_PWR_SRC, pwr_source, 1, "PwrSource", PWR_SRC_VCC_3V3, pwr_source2str) ;
 #endif /*HAS_FLASH_FS*/
-    if((true == res) && (1 == file_len)) {
-#ifdef HAS_LOG
-        LOG_INFO(LG_PWR, "Set power source %u %s", pwr_source, pwr_source2str(pwr_source));
-#endif
-        res = pwr_src_set(pwr_source);
-    } else {
-#ifdef HAS_LOG
-        LOG_WARNING(LG_PWR, "Set default power source VCC 3.3V");
-#endif
-        res = pwr_src_set(PWR_SRC_VCC_3V3);
-        pwr_source = PWR_SRC_VCC_3V3;
-        res = mm_set(PAR_ID_PWR_SRC, (uint8_t*)&pwr_source, sizeof(pwr_source));
-        if(false == res) {
-#ifdef HAS_LOG
-            LOG_ERROR(LG_PWR, "Unable to set dflt PwrSrc");
-#endif
-        }
-    }
-
-    return res;
+    res = pwr_src_set(pwr_source);
+    return out_res;
 }
 
 PwrSource_t pwr_src_get(void) {

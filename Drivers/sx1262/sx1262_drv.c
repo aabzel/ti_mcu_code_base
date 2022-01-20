@@ -865,7 +865,7 @@ float dbm2watts(int32_t dbm) {
     watts = powf(10.0f, ((float)dbm) / 10.0f) / 1000.0f;
     return watts;
 }
-
+#if 0
 #ifdef HAS_LOG
 #define LOAD_PARAM(PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                                          \
     do {                                                                                                               \
@@ -892,7 +892,7 @@ float dbm2watts(int32_t dbm) {
         }                                                                                                              \
     } while(0);
 #endif
-
+#endif
 
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     bool out_res = true;
@@ -915,31 +915,31 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 
 #ifdef HAS_FLASH_FS
     bool res = true;
-    LOAD_PARAM(PAR_ID_LORA_CRC_INIT, sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
-    LOAD_PARAM(PAR_ID_LORA_CRC_POLY, sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
+    LOAD_PARAM(LORA,PAR_ID_LORA_CRC_INIT, sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
+    LOAD_PARAM(LORA,PAR_ID_LORA_CRC_POLY, sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
 
-    LOAD_PARAM(PAR_ID_LOW_DATA_RATE, sx1262Instance->mod_params.low_data_rate_optimization, 1, "LowDataRateOpt",
+    LOAD_PARAM(LORA,PAR_ID_LOW_DATA_RATE, sx1262Instance->mod_params.low_data_rate_optimization, 1, "LowDataRateOpt",
                LDRO_OFF, LowDataRateOpt2Str);
-    LOAD_PARAM(PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen", 255,
+    LOAD_PARAM(LORA,PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen", 255,
                PayloadLen2Str);
-    LOAD_PARAM(PAR_ID_PACKET_TYPE, sx1262Instance->packet_param.packet_type, 1, "PktType", PACKET_TYPE_LORA,
+    LOAD_PARAM(LORA,PAR_ID_PACKET_TYPE, sx1262Instance->packet_param.packet_type, 1, "PktType", PACKET_TYPE_LORA,
                PacketType2Str);
-    LOAD_PARAM(PAR_ID_HEADER_TYPE, sx1262Instance->packet_param.proto.lora.header_type, 1, "HeaderType",
+    LOAD_PARAM(LORA,PAR_ID_HEADER_TYPE, sx1262Instance->packet_param.proto.lora.header_type, 1, "HeaderType",
                LORA_VAR_LEN_PACT, LoraHeaderType2Str);
-    LOAD_PARAM(PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType", LORA_CRC_ON,
+    LOAD_PARAM(LORA,PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType", LORA_CRC_ON,
                LoraCrcType2Str);
-    LOAD_PARAM(PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen",
+    LOAD_PARAM(LORA,PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen",
                DFLT_PREAMBLE_LEN, PreambleLen2Str);
-    LOAD_PARAM(PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD,
+    LOAD_PARAM(LORA,PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD,
                HexWord2Str);
-    LOAD_PARAM(PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp", IQ_SETUP_STANDARD,
+    LOAD_PARAM(LORA,PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp", IQ_SETUP_STANDARD,
                IqSetUp2Str);
-    LOAD_PARAM(PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate", DFLT_LORA_CR, coding_rate2str);
-    LOAD_PARAM(PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth", DFLT_LORA_BW, bandwidth2str);
-    LOAD_PARAM(PAR_ID_LORA_SF, sx1262Instance->mod_params.spreading_factor, 1, "SpreadingFactor", DFLT_SF,
+    LOAD_PARAM(LORA,PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate", DFLT_LORA_CR, coding_rate2str);
+    LOAD_PARAM(LORA,PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth", DFLT_LORA_BW, bandwidth2str);
+    LOAD_PARAM(LORA,PAR_ID_LORA_SF, sx1262Instance->mod_params.spreading_factor, 1, "SpreadingFactor", DFLT_SF,
                spreading_factor2str);
-    LOAD_PARAM(PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 4, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
-    LOAD_PARAM(PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr", DFLT_OUT_POWER, dbm2wattsStr);
+    LOAD_PARAM(LORA,PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 4, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
+    LOAD_PARAM(LORA,PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr", DFLT_OUT_POWER, dbm2wattsStr);
     // LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
     uint16_t file_len = 0;
     res = mm_get(PAR_ID_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word, sizeof(sx1262Instance->set_sync_word),

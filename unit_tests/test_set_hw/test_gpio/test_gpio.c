@@ -1,6 +1,5 @@
 #include "test_gpio.h"
 
-//#include <gpio.h>
 #include <string.h>
 
 #include "clocks.h"
@@ -35,11 +34,13 @@ static bool test_gpio_pin(uint8_t dio_number) {
 }
 
 bool test_gpio_write(void) {
-#ifdef HAS_CAN
+#ifdef DIO_CAN_SS
     EXPECT_TRUE(test_gpio_pin(DIO_CAN_SS));
+#endif
+#ifdef DIO_CAN_RST
     EXPECT_TRUE(test_gpio_pin(DIO_CAN_RST));
 #endif
-#ifdef HAS_GNSS
+#ifdef DIO_GNSS_RST_N
     EXPECT_TRUE(test_gpio_pin(DIO_GNSS_RST_N));
 #endif
     EXPECT_TRUE(test_gpio_pin(DIO_SX1262_RST));
@@ -96,22 +97,28 @@ bool test_gpio_write_ps_rs232(void) {
 }
 #endif
 
-#ifdef HAS_GNSS
+#ifdef DIO_GNSS_SAFEBOOT_N
 bool test_gpio_write_gnss_safeboot_n(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_GNSS_SAFEBOOT_N));
     return true;
 }
+#endif
 
+#ifdef DIO_GNSS_RXD
 bool test_gpio_write_gnss_rxd(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_GNSS_RXD));
     return true;
 }
+#endif
 
+#ifdef DIO_GNSS_INT
 bool test_gpio_write_gnss_int(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_GNSS_INT));
     return true;
 }
+#endif
 
+#ifdef DIO_GNSS_RST_N
 bool test_gpio_write_gnss_rst_n(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_GNSS_RST_N));
     return true;
@@ -130,7 +137,7 @@ bool test_gpio_write_led_red(void) {
     return true;
 }
 
-#ifdef HAS_CAN
+#ifdef DIO_CAN_SS
 bool test_gpio_write_can_ss(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_CAN_SS));
     return true;
@@ -148,7 +155,7 @@ bool test_gpio_write_sx1262_rst(void) {
     return true;
 }
 
-#ifdef HAS_CAN
+#ifdef DIO_CAN_RST
 bool test_gpio_write_can_rst(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_CAN_RST));
     return true;

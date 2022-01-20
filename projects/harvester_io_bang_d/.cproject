@@ -146,12 +146,13 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE.265604701" name="Mode" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_MODE.automatic" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY.1440920769" name="Preprocess only (--preproc_only, -ppo)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE.573688216" name="Continue compilation after using -pp&lt;X&gt; options. (--preproc_with_compile, -ppa)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE" value="false" valueType="boolean"/>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE.813892389" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE" valueType="stringList">
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cc2642.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE.813892389" name="Read options from specified file (--cmd_file, -@)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE" valueType="stringList">
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cli.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\rs232.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cc2642.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\HarvesterPower.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\KeyValMap.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\rs232.opt"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.425241768" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.467512831" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>

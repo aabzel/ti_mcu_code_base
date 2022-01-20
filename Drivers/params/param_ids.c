@@ -78,15 +78,7 @@ uint32_t param_get_cnt(void){
 bool param_init(void) {
     bool res = true;
     bool out_res = true;
-#if 0
-    if(param_get_cnt != ARRAY_SIZE(ParamArray)) {
-        LOG_ERROR(PARAM, "Param table corrupted");
-        res = false;
-        out_res = false;
-    } else {
-        res = true;
-    }
-#endif
+
     uint16_t value_len = 0;
     uint16_t i = 0;
     for(i = 0; i < ARRAY_SIZE(ParamArray); i++) {
