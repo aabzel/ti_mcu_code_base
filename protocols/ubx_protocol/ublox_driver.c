@@ -17,7 +17,7 @@
 #include "clocks.h"
 #endif /*HAS_MCU*/
 
-#ifndef HAS_UART
+#if !defined(HAS_UART) && defined(HAS_MCU)
 #error "Ublox driver requires UART driver"
 #endif
 
