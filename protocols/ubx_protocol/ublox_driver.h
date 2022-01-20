@@ -9,21 +9,28 @@ extern "C" {
 #include <stdint.h>
 #include <time.h>
 
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
 #include "clocks.h"
 #endif
 #include "data_utils.h"
 #include "gnss_utils.h"
 #include "ubx_protocol.h"
 
-#ifdef HAS_MCU
+#ifndef HAS_UART
+#error "Ublox driver requires UART driver"
+#endif
+
+
+#define UBX_PERIOD_US S_2_US(3)
+#ifdef HAS_UART1
 #define UBX_SEND_TRY 15
 #define UBX_SEND_TIME_OUT_MS 2000
+#define UBX_RX_TIME_OUT_MS S_2_MS(15)
+
 #ifdef UART_NUM_ZED_F9P
 #define UBX_UART_NUM UART_NUM_ZED_F9P
 #endif
-#define UBX_PERIOD_US S_2_US(3)
-#define UBX_RX_TIME_OUT_MS S_2_MS(15)
+
 #endif
 
 typedef enum eReceiverMode_t {

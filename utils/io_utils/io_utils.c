@@ -4,11 +4,18 @@
 
 #ifdef HAS_MCU
 #include "sys.h"
-#include "uart_common.h"
-#include "uart_drv.h"
+#endif
+
+#ifdef HAS_LOG
 #include "writer_config.h"
 #include "writer_generic.h"
 #endif
+
+#ifdef HAS_UART
+#include "uart_common.h"
+#include "uart_drv.h"
+#endif
+
 
 #ifdef HAS_CUSTOM_PRINTF
 print_callback_t print_callback_f;

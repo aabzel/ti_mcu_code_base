@@ -5,15 +5,21 @@
 #include <stdio.h>
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
 #include "clocks.h"
+#endif
+#ifdef HAS_FLASH_FS
 #include "flash_fs.h"
+#endif
+#ifdef HAS_PARAM
+#include "param_ids.h"
+#endif
 #ifdef HAS_LOG
 #include "log.h"
 #include "io_utils.h"
 #endif
+#ifdef HAS_LED
 #include "led_drv.h"
-#include "param_ids.h"
 #endif
 
 #include "gnss_utils.h"
@@ -430,7 +436,7 @@ bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
 #endif
                 res = gnss_parse_rmc(nmea_msg, &gps_ctx->rmc);
                 if(res) {
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
                     gps_ctx->gnss_time_stamp = get_time_ms32();
 #endif
                     gps_ctx->rmc.coordinate_dd = encode_gnss_coordinates(gps_ctx->rmc.coordinate_ddmm);
@@ -445,7 +451,7 @@ bool nmea_parse(char* nmea_msg, uint16_t len, NmeaData_t* gps_ctx) {
                 /*here lat and lon*/
                 res = gnss_parse_gll(nmea_msg, &gps_ctx->gll);
                 if(res) {
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
                     gps_ctx->gnss_time_stamp = get_time_ms32();
 #endif
                     gps_ctx->gll.fcnt.cnt++;
@@ -592,7 +598,7 @@ static bool nmea_calc_mode(PositionMode_t* pos_mode, NmeaData_t* nmea_data) {
 bool nmea_update_rtk_fixed_duration(void) {
     bool res = false;
     uint32_t cur_up_time = 0;
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
     cur_up_time = get_time_ms32();
 #endif
     uint32_t cur_rtk_fixed_duration = cur_up_time - NmeaProto.rtk_fixed_start_ms;
@@ -618,7 +624,7 @@ bool nmea_proc(void) {
     static uint32_t prev_zda_cnt = 0;
     static uint32_t prev_rmc_cnt = 0;
     static uint32_t prev_gga_cnt = 0;
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
     uint32_t cur_time_ms = get_time_ms32();
     uint32_t lack_of_frame_time_out_ms = 0;
 #endif
@@ -685,7 +691,7 @@ bool nmea_proc(void) {
             }
             if(PM_RTK_FIXED == NmeaProto.pos_mode) {
                 Led[LED_INDEX_GREEN].mode = LED_MODE_ON;
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
                 NmeaProto.rtk_fixed_start_ms = get_time_ms32();
 #endif
             } else {

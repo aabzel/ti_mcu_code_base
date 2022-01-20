@@ -7,12 +7,12 @@
 #include "crc24_q.h"
 #include "data_utils.h"
 #include "debug_info.h"
-#ifdef HAS_MCU
+#ifdef HAS_LED
 #include "led_drv.h"
+#endif
 #ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
-#endif
 #endif
 
 #ifdef X86_64

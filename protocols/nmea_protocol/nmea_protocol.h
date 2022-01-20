@@ -6,10 +6,10 @@
 #include <time.h>
 
 #include "gnss_utils.h"
-#ifdef HAS_MCU
+#ifdef HAS_CLOCK
 #include "clocks.h"
 #endif
-#ifdef HAS_MCU
+#ifdef HAS_TASKS
 #define NMEA_PERIOD_US S_2_US(1.5)
 #define NMEA_LACK_FRAME_WARNING_TIME_OUT_MS S_2_MS(6)
 #define NMEA_LACK_FRAME_ERROR_TIME_OUT_MS S_2_MS(12)

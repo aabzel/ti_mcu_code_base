@@ -279,7 +279,7 @@ uint8_t ubx_keyid_2len(uint32_t key_id) {
     return bytes;
 }
 
-#ifdef HAS_MCU
+#ifdef HAS_UART
 bool ubx_wait_ack(uint32_t wait_pause_ms) {
     bool res = false, loop = true;
     uint32_t start_ms = 0U, curr_ms = 0U, diff_ms = 0;

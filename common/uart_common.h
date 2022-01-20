@@ -20,7 +20,7 @@
 #include "stm32f4xx_hal.h"
 #endif /*USE_HAL_DRIVER*/
 
-#ifdef HAS_MCU
+#ifdef HAS_UART
 #include "uart_drv.h"
 #endif
 
@@ -55,7 +55,7 @@ typedef struct xUartHandle_t {
 #ifdef USE_HAL_DRIVER
     UART_HandleTypeDef uart_h;
 #endif /*USE_HAL_DRIVER*/
-#ifdef HAS_MCU
+#ifdef HAS_UART
     bool is_uart_fwd[UART_COUNT];
 #endif
     char name[8];
@@ -65,7 +65,7 @@ typedef struct xUartHandle_t {
 
 typedef enum { UART_ERROR_PE, UART_ERROR_FE, UART_ERROR_NE, UART_ERROR_ORE } rx_uart_error_t;
 
-#ifdef HAS_MCU
+#ifdef HAS_UART
 extern UartHandle_t huart[UART_COUNT];
 bool uart_common_init(uint8_t uart_num);
 #endif

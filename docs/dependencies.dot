@@ -2,13 +2,16 @@ digraph graphname {
     rankdir=LR;
 	AES;
     CLOCK->CLI;
+	STREAM->LOG;
 	UART->STREAM;
 	LORA->STREAM;
+	TCAM4550->CAN;
+	CAN->STREAM;
+	RS232->STREAM;
 	BLE->STREAM;
 	RS232->RTK;
 	LORA->RTK;
 	ZED_F9P->RTK;
-	STREAM->CLI
     CLOCK->GPIO_PWM
     CLOCK->LED;
     CLOCK->TASK;
@@ -81,7 +84,6 @@ digraph graphname {
     CLI->BootLoader;
     RS232->BootLoader;
     UART->LOG;
-	LORA->LOG;
 	LOG->CLI;
     UART->NMEA;
     UART->RS232;

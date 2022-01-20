@@ -38,7 +38,7 @@ bool cli_echo = true;
 bool cli_output = true;
 uint32_t cli_task_cnt = 0;
 bool cli_init_done = false;
-#ifdef HAS_MCU
+#ifdef HAS_CLI
 static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
 #endif
 
@@ -105,7 +105,7 @@ static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const su
 #endif
 
 
-#ifndef X86_64
+#ifdef HAS_CLI
 bool cli_process(void) {
     if(true == huart[UART_NUM_CLI].rx_int) {
         huart[UART_NUM_CLI].rx_int = false;
@@ -224,7 +224,7 @@ bool process_shell_cmd(char* cmd_line) {
 }
 #endif
 
-#ifndef X86_64
+#ifdef HAS_CLI
 void help_dump_key(const char* sub_name1, const char* sub_name2) {
     uint16_t num = 1;
     const shell_cmd_info_t* cmd = shell_commands;
@@ -338,7 +338,7 @@ Arrow_t cli_arrows_parse(char cur_char) {
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_CLI
 bool cli_init(void) {
     bool res = true;
 #ifdef HAS_CLI_CMD_HISTORY

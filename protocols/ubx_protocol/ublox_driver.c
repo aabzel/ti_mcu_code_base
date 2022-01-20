@@ -13,7 +13,7 @@
 #include "ubx_protocol.h"
 #include "ubx_types.h"
 
-#ifndef HAS_MCU
+#ifdef HAS_CLOCK
 #include "clocks.h"
 #endif /*HAS_MCU*/
 

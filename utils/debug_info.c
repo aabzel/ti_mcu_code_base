@@ -16,26 +16,33 @@
 #include "stm32f4xx_hal.h"
 #endif /*STM32F413xx*/
 
-#ifdef HAS_MCU
+#ifdef HAS_UART
 #include "uart_drv.h"
+#endif
 #ifdef HAS_FLASH
 #include "flash_drv.h"
 #endif
+
+#ifdef HAS_DEV_ID
+#include "device_id.h"
+#endif
+
+#ifdef HAS_LOG
+#include "table_utils.h"
+#include "writer_config.h"
+#include "writer_generic.h"
+#include "oprintf.h"
+#endif
+
+#ifdef HAS_MCU
+#include "sys_config.h"
 #ifndef USE_HAL_DRIVER
 #include "core_driver.h"
 #endif
 #ifdef HAS_BOOT
 #include "boot_cfg.h"
 #endif
-#ifdef HAS_DEV_ID
-#include "device_id.h"
-#endif
-#include "oprintf.h"
-#include "sys_config.h"
-#include "table_utils.h"
 #include "version.h"
-#include "writer_config.h"
-#include "writer_generic.h"
 #endif
 
 #ifdef X86_64
@@ -78,7 +85,7 @@ bool is_little_endian(void) {
     return bint.u8[0] == 4;
 }
 
-#ifdef HAS_MCU
+#ifdef HAS_LOG
 static bool print_fw_type(void) {
     bool res = false;
     io_printf("config: %s " CRLF, CONFIG_NAME);
@@ -102,7 +109,7 @@ static bool print_fw_type(void) {
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_LOG
 void print_sysinfo(void) {
 #ifdef HAS_CORTEX_M
     io_printf("Reset handler: 0x%x " CRLF, *((uint32_t*)0x00000004));
@@ -163,7 +170,7 @@ bool print_version(void) {
 }
 #endif /*USE_HAL_DRIVER*/
 
-#ifdef HAS_MCU
+#ifdef HAS_LOG
 
 void print_sys_info(void) {
     uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
@@ -176,7 +183,7 @@ void print_sys_info(void) {
 #endif
     explore_stack_dir();
 }
-#endif /*HAS_MCU*/
+#endif /*HAS_LOG*/
 
 /*platform spesific data type calculator */
 static bool print_u16_un(U16_bit_t un) {
@@ -252,7 +259,7 @@ bool print_64bit_types(void* val) {
     return true;
 }
 
-#if defined(HAS_MCU) && !defined(ESP32)
+#if defined(HAS_LOG) && !defined(ESP32)
 bool print_vector_table(uint32_t vectors_table_base) {
     uint32_t* addres = 0;
     uint32_t offset = 0, num = 0;
@@ -391,7 +398,7 @@ static bool print_mem2(uint8_t* addr, uint32_t len, bool new_line) {
 }
 #endif
 
-#ifdef HAS_MCU
+#ifdef HAS_LOG
 bool find_addr_by_val(uint16_t byte_num, uint32_t val, uint32_t start_addr, uint32_t end_addr) {
     bool res = false;
     uint32_t cnt = 0;
@@ -474,7 +481,7 @@ bool print_bit_hint(uint16_t offset, uint32_t bitness) {
     return res;
 }
 
-#ifdef HAS_MCU
+#ifdef HAS_LOG
 bool print_bit_representation(uint32_t val) {
     bool res = true;
     int32_t bit_index = 0;
