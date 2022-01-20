@@ -68,9 +68,10 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/led_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/rs232_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/task_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/boards"/>
