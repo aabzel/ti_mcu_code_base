@@ -134,14 +134,9 @@
 									<listOptionValue builtIn="false" value="HAS_BOOT"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
 									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
-									<listOptionValue builtIn="false" value="HAS_CLI"/>
-									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
 									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
 									<listOptionValue builtIn="false" value="HAS_CUSTOM_PRINTF"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH_FS"/>
-									<listOptionValue builtIn="false" value="HAS_FLASH_NVS"/>
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_GPIO"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
@@ -150,18 +145,10 @@
 									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
-									<listOptionValue builtIn="false" value="HAS_PARAM"/>
 									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
 									<listOptionValue builtIn="false" value="HAS_RS232"/>
-									<listOptionValue builtIn="false" value="HAS_SPI"/>
-									<listOptionValue builtIn="false" value="HAS_SPI0"/>
-									<listOptionValue builtIn="false" value="HAS_SPI_INT"/>
 									<listOptionValue builtIn="false" value="HAS_SUPER_LOOP"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_FLASH_FS"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SPI"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_UART"/>
 									<listOptionValue builtIn="false" value="HAS_TIM"/>
 									<listOptionValue builtIn="false" value="HAS_UART"/>
 									<listOptionValue builtIn="false" value="HAS_UART_FWD"/>

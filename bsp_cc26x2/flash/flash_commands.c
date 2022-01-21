@@ -7,7 +7,9 @@
 
 #include "convert.h"
 #include "crc16_ccitt.h"
+#ifdef HAS_CRC32
 #include "crc32.h"
+#endif
 #include "data_utils.h"
 #include "debug_info.h"
 #include "diag_page_nums.h"
@@ -108,16 +110,18 @@ bool flash_diag_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        uint32_t all_flash_crc = 0;
         // FlashSizeGet
         // FlashPowerModeGet
         // FlashProtectionGet
+#ifdef HAS_CRC32
+        uint32_t all_flash_crc = 0;
         all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
+        io_printf("FlashCRC32: 0x%08x" CRLF, all_flash_crc);
+#endif
         uint32_t mode = VIMSModeGet(VIMS_BASE);
         uint32_t flash_sec_size = FlashSectorSizeGet();
         uint32_t flash_size = FlashSizeGet();
         io_printf("VIMSMode: %s" CRLF, vims_mode2str(mode));
-        io_printf("FlashCRC32: 0x%08x" CRLF, all_flash_crc);
         io_printf("FlashSectorSize: %u bytes %u kBytes" CRLF, flash_sec_size, flash_sec_size / K_BYTES);
         io_printf("FlashSize: %u bytes %u kBytes" CRLF, flash_size, flash_size / K_BYTES);
         io_printf("FlashPowerMode: %u" CRLF, FlashPowerModeGet());

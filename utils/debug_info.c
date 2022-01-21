@@ -5,7 +5,7 @@
 
 #include "byte_utils.h"
 #include "convert.h"
-#ifdef HAS_CRC
+#ifdef HAS_CRC32
 #include "crc32.h"
 #endif
 #include "data_utils.h"
@@ -129,7 +129,6 @@ void print_sysinfo(void) {
 bool print_version(void) {
     bool res = true;
     print_fw_type();
-    uint32_t all_flash_crc = 0;
     io_printf("Date: %s" CRLF, __DATE__);
     io_printf("Time: %s" CRLF, __TIME__);
     io_printf("TimeStamp: %s" CRLF, __TIMESTAMP__);
@@ -143,10 +142,11 @@ bool print_version(void) {
     io_printf("branch: %s" CRLF, GIT_BRANCH);
     io_printf("lastCommit: %s" CRLF, GIT_LAST_COMMIT_HASH);
 
-#if defined(HAS_CRC) && defined(HAS_FLASH)
+#if defined(HAS_CRC32) && defined(HAS_FLASH)
+    uint32_t all_flash_crc = 0;
     all_flash_crc = crc32(((uint8_t*)NOR_FLASH_BASE), NOR_FLASH_SIZE);
-#endif /*HAS_FLASH*/
     io_printf("FlashCRC32: 0x%08X" CRLF, all_flash_crc);
+#endif /*HAS_FLASH*/
 #ifdef NORTOS
     io_printf("main(): 0x%08p" CRLF, main);
 #endif
