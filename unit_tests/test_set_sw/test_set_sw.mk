@@ -15,6 +15,7 @@ include $(TEST_SET_SW_DIR)/test_nmea_proto/test_nmea_proto.mk
 include $(TEST_SET_SW_DIR)/test_ublox_proto/test_ublox_proto.mk
 include $(TEST_SET_SW_DIR)/test_string/test_string.mk
 include $(TEST_SET_SW_DIR)/test_utils/test_utils.mk
+include $(TEST_SET_SW_DIR)/test_tbfp_rtcm_proto/test_tbfp_rtcm_proto.mk
 
 SOURCES_C += $(TEST_SET_SW_DIR)/test_sw_list.c
 

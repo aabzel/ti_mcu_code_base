@@ -40,6 +40,15 @@
         }                                                                                                              \
     } while(0);
 
+#define EXPECT_TRUE_NUM(val_in, ID)                                                                                            \
+    do {                                                                                                               \
+        bool val = val_in;                                                                                             \
+        if(true != ((bool)val)) {                                                                                      \
+            LOG_ERROR(SYS, "%s:Line: %d in val %d id: %u", __FUNCTION__, __LINE__, (int)val, ID);                      \
+            return false;                                                                                              \
+        }                                                                                                              \
+    } while(0);
+
 #define EXPECT_FALSE(val_in)                                                                                           \
     do {                                                                                                               \
         bool val = val_in;                                                                                             \

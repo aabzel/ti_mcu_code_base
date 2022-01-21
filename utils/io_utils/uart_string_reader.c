@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "clocks.h"
 #include "cli_manager.h"
 #include "fifo_char.h"
 #include "io_utils.h"
@@ -51,8 +52,23 @@ bool uart_string_reader_rx_callback(uart_string_reader_t* rdr, char c) {
 
 void uart_string_reader_error_callback(uart_string_reader_t* rdr) { rdr->error_count++; }
 
-void uart_string_reader_proccess(uart_string_reader_t* rdr) {
+#define CLI_POLL_TIMEOUT_MS 500
+bool uart_string_reader_proccess(uart_string_reader_t* rdr) {
+    bool res = true;
+#ifdef HAS_CLOCK
+    uint32_t cur_time_ms = 0;
+    uint32_t duration_ms = 0;
+    uint32_t start_time_ms = get_time_ms32();
+#endif/*HAS_CLOCK*/
     while(1) {
+#ifdef HAS_CLOCK
+        cur_time_ms = get_time_ms32();
+        duration_ms = cur_time_ms - start_time_ms;
+        if(CLI_POLL_TIMEOUT_MS < duration_ms){
+            res = false;
+            break;
+        }
+#endif/*HAS_CLOCK*/
         fifo_index_t size = 0, i = 0;
         char data[200] = "";
         fifo_pull_array(&rdr->fifo, data, sizeof(data), &size);
@@ -119,6 +135,7 @@ void uart_string_reader_proccess(uart_string_reader_t* rdr) {
             }
         }
     }
+    return res;
 }
 
 const char* uart_string_reader_get_str(const uart_string_reader_t* rdr) { return rdr->string; }

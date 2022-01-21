@@ -16,7 +16,7 @@
 #endif
 
 #include "data_utils.h"
-#ifndef X86_64
+#ifdef HAS_MCU
 #include "base_cmd.h"
 #include "cli_commands.h"
 #include "io_utils.h"

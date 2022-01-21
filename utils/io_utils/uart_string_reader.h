@@ -32,7 +32,7 @@ uart_string_reader_t* get_uart_reader(void);
 bool uart_string_reader_init(uart_string_reader_t* r);
 bool uart_string_reader_rx_callback(uart_string_reader_t* r, char c);
 void uart_string_reader_error_callback(uart_string_reader_t* r);
-void uart_string_reader_proccess(uart_string_reader_t* r);
+bool uart_string_reader_proccess(uart_string_reader_t* r);
 void uart_string_reader_clear_str(uart_string_reader_t* r); /* clear current string */
 const char* uart_string_reader_get_str(const uart_string_reader_t* r);
 

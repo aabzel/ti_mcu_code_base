@@ -17,6 +17,7 @@
 
 #ifdef X86_64
 #include <stdio.h>
+#include "log.h"
 #endif
 
 #ifdef HAS_LORA
@@ -164,7 +165,9 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             instance->rx_pkt_cnt++;
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
             /*Send RTCM3 frame to LoRa*/
+#ifdef HAS_LED
             led_blink(&Led[LED_INDEX_RED], 10);
+#endif
             if(IF_UART1 == instance->interface) {
                 Interfaces_t interface = IF_NONE;
                 for(interface = IF_LORA; interface<=IF_CNT; interface++){
@@ -263,6 +266,9 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
 
 bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Interfaces_t interface) {
     bool res = false;
+#ifdef X86_64
+    LOG_DEBUG(RTCM,"%s():", __FUNCTION__);
+#endif
     if((NULL != payload) && (0 < size)) {
         uint32_t i = 0;
         rtcm3_reset_rx(&Rtcm3Protocol[interface]);

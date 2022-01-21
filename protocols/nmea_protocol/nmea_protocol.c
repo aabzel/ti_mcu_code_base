@@ -666,7 +666,7 @@ bool nmea_proc(void) {
         }
     }
     /*If new coordinates had not been received in the last 3 seconds, then FW would have erased the old ones*/
-#ifdef HAS_LOG
+#if defined(HAS_LOG) && defined(HAS_CLOCK)
     lack_of_frame_time_out_ms = (cur_time_ms - NmeaData.gnss_time_stamp);
     if(NMEA_LACK_FRAME_WARNING_TIME_OUT_MS < lack_of_frame_time_out_ms) {
         LOG_WARNING(NMEA, "LackOfFrame %u<%u s", NMEA_LACK_FRAME_WARNING_TIME_OUT_MS / 1000,

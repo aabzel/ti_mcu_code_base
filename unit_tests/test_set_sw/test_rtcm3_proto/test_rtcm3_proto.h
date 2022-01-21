@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 
 extern const uint8_t rtcm3_message2[39];
+extern const uint8_t rtcm3_message[36];
 
 bool test_rtcm3_array(void);
 bool test_rtcm3_proto_1(void);

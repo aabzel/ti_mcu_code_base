@@ -989,11 +989,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="368.21428"
-     inkscape:cy="725.71428"
+     inkscape:zoom="2.8"
+     inkscape:cx="589.64286"
+     inkscape:cy="933.57143"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer8"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -1078,6 +1078,14 @@
        x="129.52457"
        y="262.05215"
        ry="0.04159908" />
+    <rect
+       style="display:inline;fill:#55ff99;fill-opacity:1;stroke:#000000;stroke-width:0.292755;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1090-4"
+       width="39.278793"
+       height="32.549755"
+       x="129.48016"
+       y="225.25191"
+       ry="0.040919237" />
   </g>
   <g
      inkscape:label="temp"
@@ -1115,7 +1123,7 @@
        y="702.6629"
        id="text2640" />
     <rect
-       style="opacity:1;fill:#b7ffc7;fill-opacity:1;stroke:#000000;stroke-width:0.292755;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#55ff99;fill-opacity:1;stroke:#000000;stroke-width:0.292755;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect1090"
        width="39.278793"
        height="32.549755"
@@ -2465,55 +2473,6 @@
          x="31.671436"
          y="79.779953"
          style="font-size:3.52778px;stroke-width:0.264583">Win10</tspan></text>
-    <rect
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.292755;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect1090-4"
-       width="39.278793"
-       height="32.549755"
-       x="129.48016"
-       y="225.25191"
-       ry="0.040919237" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.09833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0774582"
-       x="143.76663"
-       y="230.18036"
-       id="text1094-9"><tspan
-         sodipodi:role="line"
-         id="tspan1092-5"
-         x="143.76663"
-         y="230.18036"
-         style="stroke-width:0.0774582">Harvester</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.09833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0774582"
-       x="130.37944"
-       y="232.90399"
-       id="text2033-5"><tspan
-         sodipodi:role="line"
-         id="tspan2031-1"
-         x="130.37944"
-         y="232.90399"
-         style="stroke-width:0.0774582">XP1</tspan></text>
-    <rect
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.278862;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2035-8"
-       width="6.7761703"
-       height="12.308756"
-       x="129.5981"
-       y="229.49005"
-       ry="0.042871289" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:1.5266px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.114495"
-       x="130.70558"
-       y="239.75076"
-       id="text3837-9-9"><tspan
-         sodipodi:role="line"
-         id="tspan3835-9-1"
-         style="font-size:1.5266px;stroke-width:0.114495"
-         x="130.70558"
-         y="239.75076">40 pin</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.785333;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker20013-1);marker-end:url(#marker19221-0)"
        d="m 102.30694,233.35528 c 0,0 12.72518,0.30331 25.82534,0"
@@ -2578,24 +2537,6 @@
          style="font-size:3.52778px;stroke-width:0.264583"
          x="161.77382"
          y="183.69643">X5</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.24461"
-       id="rect3093-5"
-       width="7.8902516"
-       height="7.6540179"
-       x="160.82886"
-       y="238.50298" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="161.91554"
-       y="243.18044"
-       id="text3911-8"><tspan
-         sodipodi:role="line"
-         id="tspan3909-6"
-         style="font-size:3.52778px;stroke-width:0.264583"
-         x="161.91554"
-         y="243.18044">X5</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 168.67187,241.71577 h 14.03237 v -8.07924 l -3.22941,-1.8645"
@@ -2628,24 +2569,6 @@
          style="stroke-width:0.086337"
          x="242.4756"
          y="-135.08609">LoRa</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.48903px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.466693"
-       x="130.40079"
-       y="256.16537"
-       id="text3415-0"><tspan
-         sodipodi:role="line"
-         id="tspan3413-6"
-         x="130.40079"
-         y="256.16537"
-         style="stroke-width:0.466693">XP2</tspan></text>
-    <rect
-       style="display:inline;opacity:0.984;fill:none;fill-opacity:1;stroke:#1e1914;stroke-width:0.283176;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect3417-8"
-       width="6.7868009"
-       height="3.1658206"
-       x="129.58746"
-       y="253.81203" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker4493-5);marker-end:url(#marker9569-5)"
        d="m 129.52456,264.15862 -9.47544,0.0661 -2e-4,-9.35491 9.57013,-0.0657"
@@ -2717,6 +2640,28 @@
        height="7.0214839"
        x="129.36235"
        y="269.74066" />
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.278862;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect2035-8"
+       width="6.7761703"
+       height="12.308756"
+       x="129.5981"
+       y="229.49005"
+       ry="0.042871289" />
+    <rect
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.24461"
+       id="rect3093-5"
+       width="7.8902516"
+       height="7.6540179"
+       x="160.82886"
+       y="238.50298" />
+    <rect
+       style="display:inline;opacity:0.984;fill:none;fill-opacity:1;stroke:#1e1914;stroke-width:0.283176;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3417-8"
+       width="6.7868009"
+       height="3.1658206"
+       x="129.58746"
+       y="253.81203" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -2942,6 +2887,61 @@
          x="138.07359"
          y="267.41025"
          style="stroke-width:0.0654398">LAUNCHXL-CC26X2R1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:3.09833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0774582"
+       x="143.76663"
+       y="230.18036"
+       id="text1094-9"><tspan
+         sodipodi:role="line"
+         id="tspan1092-5"
+         x="143.76663"
+         y="230.18036"
+         style="stroke-width:0.0774582">Harvester</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:3.09833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0774582"
+       x="130.37944"
+       y="232.90399"
+       id="text2033-5"><tspan
+         sodipodi:role="line"
+         id="tspan2031-1"
+         x="130.37944"
+         y="232.90399"
+         style="stroke-width:0.0774582">XP1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:1.5266px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.114495"
+       x="130.70558"
+       y="239.75076"
+       id="text3837-9-9"><tspan
+         sodipodi:role="line"
+         id="tspan3835-9-1"
+         style="font-size:1.5266px;stroke-width:0.114495"
+         x="130.70558"
+         y="239.75076">40 pin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="161.91554"
+       y="243.18044"
+       id="text3911-8"><tspan
+         sodipodi:role="line"
+         id="tspan3909-6"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="161.91554"
+         y="243.18044">X5</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:2.48903px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.466693"
+       x="130.40079"
+       y="256.16537"
+       id="text3415-0"><tspan
+         sodipodi:role="line"
+         id="tspan3413-6"
+         x="130.40079"
+         y="256.16537"
+         style="stroke-width:0.466693">XP2</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

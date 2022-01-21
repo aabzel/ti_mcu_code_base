@@ -2,7 +2,7 @@
 #define UNIT_TEST_CHECK_H
 
 #ifdef X86_64
-#include "unit_test_check_x86.h"
+#include "unit_test_check_general.h"
 #else
 #include "unit_test_check_cortex_m.h"
 #endif

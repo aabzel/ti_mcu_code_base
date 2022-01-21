@@ -74,6 +74,12 @@ extern "C" {
 #define TEST_SUIT_TBFP_PROTO
 #endif
 
+#ifdef HAS_TEST_SUIT_TBFP_RTCM
+#include "test_tbfp_rtcm_proto.h"
+#else
+#define TEST_SUIT_TBFP_RTCM_STACK
+#endif
+
 #ifdef HAS_TEST_SUIT_FIFO
 #include "test_fifo_array.h"
 #include "test_fifo_char.h"
@@ -130,6 +136,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_NMEA_PROTO                                                                                               \
     TEST_SUIT_RTCM3_PROTO                                                                                              \
     TEST_SUIT_TBFP_PROTO                                                                                               \
+    TEST_SUIT_TBFP_RTCM_STACK                                                                                          \
     TEST_SUIT_SYSTEM                                                                                                   \
     TEST_SUIT_STRING_UTILS                                                                                             \
     UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init}, {"uspec_behavior", test_uspec_behavior},                     \

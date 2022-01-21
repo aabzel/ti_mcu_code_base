@@ -47,6 +47,7 @@
 
 #ifdef X86_64
 #include <stdio.h>
+#include "log.h"
 #endif
 
 TbfpProtocol_t TbfpProtocol[3] = {0};
@@ -139,16 +140,16 @@ bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t 
             memcpy(&frame[TBFP_INDEX_PAYLOAD], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
             switch(interface) {
-            case IF_LORA: {
 #ifdef HAS_LORA
+            case IF_LORA: {
                 res = lora_send_queue(frame, frame_len + TBFP_SIZE_CRC);
-#endif
             } break;
-            case IF_RS232: {
+#endif
 #ifdef HAS_RS232
+            case IF_RS232: {
                 res = rs232_send(frame, frame_len + TBFP_SIZE_CRC);
-#endif
             } break;
+#endif
             case IF_LOOPBACK: {
                 res = tbfp_proc_full(frame, frame_len + TBFP_SIZE_CRC, IF_LOOPBACK);
             } break;
@@ -345,23 +346,33 @@ bool tbfp_parser_reset_rx(TbfpProtocol_t* instance) {
 
 static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t interface) {
     bool res = false;
+#ifdef X86_64
+    LOG_DEBUG(TBFP,"%s():", __FUNCTION__);
+#endif
     switch(payload[0]) {
 #ifdef HAS_RTCM3
     case FRAME_ID_RTCM3:
+#ifdef X86_64
+        LOG_DEBUG(TBFP,"RTCM payload");
+#endif
         res = rtcm3_proc_array(payload, len, interface);
         break;
 #endif /*HAS_RTCM3*/
     case FRAME_ID_CHAT:
+        LOG_DEBUG(TBFP,"ChatPayload");
         res = tbfp_proc_chat(payload, len);
         break;
     case FRAME_ID_PONG:
     case FRAME_ID_PING:
+        LOG_DEBUG(TBFP,"PingPayload");
         res = tbfp_proc_ping(payload, len, interface);
         break;
     case FRAME_ID_CMD:
+        LOG_DEBUG(TBFP,"CmdPayload");
         res = tbfp_proc_cmd(payload, len);
         break;
     default:
+        LOG_ERROR(TBFP,"UndefPayload ID: 0x%02x",payload[0] );
         res = false;
         break;
     }
@@ -412,14 +423,16 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
 
 bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
-
+#ifdef X86_64
+    LOG_DEBUG(TBFP,"%s():", __FUNCTION__);
+#endif
     res = is_tbfp_protocol(arr, len);
     if(res) {
         TbfHeader_t inHeader = {0};
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
 #ifdef HAS_TBFP_FLOW_CONTROL
 #ifdef X86_64
-        printf("\n1 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num,
+        LOG_DEBUG(TBFP,"1 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num,
                inHeader.snum, TbfpProtocol[interface].con_flow);
 #endif
         if((TbfpProtocol[interface].prev_s_num + 1) == inHeader.snum) {
