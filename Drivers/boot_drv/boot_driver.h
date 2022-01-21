@@ -22,11 +22,17 @@ typedef enum eCmdBoot_t {
 
 const char* boot_cmd2str(uint8_t boot_cmd);
 bool boot_init(void);
+
+#ifdef HAS_GENERIC
+bool boot_jump_to_boot(void);
+#endif
+
+#ifdef HAS_BOOTLOADER
+bool boot_try_app(void);
 bool boot_erase_app(void);
 bool boot_jump_to_code(uint32_t flash_addr);
-bool boot_try_app(void);
-bool boot_jump_to_boot(void);
 bool boot_launch_app(void);
+#endif
 
 #ifdef HAS_GENERIC
 bool boot_proc(void);

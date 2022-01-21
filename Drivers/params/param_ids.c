@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifndef HAS_FLASH_FS
+#error "Params need FLASH_FS"
+#endif
+
 #include "boot_driver.h"
 #include "data_utils.h"
 #ifdef HAS_FLASH_FS

@@ -38,7 +38,7 @@ bool proc_rs232(void){
     bool res = false;
 #ifdef HAS_TBFP
     /*HeartBeat RS232 Frame*/
-    if (rs232.ping) {
+    if(rs232.ping) {
         res = tbfp_send_ping(FRAME_ID_PONG, IF_RS232);
     }
 #endif /*HAS_TBFP*/

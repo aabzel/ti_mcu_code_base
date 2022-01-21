@@ -28,17 +28,20 @@
 #ifdef HAS_GENERIC
 static bool fine_start_event = false;
 #endif
+#ifdef HAS_BOOTLOADER
 typedef void (*pFunction)(void);
 pFunction Jump_To_Application;
+#endif
 
-#ifdef CC26XX
+#if defined(CC26XX) && defined(HAS_BOOTLOADER)
 static bool disable_interrupt(void) {
     HWREG(NVIC_DIS0) = 0xffffffff;
     HWREG(NVIC_DIS1) = 0xffffffff;
     return true;
 }
-#endif
+#endif /*CC26XX*/
 
+#ifdef HAS_BOOTLOADER
 bool boot_jump_to_code(uint32_t app_start_address) {
     bool res = false;
     res = is_flash_addr(app_start_address);
@@ -78,6 +81,7 @@ bool boot_jump_to_code(uint32_t app_start_address) {
             LOG_ERROR(BOOT, "Error top stack size pointer 0x%08x lim: [0x%08x 0x%08x]", stack_top, RAM_START,
                       RAM_START + RAM_SIZE);
 #endif
+#ifdef HAS_FLASH_FS
             uint8_t boot_cmd = BOOT_CMD_STAY_ON;
             res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
             if(false == res) {
@@ -89,6 +93,7 @@ bool boot_jump_to_code(uint32_t app_start_address) {
                 LOG_WARNING(BOOT, "Stay in boot");
 #endif
             }
+#endif /*HAS_FLASH_FS*/
         }
     } else {
 #ifdef HAS_LOG
@@ -97,6 +102,7 @@ bool boot_jump_to_code(uint32_t app_start_address) {
     }
     return res;
 }
+#endif
 
 const char* boot_cmd2str(uint8_t boot_cmd) {
     const char* name = "error";
@@ -117,6 +123,7 @@ const char* boot_cmd2str(uint8_t boot_cmd) {
     return name;
 }
 
+#ifdef HAS_BOOTLOADER
 bool boot_try_app(void) {
     bool res = false;
     uint16_t real_len = 0;
@@ -159,55 +166,68 @@ bool boot_try_app(void) {
             LOG_ERROR(BOOT, "Lack of boot app address");
 #endif
             app_start_address = DFLT_APP_START_ADDR;
+#ifdef HAS_FLASH_FS
             res = mm_set(PAR_ID_APP_START, (uint8_t*)&app_start_address, sizeof(app_start_address));
             if(false == res) {
 #ifdef HAS_LOG
                 LOG_ERROR(BOOT, "Error set dflt start adddr");
 #endif
             }
+#endif /*HAS_FLASH_FS*/
         }
     } else {
         res = false;
     }
     return res;
 }
+#endif
 
+#ifdef HAS_BOOTLOADER
 bool boot_launch_app(void) {
     bool res = false;
+#ifdef HAS_FLASH_FS
     uint8_t boot_cmd = BOOT_CMD_LAUNCH_APP;
-    uint8_t boot_cnt = 0;
     res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
     if(false == res) {
 #ifdef HAS_LOG
         LOG_ERROR(BOOT, "Error set boot cmd");
 #endif
     }
+#endif /*HAS_FLASH_FS*/
+#ifdef HAS_FLASH_FS
+    uint8_t boot_cnt = 0;
     res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
     if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(BOOT, "Error reset boot cnt");
+        LOG_ERROR(BOOT, "ErrorResetBootCnt");
 #endif
     }
+#endif /*HAS_FLASH_FS*/
 
+#ifdef HAS_FLASH_FS
     uint32_t start_addr = DFLT_APP_START_ADDR;
     res = mm_set(PAR_ID_APP_START, (uint8_t*)&start_addr, sizeof(start_addr));
     if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(BOOT, "Error set start addr");
+        LOG_ERROR(BOOT, "ErrorSetStartAddr");
 #endif
     }
+#endif /*HAS_FLASH_FS*/
 
     res = reboot();
     if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(BOOT, "Error reboot");
+        LOG_ERROR(BOOT, "ErrorReboot");
 #endif
     }
     return res;
 }
+#endif
 
+#ifdef HAS_GENERIC
 bool boot_jump_to_boot(void) {
     bool res = false;
+#ifdef HAS_FLASH_FS
     uint8_t boot_cmd = BOOT_CMD_STAY_ON;
     res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
     if(false == res) {
@@ -215,6 +235,7 @@ bool boot_jump_to_boot(void) {
         LOG_ERROR(BOOT, "Error set boot cmd");
 #endif
     }
+#endif /*HAS_FLASH_FS*/
 
     res = reboot();
     if(false == res) {
@@ -224,6 +245,7 @@ bool boot_jump_to_boot(void) {
     }
     return res;
 }
+#endif
 
 /*Application Hang on protection*/
 bool boot_init(void) {
@@ -242,6 +264,7 @@ bool boot_init(void) {
 #ifdef HAS_LOG
             LOG_ERROR(BOOT, "Application seems hang on");
 #endif
+#ifdef HAS_FLASH_FS
             CmdBoot_t boot_cmd = BOOT_CMD_STAY_ON;
             res = mm_set(PAR_ID_BOOT_CMD, (uint8_t*)&boot_cmd, sizeof(boot_cmd));
             if(false == res) {
@@ -254,24 +277,29 @@ bool boot_init(void) {
 #endif
                 res = true;
             }
+#endif /*HAS_FLASH_FS*/
         } else {
             boot_cnt++;
+#ifdef HAS_FLASH_FS
             res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
             if(false == res) {
 #ifdef HAS_LOG
                 LOG_ERROR(BOOT, "Unable to update boot cnt");
 #endif
             }
+#endif /*HAS_FLASH_FS*/
         }
     } else {
         res = true;
         boot_cnt = 0;
+#ifdef HAS_FLASH_FS
         res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
         if(false == res) {
 #ifdef HAS_LOG
             LOG_ERROR(BOOT, "Unable to init boot cnt");
 #endif
         }
+#endif /*HAS_FLASH_FS*/
     }
     return res;
 }
@@ -284,6 +312,7 @@ bool boot_proc(void) {
            That means that everything all right.*/
         if(false == fine_start_event) {
             /*Indicate boot that Application loaded fine*/
+#ifdef HAS_FLASH_FS
             uint8_t boot_cnt = 0;
             res = mm_set(PAR_ID_BOOT_CNT, (uint8_t*)&boot_cnt, sizeof(boot_cnt));
             if(false == res) {
@@ -296,6 +325,7 @@ bool boot_proc(void) {
                 LOG_INFO(BOOT, "AppLoadedFine!");
 #endif
             }
+#endif /*HAS_FLASH_FS*/
         }
         fine_start_event = true;
     }

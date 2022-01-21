@@ -1360,11 +1360,14 @@ static bool sx1262_calc_bit_rate(uint32_t bytes, float* tx_real_bit_rate, uint32
     uint32_t tx_done_time_stamp_ms = get_time_ms32();
     duration_ms = tx_done_time_stamp_ms - Sx1262Instance.tx_start_time_stamp_ms;
     bit_rate = ((float)(bytes * 8 * 1000)) / (((float)duration_ms));
+#ifdef HAS_FLASH_FS
     uint16_t file_len = 0;
     res = mm_get(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate,
                  sizeof(Sx1262Instance.tx_max_bit_rate), &file_len);
+#endif
     if(Sx1262Instance.tx_max_bit_rate < bit_rate) {
         Sx1262Instance.tx_max_bit_rate = bit_rate;
+#ifdef HAS_FLASH_FS
         res = mm_set(PAR_ID_LORA_MAX_BIT_RATE, (uint8_t*)&Sx1262Instance.tx_max_bit_rate,
                      sizeof(Sx1262Instance.tx_max_bit_rate));
         if(false == res) {
@@ -1372,6 +1375,7 @@ static bool sx1262_calc_bit_rate(uint32_t bytes, float* tx_real_bit_rate, uint32
             LOG_ERROR(LORA, "SaveMaxLoRaBitRateErr");
 #endif
         }
+#endif
     }
     if(tx_real_bit_rate && tx_duration_ms) {
         *tx_real_bit_rate = bit_rate;
