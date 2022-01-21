@@ -154,6 +154,7 @@
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP"/>
 									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
+									<listOptionValue builtIn="false" value="HAS_TBFP_RETRANSMIT"/>
 									<listOptionValue builtIn="false" value="HAS_TIM_COMMANDS"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
@@ -187,6 +188,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\KeyValMap.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\rs232.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\tbfp.opt"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.425241768" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.467512831" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>

@@ -2,6 +2,7 @@
 
 #ifdef X86_64
 #include <stdio.h>
+#include "log.h"
 #endif
 
 #include "rtcm3_protocol.h"
@@ -10,6 +11,10 @@
 #endif
 #include "system.h"
 #include "unit_test_check.h"
+
+const uint8_t rtcm3_message25[25]={ 0xD3,0x00,0x13,0x3E,0xD0,0x00,0x03,0x86,0xA5,0x7F,
+                                    0x83,0x07,0x85,0x1F,0xDA,0xD8,0x0B,0x0C,0x35,0xF9,
+                                    0x18,0xAC,0xDB,0xE9,0xF2};
 
 const uint8_t rtcm3_message[36] = {0xD3, 0x00, 0x1E, 0x44, 0x60, 0x00, 0x1C, 0x77, 0xD7, 0x82, 0x00, 0x00,
                                    0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
@@ -27,6 +32,7 @@ bool test_rtcm3_proto_1(void) {
 #ifndef X86_64
     EXPECT_TRUE(uart_deinit(1));
 #endif
+    EXPECT_TRUE(is_rtcm3_frame((uint8_t*)rtcm3_message25, sizeof(rtcm3_message25)));
     EXPECT_TRUE(is_rtcm3_frame((uint8_t*)rtcm3_message, sizeof(rtcm3_message)));
     rtcm3_reset_rx(&Rtcm3Protocol[IF_UART1]);
     Rtcm3Protocol[IF_UART1].rx_pkt_cnt = 0;

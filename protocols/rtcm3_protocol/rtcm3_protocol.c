@@ -101,12 +101,10 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         instance->max_len = max16u(instance->max_len, instance->exp_len.field.len);
         instance->min_len = min16u(instance->min_len, instance->exp_len.field.len);
 #endif
-        if(RTCM3_RX_FRAME_SIZE < instance->exp_len.field.len) {
+        if(RTCM3_RX_FRAME_SIZE < (instance->exp_len.field.len+RTCM3_CRC24_SIZE)) {
             res = false;
             instance->err_cnt++;
-#ifdef HAS_DEBUG_RTCM3
-            LOG_ERROR(SYS, "TooBig frame %u byte", instance->exp_len.field.len);
-#endif
+            LOG_ERROR(SYS, "TooBigFrame %u byte. Max %u Byte", instance->exp_len.field.len+RTCM3_CRC24_SIZE, RTCM3_RX_FRAME_SIZE);
             rtcm3_reset_rx(instance);
         }
     } else {
@@ -170,7 +168,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #endif
             if(IF_UART1 == instance->interface) {
                 Interfaces_t interface = IF_NONE;
-                for(interface = IF_LORA; interface<=IF_CNT; interface++){
+                for(interface = IF_LORA; interface <= IF_CNT; interface++){
                     if(instance->forwarding[interface]) {
 #ifdef HAS_TBFP
                         /*Wrap to TBFP*/
@@ -178,7 +176,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
                         if(false == res) {
                             instance->lost_pkt_cnt[interface]++;
                         }
-#endif
+#endif /*HAS_TBFP*/
                     }
                 }
             }

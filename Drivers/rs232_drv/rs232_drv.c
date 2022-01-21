@@ -19,7 +19,7 @@ RS232_t rs232 = {0};
 
 bool rs232_send(uint8_t* const data, uint32_t len){
     bool res = false;
-    GPIO_writeDio(DIO_PS_RS232, 1);
+    gpio_set_state(DIO_PS_RS232, 1);
     res = uart_send(UART_NUM_RS232, (uint8_t*)data, len, true);
     return res;
 }

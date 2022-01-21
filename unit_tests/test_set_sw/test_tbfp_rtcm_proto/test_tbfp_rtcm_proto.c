@@ -16,12 +16,12 @@ bool test_tbfp_rtcm_path(void) {
     printf("\n%s():", __FUNCTION__);
 #endif
     uint32_t i=0;
-    EXPECT_TRUE( set_log_level(TBFP , LOG_LEVEL_DEBUG ));
-    EXPECT_TRUE( set_log_level(RTCM, LOG_LEVEL_DEBUG ));
+    EXPECT_TRUE( set_log_level(TBFP , LOG_LEVEL_INFO ));
+    EXPECT_TRUE( set_log_level(RTCM, LOG_LEVEL_INFO ));
     EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_LOOPBACK], IF_LOOPBACK));
     EXPECT_TRUE(rtcm3_protocol_init(&Rtcm3Protocol[IF_LOOPBACK], IF_LOOPBACK, false));
     for (i=1; i<1000;i++) {
-        EXPECT_TRUE_NUM(tbfp_send(rtcm3_message, sizeof(rtcm3_message), IF_LOOPBACK, 0),i);
+        EXPECT_TRUE_NUM(tbfp_send((uint8_t* )rtcm3_message, sizeof(rtcm3_message), IF_LOOPBACK, 0),i);
         EXPECT_EQ(i,Rtcm3Protocol[IF_LOOPBACK].rx_pkt_cnt);
     }
 

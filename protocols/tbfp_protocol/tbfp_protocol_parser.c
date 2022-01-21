@@ -14,6 +14,7 @@
 #ifdef HAS_LOG
 #include "log.h"
 #endif
+
 static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     if(TBFP_PREAMBLE == rx_byte) {
@@ -40,7 +41,7 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
         instance->parser.rx_frame[1] = rx_byte;
         instance->parser.load_len = 2;
 #ifdef HAS_DEBUG
-#ifdef HAS_MCU
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "Len:0x%02x %u", rx_byte, rx_byte);
 #endif
         instance->max_len = max16u(instance->max_len, instance->parser.exp_payload_len);

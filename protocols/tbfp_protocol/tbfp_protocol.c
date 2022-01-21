@@ -151,7 +151,7 @@ bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t 
             } break;
 #endif
             case IF_LOOPBACK: {
-                res = tbfp_proc_full(frame, frame_len + TBFP_SIZE_CRC, IF_LOOPBACK);
+                res = tbfp_proc(frame, frame_len + TBFP_SIZE_CRC, IF_LOOPBACK);
             } break;
             default:
                 break;

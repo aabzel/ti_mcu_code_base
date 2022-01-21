@@ -1,7 +1,7 @@
 #ifndef SYS_CONFIG_COMMON_H
 #define SYS_CONFIG_COMMON_H
 
-#define CLI_UART_BAUD_RATE 460800U /* bit/s */
+#define CLI_UART_BAUD_RATE 460800 /* bit/s */
 #define DFLT_TIME_ZONE 3
 #define WDT_TIMEOUT_MS 10000U
 

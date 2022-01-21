@@ -129,6 +129,10 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_CLI, 1000, cli_process, loop_start_time_us);
 #endif /*HAS_CLI*/
 
+#ifdef HAS_UART
+    measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us);
+#endif /*HAS_UART1*/
+
 #ifdef HAS_GENERIC
     measure_task_interval(TASK_ID_BOOT, BOOT_PERIOD_US, boot_proc, loop_start_time_us);
 #endif
@@ -141,9 +145,6 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_ADC, 300000, adc_proc, loop_start_time_us);
 #endif
 
-#ifdef HAS_UART
-    measure_task_interval(TASK_ID_UART, UART_PERIOD_US, proc_uarts, loop_start_time_us);
-#endif /*HAS_UART1*/
 
 #ifdef HAS_RS232
     measure_task_interval(TASK_ID_RS232, RS232_PERIOD_US, proc_rs232, loop_start_time_us);
