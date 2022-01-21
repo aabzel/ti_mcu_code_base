@@ -36,6 +36,26 @@ const char* interface2str(Interfaces_t interface) {
     return name;
 }
 
+bool interface_valid(Interfaces_t interface) {
+    bool res =  false;
+    switch(interface) {
+    case IF_LORA:
+    case IF_RS232:
+    case IF_UART1:
+    case IF_SPI:
+    case IF_UART0:
+    case IF_CAN:
+    case IF_BLE:
+        res = true;
+        break;
+    default:
+        res = false;
+        break;
+    }
+    return res;
+}
+
+
 #if defined(HAS_HARVESTER_V1) && defined(UART_NUM_ZED_F9P) && defined(HAS_UART)
 bool sys_bypass_nmea_rs232(void) {
     bool res = true;

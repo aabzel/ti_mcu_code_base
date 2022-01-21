@@ -44,7 +44,7 @@ typedef struct xRtcm3Header_t {
 typedef struct xRtcm3Protocol_t {
     uint32_t rx_pkt_cnt;
     uint32_t rx_rx_pkt_cnt;
-    uint32_t lora_lost_pkt_cnt;
+    uint32_t lost_pkt_cnt[IF_CNT];
     uint32_t uart_lost_pkt_cnt;
     uint32_t crc_err_cnt;
     uint32_t load_len;
@@ -63,11 +63,10 @@ typedef struct xRtcm3Protocol_t {
     uint8_t rx_frame[RTCM3_RX_FRAME_SIZE];
     uint8_t fix_frame[RTCM3_RX_FRAME_SIZE];
     Interfaces_t interface;
-    bool lora_fwd;
-    bool rs232_fwd;
+    bool forwarding[IF_CNT];
 } Rtcm3Protocol_t;
 
-extern Rtcm3Protocol_t Rtcm3Protocol[RTCM_IF_CNT];
+extern Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];
 
 bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool lora_fwd);
 bool rtcm3_proc_byte(Rtcm3Protocol_t* instance, uint8_t rx_byte);

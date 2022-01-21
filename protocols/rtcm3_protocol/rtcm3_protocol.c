@@ -31,7 +31,7 @@
 #include "uart_drv.h"
 #endif /*HAS_UART*/
 
-Rtcm3Protocol_t Rtcm3Protocol[RTCM_IF_CNT];
+Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];
 
 bool rtcm3_reset_rx(Rtcm3Protocol_t* instance) {
     instance->load_len = 0;
@@ -46,9 +46,9 @@ bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool
     memset(instance->fix_frame, 0x00, RTCM3_RX_FRAME_SIZE);
     memset(instance->rx_frame, 0x00, RTCM3_RX_FRAME_SIZE);
 #ifdef HAS_DEBUG
-    instance->lora_fwd = false;
+    instance->forwarding[IF_LORA] = false;
 #else
-    instance->lora_fwd = lora_fwd;
+    instance->forwarding[IF_LORA] = lora_fwd;
 #endif /*HAS_DEBUG*/
 #ifdef HAS_LOG
     LOG_DEBUG(RTCM, "Init");
@@ -164,31 +164,24 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             instance->rx_pkt_cnt++;
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
             /*Send RTCM3 frame to LoRa*/
+            led_blink(&Led[LED_INDEX_RED], 10);
             if(IF_UART1 == instance->interface) {
-#ifdef HAS_LORA
-                if(true == instance->lora_fwd) {
-                    /*Wrap to TBFP*/
+                Interfaces_t interface = IF_NONE;
+                for(interface = IF_LORA; interface<=IF_CNT; interface++){
+                    if(instance->forwarding[interface]) {
 #ifdef HAS_TBFP
-                    res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, IF_LORA, 0);
-                    if(false == res) {
-                        instance->lora_lost_pkt_cnt++;
-                    }
+                        /*Wrap to TBFP*/
+                        res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, interface, 0);
+                        if(false == res) {
+                            instance->lost_pkt_cnt[interface]++;
+                        }
 #endif
-                }
-#endif /*HAS_LORA*/
-#ifdef HAS_RS232
-                if(true == instance->rs232_fwd) {
-                    res = uart_send(UART_NUM_CLI, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
-                    if(false == res) {
-                        instance->uart_lost_pkt_cnt++;
                     }
                 }
-#endif /*HAS_RS232*/
             }
 
             if((IF_LORA == instance->interface) || (IF_RS232 == instance->interface)) {
 #ifdef HAS_UART1
-                led_blink(&Led[LED_INDEX_RED], 10);
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                 if(false == res) {
                     instance->uart_lost_pkt_cnt++;

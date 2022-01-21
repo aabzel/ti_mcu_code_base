@@ -3,6 +3,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef HAS_UART1_FWD
+#error "Raw UART1->UART0 forwarding is prohibited for RTCM corrections bypass"
+#endif
+
 #ifdef HAS_CALENDAR
 #include "calendar.h"
 #endif
@@ -50,6 +54,11 @@
 
 extern ZedF9P_t ZedF9P = {0};
 
+#if (!defined(HAS_GPS_CORRECTION) && !defined(HAS_GLONASS_CORRECTION)) && \
+    (!defined(HAS_GALILEO_CORRECTION) && !defined (HAS_BEI_DOU_CORRECTION))
+#error "Some corrections must be included in build"
+#endif
+
 static bool zed_f9p_proc_base(void) {
     bool res = false;
 #ifdef HAS_SX1262
@@ -77,8 +86,8 @@ static bool zed_f9p_proc_base(void) {
         res = cli_set_echo(false);
 #endif
 #ifdef HAS_RTCM3
-        Rtcm3Protocol[IF_UART1].lora_fwd = false;
-        Rtcm3Protocol[IF_UART1].rs232_fwd = true;
+        Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = false;
+        Rtcm3Protocol[IF_UART1].forwarding[IF_RS232]= true;
 #endif
         task_data[TASK_ID_RS232].on = true;
 #ifdef HAS_RS232
@@ -88,8 +97,8 @@ static bool zed_f9p_proc_base(void) {
 
     if(IF_LORA == ZedF9P.channel) {
 #ifdef HAS_RTCM3
-        Rtcm3Protocol[IF_UART1].lora_fwd = true;
-        Rtcm3Protocol[IF_UART1].rs232_fwd = false;
+        Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = true;
+        Rtcm3Protocol[IF_UART1].forwarding[IF_RS232] = false;
 #endif
         task_data[TASK_ID_RS232].on = false;
 #ifdef HAS_RS232
@@ -353,16 +362,16 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
         task_data[TASK_ID_NMEA].on = false;
 #ifdef HAS_RTCM3
         if(IF_LORA == ZedF9P.channel) {
-            Rtcm3Protocol[IF_UART1].lora_fwd = true;
-            Rtcm3Protocol[IF_UART1].rs232_fwd = false;
+            Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = true;
+            Rtcm3Protocol[IF_UART1].forwarding[IF_RS232] = false;
 #ifdef HAS_SX1262
             Sx1262Instance.check_connectivity = false;
             Sx1262Instance.sync_rssi = false;
 #endif
         }
         if(IF_RS232 == ZedF9P.channel) {
-            Rtcm3Protocol[IF_UART1].lora_fwd = false;
-            Rtcm3Protocol[IF_UART1].rs232_fwd = true;
+            Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = false;
+            Rtcm3Protocol[IF_UART1].forwarding[IF_RS232] = true;
         }
 #endif /*HAS_RTCM3*/
 #endif /*HAS_UBLOX*/

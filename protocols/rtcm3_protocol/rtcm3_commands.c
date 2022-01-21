@@ -36,10 +36,10 @@ static bool rtcm3_diag(void) {
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
         io_printf(TSEP);
         io_printf(" %5s " TSEP, interface2str((Interfaces_t)interface));
-        io_printf("  %1u  " TSEP, Rtcm3Protocol[interface].lora_fwd);
-        io_printf(" %7u " TSEP,  Rtcm3Protocol[interface].lora_lost_pkt_cnt);
-        double lora_lost_pkt = ((double)100*Rtcm3Protocol[interface].lora_lost_pkt_cnt)/((double)Rtcm3Protocol[interface].rx_pkt_cnt);
-        io_printf("   %3.1f  " TSEP,(double) lora_lost_pkt);
+        io_printf("  %1u  " TSEP, Rtcm3Protocol[interface].forwarding[IF_LORA]);
+        io_printf(" %7u " TSEP,  Rtcm3Protocol[interface].lost_pkt_cnt[IF_LORA]);
+        double lora_lost_pkt_pc = ((double)100*Rtcm3Protocol[interface].lost_pkt_cnt[IF_LORA])/((double)Rtcm3Protocol[interface].rx_pkt_cnt);
+        io_printf("   %3.1f  " TSEP,(double) lora_lost_pkt_pc);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].uart_lost_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].rx_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].crc_err_cnt);
@@ -94,22 +94,28 @@ bool rtcm3_reset_command(int32_t argc, char* argv[]) {
 bool rtcm3_fwd_command(int32_t argc, char* argv[]){
     bool res = false;
     bool status= 0;
-    uint8_t interface = 0;
+    uint8_t interface1 = 0;
+    uint8_t interface2 = 0;
     if(2 == argc) {
-        res = try_str2uint8(argv[0], &interface);
+        res = try_str2uint8(argv[0], &interface1);
         if(false == res) {
-            LOG_ERROR(SYS, "Unable to extract interface %s", argv[0]);
+            LOG_ERROR(SYS, "Unable to extract interface1 %s", argv[0]);
         }
 
-        res = try_str2bool(argv[1], &status);
+        res = try_str2uint8(argv[1], &interface2);
         if(false == res) {
-            LOG_ERROR(SYS, "Unable to extract status %s", argv[1]);
+            LOG_ERROR(SYS, "Unable to extract interface2 %s", argv[1]);
+        }
+
+        res = try_str2bool(argv[2], &status);
+        if(false == res) {
+            LOG_ERROR(SYS, "Unable to extract status %s", argv[2]);
         }
     } else {
-        LOG_ERROR(SYS, "Usage: rtcmf interface status");
+        LOG_ERROR(SYS, "Usage: rtcmf interface1 interface2 status");
     }
     if(res) {
-        Rtcm3Protocol[interface].lora_fwd = status;
+        Rtcm3Protocol[interface1].forwarding[interface2] = status;
     }
     return res;
 }

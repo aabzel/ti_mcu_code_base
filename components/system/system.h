@@ -7,22 +7,25 @@
 #ifdef HAS_IAR
 typedef __packed  enum eInterfaces_t {
 #else
-typedef   enum eInterfaces_t {
+typedef enum eInterfaces_t {
 #endif
     IF_LOOPBACK = 0,
     IF_LORA = 1,
     IF_RS232 = 2,
     IF_UART1 = 3,
-    IF_CAN = 4,
-    IF_BLE = 5,
-    IF_SPI = 6,
-    IF_NONE = 7,
+    IF_UART0 = 4,
+    IF_CAN = 5,
+    IF_BLE = 6,
+    IF_SPI = 7,
+    IF_CNT = 8,
+    IF_NONE = 9,
 #ifdef HAS_IAR
 }  Interfaces_t;
 #else
 } __attribute__((__packed__)) Interfaces_t;
 #endif
 
+bool interface_valid(Interfaces_t interface);
 const char* interface2str(Interfaces_t interface);
 #ifdef HAS_HARVESTER_V1
 bool sys_bypass_nmea_rs232(void);

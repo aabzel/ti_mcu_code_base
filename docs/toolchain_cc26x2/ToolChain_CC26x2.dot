@@ -1,9 +1,12 @@
 digraph  graphname {
     rankdir=LR;
+	subgraph clusterx86{
+		label="X86-64"
+
     subgraph clusterWIN10  {
 		label="Windows10"
 		WIN10[shape="none"][style="invis"][label=""];
-		
+		XDCTools [label="XDCTools"];//TI RTOS Configuration
     	subgraph clusterJVM  {
     	   label="JVM"
 		   /*node [style=filled];*/
@@ -28,7 +31,7 @@ digraph  graphname {
 		Teraterm [label="Teraterm.exe"];
 		putty [label="PuTTY.exe"];
     	dot [label="dot.exe"];
-    	    subgraph clusterSDK  {
+    	subgraph clusterSDK  {
 			   node [style=filled];
 		       color=red
     	       label="SDK"
@@ -57,6 +60,7 @@ digraph  graphname {
 		SysConfigCli->Eclipse[label="*.c/*.h"];
     	GIT->GIT[label=".ccsproject"];
     	GIT->GIT[label="*.c"];
+		Notepadpp->XDCTools [label="*.xscfg"];
     	GIT->GIT[label="*.h"];
     	GIT->GIT[label="*.cmd"];
     	GIT->GIT[label=".cproject"];
@@ -91,5 +95,6 @@ digraph  graphname {
     	Linker->tiobj2bin[label="*.out"];
     	tiobj2bin->xdsdfu[label="*.bin"];
 	//[label="*.xscfg"];
+	}
 	}
 }
