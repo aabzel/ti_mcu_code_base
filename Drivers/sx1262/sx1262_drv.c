@@ -896,6 +896,13 @@ float dbm2watts(int32_t dbm) {
 
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     bool out_res = true;
+    sx1262Instance->crc_init=0x1D0F;
+    sx1262Instance->lora_sync_word_set=DFLT_LORA_SYNC_WORD;
+    sx1262Instance->crc_poly=0x1021;
+    sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
+    sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
+    sx1262Instance->mod_params.spreading_factor = DFLT_SF;
+    sx1262Instance->mod_params.low_data_rate_optimization = LDRO_OFF;
     sx1262Instance->packet_param.packet_type = PACKET_TYPE_LORA;
     sx1262Instance->packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
     sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
@@ -904,10 +911,6 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->packet_param.proto.lora.payload_length = 255;
     sx1262Instance->output_power = DFLT_OUT_POWER;
     sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
-    sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
-    sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
-    sx1262Instance->mod_params.spreading_factor = DFLT_SF;
-    sx1262Instance->mod_params.low_data_rate_optimization = LDRO_OFF;
     sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
 #ifdef HAS_SX1262_BIT_RATE
     sx1262Instance->tx_max_bit_rate = 0.0;
@@ -1815,18 +1818,18 @@ bool sx1262_init(void) {
         res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
 
         res = sx1262_set_standby(STDBY_XOSC);
-        if(false == res) {
 #ifdef HAS_LOG
+        if(false == res) {
             LOG_ERROR(LORA, "SetStandByErr");
-#endif
         }
+#endif
 
         res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
-        if(false == res) {
 #ifdef HAS_LOG
+        if(false == res) {
             LOG_ERROR(LORA, "SX1262SetModParErr");
-#endif
         }
+#endif
 
         res = sx1262_set_packet_params(&Sx1262Instance.packet_param) && res;
 
