@@ -186,6 +186,10 @@ bool sx1262_is_connected(void) {
     if(res) {
         if(packet_type != PACKET_TYPE_UNDEF) {
             res = true;
+        }else{
+#ifdef HAS_LOG
+    	LOG_ERROR(LORA, "PaketTypeErr");
+#endif
         }
     }
 
@@ -193,6 +197,9 @@ bool sx1262_is_connected(void) {
     if((Sx1262Instance.set_sync_word == read_sync_word) && (true == res)) {
         res = true;
     } else {
+#ifdef HAS_LOG
+    	LOG_ERROR(LORA, "SyncWordMisMatch 0x%llx!=0x%llx",Sx1262Instance.set_sync_word, read_sync_word);
+#endif
         res = false;
     }
 
@@ -896,9 +903,9 @@ float dbm2watts(int32_t dbm) {
 
 static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     bool out_res = true;
-    sx1262Instance->crc_init=0x1D0F;
-    sx1262Instance->lora_sync_word_set=DFLT_LORA_SYNC_WORD;
-    sx1262Instance->crc_poly=0x1021;
+    sx1262Instance->lora_sync_word_set = DFLT_LORA_SYNC_WORD;
+    sx1262Instance->crc_init = 0x1D0F;
+    sx1262Instance->crc_poly = 0x1021;
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
     sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
     sx1262Instance->mod_params.spreading_factor = DFLT_SF;
@@ -1677,7 +1684,7 @@ bool sx1262_process(void) {
 #ifdef HAS_FREE_RTOS
 static void sx1262_thread(void *arg){
     while (1) {
-    	sx1262_process();
+    	//sx1262_process();
     	//vTaskYield();
     	//taskYIELD();
     	vTaskDelay((SX1262_PERIOD_US/1000) / portTICK_RATE_MS);

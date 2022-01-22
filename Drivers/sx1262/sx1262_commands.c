@@ -21,6 +21,28 @@
 #include "table_utils.h"
 #include "writer_config.h"
 
+bool sx1262_set_lora_sync_word_command(int32_t argc, char* argv[]){
+	bool res = false;
+    uint16_t lora_sync_word = 0;
+	if(1 == argc) {
+        res = try_str2uint16(argv[0], &lora_sync_word);
+        if (false==res) {
+        	LOG_ERROR(LORA, "ParseLoraSyncWordErr %s",argv[0]);
+        }
+	}else{
+        LOG_ERROR(LORA, "Usage: sxslsw sync_word16bit");
+	}
+	if(res){
+        res = sx1262_set_lora_sync_word(lora_sync_word);
+        if(res) {
+            LOG_INFO(LORA, "SetLoRaSyncWordOk");
+        } else {
+            LOG_ERROR(LORA, "SetLoRaSyncWordErr");
+        }
+	}
+	return res;
+}
+
 bool sx1262_mute_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(1 == argc) {
@@ -485,13 +507,12 @@ bool sx1262_tx_command(int32_t argc, char* argv[]) {
 }
 
 /*
-sxrx 10000
+sxr 10000
 */
 bool sx1262_rx_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint32_t timeout_s = 0;
     if(1 == argc) {
-        res = true;
         res = try_str2uint32(argv[0], &timeout_s);
         if(false == res) {
             LOG_ERROR(LORA, "Unable to extract timeout_s %s", argv[0]);
@@ -803,6 +824,7 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
     float data_rate = 0.0f, t_frame;
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     char temp_str[200];
+    char suffix_str[200];
     for(sf = SF5; sf <= SF12; sf++) {
         for(bw = 0; bw < 11; bw++) {
             for(cr = LORA_CR_4_5; cr <= LORA_CR_4_8; cr++) {
@@ -816,17 +838,32 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                         Sx1262Instance.packet_param.proto.lora.header_type,
                         Sx1262Instance.mod_params.low_data_rate_optimization, &Tsym, &t_preamble);
                     strcpy(temp_str, TSEP);
-                    snprintf(temp_str, sizeof(temp_str), "%s %5u " TSEP, temp_str, (uint32_t)powf(2.0f, (float)sf));
-                    snprintf(temp_str, sizeof(temp_str), "%s %6.2f " TSEP, temp_str,
+                    snprintf(suffix_str, sizeof(suffix_str), "%5u " TSEP, (uint32_t)powf(2.0f, (float)sf));
+                    strncat(temp_str,suffix_str,sizeof(temp_str));
+
+                    snprintf(suffix_str, sizeof(suffix_str), "%6.2f " TSEP,
                              ((float)bandwidth2num((BandWidth_t)bw)) / 1000.0f);
-                    snprintf(temp_str, sizeof(temp_str), "%s %3s " TSEP, temp_str,
+                    strncat(temp_str,suffix_str,sizeof(temp_str));
+
+                    snprintf(suffix_str, sizeof(suffix_str), "%3s " TSEP,
                              coding_rate2str((LoRaCodingRate_t)cr));
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, data_rate / 8);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, Tsym * 1000.0f);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_preamble * 1000.0f);
-                    snprintf(temp_str, sizeof(temp_str), "%s %7.1f " TSEP, temp_str, t_frame * 1000.0f);
-                    snprintf(temp_str, sizeof(temp_str), "%s", temp_str);
+                    strncat(temp_str,suffix_str,sizeof(temp_str));
+
+                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, data_rate);
+                    strncat(temp_str,suffix_str,sizeof(temp_str));
+
+                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, data_rate / 8);
+                    strncat(temp_str,suffix_str,sizeof(temp_str));
+
+                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, Tsym * 1000.0f);
+                    strncat(temp_str,suffix_str,sizeof(temp_str));
+
+                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, t_preamble * 1000.0f);
+                    strncat(temp_str,suffix_str,sizeof(temp_str));
+
+                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, t_frame * 1000.0f);
+                    strncat(temp_str,suffix_str,sizeof(temp_str));
+
                     if(is_contain(temp_str, key_word1, key_word2)) {
                         io_printf(TSEP " %3u ", num);
                         io_printf("%s" CRLF, temp_str);

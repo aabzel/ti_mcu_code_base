@@ -16,7 +16,7 @@ extern "C" {
 
 #define io_vprintf vprintf
 #define io_printf printf
-#define io_putstr puts
+#define io_putstr(input) printf("%s", input)
 #define io_putchar putchar
 #endif
 

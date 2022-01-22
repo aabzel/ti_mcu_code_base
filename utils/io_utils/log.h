@@ -10,12 +10,6 @@
 extern "C" {
 #endif
 
-#ifdef X86_64
-#define io_vprintf vprintf
-#define io_printf printf
-#define io_putstr puts
-#endif
-
 typedef enum eLog_level_t {
     LOG_LEVEL_UNKNOWN = -4,
     LOG_LEVEL_PARANOID = -3,

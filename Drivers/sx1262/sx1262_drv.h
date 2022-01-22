@@ -107,6 +107,7 @@ bool sx1262_set_sleep(uint8_t sleep_config);
 
 bool sx1262_set_standby(StandbyMode_t stdby_config);
 bool sx1262_set_sync_word(uint64_t sync_word);
+bool sx1262_set_lora_sync_word(uint16_t sync_word);
 bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time);
 bool sx1262_set_whitening_seed(uint16_t seed);
 bool sx1262_start_rx(uint32_t timeout_s);

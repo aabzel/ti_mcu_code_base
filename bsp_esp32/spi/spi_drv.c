@@ -5,7 +5,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-//#include <semphr.h>
 
 #include "bit_utils.h"
 #include "clocks.h"

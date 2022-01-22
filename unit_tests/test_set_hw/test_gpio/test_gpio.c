@@ -20,8 +20,9 @@ static bool test_gpio_pin_lev(uint8_t dio_number, uint8_t des_logic_level) {
 
 static bool test_gpio_pin(uint8_t dio_number) {
     uint8_t origin_logic_level = 0;
-
+#ifndef ESP32
     EXPECT_EQ(GPIO_DIR_INOUT, gpio_get_dir(dio_number));
+#endif
     EXPECT_TRUE(gpio_get_state(dio_number, &origin_logic_level));
 
     EXPECT_TRUE(test_gpio_pin_lev(dio_number, 0));

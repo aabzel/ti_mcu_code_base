@@ -31,6 +31,7 @@ bool sx1262_sleep_command(int32_t argc, char* argv[]);
 bool sx1262_tx_command(int32_t argc, char* argv[]);
 bool sx1262_mute_command(int32_t argc, char* argv[]);
 bool sx1262_write_reg_command(int32_t argc, char* argv[]);
+bool sx1262_set_lora_sync_word_command(int32_t argc, char* argv[]);
 
 #define SX1262_COMMANDS_BASE                                                                                           \
     SHELL_CMD("sx1262_diag", "sxd", sx1262_diag_command, "SX1262 diag"),                                               \
@@ -53,6 +54,7 @@ bool sx1262_write_reg_command(int32_t argc, char* argv[]);
         SHELL_CMD("sx1262_set_irq", "sxir", sx1262_set_irq_command, "SX1262 set IRQ"),                                 \
         SHELL_CMD("sx1262_sleep", "sxs", sx1262_sleep_command, "SX1262 sleep"),                                        \
         SHELL_CMD("sx1262_sync", "sxssw", sx1262_set_sync_word_command, "SX1262 set sync word"),                       \
+        SHELL_CMD("sx1262_lora_sync", "sxslsw", sx1262_set_lora_sync_word_command, "SX1262 set lora sync word"),       \
         SHELL_CMD("sx1262_tx", "sxt", sx1262_tx_command, "SX1262 transmit"),
 
 #ifdef HAS_SX1262_EX_DEBUG

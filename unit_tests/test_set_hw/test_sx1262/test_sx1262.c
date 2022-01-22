@@ -200,7 +200,7 @@ bool test_sx1262_types(void) {
     return true;
 }
 
-bool test_sx1262(void) {
+bool test_sx1262_connected(void) {
     EXPECT_TRUE(sx1262_is_connected());
     /* TODO: try undef op code command*/
     return true;
