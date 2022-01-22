@@ -7,19 +7,46 @@
 #include "sys_config.h"
 #include "unit_test_check.h"
 
-bool test_spi_write(void) {
+static bool test_spi_write_num(SpiName_t spi_num) {
     uint8_t array[2];
-    gpio_set_state(DIO_SX1262_SS, 1);
-#ifdef HAS_CAN
-    gpio_set_state(DIO_CAN_SS, 1);
+#ifndef ESP32
+    uint32_t init_int_cnt = SpiInstance[spi_num].it_cnt;
 #endif
-    uint32_t init_int_cnt = SpiInstance[0].it_cnt;
     memset(array,0xFF,sizeof(array));
-    EXPECT_TRUE( spi_write(SPI0_INX, array, sizeof(array)));
-    EXPECT_GR(init_int_cnt, SpiInstance[0].it_cnt);
-
+    EXPECT_TRUE( spi_write(spi_num, array, sizeof(array)));
+#ifndef ESP32
+    EXPECT_GR(init_int_cnt, SpiInstance[spi_num].it_cnt);
+#endif
     return true;
 }
+
+#ifdef HAS_SPI0
+bool test_spi0_write(void) {
+	EXPECT_TRUE( test_spi_write_num(0));
+    return true;
+}
+#endif
+
+#ifdef HAS_SPI1
+bool test_spi1_write(void) {
+	EXPECT_TRUE( test_spi_write_num(1));
+    return true;
+}
+#endif
+
+#ifdef HAS_SPI2
+bool test_spi2_write(void) {
+	EXPECT_TRUE( test_spi_write_num(2));
+    return true;
+}
+#endif
+
+#ifdef HAS_SPI3
+bool test_spi3_write(void) {
+	EXPECT_TRUE( test_spi_write_num(3));
+    return true;
+}
+#endif
 
 #ifdef HAS_SPI_WAIT_WRITE
 bool test_spi_wait_write(void) {
@@ -35,16 +62,47 @@ bool test_spi_wait_write(void) {
 }
 #endif
 
-bool test_spi_read(void) {
+static bool test_spi_read_num(SpiName_t spi_num) {
     uint8_t array[2];
+#ifndef ESP32
+    uint32_t init_int_cnt = SpiInstance[spi_num].it_cnt;
+#endif
+    memset(array,0xFF,sizeof(array));
+    EXPECT_TRUE( spi_read(spi_num, array, sizeof(array)));
+#ifndef ESP32
+    EXPECT_GR(init_int_cnt, SpiInstance[spi_num].it_cnt);
+#endif
+    return true;
+}
+
+#ifdef HAS_SPI0
+bool test_spi0_read(void) {
     gpio_set_state(DIO_SX1262_SS, 1);
 #ifdef HAS_CAN
     gpio_set_state(DIO_CAN_SS, 1);
 #endif
-    uint32_t init_int_cnt = SpiInstance[0].it_cnt;
-    memset(array,0xFF,sizeof(array));
-    EXPECT_TRUE( spi_read(SPI0_INX, array, sizeof(array)));
-    EXPECT_GR(init_int_cnt, SpiInstance[0].it_cnt);
-
+    EXPECT_TRUE(test_spi_read_num(0) );
     return true;
 }
+#endif
+
+#ifdef HAS_SPI1
+bool test_spi1_read(void) {
+    EXPECT_TRUE(test_spi_read_num(1) );
+    return true;
+}
+#endif
+
+#ifdef HAS_SPI2
+bool test_spi2_read(void) {
+    EXPECT_TRUE(test_spi_read_num(2) );
+    return true;
+}
+#endif
+
+#ifdef HAS_SPI3
+bool test_spi3_read(void) {
+    EXPECT_TRUE(test_spi_read_num(3) );
+    return true;
+}
+#endif

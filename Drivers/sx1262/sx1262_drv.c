@@ -1861,7 +1861,7 @@ bool sx1262_init(void) {
 
     if(true==res){
 #ifdef HAS_FREE_RTOS
-        xTaskCreate(sx1262_thread, "sx1262", 5000, NULL, 10, NULL);
+        xTaskCreate(sx1262_thread, "sx1262", 5000, NULL, 5, NULL);
 #endif /*HAS_FREE_RTOS*/
     }
     return res;

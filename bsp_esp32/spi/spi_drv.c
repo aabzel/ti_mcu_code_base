@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+//#include <semphr.h>
 
 #include "bit_utils.h"
 #include "clocks.h"
@@ -180,6 +181,13 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
             res = false;
         }
     }
+    SpiInstance[spi_num].mutex = xSemaphoreCreateMutexStatic(&SpiInstance[spi_num].xMutexBuffer);
+    if(NULL==SpiInstance[spi_num].mutex ){
+        res = false;
+    	LOG_ERROR(SPI, "MutexInitError");
+    }else{
+    	LOG_INFO(SPI, "MutexInitOk");
+    }
     return res;
 }
 
@@ -280,7 +288,16 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
 
 bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
-    res = spi_wait_write_wait(spi_num, tx_array, tx_array_len);
+    if( NULL!=SpiInstance[spi_num].mutex){
+        if( pdTRUE == xSemaphoreTake( SpiInstance[spi_num].mutex, 50000 )  ){
+            res = spi_wait_write_wait(spi_num, tx_array, tx_array_len);
+            xSemaphoreGive(  SpiInstance[spi_num].mutex );
+        }else{
+        	LOG_ERROR(SPI, "MutexBusy");
+        }
+    }else{
+    	LOG_ERROR(SPI, "MutexInitError SPI:%u",spi_num);
+    }
     // res = spi_wait_write(spi_num, tx_array, tx_array_len);
     return res;
 }
@@ -318,7 +335,16 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
 
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
-    res = spi_wait_read_wait(spi_num, rx_array, rx_array_len);
+    if( SpiInstance[spi_num].mutex){
+        if( pdTRUE==xSemaphoreTake( SpiInstance[spi_num].mutex, 50000 )  ){
+            res = spi_wait_read_wait(spi_num, rx_array, rx_array_len);
+            xSemaphoreGive(  SpiInstance[spi_num].mutex );
+        }else{
+        	LOG_ERROR(SPI, "MutexBusy");
+        }
+    }else{
+    	LOG_ERROR(SPI, "MutexInitError SPI:%u", spi_num);
+    }
     return res;
 }
 

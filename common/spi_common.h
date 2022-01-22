@@ -4,10 +4,17 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef ESP32
+#include <FreeRTOS.h>
+#include <semphr.h>
 #include <spi_types.h>
 #include <spi_master.h>
-#endif
+#endif /*ESP32*/
 
 #include "sys_config.h"
 
@@ -46,6 +53,8 @@ typedef struct xSpiInstance_t {
 #ifdef ESP32
   spi_device_handle_t spi_device_handle;
   spi_host_device_t host_id;
+  SemaphoreHandle_t mutex;
+  StaticSemaphore_t xMutexBuffer;
 #endif /*ESP32*/
   char name[SPI_NAME_SIZE_BYTE];
   bool init_done;
@@ -53,6 +62,10 @@ typedef struct xSpiInstance_t {
 
 #ifdef SPI_COUNT
 extern SpiInstance_t SpiInstance[SPI_COUNT];
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* SPI_COMMON_TYPE_H */
