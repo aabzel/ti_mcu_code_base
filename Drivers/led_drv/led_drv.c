@@ -3,6 +3,14 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef HAS_FREE_RTOS
+#include <FreeRTOS.h>
+#include <task.h>
+#endif
+#ifdef HAS_LOG
+#include "io_utils.h"
+#include "log.h"
+#endif
 #include "clocks.h"
 #include "data_utils.h"
 #include "gpio_drv.h"
@@ -15,13 +23,18 @@
 Led_t Led[LED_COUNT];
 
 static void test_leds(void) {
-#ifdef DIO_LED_RED
+#if (DIO_LED_RED!=DIO_LED_HEARTBEAT)
     gpio_set_state(DIO_LED_RED, 1);
 #endif
-#ifdef DIO_LED_GREEN
-    gpio_set_state(DIO_LED_GREEN, 1);
+#ifdef DIO_LED_HEARTBEAT
+    gpio_set_state(DIO_LED_HEARTBEAT, 1);
 #endif
 }
+
+#if (0==LED_COUNT)
+#error "Lack of LEDS in configs"
+#endif
+
 
 bool led_blink(Led_t* inLed, uint32_t duration_ms) {
     bool res = false;
@@ -34,27 +47,6 @@ bool led_blink(Led_t* inLed, uint32_t duration_ms) {
     return res;
 }
 
-bool led_init(void) {
-#ifdef DIO_LED_GREEN
-    Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_MS;
-    Led[LED_INDEX_GREEN].duty = LED_DUTY;
-    Led[LED_INDEX_GREEN].phase_ms = LED_PHASE;
-    Led[LED_INDEX_GREEN].mode = LED_MODE_PWM;
-    Led[LED_INDEX_GREEN].dio_num = DIO_LED_GREEN;
-#endif
-
-#ifdef DIO_LED_RED
-    Led[LED_INDEX_RED].period_ms = LED_RED_PERIOD_MS;
-    Led[LED_INDEX_RED].duty = LED_RED_DUTY;
-    Led[LED_INDEX_RED].phase_ms = LED_RED_PHASE;
-    Led[LED_INDEX_RED].mode = LED_MODE_NONE;
-    Led[LED_INDEX_RED].dio_num = DIO_LED_RED;
-#endif
-
-    test_leds();
-
-    return true;
-}
 
 static bool proc_led(Led_t* inLed) {
     bool res = false;
@@ -96,6 +88,9 @@ static bool proc_led(Led_t* inLed) {
 }
 
 bool proc_leds(void) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LED, "%s()",__FUNCTION__);
+#endif
     bool res = true;
     uint16_t i = 0;
     for(i = 0; i < ARRAY_SIZE(Led); i++) {
@@ -128,4 +123,46 @@ bool led_off(Led_t* inLed) {
         inLed->mode = LED_MODE_OFF;
     }
     return res;
+}
+
+#ifdef HAS_FREE_RTOS
+
+static void led_thread(void *arg) {
+    for(;;) {
+    	proc_leds();
+    	vTaskDelay(50 / portTICK_RATE_MS);
+    }
+}
+
+void led_create_task(void) {
+    xTaskCreate(led_thread, "LED", 5000, NULL, 0, NULL);
+}
+#endif /*HAS_TIRTOS*/
+
+bool led_init(void) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LED, "%s()",__FUNCTION__);
+#endif
+#ifdef DIO_LED_HEARTBEAT
+    Led[LED_INDEX_HEARTBEAT].period_ms = LED_GREEN_PERIOD_MS;
+    Led[LED_INDEX_HEARTBEAT].duty = LED_DUTY;
+    Led[LED_INDEX_HEARTBEAT].phase_ms = LED_PHASE;
+    Led[LED_INDEX_HEARTBEAT].mode = LED_MODE_PWM;
+    Led[LED_INDEX_HEARTBEAT].dio_num = DIO_LED_HEARTBEAT;
+#endif
+
+#if (DIO_LED_RED!=DIO_LED_HEARTBEAT)
+    Led[LED_INDEX_RED].period_ms = LED_RED_PERIOD_MS;
+    Led[LED_INDEX_RED].duty = LED_RED_DUTY;
+    Led[LED_INDEX_RED].phase_ms = LED_RED_PHASE;
+    Led[LED_INDEX_RED].mode = LED_MODE_NONE;
+    Led[LED_INDEX_RED].dio_num = DIO_LED_RED;
+#endif
+
+    test_leds();
+#ifdef HAS_FREE_RTOS
+    led_create_task();
+#endif
+
+    return true;
 }

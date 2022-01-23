@@ -1,5 +1,5 @@
 call close_terminal.bat
-set com_port_num=5
+set com_port_num=9
 set python_path="C:\Users\aabdev\.espressif\python_env\idf5.0_py3.9_env\Scripts\python.exe"
 set esp_tool=C:\esp\esp-idf\components\esptool_py\esptool\esptool.py
 set bin_path=build/hello_world.bin

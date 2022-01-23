@@ -280,12 +280,12 @@ static void cli_thread(void *arg) {
     for(;;) {
         cli_process();
         /*Wait 100 ms*/
-    	vTaskDelay(100 / portTICK_RATE_MS);
+    	vTaskDelay(200 / portTICK_RATE_MS);
     }
 }
 
 void cli_create_task(void) {
-    xTaskCreate(cli_thread, "CLI", 5000, NULL, 10, NULL);
+    xTaskCreate(cli_thread, "CLI", 5000, NULL, 0, NULL);
 }
 #endif /*HAS_TIRTOS*/
 

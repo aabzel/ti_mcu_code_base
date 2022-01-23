@@ -4,17 +4,35 @@
 #include <stdio.h>
 
 #include "convert.h"
-#include "io_utils.h"
 #include "led_drv.h"
+#include "data_utils.h"
+#ifdef HAS_LOG
+#include "io_utils.h"
 #include "log.h"
+#include "writer_config.h"
+#include "table_utils.h"
+#endif
 
 bool led_get_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        io_printf("period: %u ms" CRLF, Led[LED_INDEX_GREEN].period_ms);
-        io_printf("duty  : %u %%" CRLF, Led[LED_INDEX_GREEN].duty);
-        io_printf("phase : %u ms" CRLF, Led[LED_INDEX_GREEN].phase_ms);
+        static const table_col_t cols[] = {
+        		{5, "period"},
+    			{5, "duty"},
+    			{5, "phase"},           };
+        table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+        uint8_t i=0;
+        for(i=0;i<ARRAY_SIZE(Led);i++){
+	      io_printf(TSEP);
+          io_printf(" %u  " TSEP, Led[i].period_ms);
+          io_printf(" %u  " TSEP, Led[i].duty);
+          io_printf(" %u  " TSEP, Led[i].phase_ms);
+          io_printf(" %u  " TSEP, Led[i].mode);
+
+          io_printf(CRLF);
+        }
+        table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     } else {
         LOG_ERROR(SYS, "Usage: lg ");
     }

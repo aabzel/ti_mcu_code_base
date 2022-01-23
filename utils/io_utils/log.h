@@ -52,6 +52,7 @@ typedef enum eLog_facility_t {
     COM,
     BOOT,
     LG_DAC,
+	LED,
     DIAG,
     I2C,
     LG_INT,

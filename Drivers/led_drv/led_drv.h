@@ -43,7 +43,9 @@ typedef struct xLed_t {
 } Led_t;
 
 extern Led_t Led[LED_COUNT];
-
+#ifdef HAS_FREE_RTOS
+void led_create_task(void);
+#endif
 bool led_init(void);
 bool led_blink(Led_t *inLed, uint32_t duration_ms);
 bool led_on(Led_t *inLed);

@@ -195,6 +195,9 @@ bool sx1262_is_connected(void) {
 
     res = sx1262_get_sync_word(&read_sync_word);
     if((Sx1262Instance.set_sync_word == read_sync_word) && (true == res)) {
+#ifdef HAS_LOG
+    	LOG_DEBUG(LORA, "SyncWordMatch");
+#endif
         res = true;
     } else {
 #ifdef HAS_LOG
@@ -233,8 +236,14 @@ static bool sx1262_is_exist(void) {
     bool res = false;
     res = check_sync_word(0x0012345678abcdef);
     if(true == res) {
+#ifdef HAS_LOG
+    	LOG_INFO(LORA, "ChipExist");
+#endif
         res = true;
     } else {
+#ifdef HAS_LOG
+    	LOG_ERROR(LORA, "ChipLack");
+#endif
         res = false;
     }
     return res;
@@ -324,6 +333,9 @@ bool sx1262_set_rf_frequency(uint32_t rf_frequency_hz, uint32_t freq_xtal_hz) {
   parameters are described in the different packet type sections.
 */
 bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
     bool res = false;
     uint8_t tx_array[2] = {0};
     tx_array[0] = tx_base_addr;
@@ -368,6 +380,9 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
   The command SetRx() sets the device in receiver mode.
  * */
 bool sx1262_start_rx(uint32_t timeout_s) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
     bool res = true;
     res = sx1262_clear_fifo() && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
@@ -399,6 +414,9 @@ bool is_power_valid(int8_t power) {
    time by using the parameter RampTime. This command is available for all protocols selected.
 */
 bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
     bool res = false;
     res = is_power_valid(power);
     if(false == res) {
@@ -423,6 +441,9 @@ bool sx1262_set_dio2_as_rf_switch_ctrl(Dio2Mode_t mode) {
  * This command is used to set the parameters of the packet handling block.
  * */
 bool sx1262_set_packet_params(PacketParam_t* packParam) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
     bool res = false;
     uint8_t tx_array[9];
     memset(tx_array, 0xFF, sizeof(tx_array));
@@ -464,6 +485,9 @@ bool sx1262_reset_stats(void) {
   running with a 13 MHz RC clock.
 */
 bool sx1262_set_standby(StandbyMode_t stdby_config) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
     bool res = true;
     uint8_t tx_array[1];
     tx_array[0] = (uint8_t)stdby_config;
@@ -479,6 +503,9 @@ bool sx1262_set_standby(StandbyMode_t stdby_config) {
   The parameter for this command is PacketType.
 */
 bool sx1262_set_packet_type(RadioPacketType_t packet_type) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
     bool res = false;
     res = sx1262_set_standby(STDBY_RC);
     if(res) {
@@ -719,7 +746,10 @@ bool sx1262_set_sleep(uint8_t sleep_config) {
  * its configuration.
  */
 bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_sel, uint8_t pa_lut) {
-    bool res = false;
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
+	bool res = false;
     uint8_t tx_array[4];
     memset(tx_array, 0x00, sizeof(tx_array));
     tx_array[0] = pa_duty_cycle;
@@ -781,6 +811,9 @@ static bool calc_power_param(uint8_t output_power_dbm, uint8_t* pa_duty_cycle, u
 }
 
 static bool sx1262_conf_tx(int8_t output_power_dbm) {
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
@@ -1101,10 +1134,6 @@ bool sx1262_get_status(uint8_t* out_status) {
         uint8_t rx_array[2] = {0xFF, 0xFF};
         uint8_t tx_array = 0;
         res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
-#ifdef ESP32
-//        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, rx_array, sizeof(rx_array));
-#else
-#endif
         *out_status = rx_array[1];
     }
     return res;
@@ -1456,11 +1485,17 @@ static inline bool sx1262_proc_data_aval(void) {
 
 static inline bool sx1262_poll_status(void) {
     bool res = false;
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s():",__FUNCTION__);
+#endif
     Sx1262_t tempSx1262Instance = {0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
 
     res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
+#ifdef HAS_LOG
+        LOG_DEBUG(LORA, "Status 0x%02x", tempSx1262Instance.dev_status.byte);
+#endif
         res = true;
         static uint8_t stat_byte_prev = 0;
         Sx1262Instance.dev_status.byte = tempSx1262Instance.dev_status.byte;
@@ -1490,7 +1525,7 @@ static inline bool sx1262_poll_status(void) {
             break;
         case COM_STAT_EXE_ERR:
 #ifdef HAS_LOG
-            LOG_ERROR(LORA, "FailureToExecuteCommand"); /**/
+            LOG_ERROR(LORA, "FailureToExecuteCommand %u",Sx1262Instance.dev_status.command_status); /**/
 #endif
             res = false;
             break;
@@ -1653,6 +1688,9 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
  * */
 bool sx1262_process(void) {
     bool res = false;
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "check_connectivity=%u",Sx1262Instance.check_connectivity);
+#endif
 
     if(Sx1262Instance.check_connectivity) {
         res = sx1262_is_connected();
@@ -1684,10 +1722,10 @@ bool sx1262_process(void) {
 #ifdef HAS_FREE_RTOS
 static void sx1262_thread(void *arg){
     while (1) {
-    	//sx1262_process();
+    	sx1262_process();
     	//vTaskYield();
+    	vTaskDelay(1000 / portTICK_RATE_MS);
     	//taskYIELD();
-    	vTaskDelay((SX1262_PERIOD_US/1000) / portTICK_RATE_MS);
 	}
 }
 #endif /*HAS_FREE_RTOS*/
@@ -1736,19 +1774,32 @@ uint32_t bandwidth2num(BandWidth_t bandwidth) {
 
 bool sx1262_init(void) {
     bool res = true;
-#ifdef HAS_DEBUG
-    // res = set_log_level(LORA, LOG_LEVEL_DEBUG);
-    // Sx1262Instance.debug = true;
-    // Sx1262Instance.show_ascii = true;
+#ifdef HAS_FREE_RTOS
+   // vPortCPUInitializeMutex(&Sx1262Instance.mutex);
+    //Sx1262Instance.mutex = portMUX_INITIALIZER_UNLOCKED;
+    //Sx1262Instance.mutex = xSemaphoreCreateMutexStatic(&Sx1262Instance.xMutexBuffer);
+    //if(NULL==&Sx1262Instance.mutex ){
+    //    res = false;
+   // 	LOG_ERROR(SPI, "MutexInitError");
+   // }else{
+   // 	LOG_INFO(SPI, "MutexInitOk");
+   // }
+#endif
+
+#ifdef ESP32
+    res = set_log_level(LORA, LOG_LEVEL_DEBUG);
+    Sx1262Instance.debug = true;
+    Sx1262Instance.show_ascii = true;
 #else
+#ifdef HAS_LOG
+   res = set_log_level(LORA, LOG_LEVEL_INFO);
+#endif
     Sx1262Instance.debug = false;
     Sx1262Instance.show_bin = false;
-#ifdef HAS_LOG
-    res = set_log_level(LORA, LOG_LEVEL_INFO);
 #endif
-#endif
+
 #ifdef HAS_LOG
-    LOG_INFO(LORA, "Init SX1262");
+    LOG_INFO(LORA, "InitSX1262...");
 #endif
     Sx1262Instance.tx_mute = false;
     Sx1262Instance.check_connectivity = true;
@@ -1809,6 +1860,9 @@ bool sx1262_init(void) {
         res = sx1262_is_exist();
     }
     if(true == res) {
+#ifdef HAS_LOG
+    	LOG_INFO(LORA, "Config...");
+#endif
         res = sx1262_wakeup() && res;
 
         res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
@@ -1849,6 +1903,11 @@ bool sx1262_init(void) {
         res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
 
         res = sx1262_start_rx(0xFFFFFF) && res;
+        if(res){
+#ifdef HAS_LOG
+        	LOG_INFO(LORA, "StartRx");
+#endif
+        }
 
         res = sx1262_conf_tx(Sx1262Instance.output_power) && res;
         // res = sx1262_conf_rx() && res;
@@ -1859,16 +1918,16 @@ bool sx1262_init(void) {
         res = sx1262_start_rx(0xFFFFFF) && res;
     } else {
 #ifdef HAS_LOG
-        LOG_ERROR(LORA, "SX1262 link error");
+        LOG_ERROR(LORA, "SX1262 linkError");
 #endif
     }
     if(false == res) {
         task_data[TASK_ID_LORA].on = false;
     }
-
+    Sx1262Instance.check_connectivity = true;
     if(true==res){
 #ifdef HAS_FREE_RTOS
-        xTaskCreate(sx1262_thread, "sx1262", 5000, NULL, 5, NULL);
+        xTaskCreate(sx1262_thread, "sx1262", 5000, NULL, 6, NULL);
 #endif /*HAS_FREE_RTOS*/
     }
     return res;

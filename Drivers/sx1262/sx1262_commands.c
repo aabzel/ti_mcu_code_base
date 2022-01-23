@@ -511,7 +511,7 @@ sxr 10000
 */
 bool sx1262_rx_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint32_t timeout_s = 0;
+    uint32_t timeout_s = 0xFFFFFF;
     if(1 == argc) {
         res = try_str2uint32(argv[0], &timeout_s);
         if(false == res) {

@@ -2,8 +2,13 @@
 #define SX1262_TYPES_H
 
 #include <stdint.h>
+#ifdef HAS_FREE_RTOS
+#include <FreeRTOS.h>
+#include <semphr.h>
+#endif
 
 #include "sx1262_constants.h"
+
 
 typedef struct xPaketStat_t {
     uint16_t nb_pkt_received;
@@ -145,6 +150,10 @@ typedef struct xSx1262_t {
     ModulationParams_t mod_params;
     PacketParam_t packet_param;
     RadioPacketType_t packet_type;
+#ifdef HAS_FREE_RTOS
+    portMUX_TYPE  mutex;
+    //StaticSemaphore_t xMutexBuffer;
+#endif
 } Sx1262_t;
 
 

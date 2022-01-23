@@ -8,6 +8,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
+#ifdef HAS_FREE_RTOS
+#include <FreeRTOS.h>
+#include <semphr.h>
+#endif
+
+
 #include "bit_utils.h"
 #include "board_layout.h"
 #include "gfsk_types.h"

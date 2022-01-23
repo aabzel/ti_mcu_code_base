@@ -8,10 +8,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#ifdef ESP32
+#ifdef HAS_FREE_RTOS
 #include <FreeRTOS.h>
 #include <semphr.h>
+#endif
+#ifdef ESP32
 #include <spi_types.h>
 #include <spi_master.h>
 #endif /*ESP32*/
@@ -53,8 +54,10 @@ typedef struct xSpiInstance_t {
 #ifdef ESP32
   spi_device_handle_t spi_device_handle;
   spi_host_device_t host_id;
+#ifdef HAS_FREE_RTOS
   SemaphoreHandle_t mutex;
   StaticSemaphore_t xMutexBuffer;
+#endif
 #endif /*ESP32*/
   char name[SPI_NAME_SIZE_BYTE];
   bool init_done;

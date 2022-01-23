@@ -4,6 +4,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
+#ifdef HAS_FREE_RTOS
+#include <FreeRTOS.h>
+#include <semphr.h>
+#endif
+
+
 #include "sx1262_constants.h"
 /* Register Table */
 /* Regiser Name     Address*/
