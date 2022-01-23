@@ -21,6 +21,31 @@
 #include "table_utils.h"
 #include "writer_config.h"
 
+bool sx1262_get_status_command(int32_t argc, char* argv[]){
+	bool res = false;
+	Sx1262Status_t status;
+	status.byte=0;
+	if(0 == argc) {
+		res = true;
+	} else {
+        LOG_ERROR(LORA, "Usage: sxgs");
+	}
+	if(res){
+        res = sx1262_get_status(&status.byte);
+        if(res) {
+            LOG_INFO(LORA, "GetStatysOk");
+            LOG_INFO(LORA, "Status 0x%02X=0b%s",status.byte, utoa_bin8(status.byte));
+            LOG_INFO(LORA, "Status CmdStat:%u %s ChipMode:%u %s",
+            		status.command_status, cmd_stat2str(status.command_status),
+					status.chip_mode, chip_mode2str(status.chip_mode)
+    				);
+        } else {
+            LOG_ERROR(LORA, "GetStatysErr");
+        }
+	}
+	return res;
+}
+
 bool sx1262_set_lora_sync_word_command(int32_t argc, char* argv[]){
 	bool res = false;
     uint16_t lora_sync_word = 0;

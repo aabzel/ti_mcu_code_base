@@ -84,6 +84,7 @@ bool sx1262_get_status(uint8_t* out_status);
 bool sx1262_init(void);
 bool sx1262_int_isr(Sx1262_t* sx1262Instance);
 bool sx1262_is_connected(void);
+bool sx1262_is_exist(void);
 bool sx1262_process(void);
 bool sx1262_reset(void);
 bool sx1262_reset_stats(void);

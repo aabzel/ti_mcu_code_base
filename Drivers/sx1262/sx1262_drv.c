@@ -88,21 +88,6 @@ bool sx1262_chip_select(bool state) {
     return res;
 }
 
-#define GET_4_BYTE_OPCODE(OP_CODE, OUT_VAL_16_BIT)                                                                     \
-    do {                                                                                                               \
-        if(OUT_VAL_16_BIT) {                                                                                           \
-            uint8_t rx_array[4];                                                                                       \
-            memset(rx_array, 0x00, sizeof(rx_array));                                                                  \
-            res = sx1262_send_opcode(OP_CODE, NULL, 0, rx_array, sizeof(rx_array));                                    \
-            if(res) {                                                                                                  \
-                Sx1262Instance.status = rx_array[1];                                                                   \
-                *OUT_VAL_16_BIT = copy_and_rev16(&rx_array[2]);                                                        \
-            } else {                                                                                                   \
-                *OUT_VAL_16_BIT = 0x0000;                                                                              \
-            }                                                                                                          \
-        }                                                                                                              \
-    } while(0);
-
 Sx1262_t Sx1262Instance = {0};
 
 #ifdef HAS_SX1262_DEBUG
@@ -232,7 +217,7 @@ static bool check_sync_word(uint64_t sync_word) {
     return res;
 }
 
-static bool sx1262_is_exist(void) {
+bool sx1262_is_exist(void) {
     bool res = false;
     res = check_sync_word(0x0012345678abcdef);
     if(true == res) {
@@ -358,16 +343,16 @@ bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
   */
 bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_start_buffer_pointer) {
     bool res = false;
-    uint8_t rx_array[4];
+    uint8_t rx_array[3];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_RX_BUFFER_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
-        Sx1262Instance.status = rx_array[1];
+        Sx1262Instance.status = rx_array[0];
         if(out_payload_length_rx) {
-            *out_payload_length_rx = rx_array[2];
+            *out_payload_length_rx = rx_array[1];
         }
         if(out_rx_start_buffer_pointer) {
-            *out_rx_start_buffer_pointer = rx_array[3];
+            *out_rx_start_buffer_pointer = rx_array[2];
             uint8_t i = 0;
             for(i = 0; i < 2; i++) {
 
@@ -560,7 +545,7 @@ bool sx1262_clear_irq(uint16_t clear_irq_param) {
     bool res = false;
     uint16_t clear_irq_param_be;
     uint8_t tx_array[2];
-    memset(tx_array, 0x00, sizeof(tx_array));
+    memset(tx_array, 0xFF, sizeof(tx_array));
     // clear_irq_param_be=clear_irq_param;
     clear_irq_param_be = reverse_byte_order_uint16(clear_irq_param);
     memcpy(tx_array, &clear_irq_param_be, sizeof(uint16_t));
@@ -1088,17 +1073,17 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
 }
 
 /*GetIrqStatus
- * sxo 0x12 0 4
- * sxo 0x12 0x000000 4*/
+ * sxo 0x12 0 3
+ * sxo 0x12 0x000000 3*/
 bool sx1262_get_irq_status(Sx1262IRQs_t* out_irq_stat) {
     bool res = false;
-    uint8_t rx_array[4];
+    uint8_t rx_array[3];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_IRQ_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
         uint16_t irq_stat = 0;
-        Sx1262Instance.status = rx_array[1];
-        memcpy(&irq_stat, &rx_array[2], 2);
+        Sx1262Instance.status = rx_array[0];
+        memcpy(&irq_stat, &rx_array[1], 2);
         // irq_stat = reverse_byte_order_uint16(irq_stat);
         out_irq_stat->word = irq_stat;
     }
@@ -1112,7 +1097,16 @@ bool sx1262_get_irq_status(Sx1262IRQs_t* out_irq_stat) {
  */
 bool sx1262_get_dev_err(uint16_t* op_error) {
     bool res = false;
-    GET_4_BYTE_OPCODE(OPCODE_GET_DEVICE_ERRORS, op_error);
+    uint8_t rx_array[3];
+    memset(rx_array, 0x00, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_GET_DEVICE_ERRORS, NULL, 0, rx_array, sizeof(rx_array));
+    if(res) {
+        Sx1262Instance.status = rx_array[0];
+        *op_error = copy_and_rev16(&rx_array[1]);
+    } else {
+        *op_error = 0x0000;
+    }
+
     return res;
 }
 /*
@@ -1124,7 +1118,7 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     //uint8_t tx_array[2];
     //memset(tx_array, 0xFF, sizeof(tx_array));
 
-    uint8_t rx_array[3];
+    uint8_t rx_array[2];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
@@ -1136,14 +1130,24 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     return res;
 }
 
-/*GetStatus*/
+/*GetStatus (page 95 in datasheet)
+sxo 0xC0 0 2      2a2a
+sxo 0xC0 0x00 1   2a
+sxo 0xC0 0x00 2
+*/
 bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
     if(NULL != out_status) {
+#ifdef ESP32
+    	uint8_t rx_array;
+        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, &rx_array, 1);
+        *out_status = rx_array;
+#else
         uint8_t rx_array[2] = {0xFF, 0xFF};
-        uint8_t tx_array = 0;
+        uint8_t tx_array = 0xFF;
         res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
         *out_status = rx_array[1];
+#endif
     }
     return res;
 }
@@ -1179,12 +1183,12 @@ bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* Rss
 bool sx1262_get_rssi_inst(int8_t* out_rssi_inst) {
     bool res = false;
     int8_t rssi_inst = 0;
-    uint8_t rx_array[3];
+    uint8_t rx_array[2];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_RSSIINST, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
-        Sx1262Instance.status = rx_array[1];
-        rssi_inst = -(rx_array[2] >> 1); /*Signal power in dBm*/
+        Sx1262Instance.status = rx_array[0];
+        rssi_inst = -(rx_array[0] >> 1); /*Signal power in dBm*/
         if(NULL != out_rssi_inst) {
             *out_rssi_inst = rssi_inst;
         }
@@ -1195,18 +1199,19 @@ bool sx1262_get_rssi_inst(int8_t* out_rssi_inst) {
 bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora) {
     bool res = false;
     if(gfsk && lora) {
-        uint8_t rx_array[16];
+        uint8_t rx_array[7];
         memset(rx_array, 0xFF, sizeof(rx_array));
         res = sx1262_send_opcode(OPCODE_GET_STATS, NULL, 0, rx_array, sizeof(rx_array));
         if(res) {
-            Sx1262Instance.status = rx_array[1];
-            gfsk->nb_pkt_received = copy_and_rev16(&rx_array[2]);
-            gfsk->nb_pkt_crc_error = copy_and_rev16(&rx_array[4]);
-            gfsk->nb_pkt_length_error = copy_and_rev16(&rx_array[6]);
-
-            lora->nb_pkt_received = copy_and_rev16(&rx_array[10]);
-            lora->nb_pkt_crc_error = copy_and_rev16(&rx_array[12]);
-            lora->nb_pkt_header_err = copy_and_rev16(&rx_array[14]);
+            Sx1262Instance.status = rx_array[0];
+            /*
+            gfsk->nb_pkt_received = copy_and_rev16(&rx_array[1]);
+            gfsk->nb_pkt_crc_error = copy_and_rev16(&rx_array[3]);
+            gfsk->nb_pkt_length_error = copy_and_rev16(&rx_array[5]);
+            */
+            lora->nb_pkt_received = copy_and_rev16(&rx_array[1]);
+            lora->nb_pkt_crc_error = copy_and_rev16(&rx_array[3]);
+            lora->nb_pkt_header_err = copy_and_rev16(&rx_array[5]);
         }
     }
     return res;
@@ -1793,6 +1798,10 @@ uint32_t bandwidth2num(BandWidth_t bandwidth) {
 
 bool sx1262_init(void) {
     bool res = true;
+    static uint8_t call_cnt = 0;
+    if(0 == call_cnt) {
+        memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
+    }
 #ifdef HAS_FREE_RTOS
    // vPortCPUInitializeMutex(&Sx1262Instance.mutex);
     //Sx1262Instance.mutex = portMUX_INITIALIZER_UNLOCKED;
@@ -1804,15 +1813,18 @@ bool sx1262_init(void) {
    // 	LOG_INFO(SPI, "MutexInitOk");
    // }
 #endif
+
 #ifdef ESP32
-    Sx1262Instance.proc = false;
+    Sx1262Instance.proc = true;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = true;
+    Sx1262Instance.check_connectivity = false;
 #else
 #ifdef HAS_LOG
    res = set_log_level(LORA, LOG_LEVEL_INFO);
 #endif
+    Sx1262Instance.check_connectivity = true;
     Sx1262Instance.debug = false;
     Sx1262Instance.show_bin = false;
 #endif
@@ -1821,12 +1833,7 @@ bool sx1262_init(void) {
     LOG_INFO(LORA, "InitSX1262...");
 #endif
     Sx1262Instance.tx_mute = false;
-    Sx1262Instance.check_connectivity = true;
     Sx1262Instance.sync_rssi = true;
-    static uint8_t call_cnt = 0;
-    if(0 == call_cnt) {
-        memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
-    }
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
     res = sx1262_load_params(&Sx1262Instance);
@@ -1943,7 +1950,7 @@ bool sx1262_init(void) {
     if(false == res) {
         task_data[TASK_ID_LORA].on = false;
     }
-    Sx1262Instance.check_connectivity = true;
+   // Sx1262Instance.check_connectivity = true;
     if(true==res){
 #ifdef HAS_FREE_RTOS
         xTaskCreate(sx1262_thread, "sx1262", 5000, NULL, 6, NULL);

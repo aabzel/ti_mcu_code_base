@@ -193,15 +193,15 @@ bool test_sx1262_crc_init(void){
 
 bool test_sx1262_types(void) {
     EXPECT_EQ(1, sizeof(Sx1262Status_t));
-    EXPECT_EQ(1, sizeof(LoRaCodingRate_t));
     EXPECT_EQ(6, sizeof(LoRaPacketParam_t));
-    EXPECT_EQ(1, sizeof(BandWidth_t));
     EXPECT_EQ(2, sizeof(RadioIrqMasks_t));
+    EXPECT_EQ(1, sizeof(BandWidth_t));
+    EXPECT_EQ(1, sizeof(LoRaCodingRate_t));
     return true;
 }
 
 bool test_sx1262_connected(void) {
-    EXPECT_TRUE(sx1262_is_connected());
+    EXPECT_TRUE(sx1262_is_exist());
     /* TODO: try undef op code command*/
     return true;
 }

@@ -321,7 +321,7 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
             memset(&Transaction, 0, sizeof(Transaction));
    	        Transaction.flags = SPI_TRANS_USE_RXDATA | SPI_TRANS_MODE_OCT;
             Transaction.length = 8;
-            Transaction.rxlength = 8;
+            Transaction.rxlength = 0;
             Transaction.tx_buffer = NULL;
             Transaction.rx_buffer = rx_array;
 
@@ -343,7 +343,7 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
     if( SpiInstance[spi_num].mutex){
-        if( pdTRUE==xSemaphoreTake( SpiInstance[spi_num].mutex, 100 )  ){
+        if( pdTRUE==xSemaphoreTake( SpiInstance[spi_num].mutex, 50 )  ){
             res = spi_wait_read_wait(spi_num, rx_array, rx_array_len);
             xSemaphoreGive(  SpiInstance[spi_num].mutex );
         }else{
