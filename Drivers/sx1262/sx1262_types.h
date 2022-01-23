@@ -9,6 +9,10 @@
 
 #include "sx1262_constants.h"
 
+typedef struct xOpCode_t{
+	uint8_t op_code;
+	char * name;
+}OpCode_t;
 
 typedef struct xPaketStat_t {
     uint16_t nb_pkt_received;
@@ -136,6 +140,7 @@ typedef struct xSx1262_t {
     bool tx_mute;
     bool debug;
     bool sync_reg;
+    bool proc;
     bool show_bin;
     bool show_ascii;
     bool is_packet;

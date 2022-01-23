@@ -64,6 +64,8 @@ void spi3_post_transfer_callback(spi_transaction_t* transaction) {
 
 const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
     {
+    	.command_bits=0,
+		.address_bits=0,
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
         .spics_io_num = -1,          // CS pin
@@ -72,6 +74,8 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
         .post_cb = spi0_post_transfer_callback,
     },
     {
+        	.command_bits=0,
+    		.address_bits=0,
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
         .spics_io_num = -1,          // CS pin
@@ -80,6 +84,8 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
         .post_cb = spi1_post_transfer_callback,
     },
     {
+        	.command_bits=0,
+    		.address_bits=0,
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
         .spics_io_num = -1,          // CS pin
@@ -88,6 +94,8 @@ const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
         .post_cb = spi2_post_transfer_callback,
     },
     {
+        	.command_bits=0,
+    		.address_bits=0,
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
         .spics_io_num = -1,          // CS pin
@@ -104,7 +112,7 @@ spi_bus_config_t SpiBusCfg[SPI_CNT] = {{
                                            .sclk_io_num = DIO_SPI0_SCLK,
                                            .quadwp_io_num = -1,
                                            .quadhd_io_num = -1,
-                                           .max_transfer_sz = 256,
+                                           .max_transfer_sz = 1,
                                        },
                                        {/*SPI1*/
                                         .miso_io_num = DIO_SPI0_MISO,
@@ -112,21 +120,21 @@ spi_bus_config_t SpiBusCfg[SPI_CNT] = {{
                                         .sclk_io_num = DIO_SPI0_SCLK,
                                         .quadwp_io_num = -1,
                                         .quadhd_io_num = -1,
-                                        .max_transfer_sz = 256},
+                                        .max_transfer_sz = 1},
                                        {/*SPI2*/
                                         .miso_io_num = DIO_SPI0_MISO,
                                         .mosi_io_num = DIO_SPI0_MOSI,
                                         .sclk_io_num = DIO_SPI0_SCLK,
                                         .quadwp_io_num = -1,
                                         .quadhd_io_num = -1,
-                                        .max_transfer_sz = 256},
+                                        .max_transfer_sz = 1},
                                        {/*SPI3*/
                                         .miso_io_num = DIO_SPI0_MISO,
                                         .mosi_io_num = DIO_SPI0_MOSI,
                                         .sclk_io_num = DIO_SPI0_SCLK,
                                         .quadwp_io_num = -1,
                                         .quadhd_io_num = -1,
-                                        .max_transfer_sz = 256}};
+                                        .max_transfer_sz = 1}};
 
 spi_host_device_t SpiNum2HostId(SpiName_t spi_num) {
     spi_host_device_t host_id = SPI1_HOST;
@@ -262,7 +270,7 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
         	LOG_DEBUG(SPI, "SPI write: i:%u",i);
             memset(&Transaction, 0, sizeof(Transaction)); // Zero out the transaction
             //Transaction.user = (void*)0; // D/C needs to be set to 1
-            Transaction.flags = SPI_TRANS_USE_TXDATA;
+            Transaction.flags = SPI_TRANS_USE_TXDATA | SPI_TRANS_MODE_OCT;
             Transaction.length = 8 ; // Len is in bytes, transaction length is in bits.
             //Transaction.tx_buffer = (tx_array+i);
             Transaction.rxlength = 0;
@@ -288,7 +296,7 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
 bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
     if( NULL!=SpiInstance[spi_num].mutex){
-        if( pdTRUE == xSemaphoreTake( SpiInstance[spi_num].mutex, 1000 )  ){
+        if( pdTRUE == xSemaphoreTake( SpiInstance[spi_num].mutex, 100 )  ){
             res = spi_wait_write_wait(spi_num, tx_array, tx_array_len);
             xSemaphoreGive(  SpiInstance[spi_num].mutex );
         }else{
@@ -311,7 +319,7 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
         for(i=0; i<rx_array_len; i++){
         	LOG_DEBUG(SPI, "SPI read: i:%u",i);
             memset(&Transaction, 0, sizeof(Transaction));
-   	        Transaction.flags = SPI_TRANS_USE_RXDATA;
+   	        Transaction.flags = SPI_TRANS_USE_RXDATA | SPI_TRANS_MODE_OCT;
             Transaction.length = 8;
             Transaction.rxlength = 8;
             Transaction.tx_buffer = NULL;
@@ -335,7 +343,7 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
     if( SpiInstance[spi_num].mutex){
-        if( pdTRUE==xSemaphoreTake( SpiInstance[spi_num].mutex, 1000 )  ){
+        if( pdTRUE==xSemaphoreTake( SpiInstance[spi_num].mutex, 100 )  ){
             res = spi_wait_read_wait(spi_num, rx_array, rx_array_len);
             xSemaphoreGive(  SpiInstance[spi_num].mutex );
         }else{

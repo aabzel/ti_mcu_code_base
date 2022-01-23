@@ -11,6 +11,7 @@ extern "C" {
 #include "lora_constants.h"
 #include "sx1262_drv.h"
 
+char* OpCode2Str(uint8_t op_code);
 char* HexWord2Str(uint16_t word);
 const char* LowDataRateOpt2Str(uint8_t packet_type);
 char* dbm2wattsStr(int32_t dbm);

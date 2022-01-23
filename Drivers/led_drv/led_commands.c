@@ -18,7 +18,7 @@ bool led_get_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         res = true;
         static const table_col_t cols[] = {
-        		{5, "period"},
+        		{8, "period"},
     			{5, "duty"},
     			{5, "phase"},           };
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
@@ -29,7 +29,6 @@ bool led_get_command(int32_t argc, char* argv[]) {
           io_printf(" %u  " TSEP, Led[i].duty);
           io_printf(" %u  " TSEP, Led[i].phase_ms);
           io_printf(" %u  " TSEP, Led[i].mode);
-
           io_printf(CRLF);
         }
         table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));

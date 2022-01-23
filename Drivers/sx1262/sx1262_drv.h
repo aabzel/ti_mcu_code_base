@@ -51,13 +51,13 @@ extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(1000);                                                                               \
+        res = sx1262_wait_on_busy(10);                                                                               \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             res = sx1262_chip_select(true);                                                                            \
-            res = wait_ms(2);                                                                                          \
+            res = wait_ms(1);                                                                                          \
             res = CALL_BACK;                                                                                           \
-            res = wait_ms(2);                                                                                          \
+            res = wait_ms(1);                                                                                          \
             res = sx1262_chip_select(false);                                                                           \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \

@@ -252,6 +252,9 @@ static bool sx1262_is_exist(void) {
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
     bool res = false;
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s() OpCode:0x%x %s",__FUNCTION__, op_code, OpCode2Str(op_code));
+#endif
     if((tx_array_len + OPCODE_SIZE) < (2 * FIFO_SIZE)) {
         res = true;
         static uint8_t tempTxArray[2 * FIFO_SIZE];
@@ -279,6 +282,9 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
 bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
                         uint16_t rx_array_len) {
     bool res = false;
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s()",__FUNCTION__);
+#endif
     SX1262_CHIP_SELECT(sx1262_send_opcode_proc(op_code, tx_array, tx_array_len, rx_array, rx_array_len));
     if(false==res){
 #ifdef HAS_LOG
@@ -1115,6 +1121,9 @@ bool sx1262_get_dev_err(uint16_t* op_error) {
 */
 bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
     bool res = false;
+    //uint8_t tx_array[2];
+    //memset(tx_array, 0xFF, sizeof(tx_array));
+
     uint8_t rx_array[3];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, sizeof(rx_array));
@@ -1303,6 +1312,9 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t ma
 
 static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     bool res = false;
+#ifdef HAS_LOG
+    LOG_DEBUG(LORA, "%s(): ChipMode %u %s",__FUNCTION__, chip_mode, chip_mode2str(chip_mode));
+#endif
     static ChipMode_t prev_chip_mode = CHP_MODE_UNDEF;
     static uint32_t chip_mode_rc = 0;
     static uint32_t chip_mode_xosc = 0;
@@ -1322,7 +1334,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
         } else {
             chip_mode_rc = 0;
         }
-        if(50 < chip_mode_rc) {
+        if(25 < chip_mode_rc) {
             chip_mode_rc = 0;
 #ifdef HAS_LOG
             LOG_WARNING(LORA, "Hang on in STBY_RC");
@@ -1494,7 +1506,12 @@ static inline bool sx1262_poll_status(void) {
     res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
 #ifdef HAS_LOG
-        LOG_DEBUG(LORA, "Status 0x%02x", tempSx1262Instance.dev_status.byte);
+        LOG_DEBUG(LORA, "Status 0x%02x CmdStat:%s ChipMode:%s", tempSx1262Instance.dev_status.byte,
+        		cmd_stat2str(tempSx1262Instance.dev_status.command_status),
+				chip_mode2str(tempSx1262Instance.dev_status.chip_mode)
+				);
+
+
 #endif
         res = true;
         static uint8_t stat_byte_prev = 0;
@@ -1722,9 +1739,11 @@ bool sx1262_process(void) {
 #ifdef HAS_FREE_RTOS
 static void sx1262_thread(void *arg){
     while (1) {
-    	sx1262_process();
+    	if(Sx1262Instance.proc){
+        	sx1262_process();
+    	}
     	//vTaskYield();
-    	vTaskDelay(1000 / portTICK_RATE_MS);
+    	vTaskDelay(2000 / portTICK_RATE_MS);
     	//taskYIELD();
 	}
 }
@@ -1785,8 +1804,8 @@ bool sx1262_init(void) {
    // 	LOG_INFO(SPI, "MutexInitOk");
    // }
 #endif
-
 #ifdef ESP32
+    Sx1262Instance.proc = false;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = true;

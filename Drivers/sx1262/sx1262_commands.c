@@ -879,6 +879,40 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
 #endif
 
 #ifdef HAS_SX1262_EX_DEBUG
+bool sx1262_set_standby_command(int32_t argc, char* argv[]){
+	bool res = false;
+	uint8_t stdby_config;
+	if(1==argc){
+		 res = try_str2uint8(argv[0], (uint8_t*)&stdby_config);
+	     if(false == res) {
+	         LOG_ERROR(LORA, "Unable to extract stdby_config %s", argv[1]);
+	     }
+	}
+	if(res){
+		res = sx1262_set_standby((StandbyMode_t)stdby_config);
+		if(res) {
+		    LOG_INFO(LORA, "Ok");
+		}
+	}else{
+	    LOG_ERROR(LORA, "Usage: sxss mode");
+	    LOG_INFO(LORA, " mode %u-STDBY_RC",STDBY_RC);
+	    LOG_INFO(LORA, " mode %u-STDBY_XOSC",STDBY_XOSC);
+	}
+	return res;
+}
+#endif
+
+#ifdef HAS_SX1262_EX_DEBUG
+bool sx1262_proc_command(int32_t argc, char* argv[]){
+	bool res = false;
+	if(0==argc){
+	    res= sx1262_process();
+	}
+	return res;
+}
+#endif
+
+#ifdef HAS_SX1262_EX_DEBUG
 bool sx1262_calc_command(int32_t argc, char* argv[]) {
     bool res = false;
     char keyWord1[20] = "";

@@ -368,6 +368,9 @@ bool cmd_repeat(int32_t argc, char* argv[]) {
 #ifdef NORTOS
             wait_in_loop_ms(period_ms);
 #endif /*NORTOS*/
+#ifdef HAS_FREE_RTOS
+            vTaskDelay(period_ms / portTICK_RATE_MS);
+#endif /*HAS_FREE_RTOS*/
         }
     } else {
         LOG_ERROR(SYS, "Usage: rpt command period_ms times");

@@ -11,6 +11,64 @@
 #include "str_utils.h"
 #include "sx1262_drv.h"
 
+const OpCode_t OpCodeMap[]={
+   {.name="resetStats", .op_code=0x00},
+   {.name="clearIrq_status", .op_code=0x02},
+   {.name="clearDevice_errors", .op_code=0x07},
+   {.name="set_Dio_irqParams", .op_code=0x08},
+   {.name="writeRegister", .op_code=0x0d},
+   {.name="write_buffer", .op_code=0x0e},
+   {.name="getStats", .op_code=0x10},
+   {.name="getPacket_type", .op_code=0x11},
+   {.name="get_irqStatus", .op_code=0x12},
+   {.name="getRx_bufferStatus", .op_code=0x13},
+   {.name="getPacketStatus", .op_code=0x14},
+   {.name="getRssiinst", .op_code=0x15},
+   {.name="get_Device_errors", .op_code=0x17},
+   {.name="readRegister", .op_code=0x1d},
+   {.name="read_buffer", .op_code=0x1e},
+   {.name="setStandby", .op_code=0x80},
+   {.name="setRx", .op_code=0x82},
+   {.name="set_tx", .op_code=0x83},
+   {.name="setSleep", .op_code=0x84},
+   {.name="setRf_frequency", .op_code=0x86},
+   {.name="set_cadParam", .op_code=0x88},
+   {.name="calibrate", .op_code=0x89},
+   {.name="setPacket_type", .op_code=0x8a},
+   {.name="set_modulationParams", .op_code=0x8b},
+   {.name="setPacketParams", .op_code=0x8c},
+   {.name="set_txParams", .op_code=0x8e},
+   {.name="set_buffer_base_addr", .op_code=0x8f},
+   {.name="set_fallback_mode", .op_code=0x93},
+   {.name="setRx_Duty_cycle", .op_code=0x94},
+   {.name="setPa_config", .op_code=0x95},
+   {.name="setRegulator_mode", .op_code=0x96},
+   {.name="setDio3_as_tcxo_ctrl", .op_code=0x97},
+   {.name="calibrate_image", .op_code=0x98},
+   {.name="setDio2_asRfswitch", .op_code=0x9d},
+   {.name="stop_timer_onPreamble", .op_code=0x9f},
+   {.name="set_loraSymbol_timeout", .op_code=0xa0},
+   {.name="getStatus",             .op_code=0xc0},
+   {.name="set_fs",                 .op_code=0xc1},
+   {.name="set_cad",                .op_code=0xc5},
+   {.name="set_tx_carrier",         .op_code=0xd1},
+   {.name="set_txPreamble",        .op_code=0xd2},
+
+
+};
+
+char* OpCode2Str(uint8_t op_code){
+	 const char* name = "?";
+	 uint16_t i=0;
+	 for(i=0;i<ARRAY_SIZE(OpCodeMap);i++){
+		 if(op_code==OpCodeMap[i].op_code){
+			 name=OpCodeMap[i].name;
+			 break;
+		 }
+	 }
+	 return name;
+}
+
 const char* cmd_stat2str(uint8_t cmd_stat) {
     const char* name = "undef";
     switch(cmd_stat) {

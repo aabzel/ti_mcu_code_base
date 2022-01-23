@@ -61,9 +61,13 @@ bool sx1262_set_lora_sync_word_command(int32_t argc, char* argv[]);
 bool sx1262_set_packet_param_command(int32_t argc, char* argv[]);
 bool sx1262_set_modulation_command(int32_t argc, char* argv[]);
 bool sx1262_calc_command(int32_t argc, char* argv[]);
+bool sx1262_proc_command(int32_t argc, char* argv[]);
+bool sx1262_set_standby_command(int32_t argc, char* argv[]);
 
 #define SX1262_COMMANDS_DEBUG                                                                                          \
-    SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                               \
+		SHELL_CMD("sx1262_proc", "sxp", sx1262_proc_command, "SX1262 proc"),     \
+		SHELL_CMD("sx1262_standby", "sxss", sx1262_set_standby_command, "SX1262 SetStandBy"),     \
+        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                               \
         SHELL_CMD("sx1262_set_pack_param", "sxpp", sx1262_set_packet_param_command, "SX1262 set packet param"),        \
         SHELL_CMD("sx1262_mod", "sxmd", sx1262_set_modulation_command, "SX1262 modulation"),
 #else

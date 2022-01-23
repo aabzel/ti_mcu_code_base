@@ -1131,11 +1131,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="251.60041"
-     inkscape:cy="126.24199"
+     inkscape:zoom="15.839192"
+     inkscape:cx="760.5963"
+     inkscape:cy="253.665"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -4272,7 +4272,7 @@
          id="tspan3534"
          x="194.93611"
          y="63.651829"
-         style="fill:#0000ff;stroke-width:0.0656078">SPIn</tspan></text>
+         style="fill:#0000ff;stroke-width:0.0656078">SPI2</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.24508px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.186762"
@@ -4294,7 +4294,7 @@
          id="tspan2123"
          x="201.88806"
          y="68.526459"
-         style="fill:#0000ff;stroke-width:0.0783912">3</tspan></text>
+         style="fill:#0000ff;stroke-width:0.0783912">4</tspan></text>
     <rect
        style="opacity:0.996;fill:none;stroke:#24221c;stroke-width:0.259313"
        id="rect2141"
@@ -4390,6 +4390,17 @@
          x="201.46692"
          y="44.616749"
          style="font-size:0.665028px;stroke-width:0.0997543">TCX0 V1.2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.11478px;line-height:1.25;font-family:sans-serif;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.0836083;"
+       x="195.02621"
+       y="61.40934"
+       id="text2099"><tspan
+         sodipodi:role="line"
+         id="tspan2097"
+         x="195.02621"
+         y="61.40934"
+         style="font-size:1.11478px;stroke-width:0.0836083;fill:#0000ff;">MSB first</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
