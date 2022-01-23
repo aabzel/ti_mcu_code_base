@@ -65,7 +65,7 @@ int main(void) {
 #ifdef HAS_BOOTLOADER
     res = boot_try_app();
 #endif /*HAS_BOOTLOADER*/
-#ifdef NORTOS
+#ifdef HAS_SUPER_LOOP
     super_main_loop();
 #endif /*NORTOS*/
     /*Unreachable line*/

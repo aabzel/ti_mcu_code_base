@@ -226,6 +226,8 @@
                     <name>CCDefines</name>
                     <state>HAS_CLI_CMD_HISTORY</state>
                     <state>HAS_CLI</state>
+                    <state>HAS_CLOCK</state>
+                    <state>HAS_CUSTOM_PRINTF</state>
                     <state>HAS_CORTEX_M4</state>
                     <state>HAS_DEBUG</state>
                     <state>HAS_FLASH_FS</state>
@@ -239,10 +241,12 @@
                     <state>HAS_PARAM</state>
                     <state>HAS_SPI</state>
                     <state>HAS_SPI2</state>
+                    <state>HAS_SUPER_LOOP</state>
                     <state>HAS_SW_TESTS</state>
                     <state>HAS_SX1262_BIT_RATE</state>
                     <state>HAS_SX1262_DEBUG</state>
                     <state>HAS_SX1262</state>
+                    <state>HAS_LOG</state>
                     <state>HAS_TASKS</state>
                     <state>HAS_TELEMATIC</state>
                     <state>HAS_TBFP</state>
@@ -1744,9 +1748,6 @@
             <name>utils_sys</name>
             <file>
                 <name>$PROJ_DIR$\..\..\utils\utils_sys\device_id.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\utils\utils_sys\diag_sys.c</name>
             </file>
         </group>
         <file>

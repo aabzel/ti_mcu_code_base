@@ -58,7 +58,7 @@ const OpCode_t OpCodeMap[]={
 };
 
 char* OpCode2Str(uint8_t op_code){
-	 const char* name = "?";
+	 char* name = "?";
 	 uint16_t i=0;
 	 for(i=0;i<ARRAY_SIZE(OpCodeMap);i++){
 		 if(op_code==OpCodeMap[i].op_code){
