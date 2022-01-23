@@ -15,7 +15,7 @@ typedef enum eSpreadingFactor_t {
     SF10 = 0x0A, /*1024 Chips / Symbol*/
     SF11 = 0x0B, /*2048 Chips / Symbol*/
     SF12 = 0x0C  /*4096 Chips / Symbol*/
-} SpreadingFactor_t;
+} __attribute__ ((__packed__)) SpreadingFactor_t;
 //LoRa ModParam2 - BW
 typedef enum eBandWidth_t {
     LORA_BW_7 = 0x00,   /*7.81 kHz real */
@@ -29,7 +29,7 @@ typedef enum eBandWidth_t {
     LORA_BW_250 = 0x05, /*250 kHz real  */
     LORA_BW_500 = 0x06, /*500 kHz real  */
     /*lack code 0x07!*/
-} BandWidth_t;
+} __attribute__ ((__packed__)) BandWidth_t;
 
 /*LoRa ModParam3 - Coding Rate*/
 typedef enum eLoRaCodingRate_t {
@@ -37,7 +37,7 @@ typedef enum eLoRaCodingRate_t {
     LORA_CR_4_6 = 0x02,
     LORA_CR_4_7 = 0x03,
     LORA_CR_4_8 = 0x04
-} LoRaCodingRate_t;
+} __attribute__ ((__packed__)) LoRaCodingRate_t;
 
 /*LoRa ModParam4 - LowDataRateOptimize*/
 typedef enum eLowDataRateOpt_t{

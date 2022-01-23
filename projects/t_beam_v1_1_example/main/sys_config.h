@@ -6,7 +6,7 @@
 
 /*Hardware config*/
 #define UART_NUM_CLI (0)
-#define MAIN_SPI_NUM 1
+#define MAIN_SPI_NUM 3
 
 /*Software config*/
 #define DIO_LED_HEARTBEAT DIO_LED_RED

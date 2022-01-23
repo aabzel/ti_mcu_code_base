@@ -75,7 +75,7 @@ bool sx1262_get_dev_err(uint16_t* op_error);
 bool sx1262_get_irq_status(Sx1262IRQs_t* irq_stat);
 bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, int8_t* RssiPkt, uint8_t* SnrPkt,
                               int8_t* SignalRssiPkt);
-bool sx1262_get_packet_type(RadioPacketType_t* const packet_type);
+bool sx1262_get_packet_type(RadioPacketType_t* const packet_type, uint8_t *status) ;
 bool sx1262_get_rssi_inst(int8_t* rssi_inst);
 bool sx1262_get_rx_payload(uint8_t* payload, uint16_t* size, uint16_t max_size, uint8_t* crc8);
 bool sx1262_get_rxbuff_status(uint8_t* PayloadLengthRx, uint8_t* RxStartBufferPointer);

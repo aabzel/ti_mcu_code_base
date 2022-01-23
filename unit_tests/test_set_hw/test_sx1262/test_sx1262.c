@@ -70,7 +70,8 @@ static bool test_one_pack_type(RadioPacketType_t pack_type) {
 bool test_sx1262_packet_type(void) {
     EXPECT_EQ(1, sizeof(RadioPacketType_t));
     RadioPacketType_t orig_packet_type = PACKET_TYPE_UNDEF;
-    EXPECT_TRUE(sx1262_get_packet_type(&orig_packet_type));
+    uint8_t status=0;
+    EXPECT_TRUE(sx1262_get_packet_type(&orig_packet_type,&status));
     EXPECT_EQ(PACKET_TYPE_LORA, orig_packet_type);
 #if 0
     EXPECT_TRUE(test_one_pack_type(PACKET_TYPE_GFSK));

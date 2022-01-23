@@ -167,7 +167,7 @@ bool sx1262_is_connected(void) {
     uint64_t read_sync_word = 0;
 
     RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
-    res = sx1262_get_packet_type(&packet_type);
+    res = sx1262_get_packet_type(&packet_type, &Sx1262Instance.dev_status.byte );
     if(res) {
         if(packet_type != PACKET_TYPE_UNDEF) {
             res = true;
@@ -377,7 +377,7 @@ bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
     res = sx1262_clear_fifo() && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-    res = sx1262_set_rx_gain(RXGAIN_BOOSTED) && res;
+    //res = sx1262_set_rx_gain(RXGAIN_BOOSTED) && res;
     uint8_t tx_array[3];
     /*from senior byte to junior byte*/
     tx_array[0] = MASK_8BIT & (timeout_s >> 16);
@@ -1113,16 +1113,17 @@ bool sx1262_get_dev_err(uint16_t* op_error) {
   GetPacketType
   The command GetPacketType() returns the current operating packet type of the radio.
 */
-bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
+bool sx1262_get_packet_type(RadioPacketType_t* const packet_type, uint8_t *status) {
     bool res = false;
     //uint8_t tx_array[2];
     //memset(tx_array, 0xFF, sizeof(tx_array));
 
-    uint8_t rx_array[3];
+    uint8_t rx_array[2];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
-        Sx1262Instance.status = rx_array[0];
+        //Sx1262Instance.status = rx_array[0];
+        *status = rx_array[0];
         *packet_type = (RadioPacketType_t)rx_array[1];
     } else {
         *packet_type = PACKET_TYPE_NONE;
@@ -1132,6 +1133,7 @@ bool sx1262_get_packet_type(RadioPacketType_t* const packet_type) {
 
 /*GetStatus (page 95 in datasheet)
 sxo 0xC0 0 2      2a2a
+sxo 0xC0 0 1
 sxo 0xC0 0x00 1   2a
 sxo 0xC0 0x00 2
 sxgs
@@ -1139,15 +1141,14 @@ sxgs
 bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
     if(NULL != out_status) {
-#ifdef ESP32
+        uint8_t rx_array[2] = {0xFF, 0xFF};
+        uint8_t tx_array = 0xFF;
+        res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
+        *out_status = rx_array[1];
+#if 0
     	uint8_t rx_array = 0x00;
         res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, &rx_array, 1);
         *out_status = rx_array;
-#else
-      //  uint8_t rx_array[2] = {0xFF, 0xFF};
-        //uint8_t tx_array = 0xFF;
-        //res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
-        //*out_status = rx_array[1];
 #endif
 
 #ifdef USE_HAL_DRIVER
@@ -1517,7 +1518,9 @@ static inline bool sx1262_poll_status(void) {
     Sx1262_t tempSx1262Instance = {0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
 
-    res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
+    RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
+    res = sx1262_get_packet_type(&packet_type, &tempSx1262Instance.dev_status.byte );
+    //res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
 #ifdef HAS_LOG
         LOG_DEBUG(LORA, "Status 0x%02x CmdStat:%s ChipMode:%s", tempSx1262Instance.dev_status.byte,
@@ -1652,7 +1655,7 @@ static inline bool sx1262_sync_registers(void) {
     Sx1262Instance.wire_rst = (uint8_t)gpio_read(DIO_SX1262_RST);
 
     tempSx1262Instance.packet_type = PACKET_TYPE_UNDEF;
-    res = sx1262_get_packet_type(&tempSx1262Instance.packet_type);
+    res = sx1262_get_packet_type(&tempSx1262Instance.packet_type, &Sx1262Instance.dev_status.byte );
     if(res) {
         Sx1262Instance.packet_type = tempSx1262Instance.packet_type;
     }
@@ -1824,7 +1827,7 @@ bool sx1262_init(void) {
 #endif
 
 #ifdef ESP32
-    Sx1262Instance.proc = true;
+    Sx1262Instance.proc = false;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = true;
@@ -1905,6 +1908,7 @@ bool sx1262_init(void) {
         res = sx1262_set_rf_frequency(Sx1262Instance.rf_frequency_hz, XTAL_FREQ_HZ) && res;
 
         res = sx1262_set_regulator_mode(REG_MODE_ONLY_LDO) && res;
+        //res = sx1262_set_regulator_mode(REG_MODE_DC_DC_LDO) && res;
 
         res = sx1262_clear_fifo() && res;
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
