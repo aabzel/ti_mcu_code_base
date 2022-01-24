@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 #ifdef HAS_TEST_SUIT_CALENDAR
-#include "test_calendar.h"
+#include "test_calendar.h" /*Too Long test Perform on PC*/
 #else
 #define TEST_SUIT_CALENDAR
 #endif

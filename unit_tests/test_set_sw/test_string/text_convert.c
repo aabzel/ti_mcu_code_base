@@ -23,7 +23,7 @@ bool test_convert_try_str2array(void){
     uint8_t array[256];
     memset(array,0,sizeof(array));
     uint32_t out_array_len=0;
-    EXPECT_TRUE(try_str2array(arg1, array, sizeof(array), &out_array_len));
+    EXPECT_TRUE(try_str2array((char*) arg1, array, sizeof(array), &out_array_len));
     EXPECT_EQ(128, out_array_len);
     EXPECT_EQ_MEM(ExpArray,array,sizeof(ExpArray));
     return true;
