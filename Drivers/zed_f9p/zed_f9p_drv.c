@@ -3,10 +3,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifdef HAS_UART1_FWD
-#error "Raw UART1->UART0 forwarding is prohibited for RTCM corrections bypass"
-#endif
-
 #ifdef HAS_CALENDAR
 #include "calendar.h"
 #endif
