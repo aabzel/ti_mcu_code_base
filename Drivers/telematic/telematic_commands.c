@@ -3,12 +3,13 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <time.h>
-
-#include "convert.h"
-#include "core_driver.h"
-#include "debug_info.h"
+#ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
+#include "debug_info.h"
+#endif
+#include "convert.h"
+#include "core_driver.h"
 #ifdef HAS_LORA
 #include "lora_drv.h"
 #endif

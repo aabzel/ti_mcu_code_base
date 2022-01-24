@@ -11,6 +11,7 @@
 #include "bit_utils.h"
 #include "clocks.h"
 #include "gpio_drv.h"
+#include "log.h"
 #include "sys_config.h"
 
 const uint_least8_t SPI_count = SPI_CNT;
@@ -104,6 +105,8 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SP
 #ifdef HAS_SPI_INT
     SpiInstance[spi_num].SpiParams.transferCallbackFxn = spiCallbackFunctions[spi_num];
     SpiInstance[spi_num].SpiParams.transferMode = SPI_MODE_CALLBACK;
+#else
+    LOG_WARNING(SYS, "InterruptsDisabled");
 #endif
     SpiInstance[spi_num].SpiParams.transferTimeout = SPI_WAIT_FOREVER;
 
@@ -114,6 +117,7 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate, SP
 #ifdef INIT_SPI_SEND
         uint8_t tx_buff[4] = {0x55, 0xaa, 0x55, 0xaa};
         res = spi_write(index, tx_buff, 4) && res;
+
 #endif
     }
     return res;
@@ -139,7 +143,7 @@ static bool spi_wait_tx(SpiName_t spi_num, uint32_t init_it_cnt) {
             break;
         }
         cnt++;
-        if(1500000 < cnt) {
+        if(700000 < cnt) {
             res = false;
             break;
         }
