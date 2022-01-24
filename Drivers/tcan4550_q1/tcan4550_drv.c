@@ -1128,7 +1128,7 @@ static bool tcan4550_poll_can_interrupts(void) {
         if(IntReg.rf0n) {
             IntReg.rf0n = 0;
 #ifdef HAS_CLI
-            LOG_INFO(CAN, "Rx FIFO 0 New Message");
+            LOG_DEBUG(CAN, "RxFIFO0NewMessage");
 #endif
             TCAN4x5x_MCAN_RX_Header MsgHeader = {0}; // Initialize to 0 or you'll get garbage
             uint8_t num_bytes = 0; // Used since the ReadNextFIFO function will return how many bytes of data were read
@@ -1407,7 +1407,7 @@ bool tcan4550_proc(void) {
         CanPhy.cur.mode = tcan4550_get_mode();
         if(prev_mode != CanPhy.cur.mode) {
 #ifdef HAS_LOG
-            LOG_INFO(CAN, "new mode %s", can_mode2str(CanPhy.cur.mode));
+            LOG_INFO(CAN, "NewMode %s", can_mode2str(CanPhy.cur.mode));
 #endif
         }
 
@@ -1426,8 +1426,10 @@ bool tcan4550_proc(void) {
                                                      rx_payload); // This will read the next element in the RX FIFO 0
                 if(rx_size) {
 #ifdef HAS_LOG
-                    LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
+                    LOG_DEBUG(CAN, "Rx ID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
+#ifdef HAS_CAN_DEBUG
                     print_mem(rx_payload, rx_size, true, true, true, true);
+#endif
 #endif
                     res = can_proc_payload(rx_payload, rx_size);
                 }

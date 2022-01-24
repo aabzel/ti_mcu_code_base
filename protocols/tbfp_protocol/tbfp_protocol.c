@@ -49,7 +49,7 @@
 #include "log.h"
 #endif
 
-TbfpProtocol_t TbfpProtocol[3] = {0};
+TbfpProtocol_t TbfpProtocol[IF_CNT] = {0};
 
 bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
     bool res = false;

@@ -43,7 +43,7 @@ bool can_proc_payload(uint8_t* const rx_payload, uint32_t rx_size) {
     bool res = false;
 
 #ifdef HAS_TBFP
-    res = tbfp_proc(rx_payload, rx_size, IF_LORA, false);
+    res = tbfp_proc(rx_payload, rx_size, IF_CAN, false);
 #ifdef HAS_LOG
     if(false == res) {
         LOG_ERROR(CAN, "CanProcErr");
