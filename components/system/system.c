@@ -120,9 +120,12 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
 #endif
     } break;
     default:
-        LOG_ERROR(LORA, "UndefIf: %u=%s",interface, interface2str(interface));
+        LOG_ERROR(SYS, "UndefIf: %u=%s",interface, interface2str(interface));
         res = false;
         break;
+    }
+    if(false==res){
+        LOG_ERROR(SYS, "SendErr: %u=%s",interface, interface2str(interface));
     }
     return res;
 }

@@ -1138,16 +1138,18 @@ static bool tcan4550_poll_can_interrupts(void) {
                                                    dataPayload); // This will read the next element in the RX FIFO 0
             if(num_bytes) {
 #ifdef HAS_LOG
-                LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
+                LOG_DEBUG(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
+#ifdef HAS_CAN_DEBUG
                 print_mem(dataPayload, num_bytes, true, true, true, true);
-#endif
+#endif /*HAS_CAN_DEBUG*/
+#endif /*HAS_LOG*/
+                res = can_proc_payload(dataPayload, num_bytes);
                 res = true;
             }
         }
         if(IntReg.rf0f) {
             IntReg.rf0f = 0;
 #ifdef HAS_LOG
-            LOG_WARNING(CAN, "Rx FIFO 0 Full");
 #endif
         }
 
@@ -1240,13 +1242,13 @@ static bool tcan4550_poll_dev_interrupts(void) {
         if(reg.m_can_int) {
             reg.m_can_int = 0;
 #ifdef HAS_LOG
-            LOG_WARNING(CAN, "M_CAN global INT");
+            LOG_DEBUG(CAN, "M_CAN global INT");
 #endif
         }
         if(reg.spierr) {
             reg.spierr = 0;
 #ifdef HAS_LOG
-            LOG_WARNING(CAN, "SPI Error");
+            LOG_WARNING(CAN, "SpiError");
 #endif
             // TODO Explore SPI error
             tCanRegStatus_t stat_reg = {0};
@@ -1261,7 +1263,7 @@ static bool tcan4550_poll_dev_interrupts(void) {
         if(reg.canerr) {
             reg.canerr = 0;
 #ifdef HAS_LOG
-            LOG_WARNING(CAN, "CAN Error");
+            LOG_DEBUG(CAN, "CANError");
 #endif
         }
         if(reg.wkrq) {
@@ -1273,7 +1275,7 @@ static bool tcan4550_poll_dev_interrupts(void) {
         if(reg.globalerr) {
             reg.globalerr = 0;
 #ifdef HAS_LOG
-            LOG_WARNING(CAN, "Global Error (Any Fault)");
+            LOG_DEBUG(CAN, "Global Error (Any Fault)");
 #endif
         }
         if(reg.candom) {
@@ -1284,7 +1286,7 @@ static bool tcan4550_poll_dev_interrupts(void) {
         if(reg.canslnt) {
             reg.canslnt = 0;
 #ifdef HAS_LOG
-            LOG_WARNING(CAN, "CAN Silent");
+            LOG_DEBUG(CAN, "CAN Silent");
 #endif
         }
         if(reg.wkerr) {
@@ -1381,7 +1383,7 @@ bool tcan4550_proc(void) {
     CanPhy.cur.connected = is_tcan4550_connected();
     if(false == CanPhy.cur.connected) {
 #ifdef HAS_LOG
-        LOG_ERROR(CAN, "TCAN4550 SPI link lost");
+        LOG_ERROR(CAN, "TCAN4550_SpiLinkLost");
 #endif
         res = init_tcan();
     } else {
@@ -1426,7 +1428,7 @@ bool tcan4550_proc(void) {
                                                      rx_payload); // This will read the next element in the RX FIFO 0
                 if(rx_size) {
 #ifdef HAS_LOG
-                    LOG_DEBUG(CAN, "Rx ID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
+                    LOG_DEBUG(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
 #ifdef HAS_CAN_DEBUG
                     print_mem(rx_payload, rx_size, true, true, true, true);
 #endif

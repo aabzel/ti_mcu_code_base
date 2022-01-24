@@ -75,6 +75,7 @@ typedef enum eLog_facility_t {
     LG_RNG,
     SYS,
     WDT,
+    CRC8,
     UBX,
     UART,
     ALL_FACILITY

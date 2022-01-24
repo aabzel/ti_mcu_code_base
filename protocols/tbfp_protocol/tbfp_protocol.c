@@ -76,18 +76,14 @@ bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
         res = true;
     } else {
         res = false;
-#ifdef X86_64
-        printf("\n%s(): error", __FUNCTION__);
-#endif
+        LOG_ERROR(TBFP, "FlameErr");
     }
     if(res) {
         uint32_t frame_len = TBFP_SIZE_HEADER + header.len;
         uint8_t read_crc8 = arr[frame_len];
         res = crc8_sae_j1850_check(arr, frame_len, read_crc8);
         if(false == res) {
-#ifdef X86_64
-            printf("\n%s(): CRC8 error", __FUNCTION__);
-#endif
+            LOG_ERROR(TBFP, "CrcErr Read:0x%02x",read_crc8);
         }
     }
 
@@ -226,16 +222,16 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
                 cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
                 azimuth = gnss_calc_azimuth_deg(ZedF9P.coordinate_cur, pingFrame.coordinate);
 #ifdef HAS_LOG
-                LOG_INFO(LORA, "LinkDistance %3.3f m %4.1f deg", cur_dist, azimuth);
+                LOG_INFO(TBFP, "LinkDistance %3.3f m %4.1f deg", cur_dist, azimuth);
 #endif
             } else {
 #ifdef HAS_LOG
-                LOG_ERROR(LORA, "InvalidLocalGNSSDot");
+                LOG_ERROR(TBFP, "InvalidLocalGNSSDot");
 #endif
             }
         } else {
 #ifdef HAS_LOG
-            LOG_ERROR(LORA, "InvalidRemoteGNSSDot");
+            LOG_ERROR(TBFP, "InvalidRemoteGNSSDot");
 #endif
         }
 #endif /*HAS_ZED_F9P*/
@@ -250,7 +246,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
             res = mm_set(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&cur_dist, sizeof(double));
             if(false == res) {
 #ifdef HAS_LOG
-                LOG_ERROR(LORA, "UpdateMaxDist");
+                LOG_ERROR(TBFP, "UpdateMaxDist");
 #endif
             }
 #endif /*HAS_PARAM && HAS_FLASH_FS*/
@@ -305,9 +301,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     switch(payload[0]) {
 #ifdef HAS_RTCM3
     case FRAME_ID_RTCM3:
-#ifdef X86_64
         LOG_DEBUG(TBFP,"RTCM payload");
-#endif
         res = rtcm3_proc_array(payload, len, interface);
         break;
 #endif /*HAS_RTCM3*/
@@ -386,10 +380,10 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         TbfHeader_t inHeader = {0};
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
 #ifdef HAS_TBFP_FLOW_CONTROL
-#ifdef X86_64
-        LOG_DEBUG(TBFP,"1 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num,
+
+        LOG_DEBUG(TBFP,"prev_snum:%u snum:%u flow:%u", TbfpProtocol[interface].prev_s_num,
                inHeader.snum, TbfpProtocol[interface].con_flow);
-#endif
+
         if((TbfpProtocol[interface].prev_s_num + 1) == inHeader.snum) {
             /*Flow ok*/
             TbfpProtocol[interface].con_flow++;
@@ -419,10 +413,10 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
             TbfpProtocol[interface].err_cnt++;
         }
         TbfpProtocol[interface].prev_s_num = inHeader.snum;
-#ifdef X86_64
-        printf("\n2 %s(): prev_snum:%u snum:%u flow:%u", __FUNCTION__, TbfpProtocol[interface].prev_s_num,
+
+        LOG_DEBUG(TBFP,"prev_snum:%u snum:%u flow:%u", TbfpProtocol[interface].prev_s_num,
                inHeader.snum, TbfpProtocol[interface].con_flow);
-#endif
+
 #endif /*HAS_TBFP_FLOW_CONTROL*/
 
 #ifdef HAS_TBFP_RETRANSMIT

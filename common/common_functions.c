@@ -156,7 +156,7 @@ void super_loop(uint64_t loop_start_time_us) {
 
 #ifdef HAS_TCAN4550
     // measure_task_interval(TASK_ID_TCAN4550, 500000, tcan_proc, loop_start_time_us);
-    measure_task_interval(TASK_ID_TCAN4550, 1000, tcan4550_proc, loop_start_time_us);
+    measure_task_interval(TASK_ID_TCAN4550, TCAN4550_PERIOD_US, tcan4550_proc, loop_start_time_us);
 #endif /*HAS_TCAN4550*/
 
 #ifdef HAS_CAN

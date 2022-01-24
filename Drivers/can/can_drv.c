@@ -13,9 +13,13 @@
 
 bool can_send(uint8_t* data, uint16_t len){
     bool res=false;
+#ifdef HAS_LOG
+    LOG_DEBUG(CAN, "CanSend %u byte", len);
+#endif
+
     bool out_res=true;
     uint16_t i=0, tx_len = 0, rem = 0;
-    uint64_t data64;
+    uint64_t data64 = 0;
     if (8<len) {
         for(i=0; i<(len-8); i+=8) {
             memcpy(&data64,&data[i],8);
@@ -28,7 +32,7 @@ bool can_send(uint8_t* data, uint16_t len){
     }
     rem = len - tx_len;
     if (0<rem) {
-          data64 =0;
+          data64 = 0;
           memcpy(&data64,&data[tx_len],rem);
           res = tcan4550_send_std(0xD3, data64, rem);
           if(false==res){
