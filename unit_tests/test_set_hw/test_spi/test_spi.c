@@ -22,28 +22,28 @@ static bool test_spi_write_num(SpiName_t spi_num) {
 
 #ifdef HAS_SPI0
 bool test_spi0_write(void) {
-	EXPECT_TRUE( test_spi_write_num(0));
+	EXPECT_TRUE( test_spi_write_num((SpiName_t)0));
     return true;
 }
 #endif
 
 #ifdef HAS_SPI1
 bool test_spi1_write(void) {
-	EXPECT_TRUE( test_spi_write_num(1));
+	EXPECT_TRUE( test_spi_write_num((SpiName_t)1));
     return true;
 }
 #endif
 
 #ifdef HAS_SPI2
 bool test_spi2_write(void) {
-	EXPECT_TRUE( test_spi_write_num(2));
+	EXPECT_TRUE( test_spi_write_num((SpiName_t)2));
     return true;
 }
 #endif
 
 #ifdef HAS_SPI3
 bool test_spi3_write(void) {
-	EXPECT_TRUE( test_spi_write_num(3));
+	EXPECT_TRUE( test_spi_write_num((SpiName_t)3));
     return true;
 }
 #endif
@@ -81,28 +81,28 @@ bool test_spi0_read(void) {
 #ifdef HAS_CAN
     gpio_set_state(DIO_CAN_SS, 1);
 #endif
-    EXPECT_TRUE(test_spi_read_num(0) );
+    EXPECT_TRUE(test_spi_read_num((SpiName_t)0) );
     return true;
 }
 #endif
 
 #ifdef HAS_SPI1
 bool test_spi1_read(void) {
-    EXPECT_TRUE(test_spi_read_num(1) );
+    EXPECT_TRUE(test_spi_read_num((SpiName_t)1) );
     return true;
 }
 #endif
 
 #ifdef HAS_SPI2
 bool test_spi2_read(void) {
-    EXPECT_TRUE(test_spi_read_num(2) );
+    EXPECT_TRUE(test_spi_read_num((SpiName_t)2) );
     return true;
 }
 #endif
 
 #ifdef HAS_SPI3
 bool test_spi3_read(void) {
-    EXPECT_TRUE(test_spi_read_num(3) );
+    EXPECT_TRUE(test_spi_read_num((SpiName_t)3) );
     return true;
 }
 #endif

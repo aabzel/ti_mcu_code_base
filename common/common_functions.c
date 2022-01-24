@@ -243,7 +243,7 @@ _Noreturn void super_main_loop(void) {
 #endif
 #ifdef HAS_FREE_RTOS
         //taskYIELD();
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        vTaskDelay(5 / portTICK_PERIOD_MS);
 #endif
     }
 }

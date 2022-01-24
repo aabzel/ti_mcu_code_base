@@ -9,16 +9,10 @@
 #include "spi_drv.h"
 #include "none_blocking_pause.h"
 
-#ifdef HAS_FREE_RTOS
-#include <FreeRTOS.h>
-#include <task.h>
-#endif
-
 /*TODO: rewrite*/
 #define READ_REG_HEADER_SZ 3
 static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
     bool res = false;
-    //taskENTER_CRITICAL( &Sx1262Instance.mutex );
     if(NULL != reg_val) {
         res = true;
         *reg_val = 0xFF;
@@ -36,7 +30,6 @@ static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
     } else {
         res = false;
     }
-    //taskEXIT_CRITICAL( &Sx1262Instance.mutex );
 
     return res;
 }
@@ -72,7 +65,6 @@ bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val) {
 
 bool sx1262_get_rand(uint32_t* rand_num) {
     bool res = true;
-    //taskENTER_CRITICAL( &Sx1262Instance.mutex );
     if(rand_num) {
         res = true;
         Type32Union_t var32bit = {0};
@@ -84,25 +76,21 @@ bool sx1262_get_rand(uint32_t* rand_num) {
     } else {
         res = false;
     }
-    //taskEXIT_CRITICAL( &Sx1262Instance.mutex );
     return res;
 }
 
 bool sx1262_set_lora_sync_word(uint16_t sync_word) {
     bool res = true;
-    //taskENTER_CRITICAL( &Sx1262Instance.mutex );
     Type16Union_t var16bit;
     var16bit.u16 = sync_word;
     var16bit.u16 = reverse_byte_order_uint16(var16bit.u16);
     res = sx1262_write_reg(LORA_SYNC_WORD_MSB, var16bit.u8[0]) && res;
     res = sx1262_write_reg(LORA_SYNC_WORD_LSB, var16bit.u8[1]) && res;
-    //taskEXIT_CRITICAL(&Sx1262Instance.mutex  );
     return res;
 }
 
 bool sx1262_get_sync_word(uint64_t* sync_word) {
     bool res = true;
-    //taskENTER_CRITICAL(&Sx1262Instance.mutex  );
     if(sync_word) {
         res = true;
         Type64Union_t var64bit = {0};
@@ -118,13 +106,11 @@ bool sx1262_get_sync_word(uint64_t* sync_word) {
     } else {
         res = false;
     }
-    //taskEXIT_CRITICAL( &Sx1262Instance.mutex );
     return res;
 }
 
 bool sx1262_get_lora_sync_word(uint16_t* sync_word) {
     bool res = true;
-    //taskENTER_CRITICAL(&Sx1262Instance.mutex  );
     if(sync_word) {
         res = true;
         Type16Union_t var16bit = {0};
@@ -135,7 +121,6 @@ bool sx1262_get_lora_sync_word(uint16_t* sync_word) {
     } else {
         res = false;
     }
-    //taskEXIT_CRITICAL(&Sx1262Instance.mutex  );
     return res;
 }
 
@@ -143,7 +128,6 @@ bool sx1262_get_lora_sync_word(uint16_t* sync_word) {
 
 bool sx1262_set_sync_word(uint64_t sync_word) {
     bool res = true;
-    //taskENTER_CRITICAL( &Sx1262Instance.mutex );
     Type64Union_t var64bit;
     var64bit.u64 = sync_word;
     var64bit.u64 = reverse_byte_order_uint64(var64bit.u64);
@@ -155,14 +139,12 @@ bool sx1262_set_sync_word(uint64_t sync_word) {
     res = sx1262_write_reg(SYNC_WORD_5, var64bit.u8[5]) && res;
     res = sx1262_write_reg(SYNC_WORD_6, var64bit.u8[6]) && res;
     res = sx1262_write_reg(SYNC_WORD_7, var64bit.u8[7]) && res;
-    //taskEXIT_CRITICAL( &Sx1262Instance.mutex );
     return res;
 }
 
 
 bool sx1262_set_rx_gain(RxGain_t rx_gain){
     bool res = false;
-
     res = sx1262_write_reg(RX_GAIN, (uint8_t) rx_gain);
     return res;
 }
@@ -178,31 +160,26 @@ bool sx1262_get_rx_gain(RxGain_t *rx_gain){
 
 bool sx1262_set_crc_poly(uint16_t polynomial){
     bool res = true;
-    //taskENTER_CRITICAL(&Sx1262Instance.mutex  );
     Type16Union_t var16bit;
     var16bit.u16 = polynomial;
     var16bit.u16 = reverse_byte_order_uint16(var16bit.u16);
     res = sx1262_write_reg(CRC_POLYNOMIAL_MSB, var16bit.u8[0]) && res;
     res = sx1262_write_reg(CRC_POLYNOMIAL_LSB, var16bit.u8[1]) && res;
-    //taskEXIT_CRITICAL(&Sx1262Instance.mutex  );
     return res;
 }
 
 bool sx1262_set_crc_seed(uint16_t seed){
     bool res = true;
-    //taskENTER_CRITICAL(&Sx1262Instance.mutex  );
     Type16Union_t var16bit;
     var16bit.u16 = seed;
     var16bit.u16 = reverse_byte_order_uint16(var16bit.u16);
     res = sx1262_write_reg(CRC_INIT_MSB, var16bit.u8[0]) && res;
     res = sx1262_write_reg(CRC_INIT_LSB, var16bit.u8[1]) && res;
-    //taskEXIT_CRITICAL( &Sx1262Instance.mutex );
     return res;
 }
 
 bool sx1262_get_crc_poly(uint16_t *polynomial){
     bool res = false;
-    //taskENTER_CRITICAL( &Sx1262Instance.mutex );
     if(polynomial){
         res = true;
         Type16Union_t var16bit = {0};
@@ -211,13 +188,11 @@ bool sx1262_get_crc_poly(uint16_t *polynomial){
 
         *polynomial = reverse_byte_order_uint16(var16bit.u16);
     }
-    //taskEXIT_CRITICAL( &Sx1262Instance.mutex);
     return res;
 }
 
 bool sx1262_get_crc_seed(uint16_t *seed){
     bool res = false;
-    //taskENTER_CRITICAL(&Sx1262Instance.mutex  );
     if(seed){
         res = true;
         Type16Union_t var16bit = {0};
@@ -226,6 +201,5 @@ bool sx1262_get_crc_seed(uint16_t *seed){
 
         *seed = reverse_byte_order_uint16(var16bit.u16);
     }
-    //taskEXIT_CRITICAL(  &Sx1262Instance.mutex);
     return res;
 }

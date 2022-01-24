@@ -377,7 +377,7 @@ bool sx1262_start_rx(uint32_t timeout_s) {
     bool res = true;
     res = sx1262_clear_fifo() && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
-    //res = sx1262_set_rx_gain(RXGAIN_BOOSTED) && res;
+    res = sx1262_set_rx_gain(RXGAIN_BOOSTED) && res;
     uint8_t tx_array[3];
     /*from senior byte to junior byte*/
     tx_array[0] = MASK_8BIT & (timeout_s >> 16);
@@ -546,7 +546,6 @@ bool sx1262_clear_irq(uint16_t clear_irq_param) {
     uint16_t clear_irq_param_be;
     uint8_t tx_array[2];
     memset(tx_array, 0xFF, sizeof(tx_array));
-    // clear_irq_param_be=clear_irq_param;
     clear_irq_param_be = reverse_byte_order_uint16(clear_irq_param);
     memcpy(tx_array, &clear_irq_param_be, sizeof(uint16_t));
     res = sx1262_send_opcode(OPCODE_CLEAR_IRQ_STATUS, tx_array, sizeof(tx_array), NULL, 0);
@@ -1079,7 +1078,7 @@ bool sx1262_get_irq_status(Sx1262IRQs_t* out_irq_stat) {
     bool res = false;
     uint8_t rx_array[4];
     memset(rx_array, 0xFF, sizeof(rx_array));
-    res  = sx1262_send_opcode(OPCODE_GET_IRQ_STATUS, NULL, 0, rx_array, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_GET_IRQ_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
         uint16_t irq_stat = 0;
         Sx1262Instance.status = rx_array[1];
@@ -1115,14 +1114,11 @@ bool sx1262_get_dev_err(uint16_t* op_error) {
 */
 bool sx1262_get_packet_type(RadioPacketType_t* const packet_type, uint8_t *status) {
     bool res = false;
-    //uint8_t tx_array[2];
-    //memset(tx_array, 0xFF, sizeof(tx_array));
 
     uint8_t rx_array[2];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_PACKET_TYPE, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
-        //Sx1262Instance.status = rx_array[0];
         *status = rx_array[0];
         *packet_type = (RadioPacketType_t)rx_array[1];
     } else {
@@ -1141,11 +1137,13 @@ sxgs
 bool sx1262_get_status(uint8_t* out_status) {
     bool res = false;
     if(NULL != out_status) {
+#ifdef CC26X2
         uint8_t rx_array[2] = {0xFF, 0xFF};
-        uint8_t tx_array = 0xFF;
+        uint8_t tx_array = 0x00;
         res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
         *out_status = rx_array[1];
-#if 0
+#endif
+#ifdef ESP32
     	uint8_t rx_array = 0x00;
         res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, &rx_array, 1);
         *out_status = rx_array;
@@ -1157,7 +1155,6 @@ bool sx1262_get_status(uint8_t* out_status) {
         res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, &rx_array[0], sizeof(rx_array));
         *out_status = rx_array[1];
 #endif
-
     }
     return res;
 }
@@ -1576,7 +1573,7 @@ static inline bool sx1262_poll_status(void) {
 
 #ifdef HAS_SX1262_BIT_RATE
 #ifdef HAS_LOG
-            LOG_DEBUG(LORA, "TdDone %7.1f bit/s=%7.1f byte/s duration: %u ms for %u bytes", tx_real_bit_rate,
+            LOG_DEBUG(LORA, "TxDone %7.1f bit/s=%7.1f byte/s duration: %u ms for %u bytes", tx_real_bit_rate,
                       tx_real_bit_rate / 8, tx_duration_ms, Sx1262Instance.tx_last_size);
 #endif
 #else
@@ -1756,12 +1753,12 @@ bool sx1262_process(void) {
 #ifdef HAS_FREE_RTOS
 static void sx1262_thread(void *arg){
     while (1) {
-    	if(Sx1262Instance.proc){
+    	if(Sx1262Instance.proc) {
         	sx1262_process();
     	}
-    	//vTaskYield();
+
     	vTaskDelay(2000 / portTICK_RATE_MS);
-    	//taskYIELD();
+
 	}
 }
 #endif /*HAS_FREE_RTOS*/
@@ -1815,15 +1812,7 @@ bool sx1262_init(void) {
         memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
     }
 #ifdef HAS_FREE_RTOS
-   // vPortCPUInitializeMutex(&Sx1262Instance.mutex);
-    //Sx1262Instance.mutex = portMUX_INITIALIZER_UNLOCKED;
-    //Sx1262Instance.mutex = xSemaphoreCreateMutexStatic(&Sx1262Instance.xMutexBuffer);
-    //if(NULL==&Sx1262Instance.mutex ){
-    //    res = false;
-   // 	LOG_ERROR(SPI, "MutexInitError");
-   // }else{
-   // 	LOG_INFO(SPI, "MutexInitOk");
-   // }
+
 #endif
 
 #ifdef ESP32
@@ -1957,7 +1946,7 @@ bool sx1262_init(void) {
         res = sx1262_start_rx(0xFFFFFF) && res;
     } else {
 #ifdef HAS_LOG
-        LOG_ERROR(LORA, "SX1262 linkError");
+        LOG_ERROR(LORA, "SX1262LinkErr");
 #endif
     }
     if(false == res) {
