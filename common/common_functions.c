@@ -42,6 +42,10 @@
 #include "health_monitor.h"
 #endif
 
+#ifdef HAS_CAN
+#include "can_drv.h"
+#endif /*HAS_CAN*/
+
 #include "hw_init.h"
 #ifdef HAS_LOG
 #include "io_utils.h"
@@ -153,6 +157,11 @@ void super_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_TCAN4550
     // measure_task_interval(TASK_ID_TCAN4550, 500000, tcan_proc, loop_start_time_us);
     measure_task_interval(TASK_ID_TCAN4550, 1000, tcan4550_proc, loop_start_time_us);
+#endif /*HAS_TCAN4550*/
+
+#ifdef HAS_CAN
+    // measure_task_interval(TASK_ID_TCAN4550, 500000, tcan_proc, loop_start_time_us);
+    measure_task_interval(TASK_ID_CAN, CAN_PERIOD_US, can_proc, loop_start_time_us);
 #endif /*HAS_TCAN4550*/
 
 #ifdef HAS_UART0_FWD

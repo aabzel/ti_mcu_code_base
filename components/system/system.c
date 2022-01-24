@@ -2,11 +2,32 @@
 
 #include <stdbool.h>
 
+#ifdef HAS_LORA
+#include "lora_drv.h"
+#endif
+
+#ifdef HAS_CAN
+#include "can_drv.h"
+#endif
+
+#ifdef HAS_RS232
+#include "rs232_drv.h"
+#endif
+
+#ifdef HAS_SPI
+#include "spi_drv.h"
+#endif
+
 #ifdef HAS_LOG
 #include "io_utils.h"
+#include "log.h"
 #endif
 #include "sys_config.h"
 #include "uart_common.h"
+
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif
 
 #ifdef HAS_BOOTLOADER
 #error "That API only for Generic"
@@ -42,7 +63,7 @@ bool interface_valid(Interfaces_t interface) {
     case IF_LORA:
     case IF_RS232:
     case IF_UART1:
-    case IF_SPI:
+    case IF_SPI0:
     case IF_UART0:
     case IF_CAN:
     case IF_BLE:
@@ -55,6 +76,56 @@ bool interface_valid(Interfaces_t interface) {
     return res;
 }
 
+bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
+    bool res=false;
+    switch(interface) {
+#ifdef HAS_LORA
+    case IF_LORA: {
+        res = lora_send_queue(array, len);
+    } break;
+#endif
+#ifdef HAS_CAN
+    case IF_CAN: {
+        res = can_send(array, len);
+    } break;
+#endif
+#ifdef HAS_SPI0
+    case IF_SPI0: {
+        res = spi_write(SPI0_INX ,array, len);
+    } break;
+#endif
+#ifdef HAS_UART0
+    case IF_UART0: {
+        res = uart_send(0, array, len, true);
+    } break;
+#endif
+#ifdef HAS_UART1
+    case IF_UART1: {
+        res = uart_send(1, array, len, true);
+    } break;
+#endif
+#ifdef HAS_RS232
+    case IF_RS232: {
+        res = rs232_send(array, len );
+    } break;
+#endif
+#ifdef HAS_BLE
+    case IF_BLE: {
+        res = ble_send(array, len );
+    } break;
+#endif
+    case IF_LOOPBACK: {
+#ifdef HAS_TBFP
+        res = tbfp_proc(array, len , IF_LOOPBACK, true);
+#endif
+    } break;
+    default:
+        LOG_ERROR(LORA, "UndefIf: %u=%s",interface, interface2str(interface));
+        res = false;
+        break;
+    }
+    return res;
+}
 
 #if defined(HAS_HARVESTER_V1) && defined(UART_NUM_ZED_F9P) && defined(HAS_UART)
 bool sys_bypass_nmea_rs232(void) {

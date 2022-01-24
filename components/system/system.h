@@ -16,7 +16,7 @@ typedef enum eInterfaces_t {
     IF_UART0 = 4,
     IF_CAN = 5,
     IF_BLE = 6,
-    IF_SPI = 7,
+    IF_SPI0 = 7,
     IF_CNT = 8,
     IF_NONE = 9,
 #ifdef HAS_IAR
@@ -25,6 +25,7 @@ typedef enum eInterfaces_t {
 } __attribute__((__packed__)) Interfaces_t;
 #endif
 
+bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface);
 bool interface_valid(Interfaces_t interface);
 const char* interface2str(Interfaces_t interface);
 #ifdef HAS_HARVESTER_V1

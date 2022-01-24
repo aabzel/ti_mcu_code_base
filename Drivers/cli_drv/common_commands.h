@@ -51,7 +51,7 @@
 #define TIM_COMMANDS
 #endif
 
-#ifdef HAS_TCAN4550
+#ifdef HAS_TCAN4550_COMMANDS
 #include "tcan4550_commands.h"
 #include "tcan4550_ti_commands.h"
 #else
@@ -77,7 +77,7 @@
 #define UNIT_TEST_COMMANDS
 #endif
 
-#ifdef HAS_FLASH
+#ifdef HAS_FLASH_COMMANDS
 #include "flash_commands.h"
 #else
 #define FLASH_COMMANDS

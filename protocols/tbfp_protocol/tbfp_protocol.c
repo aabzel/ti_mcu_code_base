@@ -24,9 +24,8 @@
 #endif
 #include "float_utils.h"
 #include "gnss_utils.h"
-#ifdef HAS_LORA
-#include "lora_drv.h"
-#endif
+
+
 #ifdef HAS_PARAM
 #include "param_ids.h"
 #endif /*HAS_PARAM*/
@@ -139,27 +138,12 @@ bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t 
         if(res) {
             memcpy(&frame[TBFP_INDEX_PAYLOAD], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
-            switch(interface) {
-#ifdef HAS_LORA
-            case IF_LORA: {
-                res = lora_send_queue(frame, frame_len + TBFP_SIZE_CRC);
-            } break;
-#endif
-#ifdef HAS_RS232
-            case IF_RS232: {
-                res = rs232_send(frame, frame_len + TBFP_SIZE_CRC);
-            } break;
-#endif
-            case IF_LOOPBACK: {
-                res = tbfp_proc(frame, frame_len + TBFP_SIZE_CRC, IF_LOOPBACK);
-            } break;
-            default:
-                break;
-            }
+            res = sys_send_if(frame,   frame_len + TBFP_SIZE_CRC,  interface);
         }
     }
     return res;
 }
+
 
 static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, Interfaces_t interface,
                            uint8_t lifetime) {
@@ -172,25 +156,8 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, 
             frame[TBFP_INDEX_PAYLOAD] = payload_id;
             memcpy(&frame[TBFP_INDEX_PAYLOAD + 1], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
-            if(res) {
-                switch(interface) {
-                case IF_LORA: {
-#ifdef HAS_LORA
-                    res = lora_send_queue(frame, frame_len + TBFP_SIZE_CRC);
-#endif
-                } break;
-                case IF_RS232: {
-#ifdef HAS_RS232
-                    res = rs232_send(frame, frame_len + TBFP_SIZE_CRC);
-#endif
-                } break;
-                case IF_LOOPBACK: {
-                    res = tbfp_proc_full(frame, frame_len + TBFP_SIZE_CRC, IF_LOOPBACK);
-                } break;
-                default:
-                    break;
-                }
-            }
+            res = sys_send_if(frame, frame_len + TBFP_SIZE_CRC,  interface);
+
         }
     }
     return res;
@@ -215,9 +182,9 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
     uint32_t tx_frame_len = 0;
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
-#ifdef HAS_BLE
+
     pingFrame.mac = get_ble_mac();
-#endif
+
     pingFrame.coordinate.latitude = 999999.0;
     pingFrame.coordinate.longitude = 9999.0;
 #ifdef HAS_ZED_F9P
@@ -235,21 +202,7 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
 #endif
     res = tbfp_compose_ping(frame, &tx_frame_len, &pingFrame, interface);
     if(res) {
-        switch(interface) {
-#ifdef HAS_LORA
-        case IF_LORA:
-            res = lora_send_queue(frame, tx_frame_len);
-            break;
-#endif
-#ifdef HAS_RS232
-        case IF_RS232:
-            res = rs232_send(frame, tx_frame_len);
-            break;
-#endif
-        default:
-            res = false;
-            break;
-        }
+        res = sys_send_if(frame, tx_frame_len,  interface);
     }
     return res;
 }
@@ -380,11 +333,13 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
 }
 
 /*One LoRa frame can contain several TBFP frames*/
-bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface) {
+bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset) {
     bool res = true;
     uint32_t cur_rx_prk = 0;
     uint32_t init_rx_prk = TbfpProtocol[interface].rx_pkt_cnt;
-    res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
+    if(is_reset){
+        res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
+    }
     uint32_t i = 0, ok_cnt = 0, err_cnt = 0;
     for(i = 0; i < len; i++) {
         res = tbfp_proc_byte(&TbfpProtocol[interface], arr[i]);

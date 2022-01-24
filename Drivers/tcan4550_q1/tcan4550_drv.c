@@ -7,6 +7,7 @@
 
 #include "TCAN4550.h"
 #include "TCAN_hl.h"
+#include "can_drv.h"
 #include "bit_utils.h"
 #include "byte_utils.h"
 #include "clocks.h"
@@ -1157,11 +1158,11 @@ static bool tcan4550_poll_can_interrupts(void) {
 #endif
             tCanRegProtStat_t ProtoState = {0};
             res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
-            if(res) {
 #ifdef HAS_LOG
+            if(res) {
                 tcan4550_parse_reg_proto_state(ProtoState.word);
-#endif
             }
+#endif
         }
 
         if(IntReg.bo) {
@@ -1199,7 +1200,7 @@ static bool tcan4550_poll_can_interrupts(void) {
         if(IntReg.pea) {
             IntReg.pea = 0;
 #ifdef HAS_LOG
-            LOG_ERROR(CAN, "Protocol Error in Arbitration Phase");
+            LOG_ERROR(CAN, "ProtocolErrorInArbitrationPhase");
 #endif
             tCanRegProtStat_t ProtoState = {0};
             res = tcan4550_read_reg(ADDR_MCAN_PSR, &ProtoState.word);
@@ -1414,21 +1415,21 @@ bool tcan4550_proc(void) {
         uint8_t fifo_num = 0;
         uint8_t elements = 0;
         uint8_t frame = 0;
-        uint8_t dataPayload[64] = {0};
+        uint8_t rx_payload[64] = {0};
         for(fifo_num = 0; fifo_num < RX_FIFO_CNT; fifo_num++) {
             elements = tcan4550_get_fifo_cnt(fifo_num);
             frame = 0;
             for(frame = 0; frame < elements; frame++) {
                 TCAN4x5x_MCAN_RX_Header MsgHeader = {0};
-                uint8_t num_bytes = 0;
-                num_bytes = TCAN4x5x_MCAN_ReadNextFIFO((TCAN4x5x_MCAN_FIFO_Enum)fifo_num, &MsgHeader,
-                                                       dataPayload); // This will read the next element in the RX FIFO 0
-                if(num_bytes) {
+                uint8_t rx_size = 0;
+                rx_size = TCAN4x5x_MCAN_ReadNextFIFO((TCAN4x5x_MCAN_FIFO_Enum)fifo_num, &MsgHeader,
+                                                     rx_payload); // This will read the next element in the RX FIFO 0
+                if(rx_size) {
 #ifdef HAS_LOG
                     LOG_INFO(CAN, "Rx ID %u 0x%x", MsgHeader.ID, MsgHeader.ID);
-                    print_mem(dataPayload, num_bytes, true, true, true, true);
+                    print_mem(rx_payload, rx_size, true, true, true, true);
 #endif
-                    res = true;
+                    res = can_proc_payload(rx_payload, rx_size);
                 }
             }
         }

@@ -8,6 +8,12 @@
 extern "C" {
 #endif
 
+#ifdef HAS_GNSS
+#include "gnss_commands.h"
+#else
+#define GNSS_COMMANDS
+#endif
+
 #ifdef HAS_LED_COMMANDS
 #include "led_commands.h"
 #else
@@ -32,17 +38,7 @@ extern "C" {
 #define CORTEX_M4_COMMANDS
 #endif
 
-#ifdef HAS_UBLOX
-#include "ublox_command.h"
-#else
-#define UBLOX_COMMANDS
-#endif
 
-#ifdef HAS_NMEA
-#include "nmea_command.h"
-#else
-#define NMEA_COMMANDS
-#endif
 
 #ifdef HAS_BMP180
 #include "bmp180_commands.h"
@@ -56,7 +52,7 @@ extern "C" {
 #define BQ25171_Q1_COMMANDS
 #endif /*HAS_BQ25171_Q1*/
 
-#ifdef HAS_FLASH_FS
+#ifdef HAS_FLASH_FS_COMMANDS
 #include "flash_fs_commands.h"
 #else
 #define FLASH_FS_COMMANDS
@@ -92,7 +88,7 @@ extern "C" {
 #define SX1262_COMMANDS
 #endif
 
-#ifdef HAS_PARAM
+#ifdef HAS_PARAM_COMMANDS
 #include "param_commands.h"
 #else
 #define PARAM_COMMANDS
@@ -128,18 +124,6 @@ extern "C" {
 #define TELEMATIC_COMMANDS
 #endif
 
-#ifdef HAS_RTCM3
-#include "rtcm3_commands.h"
-#else
-#define RTCM3_COMMANDS
-#endif
-
-#ifdef HAS_ZED_F9P
-#include "zed_f9p_commands.h"
-#else
-#define ZED_F9P_COMMANDS
-#endif
-
 #define SHELL_COMMANDS                                                                                                 \
     BMP180_COMMANDS                                                                                                    \
     BQ25171_Q1_COMMANDS                                                                                                \
@@ -149,23 +133,19 @@ extern "C" {
     FLASH_FS_COMMANDS                                                                                                  \
     FLASH_NVS_COMMANDS                                                                                                 \
     HEALTH_MONITOR_COMMANDS                                                                                            \
+    GNSS_COMMANDS                                                                                                      \
     TELEMATIC_COMMANDS                                                                                                 \
     TBFP_COMMANDS                                                                                                      \
     LED_COMMANDS                                                                                                       \
     LOG_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
     MX25L6433_COMMANDS                                                                                                 \
-    NMEA_COMMANDS                                                                                                      \
     PARAM_COMMANDS                                                                                                     \
     PWR_MUX_COMMANDS                                                                                                   \
     RF_COMMANDS                                                                                                        \
-    RTCM3_COMMANDS                                                                                                     \
     SX1262_COMMANDS                                                                                                    \
     SYSTEM_COMMANDS                                                                                                    \
-    TRNG_COMMANDS                                                                                                      \
-    UBLOX_COMMANDS                 \
-    ZED_F9P_COMMANDS
-
+    TRNG_COMMANDS
 
 #ifdef __cplusplus
 } /* extern "C" */
