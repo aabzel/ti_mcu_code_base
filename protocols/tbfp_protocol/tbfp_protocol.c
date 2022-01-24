@@ -301,7 +301,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     switch(payload[0]) {
 #ifdef HAS_RTCM3
     case FRAME_ID_RTCM3:
-        LOG_DEBUG(TBFP,"RTCM payload");
+        LOG_DEBUG(TBFP,"RTCMpayload");
         res = rtcm3_proc_array(payload, len, interface);
         break;
 #endif /*HAS_RTCM3*/

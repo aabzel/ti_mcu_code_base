@@ -8,6 +8,7 @@
 #include "byte_utils.h"
 #include "data_utils.h"
 #include "debug_info.h"
+#include "time_diag.h"
 #include "gnss_diag.h"
 #include "io_utils.h"
 #include "tbfp_protocol.h"
@@ -26,7 +27,7 @@ bool tbfp_print_ping_frame(TbfPingFrame_t *pingFrame){
             res = false;
         }
 #ifdef HAS_GNSS
-        res = print_coordinate(pingFrame->coordinate)&&res;
+        res = print_coordinate(pingFrame->coordinate, true)&&res;
 #endif
     }else{
         res = false;

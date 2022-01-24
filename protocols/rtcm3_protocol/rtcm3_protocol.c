@@ -166,7 +166,10 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #ifdef HAS_LED
             led_blink(&Led[LED_INDEX_RED], 10);
 #endif
-            if(IF_UART1 == instance->interface) {
+
+            switch(instance->interface){
+            case IF_UART1:{
+
                 Interfaces_t interface = IF_NONE;
                 for(interface = IF_LORA; interface <= IF_CNT; interface++){
                     if(instance->forwarding[interface]) {
@@ -179,17 +182,22 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #endif /*HAS_TBFP*/
                     }
                 }
-            }
-
-            if((IF_LORA == instance->interface) || (IF_RS232 == instance->interface)) {
+            }break;
+            case IF_LORA:
+            case IF_RS232:
+            case IF_CAN:           {
 #ifdef HAS_UART1
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                 if(false == res) {
                     instance->uart_lost_pkt_cnt++;
                 }
 #endif /*HAS_UART1*/
-            }
 
+            } break;
+            }
+#ifdef HAS_TBFP
+            tbfp_parser_reset_rx(&TbfpProtocol[instance->interface]);
+#endif
             rtcm3_reset_rx(instance);
         } else {
 #ifdef HAS_LOG

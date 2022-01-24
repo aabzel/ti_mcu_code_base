@@ -63,7 +63,7 @@ typedef struct xRtcm3Protocol_t {
     uint8_t rx_frame[RTCM3_RX_FRAME_SIZE];
     uint8_t fix_frame[RTCM3_RX_FRAME_SIZE];
     Interfaces_t interface;
-    bool forwarding[IF_CNT];
+    bool forwarding[IF_CNT]; //TODO make bit field
 } Rtcm3Protocol_t;
 
 extern Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];

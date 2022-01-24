@@ -1372,7 +1372,9 @@ static bool tcan4550_poll_dev_interrupts(void) {
 
 bool tcan4550_poll_interrupts(void) {
     bool res = true;
+#ifdef HAS_CAN_POLLING
     res = tcan4550_poll_dev_interrupts() && res;
+#endif
     res = tcan4550_poll_can_interrupts() && res;
     return res;
 }
@@ -1380,13 +1382,15 @@ bool tcan4550_poll_interrupts(void) {
 bool tcan4550_proc(void) {
     bool res = false;
     static CanDevMode_t prev_mode = MODE_UNDEF;
-    CanPhy.cur.connected = is_tcan4550_connected();
+   // CanPhy.cur.connected = is_tcan4550_connected();
+    CanPhy.cur.connected = true;
     if(false == CanPhy.cur.connected) {
 #ifdef HAS_LOG
         LOG_ERROR(CAN, "TCAN4550_SpiLinkLost");
 #endif
         res = init_tcan();
     } else {
+#ifdef HAS_CAN_POLLING
         tCanRegCCctrl_t ctrl_reg = {0};
         tCanRegProtStat_t proto_stat = {0};
         res = tcan4550_read_reg(ADDR_MCAN_PSR, &proto_stat.word);
@@ -1412,6 +1416,7 @@ bool tcan4550_proc(void) {
             LOG_INFO(CAN, "NewMode %s", can_mode2str(CanPhy.cur.mode));
 #endif
         }
+#endif
 
         res = tcan4550_poll_interrupts();
         uint8_t fifo_num = 0;

@@ -184,6 +184,15 @@ static bool zed_f9p_proc_rover(void) {
     task_data[TASK_ID_NMEA].on = true;
 #endif
 
+    if(IF_CAN == ZedF9P.channel) {
+#ifdef HAS_CLI
+        res = cli_set_echo(true);
+#endif
+#ifdef HAS_CAN
+        //can.ping = true;
+#endif
+    }
+
     if(IF_RS232 == ZedF9P.channel) {
 #ifdef HAS_CLI
         res = cli_set_echo(false);
@@ -378,6 +387,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
         if(IF_LORA == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = true;
             Rtcm3Protocol[IF_UART1].forwarding[IF_RS232] = false;
+            Rtcm3Protocol[IF_UART1].forwarding[IF_CAN] = false;
 #ifdef HAS_SX1262
             Sx1262Instance.check_connectivity = false;
             Sx1262Instance.sync_rssi = false;
@@ -386,6 +396,12 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double
         if(IF_RS232 == ZedF9P.channel) {
             Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = false;
             Rtcm3Protocol[IF_UART1].forwarding[IF_RS232] = true;
+            Rtcm3Protocol[IF_UART1].forwarding[IF_CAN] = false;
+        }
+        if(IF_CAN == ZedF9P.channel) {
+            Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = false;
+            Rtcm3Protocol[IF_UART1].forwarding[IF_RS232] = false;
+            Rtcm3Protocol[IF_UART1].forwarding[IF_CAN] = true;
         }
 #endif /*HAS_RTCM3*/
 #endif /*HAS_UBLOX*/

@@ -109,6 +109,12 @@ extern "C" {
 #define TEST_SUIT_UTILS_TIME
 #endif
 
+#ifdef HAS_TEST_SUIT_RTCM3_PATH
+#include "test_rtcm_path.h"
+#else
+#define TEST_SUIT_RTCM3_PATH
+#endif
+
 bool test_types(void);
 bool test_array_init(void);
 bool test_64bit_mult(void);
@@ -135,6 +141,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_FIFO_ARRAY                                                                                               \
     TEST_SUIT_NMEA_PROTO                                                                                               \
     TEST_SUIT_RTCM3_PROTO                                                                                              \
+    TEST_SUIT_RTCM3_PATH                                                                                               \
     TEST_SUIT_TBFP_PROTO                                                                                               \
     TEST_SUIT_TBFP_RTCM_STACK                                                                                          \
     TEST_SUIT_SYSTEM                                                                                                   \
