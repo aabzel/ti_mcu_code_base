@@ -137,24 +137,17 @@
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_SYMBOLS}"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
-									<listOptionValue builtIn="false" value="HAS_CLI"/>
-									<listOptionValue builtIn="false" value="HAS_CLI_CMD_HISTORY"/>
 									<listOptionValue builtIn="false" value="HAS_CRC"/>
-									<listOptionValue builtIn="false" value="HAS_CUSTOM_PRINTF"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
 									<listOptionValue builtIn="false" value="HAS_HARVESTER_V1"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
 									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
-									<listOptionValue builtIn="false" value="HAS_LORA"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
 									<listOptionValue builtIn="false" value="HAS_SUPER_LOOP"/>
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SPI"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_TCAN4550"/>
 									<listOptionValue builtIn="false" value="HAS_TEST_UART"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SX1262"/>
 									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
@@ -174,8 +167,8 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY.1440920769" name="Preprocess only (--preproc_only, -ppo)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE.573688216" name="Continue compilation after using -pp&lt;X&gt; options. (--preproc_with_compile, -ppa)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE" value="false" valueType="boolean"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE.883065325" name="Read options from specified file (--cmd_file, -@)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE" valueType="stringList">
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\hardware_components.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cli.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\harvester_v1.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cc2642.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\can.opt"/>
@@ -275,7 +268,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="bsp_cc26x2/radio|bsp_cc26x2/ti_radio_config.c|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/ble|boards/tBeamV1_1|boards/stm32_H407|Drivers/telematic|protocols/nmea_protocol|protocols/rtcm3_protocol|protocols/tbfp_protocol|protocols/ubx_protocol|unit_tests/test_set_hw/test_zed_f9p|unit_tests/test_set_sw|unit_tests/test_set_sw/test_sw_list.c|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw/test_system|unit_tests/test_set_sw/test_tbfp_proto|unit_tests/test_set_sw/test_fifo|unit_tests/test_set_sw/test_utils|unit_tests/test_set_sw/test_ublox_proto|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_nmea_proto|unit_tests/test_set_sw/test_cli|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Drivers/zed_f9p|bsp_cc26x2/radio|bsp_cc26x2/ti_radio_config.c|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/ble|boards/tBeamV1_1|boards/stm32_H407|Drivers/telematic|protocols/nmea_protocol|protocols/rtcm3_protocol|protocols/tbfp_protocol|protocols/ubx_protocol|unit_tests/test_set_hw/test_zed_f9p|unit_tests/test_set_sw|unit_tests/test_set_sw/test_sw_list.c|unit_tests/test_set_sw/test_crc|unit_tests/test_set_sw/test_rtcm3_proto|unit_tests/test_set_hw/test_system|unit_tests/test_set_sw/test_tbfp_proto|unit_tests/test_set_sw/test_fifo|unit_tests/test_set_sw/test_utils|unit_tests/test_set_sw/test_ublox_proto|unit_tests/test_set_sw/test_string|unit_tests/test_set_sw/test_nmea_proto|unit_tests/test_set_sw/test_cli|utils/utils_string/str_utils_ex.c|utils/utils_files|utils/win_utils|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|bsp_cc26x2/watchdog|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rtc|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

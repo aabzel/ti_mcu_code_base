@@ -464,11 +464,11 @@ bool proc_uarts(void) {
     }
 #endif /*HAS_UART1*/
 
-#ifdef HAS_UART0
+#ifdef HAS_UART0 /*CLI*/
     res = proc_uart0();
 #endif /*HAS_UART1*/
 
-#ifdef HAS_UART1
+#ifdef HAS_UART1 /*GNSS*/
     res = proc_uart1();
 #endif /*HAS_UART1*/
     return res;

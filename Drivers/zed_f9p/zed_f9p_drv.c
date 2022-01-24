@@ -77,6 +77,22 @@ static bool zed_f9p_proc_base(void) {
         task_data[TASK_ID_UBX].on = false;
     }
 
+    if(IF_CAN == ZedF9P.channel) {
+#ifdef HAS_CLI
+        res = cli_set_echo(true);
+#endif
+#ifdef HAS_RTCM3
+        Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = false;
+        Rtcm3Protocol[IF_UART1].forwarding[IF_RS232]= false;
+        Rtcm3Protocol[IF_UART1].forwarding[IF_CAN] = true;
+#endif
+        task_data[TASK_ID_TCAN4550].on = true;
+#ifdef HAS_CAN
+        //can.ping = true;
+#endif
+    }
+
+
     if(IF_RS232 == ZedF9P.channel) {
 #ifdef HAS_CLI
         res = cli_set_echo(false);
@@ -84,6 +100,7 @@ static bool zed_f9p_proc_base(void) {
 #ifdef HAS_RTCM3
         Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = false;
         Rtcm3Protocol[IF_UART1].forwarding[IF_RS232]= true;
+        Rtcm3Protocol[IF_UART1].forwarding[IF_CAN]= false;
 #endif
         task_data[TASK_ID_RS232].on = true;
 #ifdef HAS_RS232
@@ -95,6 +112,7 @@ static bool zed_f9p_proc_base(void) {
 #ifdef HAS_RTCM3
         Rtcm3Protocol[IF_UART1].forwarding[IF_LORA] = true;
         Rtcm3Protocol[IF_UART1].forwarding[IF_RS232] = false;
+        Rtcm3Protocol[IF_UART1].forwarding[IF_CAN]= false;
 #endif
         task_data[TASK_ID_RS232].on = false;
 #ifdef HAS_RS232
