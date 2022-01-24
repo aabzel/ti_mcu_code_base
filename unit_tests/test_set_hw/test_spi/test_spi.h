@@ -19,7 +19,7 @@ bool test_spi_wait_write(void) ;
 #ifdef HAS_SPI0
 bool test_spi0_read(void) ;
 bool test_spi0_write(void) ;
-#define TEST_SUIT_SPI0 {"spi0_write", test_spi0_write}  {"spi0_read", test_spi0_read},
+#define TEST_SUIT_SPI0 {"spi0_write", test_spi0_write} , {"spi0_read", test_spi0_read},
 #else
 #define TEST_SUIT_SPI0
 #endif
