@@ -182,9 +182,9 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
     uint32_t tx_frame_len = 0;
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
-
+#ifdef CC26XX
     pingFrame.mac = get_ble_mac();
-
+#endif
     pingFrame.coordinate.latitude = 999999.0;
     pingFrame.coordinate.longitude = 9999.0;
 #ifdef HAS_ZED_F9P
