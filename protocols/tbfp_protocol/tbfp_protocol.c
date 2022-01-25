@@ -7,6 +7,10 @@
 #ifdef HAS_CLI
 #include "cli_manager.h"
 #endif
+
+#ifdef HAS_LORA
+#include "lora_drv.h"
+#endif
 #ifdef HAS_LOG
 #include "log.h"
 #include "io_utils.h"
