@@ -1150,10 +1150,10 @@ bool sx1262_get_status(uint8_t* out_status) {
 #endif
 
 #ifdef USE_HAL_DRIVER
-        uint8_t rx_array[2] ={ 0x00,0x00};
+        uint8_t rx_array[1] ={ 0x00};
         uint8_t tx_array = 0xFF;
-        res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, &rx_array[0], sizeof(rx_array));
-        *out_status = rx_array[1];
+        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, &rx_array[0], sizeof(rx_array));
+        *out_status = rx_array[0];
 #endif
     }
     return res;
@@ -1376,7 +1376,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
         } else {
             chip_mode_fs = 0;
         }
-        if(100 < chip_mode_fs) {
+        if(100000 < chip_mode_fs) {
             chip_mode_fs = 0;
 #ifdef HAS_LOG
             LOG_WARNING(LORA, "Hang on in FS");
@@ -1524,8 +1524,6 @@ static inline bool sx1262_poll_status(void) {
         		cmd_stat2str(tempSx1262Instance.dev_status.command_status),
 				chip_mode2str(tempSx1262Instance.dev_status.chip_mode)
 				);
-
-
 #endif
         res = true;
         static uint8_t stat_byte_prev = 0;

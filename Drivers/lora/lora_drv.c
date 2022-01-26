@@ -39,7 +39,7 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint32_t rx_size) {
     bool res = false;
 
 #ifdef HAS_TBFP
-    res = tbfp_proc(rx_payload, rx_size, IF_LORA);
+    res = tbfp_proc(rx_payload, rx_size, IF_LORA, true);
     if(false == res) {
 #ifdef HAS_LOG
         LOG_ERROR(LORA, "LoRaProcErr");

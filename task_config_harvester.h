@@ -7,6 +7,7 @@
   TASK(NMEA)                                                                   \
   TASK(RS232)                                                                  \
   TASK(TCAN4550)                                                               \
+  TASK(CAN)                                                                    \
   TASK(UBX)                                                                    \
   TASK(UART0_FWD)                                                              \
   TASK(UART1_FWD)                                                              \
