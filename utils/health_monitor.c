@@ -19,6 +19,10 @@
 #include "rtcm3_protocol.h"
 #endif
 
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif
+
 #ifdef HAS_LORA
 #include "lora_drv.h"
 #endif
@@ -36,12 +40,26 @@
 #include "uart_common.h"
 #include "uart_drv.h"
 #endif
+
+#if 0
+#if (TBFP_MAX_PAYLOAD < RTCM3_RX_MAX_FRAME_SIZE) /*Compile error*/
+#error "TBFP frame must be big enough to store RTCM3 frame"
+#endif
+#endif
+
 HealthMon_t HealthMon = {0};
 
 bool health_monotor_init(void) {
     bool res = true;
     memset(&HealthMon, 0x00, sizeof(HealthMon));
-
+#if defined(HAS_RTCM3)  && defined(HAS_TBFP)
+    if (TBFP_MAX_PAYLOAD < RTCM3_RX_MAX_FRAME_SIZE){
+        LOG_ERROR(HMOM,"TBFPFrameMustBeBigEnoughToStoreRTCM3Frame TBFP:%u<RTCM3:%u",TBFP_MAX_PAYLOAD,RTCM3_RX_MAX_FRAME_SIZE);
+        res = false;
+    }else{
+        LOG_INFO(HMOM,"TbfpRtcmFramesSizesOk RTCM3:%u<TBFP:%u",RTCM3_RX_MAX_FRAME_SIZE,TBFP_MAX_PAYLOAD);
+    }
+#endif
 #ifdef HAS_RELAESE
     HealthMon.power = true;
 #endif

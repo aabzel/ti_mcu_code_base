@@ -96,20 +96,27 @@ bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
 
 static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interfaces_t interface, uint8_t lifetime) {
     bool res = false;
-    if(out_array && (0 < payload_len) && (payload_len < TBFP_MAX_PAYLOAD)) {
-        TbfHeader_t header;
-        header.preamble = TBFP_PREAMBLE;
+    if(payload_len < TBFP_MAX_PAYLOAD){
+        if(out_array ) {
+            TbfHeader_t header;
+            header.preamble = TBFP_PREAMBLE;
 #ifdef HAS_TBFP_FLOW_CONTROL
-        header.snum = TbfpProtocol[interface].s_num;
-        TbfpProtocol[interface].s_num++;
+            header.snum = TbfpProtocol[interface].s_num;
+            TbfpProtocol[interface].s_num++;
 #endif /*HAS_TBFP_FLOW_CONTROL*/
 #ifdef HAS_TBFP_RETRANSMIT
-        header.lifetime = lifetime;
+            header.lifetime = lifetime;
 #endif
-        TbfpProtocol[interface].tx_pkt_cnt++;
-        header.len = (uint8_t)payload_len;
-        memcpy(out_array, &header, sizeof(TbfHeader_t));
-        res = true;
+            TbfpProtocol[interface].tx_pkt_cnt++;
+            header.len = (uint8_t)payload_len;
+            memcpy(out_array, &header, sizeof(TbfHeader_t));
+            res = true;
+        } else {
+            LOG_ERROR(TBFP, "NullPayLoad");
+        }
+
+    }else{
+        LOG_ERROR(TBFP, "TooBigPayload %u (Lim: %u)",payload_len, TBFP_MAX_PAYLOAD);
     }
     return res;
 }

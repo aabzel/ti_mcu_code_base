@@ -44,8 +44,8 @@ bool rtcm3_reset_rx(Rtcm3Protocol_t* instance) {
 bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool lora_fwd) {
     rtcm3_reset_rx(instance);
     memset(instance, 0x0, sizeof(Rtcm3Protocol_t));
-    memset(instance->fix_frame, 0x00, RTCM3_RX_FRAME_SIZE);
-    memset(instance->rx_frame, 0x00, RTCM3_RX_FRAME_SIZE);
+    memset(instance->fix_frame, 0x00, RTCM3_RX_MAX_FRAME_SIZE);
+    memset(instance->rx_frame, 0x00, RTCM3_RX_MAX_FRAME_SIZE);
 #ifdef HAS_DEBUG
     instance->forwarding[IF_LORA] = false;
 #else
@@ -101,10 +101,10 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         instance->max_len = max16u(instance->max_len, instance->exp_len.field.len);
         instance->min_len = min16u(instance->min_len, instance->exp_len.field.len);
 #endif
-        if(RTCM3_RX_FRAME_SIZE < (instance->exp_len.field.len+RTCM3_CRC24_SIZE)) {
+        if(RTCM3_RX_MAX_FRAME_SIZE < (instance->exp_len.field.len + RTCM3_OVERHEAD)) {
             res = false;
             instance->err_cnt++;
-            LOG_ERROR(SYS, "TooBigFrame %u byte. Max %u Byte", instance->exp_len.field.len+RTCM3_CRC24_SIZE, RTCM3_RX_FRAME_SIZE);
+            LOG_ERROR(SYS, "TooBigFrame %u byte. Max %u Byte", instance->exp_len.field.len+RTCM3_CRC24_SIZE, RTCM3_RX_MAX_FRAME_SIZE);
             rtcm3_reset_rx(instance);
         }
     } else {
@@ -161,7 +161,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #endif
             instance->rx_state = RTCM3_RX_DONE;
             instance->rx_pkt_cnt++;
-            memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_FRAME_SIZE);
+            memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_MAX_FRAME_SIZE);
             /*Send RTCM3 frame to LoRa*/
 #ifdef HAS_LED
             led_blink(&Led[LED_INDEX_RED], 10);

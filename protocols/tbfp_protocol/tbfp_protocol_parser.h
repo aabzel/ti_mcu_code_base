@@ -16,7 +16,8 @@ extern "C" {
 #define TBFP_SIZE_HEADER (sizeof(TbfHeader_t))
 #define TBFP_SIZE_CRC 1
 #define TBFP_SIZE_OVERHEAD (TBFP_SIZE_HEADER+TBFP_SIZE_CRC)
-#define TBFP_MAX_PAYLOAD (256-TBFP_SIZE_OVERHEAD)
+#define TBFP_MAX_PAYLOAD (1024+3+2+2)
+#define TBFP_MAX_FRAME (TBFP_MAX_PAYLOAD+TBFP_SIZE_OVERHEAD)
 
 typedef struct xTBFTparser_t{
     RxState_t rx_state;
