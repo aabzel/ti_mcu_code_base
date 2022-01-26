@@ -12,11 +12,10 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#define TBFP_RX_FRAME_SIZE 256U
-#define TBFP_SIZE_HEADER (sizeof(TbfHeader_t))
+#define TBFP_SIZE_HEADER (5)
 #define TBFP_SIZE_CRC 1
 #define TBFP_SIZE_OVERHEAD (TBFP_SIZE_HEADER+TBFP_SIZE_CRC)
-#define TBFP_MAX_PAYLOAD (1024+3+2+2)
+#define TBFP_MAX_PAYLOAD (512+3+2+2)
 #define TBFP_MAX_FRAME (TBFP_MAX_PAYLOAD+TBFP_SIZE_OVERHEAD)
 
 typedef struct xTBFTparser_t{
@@ -25,8 +24,8 @@ typedef struct xTBFTparser_t{
     uint8_t exp_payload_len;
     uint32_t load_len;
     uint16_t s_num;
-    uint8_t rx_frame[TBFP_RX_FRAME_SIZE];
-    uint8_t fix_frame[TBFP_RX_FRAME_SIZE];
+    uint8_t rx_frame[TBFP_MAX_FRAME];
+    uint8_t fix_frame[TBFP_MAX_FRAME];
 }TBFTparser_t;
 
 

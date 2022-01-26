@@ -53,6 +53,7 @@
 #include "log.h"
 #endif
 
+
 TbfpProtocol_t TbfpProtocol[IF_CNT] = {0};
 
 bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
@@ -65,6 +66,10 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
 #endif
         instance->rx_pkt_cnt = 0;
         res = true;
+    }
+    if (TBFP_SIZE_HEADER !=sizeof(TbfHeader_t)){
+        LOG_ERROR(TBFP, "HeaderLenErr");
+        res = false;
     }
     return res;
 }
