@@ -1,6 +1,8 @@
 #ifndef WRITER_CONFIG_H
 #define WRITER_CONFIG_H
 
+#include "writer_generic.h"
+
 #ifdef HAS_LORA
 #include "writer_lora.h"
 #endif /*HAS_LORA*/

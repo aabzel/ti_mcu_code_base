@@ -2,6 +2,7 @@ MK_PATH:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 #@echo $(error MK_PATH=$(MK_PATH))
 PROJECT_ROOT:= $(MK_PATH)../../
 #@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
+INCDIR += -I$(MK_PATH)
 INCDIR += -I$(PROJECT_ROOT)
 
 BUILDDIR := $(PROJECT_ROOT)/Build
@@ -32,6 +33,7 @@ HAS_X86_64=Y
 #OPT += -DSORT_LIST
 OPT += -DHAS_UTESTS
 OPT += -DHAS_DEBUG
+OPT += -DHAS_LOG
 OPT += -DX86_64
 OPT += -DHAS_SW_TESTS
 OPT += -DHAS_TEST_CLI
