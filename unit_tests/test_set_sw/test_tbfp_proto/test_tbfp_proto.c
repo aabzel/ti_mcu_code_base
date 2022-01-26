@@ -52,6 +52,15 @@ bool test_tbfp_proto_1(void) {
     return true;
 }
 
+bool test_tbfp_proto_auto(void){
+    LOG_INFO(TBFP,"%s():", __FUNCTION__);
+    uint8_t tbfp_generated[10] = {};
+    memset(tbfp_generated, 0, sizeof(tbfp_generated));
+    EXPECT_TRUE( tbfp_generate_frame(tbfp_generated, sizeof(tbfp_generated)));
+    EXPECT_TRUE( is_tbfp_protocol((uint8_t*)tbfp_generated, sizeof(tbfp_generated)));
+    return true;
+}
+
 bool test_tbfp_proto_2(void) {
     LOG_DEBUG(TBFP,"%s():", __FUNCTION__);
     uint32_t i = 0;
@@ -70,7 +79,6 @@ bool test_tbfp_proto_2(void) {
 bool test_tbfp_proto_overlen(void) {
 
     LOG_DEBUG(TBFP,"%s():", __FUNCTION__);
-
     uint32_t i = 0;
     TbfpProtocol_t instance;
     EXPECT_TRUE(tbfp_protocol_init(&instance, IF_RS232));
@@ -109,7 +117,6 @@ bool test_tbfp_proto_29(void) {
     EXPECT_EQ(init_pkt_cnt + 2, instance.rx_pkt_cnt);
     return true;
 }
-
 
 
 

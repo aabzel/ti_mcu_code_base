@@ -18,7 +18,7 @@
 static bool rtcm3_diag_lost(char* key_word1, char* key_word2) {
     bool res = false;
     uint8_t interface_base_gnss = IF_UART1;
-    static const table_col_t cols[] = {{7, "if"},
+    static const table_col_t cols[] = {{10, "interf"},
                                        {5, "Fwd"},
                                        {9, "lost"},
                                        {8, "lost,%"},
@@ -30,7 +30,7 @@ static bool rtcm3_diag_lost(char* key_word1, char* key_word2) {
     Interfaces_t intf;
     for(intf = IF_LORA; intf<IF_CNT; intf++){
         strcpy(line_str, TSEP);
-        snprintf(suffix_str, sizeof(suffix_str)," %5s " TSEP, interface2str((Interfaces_t)intf));
+        snprintf(suffix_str, sizeof(suffix_str)," %8s " TSEP, interface2str((Interfaces_t)intf));
         strncat(line_str,suffix_str, sizeof(line_str));
 
         snprintf(suffix_str, sizeof(suffix_str),"  %1u  " TSEP, Rtcm3Protocol[interface_base_gnss].forwarding[intf]);
@@ -59,7 +59,7 @@ static bool rtcm3_diag_lost(char* key_word1, char* key_word2) {
 static bool rtcm3_diag(void) {
     bool res = false;
     uint8_t interface = 0;
-    static const table_col_t cols[] = {{7, "if"},
+    static const table_col_t cols[] = {{10, "interf"},
                                        {9, "rxCnt"},
                                        {9, "crcErCnt"},
 #ifdef HAS_DEBUG
@@ -73,7 +73,7 @@ static bool rtcm3_diag(void) {
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
         io_printf(TSEP);
-        io_printf(" %5s " TSEP, interface2str((Interfaces_t)interface));
+        io_printf(" %8s " TSEP, interface2str((Interfaces_t)interface));
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].rx_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].crc_err_cnt);
 #ifdef HAS_DEBUG

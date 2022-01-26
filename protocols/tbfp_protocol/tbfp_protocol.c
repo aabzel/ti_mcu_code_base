@@ -453,3 +453,25 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
 
     return res;
 }
+
+bool tbfp_generate_frame(uint8_t* buff, uint32_t buff_len){
+    bool res = false;
+    if( buff && (TBFP_OVERHEAD_SIZE <= buff_len)){
+        uint16_t snum = 0;
+        uint16_t payload_len = buff_len - TBFP_OVERHEAD_SIZE;
+        buff[TBFP_INDEX_PREAMBLE]=TBFP_PREAMBLE;
+        buff[TBFP_INDEX_RETX] = 0;
+        memcpy(&buff[TBFP_INDEX_SER_NUM], &snum, TBFP_SIZE_SN);
+        memcpy(&buff[TBFP_INDEX_LEN], &payload_len , TBFP_SIZE_SN);
+        uint32_t i=0;
+        for(i=0;i<payload_len ;i++){
+            buff[TBFP_INDEX_PAYLOAD+i]=i;
+        }
+        uint16_t frame_len = payload_len + sizeof(TbfHeader_t);
+        buff[frame_len] = crc8_sae_j1850_calc(buff, frame_len);
+        print_mem(buff,frame_len+1,true, false, true, false);
+
+        res = true;
+    }
+    return res;
+}
