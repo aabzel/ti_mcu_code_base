@@ -104,7 +104,6 @@ static bool is_print_cmd(const shell_cmd_info_t* const cmd, const char* const su
 }
 #endif
 
-
 #ifdef HAS_CLI
 bool cli_process(void) {
     if(true == huart[UART_NUM_CLI].rx_int) {
@@ -269,26 +268,22 @@ bool cli_toggle_echo(void) {
     return true;
 }
 
-
 #ifdef HAS_FREE_RTOS
 /*
  * @brief   Application task entry point for the Project Zero.
  *
  * @param   a0, a1 - not used.
  */
-static void cli_thread(void *arg) {
+static void cli_thread(void* arg) {
     for(;;) {
         cli_process();
         /*Wait 100 ms*/
-    	vTaskDelay(200 / portTICK_RATE_MS);
+        vTaskDelay(200 / portTICK_RATE_MS);
     }
 }
 
-void cli_create_task(void) {
-    xTaskCreate(cli_thread, "CLI", 5000, NULL, 0, NULL);
-}
+void cli_create_task(void) { xTaskCreate(cli_thread, "CLI", 5000, NULL, 0, NULL); }
 #endif /*HAS_TIRTOS*/
-
 
 #ifdef HAS_TIRTOS
 /*

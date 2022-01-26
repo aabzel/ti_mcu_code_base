@@ -23,7 +23,7 @@
 Led_t Led[LED_COUNT];
 
 static void test_leds(void) {
-#if (DIO_LED_RED!=DIO_LED_HEARTBEAT)
+#if(DIO_LED_RED != DIO_LED_HEARTBEAT)
     gpio_set_state(DIO_LED_RED, 1);
 #endif
 #ifdef DIO_LED_HEARTBEAT
@@ -31,10 +31,9 @@ static void test_leds(void) {
 #endif
 }
 
-#if (0==LED_COUNT)
+#if(0 == LED_COUNT)
 #error "Lack of LEDS in configs"
 #endif
-
 
 bool led_blink(Led_t* inLed, uint32_t duration_ms) {
     bool res = false;
@@ -46,7 +45,6 @@ bool led_blink(Led_t* inLed, uint32_t duration_ms) {
     }
     return res;
 }
-
 
 static bool proc_led(Led_t* inLed) {
     bool res = false;
@@ -89,7 +87,7 @@ static bool proc_led(Led_t* inLed) {
 
 bool proc_leds(void) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LED, "%s()",__FUNCTION__);
+    LOG_DEBUG(LED, "%s()", __FUNCTION__);
 #endif
     bool res = true;
     uint16_t i = 0;
@@ -127,21 +125,19 @@ bool led_off(Led_t* inLed) {
 
 #ifdef HAS_FREE_RTOS
 
-static void led_thread(void *arg) {
+static void led_thread(void* arg) {
     for(;;) {
-    	proc_leds();
-    	vTaskDelay(50 / portTICK_RATE_MS);
+        proc_leds();
+        vTaskDelay(50 / portTICK_RATE_MS);
     }
 }
 
-void led_create_task(void) {
-    xTaskCreate(led_thread, "LED", 5000, NULL, 0, NULL);
-}
+void led_create_task(void) { xTaskCreate(led_thread, "LED", 5000, NULL, 0, NULL); }
 #endif /*HAS_TIRTOS*/
 
 bool led_init(void) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LED, "%s()",__FUNCTION__);
+    LOG_DEBUG(LED, "%s()", __FUNCTION__);
 #endif
 #ifdef DIO_LED_HEARTBEAT
     Led[LED_INDEX_HEARTBEAT].period_ms = LED_GREEN_PERIOD_MS;
@@ -151,7 +147,7 @@ bool led_init(void) {
     Led[LED_INDEX_HEARTBEAT].dio_num = DIO_LED_HEARTBEAT;
 #endif
 
-#if (DIO_LED_RED!=DIO_LED_HEARTBEAT)
+#if(DIO_LED_RED != DIO_LED_HEARTBEAT)
     Led[LED_INDEX_RED].period_ms = LED_RED_PERIOD_MS;
     Led[LED_INDEX_RED].duty = LED_RED_DUTY;
     Led[LED_INDEX_RED].phase_ms = LED_RED_PHASE;

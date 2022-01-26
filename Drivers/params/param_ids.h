@@ -44,10 +44,10 @@ typedef enum eId_t {
     PAR_ID_LORA_CRC_INIT = 32,
     PAR_ID_LORA_CRC_POLY = 31,
     PAR_ID_LOW_DATA_RATE = 30,
-    PAR_ID_GPS=34,
-    PAR_ID_GLONASS=35,
-    PAR_ID_GALILEO=36,
-    PAR_ID_BEI_DOU=37,
+    PAR_ID_GPS = 34,
+    PAR_ID_GLONASS = 35,
+    PAR_ID_GALILEO = 36,
+    PAR_ID_BEI_DOU = 37,
     PAR_ID_TEST_START = 100,
     PAR_ID_TEST_END = 200,
     PAR_ID_CNT
@@ -63,9 +63,8 @@ typedef struct xParamItem_t {
 
 extern const ParamItem_t ParamArray[];
 
-
 #ifdef HAS_LOG
-#define LOAD_PARAM(COMPONENT,PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                                \
+#define LOAD_PARAM(COMPONENT, PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                               \
     do {                                                                                                               \
         uint16_t file_len = 0;                                                                                         \
         res = mm_get(PAR_ID, (uint8_t*)&VARIABLE, sizeof(VARIABLE), &file_len);                                        \
@@ -79,7 +78,7 @@ extern const ParamItem_t ParamArray[];
         }                                                                                                              \
     } while(0);
 #else
-#define LOAD_PARAM(COMPONENT,PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                                \
+#define LOAD_PARAM(COMPONENT, PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                               \
     do {                                                                                                               \
         uint16_t file_len = 0;                                                                                         \
         res = mm_get(PAR_ID, (uint8_t*)&VARIABLE, sizeof(VARIABLE), &file_len);                                        \
@@ -90,7 +89,6 @@ extern const ParamItem_t ParamArray[];
         }                                                                                                              \
     } while(0);
 #endif
-
 
 bool param_init(void);
 bool param_proc(void);

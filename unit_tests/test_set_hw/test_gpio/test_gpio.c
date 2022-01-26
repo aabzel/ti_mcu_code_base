@@ -150,7 +150,6 @@ bool test_gpio_write_sx1262_ss(void) {
     return true;
 }
 
-
 bool test_gpio_write_sx1262_rst(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_SX1262_RST));
     return true;

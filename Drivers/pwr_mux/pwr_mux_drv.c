@@ -49,12 +49,12 @@ bool pwr_src_init(void) {
     bool out_res = true;
     PwrSource_t pwr_source = PWR_SRC_VCC_3V3;
 #ifdef HAS_PARAM
-    LOAD_PARAM(LG_PWR, PAR_ID_PWR_SRC, pwr_source, 1, "PwrSource", PWR_SRC_VCC_3V3, pwr_source2str) ;
+    LOAD_PARAM(LG_PWR, PAR_ID_PWR_SRC, pwr_source, 1, "PwrSource", PWR_SRC_VCC_3V3, pwr_source2str);
 #endif /*HAS_FLASH_FS*/
     res = pwr_src_set(pwr_source);
-    if(false==res){
+    if(false == res) {
 #ifdef HAS_LOG
-            LOG_ERROR(LG_PWR, "PwrSetErr %u %s", pwr_source, pwr_source2str(pwr_source));
+        LOG_ERROR(LG_PWR, "PwrSetErr %u %s", pwr_source, pwr_source2str(pwr_source));
 #endif
     }
     return out_res;

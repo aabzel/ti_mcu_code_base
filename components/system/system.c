@@ -38,7 +38,6 @@
 #error "That API only for Generic"
 #endif
 
-
 const char* interface2str(Interfaces_t interface) {
     const char* name = "undef";
     switch(interface) {
@@ -73,7 +72,7 @@ const char* interface2str(Interfaces_t interface) {
 }
 
 bool interface_valid(Interfaces_t interface) {
-    bool res =  false;
+    bool res = false;
     switch(interface) {
     case IF_LORA:
     case IF_RS232:
@@ -91,8 +90,8 @@ bool interface_valid(Interfaces_t interface) {
     return res;
 }
 
-bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
-    bool res=false;
+bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
+    bool res = false;
     switch(interface) {
 #ifdef HAS_LORA
     case IF_LORA: {
@@ -106,7 +105,7 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
 #endif
 #ifdef HAS_SPI0
     case IF_SPI0: {
-        res = spi_write(SPI0_INX ,array, len);
+        res = spi_write(SPI0_INX, array, len);
     } break;
 #endif
 #ifdef HAS_UART0
@@ -121,29 +120,29 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
 #endif
 #ifdef HAS_RS232
     case IF_RS232: {
-        res = rs232_send(array, len );
+        res = rs232_send(array, len);
     } break;
 #endif
 #ifdef HAS_BLE
     case IF_BLE: {
-        res = ble_send(array, len );
+        res = ble_send(array, len);
     } break;
 #endif
     case IF_LOOPBACK: {
 #ifdef HAS_TBFP
-        res = tbfp_proc(array, len , IF_LOOPBACK, true);
-        if(false==res){
+        res = tbfp_proc(array, len, IF_LOOPBACK, true);
+        if(false == res) {
             LOG_ERROR(SYS, "tbfpProcErr");
         }
 #endif
     } break;
-    default:{
-        LOG_ERROR(SYS, "UndefIf: %u=%s",interface, interface2str(interface));
+    default: {
+        LOG_ERROR(SYS, "UndefIf: %u=%s", interface, interface2str(interface));
         res = false;
-    }break;
+    } break;
     }
-    if(false==res){
-        LOG_ERROR(SYS, "SendIfErr: %u=%s",interface, interface2str(interface));
+    if(false == res) {
+        LOG_ERROR(SYS, "SendIfErr: %u=%s", interface, interface2str(interface));
     }
     return res;
 }

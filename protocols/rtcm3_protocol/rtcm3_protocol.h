@@ -14,8 +14,8 @@ extern "C" {
 #define RTCM3_HEADER_SIZE 3U
 #define RTCM3_CRC24_SIZE 3U
 #define RTCM3_OVERHEAD (RTCM3_CRC24_SIZE + RTCM3_HEADER_SIZE)
-#define RTCM3_RX_MAX_PAYLOAD_SIZE (512U+RTCM3_OVERHEAD)
-#define RTCM3_RX_MAX_FRAME_SIZE (RTCM3_RX_MAX_PAYLOAD_SIZE+RTCM3_OVERHEAD)
+#define RTCM3_RX_MAX_PAYLOAD_SIZE (512U + RTCM3_OVERHEAD)
+#define RTCM3_RX_MAX_FRAME_SIZE (RTCM3_RX_MAX_PAYLOAD_SIZE + RTCM3_OVERHEAD)
 #define RTCM_IF_CNT 4 /*LoRa RS232 UART1*/
 
 /*TODO: replase with RxState_t*/
@@ -65,7 +65,7 @@ typedef struct xRtcm3Protocol_t {
     uint8_t rx_frame[RTCM3_RX_MAX_FRAME_SIZE];
     uint8_t fix_frame[RTCM3_RX_MAX_FRAME_SIZE];
     Interfaces_t interface;
-    bool forwarding[IF_CNT]; //TODO make bit field
+    bool forwarding[IF_CNT]; // TODO make bit field
 } Rtcm3Protocol_t;
 
 extern Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];

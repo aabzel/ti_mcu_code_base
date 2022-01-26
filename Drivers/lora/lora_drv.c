@@ -9,8 +9,8 @@
 
 #include "array.h"
 #ifdef HAS_CLI
-#include "log.h"
 #include "cli_manager.h"
+#include "log.h"
 #endif
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"

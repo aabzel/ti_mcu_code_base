@@ -23,7 +23,7 @@ typedef enum xFrameId_t {
 } FrameId_t;
 
 #define TBFP_PREAMBLE 0xA5
-//https://docs.google.com/spreadsheets/d/1VAT3Ak7AzcufgvuRHrRVoVfC3nxugFGJR5pyzxL4W7Q/edit#gid=0
+// https://docs.google.com/spreadsheets/d/1VAT3Ak7AzcufgvuRHrRVoVfC3nxugFGJR5pyzxL4W7Q/edit#gid=0
 #define TBFP_INDEX_PREAMBLE 0
 #define TBFP_INDEX_RETX 1
 #define TBFP_INDEX_SER_NUM 2

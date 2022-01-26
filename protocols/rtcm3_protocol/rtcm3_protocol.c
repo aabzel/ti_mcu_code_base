@@ -16,8 +16,8 @@
 #endif
 
 #ifdef X86_64
-#include <stdio.h>
 #include "log.h"
+#include <stdio.h>
 #endif
 
 #ifdef HAS_LORA
@@ -104,7 +104,8 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         if(RTCM3_RX_MAX_FRAME_SIZE < (instance->exp_len.field.len + RTCM3_OVERHEAD)) {
             res = false;
             instance->err_cnt++;
-            LOG_ERROR(SYS, "TooBigFrame:%u byte.Max:%u Byte", instance->exp_len.field.len+RTCM3_CRC24_SIZE, RTCM3_RX_MAX_FRAME_SIZE);
+            LOG_ERROR(SYS, "TooBigFrame:%u byte.Max:%u Byte", instance->exp_len.field.len + RTCM3_CRC24_SIZE,
+                      RTCM3_RX_MAX_FRAME_SIZE);
             rtcm3_reset_rx(instance);
         }
     } else {
@@ -167,11 +168,11 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             led_blink(&Led[LED_INDEX_RED], 10);
 #endif
 
-            switch(instance->interface){
-            case IF_UART1:{
+            switch(instance->interface) {
+            case IF_UART1: {
 
                 Interfaces_t interface = IF_NONE;
-                for(interface = IF_LORA; interface <= IF_CNT; interface++){
+                for(interface = IF_LORA; interface <= IF_CNT; interface++) {
                     if(instance->forwarding[interface]) {
 #ifdef HAS_TBFP
                         /*Wrap to TBFP*/
@@ -182,10 +183,10 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #endif /*HAS_TBFP*/
                     }
                 }
-            }break;
+            } break;
             case IF_LORA:
             case IF_RS232:
-            case IF_CAN:           {
+            case IF_CAN: {
 #ifdef HAS_UART1
                 res = uart_send(UART_NUM_ZED_F9P, instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, true);
                 if(false == res) {
@@ -201,7 +202,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             rtcm3_reset_rx(instance);
         } else {
 #if defined(HAS_LOG) && defined(HAS_MCU)
-            LOG_ERROR(RTCM, "%s CrcErr",interface2str(instance->interface));
+            LOG_ERROR(RTCM, "%s CrcErr", interface2str(instance->interface));
 #endif
             instance->crc_err_cnt++;
             rtcm3_reset_rx(instance);
@@ -273,7 +274,7 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
 bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Interfaces_t interface) {
     bool res = false;
 #ifdef X86_64
-    LOG_DEBUG(RTCM,"%s():", __FUNCTION__);
+    LOG_DEBUG(RTCM, "%s():", __FUNCTION__);
 #endif
     if((NULL != payload) && (0 < size)) {
         uint32_t i = 0;

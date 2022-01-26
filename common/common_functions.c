@@ -149,7 +149,6 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_ADC, 300000, adc_proc, loop_start_time_us);
 #endif
 
-
 #ifdef HAS_RS232
     measure_task_interval(TASK_ID_RS232, RS232_PERIOD_US, proc_rs232, loop_start_time_us);
 #endif /*HAS_UART1*/
@@ -251,7 +250,7 @@ _Noreturn void super_main_loop(void) {
         super_loop(loop_start_time_us);
 #endif
 #ifdef HAS_FREE_RTOS
-        //taskYIELD();
+        // taskYIELD();
         vTaskDelay(5 / portTICK_PERIOD_MS);
 #endif
     }

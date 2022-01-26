@@ -51,9 +51,7 @@ static uint64_t pause_1s(void) {
 }
 #endif
 
-bool clock_init(void){
-    return true;
-}
+bool clock_init(void) { return true; }
 
 /*calibrate*/
 uint64_t pause_1ms(void) {

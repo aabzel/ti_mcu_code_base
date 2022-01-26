@@ -21,51 +21,49 @@
 #include "table_utils.h"
 #include "writer_config.h"
 
-bool sx1262_get_status_command(int32_t argc, char* argv[]){
-	bool res = false;
-	Sx1262Status_t status;
-	status.byte=0;
-	if(0 == argc) {
-		res = true;
-	} else {
+bool sx1262_get_status_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    Sx1262Status_t status;
+    status.byte = 0;
+    if(0 == argc) {
+        res = true;
+    } else {
         LOG_ERROR(LORA, "Usage: sxgs");
-	}
-	if(res){
+    }
+    if(res) {
         res = sx1262_get_status(&status.byte);
         if(res) {
             LOG_INFO(LORA, "GetStatysOk");
-            LOG_INFO(LORA, "Status 0x%02X=0b%s",status.byte, utoa_bin8(status.byte));
-            LOG_INFO(LORA, "Status CmdStat:%u %s ChipMode:%u %s",
-            		status.command_status, cmd_stat2str(status.command_status),
-					status.chip_mode, chip_mode2str(status.chip_mode)
-    				);
+            LOG_INFO(LORA, "Status 0x%02X=0b%s", status.byte, utoa_bin8(status.byte));
+            LOG_INFO(LORA, "Status CmdStat:%u %s ChipMode:%u %s", status.command_status,
+                     cmd_stat2str(status.command_status), status.chip_mode, chip_mode2str(status.chip_mode));
         } else {
             LOG_ERROR(LORA, "GetStatysErr");
         }
-	}
-	return res;
+    }
+    return res;
 }
 
-bool sx1262_set_lora_sync_word_command(int32_t argc, char* argv[]){
-	bool res = false;
+bool sx1262_set_lora_sync_word_command(int32_t argc, char* argv[]) {
+    bool res = false;
     uint16_t lora_sync_word = 0;
-	if(1 == argc) {
+    if(1 == argc) {
         res = try_str2uint16(argv[0], &lora_sync_word);
-        if (false==res) {
-        	LOG_ERROR(LORA, "ParseLoraSyncWordErr %s",argv[0]);
+        if(false == res) {
+            LOG_ERROR(LORA, "ParseLoraSyncWordErr %s", argv[0]);
         }
-	}else{
+    } else {
         LOG_ERROR(LORA, "Usage: sxslsw sync_word16bit");
-	}
-	if(res){
+    }
+    if(res) {
         res = sx1262_set_lora_sync_word(lora_sync_word);
         if(res) {
             LOG_INFO(LORA, "SetLoRaSyncWordOk");
         } else {
             LOG_ERROR(LORA, "SetLoRaSyncWordErr");
         }
-	}
-	return res;
+    }
+    return res;
 }
 
 bool sx1262_mute_command(int32_t argc, char* argv[]) {
@@ -864,30 +862,29 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                         Sx1262Instance.mod_params.low_data_rate_optimization, &Tsym, &t_preamble);
                     strcpy(temp_str, TSEP);
                     snprintf(suffix_str, sizeof(suffix_str), "%5u " TSEP, (uint32_t)powf(2.0f, (float)sf));
-                    strncat(temp_str,suffix_str,sizeof(temp_str));
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     snprintf(suffix_str, sizeof(suffix_str), "%6.2f " TSEP,
                              ((float)bandwidth2num((BandWidth_t)bw)) / 1000.0f);
-                    strncat(temp_str,suffix_str,sizeof(temp_str));
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%3s " TSEP,
-                             coding_rate2str((LoRaCodingRate_t)cr));
-                    strncat(temp_str,suffix_str,sizeof(temp_str));
+                    snprintf(suffix_str, sizeof(suffix_str), "%3s " TSEP, coding_rate2str((LoRaCodingRate_t)cr));
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, data_rate);
-                    strncat(temp_str,suffix_str,sizeof(temp_str));
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, data_rate / 8);
-                    strncat(temp_str,suffix_str,sizeof(temp_str));
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, Tsym * 1000.0f);
-                    strncat(temp_str,suffix_str,sizeof(temp_str));
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, t_preamble * 1000.0f);
-                    strncat(temp_str,suffix_str,sizeof(temp_str));
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, t_frame * 1000.0f);
-                    strncat(temp_str,suffix_str,sizeof(temp_str));
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     if(is_contain(temp_str, key_word1, key_word2)) {
                         io_printf(TSEP " %3u ", num);
@@ -904,36 +901,36 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
 #endif
 
 #ifdef HAS_SX1262_EX_DEBUG
-bool sx1262_set_standby_command(int32_t argc, char* argv[]){
-	bool res = false;
-	uint8_t stdby_config;
-	if(1==argc){
-		 res = try_str2uint8(argv[0], (uint8_t*)&stdby_config);
-	     if(false == res) {
-	         LOG_ERROR(LORA, "Unable to extract stdby_config %s", argv[1]);
-	     }
-	}
-	if(res){
-		res = sx1262_set_standby((StandbyMode_t)stdby_config);
-		if(res) {
-		    LOG_INFO(LORA, "Ok");
-		}
-	}else{
-	    LOG_ERROR(LORA, "Usage: sxss mode");
-	    LOG_INFO(LORA, " mode %u-STDBY_RC",STDBY_RC);
-	    LOG_INFO(LORA, " mode %u-STDBY_XOSC",STDBY_XOSC);
-	}
-	return res;
+bool sx1262_set_standby_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    uint8_t stdby_config;
+    if(1 == argc) {
+        res = try_str2uint8(argv[0], (uint8_t*)&stdby_config);
+        if(false == res) {
+            LOG_ERROR(LORA, "Unable to extract stdby_config %s", argv[1]);
+        }
+    }
+    if(res) {
+        res = sx1262_set_standby((StandbyMode_t)stdby_config);
+        if(res) {
+            LOG_INFO(LORA, "Ok");
+        }
+    } else {
+        LOG_ERROR(LORA, "Usage: sxss mode");
+        LOG_INFO(LORA, " mode %u-STDBY_RC", STDBY_RC);
+        LOG_INFO(LORA, " mode %u-STDBY_XOSC", STDBY_XOSC);
+    }
+    return res;
 }
 #endif
 
 #ifdef HAS_SX1262_EX_DEBUG
-bool sx1262_proc_command(int32_t argc, char* argv[]){
-	bool res = false;
-	if(0==argc){
-	    res= sx1262_process();
-	}
-	return res;
+bool sx1262_proc_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 == argc) {
+        res = sx1262_process();
+    }
+    return res;
 }
 #endif
 

@@ -8,12 +8,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #ifdef HAS_FREE_RTOS
 #include <FreeRTOS.h>
 #include <semphr.h>
 #endif
-
 
 #include "bit_utils.h"
 #include "board_layout.h"
@@ -51,17 +49,17 @@ extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(10);                                                                               \
+        res = sx1262_wait_on_busy(10);                                                                                 \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
-            sx1262_chip_select(true);                                                                            \
-            wait_ms(1);                                                                                          \
+            sx1262_chip_select(true);                                                                                  \
+            wait_ms(1);                                                                                                \
             res = CALL_BACK;                                                                                           \
-            wait_ms(1);                                                                                          \
-            sx1262_chip_select(false);                                                                           \
+            wait_ms(1);                                                                                                \
+            sx1262_chip_select(false);                                                                                 \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \
-            /*LOG_ERROR(LORA,"SX1262Busy");*/                                                                              \
+            /*LOG_ERROR(LORA,"SX1262Busy");*/                                                                          \
             res = false;                                                                                               \
         }                                                                                                              \
     } while(0);
@@ -75,7 +73,7 @@ bool sx1262_get_dev_err(uint16_t* op_error);
 bool sx1262_get_irq_status(Sx1262IRQs_t* irq_stat);
 bool sx1262_get_packet_status(uint8_t* RxStatus, uint8_t* RssiSync, uint8_t* RssiAvg, int8_t* RssiPkt, uint8_t* SnrPkt,
                               int8_t* SignalRssiPkt);
-bool sx1262_get_packet_type(RadioPacketType_t* const packet_type, uint8_t *status) ;
+bool sx1262_get_packet_type(RadioPacketType_t* const packet_type, uint8_t* status);
 bool sx1262_get_rssi_inst(int8_t* rssi_inst);
 bool sx1262_get_rx_payload(uint8_t* payload, uint16_t* size, uint16_t max_size, uint8_t* crc8);
 bool sx1262_get_rxbuff_status(uint8_t* PayloadLengthRx, uint8_t* RxStartBufferPointer);

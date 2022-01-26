@@ -36,8 +36,8 @@ bool sx1262_set_lora_sync_word_command(int32_t argc, char* argv[]);
 
 #define SX1262_COMMANDS_BASE                                                                                           \
     SHELL_CMD("sx1262_diag", "sxd", sx1262_diag_command, "SX1262 diag"),                                               \
-	SHELL_CMD("sx1262_get_status", "sxgs", sx1262_get_status_command, "SX1262 GetStatus"),                                               \
-    SHELL_CMD("sx1262_clr_err", "sxce", sx1262_clear_err_command, "SX1262 clear errors"),                          \
+        SHELL_CMD("sx1262_get_status", "sxgs", sx1262_get_status_command, "SX1262 GetStatus"),                         \
+        SHELL_CMD("sx1262_clr_err", "sxce", sx1262_clear_err_command, "SX1262 clear errors"),                          \
         SHELL_CMD("sx1262_clr_fifo", "sxcf", sx1262_clear_fifo_command, "SX1262 clear FIFO"),                          \
         SHELL_CMD("sx1262_init", "sxi", sx1262_init_command, "SX1262 init"),                                           \
         SHELL_CMD("sx1262_stat", "sxst", sx1262_statistic_command, "SX1262 statistic"),                                \
@@ -67,9 +67,9 @@ bool sx1262_proc_command(int32_t argc, char* argv[]);
 bool sx1262_set_standby_command(int32_t argc, char* argv[]);
 
 #define SX1262_COMMANDS_DEBUG                                                                                          \
-		SHELL_CMD("sx1262_proc", "sxp", sx1262_proc_command, "SX1262 proc"),     \
-		SHELL_CMD("sx1262_standby", "sxss", sx1262_set_standby_command, "SX1262 SetStandBy"),     \
-        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                               \
+    SHELL_CMD("sx1262_proc", "sxp", sx1262_proc_command, "SX1262 proc"),                                               \
+        SHELL_CMD("sx1262_standby", "sxss", sx1262_set_standby_command, "SX1262 SetStandBy"),                          \
+        SHELL_CMD("sx1262_calc", "sxc", sx1262_calc_command, "SX1262 calc"),                                           \
         SHELL_CMD("sx1262_set_pack_param", "sxpp", sx1262_set_packet_param_command, "SX1262 set packet param"),        \
         SHELL_CMD("sx1262_mod", "sxmd", sx1262_set_modulation_command, "SX1262 modulation"),
 #else

@@ -1,7 +1,6 @@
 #ifndef UBX_KEY_IDS_H
 #define UBX_KEY_IDS_H
 
-
 #ifdef HAS_GPS_CORRECTION
 #define CFG_MSGOUT_RTCM_3X_TYPE1074_UART1 0x2091035f // GPS MSM4 (Input/output)
 #define CFG_MSGOUT_RTCM_3X_TYPE1077_UART1 0x209102cd // GPS MSM7 (Input/output)

@@ -7,9 +7,9 @@
 
 #include "TCAN4550.h"
 #include "TCAN_hl.h"
-#include "can_drv.h"
 #include "bit_utils.h"
 #include "byte_utils.h"
+#include "can_drv.h"
 #include "clocks.h"
 #include "data_utils.h"
 #include "debug_info.h"
@@ -1385,7 +1385,7 @@ bool tcan4550_proc(void) {
 #ifdef HAS_CAN_POLLING
     static CanDevMode_t prev_mode = MODE_UNDEF;
 #endif
-   // CanPhy.cur.connected = is_tcan4550_connected();
+    // CanPhy.cur.connected = is_tcan4550_connected();
     CanPhy.cur.connected = true;
     if(false == CanPhy.cur.connected) {
 #ifdef HAS_LOG

@@ -15,8 +15,8 @@
 #include "param_ids.h"
 #endif
 #ifdef HAS_LOG
-#include "log.h"
 #include "io_utils.h"
+#include "log.h"
 #endif
 #ifdef HAS_LED
 #include "led_drv.h"
