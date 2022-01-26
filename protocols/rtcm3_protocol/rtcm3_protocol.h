@@ -11,9 +11,9 @@ extern "C" {
 #include "system.h"
 
 #define RTCM3_PREAMBLE 0xD3
-#define RTCM3_RX_FRAME_SIZE 256U
 #define RTCM3_HEADER_SIZE 3U
 #define RTCM3_CRC24_SIZE 3U
+#define RTCM3_RX_FRAME_SIZE (1024U+RTCM3_CRC24_SIZE+RTCM3_HEADER_SIZE)
 #define RTCM_IF_CNT 4 /*LoRa RS232 UART1*/
 
 /*TODO: replase with RxState_t*/

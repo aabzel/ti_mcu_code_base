@@ -1225,7 +1225,7 @@ static bool tcan4550_poll_can_interrupts(void) {
 
     return res;
 }
-
+#ifdef HAS_CAN_POLLING
 static bool tcan4550_poll_dev_interrupts(void) {
     bool res = false;
     uint32_t clear_bits = 0;
@@ -1369,6 +1369,7 @@ static bool tcan4550_poll_dev_interrupts(void) {
 
     return res;
 }
+#endif
 
 bool tcan4550_poll_interrupts(void) {
     bool res = true;
@@ -1381,7 +1382,9 @@ bool tcan4550_poll_interrupts(void) {
 
 bool tcan4550_proc(void) {
     bool res = false;
+#ifdef HAS_CAN_POLLING
     static CanDevMode_t prev_mode = MODE_UNDEF;
+#endif
    // CanPhy.cur.connected = is_tcan4550_connected();
     CanPhy.cur.connected = true;
     if(false == CanPhy.cur.connected) {
@@ -1442,7 +1445,9 @@ bool tcan4550_proc(void) {
                 }
             }
         }
+#ifdef HAS_CAN_POLLING
         prev_mode = CanPhy.cur.mode;
+#endif
     }
 
     return res;

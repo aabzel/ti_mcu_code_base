@@ -8,20 +8,58 @@
 #include "data_utils.h"
 #include "io_utils.h"
 #include "log.h"
+#include "str_utils.h"
 #include "system.h"
 #include "rtcm3_protocol.h"
 #include "table_utils.h"
 #include "writer_generic.h"
 #include "writer_config.h"
 
+static bool rtcm3_diag_lost(char* key_word1, char* key_word2) {
+    bool res = false;
+    uint8_t interface_base_gnss = IF_UART1;
+    static const table_col_t cols[] = {{7, "if"},
+                                       {5, "Fwd"},
+                                       {9, "lost"},
+                                       {8, "lost,%"},
+                                       {9, "RxCnt"},
+    };
+    char line_str[200] = "";
+    char suffix_str[200] = "";
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    Interfaces_t intf;
+    for(intf = IF_LORA; intf<IF_CNT; intf++){
+        strcpy(line_str, TSEP);
+        snprintf(suffix_str, sizeof(suffix_str)," %5s " TSEP, interface2str((Interfaces_t)intf));
+        strncat(line_str,suffix_str, sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str),"  %1u  " TSEP, Rtcm3Protocol[interface_base_gnss].forwarding[intf]);
+        strncat(line_str,suffix_str, sizeof(line_str));
+
+        double lost_pkt_pc = ((double)100*Rtcm3Protocol[interface_base_gnss].lost_pkt_cnt[intf])/((double)Rtcm3Protocol[interface_base_gnss].rx_pkt_cnt);
+        snprintf(suffix_str, sizeof(suffix_str)," %7u " TSEP,  Rtcm3Protocol[interface_base_gnss].lost_pkt_cnt[intf]);
+        strncat(line_str,suffix_str, sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str),"   %3.1f  " TSEP,(double) lost_pkt_pc);
+        strncat(line_str,suffix_str, sizeof(line_str));
+
+        snprintf(suffix_str, sizeof(suffix_str)," %7u " TSEP, Rtcm3Protocol[interface_base_gnss].rx_pkt_cnt);
+        strncat(line_str,suffix_str, sizeof(line_str));
+
+        if(is_contain(line_str, key_word1, key_word2)) {
+            io_printf("%s"CRLF, line_str);
+        }
+    }
+    res = true;
+
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    return res;
+}
+
 static bool rtcm3_diag(void) {
     bool res = false;
     uint8_t interface = 0;
     static const table_col_t cols[] = {{7, "if"},
-                                       {5, "loF"},
-                                       {9, "lostLoRa"},
-                                       {8, "lost,%"},
-                                       {9, "lostUart"},
                                        {9, "rxCnt"},
                                        {9, "crcErCnt"},
 #ifdef HAS_DEBUG
@@ -36,11 +74,6 @@ static bool rtcm3_diag(void) {
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
         io_printf(TSEP);
         io_printf(" %5s " TSEP, interface2str((Interfaces_t)interface));
-        io_printf("  %1u  " TSEP, Rtcm3Protocol[interface].forwarding[IF_LORA]);
-        io_printf(" %7u " TSEP,  Rtcm3Protocol[interface].lost_pkt_cnt[IF_LORA]);
-        double lora_lost_pkt_pc = ((double)100*Rtcm3Protocol[interface].lost_pkt_cnt[IF_LORA])/((double)Rtcm3Protocol[interface].rx_pkt_cnt);
-        io_printf("   %3.1f  " TSEP,(double) lora_lost_pkt_pc);
-        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].uart_lost_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].rx_pkt_cnt);
         io_printf(" %7u " TSEP, Rtcm3Protocol[interface].crc_err_cnt);
 #ifdef HAS_DEBUG
@@ -56,6 +89,33 @@ static bool rtcm3_diag(void) {
         res = true;
     }
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    return res;
+}
+
+bool rtcm3_diag_lost_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    char keyWord1[20] = "";
+    char keyWord2[20] = "";
+    if(0 <= argc) {
+        strncpy(keyWord1, "", sizeof(keyWord1));
+        strncpy(keyWord2, "", sizeof(keyWord2));
+        res = true;
+    }
+    if(1 <= argc) {
+        strncpy(keyWord1, argv[0], sizeof(keyWord1));
+        res = true;
+    }
+    if(2 <= argc) {
+        strncpy(keyWord2, argv[1], sizeof(keyWord2));
+        res = true;
+    }
+
+    if(2 < argc) {
+        LOG_ERROR(SYS, "Usage: rtcmd keyWord1 keyWord2");
+    }
+    if(true == res) {
+        res = rtcm3_diag_lost(keyWord1, keyWord2);
+    }
     return res;
 }
 

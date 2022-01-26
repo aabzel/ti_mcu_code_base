@@ -16,8 +16,8 @@ typedef enum eInterfaces_t {
     IF_UART1 = 4,
     IF_UART0 = 5,
     IF_BLE = 6,
-    IF_SPI0 = 7,
     IF_CNT = 8,
+    IF_SPI0 = 7,
     IF_NONE = 9,
 #ifdef HAS_IAR
 }  Interfaces_t;
