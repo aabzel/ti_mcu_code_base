@@ -15,6 +15,10 @@
 #include "writer_uart.h"
 #endif /*HAS_UART*/
 
+#ifdef X86_64
+#include "writer_stdout.h"
+#endif /*X86_64*/
+
 extern generic_writer_t *curWriterPtr;
 
 bool writer_init(void);

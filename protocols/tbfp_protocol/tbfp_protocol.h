@@ -1,7 +1,7 @@
 #ifndef TBFP_PROTOCOL_H
 #define TBFP_PROTOCOL_H
 
-/*TBFP Trivial Binary Frame Ðrotocol*/
+/*TBFP Trivial Binary Frame Protocol*/
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -23,12 +23,12 @@ typedef enum xFrameId_t {
 } FrameId_t;
 
 #define TBFP_PREAMBLE 0xA5
-
+//https://docs.google.com/spreadsheets/d/1VAT3Ak7AzcufgvuRHrRVoVfC3nxugFGJR5pyzxL4W7Q/edit#gid=0
 #define TBFP_INDEX_PREAMBLE 0
-#define TBFP_INDEX_LEN 1
+#define TBFP_INDEX_RETX 1
 #define TBFP_INDEX_SER_NUM 2
-#define TBFP_INDEX_RETX 4
-#define TBFP_INDEX_PAYLOAD 5
+#define TBFP_INDEX_LEN 4
+#define TBFP_INDEX_PAYLOAD 6
 
 #define TBFP_SIZE_ID 1
 #define TBFP_SIZE_CRC 1
@@ -37,14 +37,14 @@ typedef enum xFrameId_t {
 
 typedef struct xTbfHeader_t {
     uint8_t preamble;
-    uint8_t len;
-#ifdef HAS_TBFP_FLOW_CONTROL
-    uint16_t snum; /* serial number of the frame. For flow controll.*/
-#endif
 #ifdef HAS_TBFP_RETRANSMIT
     uint8_t lifetime; /*For mesh feature*/
 #endif
-} __attribute__((__packed__)) TbfHeader_t;
+#ifdef HAS_TBFP_FLOW_CONTROL
+    uint16_t snum; /* serial number of the frame. For flow controll.*/
+#endif
+    uint16_t len;
+} __attribute__((packed)) TbfHeader_t;
 
 typedef struct xTbfPingFrame_t {
     uint8_t id;

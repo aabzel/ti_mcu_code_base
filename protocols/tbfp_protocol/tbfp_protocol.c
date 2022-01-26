@@ -53,6 +53,9 @@
 #include "log.h"
 #endif
 
+#ifndef HAS_TBFP
+#error "That components needs HAS_TBFP macro define"
+#endif
 
 TbfpProtocol_t TbfpProtocol[IF_CNT] = {0};
 
@@ -77,7 +80,7 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
 bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
     bool res = false;
 #ifdef X86_64
-    printf("\n%s(): len: %u", __FUNCTION__, len);
+    LOG_DEBUG(TBFP,"%s(): len: %u", __FUNCTION__, len);
 #endif
     TbfHeader_t header = {0};
     memcpy(&header, arr, sizeof(TbfHeader_t));
@@ -113,7 +116,7 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
             header.lifetime = lifetime;
 #endif
             TbfpProtocol[interface].tx_pkt_cnt++;
-            header.len = (uint8_t)payload_len;
+            header.len = (uint16_t)payload_len;
             memcpy(out_array, &header, sizeof(TbfHeader_t));
             res = true;
         } else {
@@ -169,7 +172,8 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, 
             memcpy(&frame[TBFP_INDEX_PAYLOAD + 1], tx_array, len);
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
             res = sys_send_if(frame, frame_len + TBFP_SIZE_CRC,  interface);
-
+        }else{
+            LOG_ERROR(TBFP, "MakeHeaderError");
         }
     }
     return res;
@@ -224,7 +228,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
     if(NULL != ping_payload) {
         TbfPingFrame_t pingFrame = {0};
         memcpy((void*)&pingFrame, (void*)ping_payload, sizeof(TbfPingFrame_t));
-#ifdef HAS_LOG
+#if defined(HAS_LOG) && defined(HAS_MCU)
         tbfp_print_ping_frame(&pingFrame);
 #endif /*HAS_MCU*/
         if(FRAME_ID_PING == pingFrame.id) {
@@ -342,12 +346,15 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     return res;
 }
 
-/*One LoRa frame can contain several TBFP frames*/
-bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset) {
+/*One arr frame can contain several TBFP frames*/
+bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset_parser) {
+#ifdef HAS_LOG
+    LOG_DEBUG(TBFP, "Proc If:%s Len: %u", interface2str(interface), len);
+#endif
     bool res = true;
     uint32_t cur_rx_prk = 0;
     uint32_t init_rx_prk = TbfpProtocol[interface].rx_pkt_cnt;
-    if(is_reset){
+    if(is_reset_parser){
         res = tbfp_parser_reset_rx(&TbfpProtocol[interface]);
     }
     uint32_t i = 0, ok_cnt = 0, err_cnt = 0;
@@ -358,7 +365,7 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset
         } else {
             err_cnt++;
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "i=%u", i);
+            LOG_ERROR(TBFP, "Arr[%u]=0x%x", i,arr[i]);
 #endif
         }
     }
@@ -380,6 +387,7 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset
     if(len == ok_cnt) {
         res = true;
     } else {
+        LOG_ERROR(TBFP, "ProcErr %u!=%u", ok_cnt, len);
         res = false;
     }
 

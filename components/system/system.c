@@ -22,8 +22,13 @@
 #include "io_utils.h"
 #include "log.h"
 #endif
+#ifdef HAS_MCU
 #include "sys_config.h"
+#endif
+
+#ifdef HAS_UART
 #include "uart_common.h"
+#endif
 
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
@@ -32,6 +37,7 @@
 #ifdef HAS_BOOTLOADER
 #error "That API only for Generic"
 #endif
+
 
 const char* interface2str(Interfaces_t interface) {
     const char* name = "undef";
@@ -45,11 +51,20 @@ const char* interface2str(Interfaces_t interface) {
     case IF_UART1:
         name = "UART1";
         break;
+    case IF_UART0:
+        name = "UART0";
+        break;
     case IF_CAN:
         name = "CAN";
         break;
     case IF_BLE:
         name = "BLE";
+        break;
+    case IF_LOOPBACK:
+        name = "LoopBack";
+        break;
+    case IF_SPI0:
+        name = "SPI0";
         break;
     default:
         break;
@@ -117,15 +132,18 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
     case IF_LOOPBACK: {
 #ifdef HAS_TBFP
         res = tbfp_proc(array, len , IF_LOOPBACK, true);
+        if(false==res){
+            LOG_ERROR(SYS, "tbfpProcErr");
+        }
 #endif
     } break;
-    default:
+    default:{
         LOG_ERROR(SYS, "UndefIf: %u=%s",interface, interface2str(interface));
         res = false;
-        break;
+    }break;
     }
     if(false==res){
-        LOG_ERROR(SYS, "SendErr: %u=%s",interface, interface2str(interface));
+        LOG_ERROR(SYS, "SendIfErr: %u=%s",interface, interface2str(interface));
     }
     return res;
 }

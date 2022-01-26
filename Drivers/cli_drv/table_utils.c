@@ -1,6 +1,7 @@
 #include "table_utils.h"
 
 #include <string.h>
+#include "ostream.h"
 
 typedef struct {
   const char *left;

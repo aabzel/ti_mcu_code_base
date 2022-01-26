@@ -1,18 +1,35 @@
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_SYMBOLS}"/>
-									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_SYMBOLS}"/>
-									<listOptionValue builtIn="false" value="HAS_ADC"/>
-									<listOptionValue builtIn="false" value="HAS_BOOT"/>
-									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
-									<listOptionValue builtIn="false" value="HAS_CALENDAR"/>
-									<listOptionValue builtIn="false" value="HAS_CRC"/>
-									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
-									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
-									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
-									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR_COMMANDS"/>
-									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
-									<listOptionValue builtIn="false" value="HAS_SUPER_LOOP"/>
-									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
-									<listOptionValue builtIn="false" value="HAS_TASKS"/>
-									<listOptionValue builtIn="false" value="HAS_TELEMATIC"/>
-									<listOptionValue builtIn="false" value="HAS_TIM_COMMANDS"/>
-									<listOptionValue builtIn="false" value="NORTOS"/>
+	LED,
+    ALL_FACILITY
+    BATT,
+    BOOT,
+    CAN,
+    COM,
+    CRC8,
+    DIAG,
+    FLASH_FS,
+    HMOM,
+    I2C,
+    LG_ADC,
+    LG_CAL,
+    LG_DAC,
+    LG_FLASH,
+    LG_INT,
+    LG_PWR,
+    LG_RNG,
+    LG_RTC,
+    LORA,
+    NMEA,
+    NVS,
+    PARAM,
+    RF,
+    RTCM,
+    SPI,
+    SYS,
+    TBFP,
+    TEST,
+    TIM,
+    UART,
+    UBX,
+    UNKNOWN_FACILITY = 0,
+    WDT,
+    ZED_F9P,

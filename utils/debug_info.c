@@ -28,10 +28,10 @@
 #endif
 
 #ifdef HAS_LOG
+#include "oprintf.h"
 #include "table_utils.h"
 #include "writer_config.h"
 #include "writer_generic.h"
-#include "oprintf.h"
 #endif
 
 #include "version.h"

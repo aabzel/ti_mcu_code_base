@@ -5,5 +5,6 @@ CLI_DRV_DIR = $(PROJECT_ROOT)Drivers/cli_drv
 INCDIR += -I$(CLI_DRV_DIR)
 
 SOURCES_C +=  $(CLI_DRV_DIR)/cli_manager.c
+SOURCES_C +=  $(CLI_DRV_DIR)/table_utils.c
 
 

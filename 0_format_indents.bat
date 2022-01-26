@@ -6,6 +6,8 @@ set style1="{SpaceBeforeParens: Never, IndentWidth: 4, SortIncludes: true, SortU
 rem set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 set format_tool="C:\cygwin64\bin\clang-format.exe"
 
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\cli_drv\table_utils.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\cli_drv\table_utils.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\nmea_protocol\nmea_diag.c
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\nmea_protocol\nmea_diag.h
 //%format_tool%  -verbose -i -style=%style1% %work_space_dir%\boards\harvester_v1\board_layout.c

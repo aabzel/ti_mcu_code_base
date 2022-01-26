@@ -16,7 +16,9 @@ bool test_tbfp_proto_overlen(void);
 bool test_tbfp_types(void);
 
 #define TEST_SUIT_TBFP_PROTO                                                                                           \
-    {"tbfpTypes", test_tbfp_types}, {"tbfpProto1", test_tbfp_proto_1}, {"tbfp_proto2", test_tbfp_proto_2},             \
+    {"tbfpTypes", test_tbfp_types},\
+{"tbfpProto1", test_tbfp_proto_1}, \
+{"tbfp_proto2", test_tbfp_proto_2},             \
         {"tbfpProto1", test_tbfp_proto_0}, {"tbfpProto29", test_tbfp_proto_29},                                        \
         {"tbfpProto_flow_ctrl", test_tbfp_proto_flow_ctrl},
 
