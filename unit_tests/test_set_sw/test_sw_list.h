@@ -101,7 +101,7 @@ extern "C" {
 #include "test_system.h"
 #include "test_time_utils.h"
 #else
-#define TEST_SUIT_SYSTEM
+#define TEST_SUIT_SYSTEM_SW
 #define TEST_SUIT_UTILS_BIT
 #define TEST_SUIT_UTILS_BYTE
 #define TEST_SUIT_UTILS_DATA
@@ -144,7 +144,7 @@ bool test_uspec_behavior(void);
     TEST_SUIT_RTCM3_PATH                                                                                               \
     TEST_SUIT_TBFP_PROTO                                                                                               \
     TEST_SUIT_TBFP_RTCM_STACK                                                                                          \
-    TEST_SUIT_SYSTEM                                                                                                   \
+    TEST_SUIT_SYSTEM_SW                                                                                                \
     TEST_SUIT_STRING_UTILS                                                                                             \
     UBLOX_PROTO_TEST_SUIT{"array_init", test_array_init}, {"uspec_behavior", test_uspec_behavior},                     \
         {"array", test_array}, {"types", test_types}, {"64bit_mult", test_64bit_mult},                                 \

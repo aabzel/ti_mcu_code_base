@@ -9,7 +9,7 @@ extern "C" {
 
 bool test_system(void);
 
-#define TEST_SUIT_SYSTEM {"system", test_system},
+#define TEST_SUIT_SYSTEM_SW {"system", test_system},
 
 #ifdef __cplusplus
 }
