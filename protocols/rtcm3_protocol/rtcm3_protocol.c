@@ -60,7 +60,7 @@ bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool
 
 static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    if(RTCM3_PREAMBLE == rx_byte) {
+    if((RTCM3_PREAMBLE == rx_byte) && (0 == instance->load_len)) {
         instance->rx_state = RTCM3_WAIT_LEN;
         instance->rx_frame[0] = rx_byte;
         instance->load_len = 1;
@@ -79,21 +79,18 @@ static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte)
 
 static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    if(1 == instance->load_len) {
-        instance->rx_frame[1] = rx_byte;
-        instance->exp_len.len8[1] = rx_byte;
+    if(RTCM3_INX_LEN == instance->load_len) {
+        instance->rx_frame[RTCM3_INX_LEN] = rx_byte;
+        instance->exp_len.len8[RTCM3_INX_LEN] = rx_byte;
         instance->load_len = 2;
         instance->rx_state = RTCM3_WAIT_LEN;
         res = true;
-    } else if(2 == instance->load_len) {
-        instance->rx_frame[2] = rx_byte;
+    } else if((RTCM3_INX_LEN + 1) == instance->load_len) {
+        instance->rx_frame[RTCM3_INX_LEN + 1] = rx_byte;
         instance->exp_len.len8[0] = rx_byte;
         instance->load_len = 3;
 #ifdef HAS_LOG
         LOG_DEBUG(RTCM, "ExpLen %u", instance->exp_len.field.len);
-#endif
-#ifdef X86_64
-        printf("\n   exp len %u", instance->exp_len.field.len);
 #endif
         instance->rx_state = RTCM3_WAIT_PAYLOAD;
         res = true;

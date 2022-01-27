@@ -86,8 +86,8 @@ static bool zed_f9p_proc_base(void) {
         Rtcm3Protocol[IF_UART1].forwarding[IF_RS232] = false;
         Rtcm3Protocol[IF_UART1].forwarding[IF_CAN] = true;
 #endif
-        task_data[TASK_ID_TCAN4550].on = true;
 #ifdef HAS_CAN
+        task_data[TASK_ID_TCAN4550].on = true;
         // can.ping = true;
 #endif
     }

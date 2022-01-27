@@ -70,7 +70,9 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
         res = true;
     }
     if(TBFP_SIZE_HEADER != sizeof(TbfHeader_t)) {
+#ifdef HAS_LOG
         LOG_ERROR(TBFP, "HeaderLenErr");
+#endif
         res = false;
     }
     return res;
@@ -78,8 +80,8 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
 
 bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
     bool res = false;
-#ifdef X86_64
-    LOG_DEBUG(TBFP, "%s(): len: %u", __FUNCTION__, len);
+#ifdef HAS_LOG
+    LOG_DEBUG(TBFP, "IsTBFP len: %u", len);
 #endif
     TbfHeader_t header = {0};
     memcpy(&header, arr, sizeof(TbfHeader_t));
@@ -87,14 +89,18 @@ bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
         res = true;
     } else {
         res = false;
+#ifdef HAS_LOG
         LOG_ERROR(TBFP, "FlameErr");
+#endif
     }
     if(res) {
         uint32_t frame_len = TBFP_SIZE_HEADER + header.len;
         uint8_t read_crc8 = arr[frame_len];
         res = crc8_sae_j1850_check(arr, frame_len, read_crc8);
         if(false == res) {
+#ifdef HAS_LOG
             LOG_ERROR(TBFP, "CrcErr Read:0x%02x", read_crc8);
+#endif
         }
     }
 
@@ -119,11 +125,15 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
             memcpy(out_array, &header, sizeof(TbfHeader_t));
             res = true;
         } else {
+#ifdef HAS_LOG
             LOG_ERROR(TBFP, "NullPayLoad");
+#endif
         }
 
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(TBFP, "TooBigPayload %u (Lim: %u)", payload_len, TBFP_MAX_PAYLOAD);
+#endif
     }
     return res;
 }
@@ -143,16 +153,23 @@ bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_
     return res;
 }
 
-bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime) {
+bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface, uint8_t lifetime) {
     bool res = false;
-    if(tx_array && (0 < len)) {
-        uint8_t frame[256] = "";
-        uint32_t frame_len = TBFP_SIZE_HEADER + len;
-        res = tbfp_make_header(frame, len, interface, lifetime);
-        if(res) {
-            memcpy(&frame[TBFP_INDEX_PAYLOAD], tx_array, len);
-            frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
-            res = sys_send_if(frame, frame_len + TBFP_SIZE_CRC, interface);
+    if(payload && (0 < payload_len)) {
+        if((payload_len + TBFP_SIZE_OVERHEAD) < sizeof(TbfpProtocol[interface].tx_frame)) {
+            uint32_t frame_len = TBFP_SIZE_HEADER + payload_len;
+            memset(TbfpProtocol[interface].tx_frame, 0x00, sizeof(TbfpProtocol[interface].tx_frame));
+            res = tbfp_make_header(TbfpProtocol[interface].tx_frame, payload_len, interface, lifetime);
+            if(res) {
+                memcpy(&TbfpProtocol[interface].tx_frame[TBFP_INDEX_PAYLOAD], payload, payload_len);
+                TbfpProtocol[interface].tx_frame[frame_len] =
+                    crc8_sae_j1850_calc(TbfpProtocol[interface].tx_frame, frame_len);
+                res = sys_send_if(TbfpProtocol[interface].tx_frame, frame_len + TBFP_SIZE_CRC, interface);
+            }
+        } else {
+#ifdef HAS_LOG
+            LOG_ERROR(TBFP, "TooBigPayload");
+#endif
         }
     }
     return res;
@@ -171,7 +188,9 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, 
             frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
             res = sys_send_if(frame, frame_len + TBFP_SIZE_CRC, interface);
         } else {
+#ifdef HAS_LOG
             LOG_ERROR(TBFP, "MakeHeaderError");
+#endif
         }
     }
     return res;
@@ -319,25 +338,36 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     switch(payload[0]) {
 #ifdef HAS_RTCM3
     case FRAME_ID_RTCM3:
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "RTCMpayload");
+#endif
         res = rtcm3_proc_array(payload, len, interface);
         break;
 #endif /*HAS_RTCM3*/
     case FRAME_ID_CHAT:
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "ChatPayload");
+#endif
         res = tbfp_proc_chat(payload, len);
         break;
     case FRAME_ID_PONG:
+
     case FRAME_ID_PING:
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "PingPayload");
+#endif
         res = tbfp_proc_ping(payload, len, interface);
         break;
     case FRAME_ID_CMD:
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "CmdPayload");
+#endif
         res = tbfp_proc_cmd(payload, len);
         break;
     default:
+#ifdef HAS_LOG
         LOG_ERROR(TBFP, "UndefPayload ID: 0x%02x", payload[0]);
+#endif
         res = false;
         break;
     }
@@ -385,7 +415,9 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset
     if(len == ok_cnt) {
         res = true;
     } else {
+#ifdef HAS_LOG
         LOG_ERROR(TBFP, "ProcErr %u!=%u", ok_cnt, len);
+#endif
         res = false;
     }
 
@@ -402,10 +434,10 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         TbfHeader_t inHeader = {0};
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
 #ifdef HAS_TBFP_FLOW_CONTROL
-
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "prev_snum:%u snum:%u flow:%u", TbfpProtocol[interface].prev_s_num, inHeader.snum,
                   TbfpProtocol[interface].con_flow);
-
+#endif
         if((TbfpProtocol[interface].prev_s_num + 1) == inHeader.snum) {
             /*Flow ok*/
             TbfpProtocol[interface].con_flow++;
@@ -435,9 +467,10 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
             TbfpProtocol[interface].err_cnt++;
         }
         TbfpProtocol[interface].prev_s_num = inHeader.snum;
-
+#ifdef HAS_LOG
         LOG_DEBUG(TBFP, "prev_snum:%u snum:%u flow:%u", TbfpProtocol[interface].prev_s_num, inHeader.snum,
                   TbfpProtocol[interface].con_flow);
+#endif
 
 #endif /*HAS_TBFP_FLOW_CONTROL*/
 
