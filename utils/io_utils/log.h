@@ -56,6 +56,7 @@ typedef enum eLog_facility_t {
     HMOM,
     I2C,
     LED,
+    CLI,
     LG_ADC,
     LG_CAL,
     LG_DAC,

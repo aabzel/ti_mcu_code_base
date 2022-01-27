@@ -9,6 +9,7 @@
 #include "data_utils.h"
 #include "debug_info.h"
 #include "time_diag.h"
+#include "time_utils.h"
 #include "gnss_diag.h"
 #include "io_utils.h"
 #include "tbfp_protocol.h"
@@ -18,11 +19,11 @@ bool tbfp_print_ping_frame(TbfPingFrame_t *pingFrame){
     if (pingFrame) {
         io_printf("MAC: 0x%" PRIX64 CRLF, pingFrame->mac);
         struct tm * time_date =  gmtime(&pingFrame->time_stamp);
-        
         if (time_date) {
-#ifdef HAS_GNSS
-            res =  print_time_date(time_date )&&res;
-#endif
+            res = is_valid_time_date(time_date);
+            if(res){
+                res =  print_time_date(time_date )&&res;
+            }
         } else {
             res = false;
         }

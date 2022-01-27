@@ -50,7 +50,10 @@
 #define LED_INDEX_GREEN 0
 #define LED_INDEX_RED 1
 
-#define BOARD_NAME "Harvester"
+#define DIO_LED_HEARTBEAT  DIO_LED_GREEN
+#define LED_INDEX_HEARTBEAT LED_INDEX_GREEN
+
+#define BOARD_NAME "HarvesterV1"
 
 
 #endif /* BOARD_HARVESTER_V1_H  */

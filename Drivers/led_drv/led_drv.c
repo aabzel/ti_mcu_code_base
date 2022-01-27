@@ -66,7 +66,7 @@ static bool proc_led(Led_t* inLed) {
             if(inLed->duration_ms < cur_duration_ms) {
                 res = true;
                 val = 0;
-                inLed->mode = LED_MODE_PWM;
+                inLed->mode = LED_MODE_NONE;
             }
         } break;
         case LED_MODE_PWM: {

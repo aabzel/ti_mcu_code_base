@@ -151,6 +151,13 @@ bool is_time_date_equal(struct tm* date_time1, struct tm* date_time2) {
 bool is_valid_time_date(struct tm* date_time) {
     bool res = true;
     if(res) {
+        if( 2022 <= date_time->tm_year ) {
+            res = true;
+        } else {
+            res = false;
+        }
+    }
+    if(res) {
         if((0 <= date_time->tm_mon) && (date_time->tm_mon <= 11)) {
             res = true;
         } else {
@@ -186,6 +193,7 @@ bool is_valid_time_date(struct tm* date_time) {
             res = false;
         }
     }
+
 
     return res;
 }
