@@ -53,7 +53,7 @@ typedef struct xTbfPingFrame_t {
     GnssCoordinate_t coordinate;
 } __attribute__((packed)) TbfPingFrame_t;
 
-#define TBFP_MAX_TX_FRAME 300 /*Byte*/
+#define TBFP_MAX_TX_FRAME 330 /*Byte*/
 
 typedef struct xTbfpProtocol_t {
     uint32_t rx_pkt_cnt;

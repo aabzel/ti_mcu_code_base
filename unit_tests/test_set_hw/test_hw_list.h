@@ -26,6 +26,12 @@ extern "C" {
 #define TEST_SUIT_PARAM
 #endif
 
+#ifdef HAS_TEST_FIRMWARE
+#include "test_firmware.h"
+#else
+#define TEST_SUIT_FIRMWARE
+#endif
+
 #ifdef HAS_TEST_TCAN4550
 #include "test_tcan4550.h"
 #else
@@ -85,6 +91,7 @@ bool test_clock_ms(void);
 	TEST_SYSTEM_HW    \
 	TEST_SUIT_UART \
 	TEST_SUIT_GPIO \
+	TEST_SUIT_FIRMWARE\
 	TEST_SUIT_ZED_F9P \
 	TEST_SUIT_TCAN4550 \
 	TEST_SUIT_TIM \

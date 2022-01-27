@@ -28,7 +28,7 @@ static bool tbfp_diag(void) {
 #endif /*HAS_DEBUG*/
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-    for(interface = IF_LORA; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
+    for(interface =(Interfaces_t) 0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
         io_printf(TSEP);
         io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
         io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);

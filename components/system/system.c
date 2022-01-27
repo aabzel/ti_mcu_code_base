@@ -39,7 +39,7 @@
 #endif
 
 const char* interface2str(Interfaces_t interface) {
-    const char* name = "undef";
+    const char* name = "???";
     switch(interface) {
     case IF_LORA:
         name = "LoRa";

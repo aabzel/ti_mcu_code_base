@@ -138,21 +138,6 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
     return res;
 }
 
-bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame, Interfaces_t interface) {
-    bool res = false;
-    if(out_frame && tx_frame_len) {
-        res = tbfp_make_header(out_frame, sizeof(TbfPingFrame_t), interface, 0);
-        if(res) {
-            memcpy(&out_frame[TBFP_INDEX_PAYLOAD], pingFrame, sizeof(TbfPingFrame_t));
-            uint32_t frame_len = sizeof(TbfPingFrame_t) + TBFP_SIZE_HEADER;
-            out_frame[frame_len] = crc8_sae_j1850_calc(out_frame, frame_len);
-            *tx_frame_len = frame_len + TBFP_SIZE_CRC;
-            res = true;
-        }
-    }
-    return res;
-}
-
 bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface, uint8_t lifetime) {
     bool res = false;
     if(payload && (0 < payload_len)) {
@@ -168,7 +153,7 @@ bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface, u
             }
         } else {
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "TooBigPayload");
+            LOG_ERROR(TBFP, "TooBigPayload cur: %u max: %u",payload_len,sizeof(TbfpProtocol[interface].tx_frame));
 #endif
         }
     }
@@ -180,16 +165,12 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, 
     bool res = false;
     if(tx_array && (0 < len)) {
         uint8_t frame[256] = "";
-        uint32_t frame_len = TBFP_SIZE_HEADER + TBFP_SIZE_ID + len;
-        res = tbfp_make_header(frame, len + TBFP_SIZE_ID, interface, lifetime);
-        if(res) {
-            frame[TBFP_INDEX_PAYLOAD] = payload_id;
-            memcpy(&frame[TBFP_INDEX_PAYLOAD + 1], tx_array, len);
-            frame[frame_len] = crc8_sae_j1850_calc(frame, frame_len);
-            res = sys_send_if(frame, frame_len + TBFP_SIZE_CRC, interface);
-        } else {
+        frame[0] = payload_id;
+        memcpy(&frame[1], tx_array, len);
+        res = tbfp_send(frame, len + TBFP_SIZE_ID, interface,lifetime);
+        if(false==res) {
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "MakeHeaderError");
+            LOG_ERROR(TBFP, "SendTestErr");
 #endif
         }
     }
@@ -212,13 +193,12 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
     bool res = false;
     uint8_t frame[256] = "";
     memset(frame, 0, sizeof(frame));
-    uint32_t tx_frame_len = 0;
     TbfPingFrame_t pingFrame = {0};
     pingFrame.id = frame_id;
 #ifdef CC26XX
     pingFrame.mac = get_ble_mac();
 #endif
-    pingFrame.coordinate.latitude = 999999.0;
+    pingFrame.coordinate.latitude = 99999.0;
     pingFrame.coordinate.longitude = 9999.0;
 #ifdef HAS_ZED_F9P
     pingFrame.time_stamp = mktime(&ZedF9P.time_date);
@@ -231,11 +211,13 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
         pingFrame.coordinate.latitude = 360.0;
         pingFrame.coordinate.longitude = 360.0;
     }
-
 #endif
-    res = tbfp_compose_ping(frame, &tx_frame_len, &pingFrame, interface);
-    if(res) {
-        res = sys_send_if(frame, tx_frame_len, interface);
+    memcpy(frame, &pingFrame, sizeof(TbfPingFrame_t));
+    res = tbfp_send(frame, sizeof(TbfPingFrame_t), interface, 0);
+    if(false==res) {
+#ifdef HAS_LOG
+            LOG_ERROR(TBFP, "SendErr");
+#endif
     }
     return res;
 }

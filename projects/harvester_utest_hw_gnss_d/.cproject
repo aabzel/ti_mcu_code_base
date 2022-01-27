@@ -114,6 +114,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_gpio"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_spi"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_firmware"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_system"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_uart"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_zed_f9p"/>
@@ -190,6 +191,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\gnss.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\KeyValMap.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\uTests.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\rs232.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\tbfp.opt"/>
 								</option>
