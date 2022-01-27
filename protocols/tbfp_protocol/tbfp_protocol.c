@@ -146,10 +146,14 @@ bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface, u
             memset(TbfpProtocol[interface].tx_frame, 0x00, sizeof(TbfpProtocol[interface].tx_frame));
             res = tbfp_make_header(TbfpProtocol[interface].tx_frame, payload_len, interface, lifetime);
             if(res) {
-                memcpy(&TbfpProtocol[interface].tx_frame[TBFP_INDEX_PAYLOAD], payload, payload_len);
+                memcpy(&(TbfpProtocol[interface].tx_frame[TBFP_INDEX_PAYLOAD]), payload, payload_len);
                 TbfpProtocol[interface].tx_frame[frame_len] =
                     crc8_sae_j1850_calc(TbfpProtocol[interface].tx_frame, frame_len);
                 res = sys_send_if(TbfpProtocol[interface].tx_frame, frame_len + TBFP_SIZE_CRC, interface);
+            }else{
+#ifdef HAS_LOG
+                LOG_ERROR(TBFP, "TooBigPayload cur: %u max: %u",payload_len,sizeof(TbfpProtocol[interface].tx_frame));
+#endif
             }
         } else {
 #ifdef HAS_LOG
@@ -359,7 +363,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
 /*One arr frame can contain several TBFP frames*/
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset_parser) {
 #ifdef HAS_LOG
-    LOG_DEBUG(TBFP, "Proc If:%s Len: %u", interface2str(interface), len);
+    LOG_PARN(TBFP, "Proc If:%s Len: %u", interface2str(interface), len);
 #endif
     bool res = true;
     uint32_t cur_rx_prk = 0;

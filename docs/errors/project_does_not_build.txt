@@ -1,0 +1,17 @@
+Артефакт не собирается.
+
+Тип GPIOCC26XX_Config не определен кодовой базе, что расположена в папке
+C:/ti/simplelink_cc13xx_cc26xx_sdk_5_30_01_01
+
+В предыдущей версии кодовой базы
+C:/ti/simplelink_cc13x2_26x2_sdk_5_20_00_52
+тип GPIOCC26XX_Config был определен в файле GPIOCC26XX.h
+source/ti/drivers/gpio/GPIOCC26XX.h
+
+в очередной версии simplelink_cc13xx_cc26xx_sdk_5_30_01_01 тип GPIOCC26XX_Config не определн в файле GPIOCC26XX.h
+
+
+
+
+
+

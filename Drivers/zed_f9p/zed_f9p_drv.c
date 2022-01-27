@@ -88,7 +88,6 @@ static bool zed_f9p_proc_base(void) {
 #endif
 #ifdef HAS_CAN
         task_data[TASK_ID_TCAN4550].on = true;
-        // can.ping = true;
 #endif
     }
 

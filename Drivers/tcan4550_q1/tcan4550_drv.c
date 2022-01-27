@@ -1128,7 +1128,7 @@ static bool tcan4550_poll_can_interrupts(void) {
         if(IntReg.rf0n) {
             IntReg.rf0n = 0;
 #ifdef HAS_CLI
-            LOG_DEBUG(CAN, "RxFIFO0NewMessage");
+            LOG_PARN(CAN, "RxFIFO0NewMessage");
 #endif
             TCAN4x5x_MCAN_RX_Header MsgHeader = {0}; // Initialize to 0 or you'll get garbage
             uint8_t num_bytes = 0; // Used since the ReadNextFIFO function will return how many bytes of data were read
@@ -1138,7 +1138,7 @@ static bool tcan4550_poll_can_interrupts(void) {
                                                    dataPayload); // This will read the next element in the RX FIFO 0
             if(num_bytes) {
 #ifdef HAS_LOG
-                LOG_DEBUG(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
+                LOG_PARN(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
 #ifdef HAS_CAN_DEBUG
                 print_mem(dataPayload, num_bytes, true, true, true, true);
 #endif /*HAS_CAN_DEBUG*/
@@ -1436,7 +1436,7 @@ bool tcan4550_proc(void) {
                                                      rx_payload); // This will read the next element in the RX FIFO 0
                 if(rx_size) {
 #ifdef HAS_LOG
-                    LOG_DEBUG(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
+                    LOG_PARN(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
 #ifdef HAS_CAN_DEBUG
                     print_mem(rx_payload, rx_size, true, true, true, true);
 #endif

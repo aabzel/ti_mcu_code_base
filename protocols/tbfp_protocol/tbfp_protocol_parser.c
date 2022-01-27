@@ -17,7 +17,7 @@
 
 static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    if(TBFP_PREAMBLE == rx_byte) {
+    if((TBFP_PREAMBLE == rx_byte) && (0==instance->parser.load_len)) {
         instance->parser.rx_frame[0] = rx_byte;
         instance->parser.rx_state = WAIT_RETX_CNT;
         instance->parser.load_len = 1;
@@ -30,7 +30,7 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
         res = true;
     } else {
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "ParseErr");
+        LOG_PARN(TBFP, "ParsePreamErr 0x%x", rx_byte);
 #endif
         res = tbfp_parser_reset_rx(instance);
     }
@@ -39,7 +39,7 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
 static bool tbfp_parser_proc_retransmit_cnt(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
 #ifdef X86_64
-    LOG_DEBUG(TBFP, "ParseReTx: %u", rx_byte);
+    LOG_PARN(TBFP, "ParseReTx: %u", rx_byte);
 #endif
     if(TBFP_INDEX_RETX == instance->parser.load_len) {
         instance->parser.rx_frame[TBFP_INDEX_RETX] = rx_byte;
@@ -57,7 +57,7 @@ static bool tbfp_parser_proc_retransmit_cnt(TbfpProtocol_t* instance, uint8_t rx
 
 static bool tbfp_parser_proc_wait_serial_num(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    LOG_DEBUG(TBFP, "ParseSn [%u]=0x%02x", instance->parser.load_len, rx_byte);
+    LOG_PARN(TBFP, "ParseSn [%u]=0x%02x", instance->parser.load_len, rx_byte);
     if(TBFP_INDEX_SER_NUM == instance->parser.load_len) {
         instance->parser.rx_frame[TBFP_INDEX_SER_NUM] = rx_byte;
         instance->parser.load_len = TBFP_INDEX_SER_NUM + 1;
@@ -119,7 +119,7 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
         }
     } else {
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "ParseErr");
+        LOG_DEBUG(TBFP, "ParseLenErr");
 #endif
         res = tbfp_parser_reset_rx(instance);
     }
@@ -128,7 +128,7 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
 
 static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    LOG_DEBUG(TBFP, "ParsePayLoad Data[%u]=0x%02x", instance->parser.load_len - TBFP_SIZE_HEADER, rx_byte);
+    LOG_PARN(TBFP, "ParsePayLoad Data[%u]=0x%02x", instance->parser.load_len - TBFP_SIZE_HEADER, rx_byte);
     if((TBFP_SIZE_HEADER + instance->parser.exp_payload_len) <= instance->parser.load_len) {
         res = tbfp_parser_reset_rx(instance);
     } else {
@@ -157,7 +157,7 @@ static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t* instance, uint8_t rx_b
 static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
 #ifdef X86_64
-    printf("\n%s():", __FUNCTION__);
+    LOG_PARN("\n%s():", __FUNCTION__);
 #endif
     uint16_t crc8_index = TBFP_SIZE_HEADER + instance->parser.exp_payload_len;
     if(crc8_index == instance->parser.load_len) {
@@ -168,7 +168,7 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
         res = crc8_sae_j1850_check(&instance->parser.rx_frame[0], frame_len, instance->parser.read_crc8);
         if(res) {
 #ifdef HAS_LOG
-            LOG_DEBUG(TBFP, "SN:0x%04x %u crc OK", instance->parser.s_num, instance->parser.s_num);
+            LOG_DEBUG(TBFP, "SN:0x%04x %u Crc8 Ok!", instance->parser.s_num, instance->parser.s_num);
             // led_blink(&Led[LED_INDEX_RED], 10);
 #endif
             memcpy(instance->parser.fix_frame, instance->parser.rx_frame, TBFP_MAX_FRAME);
@@ -186,7 +186,7 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
         res = tbfp_parser_reset_rx(instance);
     } else {
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "ParseErr");
+        LOG_DEBUG(TBFP, "ParseCrc8Err");
 #endif
         res = tbfp_parser_reset_rx(instance);
     }
@@ -195,7 +195,7 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
 
 bool tbfp_proc_byte(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    LOG_DEBUG(TBFP, "ProcByte: [%u]=0x%02x", instance->parser.load_len, rx_byte);
+    LOG_PARN(TBFP, "ProcByte: [%u]=0x%02x", instance->parser.load_len, rx_byte);
     switch(instance->parser.rx_state) {
     case WAIT_PREAMBLE:
         res = tbfp_parser_proc_wait_preamble(instance, rx_byte);
@@ -220,7 +220,7 @@ bool tbfp_proc_byte(TbfpProtocol_t* instance, uint8_t rx_byte) {
         break;
     }
     if(false == res) {
-        LOG_ERROR(TBFP, "ParseErr %u", rx_byte);
+        LOG_ERROR(TBFP, "ParseByteErr %u", rx_byte);
     }
     return res;
 }

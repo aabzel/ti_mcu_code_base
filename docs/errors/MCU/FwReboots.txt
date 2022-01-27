@@ -1,0 +1,38 @@
+сборка  harvester_utest_hw_gnss_d harvester_utest_gnss_can_d перезагружаеься на 27й  45й секунде работы.
+сваливается в FaultISR
+
+Причина:
+Где то переполнился массив
+
+Прецедент: 
+Массив внутри tbfp_send был слишком мал для нужной нагрузки
+
+Что делать?
+Поочередно отключать код запускать код.
+Выявить компонент, который приводит к исключению и зависанию.
+   зависает тут   rtcm3_proc_byte
+		
+Как только поступает rtcm пакет с полезной нагрузной больше 255 байт так сразу программа зависает
+109.224:D [RTCM] ExpLen 167
+109.308:D [RTCM] CRCok
+109.312:E [SYS] UndefIf: 3=CAN
+109.316:E [SYS] SendIfErr: 3=CAN
+109.321:D [RTCM] Preamble
+109.325:D [RTCM] ExpLen 269
+109.334:D [RTCM] CRCok
+109.338:E [SYS] UndefIf: 3=CAN
+109.343:E [SYS] SendIfErr: 3=CAN
+
+
+
+до TBFP не доходит
+
+ll TBFP debug
+ll TBFP info
+rtcml
+ll RTCM debug
+ll RTCM info
+
+
+
+Засисает внутри функции которая преобразует дату в число для RTC
