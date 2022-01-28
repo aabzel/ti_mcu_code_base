@@ -38,8 +38,6 @@ extern "C" {
 #define CORTEX_M4_COMMANDS
 #endif
 
-
-
 #ifdef HAS_BMP180
 #include "bmp180_commands.h"
 #else
@@ -132,10 +130,8 @@ extern "C" {
     EXT_RAM_EMUL_COMMANDS                                                                                              \
     FLASH_FS_COMMANDS                                                                                                  \
     FLASH_NVS_COMMANDS                                                                                                 \
-    HEALTH_MONITOR_COMMANDS                                                                                            \
     GNSS_COMMANDS                                                                                                      \
-    TELEMATIC_COMMANDS                                                                                                 \
-    TBFP_COMMANDS                                                                                                      \
+    HEALTH_MONITOR_COMMANDS                                                                                            \
     LED_COMMANDS                                                                                                       \
     LOG_COMMANDS                                                                                                       \
     LORA_COMMANDS                                                                                                      \
@@ -145,6 +141,8 @@ extern "C" {
     RF_COMMANDS                                                                                                        \
     SX1262_COMMANDS                                                                                                    \
     SYSTEM_COMMANDS                                                                                                    \
+    TBFP_COMMANDS                                                                                                      \
+    TELEMATIC_COMMANDS                                                                                                 \
     TRNG_COMMANDS
 
 #ifdef __cplusplus

@@ -34,6 +34,10 @@
 #include "tbfp_protocol.h"
 #endif
 
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
+#endif
+
 #ifdef HAS_BOOTLOADER
 #error "That API only for Generic"
 #endif
@@ -49,6 +53,9 @@ const char* interface2str(Interfaces_t interface) {
         break;
     case IF_UART1:
         name = "UART1";
+        break;
+    case IF_SX1262:
+        name = "SX1262";
         break;
     case IF_UART0:
         name = "UART0";
@@ -77,6 +84,7 @@ bool interface_valid(Interfaces_t interface) {
     case IF_LORA:
     case IF_RS232:
     case IF_UART1:
+    case IF_SX1262:
     case IF_SPI0:
     case IF_UART0:
     case IF_CAN:
@@ -121,6 +129,11 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
 #ifdef HAS_RS232
     case IF_RS232: {
         res = rs232_send(array, len);
+    } break;
+#endif
+#ifdef HAS_SX1262
+    case IF_SX1262: {
+        res = sx1262_start_tx(array, len, 0);
     } break;
 #endif
 #ifdef HAS_BLE

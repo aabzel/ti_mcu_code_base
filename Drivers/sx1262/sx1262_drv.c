@@ -47,10 +47,14 @@ speed up to 16 MHz
 #include "sx1262_registers.h"
 #include "sys_config.h"
 #include "task_info.h"
-
 #ifndef HAS_SPI
 #error "SX1262 requires SPI driver"
 #endif
+
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif
+
 
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
@@ -1032,7 +1036,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
     if(false == Sx1262Instance.tx_mute) {
         if(Sx1262Instance.tx_done) {
             Sx1262Instance.tx_done = false;
-            if((NULL != tx_buf) && (0 < tx_len)) {
+            if((NULL != tx_buf) && (0 < tx_len) && (tx_len < SX1262_MAX_FRAME_SIZE)) {
                 // res = sx1262_clear_fifo();
                 res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
                 res = sx1262_set_payload(tx_buf, tx_len) && res;
@@ -1043,6 +1047,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
                 }
 #endif
             } else {
+                LOG_ERROR(LORA, "TxLenErr:%u Max%u", tx_len, SX1262_MAX_FRAME_SIZE);
                 res = false;
             }
             if(res) {
@@ -1665,6 +1670,7 @@ static inline bool sx1262_sync_registers(void) {
     return res;
 }
 
+
 static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     bool res = false;
     uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
@@ -1672,12 +1678,11 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
 
     if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done)) {
-        uint8_t tx_buf[SX1262_MAX_FRAME_SIZE] = {0};
-        memset(tx_buf, 0, sizeof(tx_buf));
+        uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE] = {0};
+        memset(TxPayload, 0, sizeof(TxPayload));
 
-        /*Transmitt multiple RTCM3 packages in single LoRa frame*/
         fifo_index_t tx_len = 0;
-        res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_buf, sizeof(tx_buf), &tx_len);
+        res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);
         if(res) {
 #ifdef HAS_LOG
             LOG_DEBUG(LORA, "FiFoPullErr Len:%u", tx_len);
@@ -1703,13 +1708,13 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
         }
 #endif /*HAS_LORA_FIFO_ARRAYS*/
         if(res) {
-            if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
-                res = sx1262_start_tx(tx_buf, tx_len, 0);
-                if(res) {
-                    LoRaInterface.tx_ok_cnt++;
-                } else {
-                    LoRaInterface.tx_err_cnt++;
-                }
+            if((0 < tx_len) && (tx_len <= sizeof(TxPayload))) {
+               res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
+               if(res) {
+                   LoRaInterface.tx_ok_cnt++;
+               } else {
+                   LoRaInterface.tx_err_cnt++;
+               }
             }
         }
     }
@@ -1722,7 +1727,7 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
 bool sx1262_process(void) {
     bool res = false;
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "check_connectivity=%u", Sx1262Instance.check_connectivity);
+    LOG_DEBUG(LORA, "CheckConnectivity=%u", Sx1262Instance.check_connectivity);
 #endif
 
     if(Sx1262Instance.check_connectivity) {

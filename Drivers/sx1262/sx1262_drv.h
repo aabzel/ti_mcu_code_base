@@ -25,6 +25,10 @@
 #include "sx1262_registers.h"
 #include "sx1262_types.h"
 
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif
+
 #define PACK_SIZE_BYTES 16
 
 #define FIFO_SIZE 256
@@ -32,7 +36,10 @@
 #define RX_SIZE 256
 #define TX_SIZE 256
 
-#define SX1262_MAX_FRAME_SIZE 256U
+#define SX1262_MAX_FRAME_SIZE 255U
+#ifdef HAS_TBFP
+#define SX1262_MAX_PAYLOAD_SIZE (SX1262_MAX_FRAME_SIZE-TBFP_OVERHEAD_SIZE)
+#endif
 
 #define RC_FREQ_HZ 13000000U
 #define XTAL_FREQ_HZ 32000000U

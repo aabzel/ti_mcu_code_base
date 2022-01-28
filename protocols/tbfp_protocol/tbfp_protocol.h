@@ -18,6 +18,7 @@ typedef enum xFrameId_t {
     FRAME_ID_CMD = 0x44,   /*D*/
     FRAME_ID_CHAT = 0x43,  /*C*/
     FRAME_ID_PING = 0x50,  /*P*/
+    FRAME_ID_TUNNEL = 0x54, /*T matryoshka*/
     FRAME_ID_PONG = 0x90,  /**/
     FRAME_ID_RTCM3 = 0xD3, /**/
 } FrameId_t;
@@ -80,8 +81,9 @@ typedef struct xTbfpProtocol_t {
 extern TbfpProtocol_t TbfpProtocol[IF_CNT]; /*RS232 LoRa*/
 
 bool tbfp_generate_frame(uint8_t* array, uint32_t len);
-bool tbfp_parser_reset_rx(TbfpProtocol_t* instance);
+bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state);
 bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime);
+bool tbfp_send_tunnel(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
 bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime);
 bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface);
