@@ -81,14 +81,14 @@ bool test_gpio_write_ps_rs232(void);
 #define TEST_SUIT_GPIO_RS232
 #endif
 
-#ifdef DIO_BATT_SCL
+#if defined(DIO_BATT_SCL) && defined(HAS_IO_BANG)
 bool test_gpio_write_batt_scl(void);
 #define TEST_SUIT_GPIO_BATT_SCL {"gpio_wr_scl", test_gpio_write_batt_scl},
 #else
 #define TEST_SUIT_GPIO_BATT_SCL
 #endif /*HAS_IO_BANG*/
 
-#ifdef DIO_BATT_SDA
+#if defined(DIO_BATT_SDA) && defined(HAS_IO_BANG)
 bool test_gpio_write_batt_sda(void);
 #define TEST_SUIT_BATT_SDA {"gpio_wr_sda", test_gpio_write_batt_sda},
 #else
@@ -102,21 +102,21 @@ bool test_gpio_write_mosi(void);
 #define TEST_SUIT_MOSI
 #endif
 
-#ifdef DIO_SCLK
+#if defined(DIO_SCLK) && defined(HAS_IO_BANG)
 bool test_gpio_write_sclk(void);
 #define TEST_SUIT_SCLK {"gpio_wr_sclk", test_gpio_write_sclk},
 #else
 #define TEST_SUIT_SCLK
 #endif
 
-#ifdef DIO_PWR_MUX_CTRL
+#if defined(DIO_PWR_MUX_CTRL) && defined(HAS_IO_BANG)
 bool test_gpio_write_pwr_mux_ctrl(void);
 #define TEST_SUIT_PWR_MUX_CTRL {"gpio_wr_pwr_mux_ctrl", test_gpio_write_pwr_mux_ctrl},
 #else
 #define TEST_SUIT_PWR_MUX_CTRL
 #endif
 
-#ifdef DIO_GNSS_RXD
+#if defined(DIO_GNSS_RXD) && defined(HAS_IO_BANG)
 bool test_gpio_write_gnss_rxd(void);
 #define TEST_SUIT_GNSS_RXD {"gpio_wr_gnss_rxd", test_gpio_write_gnss_rxd},
 #else

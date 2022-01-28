@@ -75,14 +75,14 @@ bool init_tcan(void) {
         1; // Standard ID number of elements, you MUST have a filter written to MRAM for each element defined
     MRAMConfiguration.XIDNumElements =
         1; // Extended ID number of elements, you MUST have a filter written to MRAM for each element defined
-    MRAMConfiguration.Rx0NumElements = 30;                     // RX0 Number of elements
+    MRAMConfiguration.Rx0NumElements = 30;                    // RX0 Number of elements
     MRAMConfiguration.Rx0ElementSize = MRAM_8_Byte_Data;      // RX0 data payload size
-    MRAMConfiguration.Rx1NumElements = 10;                     // RX1 number of elements
+    MRAMConfiguration.Rx1NumElements = 10;                    // RX1 number of elements
     MRAMConfiguration.Rx1ElementSize = MRAM_8_Byte_Data;      // RX1 data payload size
-    MRAMConfiguration.RxBufNumElements = 0;                    // RX buffer number of elements
+    MRAMConfiguration.RxBufNumElements = 0;                   // RX buffer number of elements
     MRAMConfiguration.RxBufElementSize = MRAM_8_Byte_Data;    // RX buffer data payload size
-    MRAMConfiguration.TxEventFIFONumElements = 0;              // TX Event FIFO number of elements
-    MRAMConfiguration.TxBufferNumElements = 8;                 // TX buffer number of elements
+    MRAMConfiguration.TxEventFIFONumElements = 0;             // TX Event FIFO number of elements
+    MRAMConfiguration.TxBufferNumElements = 8;                // TX buffer number of elements
     MRAMConfiguration.TxBufferElementSize = MRAM_8_Byte_Data; // TX buffer data payload size
 
     /* Configure the MCAN core with the settings above, the changes in this block are write protected registers,      *

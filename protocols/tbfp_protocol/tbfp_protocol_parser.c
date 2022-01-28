@@ -17,7 +17,7 @@
 
 static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    if((TBFP_PREAMBLE == rx_byte) && (0==instance->parser.load_len)) {
+    if((TBFP_PREAMBLE == rx_byte) && (0 == instance->parser.load_len)) {
         instance->parser.rx_frame[0] = rx_byte;
         instance->parser.rx_state = WAIT_RETX_CNT;
         instance->parser.load_len = 1;
@@ -83,7 +83,7 @@ static bool tbfp_parser_proc_wait_serial_num(TbfpProtocol_t* instance, uint8_t r
 }
 
 #ifdef HAS_DEBUG
-static bool tbfp_update_len_stat(TbfpProtocol_t* instance, uint16_t payload_len){
+static bool tbfp_update_len_stat(TbfpProtocol_t* instance, uint16_t payload_len) {
     bool res = true;
     instance->max_len = max16u(instance->max_len, payload_len);
     instance->min_len = min16u(instance->min_len, payload_len);
@@ -161,7 +161,7 @@ static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t* instance, uint8_t rx_b
 
 static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    LOG_PARN(TBFP,"ProcCrc8");
+    LOG_PARN(TBFP, "ProcCrc8");
     uint16_t crc8_index = TBFP_SIZE_HEADER + instance->parser.exp_payload_len;
     if(crc8_index == instance->parser.load_len) {
         instance->parser.rx_frame[instance->parser.load_len] = rx_byte; /*read crc8*/

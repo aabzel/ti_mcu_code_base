@@ -78,7 +78,7 @@ static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte)
 }
 
 #ifdef HAS_DEBUG
-static bool rtcm3_update_len_stat(Rtcm3Protocol_t* instance, uint16_t payload_len){
+static bool rtcm3_update_len_stat(Rtcm3Protocol_t* instance, uint16_t payload_len) {
     bool res = true;
     instance->max_len = max16u(instance->max_len, payload_len);
     instance->min_len = min16u(instance->min_len, payload_len);
@@ -163,7 +163,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             LOG_DEBUG(RTCM, "CRC24ok");
 #endif
 #ifdef HAS_DEBUG
-            rtcm3_update_len_stat( instance,   instance->exp_len.field.len);
+            rtcm3_update_len_stat(instance, instance->exp_len.field.len);
 #endif
             instance->rx_state = RTCM3_RX_DONE;
             instance->rx_pkt_cnt++;

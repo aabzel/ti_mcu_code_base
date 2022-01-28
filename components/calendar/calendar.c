@@ -85,7 +85,7 @@ bool calendar_gettime(struct tm* date_time) {
     uint32_t cur_sec = 0;
 #ifdef X86_64
     cur_sec = g_sec; /*For tests on PC */
-    LOG_DEBUG(TEST, "GetCounter %u",g_sec);
+    LOG_DEBUG(TEST, "GetCounter %u", g_sec);
 #endif
 #ifdef HAS_RTC
     cur_sec = SwRtc.raw_sec;
@@ -161,7 +161,7 @@ uint32_t calendar_settime(struct tm* date_time) {
 #endif
         g_sec = struct_to_counter(date_time);
 #ifdef X86_64
-        LOG_DEBUG(TEST, "SetCounter %u",g_sec);
+        LOG_DEBUG(TEST, "SetCounter %u", g_sec);
 #endif
 #ifdef HAS_RTC
         SwRtc.raw_sec = g_sec;

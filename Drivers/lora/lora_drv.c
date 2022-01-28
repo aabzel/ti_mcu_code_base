@@ -101,10 +101,10 @@ bool lora_send_array_queue(uint8_t* const tx_payload, uint32_t len) {
 }
 #endif
 
-bool lora_send_queue(uint8_t*  tx_payload, uint32_t len) {
+bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
     bool res = false;
-    if ((NULL != tx_payload) && (0<len )) {
-        res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char* )tx_payload, (fifo_index_t) len);
+    if((NULL != tx_payload) && (0 < len)) {
+        res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
         if(false == res) {
             LoRaInterface.ovfl_err_cnt++;
             LOG_ERROR(LORA, "TxQueueOverFlow");

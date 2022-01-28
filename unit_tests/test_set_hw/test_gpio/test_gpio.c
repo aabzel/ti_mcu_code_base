@@ -85,11 +85,12 @@ bool test_gpio_write_batt_scl(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_BATT_SCL));
     return true;
 }
+
 bool test_gpio_write_pwr_mux_ctrl(void) {
     EXPECT_TRUE(test_gpio_pin(DIO_PWR_MUX_CTRL));
     return true;
 }
-#endif
+#endif /*HAS_IO_BANG*/
 
 #ifdef DIO_PS_RS232
 bool test_gpio_write_ps_rs232(void) {

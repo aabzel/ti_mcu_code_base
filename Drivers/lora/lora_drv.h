@@ -10,7 +10,7 @@
 #include "fifo_char.h"
 
 #define LORA_MAX_FRAME_SIZE 256U
-#define LORA_TX_BUFF_SIZE (LORA_MAX_FRAME_SIZE*5)
+#define LORA_TX_BUFF_SIZE (LORA_MAX_FRAME_SIZE * 10)
 #if HAS_LORA_FIFO_ARRAYS
 #define LORA_TX_QUEUE_SIZE 60
 #endif

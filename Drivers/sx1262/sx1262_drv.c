@@ -1014,6 +1014,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     return out_res;
 }
 
+/*SetTx*/
 static bool sx1262_set_tx(uint32_t timeout_s) {
     bool res = true;
     uint8_t buff[3];
@@ -1518,8 +1519,8 @@ static inline bool sx1262_poll_status(void) {
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
 
     RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
-    res = sx1262_get_packet_type(&packet_type, &tempSx1262Instance.dev_status.byte);
-    // res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
+    // res = sx1262_get_packet_type(&packet_type, &tempSx1262Instance.dev_status.byte);
+    res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
 #ifdef HAS_LOG
         LOG_DEBUG(LORA, "Status 0x%02x CmdStat:%s ChipMode:%s", tempSx1262Instance.dev_status.byte,
@@ -1673,11 +1674,10 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
         uint8_t tx_buf[SX1262_MAX_FRAME_SIZE] = {0};
         memset(tx_buf, 0, sizeof(tx_buf));
 
-
         /*Transmitt multiple RTCM3 packages in single LoRa frame*/
         fifo_index_t tx_len = 0;
-        res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char* ) tx_buf, sizeof(tx_buf), &tx_len);
-        if(res){
+        res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_buf, sizeof(tx_buf), &tx_len);
+        if(res) {
 #ifdef HAS_LOG
             LOG_DEBUG(LORA, "FiFoPullErr Len:%u", tx_len);
 #endif
@@ -1995,9 +1995,8 @@ float lora_calc_max_frame_tx_time(uint8_t sf_code, uint8_t bw_code, uint8_t cr_c
 }
 #endif
 
-bool sx1262_set_fs(void){
+bool sx1262_set_fs(void) {
     bool res = false;
     res = sx1262_send_opcode(OPCODE_SET_FS, NULL, 0, NULL, 0);
     return res;
-
 }

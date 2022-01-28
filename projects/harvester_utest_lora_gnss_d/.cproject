@@ -181,6 +181,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\io.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\lora.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\mcu.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\rs232.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\tbfp.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\uTestsGnss.opt"/>
