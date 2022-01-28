@@ -82,6 +82,15 @@ static bool tbfp_parser_proc_wait_serial_num(TbfpProtocol_t* instance, uint8_t r
     return res;
 }
 
+#ifdef HAS_DEBUG
+static bool tbfp_update_len_stat(TbfpProtocol_t* instance, uint16_t payload_len){
+    bool res = true;
+    instance->max_len = max16u(instance->max_len, payload_len);
+    instance->min_len = min16u(instance->min_len, payload_len);
+    return res;
+}
+#endif /*HAS_DEBUG*/
+
 static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     if(TBFP_INDEX_LEN == instance->parser.load_len) {
@@ -95,10 +104,6 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
         memcpy(&(instance->parser.exp_payload_len), &(instance->parser.rx_frame[TBFP_INDEX_LEN]), TBFP_SIZE_LEN);
 #ifdef HAS_LOG
         LOG_DEBUG(TBFP, "Len:0x%04x %u", instance->parser.exp_payload_len, instance->parser.exp_payload_len);
-#endif
-#ifdef HAS_DEBUG
-        instance->max_len = max16u(instance->max_len, instance->parser.exp_payload_len);
-        instance->min_len = min16u(instance->min_len, instance->parser.exp_payload_len);
 #endif
         if(0 < instance->parser.exp_payload_len) {
             if(instance->parser.exp_payload_len <= TBFP_MAX_PAYLOAD) {
@@ -156,9 +161,7 @@ static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t* instance, uint8_t rx_b
 
 static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-#ifdef X86_64
-    LOG_PARN("\n%s():", __FUNCTION__);
-#endif
+    LOG_PARN(TBFP,"ProcCrc8");
     uint16_t crc8_index = TBFP_SIZE_HEADER + instance->parser.exp_payload_len;
     if(crc8_index == instance->parser.load_len) {
         instance->parser.rx_frame[instance->parser.load_len] = rx_byte; /*read crc8*/
@@ -171,6 +174,10 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
             LOG_DEBUG(TBFP, "SN:0x%04x %u Crc8 Ok!", instance->parser.s_num, instance->parser.s_num);
             // led_blink(&Led[LED_INDEX_RED], 10);
 #endif
+#ifdef HAS_DEBUG
+            tbfp_update_len_stat(instance, instance->parser.exp_payload_len);
+#endif
+
             memcpy(instance->parser.fix_frame, instance->parser.rx_frame, TBFP_MAX_FRAME);
             instance->parser.rx_state = RX_DONE;
             instance->rx_pkt_cnt++;

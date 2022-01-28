@@ -1670,18 +1670,20 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
 
     if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done)) {
-        uint8_t tx_buf[TX_SIZE] = {0};
+        uint8_t tx_buf[SX1262_MAX_FRAME_SIZE] = {0};
         memset(tx_buf, 0, sizeof(tx_buf));
-        uint32_t tx_len = 0;
-#ifdef HAS_PACKED_LORA_FRAME
+
+
         /*Transmitt multiple RTCM3 packages in single LoRa frame*/
-        res = fifo_arr_pack_frame(tx_buf, sizeof(tx_buf), &LoRaInterface.FiFoLoRaTx, &tx_len);
-        if(false == res) {
+        fifo_index_t tx_len = 0;
+        res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char* ) tx_buf, sizeof(tx_buf), &tx_len);
+        if(res){
 #ifdef HAS_LOG
-            LOG_ERROR(LORA, "PackErr Len:%u", tx_len);
+            LOG_DEBUG(LORA, "FiFoPullErr Len:%u", tx_len);
 #endif
         }
-#else
+
+#ifdef HAS_LORA_FIFO_ARRAYS
         Array_t Node = {.size = 0, .pArr = NULL};
         res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &Node);
         if(res) {
@@ -1698,7 +1700,7 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
 #endif /*HAS_MCU*/
             }
         }
-#endif /*HAS_PACKED_LORA_FRAME*/
+#endif /*HAS_LORA_FIFO_ARRAYS*/
         if(res) {
             if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
                 res = sx1262_start_tx(tx_buf, tx_len, 0);
@@ -1992,3 +1994,10 @@ float lora_calc_max_frame_tx_time(uint8_t sf_code, uint8_t bw_code, uint8_t cr_c
     return t_frame;
 }
 #endif
+
+bool sx1262_set_fs(void){
+    bool res = false;
+    res = sx1262_send_opcode(OPCODE_SET_FS, NULL, 0, NULL, 0);
+    return res;
+
+}

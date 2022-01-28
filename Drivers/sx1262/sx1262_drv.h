@@ -32,6 +32,9 @@
 #define RX_SIZE 256
 #define TX_SIZE 256
 
+#define SX1262_MAX_FRAME_SIZE 256U
+
+
 #define RC_FREQ_HZ 13000000U
 #define XTAL_FREQ_HZ 32000000U
 #define SX1262_PERIOD_US 300U
@@ -96,6 +99,7 @@ bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_le
                         uint16_t rx_array_len);
 bool sx1262_set_buffer_base_addr(uint8_t tx_addr, uint8_t rx_addr);
 bool sx1262_set_cad(void);
+bool sx1262_set_fs(void);
 bool sx1262_set_cad_params(CadNunSym_t cad_symbol_num, uint8_t cad_det_peak, /*See App Application note AN1200.48 */
                            uint8_t cad_det_min,                              /*See App Application note AN1200.48 */
                            CadExtMode_t cad_exit_mode, uint16_t cad_timeout);
