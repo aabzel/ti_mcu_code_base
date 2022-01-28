@@ -47,6 +47,7 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint32_t rx_size) {
 #ifdef HAS_LOG
         LOG_ERROR(LORA, "LoRaProcErr");
 #endif
+        LoRaInterface.err_cnt++;
     }
 #endif /*HAS_TBFP*/
     return res;
@@ -104,10 +105,18 @@ bool lora_send_array_queue(uint8_t* const tx_payload, uint32_t len) {
 bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
     bool res = false;
     if((NULL != tx_payload) && (0 < len)) {
-        res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
+        uint8_t debugSync[5]={0x11, 0x22, 0x33, 0x44, 0x55};
+        res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)debugSync, (fifo_index_t)sizeof(debugSync));
         if(false == res) {
             LoRaInterface.ovfl_err_cnt++;
             LOG_ERROR(LORA, "TxQueueOverFlow");
+        }
+        if(res){
+            res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
+            if(false == res) {
+                LoRaInterface.ovfl_err_cnt++;
+                LOG_ERROR(LORA, "TxQueueOverFlow");
+            }
         }
     } else {
         LoRaInterface.err_cnt++;

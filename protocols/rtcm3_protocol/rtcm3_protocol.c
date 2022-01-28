@@ -170,7 +170,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_MAX_FRAME_SIZE);
             /*Send RTCM3 frame to LoRa*/
 #ifdef HAS_LED
-            led_blink(&Led[LED_INDEX_RED], 20);
+            led_blink(&Led[LED_INDEX_RED], 30);
 #endif
 
             switch(instance->interface) {

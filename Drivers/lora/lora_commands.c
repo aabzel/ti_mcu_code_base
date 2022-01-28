@@ -12,7 +12,6 @@
 #include "sx1262_drv.h"
 #endif
 
-
 bool lora_diag_command(int32_t argc, char* argv[]){
     bool res = false;
     if(0==argc){

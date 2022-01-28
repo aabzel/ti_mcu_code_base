@@ -15,6 +15,8 @@ static bool test_one_sync_word(uint64_t sync_word) {
     return true;
 }
 
+
+
 static bool test_one_lora_sync_word(uint16_t sync_word) {
     uint16_t read_sync_word = 0;
     EXPECT_TRUE(sx1262_set_lora_sync_word(sync_word));
@@ -49,10 +51,17 @@ bool test_sx1262_sync_word(void) {
 }
 
 bool test_sx1262_status(void){
-    /*TODO: */
-    Sx1262Status_t status;
+
     EXPECT_EQ(1, sizeof(Sx1262Status_t));
-    EXPECT_TRUE(sx1262_get_status(&status.byte));
+
+    uint8_t status1=0;
+    uint8_t status2=0;
+    RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
+    EXPECT_TRUE(sx1262_get_packet_type(&packet_type, &status2));
+    EXPECT_TRUE(sx1262_get_status(&status1));
+    EXPECT_EQ(status1, status2);
+
+
     return true;
 }
 
@@ -234,3 +243,4 @@ bool test_sx1262_connected(void) {
     /* TODO: try undef op code command*/
     return true;
 }
+

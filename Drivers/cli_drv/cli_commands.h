@@ -38,8 +38,6 @@ extern "C" {
 #define CORTEX_M4_COMMANDS
 #endif
 
-
-
 #ifdef HAS_BMP180
 #include "bmp180_commands.h"
 #else

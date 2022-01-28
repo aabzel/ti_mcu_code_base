@@ -24,7 +24,7 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
 #ifdef HAS_DEBUG
         instance->preamble_cnt++;
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "Preamble");
+        LOG_DEBUG(TBFP, "Preamble 0x%x",rx_byte);
 #endif
 #endif
         res = true;
@@ -44,6 +44,7 @@ static bool tbfp_parser_proc_retransmit_cnt(TbfpProtocol_t* instance, uint8_t rx
     if(TBFP_INDEX_RETX == instance->parser.load_len) {
         instance->parser.rx_frame[TBFP_INDEX_RETX] = rx_byte;
         instance->parser.load_len = TBFP_INDEX_RETX + 1;
+        LOG_DEBUG(TBFP, "ReTxCnt:0x%x",rx_byte);
         instance->parser.rx_state = WAIT_SERIAL_NUM;
         res = true;
     } else {

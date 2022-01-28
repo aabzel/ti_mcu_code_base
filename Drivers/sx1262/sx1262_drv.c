@@ -181,7 +181,7 @@ bool sx1262_is_connected(void) {
     res = sx1262_get_sync_word(&read_sync_word);
     if((Sx1262Instance.set_sync_word == read_sync_word) && (true == res)) {
 #ifdef HAS_LOG
-        LOG_DEBUG(LORA, "SyncWordMatch");
+        LOG_PARN(LORA, "SyncWordMatch");
 #endif
         res = true;
     } else {
@@ -237,7 +237,7 @@ bool sx1262_is_exist(void) {
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s() OpCode:0x%x %s", __FUNCTION__, op_code, OpCode2Str(op_code));
+    LOG_PARN(LORA, "%s() OpCode:0x%x %s", __FUNCTION__, op_code, OpCode2Str(op_code));
 #endif
     bool res = false;
     if((tx_array_len + OPCODE_SIZE) < (2 * FIFO_SIZE)) {
@@ -267,7 +267,7 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
 bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
                         uint16_t rx_array_len) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     bool res = false;
     SX1262_CHIP_SELECT(sx1262_send_opcode_proc(op_code, tx_array, tx_array_len, rx_array, rx_array_len));
@@ -325,7 +325,7 @@ bool sx1262_set_rf_frequency(uint32_t rf_frequency_hz, uint32_t freq_xtal_hz) {
 */
 bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     bool res = false;
     uint8_t tx_array[2] = {0};
@@ -333,6 +333,19 @@ bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
     tx_array[1] = rx_base_addr;
     res = sx1262_send_opcode(OPCODE_SET_BUFFER_BASE_ADDR, tx_array, sizeof(tx_array), NULL, 0);
     return res;
+}
+
+static uint8_t get_prev_circular(uint8_t addr, uint8_t inter){
+    uint8_t val=addr;
+    uint8_t i = 0;
+    for(i = 0; i < 2; i++) {
+        if(0 < val) {
+            val -= 1; /*subtraction matters*/
+        } else {
+            val = 255;
+        }
+    }
+    return val;
 }
 /*
   GetRxBufferStatus
@@ -343,25 +356,18 @@ bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
   */
 bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_start_buffer_pointer) {
     bool res = false;
-    uint8_t rx_array[3];
+    uint8_t rx_array[4];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_RX_BUFFER_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
-        Sx1262Instance.status = rx_array[0];
+        Sx1262Instance.status = rx_array[1];
         if(out_payload_length_rx) {
-            *out_payload_length_rx = rx_array[1];
+            *out_payload_length_rx = rx_array[2];
         }
         if(out_rx_start_buffer_pointer) {
-            *out_rx_start_buffer_pointer = rx_array[2];
-#if 0
-            uint8_t i = 0;
-            for(i = 0; i < 2; i++) {
-                if(0 < *out_rx_start_buffer_pointer) {
-                    *out_rx_start_buffer_pointer -= 1; /*subtraction matters*/
-                } else {
-                    *out_rx_start_buffer_pointer = 255;
-                }
-            }
+            *out_rx_start_buffer_pointer = rx_array[3];
+#if 1
+            *out_rx_start_buffer_pointer= get_prev_circular(*out_rx_start_buffer_pointer,2);
 #endif
         }
     }
@@ -373,7 +379,7 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
  * */
 bool sx1262_start_rx(uint32_t timeout_s) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     bool res = true;
     res = sx1262_clear_fifo() && res;
@@ -407,7 +413,7 @@ bool is_power_valid(int8_t power) {
 */
 bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     bool res = false;
     res = is_power_valid(power);
@@ -434,7 +440,7 @@ bool sx1262_set_dio2_as_rf_switch_ctrl(Dio2Mode_t mode) {
  * */
 bool sx1262_set_packet_params(PacketParam_t* packParam) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     bool res = false;
     uint8_t tx_array[9];
@@ -478,7 +484,7 @@ bool sx1262_reset_stats(void) {
 */
 bool sx1262_set_standby(StandbyMode_t stdby_config) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     bool res = true;
     uint8_t tx_array[1];
@@ -496,7 +502,7 @@ bool sx1262_set_standby(StandbyMode_t stdby_config) {
 */
 bool sx1262_set_packet_type(RadioPacketType_t packet_type) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     bool res = false;
     res = sx1262_set_standby(STDBY_RC);
@@ -738,7 +744,7 @@ bool sx1262_set_sleep(uint8_t sleep_config) {
  */
 bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_sel, uint8_t pa_lut) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     bool res = false;
     uint8_t tx_array[4];
@@ -803,7 +809,7 @@ static bool calc_power_param(uint8_t output_power_dbm, uint8_t* pa_duty_cycle, u
 
 static bool sx1262_conf_tx(int8_t output_power_dbm) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "%s()", __FUNCTION__);
 #endif
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
@@ -1036,6 +1042,8 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
                 // res = sx1262_clear_fifo();
                 res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
                 res = sx1262_set_payload(tx_buf, tx_len) && res;
+                Sx1262Instance.packet_param.proto.lora.payload_length =tx_len;
+                res = sx1262_set_packet_params(&Sx1262Instance.packet_param);
 #ifdef HAS_LOG
                 LOG_DEBUG(LORA, "TxLen:%u", tx_len);
                 if(Sx1262Instance.debug) {
@@ -1309,12 +1317,13 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t ma
     uint8_t calc_crc8 = 0;
     uint8_t rx_start_buffer_pointer = 0;
     res = sx1262_get_rxbuff_status(&len, &rx_start_buffer_pointer);
-    if(res) {
 #ifdef HAS_LOG
+    if(res) {
         LOG_DEBUG(LORA, "Start %u rxLen %u", rx_start_buffer_pointer, len);
-#endif
     }
-    rx_payload_len = 256; // len;
+#endif
+    //rx_payload_len = 256; // One LoRa Frame one-multiple TBFP frame
+    rx_payload_len = len; // Just for stream of bytes
     if(rx_payload_len <= max_size) {
         res = sx1262_read_buffer(rx_start_buffer_pointer, out_payload, (uint16_t)rx_payload_len);
         *out_size = rx_payload_len;
@@ -1329,7 +1338,7 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t ma
 static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     bool res = false;
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s(): ChipMode %u %s", __FUNCTION__, chip_mode, chip_mode2str(chip_mode));
+    LOG_PARN(LORA, "%s(): ChipMode %u %s", __FUNCTION__, chip_mode, chip_mode2str(chip_mode));
 #endif
     static ChipMode_t prev_chip_mode = CHP_MODE_UNDEF;
     static uint32_t chip_mode_rc = 0;
@@ -1338,7 +1347,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     static uint32_t chip_mode_tx = 0;
     if(chip_mode != prev_chip_mode) {
 #ifdef HAS_LOG
-        LOG_DEBUG(LORA, "ChipMode %u %s", chip_mode, chip_mode2str(chip_mode));
+        LOG_DEBUG(LORA, "ChipMode:%u %s", chip_mode, chip_mode2str(chip_mode));
 #endif
     }
 
@@ -1390,6 +1399,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     } break;
     case CHP_MODE_RX: {
         int8_t rssi_inst = 0;
+        Sx1262Instance.tx_done=true;
         res = sx1262_get_rssi_inst(&rssi_inst);
         if(res) {
             Sx1262Instance.rssi_inst = rssi_inst;
@@ -1514,17 +1524,17 @@ static inline bool sx1262_proc_data_aval(void) {
 static inline bool sx1262_poll_status(void) {
     bool res = false;
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s():", __FUNCTION__);
+    LOG_PARN(LORA, "%s():", __FUNCTION__);
 #endif
     Sx1262_t tempSx1262Instance = {0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
 
-    RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
+    //RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
     // res = sx1262_get_packet_type(&packet_type, &tempSx1262Instance.dev_status.byte);
     res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
 #ifdef HAS_LOG
-        LOG_DEBUG(LORA, "Status 0x%02x CmdStat:%s ChipMode:%s", tempSx1262Instance.dev_status.byte,
+        LOG_PARN(LORA, "Status 0x%02x CmdStat:%s ChipMode:%s", tempSx1262Instance.dev_status.byte,
                   cmd_stat2str(tempSx1262Instance.dev_status.command_status),
                   chip_mode2str(tempSx1262Instance.dev_status.chip_mode));
 #endif
@@ -1533,7 +1543,10 @@ static inline bool sx1262_poll_status(void) {
         Sx1262Instance.dev_status.byte = tempSx1262Instance.dev_status.byte;
         if(Sx1262Instance.dev_status.byte != stat_byte_prev) {
 #ifdef HAS_LOG
-            LOG_DEBUG(LORA, "Status:0x%02x", Sx1262Instance.dev_status.byte); /**/
+            LOG_DEBUG(LORA, "Status:0x%02x Mode:%s Cmd:%s",
+                      Sx1262Instance.dev_status.byte,
+                      chip_mode2str(Sx1262Instance.dev_status.chip_mode),
+                      cmd_stat2str(Sx1262Instance.dev_status.command_status)); /**/
 #endif
         }
         stat_byte_prev = Sx1262Instance.dev_status.byte;
@@ -1667,51 +1680,64 @@ static inline bool sx1262_sync_registers(void) {
 
 static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     bool res = false;
-    uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
-    uint32_t cur_time_stamp_ms = get_time_ms32();
-    tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
 
-    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done)) {
-        uint8_t tx_buf[SX1262_MAX_FRAME_SIZE] = {0};
-        memset(tx_buf, 0, sizeof(tx_buf));
+    fifo_index_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
+    if(SX1262_MAX_FRAME_SIZE<=count){
+        uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
+        uint32_t cur_time_stamp_ms = get_time_ms32();
+        tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
 
-        /*Transmitt multiple RTCM3 packages in single LoRa frame*/
-        fifo_index_t tx_len = 0;
-        res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_buf, sizeof(tx_buf), &tx_len);
-        if(res) {
-#ifdef HAS_LOG
-            LOG_DEBUG(LORA, "FiFoPullErr Len:%u", tx_len);
-#endif
-        }
+        if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done)) {
+            uint8_t tx_buf[SX1262_MAX_FRAME_SIZE] = {0};
+            memset(tx_buf, 0, sizeof(tx_buf));
 
-#ifdef HAS_LORA_FIFO_ARRAYS
-        Array_t Node = {.size = 0, .pArr = NULL};
-        res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &Node);
-        if(res) {
-            if(Node.pArr) {
-                if(0 < Node.size) {
-                    if(Node.size <= sizeof(tx_buf)) {
+            /*Transmitt multiple RTCM3 packages in single LoRa frame*/
+            fifo_index_t tx_len = 0;
+            res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_buf, sizeof(tx_buf), &tx_len);
+            if(res) {
+                if(0<tx_len){
+    #ifdef HAS_LOG
+                    LOG_DEBUG(LORA, "RxFiFoPull Len:%u", tx_len);
+    #endif
+                }else{
+                    LOG_PARN(LORA, "TxFiFoEmpty");
+                }
+            }else{
+                LOG_ERROR(LORA, "FiFoPullErr Len:%u", tx_len);
+            }
 
-                        memcpy(tx_buf, Node.pArr, Node.size);
-                        tx_len = Node.size;
+    #ifdef HAS_LORA_FIFO_ARRAYS
+            Array_t Node = {.size = 0, .pArr = NULL};
+            res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &Node);
+            if(res) {
+                if(Node.pArr) {
+                    if(0 < Node.size) {
+                        if(Node.size <= sizeof(tx_buf)) {
+
+                            memcpy(tx_buf, Node.pArr, Node.size);
+                            tx_len = Node.size;
+                        }
+                    }
+    #ifdef HAS_MCU
+                    free(Node.pArr);
+    #endif /*HAS_MCU*/
+                }
+            }
+    #endif /*HAS_LORA_FIFO_ARRAYS*/
+            if(res) {
+                if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
+                    res = sx1262_start_tx(tx_buf, tx_len, 0);
+                    if(res) {
+                        LoRaInterface.tx_ok_cnt++;
+                    } else {
+                        LoRaInterface.tx_err_cnt++;
                     }
                 }
-#ifdef HAS_MCU
-                free(Node.pArr);
-#endif /*HAS_MCU*/
             }
         }
-#endif /*HAS_LORA_FIFO_ARRAYS*/
-        if(res) {
-            if((0 < tx_len) && (tx_len <= sizeof(tx_buf))) {
-                res = sx1262_start_tx(tx_buf, tx_len, 0);
-                if(res) {
-                    LoRaInterface.tx_ok_cnt++;
-                } else {
-                    LoRaInterface.tx_err_cnt++;
-                }
-            }
-        }
+    }else{
+        LOG_PARN(LORA, "FiFoCnt:%u", count);
+        res = true;
     }
     return res;
 }
@@ -1722,7 +1748,7 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
 bool sx1262_process(void) {
     bool res = false;
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "check_connectivity=%u", Sx1262Instance.check_connectivity);
+    LOG_PARN(LORA, "check_connectivity=%u", Sx1262Instance.check_connectivity);
 #endif
 
     if(Sx1262Instance.check_connectivity) {
