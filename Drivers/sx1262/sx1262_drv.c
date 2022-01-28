@@ -343,25 +343,26 @@ bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
   */
 bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_start_buffer_pointer) {
     bool res = false;
-    uint8_t rx_array[4];
+    uint8_t rx_array[3];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_RX_BUFFER_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
-        Sx1262Instance.status = rx_array[1];
+        Sx1262Instance.status = rx_array[0];
         if(out_payload_length_rx) {
-            *out_payload_length_rx = rx_array[2];
+            *out_payload_length_rx = rx_array[1];
         }
         if(out_rx_start_buffer_pointer) {
-            *out_rx_start_buffer_pointer = rx_array[3];
+            *out_rx_start_buffer_pointer = rx_array[2];
+#if 0
             uint8_t i = 0;
             for(i = 0; i < 2; i++) {
-
                 if(0 < *out_rx_start_buffer_pointer) {
                     *out_rx_start_buffer_pointer -= 1; /*subtraction matters*/
                 } else {
                     *out_rx_start_buffer_pointer = 255;
                 }
             }
+#endif
         }
     }
     return res;
