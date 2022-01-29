@@ -292,11 +292,11 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
     } /*true==init_done*/
     return res;
 }
-
+#define WAIT_MUTEX 1000
 bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_array_len) {
     bool res = false;
     if( NULL!=SpiInstance[spi_num].mutex){
-        if( pdTRUE == xSemaphoreTake( SpiInstance[spi_num].mutex, 100 )  ){
+        if( pdTRUE == xSemaphoreTake( SpiInstance[spi_num].mutex, WAIT_MUTEX )  ){
             res = spi_wait_write_wait(spi_num, tx_array, tx_array_len);
             xSemaphoreGive(  SpiInstance[spi_num].mutex );
         }else{
@@ -343,7 +343,7 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
 bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
     if( SpiInstance[spi_num].mutex){
-        if( pdTRUE==xSemaphoreTake( SpiInstance[spi_num].mutex, 50 )  ){
+        if( pdTRUE==xSemaphoreTake( SpiInstance[spi_num].mutex, WAIT_MUTEX )  ){
             res = spi_wait_read_wait(spi_num, rx_array, rx_array_len);
             xSemaphoreGive(  SpiInstance[spi_num].mutex );
         }else{
