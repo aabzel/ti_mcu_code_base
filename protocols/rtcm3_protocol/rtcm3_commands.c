@@ -145,7 +145,7 @@ bool rtcm3_reset_command(int32_t argc, char* argv[]) {
         LOG_ERROR(SYS, "Usage: rtcmr interface");
     }
     if(res) {
-        res = rtcm3_reset_rx(&Rtcm3Protocol[interface]);
+        res = rtcm3_reset_rx(&Rtcm3Protocol[interface],WAIT_INIT);
     }
     return res;
 }

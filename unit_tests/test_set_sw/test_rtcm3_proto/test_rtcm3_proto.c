@@ -33,7 +33,7 @@ bool test_rtcm3_proto_1(void) {
 #endif
     EXPECT_TRUE(is_rtcm3_frame((uint8_t*)rtcm3_message25, sizeof(rtcm3_message25)));
     EXPECT_TRUE(is_rtcm3_frame((uint8_t*)rtcm3_message, sizeof(rtcm3_message)));
-    rtcm3_reset_rx(&Rtcm3Protocol[IF_UART1]);
+    rtcm3_reset_rx(&Rtcm3Protocol[IF_UART1],WAIT_INIT);
     Rtcm3Protocol[IF_UART1].rx_pkt_cnt = 0;
     for(i = 0; i < sizeof(rtcm3_message); i++) {
         rtcm3_proc_byte(&Rtcm3Protocol[IF_UART1], rtcm3_message[i]);
@@ -52,7 +52,7 @@ bool test_rtcm3_types(void) {
     EXPECT_EQ(2, sizeof(Rtcm3Len_t));
     EXPECT_EQ(3, sizeof(Rtcm3Header_t)); /*error on work NetTop returns 4*/
 #ifndef X86_64
-    EXPECT_EQ(1, sizeof(Rtcm3ProtState_t));
+    EXPECT_EQ(1, sizeof(RxState_t));
 #endif
     return true;
 }
@@ -62,7 +62,7 @@ bool test_rtcm3_array(void) {
     printf("\n%s():", __FUNCTION__);
 #endif /*X86_64*/
     Rtcm3Protocol[IF_LORA].rx_pkt_cnt = 0;
-    rtcm3_reset_rx(&Rtcm3Protocol[IF_LORA]);
+    rtcm3_reset_rx(&Rtcm3Protocol[IF_LORA],WAIT_INIT);
     EXPECT_TRUE(rtcm3_proc_array((uint8_t*)rtcm3_message2, sizeof(rtcm3_message2), IF_LORA));
     EXPECT_EQ(2, Rtcm3Protocol[IF_LORA].rx_pkt_cnt);
     return true;
