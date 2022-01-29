@@ -16,8 +16,8 @@
 bool wait_in_loop_ms(uint32_t wait_pause_ms) {
     bool res = false;
 #ifdef HAS_FREE_RTOS
-   //vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
-   res = true;
+    // vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
+    res = true;
 #endif
 
 #ifdef NORTOS
@@ -47,8 +47,8 @@ bool wait_in_loop_ms(uint32_t wait_pause_ms) {
 bool wait_ms(int32_t wait_pause_ms) {
     bool res = false;
 #ifdef HAS_FREE_RTOS
-  	vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
-   	res = true;
+    vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
+    res = true;
 #endif /*HAS_FREE_RTOS*/
 
 #ifdef NORTOS

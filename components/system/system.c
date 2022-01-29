@@ -22,11 +22,20 @@
 #include "io_utils.h"
 #include "log.h"
 #endif
+#ifdef HAS_MCU
 #include "sys_config.h"
+#endif
+
+#ifdef HAS_UART
 #include "uart_common.h"
+#endif
 
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
+#endif
+
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
 #endif
 
 #ifdef HAS_BOOTLOADER
@@ -34,7 +43,7 @@
 #endif
 
 const char* interface2str(Interfaces_t interface) {
-    const char* name = "undef";
+    const char* name = "???";
     switch(interface) {
     case IF_LORA:
         name = "LoRa";
@@ -45,11 +54,23 @@ const char* interface2str(Interfaces_t interface) {
     case IF_UART1:
         name = "UART1";
         break;
+    case IF_SX1262:
+        name = "SX1262";
+        break;
+    case IF_UART0:
+        name = "UART0";
+        break;
     case IF_CAN:
         name = "CAN";
         break;
     case IF_BLE:
         name = "BLE";
+        break;
+    case IF_LOOPBACK:
+        name = "LoopBack";
+        break;
+    case IF_SPI0:
+        name = "SPI0";
         break;
     default:
         break;
@@ -58,11 +79,12 @@ const char* interface2str(Interfaces_t interface) {
 }
 
 bool interface_valid(Interfaces_t interface) {
-    bool res =  false;
+    bool res = false;
     switch(interface) {
     case IF_LORA:
     case IF_RS232:
     case IF_UART1:
+    case IF_SX1262:
     case IF_SPI0:
     case IF_UART0:
     case IF_CAN:
@@ -76,8 +98,8 @@ bool interface_valid(Interfaces_t interface) {
     return res;
 }
 
-bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
-    bool res=false;
+bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
+    bool res = false;
     switch(interface) {
 #ifdef HAS_LORA
     case IF_LORA: {
@@ -91,7 +113,7 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
 #endif
 #ifdef HAS_SPI0
     case IF_SPI0: {
-        res = spi_write(SPI0_INX ,array, len);
+        res = spi_write(SPI0_INX, array, len);
     } break;
 #endif
 #ifdef HAS_UART0
@@ -106,26 +128,34 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface){
 #endif
 #ifdef HAS_RS232
     case IF_RS232: {
-        res = rs232_send(array, len );
+        res = rs232_send(array, len);
+    } break;
+#endif
+#ifdef HAS_SX1262
+    case IF_SX1262: {
+        res = sx1262_start_tx(array, len, 0);
     } break;
 #endif
 #ifdef HAS_BLE
     case IF_BLE: {
-        res = ble_send(array, len );
+        res = ble_send(array, len);
     } break;
 #endif
     case IF_LOOPBACK: {
 #ifdef HAS_TBFP
-        res = tbfp_proc(array, len , IF_LOOPBACK, true);
+        res = tbfp_proc(array, len, IF_LOOPBACK, true);
+        if(false == res) {
+            LOG_ERROR(SYS, "tbfpProcErr");
+        }
 #endif
     } break;
-    default:
-        LOG_ERROR(SYS, "UndefIf: %u=%s",interface, interface2str(interface));
+    default: {
+        LOG_ERROR(SYS, "UndefIf: %u=%s", interface, interface2str(interface));
         res = false;
-        break;
+    } break;
     }
-    if(false==res){
-        LOG_ERROR(SYS, "SendErr: %u=%s",interface, interface2str(interface));
+    if(false == res) {
+        LOG_ERROR(SYS, "SendIfErr: %u=%s", interface, interface2str(interface));
     }
     return res;
 }

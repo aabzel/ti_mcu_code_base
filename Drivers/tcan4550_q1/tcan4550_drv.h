@@ -12,7 +12,7 @@ extern "C" {
 #include "tcan4550_reg.h"
 #include "tcan4550_types.h"
 
-#define TCAN4550_PERIOD_US 500
+#define TCAN4550_PERIOD_US 1
 #define CAN_BAUD_RATE_DFLT 250000U /*Bit/s*/
 #define CAN_XTAL_HZ 40000000U
 #define MRAM_SZ 2048U /*Byte*/

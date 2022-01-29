@@ -1,5 +1,5 @@
-#ifndef TEST_SYSTEM_H
-#define TEST_SYSTEM_H
+#ifndef TEST_RTCM3_PATH_H
+#define TEST_RTCM3_PATH_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,11 +9,11 @@ extern "C" {
 
 bool test_rtcm3_path(void);
 
-#define TEST_SYSTEM                      \
+#define TEST_SUIT_RTCM3_PATH                      \
         {"rtcm3_path", test_rtcm3_path},                                                                                                     \
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* TEST_SYSTEM_H */
+#endif /* TEST_RTCM3_PATH_H */

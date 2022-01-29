@@ -16,7 +16,6 @@
 #include "uart_drv.h"
 #endif
 
-
 #ifdef HAS_CUSTOM_PRINTF
 print_callback_t print_callback_f;
 void io_putstr(const char* str) {
@@ -89,7 +88,7 @@ void wait_for_printf(void) {
 bool flush_printf(void) {
     bool res = false;
     if(huart[UART_NUM_CLI].init_done) {
-       res = true;
+        res = true;
 #ifdef HAS_LOG
         uint32_t cnt = 0;
         while((false == isFromInterrupt()) && (false == writer_clean(curWriterPtr))) {
@@ -104,4 +103,3 @@ bool flush_printf(void) {
     return res;
 }
 #endif
-

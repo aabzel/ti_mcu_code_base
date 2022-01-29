@@ -147,31 +147,31 @@ bool fifo_push_array(Fifo_array_t* instance, char* const inArr, fifo_index_t arr
     return res;
 }
 
-bool fifo_pull_array(Fifo_array_t* instance, char* const outArr, size_t arr_size, fifo_index_t* const outLen) {
+bool fifo_pull_array(Fifo_array_t* instance, char* outArr, size_t arr_size, fifo_index_t* const out_len) {
     bool res = is_fifo_valid(instance);
-    if((NULL != outArr) && (NULL != outLen) && (true == res)) {
+    if((NULL != outArr) && (NULL != out_len) && (true == res)) {
         res = false;
         bool loop = true;
-        (*outLen) = 0u;
+        (*out_len) = 0u;
         while(loop) {
             if(0u < instance->fifoState.count) {
                 char out_char = (char)0;
-                if ((*outLen)<(arr_size-1)) {
+                if ((*out_len)<(arr_size)) {
                     res = fifo_pull(instance, &out_char);
                     if(true == res) {
-                        outArr[(*outLen)] = out_char;
-                        (*outLen)++;
+                        outArr[(*out_len)] = out_char;
+                        (*out_len)++;
                     } else {
                         loop = false;
                     }
                 } else {
                     /*Lack of space to store */
-                    outArr[(*outLen)] = '\0';
+                    //outArr[(*out_len)] = '\0';
                     loop = false;
                     res = true;
                 }/**/
             } else {
-                outArr[(*outLen)] = '\0';
+                //outArr[(*out_len)] = '\0';
                 loop = false;
                 res = true;
             }
@@ -182,12 +182,12 @@ bool fifo_pull_array(Fifo_array_t* instance, char* const outArr, size_t arr_size
     return res;
 }
 
-bool fifo_peek_array(Fifo_array_t* instance, char* outArr, fifo_index_t* const outLen) {
+bool fifo_peek_array(Fifo_array_t* instance, char* outArr, fifo_index_t* const out_len) {
     bool res = is_fifo_valid(instance);
     if(res) {
         res = false;
-        if((NULL != outArr) && (NULL != outLen)) {
-            (*outLen) = 0u;
+        if((NULL != outArr) && (NULL != out_len)) {
+            (*out_len) = 0u;
             if(true == fifo_index_valid(&(instance->fifoState))) {
                 if(0u < instance->fifoState.count) {
                     uint16_t i = 0u;
@@ -200,7 +200,7 @@ bool fifo_peek_array(Fifo_array_t* instance, char* outArr, fifo_index_t* const o
                             run = 0;
                         }
                     }
-                    (*outLen) = instance->fifoState.count;
+                    (*out_len) = instance->fifoState.count;
                     outArr[i] = '\0';
                     res = true;
                 }

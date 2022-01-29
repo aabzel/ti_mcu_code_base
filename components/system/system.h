@@ -9,16 +9,17 @@ typedef __packed  enum eInterfaces_t {
 #else
 typedef enum eInterfaces_t {
 #endif
-    IF_LOOPBACK = 0,
-    IF_LORA = 1,
-    IF_RS232 = 2,
-    IF_CAN = 3,
-    IF_UART1 = 4,
-    IF_UART0 = 5,
-    IF_BLE = 6,
-    IF_SPI0 = 7,
-    IF_CNT = 8,
-    IF_NONE = 9,
+    IF_LORA = 0,/*RTCM3 source*/
+    IF_CAN = 1,/*for Debug*/
+    IF_RS232 = 2,/*for Debug*/
+    IF_LOOPBACK = 3,/*for self Test*/
+    IF_UART1 = 4, /*for RTCM3 source*/
+    IF_SX1262 = 5,
+    IF_CNT = 6,
+    IF_UART0 = 7,
+    IF_BLE = 8,
+    IF_SPI0 = 9,
+    IF_NONE = 10,
 #ifdef HAS_IAR
 }  Interfaces_t;
 #else

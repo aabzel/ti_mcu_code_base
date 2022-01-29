@@ -54,7 +54,9 @@ bool crc8_sae_j1850_check(const void* in_buf, uint32_t len, uint8_t exp_crc) {
     if(calc_crc == exp_crc) {
         res = true;
     } else {
-        LOG_ERROR(CRC8,"error calc:0x%02x exp:0x%02x", calc_crc, exp_crc);
+#ifdef HAS_LOG
+        LOG_ERROR(CRC8, "error calc:0x%02x exp:0x%02x", calc_crc, exp_crc);
+#endif
     }
     return res;
 }

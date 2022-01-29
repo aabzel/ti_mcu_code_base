@@ -7,9 +7,9 @@
 
 #include "TCAN4550.h"
 #include "TCAN_hl.h"
-#include "can_drv.h"
 #include "bit_utils.h"
 #include "byte_utils.h"
+#include "can_drv.h"
 #include "clocks.h"
 #include "data_utils.h"
 #include "debug_info.h"
@@ -1128,7 +1128,7 @@ static bool tcan4550_poll_can_interrupts(void) {
         if(IntReg.rf0n) {
             IntReg.rf0n = 0;
 #ifdef HAS_CLI
-            LOG_DEBUG(CAN, "RxFIFO0NewMessage");
+            LOG_PARN(CAN, "RxFIFO0NewMessage");
 #endif
             TCAN4x5x_MCAN_RX_Header MsgHeader = {0}; // Initialize to 0 or you'll get garbage
             uint8_t num_bytes = 0; // Used since the ReadNextFIFO function will return how many bytes of data were read
@@ -1138,7 +1138,7 @@ static bool tcan4550_poll_can_interrupts(void) {
                                                    dataPayload); // This will read the next element in the RX FIFO 0
             if(num_bytes) {
 #ifdef HAS_LOG
-                LOG_DEBUG(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
+                LOG_PARN(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
 #ifdef HAS_CAN_DEBUG
                 print_mem(dataPayload, num_bytes, true, true, true, true);
 #endif /*HAS_CAN_DEBUG*/
@@ -1225,7 +1225,7 @@ static bool tcan4550_poll_can_interrupts(void) {
 
     return res;
 }
-
+#ifdef HAS_CAN_POLLING
 static bool tcan4550_poll_dev_interrupts(void) {
     bool res = false;
     uint32_t clear_bits = 0;
@@ -1369,24 +1369,31 @@ static bool tcan4550_poll_dev_interrupts(void) {
 
     return res;
 }
+#endif
 
 bool tcan4550_poll_interrupts(void) {
     bool res = true;
+#ifdef HAS_CAN_POLLING
     res = tcan4550_poll_dev_interrupts() && res;
+#endif
     res = tcan4550_poll_can_interrupts() && res;
     return res;
 }
 
 bool tcan4550_proc(void) {
     bool res = false;
+#ifdef HAS_CAN_POLLING
     static CanDevMode_t prev_mode = MODE_UNDEF;
-    CanPhy.cur.connected = is_tcan4550_connected();
+#endif
+    // CanPhy.cur.connected = is_tcan4550_connected();
+    CanPhy.cur.connected = true;
     if(false == CanPhy.cur.connected) {
 #ifdef HAS_LOG
         LOG_ERROR(CAN, "TCAN4550_SpiLinkLost");
 #endif
         res = init_tcan();
     } else {
+#ifdef HAS_CAN_POLLING
         tCanRegCCctrl_t ctrl_reg = {0};
         tCanRegProtStat_t proto_stat = {0};
         res = tcan4550_read_reg(ADDR_MCAN_PSR, &proto_stat.word);
@@ -1412,6 +1419,7 @@ bool tcan4550_proc(void) {
             LOG_INFO(CAN, "NewMode %s", can_mode2str(CanPhy.cur.mode));
 #endif
         }
+#endif
 
         res = tcan4550_poll_interrupts();
         uint8_t fifo_num = 0;
@@ -1428,7 +1436,7 @@ bool tcan4550_proc(void) {
                                                      rx_payload); // This will read the next element in the RX FIFO 0
                 if(rx_size) {
 #ifdef HAS_LOG
-                    LOG_DEBUG(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
+                    LOG_PARN(CAN, "RxID %u=0x%x", MsgHeader.ID, MsgHeader.ID);
 #ifdef HAS_CAN_DEBUG
                     print_mem(rx_payload, rx_size, true, true, true, true);
 #endif
@@ -1437,7 +1445,9 @@ bool tcan4550_proc(void) {
                 }
             }
         }
+#ifdef HAS_CAN_POLLING
         prev_mode = CanPhy.cur.mode;
+#endif
     }
 
     return res;

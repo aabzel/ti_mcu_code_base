@@ -8,8 +8,8 @@
 
 #include "bit_utils.h"
 #include "clocks.h"
-#include "log.h"
 #include "gpio_drv.h"
+#include "log.h"
 #include "spi_common.h"
 #include "sys_config.h"
 
@@ -30,75 +30,75 @@ const static uint32_t SpiBaseLut[SPI_CNT] = {SPI0_BASE, SPI1_BASE, SPI2_BASE, SP
 // set the D/C line to the value indicated in the user field.
 void spi0_pre_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-  //  gpio_set_state(DIO_SX1262_SS, 0);
+    //  gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi1_pre_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-  //  gpio_set_state(DIO_SX1262_SS, 0);
+    //  gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi2_pre_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-  //  gpio_set_state(DIO_SX1262_SS, 0);
+    //  gpio_set_state(DIO_SX1262_SS, 0);
 }
 void spi3_pre_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-   // gpio_set_state(DIO_SX1262_SS, 0);
+    // gpio_set_state(DIO_SX1262_SS, 0);
 }
 
 void spi0_post_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-  //  gpio_set_state(DIO_SX1262_SS, 1);
+    //  gpio_set_state(DIO_SX1262_SS, 1);
 }
 void spi1_post_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-  //  gpio_set_state(DIO_SX1262_SS, 1);
+    //  gpio_set_state(DIO_SX1262_SS, 1);
 }
 void spi2_post_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-   // gpio_set_state(DIO_SX1262_SS, 1);
+    // gpio_set_state(DIO_SX1262_SS, 1);
 }
 void spi3_post_transfer_callback(spi_transaction_t* transaction) {
     // int dc=(int)transaction->user;
-  //  gpio_set_state(DIO_SX1262_SS, 1);
+    //  gpio_set_state(DIO_SX1262_SS, 1);
 }
 
 const spi_device_interface_config_t SpiDevCfg[SPI_CNT] = {
     {
-    	.command_bits=0,
-		.address_bits=0,
+        .command_bits = 0,
+        .address_bits = 0,
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
-        .spics_io_num = -1,          // CS pin
+        .spics_io_num = -1,                     // CS pin
         .queue_size = 7,                        // We want to be able to queue 7 transactions at a time
         .pre_cb = spi0_pre_transfer_callback,   // Specify pre-transfer callback to handle D/C line
         .post_cb = spi0_post_transfer_callback,
     },
     {
-        	.command_bits=0,
-    		.address_bits=0,
+        .command_bits = 0,
+        .address_bits = 0,
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
-        .spics_io_num = -1,          // CS pin
+        .spics_io_num = -1,                     // CS pin
         .queue_size = 7,                        // We want to be able to queue 7 transactions at a time
         .pre_cb = spi1_pre_transfer_callback,   // Specify pre-transfer callback to handle D/C line
         .post_cb = spi1_post_transfer_callback,
     },
     {
-        	.command_bits=0,
-    		.address_bits=0,
+        .command_bits = 0,
+        .address_bits = 0,
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
-        .spics_io_num = -1,          // CS pin
+        .spics_io_num = -1,                     // CS pin
         .queue_size = 7,                        // We want to be able to queue 7 transactions at a time
         .pre_cb = spi2_pre_transfer_callback,   // Specify pre-transfer callback to handle D/C line
         .post_cb = spi2_post_transfer_callback,
     },
     {
-        	.command_bits=0,
-    		.address_bits=0,
+        .command_bits = 0,
+        .address_bits = 0,
         .clock_speed_hz = SPI_CLK_FREQUENCY_HZ, // Clock out at 26 MHz
         .mode = 0,                              // SPI mode 0
-        .spics_io_num = -1,          // CS pin
+        .spics_io_num = -1,                     // CS pin
         .queue_size = 7,                        // We want to be able to queue 7 transactions at a time
         .pre_cb = spi3_pre_transfer_callback,   // Specify pre-transfer callback to handle D/C line
         .post_cb = spi3_post_transfer_callback,
@@ -189,11 +189,11 @@ static bool spi_init_ll(SpiName_t spi_num, char* spi_name, uint32_t bit_rate) {
         }
     }
     SpiInstance[spi_num].mutex = xSemaphoreCreateMutexStatic(&SpiInstance[spi_num].xMutexBuffer);
-    if(NULL==SpiInstance[spi_num].mutex ){
+    if(NULL == SpiInstance[spi_num].mutex) {
         res = false;
-    	LOG_ERROR(SPI, "MutexInitError");
-    }else{
-    	LOG_INFO(SPI, "MutexInitOk");
+        LOG_ERROR(SPI, "MutexInitError");
+    } else {
+        LOG_INFO(SPI, "MutexInitOk");
     }
     return res;
 }
@@ -262,24 +262,23 @@ bool spi_wait_write_wait(SpiName_t spi_num, const uint8_t* const tx_array, uint1
     bool res = false;
     (void)spi_num;
     if(true == SpiInstance[spi_num].init_done) {
-    	LOG_DEBUG(SPI, "SPI:%u tx:%u",spi_num,tx_array_len);
+        LOG_DEBUG(SPI, "SPI:%u tx:%u", spi_num, tx_array_len);
         SpiInstance[spi_num].it_done = false;
         spi_transaction_t Transaction;
         uint16_t i = 0;
-        for(i=0; i<tx_array_len; i++){
-        	LOG_DEBUG(SPI, "SPI write: i:%u",i);
+        for(i = 0; i < tx_array_len; i++) {
+            LOG_DEBUG(SPI, "SPI write: i:%u", i);
             memset(&Transaction, 0, sizeof(Transaction)); // Zero out the transaction
-            //Transaction.user = (void*)0; // D/C needs to be set to 1
+            // Transaction.user = (void*)0; // D/C needs to be set to 1
             Transaction.flags = SPI_TRANS_USE_TXDATA | SPI_TRANS_MODE_OCT;
-            Transaction.length = 8 ; // Len is in bytes, transaction length is in bits.
-            //Transaction.tx_buffer = (tx_array+i);
+            Transaction.length = 8; // Len is in bytes, transaction length is in bits.
+            // Transaction.tx_buffer = (tx_array+i);
             Transaction.rxlength = 0;
             Transaction.rx_buffer = NULL;
-            Transaction.tx_data[0]=*(tx_array+i);
+            Transaction.tx_data[0] = *(tx_array + i);
             if(SpiInstance[spi_num].spi_device_handle) {
                 esp_err_t ret;
-                ret = spi_device_polling_transmit(SpiInstance[spi_num].spi_device_handle,
-                		                          &Transaction);
+                ret = spi_device_polling_transmit(SpiInstance[spi_num].spi_device_handle, &Transaction);
                 if(ESP_OK == ret) {
                     res = true;
                     LOG_DEBUG(SPI, "SPItxOK");
@@ -298,12 +297,12 @@ bool spi_write(SpiName_t spi_num, const uint8_t* const tx_array, uint16_t tx_arr
     if( NULL!=SpiInstance[spi_num].mutex){
         if( pdTRUE == xSemaphoreTake( SpiInstance[spi_num].mutex, WAIT_MUTEX )  ){
             res = spi_wait_write_wait(spi_num, tx_array, tx_array_len);
-            xSemaphoreGive(  SpiInstance[spi_num].mutex );
-        }else{
-        	LOG_ERROR(SPI, "MutexBusy");
+            xSemaphoreGive(SpiInstance[spi_num].mutex);
+        } else {
+            LOG_ERROR(SPI, "MutexBusy");
         }
-    }else{
-    	LOG_ERROR(SPI, "MutexInitError SPI:%u",spi_num);
+    } else {
+        LOG_ERROR(SPI, "MutexInitError SPI:%u", spi_num);
     }
     // res = spi_wait_write(spi_num, tx_array, tx_array_len);
     return res;
@@ -314,26 +313,26 @@ static bool spi_wait_read_wait(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx
     if(true == SpiInstance[spi_num].init_done) {
         spi_wait_tx_done(spi_num);
         SpiInstance[spi_num].it_done = false;
-        spi_transaction_t Transaction ;
+        spi_transaction_t Transaction;
         uint16_t i = 0;
-        for(i=0; i<rx_array_len; i++){
-        	LOG_DEBUG(SPI, "SPI read: i:%u",i);
+        for(i = 0; i < rx_array_len; i++) {
+            LOG_DEBUG(SPI, "SPI read: i:%u", i);
             memset(&Transaction, 0, sizeof(Transaction));
-   	        Transaction.flags = SPI_TRANS_USE_RXDATA | SPI_TRANS_MODE_OCT;
+            Transaction.flags = SPI_TRANS_USE_RXDATA | SPI_TRANS_MODE_OCT;
             Transaction.length = 8;
             Transaction.rxlength = 0;
             Transaction.tx_buffer = NULL;
             Transaction.rx_buffer = rx_array;
 
-            esp_err_t err = spi_device_polling_transmit( SpiInstance[spi_num].spi_device_handle, &Transaction);
-            if(ESP_OK==err){
-            	LOG_DEBUG(SPI, "SPIrxOK");
+            esp_err_t err = spi_device_polling_transmit(SpiInstance[spi_num].spi_device_handle, &Transaction);
+            if(ESP_OK == err) {
+                LOG_DEBUG(SPI, "SPIrxOK");
                 SpiInstance[spi_num].rx_byte_cnt += 1;
-                *(rx_array+i) = Transaction.rx_data[0];
+                *(rx_array + i) = Transaction.rx_data[0];
                 res = true;
-            }else{
-         	    res = false;
-         	    LOG_ERROR(SPI, "SPI read error i:%u",i);
+            } else {
+                res = false;
+                LOG_ERROR(SPI, "SPI read error i:%u", i);
             }
         }
     }
@@ -344,13 +343,14 @@ bool spi_read(SpiName_t spi_num, uint8_t* rx_array, uint16_t rx_array_len) {
     bool res = false;
     if( SpiInstance[spi_num].mutex){
         if( pdTRUE==xSemaphoreTake( SpiInstance[spi_num].mutex, WAIT_MUTEX )  ){
+
             res = spi_wait_read_wait(spi_num, rx_array, rx_array_len);
-            xSemaphoreGive(  SpiInstance[spi_num].mutex );
-        }else{
-        	LOG_ERROR(SPI, "MutexBusy");
+            xSemaphoreGive(SpiInstance[spi_num].mutex);
+        } else {
+            LOG_ERROR(SPI, "MutexBusy");
         }
-    }else{
-    	LOG_ERROR(SPI, "MutexInitError SPI:%u", spi_num);
+    } else {
+        LOG_ERROR(SPI, "MutexInitError SPI:%u", spi_num);
     }
     return res;
 }

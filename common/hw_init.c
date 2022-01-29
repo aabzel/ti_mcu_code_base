@@ -147,7 +147,7 @@ bool hw_init(void) {
 #endif /*HAS_UART*/
 
 #ifdef HAS_RTC
-  res = try_init(rtc_init(),"RTC") && res;
+  res = try_init( rtc_init(),"RTC") && res;
 #endif /*HAS_RTC*/
 
 #ifdef HAS_RS232
@@ -194,10 +194,6 @@ bool hw_init(void) {
 #ifdef HAS_RNG
   res = try_init( rng_init(),"RNG") && res;
 #endif /*HAS_RNG*/
-
-#ifdef HAS_RTC
-  res = try_init( rtc_init(),"RTC") && res;
-#endif /*HAS_RTC*/
 
 #ifdef HAS_BLE
   res = try_init(ble_init(),"BLE") && res;

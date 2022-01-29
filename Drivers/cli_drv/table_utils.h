@@ -53,27 +53,20 @@
 #endif
 
 typedef struct {
-  uint8_t width;
-  const char *name;
+    uint8_t width;
+    const char* name;
 } table_col_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void table_row_top(ostream_t *row_top_ostream, const table_col_t row_top_cols[],
-                   int16_t row_top_col_count);
-void table_row_separator(ostream_t *row_separator_ostream,
-                         const table_col_t row_separator_cols[],
+void table_row_top(ostream_t* row_top_ostream, const table_col_t row_top_cols[], int16_t row_top_col_count);
+void table_row_separator(ostream_t* row_separator_ostream, const table_col_t row_separator_cols[],
                          int16_t row_separator_col_count);
-void table_row_bottom(ostream_t *row_bottom_ostream,
-                      const table_col_t row_bottom_cols[],
-                      int16_t row_bottom_col_count);
-void table_row_header(ostream_t *row_header_ostream,
-                      const table_col_t row_header_cols[],
-                      int16_t row_header_col_count);
-void table_header(ostream_t *header_ostream, const table_col_t header_cols[],
-                  int16_t header_col_count);
+void table_row_bottom(ostream_t* row_bottom_ostream, const table_col_t row_bottom_cols[], int16_t row_bottom_col_count);
+void table_row_header(ostream_t* row_header_ostream, const table_col_t row_header_cols[], int16_t row_header_col_count);
+void table_header(ostream_t* header_ostream, const table_col_t header_cols[], int16_t header_col_count);
 
 #ifdef __cplusplus
 }

@@ -10,6 +10,8 @@ extern "C" {
 bool test_sx1262_status(void);
 bool test_sx1262_connected(void);
 bool test_sx1262_fifo(void);
+bool test_sx1262_chip_mode(void);
+bool test_sx1262_tx(void);
 bool test_sx1262_sync_word(void);
 bool test_sx1262_crc_poly(void);
 bool test_sx1262_crc_init(void);
@@ -24,6 +26,8 @@ bool test_sx1262_packet_type(void);
 #define TEST_SUIT_SX1262                                                                                               \
     {"sx1262_connect", test_sx1262_connected},   \
     {"sx1262_lora_sync_word", test_sx1262_lora_sync_word},           \
+    {"sx1262_tx", test_sx1262_tx},           \
+    {"sx1262_ChipMode", test_sx1262_chip_mode},           \
     {"sx1262_crc_poly", test_sx1262_crc_poly},           \
     {"sx1262_crc_init", test_sx1262_crc_init},           \
     {"sx1262_rx_gain", test_sx1262_rx_gain},           \

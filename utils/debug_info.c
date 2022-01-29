@@ -28,12 +28,13 @@
 #endif
 
 #ifdef HAS_LOG
+#include "oprintf.h"
 #include "table_utils.h"
 #include "writer_config.h"
 #include "writer_generic.h"
-#include "oprintf.h"
 #endif
 
+#include "version.h"
 #ifdef HAS_MCU
 #include "sys_config.h"
 #ifndef USE_HAL_DRIVER
@@ -42,7 +43,6 @@
 #ifdef HAS_BOOT
 #include "boot_cfg.h"
 #endif
-#include "version.h"
 #endif
 
 #ifdef X86_64
@@ -109,7 +109,7 @@ static bool print_fw_type(void) {
 }
 #endif
 
-#ifdef HAS_LOG
+#ifdef HAS_MCU
 void print_sysinfo(void) {
 #ifdef HAS_CORTEX_M
     io_printf("Reset handler: 0x%x " CRLF, *((uint32_t*)0x00000004));
@@ -170,8 +170,7 @@ bool print_version(void) {
 }
 #endif /*USE_HAL_DRIVER*/
 
-#ifdef HAS_LOG
-
+#ifdef HAS_MCU
 void print_sys_info(void) {
     uint32_t top_stack_val = *((uint32_t*)(APP_START_ADDRESS));
     io_printf("BootStackEnd: 0x%x " CRLF, *((uint32_t*)(0x00000000)));
@@ -183,7 +182,7 @@ void print_sys_info(void) {
 #endif
     explore_stack_dir();
 }
-#endif /*HAS_LOG*/
+#endif /*HAS_MCU*/
 
 /*platform spesific data type calculator */
 static bool print_u16_un(U16_bit_t un) {

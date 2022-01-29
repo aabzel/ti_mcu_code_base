@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <time.h>
 #ifdef HAS_LOG
+#include "debug_info.h"
 #include "io_utils.h"
 #include "log.h"
-#include "debug_info.h"
 #endif
 #include "convert.h"
 #include "core_driver.h"
@@ -18,7 +18,6 @@
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
 #endif
-
 
 bool telematic_sent_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -61,7 +60,6 @@ bool telematic_sent_command(int32_t argc, char* argv[]) {
 
     return res;
 }
-
 
 bool ping_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -118,7 +116,7 @@ bool chat_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        res = tbfp_send_chat(tx_array, tx_array_len, (Interfaces_t) interface, lifetime);
+        res = tbfp_send_chat(tx_array, tx_array_len, (Interfaces_t)interface, lifetime);
         if(res) {
             LOG_INFO(SYS, "ok [%s]", tx_array);
             res = print_mem(tx_array, tx_array_len, false, true, true, false);

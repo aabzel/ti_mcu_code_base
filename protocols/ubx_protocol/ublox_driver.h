@@ -16,11 +16,9 @@ extern "C" {
 #include "gnss_utils.h"
 #include "ubx_protocol.h"
 
-
 #if !defined(HAS_UART) && defined(HAS_MCU)
 #error "Ublox driver requires UART driver"
 #endif
-
 
 #define UBX_PERIOD_US S_2_US(3)
 #define UBX_SEND_TRY 15
@@ -57,14 +55,13 @@ typedef enum eUbxType_t {
     UBX_L = 13,
 } UbxType_t;
 
-typedef enum eSatConst_t{
-    SC_GPS=0,
-    SC_GLONASS=1,
-    SC_GALILEO=2,
-    SC_BEI_DOU=3,
-    SC_NONE=4,
-}SatConst_t;
-
+typedef enum eSatConst_t {
+    SC_GPS = 0,
+    SC_GLONASS = 1,
+    SC_GALILEO = 2,
+    SC_BEI_DOU = 3,
+    SC_NONE = 4,
+} SatConst_t;
 
 #if 0
 #define UBX_KEY_CNT 1

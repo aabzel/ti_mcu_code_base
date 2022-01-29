@@ -1,4 +1,4 @@
-#include "test_system.h"
+#include "test_rtcm_path.h"
 
 #include <string.h>
 

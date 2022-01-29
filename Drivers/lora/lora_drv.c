@@ -9,8 +9,8 @@
 
 #include "array.h"
 #ifdef HAS_CLI
-#include "log.h"
 #include "cli_manager.h"
+#include "log.h"
 #endif
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
@@ -32,17 +32,20 @@
 #include "sx1262_drv.h"
 #endif
 
+static char LoRaTxBuff[LORA_TX_BUFF_SIZE];
+#if HAS_LORA_FIFO_ARRAYS
 static Array_t ArrLoRaTxNode[LORA_TX_QUEUE_SIZE];
+#endif
 LoRaIf_t LoRaInterface = {0};
 
 bool lora_proc_payload(uint8_t* const rx_payload, uint32_t rx_size) {
     bool res = false;
 
 #ifdef HAS_TBFP
-    res = tbfp_proc(rx_payload, rx_size, IF_LORA, true);
+    res = tbfp_proc(rx_payload, rx_size, IF_SX1262, false);
     if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(LORA, "LoRaProcErr");
+        LOG_ERROR(LORA, "SX1262ProcErr");
 #endif
     }
 #endif /*HAS_TBFP*/
@@ -65,13 +68,18 @@ bool lora_init(void) {
         }
     }
 #endif
+
+    res = fifo_init(&LoRaInterface.FiFoLoRaCharTx, &LoRaTxBuff[0], sizeof(LoRaTxBuff));
+#if HAS_LORA_FIFO_ARRAYS
     LoRaInterface.tx_ok_cnt = 0;
     LoRaInterface.tx_done_cnt = 0;
     res = fifo_arr_init(&LoRaInterface.FiFoLoRaTx, &ArrLoRaTxNode[0], ARRAY_SIZE(ArrLoRaTxNode));
+#endif
     return res;
 }
 
-bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
+#ifdef HAS_LORA_FIFO_ARRAYS
+bool lora_send_array_queue(uint8_t* const tx_payload, uint32_t len) {
     bool res = false;
     if((NULL != tx_payload) && (len <= LORA_MAX_FRAME_SIZE)) {
         uint8_t* data = memdup((uint8_t*)tx_payload, len);
@@ -85,6 +93,21 @@ bool lora_send_queue(uint8_t* const tx_payload, uint32_t len) {
             }
         } else {
             LoRaInterface.err_cnt++;
+        }
+    } else {
+        LoRaInterface.err_cnt++;
+    }
+    return res;
+}
+#endif
+
+bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
+    bool res = false;
+    if((NULL != tx_payload) && (0 < len)) {
+        res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
+        if(false == res) {
+            LoRaInterface.ovfl_err_cnt++;
+            LOG_ERROR(LORA, "TxQueueOverFlow");
         }
     } else {
         LoRaInterface.err_cnt++;

@@ -11,62 +11,61 @@
 #include "str_utils.h"
 #include "sx1262_drv.h"
 
-const OpCode_t OpCodeMap[]={
-   {.name="resetStats", .op_code=0x00},
-   {.name="clearIrqStatus", .op_code=0x02},
-   {.name="clearDevice_errors", .op_code=0x07},
-   {.name="SetDioIrqParams", .op_code=0x08},
-   {.name="writeRegister", .op_code=0x0d},
-   {.name="writeBuffer", .op_code=0x0e},
-   {.name="GetStats", .op_code=0x10},
-   {.name="GetPacketType", .op_code=0x11},
-   {.name="GetIrqStatus", .op_code=0x12},
-   {.name="GetRxBufferStatus", .op_code=0x13},
-   {.name="GetPacketStatus", .op_code=0x14},
-   {.name="GetRssiinst", .op_code=0x15},
-   {.name="GetDeviceErrors", .op_code=0x17},
-   {.name="readRegister", .op_code=0x1d},
-   {.name="readBuffer", .op_code=0x1e},
-   {.name="SetStandby", .op_code=0x80},
-   {.name="SetRx", .op_code=0x82},
-   {.name="SetTx", .op_code=0x83},
-   {.name="SetSleep", .op_code=0x84},
-   {.name="SetRfFrequency", .op_code=0x86},
-   {.name="SetCadParam", .op_code=0x88},
-   {.name="calibrate", .op_code=0x89},
-   {.name="SetPacketType", .op_code=0x8a},
-   {.name="SetModulationParams", .op_code=0x8b},
-   {.name="SetPacketParams", .op_code=0x8c},
-   {.name="SetTxParams", .op_code=0x8e},
-   {.name="SetBufferBaseAddr", .op_code=0x8f},
-   {.name="SetFallback_mode", .op_code=0x93},
-   {.name="SetRxDuty_cycle", .op_code=0x94},
-   {.name="SetPaConfig", .op_code=0x95},
-   {.name="SetRegulatorMode", .op_code=0x96},
-   {.name="SetDio3As_tcxo_ctrl", .op_code=0x97},
-   {.name="calibrateImage", .op_code=0x98},
-   {.name="SetDio2_asRfswitch", .op_code=0x9d},
-   {.name="stop_timer_onPreamble", .op_code=0x9f},
-   {.name="Set_loraSymbol_timeout", .op_code=0xa0},
-   {.name="GetStatus",             .op_code=0xc0},
-   {.name="SetFs",                 .op_code=0xc1},
-   {.name="SetCad",                .op_code=0xc5},
-   {.name="SetTxCarrier",         .op_code=0xd1},
-   {.name="SetTxPreamble",        .op_code=0xd2},
-
+const OpCode_t OpCodeMap[] = {
+    {.name = "resetStats", .op_code = 0x00},
+    {.name = "clearIrqStatus", .op_code = 0x02},
+    {.name = "clearDevice_errors", .op_code = 0x07},
+    {.name = "SetDioIrqParams", .op_code = 0x08},
+    {.name = "writeRegister", .op_code = 0x0d},
+    {.name = "writeBuffer", .op_code = 0x0e},
+    {.name = "GetStats", .op_code = 0x10},
+    {.name = "GetPacketType", .op_code = 0x11},
+    {.name = "GetIrqStatus", .op_code = 0x12},
+    {.name = "GetRxBufferStatus", .op_code = 0x13},
+    {.name = "GetPacketStatus", .op_code = 0x14},
+    {.name = "GetRssiinst", .op_code = 0x15},
+    {.name = "GetDeviceErrors", .op_code = 0x17},
+    {.name = "readRegister", .op_code = 0x1d},
+    {.name = "readBuffer", .op_code = 0x1e},
+    {.name = "SetStandby", .op_code = 0x80},
+    {.name = "SetRx", .op_code = 0x82},
+    {.name = "SetTx", .op_code = 0x83},
+    {.name = "SetSleep", .op_code = 0x84},
+    {.name = "SetRfFrequency", .op_code = 0x86},
+    {.name = "SetCadParam", .op_code = 0x88},
+    {.name = "calibrate", .op_code = 0x89},
+    {.name = "SetPacketType", .op_code = 0x8a},
+    {.name = "SetModulationParams", .op_code = 0x8b},
+    {.name = "SetPacketParams", .op_code = 0x8c},
+    {.name = "SetTxParams", .op_code = 0x8e},
+    {.name = "SetBufferBaseAddr", .op_code = 0x8f},
+    {.name = "SetFallback_mode", .op_code = 0x93},
+    {.name = "SetRxDuty_cycle", .op_code = 0x94},
+    {.name = "SetPaConfig", .op_code = 0x95},
+    {.name = "SetRegulatorMode", .op_code = 0x96},
+    {.name = "SetDio3As_tcxo_ctrl", .op_code = 0x97},
+    {.name = "calibrateImage", .op_code = 0x98},
+    {.name = "SetDio2_asRfswitch", .op_code = 0x9d},
+    {.name = "stop_timer_onPreamble", .op_code = 0x9f},
+    {.name = "Set_loraSymbol_timeout", .op_code = 0xa0},
+    {.name = "GetStatus", .op_code = 0xc0},
+    {.name = "SetFs", .op_code = 0xc1},
+    {.name = "SetCad", .op_code = 0xc5},
+    {.name = "SetTxCarrier", .op_code = 0xd1},
+    {.name = "SetTxPreamble", .op_code = 0xd2},
 
 };
 
-char* OpCode2Str(uint8_t op_code){
-	 char* name = "?";
-	 uint16_t i=0;
-	 for(i=0;i<ARRAY_SIZE(OpCodeMap);i++){
-		 if(op_code==OpCodeMap[i].op_code){
-			 name=OpCodeMap[i].name;
-			 break;
-		 }
-	 }
-	 return name;
+char* OpCode2Str(uint8_t op_code) {
+    char* name = "?";
+    uint16_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(OpCodeMap); i++) {
+        if(op_code == OpCodeMap[i].op_code) {
+            name = OpCodeMap[i].name;
+            break;
+        }
+    }
+    return name;
 }
 
 const char* cmd_stat2str(uint8_t cmd_stat) {
@@ -294,8 +293,6 @@ bool print_int_diag(Sx1262IrqCnt_t* irq_cnt) {
     }
     return res;
 }
-
-
 
 char* bandwidth2str(uint8_t bandwidth) {
     static char name[40] = "";

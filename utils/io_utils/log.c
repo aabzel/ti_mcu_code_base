@@ -185,6 +185,9 @@ const char* facility2str(log_facility_t facility) {
     case CRC8:
         facility_str = "CRC8";
         break;
+    case CLI:
+        facility_str = "CLI";
+        break;
     case UBX:
         facility_str = "UBX";
         break;
@@ -247,6 +250,9 @@ bool log_write_begin(log_level_t level, log_facility_t facility) {
         if(log_colored) {
             io_putstr(log_level_color(level));
         }
+#ifdef X86_64
+        io_printf("\n");
+#endif
         io_printf("%" PRIu32 ".%03" PRIu32, (uint32_t)(now / 1000), (uint32_t)(now % 1000));
         io_printf(":%c ", log_level_name(level));
         if(log_facility_name) {

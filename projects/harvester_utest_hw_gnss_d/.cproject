@@ -54,25 +54,21 @@
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/common/nv"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/devices/cc13x2_cc26x2"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/gpio"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/devices/cc13x2_cc26x2/driverlib"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers"/>
+									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/gpio"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/power"/>
-									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/rf"/>
 									<listOptionValue builtIn="false" value="${COM_TI_SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR}/source/ti/drivers/temperature"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/${ConfigName}"/>
 									<listOptionValue builtIn="false" value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/calendar"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/system"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/boot_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/bq25171_q1_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/cli_drv"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/flash_fs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/gpio_pwm"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/led_drv"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/lora"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/pwr_mux"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/Drivers/rs232_drv"/>
@@ -100,29 +96,40 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/bsp_cc26x2/watchdog"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/calendar"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/gnss"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/system"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/mcu"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/tbfp_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/rtcm3_protocol"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/tbfp_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/ubx_protocol"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_firmware"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_flash_fs"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_gpio"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_params"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_spi"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_system"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_tim"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_uart"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_hw/test_zed_f9p"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_calendar"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_cli"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_crc"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_fifo"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_rtcm3_proto"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_string"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_tbfp_proto"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/unit_tests/test_set_sw/test_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/fifo"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_diag"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_math"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/utils_string"/>
@@ -134,34 +141,13 @@
 									<listOptionValue builtIn="false" value="HAS_ADC"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT"/>
 									<listOptionValue builtIn="false" value="HAS_BOOT_DIAG"/>
-									<listOptionValue builtIn="false" value="HAS_BQ25171_Q1"/>
 									<listOptionValue builtIn="false" value="HAS_CALENDAR"/>
-									<listOptionValue builtIn="false" value="HAS_CLOCK"/>
-									<listOptionValue builtIn="false" value="HAS_CUSTOM_PRINTF"/>
 									<listOptionValue builtIn="false" value="HAS_DEBUG"/>
 									<listOptionValue builtIn="false" value="HAS_GENERIC"/>
-									<listOptionValue builtIn="false" value="HAS_GPIO"/>
-									<listOptionValue builtIn="false" value="HAS_HARVESTER"/>
-									<listOptionValue builtIn="false" value="HAS_HARVESTER_V1"/>
 									<listOptionValue builtIn="false" value="HAS_HEALTH_MONITOR"/>
-									<listOptionValue builtIn="false" value="HAS_HW_TESTS"/>
-									<listOptionValue builtIn="false" value="HAS_LED"/>
 									<listOptionValue builtIn="false" value="HAS_NORTOS"/>
-									<listOptionValue builtIn="false" value="HAS_PWR_MUX"/>
-									<listOptionValue builtIn="false" value="HAS_RTC"/>
-									<listOptionValue builtIn="false" value="HAS_SW_TESTS"/>
 									<listOptionValue builtIn="false" value="HAS_SUPER_LOOP"/>
 									<listOptionValue builtIn="false" value="HAS_TASKS"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP_FLOW_CONTROL"/>
-									<listOptionValue builtIn="false" value="HAS_TBFP_RETRANSMIT"/>
-									<listOptionValue builtIn="false" value="HAS_TIM_COMMANDS"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_CRC"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SUIT_RTCM3_PROTO"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_SYSTEM"/>
-									<listOptionValue builtIn="false" value="HAS_TEST_UART"/>
-									<listOptionValue builtIn="false" value="HAS_TIM"/>
-									<listOptionValue builtIn="false" value="HAS_UNIT_TEST"/>
 									<listOptionValue builtIn="false" value="NORTOS"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.954922929" name="Target processor version (--silicon_version, -mv)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.SILICON_VERSION.7M4" valueType="enumerated"/>
@@ -180,15 +166,22 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY.1440920769" name="Preprocess only (--preproc_only, -ppo)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_ONLY" value="false" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE.573688216" name="Continue compilation after using -pp&lt;X&gt; options. (--preproc_with_compile, -ppa)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.PREPROC_WITH_COMPILE" value="false" valueType="boolean"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE.679690817" name="Read options from specified file (--cmd_file, -@)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compilerID.CMD_FILE" valueType="stringList">
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\HarvesterPower.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\KeyValMap.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cc2642.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cli.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\harvester_v1.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\HarvesterPower.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\cli_base.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\debug.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\gnss.opt"/>
-									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\KeyValMap.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\harvester_v1.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\io.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\log.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\rs232.opt"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\tbfp.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\uTests.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\uTestsGnss.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\uTestsKeyValMap.opt"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}\options\uTestsUart.opt"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS.425241768" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS.467512831" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.compiler.inputType__CPP_SRCS"/>
@@ -297,7 +290,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="unit_tests/test_set_hw/test_spi|common/spi_common.c|bsp_cc26x2/spi|Drivers/can|bsp_cc26x2/radio|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/watchdog|boards/tBeamV1_1|bsp_cc26x2/ble|boards/stm32_H407|unit_tests/test_set_sw/test_string|utils/utils_string/str_utils_ex.c|Drivers/telematic|Drivers/lora|unit_tests/test_set_hw/test_can|protocols/j1939|utils/io_utils/writer_lora.c|utils/win_utils|utils/utils_files|Drivers/tcan4550_q1|Drivers/tcan4550_q1_ti|Drivers/sx1262|unit_tests/test_set_hw/test_sx1262|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="utils/io_utils/writer_stdout.c|unit_tests/test_set_hw/test_spi|common/spi_common.c|bsp_cc26x2/spi|Drivers/can|bsp_cc26x2/radio|bsp_cc26x2/ti_drivers_config.c|bsp_cc26x2/watchdog|boards/tBeamV1_1|bsp_cc26x2/ble|boards/stm32_H407|unit_tests/test_set_sw/test_string|utils/utils_string/str_utils_ex.c|Drivers/telematic|Drivers/lora|unit_tests/test_set_hw/test_can|protocols/j1939|utils/io_utils/writer_lora.c|utils/win_utils|utils/utils_files|Drivers/tcan4550_q1|Drivers/tcan4550_q1_ti|Drivers/sx1262|unit_tests/test_set_hw/test_sx1262|Drivers/gpio_pwm|boards/stm32f4|boards/harvester_cc2642_v1|boards/launchpad|utils/utils_file|utils/fifo_char_buffer.c|Drivers/mx25l6433f|Drivers/ext_ram_simulator|bsp_cc26x2/rng|bsp_cc26x2/dac|bsp_cc26x2/rf|bsp_cc26x2/i2c|Drivers/bmp180|startup_ccs.c|bsp_cc26x2/bluetooth|cc26x2r1f_D.cmd|PowerCC26X2.c|PowerCC26X2_calibrateRCOSC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

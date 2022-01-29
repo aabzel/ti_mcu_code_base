@@ -11,10 +11,16 @@ extern "C" {
 #include "system.h"
 
 #define RTCM3_PREAMBLE 0xD3
-#define RTCM3_RX_FRAME_SIZE 256U
 #define RTCM3_HEADER_SIZE 3U
 #define RTCM3_CRC24_SIZE 3U
+#define RTCM3_OVERHEAD (RTCM3_CRC24_SIZE + RTCM3_HEADER_SIZE)
+#define RTCM3_RX_MAX_PAYLOAD_SIZE (512U)
+#define RTCM3_RX_MAX_FRAME_SIZE (RTCM3_RX_MAX_PAYLOAD_SIZE + RTCM3_OVERHEAD)
 #define RTCM_IF_CNT 4 /*LoRa RS232 UART1*/
+
+#define RTCM3_INX_PREAMBLE 0
+#define RTCM3_INX_LEN 1
+#define RTCM3_INX_PAYLOAD 3
 
 /*TODO: replase with RxState_t*/
 typedef enum eRtcm3ProtState_t {
@@ -26,7 +32,7 @@ typedef enum eRtcm3ProtState_t {
 } Rtcm3ProtState_t;
 
 typedef struct sRtcm3LenBit_t {
-    uint16_t len : 10;
+    uint16_t len : 10; /*Big or Little endian*/
     uint16_t res : 6;
 } Rtcm3LenBit_t;
 
@@ -60,10 +66,10 @@ typedef struct xRtcm3Protocol_t {
     uint32_t read_crc;
     uint16_t ack_cnt;
     Rtcm3ProtState_t rx_state;
-    uint8_t rx_frame[RTCM3_RX_FRAME_SIZE];
-    uint8_t fix_frame[RTCM3_RX_FRAME_SIZE];
+    uint8_t rx_frame[RTCM3_RX_MAX_FRAME_SIZE];
+    uint8_t fix_frame[RTCM3_RX_MAX_FRAME_SIZE];
     Interfaces_t interface;
-    bool forwarding[IF_CNT];
+    bool forwarding[IF_CNT]; // TODO make bit field
 } Rtcm3Protocol_t;
 
 extern Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];

@@ -1,0 +1,28 @@
+Не наблюдается сплошного потока CAN сообщений принимаегого из CAN
+Теряется по 2 TBFP пакета в среднем
+Лог базовой станции показывает что все TBFP пакеты отправляется.
+Лог ровера показывает что приходит каждый третий TBFP пакет 
+
+
+Решение:
+увеличить RX queue?
+
+
+Ни один TBFP пакет не доходит до получателя по CAN
+ll can debug
+ll can parn
+ll tbfp debug
+
+ll can info
+ll tbfp info
+CAN Пакеты приходят а TBFP пакет не собирается из них 
+
+В CAN шине теряются пакеты
+
+
+
+        modified:   boards/harvester_v1/board_harvester_v1.h
+git diff  protocols/tbfp_protocol/tbfp_diag.c
+git diff   protocols/tbfp_protocol/tbfp_protocol.c
+
+

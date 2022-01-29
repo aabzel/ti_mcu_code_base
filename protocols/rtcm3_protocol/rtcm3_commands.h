@@ -12,10 +12,12 @@ extern "C" {
 
 bool rtcm3_fwd_command(int32_t argc, char* argv[]);
 bool rtcm3_diag_command(int32_t argc, char* argv[]);
+bool rtcm3_diag_lost_command(int32_t argc, char* argv[]);
 bool rtcm3_reset_command(int32_t argc, char* argv[]);
 
 #define RTCM3_COMMANDS                                                                            \
     SHELL_CMD("rtcm_diag", "rtcmd", rtcm3_diag_command, "RTCM3 diag"),                            \
+    SHELL_CMD("rtcm_lost", "rtcml", rtcm3_diag_lost_command, "RTCM3 DiagLost"),             \
     SHELL_CMD("rtcm_fwd", "rtcmf", rtcm3_fwd_command, "RTCM3 forwarding"),                        \
     SHELL_CMD("rtcm_reset", "rtcmr", rtcm3_reset_command, "RTCM3 reset"),
 

@@ -191,6 +191,34 @@ bool test_sx1262_crc_init(void){
     return true;
 }
 
+bool test_sx1262_tx(void){
+    uint8_t tx_buf[4]={0x55,0xaa,0x10,0x01};
+
+    Sx1262Instance.tx_done= true;
+    EXPECT_TRUE( sx1262_start_tx(tx_buf, sizeof(tx_buf), 0));
+    EXPECT_TRUE(  wait_in_loop_ms(1000));
+    EXPECT_TRUE( Sx1262Instance.tx_done);
+
+    Sx1262Instance.tx_done= true;
+    EXPECT_TRUE( sx1262_start_tx(tx_buf, sizeof(tx_buf), 0));
+    EXPECT_TRUE(  wait_in_loop_ms(1000));
+    EXPECT_TRUE( Sx1262Instance.tx_done);
+
+    return true;
+}
+
+bool test_sx1262_chip_mode(void){
+    Sx1262Status_t dev_status;
+    EXPECT_TRUE( sx1262_set_fs());
+    EXPECT_TRUE(  sx1262_get_status( &dev_status.byte));
+    EXPECT_EQ(CHP_MODE_FS, dev_status.chip_mode);
+    RadioPacketType_t packet_type=PACKET_TYPE_UNDEF;
+    dev_status.byte=0;
+    EXPECT_TRUE( sx1262_get_packet_type(&packet_type, &dev_status.byte));
+    EXPECT_EQ(CHP_MODE_FS, dev_status.chip_mode);
+    EXPECT_TRUE( sx1262_init());
+    return true;
+}
 
 bool test_sx1262_types(void) {
     EXPECT_EQ(1, sizeof(Sx1262Status_t));
