@@ -156,8 +156,8 @@ typedef struct xSx1262_t {
     PacketParam_t packet_param;
     RadioPacketType_t packet_type;
 #ifdef HAS_FREE_RTOS
-    portMUX_TYPE  mutex;
-    //StaticSemaphore_t xMutexBuffer;
+    SemaphoreHandle_t mutex;
+    StaticSemaphore_t xMutexBuffer;
 #endif
 } Sx1262_t;
 

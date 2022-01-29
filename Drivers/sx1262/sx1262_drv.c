@@ -14,8 +14,9 @@ speed up to 16 MHz
 #include <string.h>
 
 #ifdef HAS_FREE_RTOS
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#include <FreeRTOS.h>
+#include <task.h>
+#include <semphr.h>
 #endif /*HAS_FREE_RTOS*/
 
 #include "array.h"
@@ -72,23 +73,57 @@ speed up to 16 MHz
 #include "sx1262_diag.h"
 #endif
 
+
+#define WAIT_SX1262_MUTEX 1000
 bool sx1262_chip_select(bool state) {
-    bool res = false;
-    if(true == state) {
+    bool res = true;
+#ifdef HAS_FREE_RTOS
+    if(Sx1262Instance.mutex){
+        if(true==state){
+            if( pdTRUE == xSemaphoreTake( Sx1262Instance.mutex, WAIT_SX1262_MUTEX ) ){
+                res = true;
+            }else{
+                res = false;
+                LOG_ERROR(LORA, "MutexBusy");
+            }
+        }
+    }else{
+        res = false;
+        LOG_ERROR(LORA, "MutexInitError");
+    }
+#endif
+
+    if((true == state) && (true==res)) {
+#ifdef HAS_SPI_SW_CHIP_SELECT
         gpio_set_state(DIO_SX1262_SS, 0);
 #ifdef HAS_CAN
         gpio_set_state(DIO_CAN_SS, 1);
 #endif
+#endif /*HAS_SPI_SW_CHIP_SELECT*/
         res = true;
     } else if(false == state) {
+#ifdef HAS_SPI_SW_CHIP_SELECT
         gpio_set_state(DIO_SX1262_SS, 1);
 #ifdef HAS_CAN
         gpio_set_state(DIO_CAN_SS, 1);
 #endif
+#endif /*HAS_SPI_SW_CHIP_SELECT*/
         res = true;
     } else {
         res = false;
     }
+
+#ifdef HAS_FREE_RTOS
+    if(Sx1262Instance.mutex){
+        if(false==state){
+            xSemaphoreGive(Sx1262Instance.mutex);
+            res = true;
+        }
+    }else{
+        res = false;
+        LOG_ERROR(LORA, "MutexInitError");
+    }
+#endif
     return res;
 }
 
@@ -217,6 +252,10 @@ static bool check_sync_word(uint64_t sync_word) {
                 res = false;
             }
         }
+    }else{
+#ifdef HAS_LOG
+       LOG_ERROR(LORA, "Set:0x%llx Err", sync_word);
+#endif
     }
     return res;
 }
@@ -241,7 +280,7 @@ bool sx1262_is_exist(void) {
 static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* out_rx_array,
                                     uint16_t rx_array_len) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s() OpCode:0x%x %s", __FUNCTION__, op_code, OpCode2Str(op_code));
+    LOG_PARN(LORA, "%s() OpCode:0x%x %s", __FUNCTION__, op_code, OpCode2Str(op_code));
 #endif
     bool res = false;
     if((tx_array_len + OPCODE_SIZE) < (2 * FIFO_SIZE)) {
@@ -268,18 +307,19 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
     return res;
 }
 
+/*SendOpCode*/
 bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
                         uint16_t rx_array_len) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_DEBUG(LORA, "SendOpCode 0x%02x %s", op_code, OpCode2Str(op_code));
 #endif
     bool res = false;
     SX1262_CHIP_SELECT(sx1262_send_opcode_proc(op_code, tx_array, tx_array_len, rx_array, rx_array_len));
-    if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(LORA, "OpCodeError 0x%02x", op_code);
-#endif
+    if(false == res) {
+        LOG_ERROR(LORA, "OpCodeError: 0x%02x %s", op_code, OpCode2Str(op_code));
     }
+#endif
     return res;
 }
 /*
@@ -411,7 +451,7 @@ bool is_power_valid(int8_t power) {
 */
 bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_DEBUG(LORA, "SetTxParams");
 #endif
     bool res = false;
     res = is_power_valid(power);
@@ -742,7 +782,7 @@ bool sx1262_set_sleep(uint8_t sleep_config) {
  */
 bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_sel, uint8_t pa_lut) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_DEBUG(LORA, "SetPaConfig");
 #endif
     bool res = false;
     uint8_t tx_array[4];
@@ -793,7 +833,7 @@ static bool calc_power_param(uint8_t output_power_dbm, uint8_t* pa_duty_cycle, u
         break;
     case 14:
         *pa_duty_cycle = 0x02;
-        *hp_max = 0x02;
+        *hp_max = 0x01;// was 2
         res = true;
         break;
     default:
@@ -833,7 +873,7 @@ static bool sx1262_conf_tx(int8_t output_power_dbm) {
 #endif
     }
     res = sx1262_set_pa_config(pa_duty_cycle, hp_max, DEV_SEL_SX1262, 0x01) && res;
-    res = sx1262_set_tx_params(output_power_dbm, SET_RAMP_10U) && res;
+    res = sx1262_set_tx_params(output_power_dbm, SET_RAMP_3400US) && res;
     res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
 
     return res;
@@ -1153,9 +1193,14 @@ bool sx1262_get_status(uint8_t* out_status) {
         *out_status = rx_array[1];
 #endif
 #ifdef ESP32
-        uint8_t rx_array = 0x00;
-        res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, &rx_array, 1);
-        *out_status = rx_array;
+        uint8_t rx_array[2] = {0xFF, 0xFF};
+        uint8_t tx_array = 0x00;
+        res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
+        *out_status = rx_array[1];
+
+        //uint8_t rx_array = 0x00;
+        //res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, &rx_array, 1);
+        //*out_status = rx_array;
 #endif
 
 #ifdef USE_HAL_DRIVER
@@ -1671,6 +1716,7 @@ static inline bool sx1262_sync_registers(void) {
 }
 
 
+#ifdef HAS_TBFP
 static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     bool res = false;
     uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
@@ -1720,6 +1766,7 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     }
     return res;
 }
+#endif /*HAS_TBFP*/
 
 /* poll sx1262 registers. Move data from transceiver REG to MCU RAM.
  * verify transceiver and notify user if needed
@@ -1740,7 +1787,9 @@ bool sx1262_process(void) {
             Sx1262Instance.busy_cnt = 0;
             res = sx1262_init();
         }
+#ifdef HAS_TBFP
         res = sx1262_transmit_from_queue(&Sx1262Instance);
+#endif
 
         res = sx1262_poll_status();
         if(Sx1262Instance.sync_reg) {
@@ -1818,7 +1867,13 @@ bool sx1262_init(void) {
         memset(&Sx1262Instance, 0x00, sizeof(Sx1262Instance));
     }
 #ifdef HAS_FREE_RTOS
-
+    Sx1262Instance.mutex = xSemaphoreCreateMutexStatic(&Sx1262Instance.xMutexBuffer);
+    if(NULL == Sx1262Instance.mutex) {
+        res = false;
+        LOG_ERROR(LORA, "MutexInitError");
+    } else {
+        LOG_INFO(LORA, "MutexInitOk");
+    }
 #endif
 
 #ifdef ESP32

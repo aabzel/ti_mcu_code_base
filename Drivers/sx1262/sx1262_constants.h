@@ -9,14 +9,16 @@
 
 // Table 13-41: RampTime Definition
 // RampTime Value RampTime (μs)
-#define SET_RAMP_10U 0x00   /*10  */
-#define SET_RAMP_20U 0x01   /*20  */
-#define SET_RAMP_40U 0x02   /*40  */
-#define SET_RAMP_80U 0x03   /*80  */
-#define SET_RAMP_200U 0x04  /*200 */
-#define SET_RAMP_800U 0x05  /*800 */
-#define SET_RAMP_1700U 0x06 /*1700*/
-#define SET_RAMP_3400U 0x07 /*3400*/
+typedef enum eRampTime_t{
+  SET_RAMP_10US= 0x00,   /*10  */
+  SET_RAMP_20US= 0x01,   /*20  */
+  SET_RAMP_40US= 0x02,   /*40  */
+  SET_RAMP_80US= 0x03,   /*80  */
+  SET_RAMP_200US= 0x04,  /*200 */
+  SET_RAMP_800US =0x05,  /*800 */
+  SET_RAMP_1700US= 0x06, /*1700*/
+  SET_RAMP_3400US= 0x07, /*3400*/
+}RampTime_t;
 
 /* OpError Bits */
 #define OP_ERR_BIT_RC64K_CALIB_ERR 0 /*RC64k calibration failed */

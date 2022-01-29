@@ -16,7 +16,7 @@
 bool wait_in_loop_ms(uint32_t wait_pause_ms) {
     bool res = false;
 #ifdef HAS_FREE_RTOS
-    // vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
+    vTaskDelay(wait_pause_ms / portTICK_RATE_MS);
     res = true;
 #endif
 

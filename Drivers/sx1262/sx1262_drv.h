@@ -58,14 +58,18 @@ extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(10);                                                                                 \
+        res = sx1262_wait_on_busy(100);                                                                                 \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
-            sx1262_chip_select(true);                                                                                  \
-            wait_ms(1);                                                                                                \
-            res = CALL_BACK;                                                                                           \
-            wait_ms(1);                                                                                                \
-            sx1262_chip_select(false);                                                                                 \
+            res = sx1262_chip_select(true);                                                                            \
+            if(true==res){                                                                                             \
+                wait_ms(1);                                                                                            \
+                res = CALL_BACK;                                                                                       \
+                wait_ms(1);                                                                                            \
+                sx1262_chip_select(false);                                                                             \
+            }else{                                                                                                     \
+                LOG_ERROR(LORA,"ChipBusy");                                                                            \
+            }                                                                                                          \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \
             /*LOG_ERROR(LORA,"SX1262Busy");*/                                                                          \
