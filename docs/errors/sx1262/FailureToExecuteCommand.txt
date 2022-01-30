@@ -1,0 +1,46 @@
+sx1262 Failure To Execute Command
+
+The command was successfully processed, however the chip could not execute the command; for instance it was unable to enter the specified device mode or send the requested data,
+
+На плате с cc26xx и STM32 такой проблемы нет. 
+SX1262 драйвер тот же самый.
+Тут что-то с нарушениями таймингов SPI ChipSelect Reset. Или питания не достаточно для выхода в режим приема сообщений.
+Нужно просмотреть логическим анализатором шину SPI.
+
+Можно другой SPI поставить.
+
+Что известно:
+MOSI MISO правильые так как регистры читаются. На 2 3 SPI одинаково.
+sxo 0xC1 0 0	SetFs не показывает частоту
+sxo 0xC1 0x00 0
+sxo 0x1C 0 0
+
+1100 0001
+10000011 0x83
+rpt sxo_0xC1_0_0  1000 999
+62.113:D [LoRa] sx1262_send_opcode_proc() OpCode:0xc0 getStatus
+362.468:D [LoRa] Status 0x2a CmdStat:FailureExecute ChipMode:STBY_RC
+362.469:D [LoRa] Status:0x2a
+362.469:E [LoRa] FailureToExecuteCommand 5
+
+Предположение:
+читать статус другой командой
+sxo 0x11 0x0000 3
+sxo 0x11 0 3
+sxo 0x11 0 2   Ok
+sxo 0xC0 0 1  
+
+Что делать?
+После каждой команды что возвращает стату анализировать статус.  is_status_correct(status)
+
+-может SPI неверно считывает. Нет. Синхрослово же читается и регистры читаются корректно.
+-Неправильно считывается статус. Что с одним отправленным байтом что без все ровно Failure To Execute Command.
+sxrt
+sxgs
+
+-Вероятно это пробоема с питанием
+https://forum.lora-developers.semtech.com/t/sx1262-failure-to-execute-command/269
+Нет. Питание стабильное 3,37 Вольт.
+
+
+

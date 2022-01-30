@@ -18,7 +18,7 @@ const Pin_t PinTable[] = {
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=37, .mcu_pin=6, .name="IO37"},// ok
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=34, .mcu_pin=10,.name="TXD1"},// ok
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=35, .mcu_pin=11,.name="IO35"},// ok
-		{.level=1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=33, .mcu_pin=13,.name="LoRaIo1"},// ok
+		{.level=1, .pull_mode = PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=33, .mcu_pin=13,.name="LoRaIo1"},// ok
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=25, .mcu_pin=14,.name="IO25"},// ok
 		{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=26, .mcu_pin=15,.name="LoRaIo0"},// ok
 		{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=0,  .mcu_pin=23,.name="IO0"},// ok

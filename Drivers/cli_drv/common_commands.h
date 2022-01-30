@@ -96,7 +96,7 @@
 #define DAC_COMMANDS
 #endif
 
-#ifdef HAS_I2C
+#ifdef HAS_I2C_COMMANDS
 #include "i2c_commands.h"
 #else
 #define I2C_COMMANDS
