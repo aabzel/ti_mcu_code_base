@@ -5,11 +5,16 @@
 
 #include "log.h"
 #include "convert.h"
+#include "axp192_diag.h"
 #include "axp192_drv.h"
+#include "axp192_types.h"
 
 bool axp192_diag_command(int32_t argc, char* argv[]){
     bool res = false;
-
+    ChargeControl_t reg;
+    reg.byte=0;
+    res = axp192_i2c_read(0x33, &reg.byte);
+    res = axp192_parse_reg33(reg.byte);
     return res;
 }
 
