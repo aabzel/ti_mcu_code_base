@@ -97,6 +97,10 @@
 #include "sx1262_drv.h"
 #endif /*HAS_SX1262*/
 
+#ifdef HAS_AXP192
+#include "axp192_drv.h"
+#endif /*HAS_AXP192*/
+
 #ifdef HAS_WDT
 #include "watchdog_drv.h"
 #endif/*HAS_WDT*/
@@ -198,6 +202,11 @@ bool hw_init(void) {
 #ifdef HAS_BLE
   res = try_init(ble_init(),"BLE") && res;
 #endif /*HAS_BLE*/
+
+
+#ifdef HAS_AXP192
+  res = try_init(axp192_init(),"axp192") && res;
+#endif /*HAS_AXP192*/
 
 #ifdef HAS_SX1262
   res = try_init(sx1262_init(),"sx1262") && res;

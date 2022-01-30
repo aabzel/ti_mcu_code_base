@@ -14,6 +14,12 @@ extern "C" {
 #define GNSS_COMMANDS
 #endif
 
+#ifdef HAS_AXP192_COMMANDS
+#include "axp192_commands.h"
+#else
+#define AXP192_COMMANDS
+#endif
+
 #ifdef HAS_LED_COMMANDS
 #include "led_commands.h"
 #else
@@ -123,6 +129,7 @@ extern "C" {
 #endif
 
 #define SHELL_COMMANDS                                                                                                 \
+    AXP192_COMMANDS                                                                                                    \
     BMP180_COMMANDS                                                                                                    \
     BQ25171_Q1_COMMANDS                                                                                                \
     COMMON_COMMANDS                                                                                                    \

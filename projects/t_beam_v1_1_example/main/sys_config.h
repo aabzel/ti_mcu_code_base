@@ -8,6 +8,7 @@
 #define UART_NUM_CLI (0)
 #define MAIN_SPI_NUM 3
 #define I2C_MASTER_NUM 0
+#define AXP192_I2C      I2C_MASTER_NUM
 
 /*Software config*/
 #define DIO_LED_HEARTBEAT DIO_LED_RED

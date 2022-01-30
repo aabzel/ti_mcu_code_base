@@ -32,4 +32,6 @@
 #define DIO_UART_CLI_RX	3
 #define DIO_UART_CLI_TX	1
 
+#define AXP192_I2C_ADDR 0x34
+
 #endif /* T_BEAM_V1_1_H  */

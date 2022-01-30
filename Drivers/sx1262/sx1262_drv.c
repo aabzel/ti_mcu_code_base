@@ -1384,7 +1384,7 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t ma
 static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     bool res = false;
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s(): ChipMode %u %s", __FUNCTION__, chip_mode, chip_mode2str(chip_mode));
+    LOG_PARN(LORA, "ChipMode %u %s", chip_mode, chip_mode2str(chip_mode));
 #endif
     static ChipMode_t prev_chip_mode = CHP_MODE_UNDEF;
     static uint32_t chip_mode_rc = 0;
@@ -1569,7 +1569,7 @@ static inline bool sx1262_proc_data_aval(void) {
 static inline bool sx1262_poll_status(void) {
     bool res = false;
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s():", __FUNCTION__);
+    LOG_PARN(LORA, "PollStatus");
 #endif
     Sx1262_t tempSx1262Instance = {0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
@@ -1779,7 +1779,7 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
 bool sx1262_process(void) {
     bool res = false;
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "CheckConnectivity=%u", Sx1262Instance.check_connectivity);
+    LOG_PARN(LORA, "CheckConnectivity=%u", Sx1262Instance.check_connectivity);
 #endif
 
     if(Sx1262Instance.check_connectivity) {
@@ -1882,7 +1882,7 @@ bool sx1262_init(void) {
 #endif
 
 #ifdef ESP32
-    Sx1262Instance.proc = true;
+    Sx1262Instance.proc = false;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = true;

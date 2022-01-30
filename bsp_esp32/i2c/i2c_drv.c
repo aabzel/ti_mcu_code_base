@@ -95,6 +95,7 @@ bool i2c_write(uint8_t i2c_num, uint8_t i2c_addr, uint8_t* array, uint16_t array
             LOG_ERROR(I2C, "BeginErr");
         }
         i2c_cmd_link_delete(cmd);
+        res = true;
     }else{
         LOG_ERROR(I2C, "CmdWrLinkErr");
     }
@@ -103,52 +104,51 @@ bool i2c_write(uint8_t i2c_num, uint8_t i2c_addr, uint8_t* array, uint16_t array
 
 bool i2c_read(uint8_t i2c_num, uint8_t i2c_addr, uint8_t* array, uint16_t array_len) {
     bool res = false;
-    if (array_len == 0) {
-        return ESP_OK;
-    }
+   // if (array_len == 0) {
+   //     return ESP_OK;
+   // }
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     if(cmd){
         esp_err_t ret;
         ret = i2c_master_start(cmd);
         if(ESP_OK ==ret){
-
         }else{
             LOG_ERROR(I2C, "StartErr");
         }
         ret = i2c_master_write_byte(cmd, (i2c_addr << 1) | READ_BIT, ACK_CHECK_EN);
         if(ESP_OK ==ret){
-
         }else{
-            LOG_ERROR(I2C, "StartErr");
+            LOG_ERROR(I2C, "WrAddrErr");
         }
-        if (0<array_len ) {
-            i2c_master_read(cmd, array, array_len - 1, ACK_VAL);
-        }
-        if(ESP_OK ==ret){
 
-        }else{
-            LOG_ERROR(I2C, "StartErr");
+
+
+        if (1<array_len ) {
+            ret=i2c_master_read(cmd, array, array_len-1, ACK_VAL);
+            if(ESP_OK ==ret){
+            }else{
+                LOG_ERROR(I2C, "ReadDataErr");
+            }
         }
         ret = i2c_master_read_byte(cmd, array + array_len - 1, NACK_VAL);
         if(ESP_OK ==ret){
-
         }else{
-            LOG_ERROR(I2C, "StartErr");
+           LOG_ERROR(I2C, "ReadTailErr");
         }
+
         ret = i2c_master_stop(cmd);
         if(ESP_OK ==ret){
-
         }else{
-            LOG_ERROR(I2C, "StartErr");
+            LOG_ERROR(I2C, "StopErr");
         }
         ret = i2c_master_cmd_begin(i2c_num, cmd, 1000 / portTICK_RATE_MS);
         if(ESP_OK ==ret){
-
         }else{
-            LOG_ERROR(I2C, "StartErr");
+            LOG_ERROR(I2C, "CmdErr");
         }
 
         i2c_cmd_link_delete(cmd);
+        res = true;
     }else{
         LOG_ERROR(I2C, "CmdReadLinkErr");
     }
