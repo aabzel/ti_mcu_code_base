@@ -311,7 +311,7 @@ static bool sx1262_send_opcode_proc(uint8_t op_code, uint8_t* tx_array, uint16_t
 bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_len, uint8_t* rx_array,
                         uint16_t rx_array_len) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "SendOpCode 0x%02x %s", op_code, OpCode2Str(op_code));
+    LOG_PARN(LORA, "SendOpCode 0x%02x %s", op_code, OpCode2Str(op_code));
 #endif
     bool res = false;
     SX1262_CHIP_SELECT(sx1262_send_opcode_proc(op_code, tx_array, tx_array_len, rx_array, rx_array_len));
@@ -322,6 +322,11 @@ bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_le
 #endif
     return res;
 }
+
+
+/*SetRxTxFallbackMode*/
+
+
 /*
   SetRegulatorMode
   By default only the LDO is used. This is useful in low cost applications where the cost
@@ -522,7 +527,7 @@ bool sx1262_reset_stats(void) {
 */
 bool sx1262_set_standby(StandbyMode_t stdby_config) {
 #ifdef HAS_LOG
-    LOG_DEBUG(LORA, "%s()", __FUNCTION__);
+    LOG_DEBUG(LORA, "SetStandby");
 #endif
     bool res = true;
     uint8_t tx_array[1];
@@ -1130,7 +1135,7 @@ bool sx1262_get_irq_status(Sx1262IRQs_t* out_irq_stat) {
     res = sx1262_send_opcode(OPCODE_GET_IRQ_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
         uint16_t irq_stat = 0;
-        Sx1262Instance.status = rx_array[1];
+        Sx1262Instance.status = rx_array[1];/*Diag Status*/
         memcpy(&irq_stat, &rx_array[2], 2);
         // irq_stat = reverse_byte_order_uint16(irq_stat);
         out_irq_stat->word = irq_stat;
@@ -1877,7 +1882,7 @@ bool sx1262_init(void) {
 #endif
 
 #ifdef ESP32
-    Sx1262Instance.proc = false;
+    Sx1262Instance.proc = true;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = true;
@@ -1968,6 +1973,7 @@ bool sx1262_init(void) {
         res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
 
         res = sx1262_set_standby(STDBY_XOSC);
+
 #ifdef HAS_LOG
         if(false == res) {
             LOG_ERROR(LORA, "SetStandByErr");

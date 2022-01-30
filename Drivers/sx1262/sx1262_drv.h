@@ -66,10 +66,10 @@ extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
                 wait_ms(1);                                                                                            \
                 res = CALL_BACK;                                                                                       \
                 wait_ms(1);                                                                                            \
-                sx1262_chip_select(false);                                                                             \
             }else{                                                                                                     \
                 LOG_ERROR(LORA,"ChipBusy");                                                                            \
             }                                                                                                          \
+            sx1262_chip_select(false);                                                                                 \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \
             /*LOG_ERROR(LORA,"SX1262Busy");*/                                                                          \

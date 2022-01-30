@@ -1,8 +1,7 @@
-Failure To Execute Command
-
-не проходят тесты на трансивере SX1262
+Чтение статуса чипа показывает Failure To Execute Command
 
 tsr sx1262+
+не проходят тесты на трансивере SX1262
 
 Failed: sx1262_tx.9
 Failed: sx1262_ChipMode.10
@@ -22,6 +21,7 @@ CHP_MODE_STBY_RC
 
 Либо тока не достаточно чтобы включить PLL для гетеродина.
 LDO2 к которому подключен LoRa при старте испускает Quiescent Current 100mA
+Модуль же требует  120...130mA
 
 Посмотреть код Mesh. Что они делают с PMIC(ом)
 

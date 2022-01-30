@@ -12,14 +12,15 @@ const Pin_t PinTable[] = {
 		{.level=1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=18, .mcu_pin=35,.name="LoRaSS"},//ok
 		{.level=0, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=4,  .mcu_pin=24,.name="LED"},/*ok*/
 		{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=32, .mcu_pin=12,.name="LoRaBusy"}, //ok
-		{.level=1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=23, .mcu_pin=36,.name="LoRaRst"}, // ok
+		{.level=1,  .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=23, .mcu_pin=36,.name="LoRaRst"}, // ok
+		{.level=1,  .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=15, .mcu_pin=21,.name="IO15"},
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=36, .mcu_pin=5, .name="IO36"},// ok
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=37, .mcu_pin=6, .name="IO37"},// ok
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=34, .mcu_pin=10,.name="TXD1"},// ok
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=35, .mcu_pin=11,.name="IO35"},// ok
-		{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=33, .mcu_pin=13,.name="LoRaIo1"},// ok
+		{.level=1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=33, .mcu_pin=13,.name="LoRaIo1"},// ok
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=25, .mcu_pin=14,.name="IO25"},// ok
-		{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=26, .mcu_pin=15,.name="LoRaIo0"},// ok
+		{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=26, .mcu_pin=15,.name="LoRaIo0"},// ok
 		{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=0,  .mcu_pin=23,.name="IO0"},// ok
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_OUT, .dio=27, .mcu_pin=16,.name="MOSI/SDI"},// ok
 		{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=14, .mcu_pin=17,.name="IO14"},// ok
@@ -27,7 +28,6 @@ const Pin_t PinTable[] = {
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=2,  .mcu_pin=22,.name="IO2"},
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=10, .mcu_pin=29,.name="SWP/SD3"},
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=13, .mcu_pin=20,.name="IO13"},
-		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_INOUT, .dio=15, .mcu_pin=21,.name="IO15"},
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_OUT, .dio=12, .mcu_pin=18,.name="RXD1"},
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_OUT, .dio=17, .mcu_pin=27,.name="GPIO17"}, /**/
 		//{.level=-1, .pull_mode=PULL_AIR, .dir=GPIO_DIR_IN, .dio=3,  .mcu_pin=40,.name="U0RXD"},
