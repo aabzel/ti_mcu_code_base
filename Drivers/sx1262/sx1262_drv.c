@@ -518,6 +518,9 @@ bool sx1262_set_packet_type(RadioPacketType_t packet_type) {
     }
     return res;
 }
+
+
+
 /*
   SetDioIrqParams
   This command is used to set the IRQ flag.
@@ -802,23 +805,23 @@ static bool calc_power_param(uint8_t output_power_dbm, uint8_t* pa_duty_cycle, u
     bool res = false;
     switch(output_power_dbm) {
     case 22:
-        *pa_duty_cycle = 0x04;
-        *hp_max = 0x07;
+        (*pa_duty_cycle) = 0x04;
+        (*hp_max) = 0x07;
         res = true;
         break;
     case 20:
-        *pa_duty_cycle = 0x03;
-        *hp_max = 0x05;
+        (*pa_duty_cycle) = 0x03;
+        (*hp_max) = 0x05;
         res = true;
         break;
     case 17:
-        *pa_duty_cycle = 0x02;
-        *hp_max = 0x03;
+        (*pa_duty_cycle) = 0x02;
+        (*hp_max) = 0x03;
         res = true;
         break;
     case 14:
-        *pa_duty_cycle = 0x02;
-        *hp_max = 0x01; // was 2
+        (*pa_duty_cycle) = 0x02;
+        (*hp_max) = 0x02;
         res = true;
         break;
     default:
@@ -843,6 +846,8 @@ static bool sx1262_conf_tx(int8_t output_power_dbm) {
         LOG_ERROR(LORA, "InvaOutPwr: %d dBm %6.3f W", output_power_dbm, dbm2watts(output_power_dbm));
 #endif
         output_power_dbm = DFLT_OUT_POWER;
+    }else{
+        LOG_INFO(LORA, "OutPwr: %d dBm %6.3f W", output_power_dbm, dbm2watts(output_power_dbm));
     }
 
     uint8_t pa_duty_cycle = 0;

@@ -317,6 +317,38 @@ bool sx1262_set_freq_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+//uint8_t TxDone :1;       /*bit 0*/
+//uint8_t RxDone:1;        /*bit 1*/
+//uint8_t PreambleDetected:1; /*bit 2*/
+//uint8_t SyncWordValid:1; /*bit 3*/
+//uint8_t HeaderValid:1;  /*bit 4*/
+//uint8_t HeaderErr:1;    /*bit 5*/
+//uint8_t CrcErr:1;       /*bit 6*/
+//uint8_t CadDone:1;      /*bit 7*/
+//uint8_t CadDetected:1;  /*bit 8*/
+//uint8_t Timeout:1;      /*bit 9*/
+
+bool sx1262_get_irq_command(int32_t argc, char* argv[]){
+    bool res = false;
+    Sx1262IRQs_t irq_stat;
+    res=sx1262_get_irq_status(&irq_stat);
+    if(res){
+        LOG_INFO(LORA, "0 TxDone %u", irq_stat.TxDone);
+        LOG_INFO(LORA, "1 RxDone %u", irq_stat.RxDone);
+        LOG_INFO(LORA, "2 PreambleDetected %u", irq_stat.PreambleDetected);
+        LOG_INFO(LORA, "3 SyncWordValid %u", irq_stat.SyncWordValid);
+        LOG_INFO(LORA, "4 HeaderValid %u", irq_stat.HeaderValid);
+        LOG_INFO(LORA, "5 HeaderErr %u", irq_stat.HeaderErr);
+        LOG_INFO(LORA, "6 CrcErr %u", irq_stat.CrcErr);
+        LOG_INFO(LORA, "7 CadDone %u", irq_stat.CadDone);
+        LOG_INFO(LORA, "8 CadDetected %u", irq_stat.CadDetected);
+        LOG_INFO(LORA, "9 Timeout %u", irq_stat.Timeout);
+    }else{
+        LOG_ERROR(LORA, "Err");
+    }
+    return res;
+}
+
 bool sx1262_set_irq_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(4 == argc) {

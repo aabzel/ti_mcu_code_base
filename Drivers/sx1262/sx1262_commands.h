@@ -10,6 +10,8 @@ extern "C" {
 
 #include "cli_manager.h"
 
+
+bool sx1262_get_irq_command(int32_t argc, char* argv[]);
 bool sx1262_test_command(int32_t argc, char* argv[]);
 bool sx1262_clear_err_command(int32_t argc, char* argv[]);
 bool sx1262_clear_fifo_command(int32_t argc, char* argv[]);
@@ -54,6 +56,7 @@ bool sx1262_set_lora_sync_word_command(int32_t argc, char* argv[]);
         SHELL_CMD("sx1262_rx", "sxr", sx1262_rx_command, "SX1262 receive"),                                            \
         SHELL_CMD("sx1262_set_freq", "sxsf", sx1262_set_freq_command, "SX1262 set freq"),                              \
         SHELL_CMD("sx1262_set_irq", "sxir", sx1262_set_irq_command, "SX1262 set IRQ"),                                 \
+        SHELL_CMD("sx1262_get_irq", "sxgi", sx1262_get_irq_command, "SX1262 get IRQ"),                                 \
         SHELL_CMD("sx1262_sleep", "sxs", sx1262_sleep_command, "SX1262 sleep"),                                        \
         SHELL_CMD("sx1262_sync", "sxssw", sx1262_set_sync_word_command, "SX1262 set sync word"),                       \
         SHELL_CMD("sx1262_lora_sync", "sxslsw", sx1262_set_lora_sync_word_command, "SX1262 set lora sync word"),       \

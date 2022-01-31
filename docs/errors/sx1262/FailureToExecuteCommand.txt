@@ -3,10 +3,13 @@ sx1262 Failure To Execute Command
 The command was successfully processed, however the chip could not execute the command; for instance it was unable to enter the specified device mode or send the requested data,
 
 На плате с cc26xx и STM32 такой проблемы нет. 
-SX1262 драйвер тот же самый.
-Тут что-то с нарушениями таймингов SPI ChipSelect Reset. Или питания не достаточно для выхода в режим приема сообщений.
-Нужно просмотреть логическим анализатором шину SPI.
+Код драйвера SX1262 общий на все платы.
 
+Предположения:
+--что-то с нарушениями таймингов SPI ChipSelect Reset. 
+--питания не достаточно для выхода в режим приема сообщений.
+
+Нужно просмотреть логическим анализатором шину SPI.
 Можно другой SPI поставить.
 
 Что известно:
