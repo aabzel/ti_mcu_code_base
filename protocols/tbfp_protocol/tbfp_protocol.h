@@ -62,9 +62,9 @@ extern TbfpProtocol_t TbfpProtocol[IF_CNT]; /*RS232 LoRa*/
 bool tbfp_check_flow_control(
                              Interfaces_t interface,
                              uint16_t snum,
-                             uint16_t *prev_s_num,
-                             uint16_t *con_flow,
-                             uint16_t *max_con_flow
+                             uint16_t *const prev_s_num,
+                             uint16_t *const con_flow,
+                             uint16_t *const max_con_flow
                              ) ;
 bool tbfp_generate_frame(uint8_t* array, uint32_t len);
 bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state);

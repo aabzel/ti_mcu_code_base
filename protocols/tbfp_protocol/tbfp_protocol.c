@@ -464,41 +464,42 @@ static bool flow_ctrl_print_lost(uint16_t prev_s_num, uint16_t s_num, uint32_t c
 bool tbfp_check_flow_control(
                              Interfaces_t interface,
                              uint16_t snum,
-                             uint16_t *prev_s_num,
-                             uint16_t *con_flow,
-                             uint16_t *max_con_flow
+                             uint16_t * const prev_s_num,
+                             uint16_t * const con_flow,
+                             uint16_t * const max_con_flow
                              ) {
     bool res = false;
 #ifdef HAS_LOG
     LOG_PARN(TBFP, "prev_snum:%u snum:%u flow:%u",  *prev_s_num, snum,  *con_flow);
 #endif
-    if(( 1+ *prev_s_num ) == snum) {
+    if( snum==( 1+ (*prev_s_num) ) ) {
         /*Flow ok*/
         LOG_PARN(TBFP, "FlowOk");
         (*con_flow)++;
-         *max_con_flow = max16u( *max_con_flow,  *con_flow);
+         (*max_con_flow) = max16u( *max_con_flow,  *con_flow);
         res = true;
     } else if(( *prev_s_num + 1) < snum) {
         LOG_PARN(TBFP, "FlowTorn");
         flow_ctrl_print_lost( *prev_s_num, snum,  *con_flow, interface );
         (*con_flow) = 1;
         res = true;
-    }  else if( *prev_s_num == snum) {
+    }  else if( snum==(*prev_s_num) ) {
         /*Rx Retx*/
-        LOG_DEBUG(TBFP, "SN cur=prev=%u", snum);
+        LOG_WARNING(TBFP, "SN cur=prev=%u", snum);
         res = false;
-    }else if( snum <  *prev_s_num) {
+    }else if( snum <  (*prev_s_num)) {
         /*Unreal situation*/
-        LOG_ERROR(TBFP, "SnOrderError SNcur:%u<=SNprev:%u", snum,  *prev_s_num);
+        LOG_ERROR(TBFP, "SnOrderError SNcur:%u<=SNprev:%u", snum,  (*prev_s_num));
        //  con_flow = 1;
         res = false;
     } else {
         /*Unreal situation*/
         res = false;
     }
-    if(res){
-        *prev_s_num = snum;
-    }
+
+    (*prev_s_num) = snum;
+
+
 #ifdef HAS_LOG
     LOG_PARN(TBFP, "prev_snum:%u snum:%u flow:%u",  *prev_s_num, snum,  *con_flow);
 #endif
@@ -519,9 +520,9 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         bool flow_ctrl_ok = false;
         flow_ctrl_ok = tbfp_check_flow_control(interface,
                                                inHeader.snum,
-                                               &TbfpProtocol[interface].prev_s_num,
-                                               &TbfpProtocol[interface].con_flow,
-                                               &TbfpProtocol[interface].max_con_flow
+                                               &(TbfpProtocol[interface].prev_s_num),
+                                               &(TbfpProtocol[interface].con_flow),
+                                               &(TbfpProtocol[interface].max_con_flow)
                                                );
         if(false == flow_ctrl_ok) {
             TbfpProtocol[interface].err_cnt++;

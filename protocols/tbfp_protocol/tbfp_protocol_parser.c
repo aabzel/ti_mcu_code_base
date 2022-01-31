@@ -45,7 +45,7 @@ static bool tbfp_parser_proc_retransmit_cnt(TbfpProtocol_t* instance, uint8_t rx
     if(TBFP_INDEX_RETX == instance->parser.load_len) {
         instance->parser.rx_frame[TBFP_INDEX_RETX] = rx_byte;
         instance->parser.load_len = TBFP_INDEX_RETX + 1;
-        LOG_DEBUG(TBFP, "ReTxCnt:0x%x", rx_byte);
+        LOG_DEBUG(TBFP, "%s ReTxCnt:0x%x", interface2str(instance->interface), rx_byte);
         instance->parser.rx_state = WAIT_SERIAL_NUM;
         res = true;
     } else {
@@ -114,7 +114,8 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
             } else {
                 instance->err_cnt++;
 #ifdef HAS_LOG
-                LOG_ERROR(TBFP, "$s TooBigData %u Byte", interface2str(instance->interface), instance->parser.exp_payload_len);
+                LOG_ERROR(TBFP, "%s TooBigData %u Byte", interface2str(instance->interface),
+                          instance->parser.exp_payload_len);
 #endif
                 res = tbfp_parser_reset_rx(instance, WAIT_LEN);
             }
@@ -187,8 +188,10 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
             res = tbfp_proc_full(instance->parser.fix_frame, frame_len + TBFP_SIZE_CRC, instance->interface);
         } else {
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "SN:0x%04x %u crc err read:0x%02x %s", instance->parser.s_num, instance->parser.s_num,
-                      instance->parser.read_crc8,interface2str(instance->interface));
+            LOG_ERROR(TBFP, "%s SN:0x%04x %u crc err read:0x%02x",interface2str(instance->interface),
+                      instance->parser.s_num,
+                      instance->parser.s_num,
+                      instance->parser.read_crc8);
 #endif
             instance->crc_err_cnt++;
             res = false; // errors
