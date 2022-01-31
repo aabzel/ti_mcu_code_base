@@ -68,6 +68,16 @@ char* OpCode2Str(uint8_t op_code) {
     return name;
 }
 
+char* Standby2Str(StandbyMode_t standby_mode){
+    const char* name = "?";
+    switch(standby_mode){
+       case STDBY_RC: name = "RC";break;
+       case STDBY_XOSC:name = "XOSC"; break;
+       default: name = "??";break;
+    }
+    return name;
+}
+
 const char* cmd_stat2str(uint8_t cmd_stat) {
     const char* name = "undef";
     switch(cmd_stat) {

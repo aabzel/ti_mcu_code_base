@@ -86,6 +86,7 @@ typedef enum eRxGain_t{
 typedef enum eStandbyMode_t {
     STDBY_RC = 0,   /* Device running on RC13M, set STDBY_RC mode       */
     STDBY_XOSC = 1, /* Device running on XTAL 32MHz, set STDBY_XOSC mode*/
+    STDBY_UNFED = 2,
 } __attribute__ ((__packed__))StandbyMode_t;
 
 

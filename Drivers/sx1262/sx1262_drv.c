@@ -495,7 +495,27 @@ bool sx1262_set_standby(StandbyMode_t stdby_config) {
     uint8_t tx_array[1];
     tx_array[0] = (uint8_t)stdby_config;
     res = sx1262_send_opcode(OPCODE_SET_STANDBY, tx_array, sizeof(tx_array), NULL, 0);
+    StandbyMode_t stdby_read;
+    stdby_read=sx1262_get_standby();
+    if(stdby_read!=stdby_config){
+        LOG_WARNING(LORA,"StandbySetErr: Set:%s Read:%s",Standby2Str(stdby_config),Standby2Str(stdby_read));
+    }
     return res;
+}
+
+StandbyMode_t sx1262_get_standby(void){
+    StandbyMode_t standby_mode=STDBY_UNFED;
+    Sx1262Status_t dev_status;
+    dev_status.byte=0;
+    bool res=sx1262_get_status(&dev_status.byte);
+    if(res){
+        switch(dev_status.chip_mode) {
+          case CHP_MODE_STBY_RC: standby_mode=STDBY_RC;break;
+          case CHP_MODE_STBY_XOSC: standby_mode=STDBY_XOSC; break;
+          default : standby_mode=STDBY_UNFED;break;
+        }
+    }
+    return standby_mode;
 }
 
 /*
@@ -516,6 +536,7 @@ bool sx1262_set_packet_type(RadioPacketType_t packet_type) {
         tx_array[0] = packet_type;
         res = sx1262_send_opcode(OPCODE_SET_PACKET_TYPE, tx_array, sizeof(tx_array), NULL, 0);
     }
+
     return res;
 }
 

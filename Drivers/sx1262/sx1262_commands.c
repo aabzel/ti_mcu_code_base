@@ -945,7 +945,9 @@ bool sx1262_set_standby_command(int32_t argc, char* argv[]) {
     if(res) {
         res = sx1262_set_standby((StandbyMode_t)stdby_config);
         if(res) {
-            LOG_INFO(LORA, "Ok");
+            LOG_INFO(LORA, "Set %s Ok",Standby2Str(stdby_config));
+        }else{
+            LOG_ERROR(LORA, "Set %s Err",Standby2Str(stdby_config));
         }
     } else {
         LOG_ERROR(LORA, "Usage: sxss mode");

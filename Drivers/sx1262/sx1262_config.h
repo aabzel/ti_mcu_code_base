@@ -8,7 +8,7 @@ extern "C" {
 #include "lora_constants.h"
 
 #define DFLT_TX_PAUSE_MS 0U /*TODO Find least possible value*/
-#define DFLT_FREQ_MHZ 868950000UL
+#define DFLT_FREQ_MHZ 868000000
 #define DFLT_LORA_BW LORA_BW_125
 #define DFLT_SF SF7
 #define DFLT_LORA_CR LORA_CR_4_8

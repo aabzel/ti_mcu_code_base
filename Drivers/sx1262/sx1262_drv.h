@@ -68,6 +68,7 @@ bool sx1262_get_rx_payload(uint8_t* payload, uint16_t* size, uint16_t max_size, 
 bool sx1262_get_rxbuff_status(uint8_t* PayloadLengthRx, uint8_t* RxStartBufferPointer);
 bool sx1262_get_statistic(PaketStat_t* gfsk, PaketStat_t* lora);
 bool sx1262_get_status(uint8_t* out_status);
+StandbyMode_t sx1262_get_standby(void);
 bool sx1262_init(void);
 bool sx1262_int_isr(Sx1262_t* sx1262Instance);
 bool sx1262_is_connected(void);

@@ -5,6 +5,10 @@ The command was successfully processed, however the chip could not execute the c
 На плате с cc26xx и STM32 такой проблемы нет. 
 Код драйвера SX1262 общий на все платы.
 
+Трансивер не переходит в режим XOSC
+SetStandby(...).
+
+
 Предположения:
 --что-то с нарушениями таймингов SPI ChipSelect Reset. 
 --питания не достаточно для выхода в режим приема сообщений.
