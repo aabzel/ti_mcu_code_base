@@ -7,7 +7,8 @@ rem set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 set format_tool="C:\cygwin64\bin\clang-format.exe"
 
 
-
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\protocol_diag.c
+%format_tool%  -verbose -i -style=%style1% %work_space_dir%\protocols\protocol_diag.h
 
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\boot_drv\boot_commands.h
 %format_tool%  -verbose -i -style=%style1% %work_space_dir%\Drivers\bq25171_q1_drv\bq25171_q1_commands.c

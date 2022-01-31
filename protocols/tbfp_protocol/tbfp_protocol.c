@@ -315,7 +315,7 @@ static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len) {
 bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state) {
     bool res = false;
     if(instance) {
-        LOG_DEBUG(TBFP, "ResetFsmIn: %s",RxState2Str(state));
+        LOG_DEBUG(TBFP, "ResetFsmIn: %s", RxState2Str(state));
         instance->parser.rx_state = WAIT_PREAMBLE;
         instance->parser.load_len = 0;
         res = true;
@@ -329,10 +329,10 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     LOG_DEBUG(TBFP, "%s():", __FUNCTION__);
 #endif
     switch(payload[0]) {
-    case FRAME_ID_TUNNEL:{
-        LOG_DEBUG(TBFP, "TBFP in TBFP");/*matryoshka*/
+    case FRAME_ID_TUNNEL: {
+        LOG_DEBUG(TBFP, "TBFP in TBFP"); /*matryoshka*/
         res = tbfp_proc(payload, len, IF_LORA, false);
-    }break;
+    } break;
 #ifdef HAS_RTCM3
     case FRAME_ID_RTCM3:
 #ifdef HAS_LOG
@@ -380,7 +380,7 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset
     uint32_t cur_rx_prk = 0;
     uint32_t init_rx_prk = TbfpProtocol[interface].rx_pkt_cnt;
     if(is_reset_parser) {
-        res = tbfp_parser_reset_rx(&TbfpProtocol[interface],WAIT_INIT);
+        res = tbfp_parser_reset_rx(&TbfpProtocol[interface], WAIT_INIT);
     }
     uint32_t i = 0, ok_cnt = 0, err_cnt = 0;
     for(i = 0; i < len; i++) {

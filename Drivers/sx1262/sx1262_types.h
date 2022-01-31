@@ -8,6 +8,8 @@
 #endif
 
 #include "sx1262_constants.h"
+#include "lora_constants.h"
+#include "gfsk_types.h"
 
 typedef struct xOpCode_t{
 	uint8_t op_code;

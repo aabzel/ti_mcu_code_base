@@ -105,13 +105,13 @@ bool lora_send_array_queue(uint8_t* const tx_payload, uint32_t len) {
 bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
     bool res = false;
     if((NULL != tx_payload) && (0 < len)) {
-        uint8_t debugSync[5]={0x11, 0x22, 0x33, 0x44, 0x55};
+        uint8_t debugSync[5] = {0x11, 0x22, 0x33, 0x44, 0x55};
         res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)debugSync, (fifo_index_t)sizeof(debugSync));
         if(false == res) {
             LoRaInterface.ovfl_err_cnt++;
             LOG_ERROR(LORA, "TxQueueOverFlow");
         }
-        if(res){
+        if(res) {
             res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
             if(false == res) {
                 LoRaInterface.ovfl_err_cnt++;

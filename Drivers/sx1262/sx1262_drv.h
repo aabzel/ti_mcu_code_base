@@ -39,37 +39,32 @@
 #define SX1262_MAX_FRAME_SIZE 255U
 
 #ifdef HAS_TBFP
-#define SX1262_MAX_PAYLOAD_SIZE (SX1262_MAX_FRAME_SIZE-TBFP_OVERHEAD_SIZE)
+#define SX1262_MAX_PAYLOAD_SIZE (SX1262_MAX_FRAME_SIZE - TBFP_OVERHEAD_SIZE)
 #endif
-
 
 #define RC_FREQ_HZ 13000000U
 #define XTAL_FREQ_HZ 32000000U
 #define SX1262_PERIOD_US 300U
 
 #define FREQ_DIV 33554432U // 0x02000000 ( double )pow( 2.0, 25.0 )
-#define SX1262_REG_CNT 36U
 #define OPCODE_SIZE 1
 #define MHZ_TO_FRF 1048576 /* ((float)XTAL_FREQ_HZ))*10000000.0f)*/
 
 extern Sx1262_t Sx1262Instance;
-#ifdef HAS_SX1262_DEBUG
-extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
-#endif
 
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(100);                                                                                 \
+        res = sx1262_wait_on_busy(100);                                                                                \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
             res = sx1262_chip_select(true);                                                                            \
-            if(true==res){                                                                                             \
+            if(true == res) {                                                                                          \
                 wait_ms(1);                                                                                            \
                 res = CALL_BACK;                                                                                       \
                 wait_ms(1);                                                                                            \
-            }else{                                                                                                     \
-                LOG_ERROR(LORA,"ChipBusy");                                                                            \
+            } else {                                                                                                   \
+                LOG_ERROR(LORA, "ChipBusy");                                                                           \
             }                                                                                                          \
             sx1262_chip_select(false);                                                                                 \
         } else {                                                                                                       \

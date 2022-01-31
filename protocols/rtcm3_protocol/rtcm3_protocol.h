@@ -8,8 +8,8 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "system.h"
 #include "protocol_common.h"
+#include "system.h"
 
 #define RTCM3_PREAMBLE 0xD3
 #define RTCM3_HEADER_SIZE 3U

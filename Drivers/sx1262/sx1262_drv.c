@@ -15,8 +15,8 @@ speed up to 16 MHz
 
 #ifdef HAS_FREE_RTOS
 #include <FreeRTOS.h>
-#include <task.h>
 #include <semphr.h>
+#include <task.h>
 #endif /*HAS_FREE_RTOS*/
 
 #include "array.h"
@@ -56,7 +56,6 @@ speed up to 16 MHz
 #include "tbfp_protocol.h"
 #endif
 
-
 #ifdef HAS_FLASH_FS
 #include "flash_fs.h"
 #endif
@@ -73,27 +72,26 @@ speed up to 16 MHz
 #include "sx1262_diag.h"
 #endif
 
-
 #define WAIT_SX1262_MUTEX 1000
 bool sx1262_chip_select(bool state) {
     bool res = true;
 #ifdef HAS_FREE_RTOS
-    if(Sx1262Instance.mutex){
-        if(true==state){
-            if( pdTRUE == xSemaphoreTake( Sx1262Instance.mutex, WAIT_SX1262_MUTEX ) ){
+    if(Sx1262Instance.mutex) {
+        if(true == state) {
+            if(pdTRUE == xSemaphoreTake(Sx1262Instance.mutex, WAIT_SX1262_MUTEX)) {
                 res = true;
-            }else{
+            } else {
                 res = false;
                 LOG_ERROR(LORA, "MutexBusy");
             }
         }
-    }else{
+    } else {
         res = false;
         LOG_ERROR(LORA, "MutexInitError");
     }
 #endif
 
-    if((true == state) && (true==res)) {
+    if((true == state) && (true == res)) {
 #ifdef HAS_SPI_SW_CHIP_SELECT
         gpio_set_state(DIO_SX1262_SS, 0);
 #ifdef HAS_CAN
@@ -114,12 +112,12 @@ bool sx1262_chip_select(bool state) {
     }
 
 #ifdef HAS_FREE_RTOS
-    if(Sx1262Instance.mutex){
-        if(false==state){
+    if(Sx1262Instance.mutex) {
+        if(false == state) {
             xSemaphoreGive(Sx1262Instance.mutex);
             res = true;
         }
-    }else{
+    } else {
         res = false;
         LOG_ERROR(LORA, "MutexInitError");
     }
@@ -128,47 +126,6 @@ bool sx1262_chip_select(bool state) {
 }
 
 Sx1262_t Sx1262Instance = {0};
-
-#ifdef HAS_SX1262_DEBUG
-const xSx1262Reg_t RegMap[] = {
-    {0x0580, "DIOxOutputEnable"},
-    {0x0583, "DIOxInputEnable"},
-    {0x0584, "DIOxPullUpControl"},
-    {0x0585, "DIOxPullDownControl"},
-    {0x06B8, "WhiteningInitValMSB"},
-    {0x06B9, "WhiteningInitValLSB"},
-    {0x06BC, "CRCMSBInitVal0"},
-    {0x06BD, "CRCLSBInitVal1"},
-    {0x06BE, "CRCMSBpolynomVal0"},
-    {0x06BF, "CRCLSBpolynomVal1"},
-    {SYNC_WORD_0, "SyncWord0"},
-    {SYNC_WORD_1, "SyncWord1"},
-    {SYNC_WORD_2, "SyncWord2"},
-    {SYNC_WORD_3, "SyncWord3"},
-    {SYNC_WORD_4, "SyncWord4"},
-    {SYNC_WORD_5, "SyncWord5"},
-    {SYNC_WORD_6, "SyncWord6"},
-    {SYNC_WORD_7, "SyncWord7"},
-    {0x06CD, "NodeAddr"},
-    {0x06CE, "BroadcastAddr"},
-    {0x0736, "IQpolaritySetup"},
-    {0x0740, "LoRaSyncWordMSB"},
-    {0x0741, "LoRaSyncWordLSB"},
-    {RAND_NUM_GEN_0, "RandNumGen0"},
-    {RAND_NUM_GEN_1, "RandNumGen1"},
-    {RAND_NUM_GEN_2, "RandNumGen2"},
-    {RAND_NUM_GEN_3, "RandNumGen3"},
-    {0x0889, "TxModulation"},
-    {0x08AC, "RxGain"},
-    {0x08D8, "TxClampConfig"},
-    {0x08E7, "OCPConfig"},
-    {0x0902, "RTCcontrol"},
-    {0x0911, "XTAtrim"},
-    {0x0912, "XTBtrim"},
-    {0x920, "DIO3outputVoltageControl"},
-    {0x944, "EventMask"},
-};
-#endif /*HAS_SX1262_DEBUG*/
 
 bool sx1262_wait_on_busy(uint32_t time_out_ms) {
     uint32_t start_ms = 0U;
@@ -252,9 +209,9 @@ static bool check_sync_word(uint64_t sync_word) {
                 res = false;
             }
         }
-    }else{
+    } else {
 #ifdef HAS_LOG
-       LOG_ERROR(LORA, "Set:0x%llx Err", sync_word);
+        LOG_ERROR(LORA, "Set:0x%llx Err", sync_word);
 #endif
     }
     return res;
@@ -323,9 +280,7 @@ bool sx1262_send_opcode(uint8_t op_code, uint8_t* tx_array, uint16_t tx_array_le
     return res;
 }
 
-
 /*SetRxTxFallbackMode*/
-
 
 /*
   SetRegulatorMode
@@ -384,8 +339,8 @@ bool sx1262_set_buffer_base_addr(uint8_t tx_base_addr, uint8_t rx_base_addr) {
     return res;
 }
 
-static uint8_t get_prev_circular(uint8_t addr, uint8_t inter){
-    uint8_t val=addr;
+static uint8_t get_prev_circular(uint8_t addr, uint8_t inter) {
+    uint8_t val = addr;
     uint8_t i = 0;
     for(i = 0; i < 2; i++) {
         if(0 < val) {
@@ -416,7 +371,7 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
         if(out_rx_start_buffer_pointer) {
             *out_rx_start_buffer_pointer = rx_array[3];
 #if 1
-            *out_rx_start_buffer_pointer= get_prev_circular(*out_rx_start_buffer_pointer,2);
+            *out_rx_start_buffer_pointer = get_prev_circular(*out_rx_start_buffer_pointer, 2);
 #endif
         }
     }
@@ -733,6 +688,21 @@ bool is_valid_bandwidth(BandWidth_t bandwidth) {
     }
     return res;
 }
+
+static bool sx1262_set_modulation_quality_workaround(BandWidth_t band_width) {
+    bool res = false;
+    uint8_t tx_modulation = 0;
+    res = sx1262_get_tx_modulation(&tx_modulation);
+    if(res) {
+        if(LORA_BW_500 == band_width) {
+            RESET_BIT_NUM(tx_modulation, 2);
+        } else {
+            SET_BIT_NUM(tx_modulation, 2);
+        }
+        res = sx1262_set_tx_modulation(tx_modulation);
+    }
+    return res;
+}
 /*
 
   The command SetModulationParams(...) is used to configure the modulation parameters of the radio.
@@ -746,6 +716,8 @@ bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
 #ifdef HAS_LOG
         LOG_ERROR(LORA, "BandWidthError %u", modParams->band_width);
 #endif
+    } else {
+        res = sx1262_set_modulation_quality_workaround(modParams->band_width);
     }
     res2 = is_valid_coding_rate(modParams->coding_rate);
     if(false == res2) {
@@ -760,6 +732,7 @@ bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
 #endif
     }
     if(res1 && res2 && res3) {
+
         uint8_t tx_array[8]; /**/
         memset(tx_array, 0x00, sizeof(tx_array));
         tx_array[0] = modParams->spreading_factor;
@@ -844,7 +817,7 @@ static bool calc_power_param(uint8_t output_power_dbm, uint8_t* pa_duty_cycle, u
         break;
     case 14:
         *pa_duty_cycle = 0x02;
-        *hp_max = 0x01;// was 2
+        *hp_max = 0x01; // was 2
         res = true;
         break;
     default:
@@ -1091,7 +1064,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
                 // res = sx1262_clear_fifo();
                 res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
                 res = sx1262_set_payload(tx_buf, tx_len) && res;
-                Sx1262Instance.packet_param.proto.lora.payload_length =tx_len;
+                Sx1262Instance.packet_param.proto.lora.payload_length = tx_len;
                 res = sx1262_set_packet_params(&Sx1262Instance.packet_param);
 #ifdef HAS_LOG
                 LOG_DEBUG(LORA, "TxLen:%u", tx_len);
@@ -1143,7 +1116,7 @@ bool sx1262_get_irq_status(Sx1262IRQs_t* out_irq_stat) {
     res = sx1262_send_opcode(OPCODE_GET_IRQ_STATUS, NULL, 0, rx_array, sizeof(rx_array));
     if(res) {
         uint16_t irq_stat = 0;
-        Sx1262Instance.status = rx_array[1];/*Diag Status*/
+        Sx1262Instance.status = rx_array[1]; /*Diag Status*/
         memcpy(&irq_stat, &rx_array[2], 2);
         // irq_stat = reverse_byte_order_uint16(irq_stat);
         out_irq_stat->word = irq_stat;
@@ -1211,8 +1184,8 @@ bool sx1262_get_status(uint8_t* out_status) {
         res = sx1262_send_opcode(OPCODE_GET_STATUS, &tx_array, 1, rx_array, sizeof(rx_array));
         *out_status = rx_array[1];
 
-        //uint8_t rx_array = 0x00;
-        //res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, &rx_array, 1);
+        // uint8_t rx_array = 0x00;
+        // res = sx1262_send_opcode(OPCODE_GET_STATUS, NULL, 0, &rx_array, 1);
         //*out_status = rx_array;
 #endif
 
@@ -1377,7 +1350,7 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t ma
         LOG_DEBUG(LORA, "Start %u rxLen %u", rx_start_buffer_pointer, len);
     }
 #endif
-    //rx_payload_len = 256; // One LoRa Frame one-multiple TBFP frame
+    // rx_payload_len = 256; // One LoRa Frame one-multiple TBFP frame
     rx_payload_len = len; // Just for stream of bytes
     if(rx_payload_len <= max_size) {
         res = sx1262_read_buffer(rx_start_buffer_pointer, out_payload, (uint16_t)rx_payload_len);
@@ -1454,7 +1427,7 @@ static bool sx1262_proc_chip_mode(ChipMode_t chip_mode) {
     } break;
     case CHP_MODE_RX: {
         int8_t rssi_inst = 0;
-        Sx1262Instance.tx_done=true;
+        Sx1262Instance.tx_done = true;
         res = sx1262_get_rssi_inst(&rssi_inst);
         if(res) {
             Sx1262Instance.rssi_inst = rssi_inst;
@@ -1584,22 +1557,21 @@ static inline bool sx1262_poll_status(void) {
     Sx1262_t tempSx1262Instance = {0};
     memset(&tempSx1262Instance, 0x00, sizeof(tempSx1262Instance));
 
-    //RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
+    // RadioPacketType_t packet_type = PACKET_TYPE_UNDEF;
     // res = sx1262_get_packet_type(&packet_type, &tempSx1262Instance.dev_status.byte);
     res = sx1262_get_status(&tempSx1262Instance.dev_status.byte);
     if(res) {
 #ifdef HAS_LOG
         LOG_PARN(LORA, "Status 0x%02x CmdStat:%s ChipMode:%s", tempSx1262Instance.dev_status.byte,
-                  cmd_stat2str(tempSx1262Instance.dev_status.command_status),
-                  chip_mode2str(tempSx1262Instance.dev_status.chip_mode));
+                 cmd_stat2str(tempSx1262Instance.dev_status.command_status),
+                 chip_mode2str(tempSx1262Instance.dev_status.chip_mode));
 #endif
         res = true;
         static uint8_t stat_byte_prev = 0;
         Sx1262Instance.dev_status.byte = tempSx1262Instance.dev_status.byte;
         if(Sx1262Instance.dev_status.byte != stat_byte_prev) {
 #ifdef HAS_LOG
-            LOG_DEBUG(LORA, "Status:0x%02x Mode:%s Cmd:%s",
-                      Sx1262Instance.dev_status.byte,
+            LOG_DEBUG(LORA, "Status:0x%02x Mode:%s Cmd:%s", Sx1262Instance.dev_status.byte,
                       chip_mode2str(Sx1262Instance.dev_status.chip_mode),
                       cmd_stat2str(Sx1262Instance.dev_status.command_status)); /**/
 #endif
@@ -1631,6 +1603,7 @@ static inline bool sx1262_poll_status(void) {
             break;
         case COM_STAT_COM_TX_DONE: {
             Sx1262Instance.tx_done = true;
+            Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
 #ifdef LED_INDEX_RED
             led_off(&Led[LED_INDEX_RED]);
 #endif
@@ -1733,14 +1706,14 @@ static inline bool sx1262_sync_registers(void) {
     return res;
 }
 
-
 #ifdef HAS_TBFP
 static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     bool res = false;
-
-    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) &&
-       (true == instance->tx_done) &&
-       (SX1262_MAX_PAYLOAD_SIZE < fifo_get_count(&LoRaInterface.FiFoLoRaCharTx))) {
+    uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
+    uint32_t cur_time_stamp_ms = get_time_ms32();
+    tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
+    uint32_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
+    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done) && (SX1262_MAX_PAYLOAD_SIZE < count)) {
         uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE] = {0};
         memset(TxPayload, 0, sizeof(TxPayload));
 
@@ -1751,55 +1724,42 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
             LOG_DEBUG(LORA, "FiFoPullErr Len:%u", tx_len);
 #endif
         }
-            /*Transmitt multiple RTCM3 packages in single LoRa frame*/
-            fifo_index_t tx_len = 0;
-            res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_buf, sizeof(tx_buf), &tx_len);
-            if(res) {
-                if(0<tx_len){
-    #ifdef HAS_LOG
-                    LOG_DEBUG(LORA, "RxFiFoPull Len:%u", tx_len);
-    #endif
-                }else{
-                    LOG_PARN(LORA, "TxFiFoEmpty");
-                }
-            }else{
-                LOG_ERROR(LORA, "FiFoPullErr Len:%u", tx_len);
-            }
 
-    #ifdef HAS_LORA_FIFO_ARRAYS
-            Array_t Node = {.size = 0, .pArr = NULL};
-            res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &Node);
-            if(res) {
-                if(Node.pArr) {
-                    if(0 < Node.size) {
-                        if(Node.size <= sizeof(tx_buf)) {
-
-                            memcpy(tx_buf, Node.pArr, Node.size);
-                            tx_len = Node.size;
-                        }
-                    }
-    #ifdef HAS_MCU
-                    free(Node.pArr);
-    #endif /*HAS_MCU*/
-                }
-            }
-        }
-#endif /*HAS_LORA_FIFO_ARRAYS*/
+#ifdef HAS_LORA_FIFO_ARRAYS
+        Array_t Node = {.size = 0, .pArr = NULL};
+        res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &Node);
         if(res) {
-            if((0 < tx_len) && (tx_len <= sizeof(TxPayload))) {
-               res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
-               if(res) {
-                   LoRaInterface.tx_ok_cnt++;
-               } else {
-                   LoRaInterface.tx_err_cnt++;
-               }
+            if(Node.pArr) {
+                if(0 < Node.size) {
+                    if(Node.size <= sizeof(tx_buf)) {
+
+                        memcpy(tx_buf, Node.pArr, Node.size);
+                        tx_len = Node.size;
+                    }
+                }
+#ifdef HAS_MCU
+                free(Node.pArr);
+#endif /*HAS_MCU*/
             }
         }
-    }else{
-        LOG_PARN(LORA, "FiFoCnt:%u", count);
-        res = true;
     }
-    return res;
+#endif /*HAS_LORA_FIFO_ARRAYS*/
+    if(res) {
+        if((0 < tx_len) && (tx_len <= sizeof(TxPayload))) {
+            res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
+            if(res) {
+                LoRaInterface.tx_ok_cnt++;
+            } else {
+                LoRaInterface.tx_err_cnt++;
+            }
+        }
+    }
+}
+else {
+    LOG_PARN(LORA, "FiFoCnt:%u", count);
+    res = true;
+}
+return res;
 }
 #endif /*HAS_TBFP*/
 
@@ -1895,6 +1855,17 @@ uint32_t bandwidth2num(BandWidth_t bandwidth) {
     return band_width;
 }
 
+static bool sx1262_set_tx_clamp_config_workarround(void) {
+    bool res = false;
+    uint8_t tx_clamp_config = 0;
+    res = sx1262_get_tx_clamp_config(&tx_clamp_config);
+    if(res) {
+        tx_clamp_config |= 0x1E;
+        res = sx1262_set_tx_clamp_config(tx_clamp_config);
+    }
+    return res;
+}
+
 bool sx1262_init(void) {
     bool res = true;
     static uint8_t call_cnt = 0;
@@ -1939,7 +1910,12 @@ bool sx1262_init(void) {
         LOG_WARNING(LORA, "LackOfParam");
 #endif
     }
-
+    res = sx1262_set_tx_clamp_config_workarround();
+    if(res) {
+        LOG_WARNING(LORA, "txClampConfigOk");
+    } else {
+        LOG_WARNING(LORA, "txClampConfigErr");
+    }
     Sx1262Instance.bit_rate =
         lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
                             Sx1262Instance.mod_params.coding_rate);

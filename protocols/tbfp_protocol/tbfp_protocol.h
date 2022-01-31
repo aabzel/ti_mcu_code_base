@@ -15,12 +15,12 @@ extern "C" {
 #include "tbfp_protocol_parser.h"
 
 typedef enum xFrameId_t {
-    FRAME_ID_CMD = 0x44,   /*D*/
-    FRAME_ID_CHAT = 0x43,  /*C*/
-    FRAME_ID_PING = 0x50,  /*P*/
+    FRAME_ID_CMD = 0x44,    /*D*/
+    FRAME_ID_CHAT = 0x43,   /*C*/
+    FRAME_ID_PING = 0x50,   /*P*/
     FRAME_ID_TUNNEL = 0x54, /*T matryoshka*/
-    FRAME_ID_PONG = 0x90,  /**/
-    FRAME_ID_RTCM3 = 0xD3, /**/
+    FRAME_ID_PONG = 0x90,   /**/
+    FRAME_ID_RTCM3 = 0xD3,  /**/
 } FrameId_t;
 
 #define TBFP_PREAMBLE 0xA5

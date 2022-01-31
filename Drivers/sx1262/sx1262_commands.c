@@ -431,7 +431,7 @@ static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     char temp_str[120];
     char suffix_str[120];
-    for(i = 0; i < SX1262_REG_CNT; i++) {
+    for(i = 0; i < sx1262_get_reg_cnt(); i++) {
         res = sx1262_read_reg(RegMap[i].addr, &reg_val);
         if(res) {
             cnt++;
@@ -456,7 +456,7 @@ static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
         }
     }
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-    if(SX1262_REG_CNT == cnt) {
+    if(sx1262_get_reg_cnt() == cnt) {
         res = true;
     }
 #endif

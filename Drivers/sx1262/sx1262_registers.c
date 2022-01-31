@@ -9,6 +9,67 @@
 #include "spi_drv.h"
 #include "none_blocking_pause.h"
 
+#ifdef HAS_SX1262_DEBUG
+const xSx1262Reg_t RegMap[] = {
+   { 0x0385, "HoppingEnable"  },
+   { 0x0386, "PacketLength"   },
+   { 0x0387, "NbHoppingBlocks"},
+   { 0x0388, "NbSymbols0"     },
+   { 0x0389, "NbSymbols0"     },
+   { 0x038A, "Freq0"          },
+   { 0x038B, "Freq0"          },
+   { 0x038C, "Freq0"          },
+   { 0x038D, "Freq0"          },
+   { 0x03E2, "NbSymbols15"    },
+   { 0x03E3, "NbSymbols15"    },
+   { 0x03E4, "Freq15"         },
+   { 0x03E5, "Freq15"         },
+   { 0x03E6, "Freq15"         },
+   { 0x03E7, "Freq15"         },
+
+    {0x0580, "DIOxOutputEnable"},
+    {0x0583, "DIOxInputEnable"},
+    {0x0584, "DIOxPullUpControl"},
+    {0x0585, "DIOxPullDownControl"},
+    {0x06B8, "WhiteningInitValMSB"},
+    {0x06B9, "WhiteningInitValLSB"},
+    {0x06BC, "CRCMSBInitVal0"},
+    {0x06BD, "CRCLSBInitVal1"},
+    {0x06BE, "CRCMSBpolynomVal0"},
+    {0x06BF, "CRCLSBpolynomVal1"},
+    {SYNC_WORD_0, "SyncWord0"},
+    {SYNC_WORD_1, "SyncWord1"},
+    {SYNC_WORD_2, "SyncWord2"},
+    {SYNC_WORD_3, "SyncWord3"},
+    {SYNC_WORD_4, "SyncWord4"},
+    {SYNC_WORD_5, "SyncWord5"},
+    {SYNC_WORD_6, "SyncWord6"},
+    {SYNC_WORD_7, "SyncWord7"},
+    {0x06CD, "NodeAddr"},
+    {0x06CE, "BroadcastAddr"},
+    {0x0736, "IQpolaritySetup"},
+    {0x0740, "LoRaSyncWordMSB"},
+    {0x0741, "LoRaSyncWordLSB"},
+    {RAND_NUM_GEN_0, "RandNumGen0"},
+    {RAND_NUM_GEN_1, "RandNumGen1"},
+    {RAND_NUM_GEN_2, "RandNumGen2"},
+    {RAND_NUM_GEN_3, "RandNumGen3"},
+    {0x0889, "TxModulation"},
+    {0x08AC, "RxGain"},
+    {0x08D8, "TxClampConfig"},
+    {0x08E7, "OCPConfig"},
+    {0x0902, "RTCcontrol"},
+    {0x0911, "XTAtrim"},
+    {0x0912, "XTBtrim"},
+    {0x0920, "DIO3outputVoltageControl"},
+    {0x0944, "EventMask"},
+};
+#endif /*HAS_SX1262_DEBUG*/
+
+uint32_t sx1262_get_reg_cnt(void){
+    return ARRAY_SIZE(RegMap);
+}
+
 /*TODO: rewrite*/
 #define READ_REG_HEADER_SZ 3
 static bool sx1262_read_reg_proc(uint16_t reg_addr, uint8_t* reg_val) {
@@ -60,6 +121,30 @@ bool sx1262_write_reg(uint16_t reg_addr, uint8_t reg_val) {
     memcpy(&tx_array[0], &reg_addr_be, sizeof(reg_addr_be));
     tx_array[2] = reg_val;
     res = sx1262_send_opcode(OPCODE_WRITE_REGISTER, tx_array, sizeof(tx_array), NULL, 0);
+    return res;
+}
+
+bool sx1262_set_tx_modulation(uint8_t tx_modulation){
+    bool res = true;
+    res= sx1262_write_reg(REG_TX_MODULATION ,  tx_modulation);
+    return res;
+}
+
+bool sx1262_get_tx_modulation(uint8_t *tx_modulation){
+    bool res = true;
+    res = sx1262_read_reg(REG_TX_MODULATION , tx_modulation) ;
+    return res;
+}
+
+bool sx1262_set_tx_clamp_config(uint8_t tx_clamp_config){
+    bool res = true;
+    res= sx1262_write_reg(REG_TX_CLAMP_CONFIG, tx_clamp_config);
+    return res;
+}
+
+bool sx1262_get_tx_clamp_config(uint8_t *tx_clamp_config){
+    bool res = true;
+    res = sx1262_read_reg(REG_TX_CLAMP_CONFIG, tx_clamp_config) ;
     return res;
 }
 

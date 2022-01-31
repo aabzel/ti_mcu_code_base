@@ -36,9 +36,9 @@ Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];
 
 bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state) {
     bool res = false;
-    if(instance){
+    if(instance) {
         res = true;
-        LOG_DEBUG(TBFP, "ResetFsmIn: %s",RxState2Str(rx_state));
+        LOG_DEBUG(TBFP, "ResetFsmIn: %s", RxState2Str(rx_state));
         instance->load_len = 0;
         instance->exp_len.len16 = 0;
         instance->rx_state = WAIT_PREAMBLE;
@@ -77,7 +77,7 @@ static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte)
 #endif
         res = true;
     } else {
-        rtcm3_reset_rx(instance,WAIT_PREAMBLE);
+        rtcm3_reset_rx(instance, WAIT_PREAMBLE);
     }
     return res;
 }
@@ -113,10 +113,10 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             instance->err_cnt++;
             LOG_ERROR(SYS, "TooBigFrame:%u byte.Max:%u Byte", instance->exp_len.field.len + RTCM3_CRC24_SIZE,
                       RTCM3_RX_MAX_FRAME_SIZE);
-            rtcm3_reset_rx(instance,WAIT_LEN);
+            rtcm3_reset_rx(instance, WAIT_LEN);
         }
     } else {
-        rtcm3_reset_rx(instance,WAIT_LEN);
+        rtcm3_reset_rx(instance, WAIT_LEN);
     }
     return res;
 }
@@ -134,7 +134,7 @@ bool rtcm3_proc_wait_payload(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         instance->rx_state = WAIT_CRC;
         res = true;
     } else {
-        rtcm3_reset_rx(instance,WAIT_PAYLOAD);
+        rtcm3_reset_rx(instance, WAIT_PAYLOAD);
     }
     return res;
 }
@@ -207,18 +207,18 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             } break;
             }
 #ifdef HAS_TBFP
-            tbfp_parser_reset_rx(&TbfpProtocol[instance->interface],RX_DONE);
+            tbfp_parser_reset_rx(&TbfpProtocol[instance->interface], RX_DONE);
 #endif
-            rtcm3_reset_rx(instance,WAIT_CRC);
+            rtcm3_reset_rx(instance, WAIT_CRC);
         } else {
 #if defined(HAS_LOG) && defined(HAS_MCU)
             LOG_ERROR(RTCM, "%s CrcErr", interface2str(instance->interface));
 #endif
             instance->crc_err_cnt++;
-            rtcm3_reset_rx(instance,WAIT_CRC);
+            rtcm3_reset_rx(instance, WAIT_CRC);
         }
     } else {
-        rtcm3_reset_rx(instance,WAIT_CRC);
+        rtcm3_reset_rx(instance, WAIT_CRC);
     }
     return res;
 }
@@ -239,7 +239,7 @@ bool rtcm3_proc_byte(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         res = rtcm3_proc_wait_crc24(instance, rx_byte);
         break;
     default:
-        rtcm3_reset_rx(instance,WAIT_UNDEF);
+        rtcm3_reset_rx(instance, WAIT_UNDEF);
         break;
     }
     return res;
@@ -288,7 +288,7 @@ bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Interfaces_t interf
 #endif
     if((NULL != payload) && (0 < size)) {
         uint32_t i = 0;
-        rtcm3_reset_rx(&Rtcm3Protocol[interface],WAIT_INIT );
+        rtcm3_reset_rx(&Rtcm3Protocol[interface], WAIT_INIT);
         uint32_t init_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt;
         for(i = 0; i < size; i++) {
             res = rtcm3_proc_byte(&Rtcm3Protocol[interface], payload[i]);
