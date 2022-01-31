@@ -78,6 +78,9 @@ const char* interface2str(Interfaces_t interface) {
     return name;
 }
 
+bool system_calc_byte_rate(void){
+    return false;
+}
 bool interface_valid(Interfaces_t interface) {
     bool res = false;
     switch(interface) {

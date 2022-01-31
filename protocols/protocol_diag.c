@@ -33,7 +33,6 @@ char* RxState2Str(RxState_t rx_state) {
     default:
         name = "??";
         break;
-        break;
     }
     return name;
 }

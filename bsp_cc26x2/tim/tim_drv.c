@@ -9,6 +9,8 @@ https://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/tirtos/2_20_
 #include <string.h>
 #include <timer.h>
 
+#include "system.h"
+
 #ifdef DeviceFamily_CC26X2
 #include <ti/drivers/timer/GPTimerCC26XX.h>
 #endif
@@ -139,6 +141,7 @@ void timerCallback2(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interrupt
 #ifdef HAS_RTC
         SwRtc.raw_sec++;
 #endif
+        system_calc_byte_rate();
     }
 }
 

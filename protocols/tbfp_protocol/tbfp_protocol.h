@@ -10,31 +10,11 @@ extern "C" {
 #include <stdint.h>
 #include <time.h>
 
+#include "tbfp_constants.h"
 #include "gnss_utils.h"
 #include "system.h"
 #include "tbfp_protocol_parser.h"
 
-typedef enum xFrameId_t {
-    FRAME_ID_CMD = 0x44,    /*D*/
-    FRAME_ID_CHAT = 0x43,   /*C*/
-    FRAME_ID_PING = 0x50,   /*P*/
-    FRAME_ID_TUNNEL = 0x54, /*T matryoshka*/
-    FRAME_ID_PONG = 0x90,   /**/
-    FRAME_ID_RTCM3 = 0xD3,  /**/
-} FrameId_t;
-
-#define TBFP_PREAMBLE 0xA5
-// https://docs.google.com/spreadsheets/d/1VAT3Ak7AzcufgvuRHrRVoVfC3nxugFGJR5pyzxL4W7Q/edit#gid=0
-#define TBFP_INDEX_PREAMBLE 0
-#define TBFP_INDEX_RETX 1
-#define TBFP_INDEX_SER_NUM 2
-#define TBFP_INDEX_LEN 4
-#define TBFP_INDEX_PAYLOAD 6
-
-#define TBFP_SIZE_ID 1
-#define TBFP_SIZE_CRC 1
-
-#define TBFP_OVERHEAD_SIZE (sizeof(TbfHeader_t) + TBFP_SIZE_CRC)
 
 typedef struct xTbfHeader_t {
     uint8_t preamble;
@@ -54,7 +34,6 @@ typedef struct xTbfPingFrame_t {
     GnssCoordinate_t coordinate;
 } __attribute__((packed)) TbfPingFrame_t;
 
-#define TBFP_MAX_TX_FRAME 330 /*Byte*/
 
 typedef struct xTbfpProtocol_t {
     uint32_t rx_pkt_cnt;
@@ -73,7 +52,7 @@ typedef struct xTbfpProtocol_t {
     uint16_t con_flow;
     uint16_t max_con_flow;
 #endif
-    uint8_t tx_frame[TBFP_MAX_TX_FRAME];
+    uint8_t tx_frame[TBFP_MAX_FRAME]; //
     Interfaces_t interface;
     TBFTparser_t parser;
 } TbfpProtocol_t;

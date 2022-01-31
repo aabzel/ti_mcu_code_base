@@ -29,25 +29,29 @@ static bool tbfp_diag(void) {
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
-        io_printf(TSEP);
-        io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].tx_pkt_cnt);
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
+        if(TbfpProtocol[interface].interface==interface){
 
-#ifdef HAS_DEBUG
-#ifdef HAS_TBFP_FLOW_CONTROL
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].max_con_flow);
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].con_flow);
-#endif
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].min_len);
-        io_printf(" %7u " TSEP, TbfpProtocol[interface].max_len);
-        io_printf(" %5u " TSEP, TbfpProtocol[interface].debug);
-        io_printf(CRLF);
-#endif /*HAS_DEBUG*/
-        res = true;
+            io_printf(TSEP);
+
+            io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].tx_pkt_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
+
+    #ifdef HAS_DEBUG
+    #ifdef HAS_TBFP_FLOW_CONTROL
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].max_con_flow);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].con_flow);
+    #endif
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].min_len);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].max_len);
+            io_printf(" %5u " TSEP, TbfpProtocol[interface].debug);
+            io_printf(CRLF);
+    #endif /*HAS_DEBUG*/
+            res = true;
+        }
     }
 
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));

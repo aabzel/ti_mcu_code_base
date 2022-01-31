@@ -1055,17 +1055,17 @@ static bool sx1262_set_tx(uint32_t timeout_s) {
     return res;
 }
 
-bool sx1262_start_tx(uint8_t* tx_buf, uint8_t tx_len, uint32_t timeout_s) {
+bool sx1262_start_tx(uint8_t* tx_buf, uint16_t tx_len, uint32_t timeout_s) {
     bool res = true;
     if(false == Sx1262Instance.tx_mute) {
         if(Sx1262Instance.tx_done) {
             Sx1262Instance.tx_done = false;
-            if((NULL != tx_buf) && (0 < tx_len) && (tx_len < SX1262_MAX_FRAME_SIZE)) {
+            if((NULL != tx_buf) && (0 < tx_len) && (tx_len <= SX1262_MAX_FRAME_SIZE)) {
                 // res = sx1262_clear_fifo();
                 res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
                 res = sx1262_set_payload(tx_buf, tx_len) && res;
-                Sx1262Instance.packet_param.proto.lora.payload_length = tx_len;
-                res = sx1262_set_packet_params(&Sx1262Instance.packet_param);
+                //Sx1262Instance.packet_param.proto.lora.payload_length = tx_len;
+                //res = sx1262_set_packet_params(&Sx1262Instance.packet_param);
 #ifdef HAS_LOG
                 LOG_DEBUG(LORA, "TxLen:%u", tx_len);
                 if(Sx1262Instance.debug) {
@@ -1350,8 +1350,8 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t ma
         LOG_DEBUG(LORA, "Start %u rxLen %u", rx_start_buffer_pointer, len);
     }
 #endif
-    // rx_payload_len = 256; // One LoRa Frame one-multiple TBFP frame
-    rx_payload_len = len; // Just for stream of bytes
+    rx_payload_len = 256; /* One LoRa Frame Must contain one TBFP frame!*/
+    //rx_payload_len = len; // Just for stream of bytes. (unreliable).
     if(rx_payload_len <= max_size) {
         res = sx1262_read_buffer(rx_start_buffer_pointer, out_payload, (uint16_t)rx_payload_len);
         *out_size = rx_payload_len;
@@ -1713,17 +1713,27 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     uint32_t cur_time_stamp_ms = get_time_ms32();
     tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
     uint32_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
-    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done) && (SX1262_MAX_PAYLOAD_SIZE < count)) {
-        uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE] = {0};
-        memset(TxPayload, 0, sizeof(TxPayload));
+    fifo_index_t tx_len = 0;
+    uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE-2] = {0};
+    memset(TxPayload, 0, sizeof(TxPayload));
+    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done) && (sizeof(TxPayload) < count)) {
 
-        fifo_index_t tx_len = 0;
         res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);
         if(res) {
+            if(tx_len!=sizeof(TxPayload)){
 #ifdef HAS_LOG
-            LOG_DEBUG(LORA, "FiFoPullErr Len:%u", tx_len);
+                LOG_ERROR(LORA, "FiFoPullLenErr Len:%u %u", tx_len,sizeof(TxPayload));
+#endif
+            }
+#ifdef HAS_LOG
+            LOG_DEBUG(LORA, "FiFoPull Len:%u", tx_len);
+#endif
+        }else{
+#ifdef HAS_LOG
+            LOG_ERROR(LORA, "FiFoPullErr Len:%u", tx_len);
 #endif
         }
+
 
 #ifdef HAS_LORA_FIFO_ARRAYS
         Array_t Node = {.size = 0, .pArr = NULL};
@@ -1742,26 +1752,27 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
 #endif /*HAS_MCU*/
             }
         }
-    }
 #endif /*HAS_LORA_FIFO_ARRAYS*/
+    } else {
+        LOG_PARN(LORA, "FiFoCnt:%u", count);
+        res = true;
+    }
     if(res) {
-        if((0 < tx_len) && (tx_len <= sizeof(TxPayload))) {
+        if((0 < tx_len) && (tx_len == sizeof(TxPayload))) {
+#ifdef HAS_TBFP
             res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
             if(res) {
                 LoRaInterface.tx_ok_cnt++;
             } else {
                 LoRaInterface.tx_err_cnt++;
             }
+#endif /*HAS_TBFP*/
         }
     }
-}
-else {
-    LOG_PARN(LORA, "FiFoCnt:%u", count);
-    res = true;
-}
-return res;
+    return res;
 }
 #endif /*HAS_TBFP*/
+
 
 /* poll sx1262 registers. Move data from transceiver REG to MCU RAM.
  * verify transceiver and notify user if needed

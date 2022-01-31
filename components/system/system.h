@@ -26,6 +26,7 @@ typedef enum eInterfaces_t {
 } __attribute__((__packed__)) Interfaces_t;
 #endif
 
+bool system_calc_byte_rate(void);
 bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface);
 bool interface_valid(Interfaces_t interface);
 const char* interface2str(Interfaces_t interface);

@@ -24,7 +24,7 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
 #ifdef HAS_DEBUG
         instance->preamble_cnt++;
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "Preamble 0x%x", rx_byte);
+        LOG_DEBUG(TBFP, "Preamble 0x%x %s", rx_byte, interface2str(instance->interface));
 #endif
 #endif
         res = true;
@@ -183,11 +183,12 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
             memcpy(instance->parser.fix_frame, instance->parser.rx_frame, TBFP_MAX_FRAME);
             instance->parser.rx_state = RX_DONE;
             instance->rx_pkt_cnt++;
+            res = tbfp_parser_reset_rx(instance, RX_DONE);
             res = tbfp_proc_full(instance->parser.fix_frame, frame_len + TBFP_SIZE_CRC, instance->interface);
         } else {
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "SN:0x%04x %u crc err read:0x%02x", instance->parser.s_num, instance->parser.s_num,
-                      instance->parser.read_crc8);
+            LOG_ERROR(TBFP, "SN:0x%04x %u crc err read:0x%02x %s", instance->parser.s_num, instance->parser.s_num,
+                      instance->parser.read_crc8,interface2str(instance->interface));
 #endif
             instance->crc_err_cnt++;
             res = false; // errors

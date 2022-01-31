@@ -437,10 +437,10 @@ static bool sx1262_print_reg_map(char* key_word1, char* key_word2) {
             cnt++;
         }
         strcpy(temp_str, TSEP);
-        snprintf(suffix_str, sizeof(suffix_str), "0x%04x " TSEP, RegMap[i].addr);
+        snprintf(suffix_str, sizeof(suffix_str), " 0x%04x " TSEP, RegMap[i].addr);
         strncat(temp_str, suffix_str, sizeof(temp_str));
 
-        snprintf(suffix_str, sizeof(suffix_str), "0x%02x " TSEP, reg_val);
+        snprintf(suffix_str, sizeof(suffix_str), " 0x%02x " TSEP, reg_val);
         strncat(temp_str, suffix_str, sizeof(temp_str));
 
         snprintf(suffix_str, sizeof(suffix_str), "0b%s " TSEP, utoa_bin8(reg_val));

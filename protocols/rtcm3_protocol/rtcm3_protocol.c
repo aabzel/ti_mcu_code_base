@@ -38,7 +38,7 @@ bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state) {
     bool res = false;
     if(instance) {
         res = true;
-        LOG_DEBUG(TBFP, "ResetFsmIn: %s", RxState2Str(rx_state));
+        LOG_DEBUG(RTCM, "ResetFsmIn: %s", RxState2Str(rx_state));
         instance->load_len = 0;
         instance->exp_len.len16 = 0;
         instance->rx_state = WAIT_PREAMBLE;
@@ -52,6 +52,8 @@ bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool
     memset(instance->fix_frame, 0x00, RTCM3_RX_MAX_FRAME_SIZE);
     memset(instance->rx_frame, 0x00, RTCM3_RX_MAX_FRAME_SIZE);
 #ifdef HAS_DEBUG
+    instance->max_len = 0;
+    instance->min_len = 0xFFFF;
     instance->forwarding[IF_LORA] = false;
 #else
     instance->forwarding[IF_LORA] = lora_fwd;

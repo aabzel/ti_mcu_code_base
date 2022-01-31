@@ -36,10 +36,10 @@
 #define RX_SIZE 256
 #define TX_SIZE 256
 
-#define SX1262_MAX_FRAME_SIZE 255U
+#define SX1262_MAX_FRAME_SIZE 255U /*TODO Explore*/
 
 #ifdef HAS_TBFP
-#define SX1262_MAX_PAYLOAD_SIZE (SX1262_MAX_FRAME_SIZE - TBFP_OVERHEAD_SIZE)
+#define SX1262_MAX_PAYLOAD_SIZE (SX1262_MAX_FRAME_SIZE - TBFP_OVERHEAD_SIZE - TBFP_SIZE_ID)
 #endif
 
 #define RC_FREQ_HZ 13000000U
@@ -128,7 +128,7 @@ bool sx1262_set_lora_sync_word(uint16_t sync_word);
 bool sx1262_set_tx_params(int8_t power, uint8_t ramp_time);
 bool sx1262_set_whitening_seed(uint16_t seed);
 bool sx1262_start_rx(uint32_t timeout_s);
-bool sx1262_start_tx(uint8_t* tx_buf, uint8_t pktLen, uint32_t timeout_s);
+bool sx1262_start_tx(uint8_t* tx_buf, uint16_t pkt_len, uint32_t timeout_s);
 bool sx1262_wait_on_busy(uint32_t time_out_ms);
 bool sx1262_wakeup(void);
 bool sx1262_write_buffer(uint8_t offset, uint8_t* payload, uint16_t payload_len);

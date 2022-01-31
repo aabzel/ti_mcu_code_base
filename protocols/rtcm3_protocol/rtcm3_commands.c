@@ -28,7 +28,7 @@ static bool rtcm3_diag_lost(char* key_word1, char* key_word2) {
     char suffix_str[200] = "";
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     Interfaces_t intf;
-    for(intf = IF_LORA; intf<IF_CNT; intf++){
+    for(intf =(Interfaces_t) 0; intf<IF_CNT; intf++){
         strcpy(line_str, TSEP);
         snprintf(suffix_str, sizeof(suffix_str)," %8s " TSEP, interface2str((Interfaces_t)intf));
         strncat(line_str,suffix_str, sizeof(line_str));
@@ -72,21 +72,23 @@ static bool rtcm3_diag(void) {
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
-        io_printf(TSEP);
-        io_printf(" %8s " TSEP, interface2str((Interfaces_t)interface));
-        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].rx_pkt_cnt);
-        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].crc_err_cnt);
-#ifdef HAS_DEBUG
-        Rtcm3Protocol[interface].diff_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt-Rtcm3Protocol[interface].prev_rx_pkt_cnt;
-        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].diff_rx_pkt_cnt);
-        Rtcm3Protocol[interface].prev_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt;
-        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].preamble_cnt);
-        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].err_cnt);
-        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].min_len);
-        io_printf(" %7u " TSEP, Rtcm3Protocol[interface].max_len);
-#endif /*HAS_DEBUG*/
-        io_printf(CRLF);
-        res = true;
+        if(interface==Rtcm3Protocol[interface].interface){
+            io_printf(TSEP);
+            io_printf(" %8s " TSEP, interface2str((Interfaces_t)Rtcm3Protocol[interface].interface));
+            io_printf(" %7u " TSEP, Rtcm3Protocol[interface].rx_pkt_cnt);
+            io_printf(" %7u " TSEP, Rtcm3Protocol[interface].crc_err_cnt);
+    #ifdef HAS_DEBUG
+            Rtcm3Protocol[interface].diff_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt-Rtcm3Protocol[interface].prev_rx_pkt_cnt;
+            io_printf(" %7u " TSEP, Rtcm3Protocol[interface].diff_rx_pkt_cnt);
+            Rtcm3Protocol[interface].prev_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt;
+            io_printf(" %7u " TSEP, Rtcm3Protocol[interface].preamble_cnt);
+            io_printf(" %7u " TSEP, Rtcm3Protocol[interface].err_cnt);
+            io_printf(" %7u " TSEP, Rtcm3Protocol[interface].min_len);
+            io_printf(" %7u " TSEP, Rtcm3Protocol[interface].max_len);
+    #endif /*HAS_DEBUG*/
+            io_printf(CRLF);
+            res = true;
+        }
     }
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
