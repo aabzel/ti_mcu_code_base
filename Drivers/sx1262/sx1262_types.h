@@ -96,6 +96,12 @@ typedef union uSx1262IRQs_t{
 } Sx1262IRQs_t;
 
 
+typedef struct xReTxFsm_t {
+    uint8_t retx_cnt;
+    uint8_t TxFrame[SX1262_MAX_FRAME_SIZE];
+    uint16_t tx_frame_len;
+}ReTxFsm_t;
+
 typedef struct xSx1262_t {
     uint64_t set_sync_word;
     uint64_t get_sync_word;
@@ -151,6 +157,7 @@ typedef struct xSx1262_t {
     uint8_t tx_size_max;
     uint32_t tx_done_cnt;
     //ChipMode_t chip_mode;
+    ReTxFsm_t ReTxFsm;
     PaketStat_t gfsk;
     PaketStat_t lora;
     Sx1262IrqCnt_t irq_cnt;

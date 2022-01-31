@@ -4,6 +4,7 @@ PROTOCOLS_DIR = $(PROJECT_ROOT)protocols
 
 INCDIR += -I$(PROTOCOLS_DIR)
 
+SOURCES_C += $(PROTOCOLS_DIR)/protocol_diag.c
 include $(PROTOCOLS_DIR)/nmea_protocol/nmea_protocol.mk
 include $(PROTOCOLS_DIR)/rtcm3_protocol/rtcm3_protocol.mk
 include $(PROTOCOLS_DIR)/tbfp_protocol/tbfp_protocol.mk

@@ -64,7 +64,8 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
         memset(instance, 0x0, sizeof(TbfpProtocol_t));
         instance->interface = interface;
 #ifdef HAS_TBFP_FLOW_CONTROL
-        instance->prev_s_num = 0xFFFF;
+        instance->prev_s_num = 0;
+        instance->s_num = 1;
 #endif
         instance->max_len = 0;
         instance->min_len = 0xFFFF;
@@ -398,23 +399,22 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset
         }
     }
 
-    if(is_reset_parser && (0==cur_rx_prk)){
-        LOG_ERROR(TBFP, "%s LackPktInFrame:%u ",
-                  interface2str(interface),
-                  len
-                  );
-    }
     cur_rx_prk = TbfpProtocol[interface].rx_pkt_cnt - init_rx_prk;
+
     if(0 < cur_rx_prk) {
 #ifdef HAS_LOG
         LOG_DEBUG(TBFP, "InPktCnt:%u in %u byte", cur_rx_prk, len);
 #endif
     } else {
+        if(is_reset_parser){
+#ifdef HAS_LOG
+            LOG_ERROR(TBFP, "%s LackPktInFrame:%u ",
+                  interface2str(interface),
+                  len);
+        }
+#endif
 #ifdef HAS_DEBUG
         if(true == TbfpProtocol[interface].debug) {
-#ifdef HAS_LOG
-            LOG_ERROR(TBFP, "LackPkt:%u", len);
-#endif
             print_mem(arr, len, true, false, true, true);
         }
 #endif
@@ -461,35 +461,46 @@ static bool flow_ctrl_print_lost(uint16_t prev_s_num, uint16_t s_num, uint32_t c
 #endif /*HAS_TBFP_FLOW_CONTROL*/
 
 #ifdef HAS_TBFP_FLOW_CONTROL
-bool tbfp_check_flow_control(TbfpProtocol_t* item, TbfHeader_t* Header) {
-    bool res = true;
+bool tbfp_check_flow_control(
+                             Interfaces_t interface,
+                             uint16_t snum,
+                             uint16_t *prev_s_num,
+                             uint16_t *con_flow,
+                             uint16_t *max_con_flow
+                             ) {
+    bool res = false;
 #ifdef HAS_LOG
-    LOG_PARN(TBFP, "prev_snum:%u snum:%u flow:%u", item->prev_s_num, Header->snum, item->con_flow);
+    LOG_PARN(TBFP, "prev_snum:%u snum:%u flow:%u",  *prev_s_num, snum,  *con_flow);
 #endif
-    if((item->prev_s_num + 1) == Header->snum) {
+    if(( 1+ *prev_s_num ) == snum) {
         /*Flow ok*/
-        item->con_flow++;
-        item->max_con_flow = max16(item->max_con_flow, item->con_flow);
+        LOG_PARN(TBFP, "FlowOk");
+        (*con_flow)++;
+         *max_con_flow = max16u( *max_con_flow,  *con_flow);
         res = true;
-    } else if((item->prev_s_num + 1) < Header->snum) {
-        flow_ctrl_print_lost(item->prev_s_num, Header->snum, item->con_flow,item->interface );
-        item->con_flow = 1;
+    } else if(( *prev_s_num + 1) < snum) {
+        LOG_PARN(TBFP, "FlowTorn");
+        flow_ctrl_print_lost( *prev_s_num, snum,  *con_flow, interface );
+        (*con_flow) = 1;
+        res = true;
+    }  else if( *prev_s_num == snum) {
+        /*Rx Retx*/
+        LOG_DEBUG(TBFP, "SN cur=prev=%u", snum);
         res = false;
-    } else if(item->prev_s_num <= Header->snum) {
+    }else if( snum <  *prev_s_num) {
         /*Unreal situation*/
-        LOG_ERROR(TBFP, "SNorderError SNcur:%u<=SNprev:%u", Header->snum, item->prev_s_num);
-        item->con_flow = 1;
-        item->err_cnt++;
+        LOG_ERROR(TBFP, "SnOrderError SNcur:%u<=SNprev:%u", snum,  *prev_s_num);
+       //  con_flow = 1;
         res = false;
     } else {
         /*Unreal situation*/
         res = false;
-        item->con_flow = 1;
-        item->err_cnt++;
     }
-    item->prev_s_num = Header->snum;
+    if(res){
+        *prev_s_num = snum;
+    }
 #ifdef HAS_LOG
-    LOG_PARN(TBFP, "prev_snum:%u snum:%u flow:%u", item->prev_s_num, Header->snum, item->con_flow);
+    LOG_PARN(TBFP, "prev_snum:%u snum:%u flow:%u",  *prev_s_num, snum,  *con_flow);
 #endif
     return res;
 }
@@ -505,8 +516,15 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         TbfHeader_t inHeader = {0};
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
 #ifdef HAS_TBFP_FLOW_CONTROL
-        res = tbfp_check_flow_control(&TbfpProtocol[interface], &inHeader);
-        if(false == res) {
+        bool flow_ctrl_ok = false;
+        flow_ctrl_ok = tbfp_check_flow_control(interface,
+                                               inHeader.snum,
+                                               &TbfpProtocol[interface].prev_s_num,
+                                               &TbfpProtocol[interface].con_flow,
+                                               &TbfpProtocol[interface].max_con_flow
+                                               );
+        if(false == flow_ctrl_ok) {
+            TbfpProtocol[interface].err_cnt++;
 #ifdef HAS_LOG
             LOG_ERROR(TBFP, "FlowCtrlErr %s",interface2str(interface));
 #endif
@@ -518,7 +536,9 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
             res = tbfp_send(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface, inHeader.lifetime - 1);
         }
 #endif /*HAS_TBFP_RETRANSMIT*/
-        res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
+        if(flow_ctrl_ok){
+            res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
+        }
     } else {
 #ifdef HAS_LOG
         LOG_ERROR(TBFP, "NotAframe");

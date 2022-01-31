@@ -36,6 +36,7 @@
 
 #ifdef HAS_SX1262
 #include "sx1262_drv.h"
+#include "sx1262_re_tx.h"
 #endif
 
 #ifdef HAS_BOOTLOADER
@@ -104,6 +105,11 @@ bool interface_valid(Interfaces_t interface) {
 bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
     bool res = false;
     switch(interface) {
+#ifdef HAS_SX1262
+    case IF_SX1262: {
+        res = sx1262_start_retx(array, len, RETX_TRY_CNT_DFLT);
+    } break;
+#endif
 #ifdef HAS_LORA
     case IF_LORA: {
         res = lora_send_queue(array, len);
@@ -132,11 +138,6 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
 #ifdef HAS_RS232
     case IF_RS232: {
         res = rs232_send(array, len);
-    } break;
-#endif
-#ifdef HAS_SX1262
-    case IF_SX1262: {
-        res = sx1262_start_tx(array, len, 0);
     } break;
 #endif
 #ifdef HAS_BLE

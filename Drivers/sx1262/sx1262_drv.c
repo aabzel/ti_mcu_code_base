@@ -46,6 +46,7 @@ speed up to 16 MHz
 #include "spi_drv.h"
 #include "sx1262_diag.h"
 #include "sx1262_registers.h"
+#include "sx1262_re_tx.h"
 #include "sys_config.h"
 #include "task_info.h"
 #ifndef HAS_SPI
@@ -1716,7 +1717,9 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     fifo_index_t tx_len = 0;
     uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE-2] = {0};
     memset(TxPayload, 0, sizeof(TxPayload));
-    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) && (true == instance->tx_done) && (sizeof(TxPayload) < count)) {
+    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) &&
+            (true == is_sx1262_retx_idle()) &&
+            (sizeof(TxPayload) < count)) {
 
         res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);
         if(res) {
@@ -1760,18 +1763,20 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     if(res) {
         if((0 < tx_len) && (tx_len == sizeof(TxPayload))) {
 #ifdef HAS_TBFP
-            res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
-            if(res) {
-                LoRaInterface.tx_ok_cnt++;
-            } else {
-                LoRaInterface.tx_err_cnt++;
-            }
+                res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
+                if(res) {
+                    LoRaInterface.tx_ok_cnt++;
+                } else {
+                    LoRaInterface.tx_err_cnt++;
+                }
 #endif /*HAS_TBFP*/
+
         }
     }
     return res;
 }
 #endif /*HAS_TBFP*/
+
 
 
 /* poll sx1262 registers. Move data from transceiver REG to MCU RAM.
@@ -1782,6 +1787,7 @@ bool sx1262_process(void) {
 #ifdef HAS_LOG
     LOG_PARN(LORA, "CheckConnectivity=%u", Sx1262Instance.check_connectivity);
 #endif
+    res = sx1216_retx_proc();
 
     if(Sx1262Instance.check_connectivity) {
         res = sx1262_is_connected();
@@ -1907,6 +1913,7 @@ bool sx1262_init(void) {
     Sx1262Instance.debug = false;
     Sx1262Instance.show_bin = false;
 #endif
+    res=sx1262_retx_init();
 
 #ifdef HAS_LOG
     LOG_INFO(LORA, "InitSX1262...");
