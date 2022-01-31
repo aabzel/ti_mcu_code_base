@@ -42,10 +42,10 @@ bool lora_proc_payload(uint8_t* const rx_payload, uint32_t rx_size) {
     bool res = false;
 
 #ifdef HAS_TBFP
-    res = tbfp_proc(rx_payload, rx_size, IF_LORA, false);
+    res = tbfp_proc(rx_payload, rx_size, IF_SX1262, false);
     if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(LORA, "LoRaProcErr");
+        LOG_ERROR(LORA, "SX1262ProcErr");
 #endif
         LoRaInterface.err_cnt++;
     }

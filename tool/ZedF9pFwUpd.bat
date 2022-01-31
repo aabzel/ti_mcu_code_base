@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\u-blox\u-center_v21.05\ubxfwupdate.exe" -p STDIO -b 9600:9600:9600 --no-fis 1 -s 1 -t 1 -v 1 "C:\Users\aabdev\Downloads\UBX_F9_100_HPG130.aa1ce2137147f95bbde5532f1b495848.bin"

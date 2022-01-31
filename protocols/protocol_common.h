@@ -12,7 +12,9 @@ typedef enum eRxState_t {
     WAIT_RETX_CNT = 3,
     WAIT_PAYLOAD = 4,
     WAIT_CRC = 5,
-    RX_DONE = 6,
+    WAIT_UNDEF = 6,
+    RX_DONE = 7,
+    WAIT_INIT = 8,
 } RxState_t;
 
 #ifdef __cplusplus

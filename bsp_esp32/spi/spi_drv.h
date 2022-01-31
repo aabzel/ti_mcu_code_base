@@ -22,6 +22,12 @@ extern "C" {
 #define SPI2_BASE 0x3FF64000
 #define SPI3_BASE 0x3FF65000
 
+//#define SPI_DISCRET_WRITE
+//#define SPI_DISCRET_READ
+
+#define SPI_CON_WRITE
+#define SPI_CON_READ
+
 typedef enum eSpiName_t { SPI0_INX = 0, SPI1_INX = 1, SPI2_INX = 2, SPI3_INX = 3, SPI_CNT = 4 } SpiName_t;
 
 bool spi_init(void);

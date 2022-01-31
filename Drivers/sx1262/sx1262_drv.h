@@ -25,6 +25,10 @@
 #include "sx1262_registers.h"
 #include "sx1262_types.h"
 
+#ifdef HAS_TBFP
+#include "tbfp_protocol.h"
+#endif
+
 #define PACK_SIZE_BYTES 16
 
 #define FIFO_SIZE 256
@@ -33,6 +37,11 @@
 #define TX_SIZE 256
 
 #define SX1262_MAX_FRAME_SIZE 255U
+
+#ifdef HAS_TBFP
+#define SX1262_MAX_PAYLOAD_SIZE (SX1262_MAX_FRAME_SIZE-TBFP_OVERHEAD_SIZE)
+#endif
+
 
 #define RC_FREQ_HZ 13000000U
 #define XTAL_FREQ_HZ 32000000U
@@ -51,13 +60,17 @@ extern const xSx1262Reg_t RegMap[SX1262_REG_CNT];
 #define SX1262_CHIP_SELECT(CALL_BACK)                                                                                  \
     do {                                                                                                               \
         res = false;                                                                                                   \
-        res = sx1262_wait_on_busy(10);                                                                                 \
+        res = sx1262_wait_on_busy(100);                                                                                 \
         if(true == res) {                                                                                              \
             res = true;                                                                                                \
-            sx1262_chip_select(true);                                                                                  \
-            wait_ms(1);                                                                                                \
-            res = CALL_BACK;                                                                                           \
-            wait_ms(1);                                                                                                \
+            res = sx1262_chip_select(true);                                                                            \
+            if(true==res){                                                                                             \
+                wait_ms(1);                                                                                            \
+                res = CALL_BACK;                                                                                       \
+                wait_ms(1);                                                                                            \
+            }else{                                                                                                     \
+                LOG_ERROR(LORA,"ChipBusy");                                                                            \
+            }                                                                                                          \
             sx1262_chip_select(false);                                                                                 \
         } else {                                                                                                       \
             Sx1262Instance.busy_cnt++;                                                                                 \

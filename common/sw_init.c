@@ -102,6 +102,9 @@ bool sw_init(void) {
 #ifdef HAS_CAN
     res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_CAN], IF_CAN), "TbfpCAN") && res;
 #endif /*HAS_CAN*/
+#ifdef HAS_SX1262
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_SX1262], IF_SX1262), "TbfpSX1262") && res;
+#endif /*HAS_CAN*/
 #endif /*HAS_TBFP*/
 
 #ifdef HAS_UBLOX

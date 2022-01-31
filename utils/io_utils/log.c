@@ -167,6 +167,9 @@ const char* facility2str(log_facility_t facility) {
     case NMEA:
         facility_str = "NMEA";
         break;
+    case I2C:
+        facility_str = "I2C";
+        break;
     case LED:
         facility_str = "LED";
         break;
@@ -205,6 +208,9 @@ const char* facility2str(log_facility_t facility) {
         break;
     case PARAM:
         facility_str = "PARAM";
+        break;
+    case PMIC:
+        facility_str = "PMIC";
         break;
     case TEST:
         facility_str = "TEST";

@@ -6,6 +6,7 @@
 #include "sx1262_registers.h"
 #include "unit_test_check.h"
 #include "none_blocking_pause.h"
+#include "sx1262_diag.h"
 
 static bool test_one_sync_word(uint64_t sync_word) {
     uint64_t read_sync_word = 0;
@@ -220,6 +221,7 @@ bool test_sx1262_chip_mode(void){
     Sx1262Status_t dev_status;
     EXPECT_TRUE( sx1262_set_fs());
     EXPECT_TRUE(  sx1262_get_status( &dev_status.byte));
+    LOG_INFO(TEST,"ChipMode: %s", chip_mode2str(dev_status.chip_mode));
     EXPECT_EQ(CHP_MODE_FS, dev_status.chip_mode);
     RadioPacketType_t packet_type=PACKET_TYPE_UNDEF;
     dev_status.byte=0;

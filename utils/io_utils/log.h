@@ -48,6 +48,7 @@ typedef enum eLog_facility_t {
 
     BATT,
     BOOT,
+    PMIC,
     CAN,
     COM,
     CRC8,

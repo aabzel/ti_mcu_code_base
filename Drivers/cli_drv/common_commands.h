@@ -96,7 +96,7 @@
 #define DAC_COMMANDS
 #endif
 
-#ifdef HAS_I2C
+#ifdef HAS_I2C_COMMANDS
 #include "i2c_commands.h"
 #else
 #define I2C_COMMANDS
@@ -113,17 +113,17 @@
     BASE_COMMANDS                                                                                                      \
     BOOT_COMMANDS                                                                                                      \
     CLOCK_COMMANDS                                                                                                     \
-    INTERRUPT_COMMANDS                                                                                                 \
     DAC_COMMANDS                                                                                                       \
-    TCAN4550_COMMANDS                                                                                                  \
-    TCAN4550_TI_TI_COMMANDS                                                                                            \
     FLASH_COMMANDS                                                                                                     \
     GPIO_COMMANDS                                                                                                      \
     GPIO_PWM_COMMANDS                                                                                                  \
     I2C_COMMANDS                                                                                                       \
+    INTERRUPT_COMMANDS                                                                                                 \
     RTC_COMMANDS                                                                                                       \
     SPI_COMMANDS                                                                                                       \
     TASK_COMMANDS                                                                                                      \
+    TCAN4550_COMMANDS                                                                                                  \
+    TCAN4550_TI_TI_COMMANDS                                                                                            \
     TEST_FIRMWARE_COMMANDS                                                                                             \
     TIM_COMMANDS                                                                                                       \
     UART_COMMANDS                                                                                                      \

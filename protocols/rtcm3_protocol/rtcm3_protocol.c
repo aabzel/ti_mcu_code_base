@@ -14,9 +14,9 @@
 #include "io_utils.h"
 #include "log.h"
 #endif
+#include "protocol_diag.h"
 
 #ifdef X86_64
-#include "log.h"
 #include <stdio.h>
 #endif
 
@@ -34,15 +34,20 @@
 
 Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];
 
-bool rtcm3_reset_rx(Rtcm3Protocol_t* instance) {
-    instance->load_len = 0;
-    instance->exp_len.len16 = 0;
-    instance->rx_state = RTCM3_WAIT_PREAMBLE;
-    return true;
+bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state) {
+    bool res = false;
+    if(instance){
+        res = true;
+        LOG_DEBUG(TBFP, "ResetFsmIn: %s",RxState2Str(rx_state));
+        instance->load_len = 0;
+        instance->exp_len.len16 = 0;
+        instance->rx_state = WAIT_PREAMBLE;
+    }
+    return res;
 }
 
 bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool lora_fwd) {
-    rtcm3_reset_rx(instance);
+    rtcm3_reset_rx(instance, WAIT_INIT);
     memset(instance, 0x0, sizeof(Rtcm3Protocol_t));
     memset(instance->fix_frame, 0x00, RTCM3_RX_MAX_FRAME_SIZE);
     memset(instance->rx_frame, 0x00, RTCM3_RX_MAX_FRAME_SIZE);
@@ -61,7 +66,7 @@ bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool
 static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     if((RTCM3_PREAMBLE == rx_byte) && (0 == instance->load_len)) {
-        instance->rx_state = RTCM3_WAIT_LEN;
+        instance->rx_state = WAIT_LEN;
         instance->rx_frame[0] = rx_byte;
         instance->load_len = 1;
 #ifdef HAS_DEBUG
@@ -72,7 +77,7 @@ static bool rtcm3_proc_wait_preamble(Rtcm3Protocol_t* instance, uint8_t rx_byte)
 #endif
         res = true;
     } else {
-        rtcm3_reset_rx(instance);
+        rtcm3_reset_rx(instance,WAIT_PREAMBLE);
     }
     return res;
 }
@@ -92,7 +97,7 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         instance->rx_frame[RTCM3_INX_LEN] = rx_byte;
         instance->exp_len.len8[RTCM3_INX_LEN] = rx_byte;
         instance->load_len = 2;
-        instance->rx_state = RTCM3_WAIT_LEN;
+        instance->rx_state = WAIT_LEN;
         res = true;
     } else if((RTCM3_INX_LEN + 1) == instance->load_len) {
         instance->rx_frame[RTCM3_INX_LEN + 1] = rx_byte;
@@ -101,17 +106,17 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #ifdef HAS_LOG
         LOG_DEBUG(RTCM, "ExpLen %u", instance->exp_len.field.len);
 #endif
-        instance->rx_state = RTCM3_WAIT_PAYLOAD;
+        instance->rx_state = WAIT_PAYLOAD;
         res = true;
         if(RTCM3_RX_MAX_FRAME_SIZE < (instance->exp_len.field.len + RTCM3_OVERHEAD)) {
             res = false;
             instance->err_cnt++;
             LOG_ERROR(SYS, "TooBigFrame:%u byte.Max:%u Byte", instance->exp_len.field.len + RTCM3_CRC24_SIZE,
                       RTCM3_RX_MAX_FRAME_SIZE);
-            rtcm3_reset_rx(instance);
+            rtcm3_reset_rx(instance,WAIT_LEN);
         }
     } else {
-        rtcm3_reset_rx(instance);
+        rtcm3_reset_rx(instance,WAIT_LEN);
     }
     return res;
 }
@@ -121,15 +126,15 @@ bool rtcm3_proc_wait_payload(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     if(instance->load_len < (RTCM3_HEADER_SIZE + instance->exp_len.field.len - 1)) {
         instance->rx_frame[instance->load_len] = rx_byte;
         instance->load_len++;
-        instance->rx_state = RTCM3_WAIT_PAYLOAD;
+        instance->rx_state = WAIT_PAYLOAD;
         res = true;
     } else if(instance->load_len == (RTCM3_HEADER_SIZE + instance->exp_len.field.len - 1)) {
         instance->rx_frame[instance->load_len] = rx_byte;
         instance->load_len++;
-        instance->rx_state = RTCM3_WAIT_CRC;
+        instance->rx_state = WAIT_CRC;
         res = true;
     } else {
-        rtcm3_reset_rx(instance);
+        rtcm3_reset_rx(instance,WAIT_PAYLOAD);
     }
     return res;
 }
@@ -143,12 +148,12 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     if(crc24_index == instance->load_len) {
         instance->rx_frame[instance->load_len] = rx_byte;
         instance->load_len++;
-        instance->rx_state = RTCM3_WAIT_CRC;
+        instance->rx_state = WAIT_CRC;
         res = true;
     } else if((crc24_index + 1) == instance->load_len) {
         instance->rx_frame[instance->load_len] = rx_byte;
         instance->load_len++;
-        instance->rx_state = RTCM3_WAIT_CRC;
+        instance->rx_state = WAIT_CRC;
         res = true;
     } else if((crc24_index + 2) == instance->load_len) {
         instance->rx_frame[instance->load_len] = rx_byte;
@@ -165,7 +170,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #ifdef HAS_DEBUG
             rtcm3_update_len_stat(instance, instance->exp_len.field.len);
 #endif
-            instance->rx_state = RTCM3_RX_DONE;
+            instance->rx_state = RX_DONE;
             instance->rx_pkt_cnt++;
             memcpy(instance->fix_frame, instance->rx_frame, RTCM3_RX_MAX_FRAME_SIZE);
             /*Send RTCM3 frame to LoRa*/
@@ -202,18 +207,18 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             } break;
             }
 #ifdef HAS_TBFP
-            tbfp_parser_reset_rx(&TbfpProtocol[instance->interface]);
+            tbfp_parser_reset_rx(&TbfpProtocol[instance->interface],RX_DONE);
 #endif
-            rtcm3_reset_rx(instance);
+            rtcm3_reset_rx(instance,WAIT_CRC);
         } else {
 #if defined(HAS_LOG) && defined(HAS_MCU)
             LOG_ERROR(RTCM, "%s CrcErr", interface2str(instance->interface));
 #endif
             instance->crc_err_cnt++;
-            rtcm3_reset_rx(instance);
+            rtcm3_reset_rx(instance,WAIT_CRC);
         }
     } else {
-        rtcm3_reset_rx(instance);
+        rtcm3_reset_rx(instance,WAIT_CRC);
     }
     return res;
 }
@@ -221,20 +226,20 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 bool rtcm3_proc_byte(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     switch(instance->rx_state) {
-    case RTCM3_WAIT_PREAMBLE:
+    case WAIT_PREAMBLE:
         res = rtcm3_proc_wait_preamble(instance, rx_byte);
         break;
-    case RTCM3_WAIT_LEN:
+    case WAIT_LEN:
         res = rtcm3_proc_wait_len(instance, rx_byte);
         break;
-    case RTCM3_WAIT_PAYLOAD:
+    case WAIT_PAYLOAD:
         res = rtcm3_proc_wait_payload(instance, rx_byte);
         break;
-    case RTCM3_WAIT_CRC:
+    case WAIT_CRC:
         res = rtcm3_proc_wait_crc24(instance, rx_byte);
         break;
     default:
-        rtcm3_reset_rx(instance);
+        rtcm3_reset_rx(instance,WAIT_UNDEF);
         break;
     }
     return res;
@@ -279,11 +284,11 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
 bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Interfaces_t interface) {
     bool res = false;
 #ifdef X86_64
-    LOG_DEBUG(RTCM, "%s():", __FUNCTION__);
+    LOG_PARN(RTCM, "%s():", __FUNCTION__);
 #endif
     if((NULL != payload) && (0 < size)) {
         uint32_t i = 0;
-        rtcm3_reset_rx(&Rtcm3Protocol[interface]);
+        rtcm3_reset_rx(&Rtcm3Protocol[interface],WAIT_INIT );
         uint32_t init_rx_pkt_cnt = Rtcm3Protocol[interface].rx_pkt_cnt;
         for(i = 0; i < size; i++) {
             res = rtcm3_proc_byte(&Rtcm3Protocol[interface], payload[i]);
