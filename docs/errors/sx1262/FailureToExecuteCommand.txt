@@ -5,8 +5,12 @@ The command was successfully processed, however the chip could not execute the c
 На плате с cc26xx и STM32 такой проблемы нет. 
 Код драйвера SX1262 общий на все платы.
 
-Трансивер не переходит в режим XOSC
+Диагностика показывает, что трансивер не переходит в режим Standby XOSC
+
 SetStandby(...).
+SetRegulatorMode(...)
+
+sxss 1
 
 
 Предположения:
@@ -38,6 +42,7 @@ sxo 0x11 0 2   Ok
 sxo 0xC0 0 1  
 
 Что делать?
+Исследовать комменду SetDIO3AsTCXOCtrl.
 После каждой команды что возвращает стату анализировать статус.  is_status_correct(status)
 
 -может SPI неверно считывает. Нет. Синхрослово же читается и регистры читаются корректно.

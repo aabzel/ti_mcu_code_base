@@ -76,6 +76,7 @@ bool sx1262_is_exist(void);
 bool sx1262_process(void);
 bool sx1262_reset(void);
 bool sx1262_reset_stats(void);
+bool sx1262_set_dio3_as_tcxo_ctrl(Dio3Vol_t vol_code, uint32_t delay);
 bool sx1262_set_dio2_as_rf_switch_ctrl(Dio2Mode_t mode);
 bool sx1262_clear_dev_error(void);
 bool sx1262_clear_fifo(void);

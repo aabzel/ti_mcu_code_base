@@ -68,7 +68,7 @@ char* OpCode2Str(uint8_t op_code) {
     return name;
 }
 
-char* Standby2Str(StandbyMode_t standby_mode){
+const char* Standby2Str(StandbyMode_t standby_mode){
     const char* name = "?";
     switch(standby_mode){
        case STDBY_RC: name = "RC";break;

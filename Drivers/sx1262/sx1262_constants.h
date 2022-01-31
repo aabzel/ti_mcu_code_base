@@ -20,6 +20,19 @@ typedef enum eRampTime_t{
   SET_RAMP_3400US= 0x07, /*3400*/
 }RampTime_t;
 
+
+typedef enum Dio3Vol_t{
+ DIO3_OUTPUTS_1_6_V= 0,
+ DIO3_OUTPUTS_1_7_V= 1,
+ DIO3_OUTPUTS_1_8_V= 2,
+ DIO3_OUTPUTS_2_2_V= 3,
+ DIO3_OUTPUTS_2_4_V= 4,
+ DIO3_OUTPUTS_2_7_V= 5,
+ DIO3_OUTPUTS_3_0_V= 6,
+ DIO3_OUTPUTS_3_3_V= 7,
+}Dio3Vol_t;
+
+
 /* OpError Bits */
 #define OP_ERR_BIT_RC64K_CALIB_ERR 0 /*RC64k calibration failed */
 #define OP_ERR_BIT_RC13M_CALIB_ERR 1 /*RC13M calibration failed */

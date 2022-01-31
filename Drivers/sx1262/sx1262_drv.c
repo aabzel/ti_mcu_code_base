@@ -126,6 +126,22 @@ bool sx1262_chip_select(bool state) {
     return res;
 }
 
+
+
+
+/*SetDIO3AsTCXOCtrl*/
+bool sx1262_set_dio3_as_tcxo_ctrl(Dio3Vol_t vol_code, uint32_t delay){
+    bool res = true;
+    uint8_t tx_array[4];
+    uint32_t delayValue = (float)delay / 15.625;
+    tx_array[1] = (uint8_t)((delayValue >> 16) & 0xFF);
+    tx_array[2] = (uint8_t)((delayValue >> 8) & 0xFF);
+    tx_array[3] = (uint8_t)(delayValue & 0xFF);
+    tx_array[0] = vol_code ;
+    res = sx1262_send_opcode(OPCODE_SET_DIO3_AS_TCXO_CTRL, tx_array, sizeof(tx_array), NULL, 0);
+    return res;
+}
+
 Sx1262_t Sx1262Instance = {0};
 
 bool sx1262_wait_on_busy(uint32_t time_out_ms) {
@@ -498,7 +514,9 @@ bool sx1262_set_standby(StandbyMode_t stdby_config) {
     StandbyMode_t stdby_read;
     stdby_read=sx1262_get_standby();
     if(stdby_read!=stdby_config){
-        LOG_WARNING(LORA,"StandbySetErr: Set:%s Read:%s",Standby2Str(stdby_config),Standby2Str(stdby_read));
+        LOG_ERROR(LORA,"StandbySetErr: Set:%s Read:%s",Standby2Str(stdby_config),Standby2Str(stdby_read));
+    }else{
+        LOG_INFO(LORA,"StandbySetOk: %s",Standby2Str(stdby_read));
     }
     return res;
 }
@@ -563,12 +581,13 @@ bool sx1262_set_dio_irq_params(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio
 */
 bool sx1262_clear_dev_error(void) {
     bool res = false;
-    uint8_t rx_array[2];
+    uint8_t tx_array[2];
+    memset(tx_array, 0x00, sizeof(tx_array));
+    uint8_t rx_array[3];
     memset(rx_array, 0x00, sizeof(rx_array));
-    uint8_t tx_array = 0x00;
-    res = sx1262_send_opcode(OPCODE_CLEAR_DEVICE_ERRORS, &tx_array, 1, rx_array, sizeof(rx_array));
+    res = sx1262_send_opcode(OPCODE_CLEAR_DEVICE_ERRORS, tx_array, sizeof(tx_array), rx_array, sizeof(rx_array));
     if(res) {
-        Sx1262Instance.status = rx_array[0];
+        Sx1262Instance.status = rx_array[1];
     }
     return res;
 }
@@ -1926,7 +1945,7 @@ bool sx1262_init(void) {
 #endif
 
 #ifdef ESP32
-    Sx1262Instance.proc = false;
+    Sx1262Instance.proc = true;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = true;
@@ -2020,7 +2039,10 @@ bool sx1262_init(void) {
 
         res = sx1262_clear_dev_error() && res;
 
+        res=sx1262_set_dio3_as_tcxo_ctrl(DIO3_OUTPUTS_1_6_V,5000);
+
         res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
+
 
         res = sx1262_set_standby(STDBY_XOSC);
 
