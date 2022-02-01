@@ -107,7 +107,12 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
     switch(interface) {
 #ifdef HAS_SX1262
     case IF_SX1262: {
+#ifdef HAS_MCU
         res = sx1262_start_retx(array, len, Sx1262Instance.ReTxFsm.retx_cnt_max);
+#else
+        /*ForUnitTest on PC*/
+        res = tbfp_proc(rx_payload, rx_size, IF_SX1262, true);
+#endif
     } break;
 #endif
 #ifdef HAS_LORA

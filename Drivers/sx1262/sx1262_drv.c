@@ -377,6 +377,8 @@ static uint8_t get_prev_circular(uint8_t addr, uint8_t inter) {
   */
 bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_start_buffer_pointer) {
     bool res = false;
+   // uint8_t tx_array[3];
+   // memset(tx_array, 0xFF, sizeof(tx_array));
     uint8_t rx_array[4];
     memset(rx_array, 0xFF, sizeof(rx_array));
     res = sx1262_send_opcode(OPCODE_GET_RX_BUFFER_STATUS, NULL, 0, rx_array, sizeof(rx_array));
@@ -400,7 +402,7 @@ bool sx1262_get_rxbuff_status(uint8_t* out_payload_length_rx, uint8_t* out_rx_st
  * */
 bool sx1262_start_rx(uint32_t timeout_s) {
 #ifdef HAS_LOG
-    LOG_PARN(LORA, "%s()", __FUNCTION__);
+    LOG_PARN(LORA, "StartRx");
 #endif
     bool res = true;
     res = sx1262_clear_fifo() && res;
@@ -1109,7 +1111,7 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint16_t tx_len, uint32_t timeout_s) {
         if(Sx1262Instance.tx_done) {
             Sx1262Instance.tx_done = false;
             if((NULL != tx_buf) && (0 < tx_len) && (tx_len <= SX1262_MAX_FRAME_SIZE)) {
-                // res = sx1262_clear_fifo();
+                res = sx1262_clear_fifo();
                 res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
                 res = sx1262_set_payload(tx_buf, tx_len) && res;
                 //Sx1262Instance.packet_param.proto.lora.payload_length = tx_len;
@@ -1387,17 +1389,19 @@ bool sx1262_read_buffer(int16_t offset, uint8_t* out_payload, uint16_t payload_l
 }
 
 bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t max_size, uint8_t* crc8) {
+    LOG_DEBUG(LORA, "LoadPayloadFromSPI %u", max_size);
     bool res = false;
     uint16_t rx_payload_len = 0;
     uint8_t len = 0;
     uint8_t calc_crc8 = 0;
     uint8_t rx_start_buffer_pointer = 0;
-    res = sx1262_get_rxbuff_status(&len, &rx_start_buffer_pointer);
+    res = sx1262_get_rxbuff_status(&len, &rx_start_buffer_pointer); /*Ignore that vals*/
 #ifdef HAS_LOG
     if(res) {
         LOG_DEBUG(LORA, "Start %u rxLen %u", rx_start_buffer_pointer, len);
     }
 #endif
+    //rx_start_buffer_pointer = 0; /*We know RX base in compile time*/
     rx_payload_len = 255; /* One LoRa Frame Must contain one TBFP frame!*/
     //rx_payload_len = len; // Just for stream of bytes. (unreliable).
     if(rx_payload_len <= max_size) {
@@ -1754,78 +1758,6 @@ static inline bool sx1262_sync_registers(void) {
     return res;
 }
 
-#ifdef HAS_TBFP
-static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
-    bool res = false;
-    uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
-    uint32_t cur_time_stamp_ms = get_time_ms32();
-    tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
-    uint32_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
-    fifo_index_t tx_len = 0;
-    uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE-3] = {0};
-    memset(TxPayload, 0, sizeof(TxPayload));
-    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) &&
-            (true == is_sx1262_retx_idle()) &&
-            (sizeof(TxPayload) < count)) {
-
-        res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);
-        if(res) {
-            if(tx_len!=sizeof(TxPayload)){
-#ifdef HAS_LOG
-                LOG_ERROR(LORA, "FiFoPullLenErr Len:%u %u", tx_len,sizeof(TxPayload));
-#endif
-            }
-#ifdef HAS_LOG
-            LOG_DEBUG(LORA, "FiFoPull Len:%u", tx_len);
-#endif
-        }else{
-#ifdef HAS_LOG
-            LOG_ERROR(LORA, "FiFoPullErr Len:%u", tx_len);
-#endif
-        }
-
-
-#ifdef HAS_LORA_FIFO_ARRAYS
-        Array_t Node = {.size = 0, .pArr = NULL};
-        res = fifo_arr_pull(&LoRaInterface.FiFoLoRaTx, &Node);
-        if(res) {
-            if(Node.pArr) {
-                if(0 < Node.size) {
-                    if(Node.size <= sizeof(tx_buf)) {
-
-                        memcpy(tx_buf, Node.pArr, Node.size);
-                        tx_len = Node.size;
-                    }
-                }
-#ifdef HAS_MCU
-                free(Node.pArr);
-#endif /*HAS_MCU*/
-            }
-        }
-#endif /*HAS_LORA_FIFO_ARRAYS*/
-    } else {
-        LOG_PARN(LORA, "FiFoCnt:%u", count);
-        res = true;
-    }
-    if(res) {
-        if((0 < tx_len) && (tx_len == sizeof(TxPayload))) {
-#ifdef HAS_TBFP
-                res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
-                if(res) {
-                    LoRaInterface.tx_ok_cnt++;
-                } else {
-                    LoRaInterface.tx_err_cnt++;
-                }
-#endif /*HAS_TBFP*/
-
-        }
-    }
-    return res;
-}
-#endif /*HAS_TBFP*/
-
-
-
 /* poll sx1262 registers. Move data from transceiver REG to MCU RAM.
  * verify transceiver and notify user if needed
  * */
@@ -1847,7 +1779,8 @@ bool sx1262_process(void) {
             res = sx1262_init();
         }
 #ifdef HAS_TBFP
-        res = sx1262_transmit_from_queue(&Sx1262Instance);
+        uint32_t cur_time_stamp_ms = get_time_ms32();
+        res = lora_transmit_from_queue(cur_time_stamp_ms ,Sx1262Instance.tx_done_time_stamp_ms);
 #endif
 
         res = sx1262_poll_status();

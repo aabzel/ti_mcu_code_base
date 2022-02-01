@@ -153,7 +153,7 @@ bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface, u
             if(res) {
                 TbfHeader_t OutHeader = {0};
                 memcpy(&OutHeader, TbfpProtocol[interface].tx_frame, sizeof(TbfHeader_t));
-                LOG_DEBUG(TBFP,"%s Sent SN:0x%04x=%u Len:%u", interface2str(interface),
+                LOG_DEBUG(TBFP,"%s Sent SN:%u=0x%04x Len:%u", interface2str(interface),
                           OutHeader.snum,OutHeader.snum,
                           OutHeader.len);
                 memcpy(&(TbfpProtocol[interface].tx_frame[TBFP_INDEX_PAYLOAD]), payload, payload_len);
@@ -325,9 +325,9 @@ static bool tbfp_proc_cmd(uint8_t* payload, uint16_t len) {
 bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state) {
     bool res = false;
     if(instance) {
-        LOG_PARN(TBFP, "ResetFsmIn: %s", RxState2Str(state));
         instance->parser.rx_state = WAIT_PREAMBLE;
         instance->parser.load_len = 0;
+        LOG_PARN(TBFP, "ResetFsmIn: %s", RxState2Str(state));
         res = true;
     }
     return res;
@@ -335,9 +335,7 @@ bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state) {
 
 static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t interface) {
     bool res = false;
-#ifdef X86_64
-    LOG_DEBUG(TBFP, "%s():", __FUNCTION__);
-#endif
+    LOG_DEBUG(TBFP, "%s ProcPayload", interface2str(interface));
     switch(payload[0]) {
     case FRAME_ID_TUNNEL: {
         LOG_DEBUG(TBFP, "TBFP in TBFP"); /*matryoshka*/
@@ -480,24 +478,24 @@ bool tbfp_check_flow_control(
 #endif
     if( snum==( 1+ (*prev_s_num) ) ) {
         /*Flow ok*/
-        LOG_PARN(TBFP, "FlowOk");
+        LOG_DEBUG(TBFP, "FlowOk %u>%u",(*prev_s_num),snum);
         (*con_flow)++;
          (*max_con_flow) = max16u( *max_con_flow,  *con_flow);
         res = true;
     } else if(( *prev_s_num + 1) < snum) {
-        LOG_PARN(TBFP, "FlowTorn");
+        LOG_WARNING(TBFP, "FlowTorn! SN:%u",snum);
         flow_ctrl_print_lost( *prev_s_num, snum,  *con_flow, interface );
         (*con_flow) = 1;
         res = true;
     }  else if( snum==(*prev_s_num) ) {
         /*Rx Retx*/
-        LOG_WARNING(TBFP, "SN cur=prev=%u", snum);
+        LOG_WARNING(TBFP, "Duplicate! SN=%u", snum);
         res = false;
     }else if( snum <  (*prev_s_num)) {
         /*Unreal situation*/
         LOG_ERROR(TBFP, "SnOrderError SNcur:%u<=SNprev:%u", snum,  (*prev_s_num));
        //  con_flow = 1;
-        res = false;
+        res = true;
     } else {
         /*Unreal situation*/
         res = false;
@@ -533,13 +531,15 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         if(false == flow_ctrl_ok) {
             TbfpProtocol[interface].err_cnt++;
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "FlowCtrlErr %s",interface2str(interface));
+            LOG_ERROR(TBFP, "FlowErr %s", interface2str(interface));
 #endif
+        }else{
+
         }
 #endif /*HAS_TBFP_FLOW_CONTROL*/
 
 #ifdef HAS_TBFP_RETRANSMIT
-        if(inHeader.lifetime) {
+        if((0<inHeader.lifetime) && (inHeader.lifetime<4)) {
             res = tbfp_send(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface, inHeader.lifetime - 1);
         }
 #endif /*HAS_TBFP_RETRANSMIT*/

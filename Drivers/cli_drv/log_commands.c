@@ -95,8 +95,8 @@ static bool log_leveles_diag(void) {
         for(f = UNKNOWN_FACILITY; f < ALL_FACILITY; f++) {
             io_printf(TSEP);
             io_printf("%3u " TSEP, f);
-            io_printf("%8s" TSEP, facility2str(f));
-            io_printf("%3d" TSEP, log_levels[f]);
+            io_printf("%10s" TSEP, facility2str(f));
+            io_printf("%4d" TSEP, log_levels[f]);
             io_printf("%s%8s%s" TSEP, log_level_color(log_levels[f]), log_level_name_long(log_levels[f]),
                       VT_SETCOLOR_NORMAL);
             io_printf(CRLF);
@@ -139,7 +139,7 @@ bool cmd_log_level(int32_t argc, char* argv[]) {
         if(ALL_FACILITY == facility) {
             log_leveles_diag();
         } else {
-            io_printf("%s %s" CRLF, facility2str(facility), log_level_name_long(get_log_level(facility)));
+            io_printf("%s %s " CRLF, facility2str(facility), log_level_name_long(get_log_level(facility)));
         }
         res = false;
     }
