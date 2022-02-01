@@ -4,8 +4,8 @@ CODE_BASE_DIR = $(PROJECT_ROOT)
 
 INCDIR += -I$(CODE_BASE_DIR)
 
-include $(CODE_BASE_DIR)/components/components.mk
 include $(CODE_BASE_DIR)/bsp_cc26x2/bsp_cc26x2.mk
+include $(CODE_BASE_DIR)/components/components.mk
 include $(CODE_BASE_DIR)/Drivers/drivers.mk
  
 

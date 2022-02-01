@@ -8,14 +8,14 @@
 #include <string.h>
 
 #include "array.h"
+#include "log.h"
 #ifdef HAS_CLI
 #include "cli_manager.h"
-#include "log.h"
 #endif
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
 #endif
-#include "core_driver.h"
+//#include "core_driver.h"
 #include "data_utils.h"
 #include "fifo_array.h"
 #ifdef HAS_FLASH_FS
@@ -30,6 +30,12 @@
 #include "str_utils.h"
 #ifdef HAS_SX1262
 #include "sx1262_drv.h"
+#endif
+
+#ifdef HAS_SX1262
+#define MAX_PAYLOAD_SIZE  (SX1262_MAX_PAYLOAD_SIZE -3)
+#else
+#define MAX_PAYLOAD_SIZE  230
 #endif
 
 char LoRaTxBuff[LORA_TX_BUFF_SIZE];
@@ -71,7 +77,7 @@ bool lora_init(void) {
 #endif /*HAS_FLASH_FS*/
 
     res = fifo_init(&LoRaInterface.FiFoLoRaCharTx, &LoRaTxBuff[0], sizeof(LoRaTxBuff));
-#if HAS_LORA_FIFO_ARRAYS
+#ifdef HAS_LORA_FIFO_ARRAYS
     LoRaInterface.tx_ok_cnt = 0;
     LoRaInterface.tx_done_cnt = 0;
     res = fifo_arr_init(&LoRaInterface.FiFoLoRaTx, &ArrLoRaTxNode[0], ARRAY_SIZE(ArrLoRaTxNode));
@@ -103,15 +109,15 @@ bool lora_send_array_queue(uint8_t* const tx_payload, uint32_t len) {
 #endif
 
 #ifdef HAS_TBFP
-bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms) {
+bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms, uint32_t pause_ms) {
     bool res = false;
-    uint32_t tx_time_diff_ms = 2 * DFLT_TX_PAUSE_MS;
+    uint32_t tx_time_diff_ms = 2 * pause_ms;
     tx_time_diff_ms = cur_time_stamp_ms - tx_done_time_stamp_ms;
     uint32_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
     fifo_index_t tx_len = 0;
-    uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE-3] = {0};
+    uint8_t TxPayload[MAX_PAYLOAD_SIZE] = {0};
     memset(TxPayload, 0, sizeof(TxPayload));
-    if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) &&
+    if((pause_ms < tx_time_diff_ms) &&
             (true == is_sx1262_retx_idle()) &&
             (sizeof(TxPayload) < count)) {
 
@@ -174,12 +180,6 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
 bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
     bool res = false;
     if((NULL != tx_payload) && (0 < len)) {
-        uint8_t debugSync[5] = {0x11, 0x22, 0x33, 0x44, 0x55};
-        res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)debugSync, (fifo_index_t)sizeof(debugSync));
-        if(false == res) {
-            LoRaInterface.ovfl_err_cnt++;
-            LOG_ERROR(LORA, "TxQueueOverFlow");
-        }
         if(res) {
             res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
             if(false == res) {

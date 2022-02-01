@@ -1,4 +1,4 @@
-LORA_DRV_DIR = $(PROJECT_ROOT)Drivers/lora 
+LORA_DRV_DIR = $(PROJECT_ROOT)Drivers/lora
 #@ echo $(error LORA_DRV_DIR = $(LORA_DRV_DIR)) 
 #@ echo $(error CFLAGS = $(CFLAGS)) 
 

@@ -36,7 +36,7 @@ typedef struct xLoRaIf_t {
 extern char LoRaTxBuff[LORA_TX_BUFF_SIZE];
 extern LoRaIf_t LoRaInterface;
 
-bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms) ;
+bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms,uint32_t  pause_ms) ;
 bool lora_init(void);
 bool lora_proc_payload(uint8_t* rx_payload, uint32_t rx_size);
 bool lora_send_queue(uint8_t* const tx_payload, uint32_t len);

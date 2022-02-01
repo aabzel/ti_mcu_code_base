@@ -25,7 +25,7 @@ bool test_tbfp_tunnel(void){
         EXPECT_TRUE(tbfp_send(BigRtcm3Message, sizeof(BigRtcm3Message), IF_LORA, 0));
         uint32_t count =0;
         do{
-            lora_transmit_from_queue(1,0);
+            lora_transmit_from_queue(10,0, 1);
             count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
         }while(0<count );
     }
