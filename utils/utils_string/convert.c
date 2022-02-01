@@ -378,7 +378,7 @@ bool try_strl2month(const char str[], int32_t* mon_value) {
         *mon_value = 11;
     } else if(strstr(str, "Jan")) {
         *mon_value = 0;
-    } else if(strstr(str, "Fed")) {
+    } else if(strstr(str, "Feb")) {
         *mon_value = 1;
     } else if(strstr(str, "Mar")) {
         *mon_value = 2;

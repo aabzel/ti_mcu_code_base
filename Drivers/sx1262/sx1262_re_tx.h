@@ -8,7 +8,17 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#define RETX_TRY_CNT_DFLT 2
+#include "lora_constants.h"
+
+#define RETX_TRY_CNT_DFLT 4 /*TODO Make Parameter*/
+
+typedef struct xReTxFsm_t {
+    uint8_t retx_cnt_max;
+    uint8_t retx_cnt;
+    uint8_t TxFrame[SX1262_MAX_FRAME_SIZE];
+    uint16_t tx_frame_len;
+}ReTxFsm_t;
+
 
 bool is_sx1262_retx_idle(void);
 bool sx1262_retx_init(void);

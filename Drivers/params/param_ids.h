@@ -48,6 +48,7 @@ typedef enum eId_t {
     PAR_ID_GLONASS = 35,
     PAR_ID_GALILEO = 36,
     PAR_ID_BEI_DOU = 37,
+    PAR_ID_RETX_CNT = 38,
     PAR_ID_TEST_START = 100,
     PAR_ID_TEST_END = 200,
     PAR_ID_CNT

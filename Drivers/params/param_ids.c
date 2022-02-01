@@ -63,6 +63,7 @@ const ParamItem_t ParamArray[] = {
     /**/ {PAR_ID_RTK_FIX_LONG, 4, UINT32, "FTKFixedTime"}, /*RTK fixed max duration*/
     /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"},      /**/
     /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
+    /**/ {PAR_ID_RETX_CNT, 1, UINT8, "ReTxCnt"},
     /**/ {PAR_ID_BASE_ACC, 4, UINT32, "BaseAcc"},
     {PAR_ID_GPS, 1, BOOL, "GpsCpr"},
     {PAR_ID_GLONASS, 1, BOOL, "GlonassCor"},

@@ -56,3 +56,5 @@ https://forum.lora-developers.semtech.com/t/sx1262-failure-to-execute-command/26
 
 
 
+Решение 
+DIO3 

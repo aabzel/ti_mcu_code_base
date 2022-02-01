@@ -1004,6 +1004,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->lora_sync_word_set = DFLT_LORA_SYNC_WORD;
     sx1262Instance->crc_init = 0x1D0F;
     sx1262Instance->crc_poly = 0x1021;
+    sx1262Instance->ReTxFsm.retx_cnt_max= RETX_TRY_CNT_DFLT;
     sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
     sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
     sx1262Instance->mod_params.spreading_factor = DFLT_SF;
@@ -1023,6 +1024,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 
 #ifdef HAS_FLASH_FS
     bool res = true;
+    LOAD_PARAM(LORA, PAR_ID_RETX_CNT, sx1262Instance->ReTxFsm.retx_cnt_max, 1, "ReTxMax", RETX_TRY_CNT_DFLT, Byte2Str);
     LOAD_PARAM(LORA, PAR_ID_LORA_CRC_INIT, sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
     LOAD_PARAM(LORA, PAR_ID_LORA_CRC_POLY, sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
 
@@ -2038,9 +2040,9 @@ bool sx1262_init(void) {
         res = sx1262_set_buffer_base_addr(TX_BASE_ADDRESS, RX_BASE_ADDRESS) && res;
 
         res = sx1262_clear_dev_error() && res;
-
+#ifdef ESP32
         res=sx1262_set_dio3_as_tcxo_ctrl(DIO3_OUTPUTS_1_6_V,5000);
-
+#endif
         res = sx1262_set_packet_type(Sx1262Instance.packet_param.packet_type) && res;
 
 

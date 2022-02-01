@@ -107,7 +107,7 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
     switch(interface) {
 #ifdef HAS_SX1262
     case IF_SX1262: {
-        res = sx1262_start_retx(array, len, RETX_TRY_CNT_DFLT);
+        res = sx1262_start_retx(array, len, Sx1262Instance.ReTxFsm.retx_cnt_max);
     } break;
 #endif
 #ifdef HAS_LORA

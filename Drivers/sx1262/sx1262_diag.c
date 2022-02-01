@@ -348,6 +348,12 @@ char* HexWord2Str(uint16_t syn_word) {
     return name;
 }
 
+char* Byte2Str(uint8_t byte) {
+    static char name[30] = "";
+    snprintf(name, sizeof(name), "%u", byte);
+    return name;
+}
+
 char* PreambleLen2Str(uint16_t pre_len) {
     static char name[30] = "";
     snprintf(name, sizeof(name), "%u Byte", pre_len);

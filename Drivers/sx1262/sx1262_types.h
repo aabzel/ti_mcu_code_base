@@ -8,6 +8,7 @@
 #endif
 
 #include "sx1262_constants.h"
+#include "sx1262_re_tx.h"
 #include "lora_constants.h"
 #include "gfsk_types.h"
 
@@ -94,13 +95,6 @@ typedef union uSx1262IRQs_t{
           uint8_t Timeout:1;      /*bit 9*/
       };
 } Sx1262IRQs_t;
-
-
-typedef struct xReTxFsm_t {
-    uint8_t retx_cnt;
-    uint8_t TxFrame[SX1262_MAX_FRAME_SIZE];
-    uint16_t tx_frame_len;
-}ReTxFsm_t;
 
 typedef struct xSx1262_t {
     uint64_t set_sync_word;
