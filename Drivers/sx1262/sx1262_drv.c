@@ -1762,7 +1762,7 @@ static bool sx1262_transmit_from_queue(Sx1262_t* instance) {
     tx_time_diff_ms = cur_time_stamp_ms - instance->tx_done_time_stamp_ms;
     uint32_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
     fifo_index_t tx_len = 0;
-    uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE-2] = {0};
+    uint8_t TxPayload[SX1262_MAX_PAYLOAD_SIZE-3] = {0};
     memset(TxPayload, 0, sizeof(TxPayload));
     if((DFLT_TX_PAUSE_MS < tx_time_diff_ms) &&
             (true == is_sx1262_retx_idle()) &&

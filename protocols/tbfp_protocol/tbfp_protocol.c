@@ -150,6 +150,11 @@ bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface, u
             memset(TbfpProtocol[interface].tx_frame, 0x00, sizeof(TbfpProtocol[interface].tx_frame));
             res = tbfp_make_header(TbfpProtocol[interface].tx_frame, payload_len, interface, lifetime);
             if(res) {
+                TbfHeader_t OutHeader = {0};
+                memcpy(&OutHeader, TbfpProtocol[interface].tx_frame, sizeof(TbfHeader_t));
+                LOG_DEBUG(TBFP,"%s Sent SN:0x%04x=%u Len:%u", interface2str(interface),
+                          OutHeader.snum,OutHeader.snum,
+                          OutHeader.len);
                 memcpy(&(TbfpProtocol[interface].tx_frame[TBFP_INDEX_PAYLOAD]), payload, payload_len);
                 TbfpProtocol[interface].tx_frame[frame_len] =
                     crc8_sae_j1850_calc(TbfpProtocol[interface].tx_frame, frame_len);
@@ -171,8 +176,8 @@ bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface, u
 static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, Interfaces_t interface,
                            uint8_t lifetime) {
     bool res = false;
-    if(tx_array && (0 < len)) {
-        uint8_t frame[256] = "";
+    uint8_t frame[256] = "";
+    if(tx_array && (0 < len) && ((len+TBFP_SIZE_OVERHEAD+TBFP_SIZE_ID)<sizeof(frame))) {
         frame[0] = payload_id;
         memcpy(&frame[1], tx_array, len);
         res = tbfp_send(frame, len + TBFP_SIZE_ID, interface, lifetime);
