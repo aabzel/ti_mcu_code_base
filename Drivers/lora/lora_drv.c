@@ -68,7 +68,7 @@ bool lora_init(void) {
 #endif
         }
     }
-#endif
+#endif /*HAS_FLASH_FS*/
 
     res = fifo_init(&LoRaInterface.FiFoLoRaCharTx, &LoRaTxBuff[0], sizeof(LoRaTxBuff));
 #if HAS_LORA_FIFO_ARRAYS
@@ -170,8 +170,6 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     return res;
 }
 #endif /*HAS_TBFP*/
-
-
 
 bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
     bool res = false;
