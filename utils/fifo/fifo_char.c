@@ -120,7 +120,7 @@ bool fifo_peek(Fifo_array_t* instance, char* const out_char) {
 bool fifo_push_array(Fifo_array_t* instance, char* const inArr, fifo_index_t arr_len) {
     bool res = is_fifo_valid(instance);
 #ifdef DEBUG_FIFO_CHAR
-    printf("\n\r%s [%s] size %d\n\r", __FUNCTION__, inArr, arr_len);
+    LOG_DEBUG(FIFO,"%s [%s] size %d\n\r", __FUNCTION__, inArr, arr_len);
 #endif
     if(res && (0u < arr_len)) {/*Spare exist*/
         uint32_t spare = fifo_get_spare(instance);

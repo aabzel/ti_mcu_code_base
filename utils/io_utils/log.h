@@ -59,6 +59,7 @@ typedef enum eLog_facility_t {
     LED,
     CLI,
     LG_ADC,
+    FIFO,
     LG_CAL,
     LG_DAC,
     LG_FLASH,

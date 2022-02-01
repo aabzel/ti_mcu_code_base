@@ -143,7 +143,7 @@ bool rtcm3_proc_wait_payload(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 
 static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #ifdef X86_64
-    printf("\n %s() 0x%02x", __FUNCTION__, rx_byte);
+    LOG_PARN(RTCM,"ProcWaitCRC24 0x%02x", rx_byte);
 #endif
     bool res = false;
     uint16_t crc24_index = RTCM3_HEADER_SIZE + instance->exp_len.field.len;
@@ -247,8 +247,28 @@ bool rtcm3_proc_byte(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     return res;
 }
 
+bool rtcm3_generate_frame(uint8_t *arr, uint32_t size){
+    bool res = true;
+    LOG_INFO(RTCM,"%s():", __FUNCTION__);
+    Rtcm3Len_t ex_len;
+    arr[0] = RTCM3_PREAMBLE;
+    ex_len.field.len = size-RTCM3_CRC24_SIZE-RTCM3_HEADER_SIZE;
+    arr[1]=ex_len.len8[1];
+    arr[2]=ex_len.len8[0];
+    uint16_t frame_length = size-RTCM3_CRC24_SIZE;
+    Type32Union_t u32val;
+    u32val.u32 = calc_crc24_q(arr, frame_length);
+    LOG_INFO(RTCM,"CRC24 0x%x", u32val.u32 );
+    arr[size-RTCM3_CRC24_SIZE]=u32val.u8[2];
+    arr[size-RTCM3_CRC24_SIZE+1]=u32val.u8[1];
+    arr[size-RTCM3_CRC24_SIZE+2]=u32val.u8[0];
+    LOG_INFO(RTCM,"%s()Done:", __FUNCTION__);
+    return res;
+}
+
 bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
     bool res = true;
+    LOG_DEBUG(RTCM,"IsRtcm3");
     Rtcm3Len_t ex_len;
     ex_len.len16 = 0;
     uint32_t read_crc24 = 0;
@@ -260,6 +280,7 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
 
     if(res) {
         if(RTCM3_PREAMBLE != arr[0]) {
+            LOG_DEBUG(RTCM,"PreErr");
             res = false;
         }
     }
@@ -270,6 +291,7 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
             res = false;
         } else {
             frame_length = ex_len.field.len + RTCM3_HEADER_SIZE;
+            LOG_DEBUG(RTCM,"PayLoadLen %u",ex_len.field.len);
         }
     }
 

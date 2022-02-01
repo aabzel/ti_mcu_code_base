@@ -10,9 +10,9 @@ extern "C" {
 bool test_tbfp_rtcm_path(void);
 bool test_tbfp_tunnel(void);
 
-#define TEST_SUIT_TBFP_RTCM_STACK            \
-    {"tbfp_rtcm_path", test_tbfp_rtcm_path},\
-    {"tbfp_tunnel", test_tbfp_tunnel},
+#define TEST_SUIT_TBFP_RTCM_STACK      \
+    {"tbfp_tunnel", test_tbfp_tunnel}, \
+    {"tbfp_rtcm_path", test_tbfp_rtcm_path},
 #ifdef __cplusplus
 }
 #endif

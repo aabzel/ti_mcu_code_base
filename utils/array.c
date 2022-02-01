@@ -64,6 +64,18 @@ bool array_max_cont(uint8_t* arr, size_t size, uint8_t patt, uint32_t *max_cont_
     return res;
 }
 
+bool array_incr(uint8_t* arr, size_t size){
+    bool res = false;
+    uint32_t i = 0;
+    if(arr && (0<size)) {
+      for(i=0;i<size;i++) {
+          arr[i]=i;
+      }
+      res = true;
+    }
+    return res;
+}
+
 bool array_rand(uint8_t* arr, uint32_t size){
     bool res = false;
     uint32_t i = 0;
@@ -77,6 +89,7 @@ bool array_rand(uint8_t* arr, uint32_t size){
       for(i=0;i<size;i++) {
           arr[i]=(uint8_t) (rand() % 255);
       }
+      res = true;
     }
     return res;
 }

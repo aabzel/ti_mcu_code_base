@@ -105,16 +105,16 @@ bool interface_valid(Interfaces_t interface) {
 bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
     bool res = false;
     switch(interface) {
-#ifdef HAS_SX1262
+//#ifdef HAS_SX1262
     case IF_SX1262: {
 #ifdef HAS_MCU
         res = sx1262_start_retx(array, len, Sx1262Instance.ReTxFsm.retx_cnt_max);
 #else
         /*ForUnitTest on PC*/
-        res = tbfp_proc(rx_payload, rx_size, IF_SX1262, true);
+        res = tbfp_proc(array, len, IF_SX1262, true);
 #endif
     } break;
-#endif
+//#endif
 #ifdef HAS_LORA
     case IF_LORA: {
         res = lora_send_queue(array, len);

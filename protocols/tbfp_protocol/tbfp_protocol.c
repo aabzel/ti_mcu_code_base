@@ -153,12 +153,12 @@ bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface, u
             if(res) {
                 TbfHeader_t OutHeader = {0};
                 memcpy(&OutHeader, TbfpProtocol[interface].tx_frame, sizeof(TbfHeader_t));
-                LOG_DEBUG(TBFP,"%s Sent SN:%u=0x%04x Len:%u", interface2str(interface),
-                          OutHeader.snum,OutHeader.snum,
-                          OutHeader.len);
                 memcpy(&(TbfpProtocol[interface].tx_frame[TBFP_INDEX_PAYLOAD]), payload, payload_len);
                 TbfpProtocol[interface].tx_frame[frame_len] =
                     crc8_sae_j1850_calc(TbfpProtocol[interface].tx_frame, frame_len);
+                LOG_DEBUG(TBFP,"%s Sent SN:%u=0x%04x Len:%u crc8 0x%02x", interface2str(interface),
+                          OutHeader.snum,OutHeader.snum,
+                          OutHeader.len,TbfpProtocol[interface].tx_frame[frame_len]);
                 res = sys_send_if(TbfpProtocol[interface].tx_frame, frame_len + TBFP_SIZE_CRC, interface);
             } else {
 #ifdef HAS_LOG
@@ -478,7 +478,7 @@ bool tbfp_check_flow_control(
 #endif
     if( snum==( 1+ (*prev_s_num) ) ) {
         /*Flow ok*/
-        LOG_DEBUG(TBFP, "FlowOk %u>%u",(*prev_s_num),snum);
+        LOG_DEBUG(TBFP, "FlowOk %u->%u",(*prev_s_num),snum);
         (*con_flow)++;
          (*max_con_flow) = max16u( *max_con_flow,  *con_flow);
         res = true;

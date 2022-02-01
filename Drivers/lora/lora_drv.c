@@ -35,7 +35,7 @@
 #ifdef HAS_SX1262
 #define MAX_PAYLOAD_SIZE  (SX1262_MAX_PAYLOAD_SIZE -3)
 #else
-#define MAX_PAYLOAD_SIZE  230
+#define MAX_PAYLOAD_SIZE  30
 #endif
 
 char LoRaTxBuff[LORA_TX_BUFF_SIZE];
@@ -117,9 +117,12 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     fifo_index_t tx_len = 0;
     uint8_t TxPayload[MAX_PAYLOAD_SIZE] = {0};
     memset(TxPayload, 0, sizeof(TxPayload));
+    bool is_retx_idle = true;
+#ifdef HAS_SX1262
+    is_retx_idle = is_sx1262_retx_idle();
+#endif
     if((pause_ms < tx_time_diff_ms) &&
-            (true == is_sx1262_retx_idle()) &&
-            (sizeof(TxPayload) < count)) {
+            (true == is_retx_idle) ) {
 
         res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);
         if(res) {
@@ -156,13 +159,11 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
             }
         }
 #endif /*HAS_LORA_FIFO_ARRAYS*/
-    } else {
-        LOG_PARN(LORA, "FiFoCnt:%u", count);
-        res = true;
     }
     if(res) {
-        if((0 < tx_len) && (tx_len == sizeof(TxPayload))) {
+        if((0 < tx_len) && (tx_len <= sizeof(TxPayload))) {
 #ifdef HAS_TBFP
+                LOG_DEBUG(LORA, " Tunnel Len:%u bytes", tx_len);
                 res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
                 if(res) {
                     LoRaInterface.tx_ok_cnt++;
@@ -179,14 +180,13 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
 
 bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
     bool res = false;
+    LOG_DEBUG(TBFP,"%s(): Len %u", __FUNCTION__, len);
     if((NULL != tx_payload) && (0 < len)) {
-        if(res) {
             res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
             if(false == res) {
                 LoRaInterface.ovfl_err_cnt++;
                 LOG_ERROR(LORA, "TxQueueOverFlow");
             }
-        }
     } else {
         LoRaInterface.err_cnt++;
     }

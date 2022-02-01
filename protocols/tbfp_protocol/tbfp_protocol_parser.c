@@ -136,7 +136,9 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
 
 static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    LOG_PARN(TBFP, "ParsePayLoad Data[%u]=0x%02x", instance->parser.load_len - TBFP_SIZE_HEADER, rx_byte);
+    LOG_DEBUG(TBFP, "%s ParsePayLoad Data[%u]=%u=0x%02x", interface2str(instance->interface),
+              instance->parser.load_len - TBFP_SIZE_HEADER,
+              rx_byte,rx_byte);
     if((TBFP_SIZE_HEADER + instance->parser.exp_payload_len) <= instance->parser.load_len) {
         res = tbfp_parser_reset_rx(instance, WAIT_PAYLOAD);
     } else {
@@ -195,10 +197,11 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
         } else {
             instance->crc_err_cnt++;
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "%s SN:%u=0x%04x crc err read:0x%02x",interface2str(instance->interface),
+            LOG_ERROR(TBFP, "%s SN:%u=0x%04x Crc8Err read:0x%02x RxPayLen:%u",interface2str(instance->interface),
                       instance->parser.s_num,
                       instance->parser.s_num,
-                      instance->parser.read_crc8);
+                      instance->parser.read_crc8,
+                      instance->parser.exp_payload_len);
 #endif
             res = false; // errors
         }
