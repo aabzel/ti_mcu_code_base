@@ -111,7 +111,7 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
         res = sx1262_start_retx(array, len, Sx1262Instance.ReTxFsm.retx_cnt_max);
 #else
         /*ForUnitTest on PC*/
-        res = tbfp_proc(array, len, IF_SX1262, true);
+        res = tbfp_proc(&array[0], len, IF_SX1262, true);
 #endif
     } break;
 //#endif

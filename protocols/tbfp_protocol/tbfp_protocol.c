@@ -339,7 +339,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     switch(payload[0]) {
     case FRAME_ID_TUNNEL: {
         LOG_DEBUG(TBFP, "TBFP in TBFP"); /*matryoshka*/
-        res = tbfp_proc(payload, len, IF_LORA, false);
+        res = tbfp_proc(&payload[1], len-1, IF_LORA, false);
     } break;
 #ifdef HAS_RTCM3
     case FRAME_ID_RTCM3:
