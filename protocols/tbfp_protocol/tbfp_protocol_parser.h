@@ -14,6 +14,7 @@ extern "C" {
 //https://docs.google.com/spreadsheets/d/1VAT3Ak7AzcufgvuRHrRVoVfC3nxugFGJR5pyzxL4W7Q/edit#gid=0
 
 typedef struct xTBFTparser_t{
+    uint8_t preamble_val;
     RxState_t rx_state;
     uint8_t read_crc8;
     uint16_t exp_payload_len;

@@ -94,16 +94,16 @@ bool sw_init(void) {
 
 #ifdef HAS_TBFP
 #ifdef HAS_LORA
-    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_LORA], IF_LORA), "TbfpLoRa") && res;
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_LORA], IF_LORA,0xA5), "TbfpLoRa") && res;
 #endif /*HAS_LORA*/
 #ifdef HAS_RS232
-    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_RS232], IF_RS232), "TbfpRS232") && res;
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_RS232], IF_RS232,0xA5), "TbfpRS232") && res;
 #endif /*HAS_RS232*/
 #ifdef HAS_CAN
-    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_CAN], IF_CAN), "TbfpCAN") && res;
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_CAN], IF_CAN,0xA5), "TbfpCAN") && res;
 #endif /*HAS_CAN*/
 #ifdef HAS_SX1262
-    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_SX1262], IF_SX1262), "TbfpSX1262") && res;
+    res = try_init(tbfp_protocol_init(&TbfpProtocol[IF_SX1262], IF_SX1262,0x1E), "TbfpSX1262") && res;
 #endif /*HAS_CAN*/
 #endif /*HAS_TBFP*/
 

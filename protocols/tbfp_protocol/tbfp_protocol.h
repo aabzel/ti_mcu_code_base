@@ -66,18 +66,18 @@ bool tbfp_check_flow_control(
                              uint16_t *const con_flow,
                              uint16_t *const max_con_flow
                              ) ;
-bool tbfp_generate_frame(uint8_t* array, uint32_t len);
+bool tbfp_generate_frame(uint8_t* array, uint32_t len, Interfaces_t interface);
 bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state);
 bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime);
 bool tbfp_send_tunnel(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
 bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime);
 bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface);
-bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface);
+bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface, uint8_t preamble_val);
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset);
 bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface);
 bool tbfp_proc_byte(TbfpProtocol_t* instance, uint8_t rx_byte);
-bool is_tbfp_protocol(uint8_t* arr, uint16_t len);
+bool is_tbfp_protocol(uint8_t* arr, uint16_t len, Interfaces_t interface);
 bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame, Interfaces_t interface);
 
 #ifdef __cplusplus

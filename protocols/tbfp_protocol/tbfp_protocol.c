@@ -58,7 +58,7 @@
 
 TbfpProtocol_t TbfpProtocol[IF_CNT] = {0};
 
-bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
+bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface, uint8_t preamble_val) {
     bool res = false;
     if(instance) {
         memset(instance, 0x0, sizeof(TbfpProtocol_t));
@@ -68,6 +68,7 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
         instance->s_num = 1;
 #endif
         instance->max_len = 0;
+        instance->parser.preamble_val=preamble_val; /*For pack tunneling*/
         instance->min_len = 0xFFFF;
         instance->rx_pkt_cnt = 0;
         res = true;
@@ -81,14 +82,14 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface) {
     return res;
 }
 
-bool is_tbfp_protocol(uint8_t* arr, uint16_t len) {
+bool is_tbfp_protocol(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = false;
 #ifdef HAS_LOG
     LOG_DEBUG(TBFP, "IsTBFP len: %u", len);
 #endif
     TbfHeader_t header = {0};
     memcpy(&header, arr, sizeof(TbfHeader_t));
-    if((TBFP_PREAMBLE == header.preamble) && (header.len < len)) {
+    if((TbfpProtocol[interface].parser.preamble_val == header.preamble) && (header.len < len)) {
         res = true;
     } else {
         res = false;
@@ -115,7 +116,7 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
     if(payload_len < TBFP_MAX_PAYLOAD) {
         if(out_array) {
             TbfHeader_t header;
-            header.preamble = TBFP_PREAMBLE;
+            header.preamble = TbfpProtocol[interface].parser.preamble_val;
 #ifdef HAS_TBFP_FLOW_CONTROL
             header.snum = TbfpProtocol[interface].s_num;
             TbfpProtocol[interface].s_num++;
@@ -408,7 +409,7 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset
 
     if(0 < cur_rx_prk) {
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "InPktCnt:%u in %u byte", cur_rx_prk, len);
+        LOG_DEBUG(TBFP, "%s %u Packets in %u byte",interface2str(interface), cur_rx_prk, len);
 #endif
     } else {
         if(is_reset_parser){
@@ -517,7 +518,7 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
 #ifdef X86_64
     LOG_DEBUG(TBFP, "%s():", __FUNCTION__);
 #endif
-    res = is_tbfp_protocol(arr, len);
+    res = is_tbfp_protocol(arr, len, interface);
     if(res) {
         TbfHeader_t inHeader = {0};
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
@@ -554,12 +555,12 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     return res;
 }
 
-bool tbfp_generate_frame(uint8_t* buff, uint32_t buff_len) {
+bool tbfp_generate_frame(uint8_t* buff, uint32_t buff_len, Interfaces_t interface) {
     bool res = false;
     if(buff && (TBFP_OVERHEAD_SIZE <= buff_len)) {
         uint16_t snum = 0;
         uint16_t payload_len = buff_len - TBFP_OVERHEAD_SIZE;
-        buff[TBFP_INDEX_PREAMBLE] = TBFP_PREAMBLE;
+        buff[TBFP_INDEX_PREAMBLE] = TbfpProtocol[interface].parser.preamble_val;
         buff[TBFP_INDEX_RETX] = 0;
         memcpy(&buff[TBFP_INDEX_SER_NUM], &snum, TBFP_SIZE_SN);
         memcpy(&buff[TBFP_INDEX_LEN], &payload_len, TBFP_SIZE_SN);

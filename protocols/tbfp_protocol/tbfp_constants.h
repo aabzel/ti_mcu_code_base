@@ -18,7 +18,7 @@ extern "C" {
 #define TBFP_MAX_PAYLOAD (512+3+2+ 10)
 #define TBFP_MAX_FRAME (TBFP_MAX_PAYLOAD+TBFP_SIZE_OVERHEAD)
 
-#define TBFP_PREAMBLE 0xA5
+#define TBFP_PREAMBLE_DFLT 0xA5
 // https://docs.google.com/spreadsheets/d/1VAT3Ak7AzcufgvuRHrRVoVfC3nxugFGJR5pyzxL4W7Q/edit#gid=0
 #define TBFP_INDEX_PREAMBLE 0
 #define TBFP_INDEX_RETX 1

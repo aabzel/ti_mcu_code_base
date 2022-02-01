@@ -17,7 +17,7 @@
 
 static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    if((TBFP_PREAMBLE == rx_byte) && (0 == instance->parser.load_len)) {
+    if((instance->parser.preamble_val == rx_byte) && (0 == instance->parser.load_len)) {
         instance->parser.rx_frame[0] = rx_byte;
         instance->parser.rx_state = WAIT_RETX_CNT;
         instance->parser.load_len = 1;
@@ -174,7 +174,12 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
         res = crc8_sae_j1850_check(&instance->parser.rx_frame[0], frame_len, instance->parser.read_crc8);
         if(res) {
 #ifdef HAS_LOG
-            LOG_DEBUG(TBFP, "%s SN:0x%04x %u Crc8 Ok!",interface2str(instance->interface), instance->parser.s_num, instance->parser.s_num);
+            LOG_DEBUG(TBFP, "%s SN:0x%04x %u Crc8 Ok! Flow %u",
+                      interface2str(instance->interface),
+                      instance->parser.s_num,
+                      instance->parser.s_num,
+                      instance->con_flow
+                      );
             // led_blink(&Led[LED_INDEX_RED], 10);
 #endif
 #ifdef HAS_DEBUG
@@ -184,8 +189,8 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
             memcpy(instance->parser.fix_frame, instance->parser.rx_frame, TBFP_MAX_FRAME);
             instance->parser.rx_state = RX_DONE;
             instance->rx_pkt_cnt++;
-            res = tbfp_parser_reset_rx(instance, RX_DONE);
             res = tbfp_proc_full(instance->parser.fix_frame, frame_len + TBFP_SIZE_CRC, instance->interface);
+            res = tbfp_parser_reset_rx(instance, RX_DONE);
         } else {
 #ifdef HAS_LOG
             LOG_ERROR(TBFP, "%s SN:0x%04x %u crc err read:0x%02x",interface2str(instance->interface),

@@ -1378,7 +1378,7 @@ bool sx1262_read_buffer(int16_t offset, uint8_t* out_payload, uint16_t payload_l
 
         uint8_t tx_array[1];
         tx_array[0] = (uint8_t)offset;
-        res = sx1262_send_opcode(OPCODE_READ_BUFFER, tx_array, 1, rx_array, payload_len + 3);
+        res = sx1262_send_opcode(OPCODE_READ_BUFFER, tx_array, 1, rx_array, payload_len );//+3 was
         if(res) {
             memcpy(out_payload, &rx_array[3], payload_len);
         }
@@ -1398,7 +1398,7 @@ bool sx1262_get_rx_payload(uint8_t* out_payload, uint16_t* out_size, uint16_t ma
         LOG_DEBUG(LORA, "Start %u rxLen %u", rx_start_buffer_pointer, len);
     }
 #endif
-    rx_payload_len = 256; /* One LoRa Frame Must contain one TBFP frame!*/
+    rx_payload_len = 255; /* One LoRa Frame Must contain one TBFP frame!*/
     //rx_payload_len = len; // Just for stream of bytes. (unreliable).
     if(rx_payload_len <= max_size) {
         res = sx1262_read_buffer(rx_start_buffer_pointer, out_payload, (uint16_t)rx_payload_len);
