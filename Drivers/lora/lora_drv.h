@@ -10,6 +10,7 @@
 #endif
 #include "fifo_array.h"
 #include "fifo_char.h"
+#include "lora_constants.h"
 
 #define LORA_MAX_FRAME_SIZE 256U
 #define LORA_TX_BUFF_SIZE (LORA_MAX_FRAME_SIZE * 10)

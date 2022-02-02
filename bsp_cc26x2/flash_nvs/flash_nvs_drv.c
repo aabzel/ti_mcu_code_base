@@ -11,7 +11,9 @@
 #include <ti/drivers/NVS.h>
 #include <ti/drivers/nvs/NVSCC26XX.h>
 #include <vims.h>
-
+#ifndef HAS_LOG
+#include "log.h"
+#endif
 #include "bit_utils.h"
 #include "data_utils.h"
 #include "memory_layout.h"
@@ -87,6 +89,10 @@ bool flash_nvs_write(uint32_t flas_addr, uint8_t* array, uint32_t array_len) {
         ret = NVS_write(nvsHandle, offset, (void*)array, (size_t)array_len, NVS_WRITE_POST_VERIFY);
         if(NVS_STATUS_SUCCESS == ret) {// Error -1
             res = true;
+        }else{
+#ifndef HAS_LOG
+            LOG_ERROR(NVS,"WriteErr %d", ret);
+#endif
         }
         NVS_lock(nvsHandle, 0);
     }

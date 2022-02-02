@@ -392,7 +392,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
 /*One arr frame can contain several TBFP frames*/
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset_parser) {
 #ifdef HAS_LOG
-    LOG_PARN(TBFP, "Proc If:%s Len: %u", interface2str(interface), len);
+    LOG_PARN(TBFP, "%s Len:%u", interface2str(interface), len);
 #endif
     bool res = true;
     uint32_t cur_rx_prk = 0;
@@ -421,8 +421,9 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset
 #endif
     } else {
         if(is_reset_parser){
+            TbfpProtocol[interface].lack_frame_in_data++;
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "%s LackPktInFrame:%u ",
+            LOG_DEBUG(TBFP, "%s LackPktInFrame:%u ",
                   interface2str(interface),
                   len);
         }
@@ -449,16 +450,20 @@ bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset
 static bool flow_ctrl_print_lost(uint16_t prev_s_num, uint16_t s_num, uint32_t con_flow, Interfaces_t interface ) {
     bool res = true;
     if(prev_s_num < (s_num - 1)) {
-        int32_t lost_frame_cnt = s_num - prev_s_num - 1;
+        uint32_t lost_frame_cnt = s_num - prev_s_num - 1;
+        if(0<lost_frame_cnt){
+            TbfpProtocol[interface].lost_rx_frames += lost_frame_cnt;
+
+        }
         if((prev_s_num + 1) == (s_num - 1)) {
-            LOG_WARNING(TBFP, "%s Lost_%u %u: Flow:%u",
+            LOG_DEBUG(TBFP, "%s Lost_%u %u: Flow:%u",
                         interface2str(interface),
                         lost_frame_cnt,
                         s_num - 1,
                         con_flow
                         );
         } else {
-            LOG_WARNING(TBFP, "%s Lost_%u %u-%u Flow:%u",
+            LOG_DEBUG(TBFP, "%s Lost_%u %u-%u Flow:%u",
                         interface2str(interface),
                         lost_frame_cnt,
                         prev_s_num + 1,
@@ -501,13 +506,14 @@ bool tbfp_check_flow_control(
          max_con_flow = max16u( max_con_flow,  con_flow);
         res = true;
     } else if(( prev_s_num + 1) < snum) {
-        LOG_WARNING(TBFP, "%s FlowTorn! SN:%u",interface2str(interface),snum);
+        TbfpProtocol[interface].flow_torn_cnt++;
+        LOG_DEBUG(TBFP, "%s FlowTorn! SN:%u",interface2str(interface),snum);
         flow_ctrl_print_lost( prev_s_num, snum,  con_flow, interface );
         con_flow = 1;
         res = true;
     }  else if( snum==prev_s_num ) {
         /*Rx Retx*/
-        LOG_WARNING(TBFP, "Duplicate! SN=%u", snum);
+        LOG_DEBUG(TBFP, "Duplicate! SN=%u", snum);
         res = false;
     }else {
         /*Unreal situation*/

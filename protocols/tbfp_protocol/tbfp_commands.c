@@ -19,12 +19,13 @@ static bool tbfp_diag(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
-        {8, "interf"},  {9, "rxCnt"},   {9, "txCnt"},  {9, "crcErCnt"},
+        {8, "interf"},  {9, "rxCnt"},   {9, "txCnt"},
+
 #ifdef HAS_DEBUG
 #ifdef HAS_TBFP_FLOW_CONTROL
         {9, "maxFlow"}, {9, "curFlow"},
 #endif
-        {9, "preCnt"},  {9, "ErCnt"},   {9, "minLen"}, {9, "maxLen"},   {7, "debug"},
+        {9, "preCnt"},   {9, "minLen"}, {9, "maxLen"},   {7, "debug"},
 #endif /*HAS_DEBUG*/
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
@@ -36,7 +37,7 @@ static bool tbfp_diag(void) {
             io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
             io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].tx_pkt_cnt);
-            io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
+
 
     #ifdef HAS_DEBUG
     #ifdef HAS_TBFP_FLOW_CONTROL
@@ -44,10 +45,51 @@ static bool tbfp_diag(void) {
             io_printf(" %7u " TSEP, TbfpProtocol[interface].con_flow);
     #endif
             io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
-            io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].min_len);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].max_len);
             io_printf(" %5u " TSEP, TbfpProtocol[interface].debug);
+            io_printf(CRLF);
+    #endif /*HAS_DEBUG*/
+            res = true;
+        }
+    }
+
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    return res;
+}
+
+static bool tbfp_error(void) {
+    bool res = false;
+    Interfaces_t interface;
+    static const table_col_t cols[] = {
+        {8, "interf"},
+        {9, "LackFrame"},
+        {9, "LenErCnt"},
+        {9, "crcErCnt"},
+#ifdef HAS_DEBUG
+#ifdef HAS_TBFP_FLOW_CONTROL
+        {9, "TornFlow"},
+        {9, "LostRx"},
+#endif
+         {9, "ErCnt"},
+#endif /*HAS_DEBUG*/
+    };
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
+        if(TbfpProtocol[interface].interface==interface){
+
+            io_printf(TSEP);
+
+            io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].lack_frame_in_data);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].len_err_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
+    #ifdef HAS_DEBUG
+    #ifdef HAS_TBFP_FLOW_CONTROL
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].flow_torn_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].lost_rx_frames);
+    #endif
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
             io_printf(CRLF);
     #endif /*HAS_DEBUG*/
             res = true;
@@ -87,6 +129,20 @@ bool tbfp_diag_command(int32_t argc, char* argv[]) {
     if(res) {
         res = tbfp_diag();
     }
+    return res;
+}
+
+bool tbfp_error_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+    }
+    if(res){
+        res = tbfp_error();
+    }else{
+        LOG_ERROR(TBFP, "Usage: tbfpd if debug");
+    }
+
     return res;
 }
 

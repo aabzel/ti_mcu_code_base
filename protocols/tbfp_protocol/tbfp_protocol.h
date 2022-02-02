@@ -38,8 +38,10 @@ typedef struct xTbfPingFrame_t {
 typedef struct xTbfpProtocol_t {
     uint32_t rx_pkt_cnt;
     uint32_t tx_pkt_cnt;
+    uint32_t len_err_cnt;
     uint32_t crc_err_cnt;
     uint32_t err_cnt;
+    uint32_t lack_frame_in_data;
 #ifdef HAS_DEBUG
     uint32_t preamble_cnt;
     uint16_t max_len;
@@ -47,6 +49,8 @@ typedef struct xTbfpProtocol_t {
     bool debug;
 #endif
 #ifdef HAS_TBFP_FLOW_CONTROL
+    uint32_t lost_rx_frames;
+    uint16_t flow_torn_cnt;
     uint16_t prev_s_num;
     uint16_t s_num;
     uint16_t con_flow;

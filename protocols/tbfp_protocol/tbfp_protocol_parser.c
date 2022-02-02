@@ -112,9 +112,9 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
                 instance->parser.rx_state = WAIT_PAYLOAD;
                 res = true;
             } else {
-                instance->err_cnt++;
+                instance->len_err_cnt++;
 #ifdef HAS_LOG
-                LOG_ERROR(TBFP, "%s TooBigData %u Byte", interface2str(instance->interface),
+                LOG_DEBUG(TBFP, "%s TooBigData %u Byte", interface2str(instance->interface),
                           instance->parser.exp_payload_len);
 #endif
                 res = tbfp_parser_reset_rx(instance, WAIT_LEN);
@@ -197,7 +197,7 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
         } else {
             instance->crc_err_cnt++;
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "%s SN:%u=0x%04x Crc8Err read:0x%02x RxPayLen:%u",interface2str(instance->interface),
+            LOG_DEBUG(TBFP, "%s SN:%u=0x%04x Crc8Err read:0x%02x RxPayLen:%u",interface2str(instance->interface),
                       instance->parser.s_num,
                       instance->parser.s_num,
                       instance->parser.read_crc8,
