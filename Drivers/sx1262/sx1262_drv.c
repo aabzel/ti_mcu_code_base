@@ -1780,7 +1780,7 @@ bool sx1262_process(void) {
         }
 #ifdef HAS_TBFP
         uint32_t cur_time_stamp_ms = get_time_ms32();
-        res = lora_transmit_from_queue(cur_time_stamp_ms ,Sx1262Instance.tx_done_time_stamp_ms);
+        res = lora_transmit_from_queue(cur_time_stamp_ms ,Sx1262Instance.tx_done_time_stamp_ms, 50);
 #endif
 
         res = sx1262_poll_status();

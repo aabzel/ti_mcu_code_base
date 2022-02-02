@@ -136,7 +136,7 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
 
 static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-    LOG_DEBUG(TBFP, "%s ParsePayLoad Data[%u]=%u=0x%02x", interface2str(instance->interface),
+    LOG_PARN(TBFP, "%s ParsePayLoad Data[%u]=%u=0x%02x", interface2str(instance->interface),
               instance->parser.load_len - TBFP_SIZE_HEADER,
               rx_byte,rx_byte);
     if((TBFP_SIZE_HEADER + instance->parser.exp_payload_len) <= instance->parser.load_len) {

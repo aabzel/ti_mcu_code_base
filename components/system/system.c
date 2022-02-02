@@ -46,6 +46,9 @@
 const char* interface2str(Interfaces_t interface) {
     const char* name = "???";
     switch(interface) {
+    case IF_SX1262:
+        name = "SX1262";
+        break;
     case IF_LORA:
         name = "LoRa";
         break;
@@ -54,9 +57,6 @@ const char* interface2str(Interfaces_t interface) {
         break;
     case IF_UART1:
         name = "UART1";
-        break;
-    case IF_SX1262:
-        name = "SX1262";
         break;
     case IF_UART0:
         name = "UART0";
@@ -105,16 +105,16 @@ bool interface_valid(Interfaces_t interface) {
 bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
     bool res = false;
     switch(interface) {
-//#ifdef HAS_SX1262
+#if defined(HAS_SX1262) ||  defined(X86_64)
     case IF_SX1262: {
 #ifdef HAS_MCU
         res = sx1262_start_retx(array, len, Sx1262Instance.ReTxFsm.retx_cnt_max);
 #else
         /*ForUnitTest on PC*/
         res = tbfp_proc(&array[0], len, IF_SX1262, true);
-#endif
+#endif /*HAS_MCU*/
     } break;
-//#endif
+#endif /*HAS_SX1262 or X86_64*/
 #ifdef HAS_LORA
     case IF_LORA: {
         res = lora_send_queue(array, len);

@@ -26,17 +26,18 @@ bool test_tbfp_tunnel(void){
     EXPECT_TRUE(fifo_init(&LoRaInterface.FiFoLoRaCharTx, &LoRaTxBuff[0], sizeof(LoRaTxBuff)));
     set_log_level(TBFP, LOG_LEVEL_DEBUG); /* uncomment in case of test fail*/
     set_log_level(LORA, LOG_LEVEL_DEBUG); /* uncomment in case of test fail*/
-    uint8_t number_tx_frame = 1;
+    uint8_t number_tx_frame = 11;
     for(i=0;i<number_tx_frame;i++){
         LOG_INFO(TBFP,"SendBigFrame %u",i);
         EXPECT_TRUE(tbfp_send(BigRtcm3Message, sizeof(BigRtcm3Message), IF_LORA, 0));
         uint32_t count =0, cnt=0;
         do{
             LOG_DEBUG(TBFP,"TxPart:%u", cnt++);
-            lora_transmit_from_queue(10,0, 1);
+            lora_transmit_from_queue(10,0, 1,MAX_PAYLOAD_SIZE);
             count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
-        }while(0<count );
+        }while(MAX_PAYLOAD_SIZE<count );
     }
+    lora_transmit_from_queue(10,0, 1,1);
     set_log_level(TBFP, LOG_LEVEL_INFO); /* uncomment in case of test fail*/
     EXPECT_EQ(number_tx_frame, TbfpProtocol[IF_LORA].rx_pkt_cnt);
     LOG_INFO(TBFP,"OK");

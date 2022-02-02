@@ -7,13 +7,21 @@ extern "C" {
 
 #include <stdbool.h>
 
+#if 1
+bool test_calendar_set_get_all(void);
+#define TEST_SUIT_CALENDAR_EXT  {"CalendarSetGetAll", test_calendar_set_get_all},
+#else
+#define TEST_SUIT_CALENDAR_EXT
+#endif
+
 bool test_calendar_parse_time(void);
 bool test_calendar_set_get(void);
 bool test_calendar_set_get_all(void);
 
 #define TEST_SUIT_CALENDAR                                                                                             \
-    {"CalendarParseTime", test_calendar_parse_time}, {"CalendarSetGet", test_calendar_set_get},                        \
-        {"CalendarSetGet", test_calendar_set_get_all},
+    {"CalendarSetGet", test_calendar_set_get}, \
+    {"CalendarParseTime", test_calendar_parse_time}, \
+    TEST_SUIT_CALENDAR_EXT
 
 #ifdef __cplusplus
 }

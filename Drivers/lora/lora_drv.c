@@ -32,12 +32,6 @@
 #include "sx1262_drv.h"
 #endif
 
-#ifdef HAS_SX1262
-#define MAX_PAYLOAD_SIZE  (SX1262_MAX_PAYLOAD_SIZE -3)
-#else
-#define MAX_PAYLOAD_SIZE  30
-#endif
-
 char LoRaTxBuff[LORA_TX_BUFF_SIZE];
 #if HAS_LORA_FIFO_ARRAYS
 static Array_t ArrLoRaTxNode[LORA_TX_QUEUE_SIZE];
@@ -109,11 +103,12 @@ bool lora_send_array_queue(uint8_t* const tx_payload, uint32_t len) {
 #endif
 
 #ifdef HAS_TBFP
-bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms, uint32_t pause_ms) {
+bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms, uint32_t pause_ms, uint32_t min_tx_unit) {
     bool res = false;
     uint32_t tx_time_diff_ms = 2 * pause_ms;
     tx_time_diff_ms = cur_time_stamp_ms - tx_done_time_stamp_ms;
     uint32_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
+    LOG_DEBUG(LORA, "FiFoCnt Len:%u", count);
     fifo_index_t tx_len = 0;
     uint8_t TxPayload[MAX_PAYLOAD_SIZE] = {0};
     memset(TxPayload, 0, sizeof(TxPayload));
@@ -122,13 +117,13 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     is_retx_idle = is_sx1262_retx_idle();
 #endif
     if((pause_ms < tx_time_diff_ms) &&
-            (true == is_retx_idle) ) {
+            (true == is_retx_idle) && (min_tx_unit<=count)) {
 
         res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);
         if(res) {
             if(tx_len!=sizeof(TxPayload)){
 #ifdef HAS_LOG
-                LOG_ERROR(LORA, "FiFoPullLenErr Len:%u %u", tx_len,sizeof(TxPayload));
+                LOG_DEBUG(LORA, "FiFoPullLenErr Len:%u %u", tx_len,sizeof(TxPayload));
 #endif
             }
 #ifdef HAS_LOG

@@ -148,7 +148,6 @@ const char* facility2str(log_facility_t facility) {
     case LG_INT:
         facility_str = "INT";
         break;
-
     case DIAG:
         facility_str = "DIAG";
         break;

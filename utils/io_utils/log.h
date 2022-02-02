@@ -45,7 +45,6 @@ typedef uint8_t log_facility_t;
 #else
 typedef enum eLog_facility_t {
     UNKNOWN_FACILITY = 0, /*must be first in enum*/
-
     BATT,
     BOOT,
     PMIC,

@@ -89,13 +89,23 @@ bool is_tbfp_protocol(uint8_t* arr, uint16_t len, Interfaces_t interface) {
 #endif
     TbfHeader_t header = {0};
     memcpy(&header, arr, sizeof(TbfHeader_t));
-    if((TbfpProtocol[interface].parser.preamble_val == header.preamble) && (header.len < len)) {
-        res = true;
-    } else {
-        res = false;
+    if(TbfpProtocol[interface].parser.preamble_val != header.preamble){
 #ifdef HAS_LOG
-        LOG_ERROR(TBFP, "FrameErr");
+        LOG_ERROR(TBFP, "FramePreambleErr Exp:0x%x Real:0x%x",TbfpProtocol[interface].parser.preamble_val,header.preamble);
 #endif
+        res = false;
+    }else{
+        res = true;
+    }
+    if(res){
+        if(header.len < len) {
+            res = true;
+        } else {
+            res = false;
+    #ifdef HAS_LOG
+            LOG_ERROR(TBFP, "FrameLenErr",header.len);
+    #endif
+        }
     }
     if(res) {
         uint32_t frame_len = TBFP_SIZE_HEADER + header.len;
@@ -468,45 +478,53 @@ static bool flow_ctrl_print_lost(uint16_t prev_s_num, uint16_t s_num, uint32_t c
 bool tbfp_check_flow_control(
                              Interfaces_t interface,
                              uint16_t snum,
-                             uint16_t * const prev_s_num,
-                             uint16_t * const con_flow,
-                             uint16_t * const max_con_flow
+                             uint16_t * const io_prev_s_num,
+                             uint16_t * const io_con_flow,
+                             uint16_t * const io_max_con_flow
                              ) {
     bool res = false;
+    uint16_t prev_s_num=*io_prev_s_num;
+    uint16_t con_flow=*io_con_flow;
+    uint16_t max_con_flow=*io_max_con_flow;
 #ifdef HAS_LOG
-    LOG_PARN(TBFP, "prev_snum:%u snum:%u flow:%u",  *prev_s_num, snum,  *con_flow);
+    LOG_PARN(TBFP, "%s prev_snum:%u snum:%u flow:%u",interface2str(interface),  prev_s_num, snum,  con_flow);
 #endif
-    if( snum==( 1+ (*prev_s_num) ) ) {
+    if( snum <  prev_s_num) {
+        /*Unreal situation*/
+        LOG_ERROR(TBFP, "SnOrderError SNcur:%u<=SNprev:%u", snum,  prev_s_num);
+        //  con_flow = 1;
+        res = false;
+    }else if( snum==( 1+ prev_s_num ) ) {
         /*Flow ok*/
-        LOG_DEBUG(TBFP, "FlowOk %u->%u",(*prev_s_num),snum);
-        (*con_flow)++;
-         (*max_con_flow) = max16u( *max_con_flow,  *con_flow);
+        LOG_DEBUG(TBFP, "%s FlowOk %u->%u",interface2str(interface),prev_s_num,snum);
+        con_flow++;
+         max_con_flow = max16u( max_con_flow,  con_flow);
         res = true;
-    } else if(( *prev_s_num + 1) < snum) {
-        LOG_WARNING(TBFP, "FlowTorn! SN:%u",snum);
-        flow_ctrl_print_lost( *prev_s_num, snum,  *con_flow, interface );
-        (*con_flow) = 1;
+    } else if(( prev_s_num + 1) < snum) {
+        LOG_WARNING(TBFP, "%s FlowTorn! SN:%u",interface2str(interface),snum);
+        flow_ctrl_print_lost( prev_s_num, snum,  con_flow, interface );
+        con_flow = 1;
         res = true;
-    }  else if( snum==(*prev_s_num) ) {
+    }  else if( snum==prev_s_num ) {
         /*Rx Retx*/
         LOG_WARNING(TBFP, "Duplicate! SN=%u", snum);
         res = false;
-    }else if( snum <  (*prev_s_num)) {
-        /*Unreal situation*/
-        LOG_ERROR(TBFP, "SnOrderError SNcur:%u<=SNprev:%u", snum,  (*prev_s_num));
-       //  con_flow = 1;
-        res = true;
-    } else {
+    }else {
         /*Unreal situation*/
         res = false;
     }
 
-    (*prev_s_num) = snum;
+    prev_s_num= snum;
 
 
 #ifdef HAS_LOG
-    LOG_PARN(TBFP, "prev_snum:%u snum:%u flow:%u",  *prev_s_num, snum,  *con_flow);
+    LOG_PARN(TBFP, "%s prev_snum:%u snum:%u flow:%u",interface2str(interface),  prev_s_num, snum,  con_flow);
 #endif
+
+    *io_prev_s_num=prev_s_num;
+    *io_con_flow=con_flow;
+    *io_max_con_flow=max_con_flow;
+
     return res;
 }
 #endif /*HAS_TBFP_FLOW_CONTROL*/

@@ -43,8 +43,9 @@ bool test_tbfp_types(void) {
 }
 bool test_tbfp_proto_1(void) {
     LOG_DEBUG(TBFP, "%s():", __FUNCTION__);
-    EXPECT_TRUE(is_tbfp_protocol((uint8_t*)tbfp_message1, sizeof(tbfp_message1),IF_RS232));
-    EXPECT_TRUE(is_tbfp_protocol((uint8_t*)tbfp_message2, sizeof(tbfp_message2),IF_RS232));
+    EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_LOOPBACK], IF_LOOPBACK,0xA5));
+    EXPECT_TRUE(is_tbfp_protocol((uint8_t*)tbfp_message1, sizeof(tbfp_message1),IF_LOOPBACK));
+    EXPECT_TRUE(is_tbfp_protocol((uint8_t*)tbfp_message2, sizeof(tbfp_message2),IF_LOOPBACK));
     return true;
 }
 
@@ -154,7 +155,7 @@ bool test_tbfp_proto_flow_ctrl2(void) {
     EXPECT_EQ(1, con_flow);
 
     EXPECT_FALSE( tbfp_check_flow_control(IF_LOOPBACK,1,&prev_s_num,&con_flow,&max_flow));
-    EXPECT_EQ(5, prev_s_num);
+    EXPECT_EQ(1, prev_s_num);
     EXPECT_EQ(1, con_flow);
     return true;
 }

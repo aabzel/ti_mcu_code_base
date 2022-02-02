@@ -29,6 +29,7 @@ static const uint8_t DaysInMonth[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30
  */
 static bool counter_to_struct(uint32_t sec, struct tm* t) {
     bool res = false;
+    LOG_DEBUG(LG_CAL, "%s():", __FUNCTION__); /*Call too frequently*/
     if(t) {
         uint16_t day = 0;
         uint8_t year = 0;
@@ -85,7 +86,7 @@ bool calendar_gettime(struct tm* date_time) {
     uint32_t cur_sec = 0;
 #ifdef X86_64
     cur_sec = g_sec; /*For tests on PC */
-    LOG_DEBUG(TEST, "GetCounter %u", g_sec);
+    LOG_DEBUG(LG_CAL, "GetCounter %u", g_sec); /*Call too frequently*/
 #endif
 #ifdef HAS_RTC
     cur_sec = SwRtc.raw_sec;
@@ -157,7 +158,7 @@ uint32_t calendar_settime(struct tm* date_time) {
     res = is_valid_time_date(date_time);
     if(res) {
 #ifdef HAS_LOG
-        LOG_DEBUG(LG_CAL, "valid date time");
+        LOG_DEBUG(LG_CAL, "ValidDdateTime");
 #endif
         g_sec = struct_to_counter(date_time);
 #ifdef X86_64
@@ -166,6 +167,8 @@ uint32_t calendar_settime(struct tm* date_time) {
 #ifdef HAS_RTC
         SwRtc.raw_sec = g_sec;
 #endif
+    }else{
+        LOG_ERROR(LG_CAL, "DateTimeErr");
     }
 
     return g_sec;
