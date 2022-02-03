@@ -68,6 +68,7 @@ typedef struct xRtcm3Protocol_t {
     uint32_t read_crc;
     uint16_t ack_cnt;
     RxState_t rx_state;
+    uint32_t jumbo_frame_cnt;
     uint8_t rx_frame[RTCM3_RX_MAX_FRAME_SIZE];
     uint8_t fix_frame[RTCM3_RX_MAX_FRAME_SIZE];
     Interfaces_t interface;

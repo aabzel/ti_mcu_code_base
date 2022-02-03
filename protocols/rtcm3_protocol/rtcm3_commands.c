@@ -69,6 +69,7 @@ static bool rtcm3_diag(void) {
                                        {9, "minLen"},
                                        {9, "maxLen"},
 #endif /*HAS_DEBUG*/
+                                       {9, "jumbo"},
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
@@ -86,6 +87,7 @@ static bool rtcm3_diag(void) {
             io_printf(" %7u " TSEP, Rtcm3Protocol[interface].min_len);
             io_printf(" %7u " TSEP, Rtcm3Protocol[interface].max_len);
     #endif /*HAS_DEBUG*/
+            io_printf(" %7u " TSEP, Rtcm3Protocol[interface].jumbo_frame_cnt);
             io_printf(CRLF);
             res = true;
         }

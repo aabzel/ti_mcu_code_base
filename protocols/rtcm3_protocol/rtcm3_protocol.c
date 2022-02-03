@@ -10,6 +10,9 @@
 #ifdef HAS_LED
 #include "led_drv.h"
 #endif
+#ifdef HAS_LORA
+#include "lora_drv.h"
+#endif /*HAS_LORA*/
 #ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
@@ -51,8 +54,9 @@ bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool
     memset(instance, 0x0, sizeof(Rtcm3Protocol_t));
     memset(instance->fix_frame, 0x00, RTCM3_RX_MAX_FRAME_SIZE);
     memset(instance->rx_frame, 0x00, RTCM3_RX_MAX_FRAME_SIZE);
+
+    instance->interface = interface;
 #ifdef HAS_DEBUG
-    instance->max_len = 0;
     instance->min_len = 0xFFFF;
     instance->forwarding[IF_LORA] = false;
 #else
@@ -61,7 +65,6 @@ bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool
 #ifdef HAS_LOG
     LOG_DEBUG(RTCM, "Init");
 #endif
-    instance->interface = interface;
     return true;
 }
 
@@ -179,7 +182,11 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #ifdef HAS_LED
             led_blink(&Led[LED_INDEX_RED], 30);
 #endif
-
+            uint16_t packet_length = frame_length+RTCM3_CRC24_SIZE;
+            if(MAX_LORA_PAYLOAD_SIZE < packet_length ){
+                instance->jumbo_frame_cnt++;
+                LOG_DEBUG(RTCM, "TooBigFrame %u byte",packet_length,MAX_LORA_PAYLOAD_SIZE);
+            }
             switch(instance->interface) {
             case IF_UART1: {
 

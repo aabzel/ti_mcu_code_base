@@ -695,6 +695,7 @@ bool nmea_proc(void) {
                 NmeaProto.rtk_fixed_start_ms = get_time_ms32();
 #endif
             } else {
+                Led[LED_INDEX_GREEN].mode = LED_MODE_PWM;
                 Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_MS;
             }
         } else if(prev_pos_mode == NmeaProto.pos_mode) {

@@ -20,9 +20,9 @@
 #define LORA_PERIOD_US S_2_US(15)
 
 #ifdef HAS_SX1262
-#define MAX_PAYLOAD_SIZE  (SX1262_MAX_PAYLOAD_SIZE -3)
+#define MAX_LORA_PAYLOAD_SIZE  (SX1262_MAX_PAYLOAD_SIZE -3)
 #else
-#define MAX_PAYLOAD_SIZE  30
+#define MAX_LORA_PAYLOAD_SIZE  30
 #endif
 
 extern FifoArray_t FiFoLoRaTx;

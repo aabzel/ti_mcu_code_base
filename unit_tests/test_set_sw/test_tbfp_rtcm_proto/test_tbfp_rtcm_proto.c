@@ -33,9 +33,9 @@ bool test_tbfp_tunnel(void){
         uint32_t count =0, cnt=0;
         do{
             LOG_DEBUG(TBFP,"TxPart:%u", cnt++);
-            lora_transmit_from_queue(10,0, 1,MAX_PAYLOAD_SIZE);
+            lora_transmit_from_queue(10,0, 1,MAX_LORA_PAYLOAD_SIZE);
             count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
-        }while(MAX_PAYLOAD_SIZE<count );
+        }while(MAX_LORA_PAYLOAD_SIZE<count );
     }
     lora_transmit_from_queue(10,0, 1,1);
     set_log_level(TBFP, LOG_LEVEL_INFO); /* uncomment in case of test fail*/
