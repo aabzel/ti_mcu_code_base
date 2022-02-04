@@ -23,6 +23,13 @@ digraph  graphname {
     		   eclipsec[label="eclipsec.exe"];
             }
         }
+    	subgraph clusterDotNet  {
+    	   label=".Net"
+		   /*node [style=filled];*/
+		   color=blue
+    	   DotNet[shape="none"][style="invis"][label=""];
+		   SDRSharp [label="SDR#.exe"];
+        }
         GIT [label="git.exe"];
     	clangformat [label="clang-format.exe"];
         Notepadpp [label="Notepad++.exe"];
