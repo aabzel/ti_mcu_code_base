@@ -10,7 +10,7 @@ extern "C" {
 
 #include "lora_constants.h"
 
-#define RETX_TRY_CNT_DFLT 4 /*TODO Make Parameter*/
+#define RETX_TRY_CNT_DFLT 1
 
 typedef struct xReTxFsm_t {
     uint8_t retx_cnt_max;

@@ -46,12 +46,19 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
             static const table_col_t cols[] = {{5, "No"},  {5, "id"},   {14, "name"},
                                                {5, "len"}, {12, "val"}, {17, "name"}};
             table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-            char temp_str[300] = "";
+            char line_str[300] = "";
+            char suffix_str[300] = "";
             for(i = 0; i < param_get_cnt(); i++) {
-                strcpy(temp_str, TSEP);
-                snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].id);
-                snprintf(temp_str, sizeof(temp_str), "%s %12s " TSEP, temp_str, ParamArray[i].name);
-                snprintf(temp_str, sizeof(temp_str), "%s %3u " TSEP, temp_str, ParamArray[i].len);
+                strcpy(line_str, TSEP);
+                snprintf(suffix_str, sizeof(suffix_str), " %3u " TSEP, ParamArray[i].id);
+                strncpy(line_str, suffix_str, sizeof(line_str));
+
+                snprintf(suffix_str, sizeof(suffix_str), " %12s " TSEP, ParamArray[i].name);
+                strncpy(line_str, suffix_str, sizeof(line_str));
+
+                snprintf(suffix_str, sizeof(suffix_str), " %3u " TSEP, ParamArray[i].len);
+                strncpy(line_str, suffix_str, sizeof(line_str));
+
                 uint16_t value_len = 0;
                 uint8_t value[100] = {0};
                 res = mm_get(ParamArray[i].id, value, ParamArray[i].len, &value_len);
@@ -65,13 +72,16 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
                     strncpy(valStr, "lack", sizeof(valStr));
                 }
 
-                snprintf(temp_str, sizeof(temp_str), "%s %10s " TSEP, temp_str, valStr);
-                snprintf(temp_str, sizeof(temp_str), "%s %15s " TSEP, temp_str,
+                snprintf(suffix_str, sizeof(suffix_str), " %10s " TSEP, valStr);
+                strncpy(line_str, suffix_str, sizeof(line_str));
+
+                snprintf(suffix_str, sizeof(suffix_str), " %15s " TSEP,
                          param_val2str(ParamArray[i].id, value, sizeof(value)));
-                snprintf(temp_str, sizeof(temp_str), "%s", temp_str);
-                if(is_contain(temp_str, keyWord1, keyWord2)) {
+                strncpy(line_str, suffix_str, sizeof(line_str));
+
+                if(is_contain(line_str, keyWord1, keyWord2)) {
                     io_printf(TSEP " %3u ", num);
-                    io_printf("%s" CRLF, temp_str);
+                    io_printf("%s" CRLF, line_str);
                     num++;
                 }
             }

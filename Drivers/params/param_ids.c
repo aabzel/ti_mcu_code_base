@@ -316,9 +316,11 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
             name = bandwidth2str((BandWidth_t)*value);
         } break;
 #endif /*HAS_SX1262*/
+#ifdef HAS_BOOT
         case PAR_ID_BOOT_CMD: {
             name = boot_cmd2str((uint8_t)*value);
         } break;
+#endif /*HAS_BOOT*/
 
 #ifdef HAS_PWR_MUX
         case PAR_ID_PWR_SRC: {

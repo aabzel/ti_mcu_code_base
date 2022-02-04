@@ -1,6 +1,9 @@
 digraph graphname {
     rankdir=LR;
-	python["python.exe"]
-	esptool.py
-	UBX->ZED_F9P;
+    python["python.exe"]
+    esptool.py
+    cmake["cmake.exe"]
+    Notepadpp [label="Notepad++.exe"];
+    
+    Notepadpp->cmake[label="CMakeLists.txt"];
 }

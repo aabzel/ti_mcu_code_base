@@ -4,9 +4,9 @@ set(PATH_SRC)
 set(PATH_WORKSPACE C:/1_job/0_NPP_IT_ELMA/code_base_workspace_esp/ti_mcu_code_base)
 set(PATH_ESP_IDF C:/esp/esp-idf)
 
+
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/common")
-
-
+list(APPEND PATH_INC ${PATH_ESP_IDF}"/components/nvs_flash/include")
 list(APPEND PATH_INC ${PATH_ESP_IDF}"/components/freertos/FreeRTOS-Kernel/include/freertos")
 list(APPEND PATH_INC ${PATH_ESP_IDF}"/components/driver/include/driver")
 list(APPEND PATH_INC ${PATH_ESP_IDF}"/components/hal/include/hal")
@@ -46,10 +46,16 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/uart/uart_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/i2c/i2c_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/i2c/i2c_commands.c")
 
+
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/params")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/utils/crc")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/params")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/lora")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/sx1262")
 
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/params/param_commands.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/params/param_ids.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/flash_fs/flash_fs_commands.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_list.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/unit_test_commands.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/unit_test_run.c")
@@ -60,6 +66,8 @@ list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_spi")
 
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_gpio")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_gpio/test_gpio.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/flash_fs/flash_fs.c")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/flash_fs")
 
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw")
@@ -120,9 +128,12 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_string/convert.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_string/str_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/led_drv/led_commands.c")
 
+#set(CMAKE_CXX_FLAGS "-Wall -Wno-dev -Wl,-rpath=/home/abcd/libs/")
+set(KEY_VAL_MAP -DHAS_FLASH_FS -DHAS_PARAM -DHAS_FLASH_FS_COMMANDS -DHAS_PARAM_COMMANDS) 
+#target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_FLASH_FS -DHAS_PARAM)
 
 #target_compile_definitions(${COMPONENT_TARGET} PUBLIC "-DHAS_CLI")
 idf_component_register(SRCS "main_thread.c" ${PATH_SRC}
                        INCLUDE_DIRS ${PATH_INC})
 # -DHAS_SX1262_POLL -DHAS_SPI_SW_CHIP_SELECT
-target_compile_options(${COMPONENT_TARGET} PUBLIC -Os -DHAS_AXP192_COMMANDS -DHAS_AXP192 -DHAS_I2C0 -DHAS_I2C -DHAS_I2C_COMMANDS -DHAS_SPI_SW_CHIP_SELECT -DHAS_LED_COMMANDS  -DconfigSUPPORT_STATIC_ALLOCATION=1 -DHAS_MCU -DHAS_LOG -DHAS_TEST_GPIO -DHAS_TEST_SPI -DHAS_TEST_SX1262 -DHAS_UNIT_TEST -DHAS_HW_TESTS -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SX1262_EX_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI3  -Wno-stringop-overflow)
+target_compile_options(${COMPONENT_TARGET} PUBLIC -Os   ${KEY_VAL_MAP} -DHAS_AXP192_COMMANDS -DHAS_AXP192 -DHAS_I2C0 -DHAS_I2C -DHAS_I2C_COMMANDS -DHAS_SPI_SW_CHIP_SELECT -DHAS_LED_COMMANDS  -DconfigSUPPORT_STATIC_ALLOCATION=1 -DHAS_MCU -DHAS_LOG -DHAS_TEST_GPIO -DHAS_TEST_SPI -DHAS_TEST_SX1262 -DHAS_UNIT_TEST -DHAS_HW_TESTS -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SX1262_EX_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI3  -Wno-stringop-overflow)
