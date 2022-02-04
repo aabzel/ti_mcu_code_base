@@ -236,10 +236,10 @@ bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* ou
 }
 
 const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
-    const char* name = "---";
+    const char* name = "?";
     if(value && (0 < size)) {
 #ifdef HAS_SX1262
-        static char temp_name[100] = "---";
+        static char temp_name[100] = "??";
 #endif
         switch(id) {
 #ifdef HAS_SX1262
