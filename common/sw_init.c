@@ -58,14 +58,6 @@
 #include "health_monitor.h"
 #endif /*HAS_HEALTH_MONITOR*/
 
-#ifdef HAS_FLASH_FS
-#include "flash_fs.h"
-#endif /*HAS_FLASH_FS*/
-
-#ifdef HAS_PARAM
-#include "param_ids.h"
-#endif /*HAS_PARAM*/
-
 #ifdef HAS_PWR_MUX
 #include "pwr_mux_drv.h"
 #endif /*HAS_PWR_MUX*/
@@ -130,14 +122,6 @@ bool sw_init(void) {
 #ifdef HAS_HEALTH_MONITOR
     res = try_init(health_monotor_init(), "HM") && res;
 #endif /*HAS_HEALTH_MONITOR*/
-
-#ifdef HAS_FLASH_FS
-    res = try_init(flash_fs_init(), "Flash_FS") && res;
-#endif /*HAS_FLASH_FS*/
-
-#ifdef HAS_PARAM
-    res = try_init(param_init(), "param") && res; //
-#endif                                            /*HAS_PARAM*/
 
 #ifdef HAS_PWR_MUX
     res = try_init(pwr_src_init(), "PWR_MUX") && res;

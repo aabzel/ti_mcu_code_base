@@ -109,6 +109,14 @@
 #include "interrupt_drv.h"
 #endif
 
+#ifdef HAS_FLASH_FS
+#include "flash_fs.h"
+#endif /*HAS_FLASH_FS*/
+
+#ifdef HAS_PARAM
+#include "param_ids.h"
+#endif /*HAS_PARAM*/
+
 bool hw_init(void) {
   bool res = true;
 #ifdef CC26XX
@@ -207,6 +215,14 @@ bool hw_init(void) {
 #ifdef HAS_AXP192
   res = try_init(axp192_init(),"axp192") && res;
 #endif /*HAS_AXP192*/
+
+#ifdef HAS_FLASH_FS
+    res = try_init(flash_fs_init(), "Flash_FS") && res;
+#endif /*HAS_FLASH_FS*/
+
+#ifdef HAS_PARAM
+    res = try_init(param_init(), "param") && res; //
+#endif
 
 #ifdef HAS_SX1262
   res = try_init(sx1262_init(),"sx1262") && res;
