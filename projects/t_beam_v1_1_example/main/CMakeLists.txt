@@ -45,8 +45,9 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/sys.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/uart/uart_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/i2c/i2c_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/i2c/i2c_commands.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_flash_fs/test_flash_fs.c")
 
-
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_flash_fs")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/params")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/utils/crc")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/params")
@@ -99,6 +100,9 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/task_drv/task_info.c")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/led_drv")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/bit_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_math/utils_math.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_params/test_params.c")
+
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_params")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/utils/utils_math")
 
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/print_buffer.c")
@@ -129,7 +133,7 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_string/str_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/led_drv/led_commands.c")
 
 #set(CMAKE_CXX_FLAGS "-Wall -Wno-dev -Wl,-rpath=/home/abcd/libs/")
-set(KEY_VAL_MAP -DHAS_FLASH_FS -DHAS_PARAM -DHAS_FLASH_FS_COMMANDS -DHAS_PARAM_COMMANDS) 
+set(KEY_VAL_MAP -DHAS_FLASH_FS -DHAS_PARAM -DHAS_FLASH_FS_COMMANDS -DHAS_PARAM_COMMANDS -DHAS_TEST_PARAM -DHAS_TEST_FLASH_FS) 
 #target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_FLASH_FS -DHAS_PARAM)
 
 #target_compile_definitions(${COMPONENT_TARGET} PUBLIC "-DHAS_CLI")

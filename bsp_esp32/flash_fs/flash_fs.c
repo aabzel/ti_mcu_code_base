@@ -85,13 +85,21 @@ bool mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* fil
     bool res = false;
     char key[NVS_KEY_NAME_MAX_SIZE-1];
     snprintf(key,sizeof(key),"%u",data_id);
-    ret = nvs_get_blob(FsHandle , key, (void *)file, (size_t *)file_len);
+    size_t length = (size_t) maxValueLen;
+    ret = nvs_get_blob(FsHandle , key, (void *)file, &length);
     if(ESP_OK==ret){
-        if((*file_len)<=maxValueLen){
+        if(length<=maxValueLen){
             res = true;
+            (*file_len) = length;
+        }else{
+            LOG_DEBUG(FLASH_FS,"GetLenErr Cur:%u Max:%u",
+                      *file_len,
+                      maxValueLen
+                      );
         }
-    }else{
+    } else {
         res = false;
+        LOG_DEBUG(FLASH_FS,"GetBlobErr %u %x", ret, ret);// 4364
     }
     return res;
 }

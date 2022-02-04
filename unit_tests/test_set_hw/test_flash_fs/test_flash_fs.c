@@ -6,8 +6,10 @@
 #include "data_utils.h"
 #include "flash_fs.h"
 #include "io_utils.h"
-#include "memory_layout.h"
 #include "none_blocking_pause.h"
+#ifndef ESP32
+#include "memory_layout.h"
+#endif
 #include "param_ids.h"
 #include "unit_test_check.h"
 
@@ -20,7 +22,9 @@ tsr flash_fs+
 */
 
 bool test_flash_fs_set_get_const(void) {
+#ifdef HAS_TEST_SUIT_FLASH_FS_EXT
     EXPECT_EQ(7, sizeof(mmItem_t));
+#endif
     uint16_t data_id = PAR_ID_TEST_START;
     uint16_t write_value = 0xAA55;
     uint16_t read_value = 0;
@@ -34,7 +38,9 @@ bool test_flash_fs_set_get_const(void) {
 }
 
 bool test_flash_fs_inval(void) {
+#ifdef HAS_TEST_SUIT_FLASH_FS_EXT
     EXPECT_EQ(7, sizeof(mmItem_t));
+#endif
     uint16_t data_id = PAR_ID_TEST_START + 1;
     uint16_t write_value = 0x55AA;
     uint16_t read_value = 0;
@@ -78,7 +84,7 @@ bool test_flash_fs_set_get_set(void) {
     return true;
 }
 
-
+#ifdef HAS_TEST_SUIT_FLASH_FS_EXT
 static uint32_t calc_toggle_exp_page(uint32_t page) {
     uint32_t exp_page = 0;
     if(MEMORY_MANAGER1_OFFSET == page) {
@@ -88,7 +94,9 @@ static uint32_t calc_toggle_exp_page(uint32_t page) {
     }
     return exp_page;
 }
+#endif
 
+#ifdef HAS_TEST_SUIT_FLASH_FS_EXT
 bool test_flash_fs_toggle(void) {
     uint32_t read_mm_page_start = 0;
     uint32_t read_mm_page_len = 1;
@@ -113,3 +121,4 @@ bool test_flash_fs_toggle(void) {
     wait_in_loop_ms(100) ;
     return true;
 }
+#endif
