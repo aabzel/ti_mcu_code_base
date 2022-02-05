@@ -128,8 +128,17 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        const table_col_t cols[] = {{5, "Num"},    {10, "baudRate"}, {17, "rx"},  {17, "tx"},  {7, "rFiCnt"},
-                                    {7, "tFiCnt"}, {6, "StErr"},     {6, "rErr"}, {10, "name"}};
+        const table_col_t cols[] = {{5, "Num"},
+                                    {10, "baudRate"},
+                                    {10, "RxRate"},
+                                    {10, "TxRate"},
+                                    {17, "rx"},
+                                    {17, "tx"},
+                                    {7, "rFiCnt"},
+                                    {7, "tFiCnt"},
+                                    {6, "StErr"},
+                                    {6, "rErr"},
+                                    {10, "name"}};
         uint32_t baud_rate = 0, uart_error = 0;
         uint8_t uart_num = 0;
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
@@ -143,6 +152,8 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
             } else {
                 io_printf("          " TSEP, baud_rate);
             }
+            io_printf(" %7u  " TSEP, huart[uart_num].rx_byte_rate);
+            io_printf(" %7u  " TSEP, huart[uart_num].tx_byte_rate);
             flowCnt_t cnt_diff;
             cnt_diff.byte_rx = huart[uart_num].cnt.byte_rx - huart[uart_num].cnt_prev.byte_rx;
             io_printf(" %7u+%7u " TSEP, huart[uart_num].cnt.byte_rx, cnt_diff.byte_rx);

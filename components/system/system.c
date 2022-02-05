@@ -80,6 +80,7 @@ const char* interface2str(Interfaces_t interface) {
 }
 
 bool system_calc_byte_rate(void){
+    uart_calc_byte_rate();
     return false;
 }
 bool interface_valid(Interfaces_t interface) {
