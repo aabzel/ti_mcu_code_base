@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define SX1262_MAX_FRAME_SIZE 254U /*TODO Explore*/
-#define PACK_SIZE_BYTES 16
+#define SX1262_MAX_FRAME_SIZE 252U /*TODO Explore*/
+//#define PACK_SIZE_BYTES 16
 
 #define FIFO_SIZE 256
 
