@@ -32,11 +32,12 @@
 
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
+#include "tbfp_re_tx_ack_fsm.h"
 #endif
 
 #ifdef HAS_SX1262
 #include "sx1262_drv.h"
-#include "sx1262_re_tx.h"
+//#include "sx1262_re_tx.h"
 #endif
 
 #ifdef HAS_BOOTLOADER
@@ -109,7 +110,8 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
 #if defined(HAS_SX1262) ||  defined(X86_64)
     case IF_SX1262: {
 #ifdef HAS_MCU
-        res = sx1262_start_retx(array, len, Sx1262Instance.ReTxFsm.retx_cnt_max);
+        res = tbfp_retx_start(&TbfpProtocol[IF_SX1262], array, len);
+        /*res = sx1262_start_tx(array, len, TX_SINGLE_MODE);*/
 #else
         /*ForUnitTest on PC*/
         res = tbfp_proc(&array[0], len, IF_SX1262, true);

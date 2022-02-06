@@ -55,6 +55,7 @@ speed up to 16 MHz
 
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
+#include "tbfp_re_tx_ack_fsm.h"
 #endif
 
 #ifdef HAS_FLASH_FS
@@ -1656,6 +1657,7 @@ static inline bool sx1262_poll_status(void) {
         case COM_STAT_COM_TX_DONE: {
             Sx1262Instance.tx_done = true;
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
+            res = tbfp_retx_tx_done(IF_SX1262);
 #ifdef LED_INDEX_RED
             led_off(&Led[LED_INDEX_RED]);
 #endif

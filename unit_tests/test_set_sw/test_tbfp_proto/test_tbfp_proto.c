@@ -36,7 +36,7 @@ bool test_tbfp_proto_0(void) {
 bool test_tbfp_types(void) {
 
     LOG_DEBUG(TBFP, "%s():", __FUNCTION__);
-
+    EXPECT_EQ(1, sizeof(TbfpFlags_t));
     EXPECT_EQ(6, sizeof(TbfHeader_t));
 
     return true;

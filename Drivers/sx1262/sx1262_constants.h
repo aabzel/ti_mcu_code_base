@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 
+#define TX_SINGLE_MODE 0
+
 #define DEV_SEL_SX1262 0
 #define DEV_SEL_SX1261 1
 

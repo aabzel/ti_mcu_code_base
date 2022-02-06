@@ -19,7 +19,6 @@ typedef struct xReTxFsm_t {
     uint16_t tx_frame_len;
 }ReTxFsm_t;
 
-
 bool is_sx1262_retx_idle(void);
 bool sx1262_retx_init(void);
 bool sx1262_start_retx(uint8_t* array, uint16_t len, uint8_t try_cnt);
