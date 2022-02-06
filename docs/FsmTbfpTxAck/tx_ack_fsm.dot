@@ -1,0 +1,23 @@
+digraph graphname {
+    rankdir=LR;
+    start[label="Start" style=filled color=black shape=circle];
+    WaitTxDone [label="WaitTxDone" style=filled color=green shape=circle];
+    Idle[label="Idle" style=filled color=green shape=circle];
+    WaitAck[label="WaitAck" style=filled color=green shape=circle];
+
+    Idle->WaitTxDone[label="TxFrame" color=green  fontcolor=green] ;
+    Idle->Idle[label="TxDone,TxDoneTimeOut,RxAck,RxAckTimeOut"];
+	//Idle->Idle[label="TxDoneTimeOut"];
+	//Idle->Idle[label="RxAck"];
+	//Idle->Idle[label="RxAckTimeOut"];
+
+
+    WaitAck->Idle[label="RxAck" color=green fontcolor=green];
+	WaitAck->Idle[ fontcolor=red label="RxAckTimeOut" color=red];
+	WaitAck->WaitAck[label="TxFrame, TxDoneTimeOut" color=black]
+	
+    WaitTxDone->WaitAck[label="TxDone" color=green  fontcolor=green];
+	WaitTxDone->Idle[label="TxDoneTimeOut" color=red fontcolor=red]
+	WaitTxDone->WaitTxDone[label="RxAck,RxAckTimeOut,TxFrame"];
+    start->Idle;
+}
