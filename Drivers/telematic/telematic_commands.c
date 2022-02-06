@@ -93,6 +93,7 @@ bool chat_command(int32_t argc, char* argv[]) {
     uint32_t tx_array_len = 0;
     uint8_t interface = IF_NONE;
     uint8_t lifetime = 0;
+    uint8_t ack = 5;
     if(1 <= argc) {
         res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);
         if(false == res) {
@@ -107,16 +108,22 @@ bool chat_command(int32_t argc, char* argv[]) {
     }
 
     if(3 <= argc) {
-        res = try_str2uint8(argv[1], &interface);
+        res = try_str2uint8(argv[2], &interface);
     }
 
-    if((2 < argc) || (0 == argc)) {
+    if(4 <= argc) {
+        res = try_str2uint8(argv[3], &ack);
+    }
+
+    if( (0 == argc) || (4 < argc) ) {
         LOG_ERROR(SYS, "Usage: char text ttl if");
         res = false;
     }
 
     if(res) {
-        res = tbfp_send_chat(tx_array, tx_array_len, (Interfaces_t)interface, lifetime);
+        res = tbfp_send_chat(tx_array, tx_array_len, (Interfaces_t)interface,
+                             lifetime,
+                             (TbfpAck_t) ack);
         if(res) {
             LOG_INFO(SYS, "ok [%s]", tx_array);
             res = print_mem(tx_array, tx_array_len, false, true, true, false);

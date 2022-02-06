@@ -116,7 +116,7 @@ extern "C" {
 #define SYSTEM_COMMANDS
 #endif
 
-#ifdef HAS_TBFP
+#ifdef HAS_TBFP_COMMANDS
 #include "tbfp_commands.h"
 #else
 #define TBFP_COMMANDS

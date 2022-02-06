@@ -98,13 +98,21 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/axp192/axp192_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/axp192/axp192_diag.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/task_drv/task_info.c")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/led_drv")
+
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/components/system")
+
+
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/bit_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_math/utils_math.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_params/test_params.c")
 
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_params")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/utils/utils_math")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/protocols/tbfp_protocol")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/protocols")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/telematic")
 
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/tbfp_protocol/tbfp_protocol.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/print_buffer.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/none_blocking_pause.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/lora/lora_drv.c")
@@ -116,6 +124,8 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/led_drv/led_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/float_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/fifo/fifo_array.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/fifo/fifo_char.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/tbfp_protocol/tbfp_re_tx_ack_fsm.c")
+
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/fifo/fifo_index.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/io_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/log.c")
@@ -131,6 +141,18 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/time_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_string/convert.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/utils_string/str_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/led_drv/led_commands.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/tbfp_protocol/tbfp_commands.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/tbfp_protocol/tbfp_protocol_parser.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/protocol_diag.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/tbfp_protocol/tbfp_diag.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/components/system/system.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/time_diag.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/lora/writer_lora.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/telematic/telematic_commands.c")
+
+
+
+set(TBFP -DTBFP_RETX -DHAS_TBFP_COMMANDS -DHAS_TBFP -DHAS_TBFP_FLOW_CONTROL)
 
 #set(CMAKE_CXX_FLAGS "-Wall -Wno-dev -Wl,-rpath=/home/abcd/libs/")
 set(KEY_VAL_MAP -DHAS_FLASH_FS -DHAS_PARAM -DHAS_FLASH_FS_COMMANDS -DHAS_PARAM_COMMANDS -DHAS_TEST_PARAM -DHAS_TEST_FLASH_FS) 
@@ -140,4 +162,4 @@ set(KEY_VAL_MAP -DHAS_FLASH_FS -DHAS_PARAM -DHAS_FLASH_FS_COMMANDS -DHAS_PARAM_C
 idf_component_register(SRCS "main_thread.c" ${PATH_SRC}
                        INCLUDE_DIRS ${PATH_INC})
 # -DHAS_SX1262_POLL -DHAS_SPI_SW_CHIP_SELECT
-target_compile_options(${COMPONENT_TARGET} PUBLIC -Os   ${KEY_VAL_MAP} -DHAS_AXP192_COMMANDS -DHAS_AXP192 -DHAS_I2C0 -DHAS_I2C -DHAS_I2C_COMMANDS -DHAS_SPI_SW_CHIP_SELECT -DHAS_LED_COMMANDS  -DconfigSUPPORT_STATIC_ALLOCATION=1 -DHAS_MCU -DHAS_LOG -DHAS_TEST_GPIO -DHAS_TEST_SPI -DHAS_TEST_SX1262 -DHAS_UNIT_TEST -DHAS_HW_TESTS -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SX1262_EX_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI3  -Wno-stringop-overflow)
+target_compile_options(${COMPONENT_TARGET} PUBLIC -Os   ${KEY_VAL_MAP} ${TBFP} -DHAS_AXP192_COMMANDS -DHAS_AXP192 -DHAS_I2C0 -DHAS_I2C -DHAS_I2C_COMMANDS -DHAS_SPI_SW_CHIP_SELECT -DHAS_LED_COMMANDS  -DconfigSUPPORT_STATIC_ALLOCATION=1 -DHAS_MCU -DHAS_LOG -DHAS_TEST_GPIO -DHAS_TEST_SPI -DHAS_TEST_SX1262 -DHAS_UNIT_TEST -DHAS_HW_TESTS -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SX1262_EX_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI3  -Wno-stringop-overflow)

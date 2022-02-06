@@ -1657,7 +1657,9 @@ static inline bool sx1262_poll_status(void) {
         case COM_STAT_COM_TX_DONE: {
             Sx1262Instance.tx_done = true;
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
+#ifdef TBFP_RETX
             res = tbfp_retx_tx_done(IF_SX1262);
+#endif /*TBFP_RETX*/
 #ifdef LED_INDEX_RED
             led_off(&Led[LED_INDEX_RED]);
 #endif
@@ -1768,7 +1770,9 @@ bool sx1262_process(void) {
 #ifdef HAS_LOG
     LOG_PARN(LORA, "CheckConnectivity=%u", Sx1262Instance.check_connectivity);
 #endif
+#ifdef HAS_SX1262_RETX
     res = sx1216_retx_proc();
+#endif
 
     if(Sx1262Instance.check_connectivity) {
         res = sx1262_is_connected();
@@ -1885,8 +1889,9 @@ bool sx1262_init(void) {
     Sx1262Instance.proc = true;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
     Sx1262Instance.debug = true;
-    Sx1262Instance.show_ascii = true;
-    Sx1262Instance.check_connectivity = false;
+    Sx1262Instance.show_ascii = false;
+    Sx1262Instance.show_bin = true;
+    Sx1262Instance.check_connectivity = true;
 #else
 #ifdef HAS_LOG
     res = set_log_level(LORA, LOG_LEVEL_INFO);

@@ -219,9 +219,11 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, 
     return res;
 }
 
-bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime) {
+bool tbfp_send_chat(uint8_t* tx_array, uint32_t len,
+                    Interfaces_t interface,
+                    uint8_t lifetime, TbfpAck_t ack) {
     bool res = false;
-    res = tbfp_send_text(FRAME_ID_CHAT, tx_array, len, interface, lifetime, ACK_NO_NEED);
+    res = tbfp_send_text(FRAME_ID_CHAT, tx_array, len, interface, lifetime, ack);
     return res;
 }
 

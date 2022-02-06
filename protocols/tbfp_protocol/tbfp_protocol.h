@@ -29,7 +29,8 @@ bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state);
 bool tbfp_send(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime, TbfpAck_t ack);
 bool tbfp_send_tunnel(uint8_t* tx_array, uint32_t len, Interfaces_t interface, TbfpAck_t ack);
 bool tbfp_send_cmd(uint8_t* tx_array, uint32_t len, Interfaces_t interface);
-bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime);
+bool tbfp_send_chat(uint8_t* tx_array, uint32_t len,
+                    Interfaces_t interface, uint8_t lifetime,TbfpAck_t ack);
 bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface);
 bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface, uint8_t preamble_val);
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset);
