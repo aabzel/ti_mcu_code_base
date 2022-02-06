@@ -8,6 +8,7 @@
   TASK(LORA)                \
   TASK(RS232)               \
   TASK(SX1262)              \
+  TASK(TBFP)                \
   TASK(WDT)                 \
   TASK(UART0_FWD)           \
   TASK(UART1_FWD)

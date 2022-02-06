@@ -14,7 +14,7 @@ bool sx1262_retx_init(void){
 
 bool sx1216_retx_proc(void){
     bool res = false;
-    if(true==Sx1262Instance.tx_done){
+    if(Sx1262Instance.tx_done){
         if(0<Sx1262Instance.ReTxFsm.retx_cnt){
             Sx1262Instance.ReTxFsm.retx_cnt--;
             res= sx1262_start_tx(Sx1262Instance.ReTxFsm.TxFrame, Sx1262Instance.ReTxFsm.tx_frame_len, 0);

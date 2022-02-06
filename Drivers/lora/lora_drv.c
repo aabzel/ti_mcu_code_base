@@ -14,6 +14,7 @@
 #endif
 #ifdef HAS_TBFP
 #include "tbfp_protocol.h"
+#include "tbfp_re_tx_ack_fsm.h"
 #endif
 //#include "core_driver.h"
 #include "data_utils.h"
@@ -114,7 +115,7 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     memset(TxPayload, 0, sizeof(TxPayload));
     bool is_retx_idle = true;
 #ifdef HAS_SX1262
-    is_retx_idle = is_sx1262_retx_idle();
+    is_retx_idle = is_tbfp_retx_idle(&TbfpProtocol[IF_SX1262]);
 #endif
     if((pause_ms < tx_time_diff_ms) &&
             (true == is_retx_idle) && (min_tx_unit<=count)) {
@@ -159,7 +160,7 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
         if((0 < tx_len) && (tx_len <= sizeof(TxPayload))) {
 #ifdef HAS_TBFP
                 LOG_DEBUG(LORA, " Tunnel Len:%u bytes", tx_len);
-                res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262);
+                res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262, ACK_NEED);
                 if(res) {
                     LoRaInterface.tx_ok_cnt++;
                 } else {

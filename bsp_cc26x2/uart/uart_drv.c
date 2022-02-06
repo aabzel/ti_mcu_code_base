@@ -579,3 +579,6 @@ bool uart_deinit(uint8_t uart_num) {
 
     return res;
 }
+
+
+

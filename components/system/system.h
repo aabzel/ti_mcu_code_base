@@ -15,11 +15,11 @@ typedef enum eInterfaces_t {
     IF_LOOPBACK = 3,/*for self Test*/
     IF_UART1 = 4, /*for RTCM3 source*/
     IF_SX1262 = 5,
-    IF_CNT = 6,
-    IF_UART0 = 7,
-    IF_BLE = 8,
-    IF_SPI0 = 9,
-    IF_NONE = 10,
+    IF_CNT = 7,
+    IF_UART0 = 8,
+    IF_BLE = 9,
+    IF_SPI0 = 10,
+    IF_NONE = 11,
 #ifdef HAS_IAR
 }  Interfaces_t;
 #else

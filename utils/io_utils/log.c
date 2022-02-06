@@ -190,6 +190,9 @@ const char* facility2str(log_facility_t facility) {
     case CLI:
         facility_str = "CLI";
         break;
+    case RETX:
+        facility_str = "RETX";
+        break;
     case UBX:
         facility_str = "UBX";
         break;

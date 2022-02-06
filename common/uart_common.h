@@ -39,6 +39,10 @@ typedef struct xUartHandle_t {
     volatile uint8_t* rx_buff;
     uint8_t rx_byte_cnt;
     uint8_t tx_byte_cnt;
+    uint8_t rx_byte_cnt_prev;
+    uint8_t tx_byte_cnt_prev;
+    uint32_t rx_byte_rate;
+    uint32_t tx_byte_rate;
     volatile flowCnt_t cnt;
     flowCnt_t cnt_prev;
     uint32_t rx_buff_size;
@@ -70,6 +74,7 @@ extern UartHandle_t huart[UART_COUNT];
 bool uart_common_init(uint8_t uart_num);
 #endif
 
+bool uart_calc_byte_rate(void);
 bool uart_send_banner(uint8_t uart_num, char pattern);
 uint32_t calc_uart_transfer_time_ms(uint32_t baudrate, uint32_t bytes);
 uint32_t calc_uart_transfer_time_us(uint32_t baudrate, uint32_t bytes);

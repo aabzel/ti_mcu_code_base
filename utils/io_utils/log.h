@@ -70,6 +70,7 @@ typedef enum eLog_facility_t {
     NMEA,
     NVS,
     PARAM,
+    RETX,
     RF,
     RTCM,
     SPI,

@@ -32,8 +32,9 @@ extern "C" {
 #define TBFP_OVERHEAD_SIZE (sizeof(TbfHeader_t) + TBFP_SIZE_CRC )
 
 typedef enum xFrameId_t {
-    FRAME_ID_CMD = 0x44,    /*D*/
+    FRAME_ID_ACK = 0x41,    /*A*/
     FRAME_ID_CHAT = 0x43,   /*C*/
+    FRAME_ID_CMD = 0x44,    /*D*/
     FRAME_ID_PING = 0x50,   /*P*/
     FRAME_ID_TUNNEL = 0x54, /*T matryoshka*/
     FRAME_ID_PONG = 0x90,   /**/

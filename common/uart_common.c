@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "data_utils.h"
 #ifdef HAS_UART
 #include "uart_drv.h"
 #endif
@@ -35,6 +36,20 @@ uint32_t calc_uart_transfer_time_ms(uint32_t baudrate, uint32_t bytes) {
     float byte_train_duration = byte_time * bytes;
     tx_time_us = (uint32_t)(byte_train_duration * 1000.0f);
     return tx_time_us;
+}
+
+bool uart_calc_byte_rate(void){
+    bool res = false;
+    uint8_t uart_num=0;
+    for(uart_num=0;uart_num<ARRAY_SIZE(huart);uart_num++){
+        huart[uart_num].rx_byte_rate=huart[uart_num].rx_byte_cnt-huart[uart_num].rx_byte_cnt_prev;
+        huart[uart_num].rx_byte_cnt_prev = huart[uart_num].rx_byte_cnt;
+
+        huart[uart_num].tx_byte_rate=huart[uart_num].tx_byte_cnt-huart[uart_num].tx_byte_cnt_prev;
+        huart[uart_num].tx_byte_cnt_prev = huart[uart_num].tx_byte_cnt;
+        res = true;
+    }
+    return res;
 }
 
 #ifdef HAS_UART

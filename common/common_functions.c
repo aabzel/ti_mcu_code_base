@@ -42,6 +42,10 @@
 #include "health_monitor.h"
 #endif
 
+#ifdef HAS_TBFP
+#include "tbfp_re_tx_ack_fsm.h"
+#endif
+
 #ifdef HAS_CAN
 #include "can_drv.h"
 #endif /*HAS_CAN*/
@@ -186,9 +190,13 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_LORA, LORA_PERIOD_US, lora_process, loop_start_time_us);
 #endif /*HAS_SX1262*/
 
+#ifdef HAS_TBFP
+    measure_task_interval(TASK_ID_TBFP, TBFP_PERIOD_US, tbfp_retx_proc, loop_start_time_us);
+#endif /*HAS_TBFP*/
+
 #ifdef HAS_NMEA
     measure_task_interval(TASK_ID_NMEA, NMEA_PERIOD_US, nmea_proc, loop_start_time_us);
-#endif /*HAS_SX1262*/
+#endif /*HAS_NMEA*/
 
 #ifdef HAS_ZED_F9P
     measure_task_interval(TASK_ID_ZED_F9P, ZED_F9P_PERIOD_US, zed_f9p_proc, loop_start_time_us);
