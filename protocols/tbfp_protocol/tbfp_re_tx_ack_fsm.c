@@ -24,15 +24,17 @@ bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
     if (instance && array && (0<len)) {
         memcpy(instance->tx_frame, array, len);
         instance->tx_frame_len = len;
+        uint32_t time_stamp = get_time_ms32();
         if (IF_SX1262 == instance->interface) {
            instance->ReTxFsm.retx_cnt = TBFP_RETX_TRY_MAX;
            res = sx1262_start_tx(instance->tx_frame,
                                 instance->tx_frame_len, TX_SINGLE_MODE);
            if(res) {
+               instance->ReTxFsm.time_stamp_start_ms = time_stamp;
+               instance->ReTxFsm.CurState = TBFP_WAIT_TX_DONE;
                LOG_DEBUG(RETX,"%s Send Try:%u",
                          interface2str(instance->interface),
                          TBFP_RETX_TRY_MAX - instance->ReTxFsm.retx_cnt+1);
-               instance->ReTxFsm.CurState = TBFP_WAIT_TX_DONE;
            } else {
                instance->ReTxFsm.CurState = TBFP_IDLE;
            }
@@ -45,7 +47,7 @@ bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
 
 bool tbfp_retx_init(TbfpProtocol_t *instance){
     bool res = false;
-    if(instance){
+    if (instance) {
         instance->ReTxFsm.CurState = TBFP_IDLE;
         instance->ReTxFsm.retx_cnt = 0;
         res = true;
@@ -62,6 +64,7 @@ static bool tbfp_proc_retx_wait_tx_done(TbfpProtocol_t *instance,
     switch(instance->ReTxFsm.input){
         case TBFP_IN_TX_DONE:
             instance->ReTxFsm.CurState= TBFP_WAIT_ACK;
+            instance->ReTxFsm.time_stamp_start_ms = time_stamp_cur;
             LOG_DEBUG(RETX,"%s TxDoneOk", interface2str(instance->interface));
             res = true;
             break;
@@ -95,7 +98,7 @@ static bool tbfp_proc_retx_wait_ack(TbfpProtocol_t *instance, uint32_t time_stam
 
     switch(instance->ReTxFsm.input){
         case TBFP_IN_RX_ACK:
-            instance->ReTxFsm.CurState=TBFP_IDLE;
+            instance->ReTxFsm.CurState = TBFP_IDLE;
             instance->ReTxFsm.spin_cnt++;
             LOG_DEBUG(RETX,"%s AckOk", interface2str(instance->interface));
             res = true;

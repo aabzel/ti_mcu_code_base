@@ -122,7 +122,7 @@ extern "C" {
 #define TBFP_COMMANDS
 #endif
 
-#ifdef HAS_TELEMATIC
+#ifdef HAS_TELEMATIC_COMMANDS
 #include "telematic_commands.h"
 #else
 #define TELEMATIC_COMMANDS
