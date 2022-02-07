@@ -29,7 +29,7 @@ bool test_tbfp_tunnel(void){
     uint8_t number_tx_frame = 11;
     for(i=0;i<number_tx_frame;i++){
         LOG_INFO(TBFP,"SendBigFrame %u",i);
-        EXPECT_TRUE(tbfp_send(BigRtcm3Message, sizeof(BigRtcm3Message), IF_LORA, 0));
+        EXPECT_TRUE(tbfp_send(BigRtcm3Message, sizeof(BigRtcm3Message), IF_LORA, 0, ACK_NO_NEED));
         uint32_t count =0, cnt=0;
         do{
             LOG_DEBUG(TBFP,"TxPart:%u", cnt++);
@@ -54,7 +54,7 @@ bool test_tbfp_rtcm_path(void) {
     EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_LOOPBACK], IF_LOOPBACK,0xA5));
     EXPECT_TRUE(rtcm3_protocol_init(&Rtcm3Protocol[IF_LOOPBACK], IF_LOOPBACK, false));
     for (i=1; i<500;i++) {
-        EXPECT_TRUE_NUM(tbfp_send((uint8_t* )rtcm3_message, sizeof(rtcm3_message), IF_LOOPBACK, 0),i);
+        EXPECT_TRUE_NUM(tbfp_send((uint8_t* )rtcm3_message, sizeof(rtcm3_message), IF_LOOPBACK, 0,ACK_NO_NEED),i);
         EXPECT_EQ(i,Rtcm3Protocol[IF_LOOPBACK].rx_pkt_cnt);
     }
 

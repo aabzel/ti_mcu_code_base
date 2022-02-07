@@ -17,7 +17,7 @@ extern "C" {
 
 #define TBFP_PERIOD_US 1000
 #define WAIT_TX_DONE_TIME_OUT_MS 400
-#define WAIT_ACK_TIME_OUT_MS ((WAIT_TX_DONE_TIME_OUT_MS*2)+100)
+#define WAIT_ACK_TIME_OUT_MS ((WAIT_TX_DONE_TIME_OUT_MS)+50)
 
 typedef enum eTbfpAck_t{
   ACK_NO_NEED= 0,

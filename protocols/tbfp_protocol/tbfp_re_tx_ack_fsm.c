@@ -211,7 +211,7 @@ bool tbfp_retx_ack(TbfpProtocol_t *instance, uint16_t ser_num){
                               instance->ReTxFsm.expected_ser_num,
                               ser_num);
         }else{
-            LOG_INFO(RETX,"%s RxAckSn:%u", interface2str(instance->interface), ser_num);
+            LOG_DEBUG(RETX,"%s RxAckSn:%u", interface2str(instance->interface), ser_num);
         }
         instance->ReTxFsm.input = TBFP_IN_RX_ACK;
         LOG_DEBUG(RETX,"%s State:%s InPut:%s",

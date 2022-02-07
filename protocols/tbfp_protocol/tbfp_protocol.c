@@ -205,7 +205,7 @@ static bool tbfp_send_ack(uint16_t snum, Interfaces_t interface){
     if(false==res){
         LOG_ERROR(TBFP, "SendAckErr");
     }else{
-        LOG_INFO(TBFP, "SendAckOk");
+        LOG_DEBUG(TBFP, "SendAckOk");
     }
     return res;
 }
@@ -377,7 +377,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     LOG_DEBUG(TBFP, "%s ProcPayload", interface2str(interface));
     switch(payload[0]) {
     case FRAME_ID_ACK: {
-        LOG_INFO(TBFP, "RxAck");
+        LOG_DEBUG(TBFP, "RxAck");
         uint16_t ser_num=0;
         memcpy(&ser_num, &payload[1], 2);
         res = tbfp_retx_ack(&TbfpProtocol[interface], ser_num);

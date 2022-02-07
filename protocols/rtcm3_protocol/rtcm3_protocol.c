@@ -195,7 +195,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
                     if(instance->forwarding[interface]) {
 #ifdef HAS_TBFP
                         /*Wrap to TBFP*/
-                        res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, interface, 0);
+                        res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, interface, 0, ACK_NO_NEED);
                         if(false == res) {
                             instance->lost_pkt_cnt[interface]++;
                         }
