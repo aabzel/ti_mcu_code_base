@@ -8,6 +8,7 @@
 
 #define DEV_SEL_SX1262 0
 #define DEV_SEL_SX1261 1
+#define RX_CONTINUOUS_MODE 0xFFFFFF
 
 // Table 13-41: RampTime Definition
 // RampTime Value RampTime (μs)

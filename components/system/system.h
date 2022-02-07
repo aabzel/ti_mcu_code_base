@@ -4,6 +4,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef enum eRetx_t{
+  RETX_NO_NEED= 0,
+  RETX_NEED =1,
+}Retx_t;
+
+
 #ifdef HAS_IAR
 typedef __packed  enum eInterfaces_t {
 #else
@@ -27,7 +33,7 @@ typedef enum eInterfaces_t {
 #endif
 
 bool system_calc_byte_rate(void);
-bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface);
+bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface, Retx_t retx);
 bool interface_valid(Interfaces_t interface);
 const char* interface2str(Interfaces_t interface);
 #ifdef HAS_HARVESTER_V1

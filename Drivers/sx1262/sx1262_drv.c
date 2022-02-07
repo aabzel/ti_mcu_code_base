@@ -916,7 +916,7 @@ bool sx1262_conf_rx(void) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
-    // res = sx1262_start_rx(0xFFFFFF) && res;
+    // res = sx1262_start_rx(RX_CONTINUOUS_MODE) && res;
     return res;
 }
 #endif
@@ -1634,7 +1634,7 @@ static inline bool sx1262_poll_status(void) {
         switch(Sx1262Instance.dev_status.command_status) {
         case COM_STAT_DATA_AVAIL: {
             res = sx1262_proc_data_aval();
-            res = sx1262_start_rx(0xFFFFFF);
+            res = sx1262_start_rx(RX_CONTINUOUS_MODE);
         } break;
         case COM_STAT_COM_TIMEOUT:
 #ifdef HAS_LOG
@@ -1662,7 +1662,7 @@ static inline bool sx1262_poll_status(void) {
 #endif /*HAS_TBFP_RETX*/
 #ifdef LED_INDEX_RED
             led_off(&Led[LED_INDEX_RED]);
-#endif
+#endif /*LED_INDEX_RED*/
 #ifdef HAS_SX1262_BIT_RATE
             float tx_real_bit_rate = 0.0;
             uint32_t tx_duration_ms = 0;
@@ -1682,7 +1682,7 @@ static inline bool sx1262_poll_status(void) {
 
             Sx1262Instance.tx_done_cnt++;
             LoRaInterface.tx_done_cnt++;
-            res = sx1262_start_rx(0xFFFFFF);
+            res = sx1262_start_rx(RX_CONTINUOUS_MODE);
         } break;
         default:
             res = false;
@@ -2011,7 +2011,7 @@ bool sx1262_init(void) {
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
         res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
 
-        res = sx1262_start_rx(0xFFFFFF) && res;
+        res = sx1262_start_rx(RX_CONTINUOUS_MODE) && res;
         if(res) {
 #ifdef HAS_LOG
             LOG_INFO(LORA, "StartRx");
@@ -2024,7 +2024,7 @@ bool sx1262_init(void) {
         // Sx1262Instance.set_sync_word = SYNC_WORD;
 
         Sx1262Instance.sync_reg = true;
-        res = sx1262_start_rx(0xFFFFFF) && res;
+        res = sx1262_start_rx(RX_CONTINUOUS_MODE) && res;
     } else {
 #ifdef HAS_LOG
         LOG_ERROR(LORA, "SX1262LinkErr");

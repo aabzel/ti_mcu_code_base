@@ -104,14 +104,30 @@ bool interface_valid(Interfaces_t interface) {
     return res;
 }
 
-bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface) {
+static bool sys_sent_sx1262(uint8_t* array, uint32_t len, Retx_t retx){
     bool res = false;
+    switch(retx){
+    case RETX_NEED:
+        res = tbfp_retx_start(&TbfpProtocol[IF_SX1262], array, len);
+        break;
+    case RETX_NO_NEED:
+        res = sx1262_start_tx(array, len, TX_SINGLE_MODE);
+        break;
+    default:
+        res = false;
+        break;
+    }
+    return res;
+}
+
+bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface, Retx_t retx) {
+    bool res = false;
+    LOG_DEBUG(SYS, "%s Send", interface2str(interface));
     switch(interface) {
 #if defined(HAS_SX1262) ||  defined(X86_64)
     case IF_SX1262: {
 #ifdef HAS_MCU
-        res = tbfp_retx_start(&TbfpProtocol[IF_SX1262], array, len);
-        /*res = sx1262_start_tx(array, len, TX_SINGLE_MODE);*/
+        res = sys_sent_sx1262( array,  len,  retx);
 #else
         /*ForUnitTest on PC*/
         res = tbfp_proc(&array[0], len, IF_SX1262, true);

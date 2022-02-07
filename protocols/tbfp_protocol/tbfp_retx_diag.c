@@ -10,11 +10,11 @@ char* tbfp_retx_in2str(TbfpReTxInput_t in){
     char *name="?";
     switch(in) {
         case TBFP_IN_NONE :  name="None";break;
-        case TBFP_IN_RX_ACK: name="RxAck";break;
         case TBFP_IN_RX_ACK_TIME_OUT :name="RxAckTineOut";break;
         case TBFP_IN_TX_DONE_TIME_OUT:name="TxDoneTimeOut";break;
         case TBFP_IN_TX_FRAME:name="TxFrame"; break;
         case TBFP_IN_TX_DONE: name="TxDone"; break;
+        case TBFP_IN_RX_ACK: name="RxAck";break;
         default: break;
     }
     return name;

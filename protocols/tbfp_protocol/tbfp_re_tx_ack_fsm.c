@@ -108,7 +108,11 @@ static bool tbfp_proc_retx_wait_ack(TbfpProtocol_t *instance, uint32_t time_stam
             instance->ReTxFsm.state = TBFP_IDLE;
             instance->ReTxFsm.time_stamp_start_ms =get_time_ms32();
             instance->ReTxFsm.spin_cnt++;
-            LOG_DEBUG(RETX,"%s AckOk", interface2str(instance->interface));
+            LOG_DEBUG(RETX,"%s AckOk After %u try",
+                      interface2str(instance->interface),
+                      TBFP_RETX_TRY_MAX-instance->ReTxFsm.retx_cnt);
+            instance->ReTxFsm.retx_cnt = 0;
+            time_stamp_diff = 0;
             res = true;
             break;
         case TBFP_IN_RX_ACK_TIME_OUT:
@@ -201,14 +205,21 @@ bool tbfp_retx_proc(void){
 bool tbfp_retx_ack(TbfpProtocol_t *instance, uint16_t ser_num){
     bool res = false;
     if (instance) {
-        if(instance->ReTxFsm.expected_ser_num == ser_num){
-            instance->ReTxFsm.input = TBFP_IN_RX_ACK;
-            LOG_DEBUG(RETX,"%s State:%s InPut:%s",
-                      interface2str(instance->interface),
-                      tbfp_retx_state2str(instance->ReTxFsm.state),
-                      tbfp_retx_in2str(instance->ReTxFsm.input));
-            res = true;
+        if(instance->ReTxFsm.expected_ser_num != ser_num){
+            LOG_WARNING(RETX,"%s ExpAckSn:%u RxAckSn:%u",
+                              interface2str(instance->interface),
+                              instance->ReTxFsm.expected_ser_num,
+                              ser_num);
+        }else{
+            LOG_INFO(RETX,"%s RxAckSn:%u", interface2str(instance->interface), ser_num);
         }
+        instance->ReTxFsm.input = TBFP_IN_RX_ACK;
+        LOG_DEBUG(RETX,"%s State:%s InPut:%s",
+                  interface2str(instance->interface),
+                  tbfp_retx_state2str(instance->ReTxFsm.state),
+                  tbfp_retx_in2str(instance->ReTxFsm.input));
+        res = true;
+
     }
     return res;
 }

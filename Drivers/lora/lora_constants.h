@@ -24,7 +24,6 @@
 #define OPCODE_SIZE 1
 #define MHZ_TO_FRF 1048576 /* ((float)XTAL_FREQ_HZ))*10000000.0f)*/
 
-
 /*LoRa ModParam1- spreading factor */
 typedef enum eSpreadingFactor_t {
     SF5 = 0x05,  /*32 Chips / Symbol*/
