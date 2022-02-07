@@ -9,15 +9,15 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "tbfp_types.h"
+//#include "tbfp_types.h"
 
 #include "system.h"
 
 #define TBFP_RETX_TRY_MAX 3
 
 #define TBFP_PERIOD_US 1000
-#define WAIT_TX_DONE_TIME_OUT_MS 2000
-#define WAIT_ACK_TIME_OUT_MS 2000
+#define WAIT_TX_DONE_TIME_OUT_MS 400
+#define WAIT_ACK_TIME_OUT_MS ((WAIT_TX_DONE_TIME_OUT_MS*2)+100)
 
 typedef enum eTbfpAck_t{
   ACK_NO_NEED= 0,
@@ -42,11 +42,12 @@ typedef enum eTbfpReTxState_t {
 typedef struct xTbfpReTxFsm_t{
     uint32_t time_stamp_start_ms;
     uint32_t err_cnt;
+    uint32_t ack_cnt;
     uint32_t spin_cnt;
     uint8_t retx_cnt;
     uint16_t expected_ser_num;
     TbfpReTxInput_t input;
-    TbfpReTxState_t CurState;
+    TbfpReTxState_t state;
 }TbfpReTxFsm_t;
 
 

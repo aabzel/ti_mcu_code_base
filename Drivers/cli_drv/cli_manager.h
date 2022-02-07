@@ -19,9 +19,6 @@
 #define SHELL_MAX_ARG_COUNT 12
 
 
-//#define CMD_PREFIX "cmd "
-
-
 extern uint32_t cli_task_cnt;
 extern bool cli_init_done;
 extern bool cli_echo;

@@ -12,8 +12,46 @@
 #include "system.h"
 #include "table_utils.h"
 #include "tbfp_protocol.h"
+#include "tbfp_retx_diag.h"
 #include "writer_config.h"
 #include "writer_generic.h"
+
+
+static bool tbfp_diag_retx(void) {
+    bool res = false;
+    Interfaces_t interface;
+    static const table_col_t cols[] = {
+        {8, "interf"},
+        {9, "spinCnt"},
+        {9, "state"},
+        {9, "input"},
+        {9, "Ack"},
+        {9, "Dur"},
+        {9, "ReTx"},
+        {9, "SN"},
+        {7, "Err"},
+    };
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
+        if(TbfpProtocol[interface].interface==interface){
+            io_printf(TSEP);
+            io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.spin_cnt);
+            io_printf(" %s " TSEP, tbfp_retx_state2str(TbfpProtocol[interface].ReTxFsm.state));
+            io_printf(" %s " TSEP, tbfp_retx_in2str(TbfpProtocol[interface].ReTxFsm.input));
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.ack_cnt);
+            io_printf(" %5u " TSEP, TbfpProtocol[interface].ReTxFsm.time_stamp_start_ms);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.retx_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.expected_ser_num);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.err_cnt);
+            io_printf(CRLF);
+            res = true;
+        }
+    }
+
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    return res;
+}
 
 static bool tbfp_diag(void) {
     bool res = false;
@@ -99,6 +137,19 @@ static bool tbfp_error(void) {
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
 }
+
+bool tbfp_diag_retx_command(int32_t argc, char* argv[]) {
+    bool res = false;
+    if(0 <= argc) {
+        res = true;
+    }
+    if(res) {
+        res = tbfp_diag_retx();
+    }
+    return res;
+}
+
+
 
 bool tbfp_diag_command(int32_t argc, char* argv[]) {
     bool res = false;

@@ -13,6 +13,7 @@ extern "C" {
 #include "tbfp_protocol_parser.h"
 #include "tbfp_re_tx_ack_fsm_types.h"
 #include "tbfp_constants.h"
+#include "system.h"
 
 typedef union uTbfpFlags_t{
     uint8_t byte;

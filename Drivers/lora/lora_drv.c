@@ -109,7 +109,7 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     uint32_t tx_time_diff_ms = 2 * pause_ms;
     tx_time_diff_ms = cur_time_stamp_ms - tx_done_time_stamp_ms;
     uint32_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
-    LOG_DEBUG(LORA, "FiFoCnt Len:%u", count);
+    LOG_PARN(LORA, "FiFoCnt Len:%u", count);
     fifo_index_t tx_len = 0;
     uint8_t TxPayload[MAX_LORA_PAYLOAD_SIZE] = {0};
     memset(TxPayload, 0, sizeof(TxPayload));

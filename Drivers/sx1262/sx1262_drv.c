@@ -1657,9 +1657,9 @@ static inline bool sx1262_poll_status(void) {
         case COM_STAT_COM_TX_DONE: {
             Sx1262Instance.tx_done = true;
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
-#ifdef TBFP_RETX
+#ifdef HAS_TBFP_RETX
             res = tbfp_retx_tx_done(IF_SX1262);
-#endif /*TBFP_RETX*/
+#endif /*HAS_TBFP_RETX*/
 #ifdef LED_INDEX_RED
             led_off(&Led[LED_INDEX_RED]);
 #endif
