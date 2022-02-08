@@ -9,6 +9,7 @@ typedef enum eRetx_t{
   RETX_NEED =1,
 }Retx_t;
 
+extern uint32_t send_err_cnt;
 
 #ifdef HAS_IAR
 typedef __packed  enum eInterfaces_t {

@@ -590,7 +590,7 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         if(false == flow_ctrl_ok) {
             TbfpProtocol[interface].err_cnt++;
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "FlowErr %s", interface2str(interface));
+            LOG_DEBUG(TBFP, "FlowErr %s", interface2str(interface));
 #endif
         }else{
 

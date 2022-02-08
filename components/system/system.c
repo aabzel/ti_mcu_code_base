@@ -44,6 +44,8 @@
 #error "That API only for Generic"
 #endif
 
+uint32_t send_err_cnt = 0;
+
 const char* interface2str(Interfaces_t interface) {
     const char* name = "???";
     switch(interface) {
@@ -183,7 +185,8 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface, Retx_t re
     } break;
     }
     if(false == res) {
-        LOG_ERROR(SYS, "SendIfErr: %u=%s", interface, interface2str(interface));
+        LOG_DEBUG(SYS, "SendIfErr: %u=%s", interface, interface2str(interface));
+        send_err_cnt++;
     }
     return res;
 }

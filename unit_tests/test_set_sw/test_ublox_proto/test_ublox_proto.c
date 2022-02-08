@@ -9,6 +9,7 @@
 #include "ubx_protocol.h"
 #include "ubx_types.h"
 #include "unit_test_check.h"
+#include "ubx_constants.h"
 
 const uint8_t ubx_baud_115200_message[28] = {
   0xB5, 0x62,
@@ -63,9 +64,9 @@ bool test_ublox_proto_err_len(void) {
 }
   
 bool test_ublox_proto_types(void) {
-#ifdef X86_64
    LOG_INFO(SYS,"%s()",__FUNCTION__);
-#endif
+   EXPECT_EQ(92, sizeof(NavPvt_t));
+   EXPECT_EQ(1, sizeof(UbxReceiverMode_t));
    EXPECT_EQ(4, sizeof(ConfigurationKeyID_t));
    EXPECT_EQ(13, sizeof(UbxCfgCfg_t));
    EXPECT_EQ(40, sizeof(UbxCfgTmode3Data_t_t));

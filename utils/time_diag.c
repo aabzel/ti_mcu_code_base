@@ -11,7 +11,7 @@ bool print_time_date(struct tm* time_date) {
     bool res = false;
     if(NULL != time_date) {
         io_printf("time: %02u:%02u:%02u" CRLF, time_date->tm_hour, time_date->tm_min, time_date->tm_sec);
-        io_printf("date: %u/%u/%u" CRLF, time_date->tm_mday, time_date->tm_mon, time_date->tm_year);
+        io_printf("date: %u/%u/%u" CRLF, time_date->tm_mday, time_date->tm_mon+1, time_date->tm_year);
         res = true;
     }
     return res;

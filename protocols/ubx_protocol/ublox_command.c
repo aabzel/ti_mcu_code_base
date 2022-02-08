@@ -12,6 +12,7 @@
 #include "log.h"
 #include "table_utils.h"
 #include "time_diag.h"
+#include "ubx_diag.h"
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
 #include "writer_config.h"
@@ -82,6 +83,21 @@ bool ubx_print_key_val_command(int32_t argc, char* argv[]) {
     return res;
 }
 #endif
+
+
+bool ubx_diag_base_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(0 == argc) {
+        io_printf("FixTipe: %u %s" CRLF, NavInfo.FixType, FixType2Str(NavInfo.FixType));
+        io_printf("RxMode: %u %s" CRLF, NavInfo.BaseRxMode, ReceiverMode2Str(NavInfo.BaseRxMode));
+        io_printf("SvInMinDur: %u s" CRLF, NavInfo.svin_min_dur_s);
+        io_printf("FixedPosAcc: %f m" CRLF, NavInfo.fixedPosAcc_mm/1000.0);
+        res = true;
+    }else{
+        LOG_ERROR(UBX, "Usage: ubb");
+    }
+    return res;
+}
 
 bool ubx_diag_command(int32_t argc, char* argv[]) {
     bool res = false;

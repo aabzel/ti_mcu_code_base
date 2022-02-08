@@ -181,7 +181,7 @@ bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
             res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
             if(false == res) {
                 LoRaInterface.ovfl_err_cnt++;
-                LOG_ERROR(LORA, "TxQueueOverFlow");
+                LOG_DEBUG(LORA, "TxQueueOverFlow");
             }
     } else {
         LoRaInterface.err_cnt++;

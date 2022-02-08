@@ -7,9 +7,35 @@
 #include "debug_info.h"
 #include "io_utils.h"
 #include "ubx_protocol.h"
+#include "ubx_constants.h"
+
+char* ReceiverMode2Str(uint8_t mode){
+    char* name = "?";
+    switch(mode){
+        case RX_MODE_DISABLED: name = "Dis";break;
+        case RX_MODE_SURVEY_IN: name = "SurveyIn";break;
+        case RX_MODE_FIXED: name = "Fixed"; break;
+        default : break;
+    }
+    return name;
+}
+
+char* FixType2Str(uint8_t mode){
+    char* name = "?";
+    switch(mode){
+        case  FIX_TYPE_NO_FIX: name = "No";break;
+        case  FIX_TYPE_DEAD_RECKONING_ONLY: name = "DeadRecOnly";break;
+        case  FIX_TYPE_2D_FIX: name = "2D"; break;
+        case  FIX_TYPE_3D_FIX: name = "3D"; break;
+        case  FIX_TYPE_GNSS_DEAD_RECKONING_COMBINED: name = "GnssDrComb"; break;
+        case  FIX_TYPE_TIME_ONLY_FIX: name = "TIME"; break;
+        default : name = "??"; break;
+    }
+    return name;
+}
 
 char* class2str(uint8_t class_id) {
-    char* name = "undef";
+    char* name = "?";
     switch(class_id) {
     case UBX_CLA_NAV:
         name = "NAV";

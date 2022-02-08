@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "timer_utils.h"
 #include "gnss_utils.h"
 #include "timer_utils.h"
 #include "zed_f9p_drv.h"
@@ -25,7 +26,11 @@ char *GnssDot2str(GnssCoordinate_t coordinate){
 }
 
 char *RtkFixDur2str(uint32_t time_ms){
-    snprintf(name, sizeof(name), "%7.1fs=%7.1fmin", ((double)time_ms) / 1000.0,((double)time_ms) / 60000.0);
+    snprintf(name, sizeof(name), "%7.1fs=%7.1fmin=%7.2f h",
+             MSEC_2_S(time_ms),
+             MSEC_2_MIN(time_ms),
+             MSEC_2_H(time_ms)
+             );
     return name;
 }
 

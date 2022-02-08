@@ -20,7 +20,7 @@ extern "C" {
 #error "Ublox driver requires UART driver"
 #endif
 
-#define UBX_PERIOD_US S_2_US(3)
+#define UBX_PERIOD_US S_2_US(4)
 #define UBX_SEND_TRY 15
 #define UBX_SEND_TIME_OUT_MS 2000
 #define UBX_RX_TIME_OUT_MS S_2_MS(15)
@@ -94,11 +94,16 @@ typedef struct xNavInfo_t {
     uint32_t acc_roll;
     uint32_t acc_pitch;
     uint32_t acc_heading;
+    UbxReceiverMode_t BaseRxMode;
+    uint32_t fixedPosAcc_mm; /* Fixed position 3D accuracy*/
+    uint32_t svin_min_dur_s; /* Survey-in minimum duration in seconds*/
+    GnssFixType_t FixType;
 
     /*velocity*/
 } NavInfo_t;
 
 extern NavInfo_t NavInfo;
+
 bool ubx_proc(void);
 bool ubx_send_message_ack(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);

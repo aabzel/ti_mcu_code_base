@@ -8,9 +8,11 @@ extern "C" {
 #endif
 
 #define SEC_2_US(SEC) ((SEC)*1000000U)
+#define MIN_2_US(MIN) ((uint32_t)(60000000 * (MIN)))
 #define MSEC_2_US(MSEC) ((MSEC)*1000U)
 #define MSEC_2_S(MSEC) (((double)MSEC)/1000.0)
-#define MIN_2_US(MIN) ((uint32_t)(60000000 * (MIN)))
+#define MSEC_2_MIN(MSEC) ( (((double)MSEC/1000.0)/60.0) )
+#define MSEC_2_H(MSEC) ( ((((double)MSEC/1000.0)/60.0)/60.0) )
 
 uint64_t get_runtime_counter(void);
 uint64_t get_time_tick64(void);
