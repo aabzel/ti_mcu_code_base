@@ -43,6 +43,7 @@ typedef struct xTbfpReTxFsm_t{
     uint32_t time_stamp_start_ms;
     uint32_t err_cnt;
     uint32_t ack_cnt;
+    uint32_t ack_time_out_cnt;
     uint32_t spin_cnt;
     uint8_t retx_cnt;
     uint16_t expected_ser_num;
