@@ -5,7 +5,8 @@
 #include "sys_config_common.h"
 
 /*Hardware config*/
-#define UART_NUM_CLI (0)
+#define UART_NUM_CLI 0
+#define UART_NUM_GNSS 1
 #define MAIN_SPI_NUM 3
 #define I2C_MASTER_NUM 0
 #define AXP192_I2C      I2C_MASTER_NUM

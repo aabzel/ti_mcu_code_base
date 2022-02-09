@@ -8,6 +8,7 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "fifo_char.h"
 #include "gpio_drv.h"
 #include "esp_log.h"
 #include "bit_utils.h"
@@ -20,8 +21,6 @@
 
 uint32_t g_uart_rx_cnt = 0;
 
-#define ECHO_TEST_TXD (1)
-#define ECHO_TEST_RXD (3)
 #define ECHO_TEST_RTS (UART_PIN_NO_CHANGE)
 #define ECHO_TEST_CTS (UART_PIN_NO_CHANGE)
 
@@ -31,15 +30,33 @@ uint32_t g_uart_rx_cnt = 0;
 
 #define BUF_SIZE (1024)
 
+
+UartCfg_t UartCfg[2]={
+                      {.tx_io_num=DIO_UART_CLI_TX,
+                       .rx_io_num=DIO_UART_CLI_RX},
+                      {.tx_io_num=DIO_GNSS_TXD,
+                       .rx_io_num=DIO_GNSS_RXD}
+};
+
 //static intr_handle_t handle_console;
 
-uart_config_t UartConfig = {
+uart_config_t UartConfig[2] = {{
     .baud_rate = ECHO_UART_BAUD_RATE,
     .data_bits = UART_DATA_8_BITS,
     .parity    = UART_PARITY_DISABLE,
     .stop_bits = UART_STOP_BITS_1,
     .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
     .source_clk = UART_SCLK_APB,
+},
+
+{
+    .baud_rate = 9600,
+    .data_bits = UART_DATA_8_BITS,
+    .parity    = UART_PARITY_DISABLE,
+    .stop_bits = UART_STOP_BITS_1,
+    .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
+    .source_clk = UART_SCLK_APB,
+}
 };
 
 bool usart_set_baudrate(uint8_t uart_num, uint16_t baudrate){
@@ -73,22 +90,79 @@ static void uart0_rx_thread(void *arg){
 	}
 }
 
+
+static void uart1_rx_thread(void *arg){
+    uint8_t data[128];
+    size_t length = 0;
+    bool res = false;
+    while (1) {
+        length = 0;
+        uart_get_buffered_data_len(UART_NUM_CLI, (size_t*)&length);
+        if(0<length){
+#ifdef HAS_UART_RX_DEBUG
+            gpio_toggle(GPIO_NUM_4);
+#endif
+            length =(size_t) uart_read_bytes(UART_NUM_GNSS, data, length, 100);
+            int i=0;
+            for(i=0;i<length;i++){
+                res = fifo_push(&huart[1].RxFifo, data[i]);
+                if(false == res) {
+                    huart[1].error_cnt++;
+                }
+#ifdef HAS_UART1_FWD
+               if(true == huart[1].is_uart_fwd[0]) {
+                  res = fifo_push(&huart[0].TxFifo, data[i]);
+                  if(false == res) {
+                      huart[0].error_cnt++;
+                  }
+        }
+#endif /*HAS_UART1_FWD*/
+                huart[UART_NUM_GNSS].tx_int = true;
+                huart[UART_NUM_GNSS].rx_int = true;
+            }
+        }
+        vTaskDelay(10 / portTICK_RATE_MS);
+    }
+}
+
+
 static bool init_uart_one(uint8_t uart_num, char* name) {
     bool res = true;
     strncpy(huart[uart_num].name, name, sizeof(huart[uart_num].name));
     int intr_alloc_flags = 0;
-    ESP_ERROR_CHECK(uart_driver_install(uart_num, BUF_SIZE * 2, 0, 0, NULL, intr_alloc_flags));
-    ESP_ERROR_CHECK(uart_param_config(uart_num, &UartConfig));
-    ESP_ERROR_CHECK(uart_set_pin(uart_num, ECHO_TEST_TXD, ECHO_TEST_RXD, ECHO_TEST_RTS, ECHO_TEST_CTS));
+    esp_err_t ret;
+    ret=uart_driver_install(uart_num, BUF_SIZE * 2, 0, 0, NULL, intr_alloc_flags);
+    if(ESP_OK==ret){
+
+    }
+    ret=uart_param_config(uart_num, &UartConfig[uart_num]);
+    if(ESP_OK==ret){
+
+    }
+    ret=uart_set_pin(uart_num, UartCfg[uart_num].tx_io_num, UartCfg[uart_num].rx_io_num, ECHO_TEST_RTS, ECHO_TEST_CTS);
+    if(ESP_OK==ret){
+
+    }
 
     // register new UART subroutine
     //uart_isr_register(UART_NUM_CLI, uart_intr_handle, NULL, ESP_INTR_FLAG_LEVEL1, NULL);
     // enable RX interrupt
-   	ESP_ERROR_CHECK(uart_enable_rx_intr(uart_num));
+    ret=uart_enable_rx_intr(uart_num);
+    if(ESP_OK==ret){
+
+    }
     char str[20] = "0";
     snprintf(str, sizeof(str), "UART%u_task", uart_num);
     uart_write_bytes(uart_num, (const char *) str, strlen(str));
-    xTaskCreate(uart0_rx_thread, str, 5000, NULL, 10, NULL);
+    switch(uart_num){
+    case 0:
+        xTaskCreate(uart0_rx_thread, str, 5000, NULL, 10, NULL);
+        break;
+    case 1:
+        xTaskCreate(uart1_rx_thread, str, 5000, NULL, 10, NULL);
+        break;
+    default : break;
+    }
     return res;
 }
 // Receive buffer to collect incoming data
@@ -121,6 +195,7 @@ static void IRAM_ATTR uart_intr_handle(void *arg){
 bool uart_init(void) {
     bool res = true;
     res = init_uart_one(UART_NUM_CLI,"CLI");
+    res = init_uart_one(UART_NUM_GNSS,"GNSS");
     return res;
 }
 
