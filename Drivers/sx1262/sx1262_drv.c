@@ -1144,13 +1144,13 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint16_t tx_len, uint32_t timeout_s) {
             }
         } else {
 #ifdef HAS_LOG
-            LOG_ERROR(LORA, "TxBusy");
+            LOG_ERROR(LORA, "BusyTxInProc");
 #endif
             res = false;
         }
     } else {
 #ifdef HAS_LOG
-        LOG_ERROR(LORA, "TxMute");
+        LOG_PARN(LORA, "TxMute Len:%u byte",tx_len);
 #endif
         res = false;
     }
@@ -1884,10 +1884,10 @@ bool sx1262_init(void) {
         LOG_INFO(LORA, "MutexInitOk");
     }
 #endif
-
 #ifdef ESP32
     Sx1262Instance.proc = true;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
+    Sx1262Instance.tx_mute = true;
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = false;
     Sx1262Instance.show_bin = true;
@@ -1899,13 +1899,13 @@ bool sx1262_init(void) {
     Sx1262Instance.check_connectivity = true;
     Sx1262Instance.debug = false;
     Sx1262Instance.show_bin = false;
-#endif
-    res=sx1262_retx_init();
+    Sx1262Instance.tx_mute = false;
+#endif /*ESP32*/
+    res = sx1262_retx_init();
 
 #ifdef HAS_LOG
     LOG_INFO(LORA, "InitSX1262...");
 #endif
-    Sx1262Instance.tx_mute = false;
     Sx1262Instance.sync_rssi = true;
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
