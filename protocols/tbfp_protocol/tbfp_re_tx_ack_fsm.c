@@ -108,7 +108,7 @@ static bool tbfp_proc_retx_wait_ack(TbfpProtocol_t *instance, uint32_t time_stam
             instance->ReTxFsm.state = TBFP_IDLE;
             instance->ReTxFsm.time_stamp_start_ms =get_time_ms32();
             instance->ReTxFsm.spin_cnt++;
-            instance->ReTxFsm.ack_cnt++;
+            instance->ReTxFsm.ack_rx_cnt++;
             LOG_DEBUG(RETX,"%s AckOk After %u try",
                       interface2str(instance->interface),
                       TBFP_RETX_TRY_MAX-instance->ReTxFsm.retx_cnt);

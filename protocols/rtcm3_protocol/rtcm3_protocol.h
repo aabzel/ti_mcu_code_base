@@ -56,6 +56,7 @@ typedef struct xRtcm3Protocol_t {
     uint32_t lost_pkt_cnt[IF_CNT];
     uint32_t uart_lost_pkt_cnt;
     uint32_t crc_err_cnt;
+    uint32_t crc_err_cnt_prev;
     uint32_t load_len;
     uint32_t err_cnt;
 #ifdef HAS_DEBUG
@@ -84,6 +85,7 @@ typedef struct xRtcm3Protocol_t {
 
 extern Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];
 
+bool rtcm3_check(void);
 bool rtcm3_calc_byte_rate(void);
 bool rtcm3_generate_frame(uint8_t *arr, uint32_t size);
 bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state);

@@ -25,7 +25,8 @@ static bool tbfp_diag_retx(void) {
         {9, "spinCnt"},
         {9, "state"},
         {9, "input"},
-        {9, "Ack"},
+        {9, "AckRx"},
+        {9, "AckTx"},
         {9, "ReTx"},
         {9, "sileCnt"},
         {7, "Err"},
@@ -38,7 +39,8 @@ static bool tbfp_diag_retx(void) {
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.spin_cnt);
             io_printf(" %7s " TSEP, tbfp_retx_state2str(TbfpProtocol[interface].ReTxFsm.state));
             io_printf(" %7s " TSEP, tbfp_retx_in2str(TbfpProtocol[interface].ReTxFsm.input));
-            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.ack_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.ack_rx_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.ack_tx_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.retx_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.silence_cnt);
             io_printf(" %5u " TSEP, TbfpProtocol[interface].ReTxFsm.err_cnt);
@@ -55,13 +57,18 @@ static bool tbfp_diag(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
-        {8, "interf"},  {9, "rxCnt"},   {9, "txCnt"},
+        {8, "interf"},
+        {9, "rxCnt"},
+        {9, "txCnt"},
 
 #ifdef HAS_DEBUG
 #ifdef HAS_TBFP_FLOW_CONTROL
-        {9, "maxFlow"}, {9, "curFlow"},
+        {9, "maxFlow"},
+        {9, "curFlow"},
 #endif
-        {9, "preCnt"},   {9, "minLen"}, {9, "maxLen"},   {7, "debug"},
+        {9, "preCnt"},
+        {9, "minLen"},
+        {9, "maxLen"},
 #endif /*HAS_DEBUG*/
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
@@ -83,7 +90,6 @@ static bool tbfp_diag(void) {
             io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].min_len);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].max_len);
-            io_printf(" %5u " TSEP, TbfpProtocol[interface].debug);
             io_printf(CRLF);
     #endif /*HAS_DEBUG*/
             res = true;

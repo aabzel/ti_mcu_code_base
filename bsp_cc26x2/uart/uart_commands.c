@@ -130,11 +130,11 @@ bool uart_rate_command(int32_t argc, char* argv[]){
         uint32_t baud_rate = 0;
         const table_col_t cols[] = {{5, "Num"},
                                     {10, "baudRate"},
-                                    {10, "Rx"},
-                                    {10, "Tx"},
                                     {10, "RxMin"},
-                                    {10, "TxMin"},
+                                    {10, "Rx"},
                                     {10, "RxMax"},
+                                    {10, "TxMin"},
+                                    {10, "Tx"},
                                     {10, "TxMax"},
                                     {10, "name"}};
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
@@ -147,11 +147,11 @@ bool uart_rate_command(int32_t argc, char* argv[]){
             } else {
                 io_printf("          " TSEP, baud_rate);
             }
-            io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.cur);
-            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.cur);
             io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.min);
-            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.min);
+            io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.cur);
             io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.max);
+            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.min);
+            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.cur);
             io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.max);
             io_printf(" %7s  " TSEP, huart[uart_num].name);
             io_printf(CRLF);

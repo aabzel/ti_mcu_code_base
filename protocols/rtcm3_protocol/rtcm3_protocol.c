@@ -49,6 +49,20 @@ bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state) {
     return res;
 }
 
+bool rtcm3_check(void){
+    bool res = true;
+    Interfaces_t intf;
+    for(intf =(Interfaces_t) 0; intf<IF_CNT; intf++){
+        uint32_t diff = Rtcm3Protocol[intf].crc_err_cnt- Rtcm3Protocol[intf].crc_err_cnt_prev;
+        Rtcm3Protocol[intf].crc_err_cnt_prev = Rtcm3Protocol[intf].crc_err_cnt;
+        if (0 < diff) {
+            res = false;
+            LOG_ERROR(RTCM, "%s CRCErr %u", interface2str(intf), diff);
+        }
+    }
+
+}
+
 bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool lora_fwd) {
     rtcm3_reset_rx(instance, WAIT_INIT);
     memset(instance, 0x0, sizeof(Rtcm3Protocol_t));

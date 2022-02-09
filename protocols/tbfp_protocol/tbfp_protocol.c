@@ -205,6 +205,7 @@ static bool tbfp_send_ack(uint16_t snum, Interfaces_t interface){
     if(false==res){
         LOG_ERROR(TBFP, "SendAckErr");
     }else{
+        TbfpProtocol[interface].ReTxFsm.ack_tx_cnt++;
         LOG_DEBUG(TBFP, "SendAckOk");
     }
     return res;
@@ -641,6 +642,39 @@ bool tbfp_generate_frame(uint8_t* buff, uint32_t buff_len, Interfaces_t interfac
         print_mem(buff, frame_len + 1, true, false, true, false);
 
         res = true;
+    }
+    return res;
+}
+
+bool tbfp_check(void){
+    bool res = true;
+    Interfaces_t interface=(Interfaces_t)0;
+    for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
+        if(TbfpProtocol[interface].interface==interface){
+            uint32_t diff =TbfpProtocol[interface].ReTxFsm.silence_cnt-TbfpProtocol[interface].ReTxFsm.silence_cnt_prev ;
+            if(0<diff ){
+                res = false;
+                LOG_ERROR(RETX,"%s LackOfAck %u times",interface2str(interface),diff);
+            }
+            TbfpProtocol[interface].ReTxFsm.silence_cnt_prev = TbfpProtocol[interface].ReTxFsm.silence_cnt ;
+
+            diff=TbfpProtocol[interface].crc_err_cnt-TbfpProtocol[interface].crc_err_cnt_prev;
+            if(0<diff ){
+                res = false;
+                LOG_ERROR(TBFP,"%s CrcErr %u times",interface2str(interface),diff);
+            }
+            TbfpProtocol[interface].crc_err_cnt_prev=TbfpProtocol[interface].crc_err_cnt;
+
+
+            diff=TbfpProtocol[interface].flow_torn_cnt-TbfpProtocol[interface].flow_torn_cnt_prev;
+            if(0<diff ){
+                res = false;
+                LOG_ERROR(TBFP,"%s FlowTorn %u times",interface2str(interface),diff);
+            }
+            TbfpProtocol[interface].flow_torn_cnt_prev=TbfpProtocol[interface].flow_torn_cnt;
+
+
+        }
     }
     return res;
 }
