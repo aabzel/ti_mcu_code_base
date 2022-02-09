@@ -42,11 +42,11 @@ bool uart_calc_byte_rate(void){
     bool res = false;
     uint8_t uart_num=0;
     for(uart_num=0;uart_num<ARRAY_SIZE(huart);uart_num++){
-        huart[uart_num].rx_byte_rate=huart[uart_num].rx_byte_cnt-huart[uart_num].rx_byte_cnt_prev;
-        huart[uart_num].rx_byte_cnt_prev = huart[uart_num].rx_byte_cnt;
+        huart[uart_num].rx_byte_rate=huart[uart_num].cnt.byte_rx -huart[uart_num].cnt_prev.byte_rx;
+        huart[uart_num].cnt_prev.byte_rx = huart[uart_num].cnt.byte_rx;
 
-        huart[uart_num].tx_byte_rate=huart[uart_num].tx_byte_cnt-huart[uart_num].tx_byte_cnt_prev;
-        huart[uart_num].tx_byte_cnt_prev = huart[uart_num].tx_byte_cnt;
+        huart[uart_num].tx_byte_rate=huart[uart_num].cnt.byte_tx-huart[uart_num].cnt_prev.byte_tx;
+        huart[uart_num].cnt_prev.byte_tx = huart[uart_num].cnt.byte_tx;
         res = true;
     }
     return res;

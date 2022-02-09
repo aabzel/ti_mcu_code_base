@@ -36,8 +36,8 @@ bool diag_page_uarts(ostream_t* stream) {
 
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
-    io_printf("rx %u byte " CRLF, huart[0].rx_byte_cnt);
-    io_printf("tx %u byte " CRLF, huart[0].tx_byte_cnt);
+    io_printf("rx %u byte " CRLF, huart[0].cnt.byte_rx);
+    io_printf("tx %u byte " CRLF, huart[0].cnt.byte_tx);
     io_printf("tx cpl %u cnt " CRLF, huart[0].tx_cpl_cnt);
     return true;
 }
