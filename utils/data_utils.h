@@ -23,6 +23,12 @@ extern "C" {
         enum { ASSERT_CONCAT(assert_line_, __LINE__) = 1 / (!!(e)) };                                                  \
     }
 
+typedef struct xU32Value_t{
+    uint32_t cur;
+    uint32_t min;
+    uint32_t max;
+}U32Value_t;
+
 typedef union uType64Union_t {
     uint64_t u64;
     int64_t s64;

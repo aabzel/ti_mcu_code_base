@@ -183,6 +183,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             led_blink(&Led[LED_INDEX_RED], 30);
 #endif
             uint16_t packet_length = frame_length+RTCM3_CRC24_SIZE;
+            instance->rx_byte +=  packet_length;
             if(MAX_LORA_PAYLOAD_SIZE < packet_length ){
                 instance->jumbo_frame_cnt++;
                 LOG_DEBUG(RTCM, "TooBigFrame %u byte",packet_length,MAX_LORA_PAYLOAD_SIZE);
@@ -329,5 +330,25 @@ bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Interfaces_t interf
         }
     }
 
+    return res;
+}
+
+bool rtcm3_calc_byte_rate(void){
+    bool res = false;
+    Interfaces_t  interface;
+    for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
+        if(interface==Rtcm3Protocol[interface].interface){
+            Rtcm3Protocol[interface].rx_rate.cur=Rtcm3Protocol[interface].rx_byte -Rtcm3Protocol[interface].rx_byte_prev;
+            Rtcm3Protocol[interface].rx_rate.min=min32u(Rtcm3Protocol[interface].rx_rate.cur,Rtcm3Protocol[interface].rx_rate.min);
+            Rtcm3Protocol[interface].rx_rate.max=max32u(Rtcm3Protocol[interface].rx_rate.cur,Rtcm3Protocol[interface].rx_rate.max);
+            Rtcm3Protocol[interface].rx_byte_prev = Rtcm3Protocol[interface].rx_byte;
+
+            Rtcm3Protocol[interface].tx_rate.cur=Rtcm3Protocol[interface].tx_byte -Rtcm3Protocol[interface].tx_byte_prev;
+            Rtcm3Protocol[interface].tx_rate.min=min32u(Rtcm3Protocol[interface].tx_rate.cur,Rtcm3Protocol[interface].tx_rate.min);
+            Rtcm3Protocol[interface].tx_rate.max=max32u(Rtcm3Protocol[interface].tx_rate.cur,Rtcm3Protocol[interface].tx_rate.max);
+            Rtcm3Protocol[interface].tx_byte_prev = Rtcm3Protocol[interface].tx_byte;
+            res = true;
+        }
+    }
     return res;
 }
