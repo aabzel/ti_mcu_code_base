@@ -10,6 +10,7 @@ extern "C" {
 
 #include "protocol_common.h"
 #include "system.h"
+#include "data_utils.h"
 
 #define RTCM3_PREAMBLE 0xD3
 #define RTCM3_HEADER_SIZE 3U
@@ -55,6 +56,7 @@ typedef struct xRtcm3Protocol_t {
     uint32_t lost_pkt_cnt[IF_CNT];
     uint32_t uart_lost_pkt_cnt;
     uint32_t crc_err_cnt;
+    uint32_t crc_err_cnt_prev;
     uint32_t load_len;
     uint32_t err_cnt;
 #ifdef HAS_DEBUG
@@ -64,6 +66,12 @@ typedef struct xRtcm3Protocol_t {
     uint16_t max_len;
     uint16_t min_len;
 #endif
+    U32Value_t tx_rate;
+    U32Value_t rx_rate;
+    uint32_t rx_byte;
+    uint32_t rx_byte_prev;
+    uint32_t tx_byte;
+    uint32_t tx_byte_prev;
     Rtcm3Len_t exp_len;
     uint32_t read_crc;
     uint16_t ack_cnt;
@@ -77,6 +85,8 @@ typedef struct xRtcm3Protocol_t {
 
 extern Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];
 
+bool rtcm3_check(void);
+bool rtcm3_calc_byte_rate(void);
 bool rtcm3_generate_frame(uint8_t *arr, uint32_t size);
 bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state);
 bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool lora_fwd);

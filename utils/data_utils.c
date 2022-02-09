@@ -41,7 +41,7 @@ uint16_t min16u(uint16_t min16u_x1, uint16_t min16u_x2) {
     return (((min16u_x1) < (min16u_x2)) ? (min16u_x1) : (min16u_x2));
 }
 
-uint32_t rx_max32u(uint32_t max32u_x1, uint32_t max32u_x2) {
+uint32_t max32u(uint32_t max32u_x1, uint32_t max32u_x2) {
     return (((max32u_x1) > (max32u_x2)) ? (max32u_x1) : (max32u_x2));
 }
 
@@ -49,7 +49,7 @@ uint64_t rx_max64u(uint64_t max64u_x1, uint64_t max64u_x2) {
     return (((max64u_x1) > (max64u_x2)) ? (max64u_x1) : (max64u_x2));
 }
 
-uint32_t rx_min32u(uint32_t min32u_x1, uint32_t min32u_x2) {
+uint32_t min32u(uint32_t min32u_x1, uint32_t min32u_x2) {
     return (((min32u_x1) < (min32u_x2)) ? (min32u_x1) : (min32u_x2));
 }
 

@@ -14,6 +14,7 @@ UartHandle_t huart[UART_COUNT] = {0};
 
 bool uart_common_init(uint8_t uart_num) {
     memset(&huart[uart_num - 1], 0x00, sizeof(huart[uart_num - 1]));
+    huart[uart_num-1].rx_rate.min = 0xFFFFFFFF;
     return true;
 }
 #endif
@@ -40,13 +41,17 @@ uint32_t calc_uart_transfer_time_ms(uint32_t baudrate, uint32_t bytes) {
 
 bool uart_calc_byte_rate(void){
     bool res = false;
-    uint8_t uart_num=0;
-    for(uart_num=0;uart_num<ARRAY_SIZE(huart);uart_num++){
-        huart[uart_num].rx_byte_rate=huart[uart_num].rx_byte_cnt-huart[uart_num].rx_byte_cnt_prev;
-        huart[uart_num].rx_byte_cnt_prev = huart[uart_num].rx_byte_cnt;
+    uint8_t uart_num = 0;
+    for(uart_num = 0; uart_num<ARRAY_SIZE(huart); uart_num++) {
+        huart[uart_num].rx_rate.cur=huart[uart_num].cnt.byte_rx - huart[uart_num].cnt_prev.byte_rx;
+        huart[uart_num].rx_rate.min = min32u( huart[uart_num].rx_rate.min, huart[uart_num].rx_rate.cur);
+        huart[uart_num].rx_rate.max = max32u( huart[uart_num].rx_rate.max, huart[uart_num].rx_rate.cur);
+        huart[uart_num].cnt_prev.byte_rx = huart[uart_num].cnt.byte_rx;
 
-        huart[uart_num].tx_byte_rate=huart[uart_num].tx_byte_cnt-huart[uart_num].tx_byte_cnt_prev;
-        huart[uart_num].tx_byte_cnt_prev = huart[uart_num].tx_byte_cnt;
+        huart[uart_num].tx_rate.cur = huart[uart_num].cnt.byte_tx - huart[uart_num].cnt_prev.byte_tx;
+        huart[uart_num].tx_rate.min = min32u( huart[uart_num].tx_rate.min, huart[uart_num].tx_rate.cur);
+        huart[uart_num].tx_rate.max = max32u( huart[uart_num].tx_rate.max, huart[uart_num].tx_rate.cur);
+        huart[uart_num].cnt_prev.byte_tx = huart[uart_num].cnt.byte_tx;
         res = true;
     }
     return res;

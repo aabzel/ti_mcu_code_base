@@ -18,6 +18,10 @@
 #include "spi_drv.h"
 #endif
 
+#ifdef HAS_RTCM3
+#include "rtcm3_protocol.h"
+#endif
+
 #ifdef HAS_LOG
 #include "io_utils.h"
 #include "log.h"
@@ -82,7 +86,9 @@ const char* interface2str(Interfaces_t interface) {
     return name;
 }
 
+
 bool system_calc_byte_rate(void){
+    rtcm3_calc_byte_rate();
     uart_calc_byte_rate();
     return false;
 }
