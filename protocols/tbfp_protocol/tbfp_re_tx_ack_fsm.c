@@ -121,7 +121,8 @@ static bool tbfp_proc_retx_wait_ack(TbfpProtocol_t *instance, uint32_t time_stam
             instance->ReTxFsm.ack_time_out_cnt++;
             instance->ReTxFsm.time_stamp_start_ms = get_time_ms32();
             if(0==instance->ReTxFsm.retx_cnt){
-                LOG_ERROR(RETX,"%s LackAck %u ms Adter %u try",
+                instance->ReTxFsm.silence_cnt++;
+                LOG_DEBUG(RETX,"%s LackAck %u ms Adter %u try",
                           interface2str(instance->interface),
                           time_stamp_diff,
                           TBFP_RETX_TRY_MAX);

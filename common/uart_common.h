@@ -39,6 +39,10 @@ typedef struct xUartHandle_t {
     volatile uint8_t* rx_buff;
     uint32_t rx_byte_rate;
     uint32_t tx_byte_rate;
+    uint32_t rx_byte_rate_min;
+    uint32_t tx_byte_rate_min;
+    uint32_t rx_byte_rate_max;
+    uint32_t tx_byte_rate_max;
     volatile flowCnt_t cnt;
     flowCnt_t cnt_prev;
     uint32_t rx_buff_size;
