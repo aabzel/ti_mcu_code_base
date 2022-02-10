@@ -25,7 +25,6 @@ bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
     if (instance && array && (0<len)) {
         memcpy(instance->tx_frame, array, len);
         instance->tx_frame_len = len;
-        uint32_t time_stamp = get_time_ms32();
         if (IF_SX1262 == instance->interface) {
            instance->ReTxFsm.retx_cnt = TBFP_RETX_TRY_MAX;
            res = sx1262_start_tx(instance->tx_frame,
@@ -50,8 +49,10 @@ bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
 bool tbfp_retx_init(TbfpProtocol_t *instance){
     bool res = false;
     if (instance) {
+        memset(&(instance->ReTxFsm), 0, sizeof(TbfpReTxFsm_t));
         instance->ReTxFsm.state = TBFP_IDLE;
         instance->ReTxFsm.retx_cnt = 0;
+        instance->ReTxFsm.ack_time_out_cnt=0;
         res = true;
     }
     return res;
@@ -71,7 +72,7 @@ static bool tbfp_proc_retx_wait_tx_done(TbfpProtocol_t *instance,
             res = true;
             break;
         case TBFP_IN_TX_DONE_TIME_OUT:
-            instance->ReTxFsm.state=TBFP_IDLE;
+            instance->ReTxFsm.state = TBFP_IDLE;
             instance->ReTxFsm.err_cnt++;
             LOG_ERROR(RETX,"%s LackTxDone after %u ms", interface2str(instance->interface) ,time_stamp_diff);
             time_stamp_diff=0;
@@ -126,6 +127,7 @@ static bool tbfp_proc_retx_wait_ack(TbfpProtocol_t *instance, uint32_t time_stam
                           interface2str(instance->interface),
                           time_stamp_diff,
                           TBFP_RETX_TRY_MAX);
+                instance->ReTxFsm.no_reply_cnt++;
             }else{
                 LOG_DEBUG(RETX,"%s LackAck %u ms", interface2str(instance->interface), time_stamp_diff);
             }

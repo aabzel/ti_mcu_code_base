@@ -28,7 +28,7 @@ static bool tbfp_diag_retx(void) {
         {9, "AckRx"},
         {9, "AckTx"},
         {9, "ReTx"},
-        {9, "sileCnt"},
+        {9, "NoRepl"},
         {7, "Err"},
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
@@ -42,7 +42,7 @@ static bool tbfp_diag_retx(void) {
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.ack_rx_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.ack_tx_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.retx_cnt);
-            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.silence_cnt);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.no_reply_cnt);
             io_printf(" %5u " TSEP, TbfpProtocol[interface].ReTxFsm.err_cnt);
             io_printf(CRLF);
             res = true;

@@ -103,6 +103,7 @@ static bool test_sx1262_fifo_one(uint8_t pattern) {
     EXPECT_TRUE(sx1262_write_buffer(0, write_payload, FIFO_SIZE));
     EXPECT_TRUE(sx1262_read_buffer(0, read_payload, FIFO_SIZE));
 
+    /*TODO Add custom memcmp with index of byte difference*/
     EXPECT_EQ(0, memcmp(write_payload, read_payload, FIFO_SIZE));
     return true;
 }
