@@ -78,13 +78,13 @@ static void uart0_rx_thread(void *arg){
     	length = 0;
     	uart_get_buffered_data_len(UART_NUM_CLI, (size_t*)&length);
     	if(0<length){
-    	    huart[0].rx_cnt = +length;
 #ifdef HAS_UART_RX_DEBUG
           	gpio_toggle(GPIO_NUM_4);
 #endif
         	length =(size_t) uart_read_bytes(UART_NUM_CLI, data, length, 100);
           	int i=0;
         	for(i=0;i<length;i++){
+        	    huart[0].rx_cnt++;
             	huart[UART_NUM_CLI].tx_int = true;
             	huart[UART_NUM_CLI].rx_int = true;
 #ifdef HAS_CLI
@@ -105,13 +105,13 @@ static void uart1_rx_thread(void *arg){
         length = 0;
         uart_get_buffered_data_len(UART_NUM_GNSS, (size_t*)&length);
         if(0<length){
-            huart[1].rx_cnt=+length;
 #ifdef HAS_UART_RX_DEBUG
             gpio_toggle(GPIO_NUM_4);
 #endif
             length =(size_t) uart_read_bytes(UART_NUM_GNSS, data, length, 100);
             int i=0;
             for(i=0;i<length;i++){
+               huart[1].rx_cnt++;
 #ifdef HAS_UART1_FWD
                if(true == huart[1].is_uart_fwd[0]) {
                   res = fifo_push(&huart[0].TxFifo, data[i]);

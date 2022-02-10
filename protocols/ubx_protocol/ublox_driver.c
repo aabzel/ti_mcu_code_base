@@ -367,11 +367,13 @@ static const UbxHeader_t PollLut[] = {
     {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC},
     {UBX_CLA_NAV, UBX_ID_NAV_VELNED},
     {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
-    {UBX_CLA_NAV, UBX_ID_NAV_PVT},
+#ifdef HAS_ZED_F9P
     {UBX_CLA_CFG, UBX_ID_CFG_TMODE3 },
+    {UBX_CLA_NAV, UBX_ID_NAV_PVT},
     {UBX_CLA_NAV, UBX_ID_NAV_ATT},
     {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
     {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
+#endif
 };
 
 bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers) {
