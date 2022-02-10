@@ -1,4 +1,4 @@
-#include "ublox_command.h"
+#include "ublox_commands.h"
 
 #include <stdbool.h>
 #include <stdio.h>

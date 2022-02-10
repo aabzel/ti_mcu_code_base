@@ -1811,7 +1811,7 @@ static void sx1262_thread(void* arg) {
             sx1262_process();
         }
 
-        vTaskDelay(1000 / portTICK_RATE_MS);
+        vTaskDelay(100 / portTICK_RATE_MS);
     }
 }
 #endif /*HAS_FREE_RTOS*/

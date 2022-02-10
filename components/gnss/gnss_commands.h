@@ -6,13 +6,13 @@ extern "C" {
 #endif
 
 #ifdef HAS_UBLOX
-#include "ublox_command.h"
+#include "ublox_commands.h"
 #else
 #define UBLOX_COMMANDS
 #endif
 
 #ifdef HAS_NMEA
-#include "nmea_command.h"
+#include "nmea_commands.h"
 #else
 #define NMEA_COMMANDS
 #endif

@@ -14,8 +14,15 @@
 #include "bit_utils.h"
 #include "uart_common.h"
 #include "driver/uart.h"
+#include "log.h"
 #ifdef HAS_CLI
 #include "uart_string_reader.h"
+#endif
+#ifdef HAS_NMEA
+#include "nmea_protocol.h"
+#endif
+#ifdef HAS_UBLOX
+#include "ubx_protocol.h"
 #endif
 #include "sys_config.h"
 
@@ -71,6 +78,7 @@ static void uart0_rx_thread(void *arg){
     	length = 0;
     	uart_get_buffered_data_len(UART_NUM_CLI, (size_t*)&length);
     	if(0<length){
+    	    huart[0].rx_cnt = +length;
 #ifdef HAS_UART_RX_DEBUG
           	gpio_toggle(GPIO_NUM_4);
 #endif
@@ -84,8 +92,6 @@ static void uart0_rx_thread(void *arg){
 #endif /*HAS_CLI*/
     	    }
     	}
-    	//vTaskYield();
-    	//taskYIELD();
     	vTaskDelay(10 / portTICK_RATE_MS);
 	}
 }
@@ -97,18 +103,15 @@ static void uart1_rx_thread(void *arg){
     bool res = false;
     while (1) {
         length = 0;
-        uart_get_buffered_data_len(UART_NUM_CLI, (size_t*)&length);
+        uart_get_buffered_data_len(UART_NUM_GNSS, (size_t*)&length);
         if(0<length){
+            huart[1].rx_cnt=+length;
 #ifdef HAS_UART_RX_DEBUG
             gpio_toggle(GPIO_NUM_4);
 #endif
             length =(size_t) uart_read_bytes(UART_NUM_GNSS, data, length, 100);
             int i=0;
             for(i=0;i<length;i++){
-                res = fifo_push(&huart[1].RxFifo, data[i]);
-                if(false == res) {
-                    huart[1].error_cnt++;
-                }
 #ifdef HAS_UART1_FWD
                if(true == huart[1].is_uart_fwd[0]) {
                   res = fifo_push(&huart[0].TxFifo, data[i]);
@@ -117,6 +120,19 @@ static void uart1_rx_thread(void *arg){
                   }
         }
 #endif /*HAS_UART1_FWD*/
+#ifdef HAS_NMEA
+                res = nmea_proc_byte(data[i]);
+                if(false==res){
+                    //LOG_ERROR(NMEA,"ProcByteErr 0x%x",data[i]);
+                }
+#endif /*HAS_NMEA*/
+
+#ifdef HAS_UBLOX
+                res = ubx_proc_byte(data[i]);
+                if(false==res){
+                   // LOG_ERROR(UBX,"ProcByteErr 0x%x",data[i]);
+                }
+#endif /*HAS_UBLOX*/
                 huart[UART_NUM_GNSS].tx_int = true;
                 huart[UART_NUM_GNSS].rx_int = true;
             }

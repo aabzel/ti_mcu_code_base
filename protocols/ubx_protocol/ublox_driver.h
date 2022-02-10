@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 #include <time.h>
 
+#include "timer_utils.h"
 #ifdef HAS_CLOCK
 #include "clocks.h"
 #endif
@@ -30,6 +31,9 @@ extern "C" {
 #define UBX_UART_NUM UART_NUM_ZED_F9P
 #endif
 
+#endif
+#ifdef HAS_UART1
+#define UBX_UART_NUM 1
 #endif
 
 typedef enum eReceiverMode_t {

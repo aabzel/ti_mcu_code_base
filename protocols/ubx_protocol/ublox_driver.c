@@ -10,6 +10,7 @@
 #include "log.h"
 #endif
 #include "uart_drv.h"
+#include "ubx_diag.h"
 #include "ubx_protocol.h"
 #include "ubx_types.h"
 
@@ -393,7 +394,9 @@ bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t la
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
         if(false == res) {
 #ifdef HAS_LOG
-            LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", UBX_CLA_CFG, UBX_ID_CFG_SET_VAL);
+            LOG_ERROR(UBX, "Send Class:0x%02x %s ID:0x%02x Error", UBX_CLA_CFG,
+                      class2str(UBX_CLA_CFG),
+                      UBX_ID_CFG_SET_VAL);
 #endif
         }
     }
@@ -420,11 +423,13 @@ bool ubx_proc(void) {
     res = ubx_send_message(PollLut[i].class, PollLut[i].id, NULL, 0);
     if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", PollLut[i].class, PollLut[i].id);
+        LOG_ERROR(UBX, "Send Class:0x%02x %s ID:0x%02x Error", PollLut[i].class,class2str(PollLut[i].class),
+                  PollLut[i].id);
 #endif
     } else {
 #ifdef HAS_LOG
-        LOG_DEBUG(UBX, "Send Class:0x%02x ID:0x%02x OK", PollLut[i].class, PollLut[i].id);
+        LOG_DEBUG(UBX, "Send Class:0x%02x %s ID:0x%02x OK", PollLut[i].class,class2str(PollLut[i].class),
+                  PollLut[i].id);
 #endif
     }
     i++;

@@ -2,6 +2,7 @@
 // http://traveleu.ru/map/GPSconverter.htm
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 
 #include "gnss_utils.h"

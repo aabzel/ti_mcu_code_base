@@ -28,14 +28,14 @@ bool diag_page_uarts(ostream_t* stream) {
               cmd_reader.error_count);
 
     io_printf(TABLE_LEFT "dbg_o " T_SEP);
-    io_printf("%16d " T_SEP, dbg_o.total_char_count);
-    io_printf("%12d " T_SEP, dbg_o.lost_char_count);
-    io_printf("%10d " T_SEP CRLF, dbg_o.error_count);
+    io_printf("%16lld " T_SEP, dbg_o.total_char_count);
+    io_printf("%12lld " T_SEP, dbg_o.lost_char_count);
+    io_printf("%10lld " T_SEP CRLF, dbg_o.error_count);
 
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
-    io_printf("rx %u byte " CRLF, huart[0].rx_byte_cnt);
-    io_printf("tx %u byte " CRLF, huart[0].tx_byte_cnt);
+   // io_printf("rx %u byte " CRLF, huart[0].rx_byte_cnt);
+   // io_printf("tx %u byte " CRLF, huart[0].tx_byte_cnt);
     io_printf("tx cpl %u cnt " CRLF, huart[0].tx_cpl_cnt);
     return true;
 }
@@ -138,7 +138,7 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
         if(0 < baud_rate) {
             io_printf(" %07u  " TSEP, baud_rate);
         } else {
-            io_printf("          " TSEP, baud_rate);
+            io_printf("          " TSEP);
         }
         io_printf(" %07u " TSEP, huart[uart_num].rx_cnt);
         io_printf(" %07u " TSEP, huart[uart_num].tx_cnt);
