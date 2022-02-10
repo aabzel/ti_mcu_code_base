@@ -88,7 +88,9 @@ const char* interface2str(Interfaces_t interface) {
 
 
 bool system_calc_byte_rate(void){
+#ifdef HAS_RTCM3
     rtcm3_calc_byte_rate();
+#endif
     uart_calc_byte_rate();
     return false;
 }
