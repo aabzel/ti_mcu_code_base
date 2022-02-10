@@ -21,8 +21,8 @@ bool tbfp_check_flow_control(
                              Interfaces_t interface,
                              uint16_t snum,
                              uint16_t *const prev_s_num,
-                             uint16_t *const con_flow,
-                             uint16_t *const max_con_flow
+                             uint32_t *const con_flow,
+                             uint32_t *const max_con_flow
                              ) ;
 bool tbfp_generate_frame(uint8_t* array, uint32_t len, Interfaces_t interface);
 bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state);

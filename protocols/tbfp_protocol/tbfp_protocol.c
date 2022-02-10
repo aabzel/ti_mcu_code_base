@@ -520,8 +520,8 @@ bool tbfp_check_flow_control(
                              Interfaces_t interface,
                              uint16_t snum,
                              uint16_t * const io_prev_s_num,
-                             uint16_t * const io_con_flow,
-                             uint16_t * const io_max_con_flow
+                             uint32_t * const io_con_flow,
+                             uint32_t * const io_max_con_flow
                              ) {
     bool res = false;
     uint16_t prev_s_num=*io_prev_s_num;

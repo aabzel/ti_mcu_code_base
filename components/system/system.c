@@ -138,6 +138,9 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface, Retx_t re
     case IF_SX1262: {
 #ifdef HAS_MCU
         res = sys_sent_sx1262( array,  len,  retx);
+        if(false==res){
+
+        }
 #else
         /*ForUnitTest on PC*/
         res = tbfp_proc(&array[0], len, IF_SX1262, true);

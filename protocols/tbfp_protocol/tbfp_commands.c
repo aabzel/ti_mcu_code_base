@@ -113,6 +113,7 @@ static bool tbfp_error(void) {
         {9, "TornFlow"},
         {9, "LostRx"},
 #endif
+        {9, "TxErCnt"},
          {9, "ErCnt"},
 #endif /*HAS_DEBUG*/
     };
@@ -131,6 +132,7 @@ static bool tbfp_error(void) {
             io_printf(" %7u " TSEP, TbfpProtocol[interface].flow_torn_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].lost_rx_frames);
     #endif
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].err_tx);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
             io_printf(CRLF);
     #endif /*HAS_DEBUG*/

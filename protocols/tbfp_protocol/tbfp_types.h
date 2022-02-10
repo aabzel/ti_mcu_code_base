@@ -48,6 +48,7 @@ typedef struct xTbfpProtocol_t {
     uint32_t crc_err_cnt;
     uint32_t crc_err_cnt_prev;
     uint32_t err_cnt;
+    uint32_t err_tx;
     uint32_t lack_frame_in_data;
 #ifdef HAS_DEBUG
     uint32_t preamble_cnt;
@@ -61,8 +62,8 @@ typedef struct xTbfpProtocol_t {
     uint16_t flow_torn_cnt_prev;
     uint16_t prev_s_num;
     uint16_t s_num;
-    uint16_t con_flow;
-    uint16_t max_con_flow;
+    uint32_t con_flow;
+    uint32_t max_con_flow;
 #endif
     TbfpReTxFsm_t ReTxFsm;
     Interfaces_t interface;

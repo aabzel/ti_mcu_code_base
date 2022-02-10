@@ -139,8 +139,8 @@ bool test_tbfp_proto_flow_ctrl(void) {
 bool test_tbfp_proto_flow_ctrl2(void) {
     LOG_DEBUG(TBFP, "%s():", __FUNCTION__);
     uint16_t prev_s_num=0;
-    uint16_t max_flow=0;
-    uint16_t con_flow=0;
+    uint32_t max_flow=0;
+    uint32_t con_flow=0;
     set_log_level(TBFP, LOG_LEVEL_PARANOID );
     EXPECT_TRUE( tbfp_check_flow_control(IF_LOOPBACK,1,&prev_s_num,&con_flow,&max_flow));
     EXPECT_EQ(1, prev_s_num);

@@ -33,6 +33,7 @@ typedef struct xLoRaIf_t {
     uint32_t tx_ok_cnt;
     uint32_t tx_err_cnt;
     uint32_t tx_done_cnt;
+    bool flush;
     Fifo_array_t FiFoLoRaCharTx;
 #if HAS_LORA_FIFO_ARRAYS
     FifoArray_t FiFoLoRaTx;

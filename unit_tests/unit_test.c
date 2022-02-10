@@ -5,6 +5,8 @@
 
 #ifdef HAS_MCU
 #include "clocks.h"
+#include "time_utils.h"
+#include "timer_utils.h"
 #endif /*HAS_MCU*/
 #include "convert.h"
 #include "io_utils.h"
