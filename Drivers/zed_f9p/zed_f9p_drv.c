@@ -256,6 +256,16 @@ bool zed_f9p_proc(void) {
 #ifdef HAS_UBLOX
 /*Radio Technical Commission for Maritime Services)*/
 
+static const keyValItem_t NormCfgLut[] = {
+    {CFG_UART1_BAUDRATE, 38400, SC_NONE},
+    {CFG_UART1INPROT_NMEA, 0, SC_NONE},
+    {CFG_UART1OUTPROT_NMEA, 1, SC_NONE},
+    {CFG_UART1OUTPROT_UBX, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_PVT_UART1,1 ,SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_PVT_USB, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1,1 ,SC_NONE},
+};
+
 static const keyValItem_t BaseCfgLutMain[] = {
     {CFG_UART1_BAUDRATE, 38400, SC_NONE},
     {CFG_UART1INPROT_NMEA, 0, SC_NONE},
@@ -264,9 +274,12 @@ static const keyValItem_t BaseCfgLutMain[] = {
     {CFG_UART1OUTPROT_NMEA, 0, SC_NONE},
     {CFG_UART1OUTPROT_RTCM3X, 1, SC_NONE},
     {CFG_UART1OUTPROT_UBX, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_PVT_UART1,1 ,SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1,1 ,SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_SVIN_UART1,1 ,SC_NONE},
     // sparkfun Output rate of the RTCM-3X-TYPE1005 Stationary RTK  reference station ARP (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1, SC_NONE},
-    /*12*/ {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1, SC_NONE},
+    {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1, SC_NONE},
 #ifdef HAS_GPS_CORRECTION
      // sparkfun Output rate of the RTCM-3X-TYPE1074 GPS MSM4 (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1, SC_GPS},
@@ -293,7 +306,7 @@ static const keyValItem_t BaseCfgLutMain[] = {
     {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1, SC_NONE},
 };
 
-
+#if 0
 static const keyValItem_t BaseCfgLutOpt[] = {
     {CFG_UART1_BAUDRATE, 38400, SC_NONE},
     {CFG_UART1INPROT_NMEA, 0, SC_NONE},
@@ -327,7 +340,30 @@ static const keyValItem_t BaseCfgLutOpt[] = {
     {CFG_MSGOUT_UBX_NAV_PVT_USB, 1, SC_NONE},
     {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1, SC_NONE},
 };
+#endif /*0*/
+#endif /*HAS_UBLOX*/
+
+
+
+static bool zed_f9p_deploy_norm(void) {
+    bool res = false, out_res = true;
+    uint32_t i = 0;
+    for(i = 0; i < ARRAY_SIZE(NormCfgLut); i++) {
+        res = ubx_cfg_set_val(NormCfgLut[i].key_id,
+                              (uint8_t*)&NormCfgLut[i].u_value.u8[0],
+                              ubx_keyid_2len(NormCfgLut[i].key_id), LAYER_MASK_RAM);
+        if(false == res) {
+#ifdef HAS_LOG
+            LOG_ERROR(ZED_F9P, "SetKeyErr 0x%x", NormCfgLut[i].key_id);
 #endif
+            out_res = false;
+        }
+    }
+
+    task_data[TASK_ID_NMEA].on = true;
+    return out_res;
+}
+
 
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m, RTKmode_t receiver_mode,
                          uint32_t fixed_position_3daccuracy_mm) {
@@ -618,7 +654,7 @@ bool zed_f9p_init(void) {
     if(res) {
         switch(ZedF9P.rtk_mode) {
         case RTK_NONE:
-            res = true;
+            res = zed_f9p_deploy_norm();
             break;
         case RTK_BASE_SURVEY_IN:
         case RTK_BASE_FIX:

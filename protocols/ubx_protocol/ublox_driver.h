@@ -62,6 +62,8 @@ typedef struct xNavInfo_t {
     int32_t hmsl;
     uint32_t h_acc;
     uint32_t v_acc;
+    uint32_t survey_in_mean_position_acc_mm;
+    uint32_t survey_in_observation_time;
     int32_t roll;
     int32_t pitch;
     int32_t heading;
@@ -78,14 +80,14 @@ typedef struct xNavInfo_t {
 
 extern NavInfo_t NavInfo;
 
-bool ubx_proc(void);
-bool ubx_send_message_ack(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
-bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
-bool ubx_driver_init(void);
-bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers);
 bool ubx_cfg_get_val(uint32_t key_id, uint8_t layers);
+bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers);
+bool ubx_driver_init(void);
+bool ubx_proc(void);
 bool ubx_proc_frame(UbloxProtocol_t* inst);
 bool ubx_reset_to_dflt(void);
+bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
+bool ubx_send_message_ack(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len);
 bool ubx_set_rate(uint16_t meas_rate_ms, uint16_t time_ref);
 #ifdef __cplusplus
 }

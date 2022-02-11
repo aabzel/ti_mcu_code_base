@@ -1,15 +1,15 @@
 #include "test_ublox_proto.h"
 
 #ifdef X86_64
-//#include <stdio.h>
 #include "log.h"
 #endif
 
 #include "array.h"
+#include "ubx_diag.h"
 #include "ubx_protocol.h"
 #include "ubx_types.h"
-#include "unit_test_check.h"
 #include "ubx_constants.h"
+#include "unit_test_check.h"
 
 const uint8_t ubx_baud_115200_message[28] = {
   0xB5, 0x62,
@@ -65,7 +65,7 @@ bool test_ublox_proto_err_len(void) {
   
 bool test_ublox_proto_types(void) {
    LOG_INFO(SYS,"%s()",__FUNCTION__);
-
+   EXPECT_STREQ("CLA:0x01=NAV ID:0x3b=SVIN",ClassId2str(UBX_CLA_NAV,0x3b));
    EXPECT_EQ(40, sizeof(NavSvin_t));
    EXPECT_EQ(1, sizeof(UbxReceiverMode_t));
    EXPECT_EQ(4, sizeof(ConfigurationKeyID_t));

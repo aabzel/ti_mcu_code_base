@@ -121,8 +121,7 @@ static char *NavId2str(uint8_t id){
 }
 
 char* ClassId2str(uint8_t cls, uint8_t id) {
-
-    static char name[20];
+    static char name[40];
     char* nameCl ="?";
     char* nameId ="?";
     switch(cls) {
@@ -162,8 +161,7 @@ char* ClassId2str(uint8_t cls, uint8_t id) {
         break;
     }
     snprintf(name,sizeof(name),"CLA:0x%02x=%s ID:0x%02x=%s",
-             cls,nameCl,
-             id,nameId);
+             cls,nameCl,             id,nameId);
     return name;
 }
 

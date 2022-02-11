@@ -203,6 +203,8 @@ static bool ubx_proc_nav_svin_frame(uint8_t* payload, uint16_t len){
     if( 40 <= len) {
         NavSvin_t Data = {0};
         memcpy(&Data, payload, sizeof(NavSvin_t));
+        NavInfo.survey_in_mean_position_acc_mm =  Data.meanAcc/10;
+        NavInfo.survey_in_observation_time= Data.dur;/*Passed survey-in observation time*/
         res = true;
     }
     return res;
@@ -377,17 +379,17 @@ bool ubx_proc_frame(UbloxProtocol_t* inst) {
 
     return res;
 }
-
+/*TODO: Adjust with 32bit keys*/
 static const UbxHeader_t PollLut[] = {
     {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC},
     {UBX_CLA_NAV, UBX_ID_NAV_VELNED},
     {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
 #ifdef HAS_ZED_F9P
-    {UBX_CLA_NAV, UBX_ID_NAV_SVIN },
+    //{UBX_CLA_NAV, UBX_ID_NAV_SVIN },
     {UBX_CLA_CFG, UBX_ID_CFG_TMODE3 },
-    {UBX_CLA_NAV, UBX_ID_NAV_PVT},
-    {UBX_CLA_NAV, UBX_ID_NAV_ATT},
-    {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
+   // {UBX_CLA_NAV, UBX_ID_NAV_PVT},
+    //{UBX_CLA_NAV, UBX_ID_NAV_ATT},
+    //{UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
     {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
 #endif
 };
