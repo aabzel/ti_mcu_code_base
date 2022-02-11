@@ -193,6 +193,9 @@ const char* facility2str(log_facility_t facility) {
     case RETX:
         facility_str = "RETX";
         break;
+    case GNSS:
+        facility_str = "GNSS";
+        break;
     case UBX:
         facility_str = "UBX";
         break;

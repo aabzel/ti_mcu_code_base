@@ -30,6 +30,10 @@
 #include "dac_drv.h"
 #endif /*HAS_DAC*/
 
+#ifdef HAS_GNSS
+#include "gnss_drv.h"
+#endif /*HAS_GNSS*/
+
 #ifdef HAS_GPIO
 #include "gpio_drv.h"
 #endif
@@ -201,6 +205,10 @@ void super_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_ZED_F9P
     measure_task_interval(TASK_ID_ZED_F9P, ZED_F9P_PERIOD_US, zed_f9p_proc, loop_start_time_us);
 #endif /*HAS_SX1262*/
+
+#ifdef HAS_GNSS
+    measure_task_interval(TASK_ID_GNSS, GNSS_PERIOD_US, gnss_proc, loop_start_time_us);
+#endif /*HAS_GNSS*/
 
 #ifdef HAS_FLASH_FS
     measure_task_interval(TASK_ID_FLASH_FS, FLASH_FS_PERIOD_US, flash_fs_proc, loop_start_time_us);

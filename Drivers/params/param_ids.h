@@ -8,7 +8,7 @@
 #include "param_types.h"
 
 //#define PARAM_CNT 32U
-#define PARAM_PERIOD_US S_2_US(3)
+#define PARAM_PERIOD_US SEC_2_US(3)
 
 typedef enum eId_t {
     PAR_ID_REBOOT_CNT = 1,

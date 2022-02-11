@@ -22,7 +22,7 @@ extern "C" {
 #error "Ublox driver requires UART driver"
 #endif
 
-#define UBX_PERIOD_US S_2_US(4)
+#define UBX_PERIOD_US SEC_2_US(4)
 #define UBX_SEND_TRY 15
 #define UBX_SEND_TIME_OUT_MS 2000
 #define UBX_RX_TIME_OUT_MS S_2_MS(15)

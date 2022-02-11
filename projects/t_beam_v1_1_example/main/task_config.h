@@ -8,7 +8,8 @@
   TASK(LORA)                \
   TASK(TBFP)                \
   TASK(NMEA)                \
-  TASK(UBX)                \
+  TASK(GNSS)                \
+  TASK(UBX)                 \
   TASK(SX1262)              \
 
 #endif /* TASKS_CONFIG_H */

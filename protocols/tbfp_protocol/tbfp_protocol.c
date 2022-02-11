@@ -49,6 +49,9 @@
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
 #endif
+#ifdef HAS_GNSS
+#include "gnss_drv.h"
+#endif
 
 #ifdef X86_64
 #include "log.h"
@@ -267,12 +270,12 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
 #endif
     pingFrame.coordinate.latitude = 99999.0;
     pingFrame.coordinate.longitude = 9999.0;
-#ifdef HAS_ZED_F9P
-    pingFrame.time_stamp = mktime(&ZedF9P.time_date);
+#ifdef HAS_GNSS
+    pingFrame.time_stamp = mktime(&Gnss.time_date);
 
-    res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
+    res = is_valid_gnss_coordinates(Gnss.coordinate_cur);
     if(res) {
-        pingFrame.coordinate = ZedF9P.coordinate_cur;
+        pingFrame.coordinate = Gnss.coordinate_cur;
     } else {
         /*invalid coordinate*/
         pingFrame.coordinate.latitude = 360.0;
@@ -304,9 +307,9 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
         double cur_dist = 0.0;
         double azimuth = 0.0;
         if(is_valid_gnss_coordinates(pingFrame.coordinate)) {
-            if(is_valid_gnss_coordinates(ZedF9P.coordinate_cur)) {
-                cur_dist = gnss_calc_distance_m(ZedF9P.coordinate_cur, pingFrame.coordinate);
-                azimuth = gnss_calc_azimuth_deg(ZedF9P.coordinate_cur, pingFrame.coordinate);
+            if(is_valid_gnss_coordinates(Gnss.coordinate_cur)) {
+                cur_dist = gnss_calc_distance_m(Gnss.coordinate_cur, pingFrame.coordinate);
+                azimuth = gnss_calc_azimuth_deg(Gnss.coordinate_cur, pingFrame.coordinate);
 #ifdef HAS_LOG
                 LOG_INFO(TBFP, "LinkDistance %3.3f m %4.1f deg", cur_dist, azimuth);
 #endif

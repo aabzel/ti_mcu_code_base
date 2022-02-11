@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 
-#define SEC_2_US(SEC) ((SEC)*1000000U)
 #define MIN_2_US(MIN) ((uint32_t)(60000000 * (MIN)))
 #define MSEC_2_US(MSEC) ((MSEC)*1000U)
 #define MSEC_2_S(MSEC) (((double)MSEC)/1000.0)
@@ -16,7 +15,7 @@ extern "C" {
 #define HOUR_2_MS(HOUR) ((HOUR)*60U * 60U * 1000U)
 #define MIN_2_MS(MIN) ((MIN)*60U * 1000U)
 #define S_2_MS(S) ((S)*1000U)
-#define S_2_US(SEC) ((uint32_t)(1000000.0 * ((float)SEC)))
+#define SEC_2_US(SEC) ((uint32_t)(1000000.0 * ((float)SEC)))
 #define MS_2_S(ms) ((((double)ms) / 1000.0))
 #define MS_2_MIN(ms) (((double)ms) / ((double)(1000 * 60)))
 

@@ -13,6 +13,10 @@
 #include "rtc_drv.h"
 #endif /*HAS_RTC*/
 
+#ifdef HAS_GNSS
+#include "gnss_drv.h"
+#endif
+
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
 #endif /*HAS_ZED_F9P*/
@@ -58,6 +62,12 @@ struct tm* time_get_time(void) {
         if((RTK_BASE_FIX == ZedF9P.rtk_mode) || (RTK_BASE_SURVEY_IN == ZedF9P.rtk_mode)) {
             res = false;
         }
+    }
+#endif
+#ifdef HAS_GNSS
+    res = is_valid_time_date(&Gnss.time_date);
+    if(res) {
+        time = &Gnss.time_date;
     }
 #endif
     if(false == res) {

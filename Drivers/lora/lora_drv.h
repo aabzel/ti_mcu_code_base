@@ -11,13 +11,14 @@
 #include "fifo_array.h"
 #include "fifo_char.h"
 #include "lora_constants.h"
+#include "timer_utils.h"
 
 #define LORA_MAX_FRAME_SIZE 256U
 #define LORA_TX_BUFF_SIZE (LORA_MAX_FRAME_SIZE * 10)
 #if HAS_LORA_FIFO_ARRAYS
 #define LORA_TX_QUEUE_SIZE 60
 #endif
-#define LORA_PERIOD_US S_2_US(15)
+#define LORA_PERIOD_US SEC_2_US(15)
 
 #ifdef HAS_SX1262
 #define MAX_LORA_PAYLOAD_SIZE  (SX1262_MAX_PAYLOAD_SIZE -3)

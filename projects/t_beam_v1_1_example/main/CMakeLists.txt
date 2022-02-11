@@ -159,6 +159,7 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/uart/uart_commands.c")
 
 set(GNSS -DHAS_GNSS)
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/components/gnss")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/components/gnss/gnss_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/gnss_diag.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/gnss_utils.c")
 #set(NMEA -DHAS_NMEA -DHAS_NMEA_DIAG)
