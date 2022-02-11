@@ -141,7 +141,9 @@ void timerCallback2(GPTimerCC26XX_Handle handle, GPTimerCC26XX_IntMask interrupt
 #ifdef HAS_RTC
         SwRtc.raw_sec++;
 #endif
+#ifdef HAS_GENERIC
         system_calc_byte_rate();
+#endif
     }
 }
 

@@ -343,8 +343,6 @@ static const keyValItem_t BaseCfgLutOpt[] = {
 #endif /*0*/
 #endif /*HAS_UBLOX*/
 
-
-
 static bool zed_f9p_deploy_norm(void) {
     bool res = false, out_res = true;
     uint32_t i = 0;
@@ -354,7 +352,7 @@ static bool zed_f9p_deploy_norm(void) {
                               ubx_keyid_2len(NormCfgLut[i].key_id), LAYER_MASK_RAM);
         if(false == res) {
 #ifdef HAS_LOG
-            LOG_ERROR(ZED_F9P, "SetKeyErr 0x%x", NormCfgLut[i].key_id);
+            LOG_ERROR(ZED_F9P, "SetKeyErr 0x%08x", NormCfgLut[i].key_id);
 #endif
             out_res = false;
         }

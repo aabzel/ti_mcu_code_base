@@ -71,9 +71,11 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface, uint8_
         instance->prev_s_num = 0;
         instance->s_num = 1;
 #endif
+#ifdef HAS_DEBUG
         instance->max_len = 0;
-        instance->parser.preamble_val=preamble_val; /*For pack tunneling*/
         instance->min_len = 0xFFFF;
+#endif
+        instance->parser.preamble_val=preamble_val; /*For pack tunneling*/
         instance->rx_pkt_cnt = 0;
         res = true;
 #ifdef HAS_TBFP_RETX

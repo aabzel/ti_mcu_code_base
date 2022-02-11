@@ -196,6 +196,7 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
 
     return res;
 }
+
 #ifdef HAS_UBX_DEBUG
 static bool ubx_nav(void) {
     bool res = print_coordinate(NavInfo.coordinate, true);
@@ -204,6 +205,7 @@ static bool ubx_nav(void) {
     io_printf("hmsl: %d mm %d m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 1000);
     io_printf("h_acc: %u mm" CRLF, NavInfo.h_acc);
     io_printf("v_acc: %u mm" CRLF, NavInfo.v_acc);
+
     io_printf("roll %d %f deg" CRLF, NavInfo.roll, 1e-5 * ((double)NavInfo.roll));
     io_printf("pitch %d %f deg" CRLF, NavInfo.pitch, 1e-5 * ((double)NavInfo.pitch));
     io_printf("heading %d %f deg" CRLF, NavInfo.heading, 1e-5 * ((double)NavInfo.heading));

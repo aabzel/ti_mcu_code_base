@@ -5,6 +5,7 @@
   TASK(LORA)                                                                   \
   TASK(SX1262)                                                                 \
   TASK(NMEA)                                                                   \
+  TASK(TBFP)                                                                   \
   TASK(RS232)                                                                  \
   TASK(TCAN4550)                                                               \
   TASK(CAN)                                                                    \
