@@ -1,4 +1,4 @@
-#include "nmea_command.h"
+#include "nmea_commands.h"
 
 #include <stdbool.h>
 #include <stdio.h>

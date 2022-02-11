@@ -170,7 +170,7 @@ bool process_shell_cmd(char* cmd_line) {
     bool res = false;
     LOG_DEBUG(CLI, "ProcCommand [%s] %u" CRLF, cmd_line, strlen(cmd_line));
 #ifdef HAS_CLI_DEBUG
-    cli_cmd_len_max = rx_min32u(cli_cmd_len_max, strlen(cmd_line));
+    cli_cmd_len_max = min32u(cli_cmd_len_max, strlen(cmd_line));
 #endif /*HAS_CLI_DEBUG*/
 
 #ifdef HAS_CLI_CMD_HISTORY

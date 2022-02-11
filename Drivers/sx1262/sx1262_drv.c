@@ -916,7 +916,7 @@ bool sx1262_conf_rx(void) {
     // page 100
     // 14.3 Circuit Configuration for Basic Rx Operation
     bool res = true;
-    // res = sx1262_start_rx(0xFFFFFF) && res;
+    // res = sx1262_start_rx(RX_CONTINUOUS_MODE) && res;
     return res;
 }
 #endif
@@ -1144,13 +1144,13 @@ bool sx1262_start_tx(uint8_t* tx_buf, uint16_t tx_len, uint32_t timeout_s) {
             }
         } else {
 #ifdef HAS_LOG
-            LOG_ERROR(LORA, "TxBusy");
+            LOG_ERROR(LORA, "BusyTxInProc");
 #endif
             res = false;
         }
     } else {
 #ifdef HAS_LOG
-        LOG_ERROR(LORA, "TxMute");
+        LOG_PARN(LORA, "TxMute Len:%u byte",tx_len);
 #endif
         res = false;
     }
@@ -1634,7 +1634,7 @@ static inline bool sx1262_poll_status(void) {
         switch(Sx1262Instance.dev_status.command_status) {
         case COM_STAT_DATA_AVAIL: {
             res = sx1262_proc_data_aval();
-            res = sx1262_start_rx(0xFFFFFF);
+            res = sx1262_start_rx(RX_CONTINUOUS_MODE);
         } break;
         case COM_STAT_COM_TIMEOUT:
 #ifdef HAS_LOG
@@ -1657,10 +1657,12 @@ static inline bool sx1262_poll_status(void) {
         case COM_STAT_COM_TX_DONE: {
             Sx1262Instance.tx_done = true;
             Sx1262Instance.tx_done_time_stamp_ms = get_time_ms32();
+#ifdef HAS_TBFP_RETX
             res = tbfp_retx_tx_done(IF_SX1262);
+#endif /*HAS_TBFP_RETX*/
 #ifdef LED_INDEX_RED
             led_off(&Led[LED_INDEX_RED]);
-#endif
+#endif /*LED_INDEX_RED*/
 #ifdef HAS_SX1262_BIT_RATE
             float tx_real_bit_rate = 0.0;
             uint32_t tx_duration_ms = 0;
@@ -1680,7 +1682,7 @@ static inline bool sx1262_poll_status(void) {
 
             Sx1262Instance.tx_done_cnt++;
             LoRaInterface.tx_done_cnt++;
-            res = sx1262_start_rx(0xFFFFFF);
+            res = sx1262_start_rx(RX_CONTINUOUS_MODE);
         } break;
         default:
             res = false;
@@ -1768,7 +1770,9 @@ bool sx1262_process(void) {
 #ifdef HAS_LOG
     LOG_PARN(LORA, "CheckConnectivity=%u", Sx1262Instance.check_connectivity);
 #endif
+#ifdef HAS_SX1262_RETX
     res = sx1216_retx_proc();
+#endif
 
     if(Sx1262Instance.check_connectivity) {
         res = sx1262_is_connected();
@@ -1807,7 +1811,7 @@ static void sx1262_thread(void* arg) {
             sx1262_process();
         }
 
-        vTaskDelay(1000 / portTICK_RATE_MS);
+        vTaskDelay(100 / portTICK_RATE_MS);
     }
 }
 #endif /*HAS_FREE_RTOS*/
@@ -1880,13 +1884,14 @@ bool sx1262_init(void) {
         LOG_INFO(LORA, "MutexInitOk");
     }
 #endif
-
 #ifdef ESP32
     Sx1262Instance.proc = true;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
+    Sx1262Instance.tx_mute = true;
     Sx1262Instance.debug = true;
-    Sx1262Instance.show_ascii = true;
-    Sx1262Instance.check_connectivity = false;
+    Sx1262Instance.show_ascii = false;
+    Sx1262Instance.show_bin = true;
+    Sx1262Instance.check_connectivity = true;
 #else
 #ifdef HAS_LOG
     res = set_log_level(LORA, LOG_LEVEL_INFO);
@@ -1894,13 +1899,13 @@ bool sx1262_init(void) {
     Sx1262Instance.check_connectivity = true;
     Sx1262Instance.debug = false;
     Sx1262Instance.show_bin = false;
-#endif
-    res=sx1262_retx_init();
+    Sx1262Instance.tx_mute = false;
+#endif /*ESP32*/
+    res = sx1262_retx_init();
 
 #ifdef HAS_LOG
     LOG_INFO(LORA, "InitSX1262...");
 #endif
-    Sx1262Instance.tx_mute = false;
     Sx1262Instance.sync_rssi = true;
     call_cnt = 1;
     Sx1262Instance.tx_done = true;
@@ -2006,7 +2011,7 @@ bool sx1262_init(void) {
         res = sx1262_set_sync_word(Sx1262Instance.set_sync_word) && res;
         res = sx1262_set_lora_sync_word(Sx1262Instance.lora_sync_word_set) && res;
 
-        res = sx1262_start_rx(0xFFFFFF) && res;
+        res = sx1262_start_rx(RX_CONTINUOUS_MODE) && res;
         if(res) {
 #ifdef HAS_LOG
             LOG_INFO(LORA, "StartRx");
@@ -2019,7 +2024,7 @@ bool sx1262_init(void) {
         // Sx1262Instance.set_sync_word = SYNC_WORD;
 
         Sx1262Instance.sync_reg = true;
-        res = sx1262_start_rx(0xFFFFFF) && res;
+        res = sx1262_start_rx(RX_CONTINUOUS_MODE) && res;
     } else {
 #ifdef HAS_LOG
         LOG_ERROR(LORA, "SX1262LinkErr");

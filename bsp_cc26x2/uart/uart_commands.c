@@ -36,8 +36,8 @@ bool diag_page_uarts(ostream_t* stream) {
 
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
-    io_printf("rx %u byte " CRLF, huart[0].rx_byte_cnt);
-    io_printf("tx %u byte " CRLF, huart[0].tx_byte_cnt);
+    io_printf("rx %u byte " CRLF, huart[0].cnt.byte_rx);
+    io_printf("tx %u byte " CRLF, huart[0].cnt.byte_tx);
     io_printf("tx cpl %u cnt " CRLF, huart[0].tx_cpl_cnt);
     return true;
 }
@@ -123,6 +123,47 @@ bool uart_init_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+bool uart_rate_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(0 == argc) {
+        uint8_t uart_num = 0;
+        uint32_t baud_rate = 0;
+        const table_col_t cols[] = {{5, "Num"},
+                                    {10, "baudRate"},
+                                    {10, "RxMin"},
+                                    {10, "Rx"},
+                                    {10, "RxMax"},
+                                    {10, "TxMin"},
+                                    {10, "Tx"},
+                                    {10, "TxMax"},
+                                    {10, "name"}};
+        table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+        for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
+            io_printf(TSEP);
+            io_printf(" %2u  " TSEP, uart_num);
+            baud_rate = uart_get_baudrate(uart_num);
+            if(0 < baud_rate) {
+                io_printf(" %7u  " TSEP, baud_rate);
+            } else {
+                io_printf("          " TSEP, baud_rate);
+            }
+            io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.min);
+            io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.cur);
+            io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.max);
+            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.min);
+            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.cur);
+            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.max);
+            io_printf(" %7s  " TSEP, huart[uart_num].name);
+            io_printf(CRLF);
+        }
+        table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    } else {
+        LOG_ERROR(UART, "Usage: ur");
+    }
+    return res;
+
+}
+
 /*TODO: calculate baud_rate*/
 bool uart_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -130,8 +171,6 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
         res = true;
         const table_col_t cols[] = {{5, "Num"},
                                     {10, "baudRate"},
-                                    {10, "RxRate"},
-                                    {10, "TxRate"},
                                     {17, "rx"},
                                     {17, "tx"},
                                     {7, "rFiCnt"},
@@ -152,8 +191,6 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
             } else {
                 io_printf("          " TSEP, baud_rate);
             }
-            io_printf(" %7u  " TSEP, huart[uart_num].rx_byte_rate);
-            io_printf(" %7u  " TSEP, huart[uart_num].tx_byte_rate);
             flowCnt_t cnt_diff;
             cnt_diff.byte_rx = huart[uart_num].cnt.byte_rx - huart[uart_num].cnt_prev.byte_rx;
             io_printf(" %7u+%7u " TSEP, huart[uart_num].cnt.byte_rx, cnt_diff.byte_rx);

@@ -172,7 +172,7 @@ static bool proc_ublox_wait_crc(uint8_t rx_byte) {
             res = ubx_proc_frame(&UbloxProtocol);
 #ifdef HAS_LOG
             if(res) {
-                LOG_DEBUG(UBX, "Rx proc done");
+                LOG_DEBUG(UBX, "RxProcDone");
             }
 #endif
 #endif /*HAS_MCU*/

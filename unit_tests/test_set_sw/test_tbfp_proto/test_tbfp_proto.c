@@ -121,13 +121,13 @@ bool test_tbfp_proto_flow_ctrl(void) {
 
     EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_LOOPBACK], IF_LOOPBACK,0xA5));
 
-    EXPECT_TRUE(tbfp_send_chat("12", 2, IF_LOOPBACK, 0));
+    EXPECT_TRUE(tbfp_send_chat("12", 2, IF_LOOPBACK, 0,ACK_NO_NEED));
     EXPECT_EQ(1, TbfpProtocol[IF_LOOPBACK].prev_s_num);
 
-    EXPECT_TRUE(tbfp_send_chat("34", 2, IF_LOOPBACK, 0));
+    EXPECT_TRUE(tbfp_send_chat("34", 2, IF_LOOPBACK, 0,ACK_NO_NEED));
     EXPECT_EQ(2, TbfpProtocol[IF_LOOPBACK].prev_s_num);
 
-    EXPECT_TRUE(tbfp_send_chat("56", 2, IF_LOOPBACK, 0));
+    EXPECT_TRUE(tbfp_send_chat("56", 2, IF_LOOPBACK, 0,ACK_NO_NEED));
     EXPECT_EQ(3, TbfpProtocol[IF_LOOPBACK].prev_s_num);
     EXPECT_EQ(4, TbfpProtocol[IF_LOOPBACK].s_num);
     EXPECT_EQ(3, TbfpProtocol[IF_LOOPBACK].con_flow);
@@ -139,8 +139,8 @@ bool test_tbfp_proto_flow_ctrl(void) {
 bool test_tbfp_proto_flow_ctrl2(void) {
     LOG_DEBUG(TBFP, "%s():", __FUNCTION__);
     uint16_t prev_s_num=0;
-    uint16_t max_flow=0;
-    uint16_t con_flow=0;
+    uint32_t max_flow=0;
+    uint32_t con_flow=0;
     set_log_level(TBFP, LOG_LEVEL_PARANOID );
     EXPECT_TRUE( tbfp_check_flow_control(IF_LOOPBACK,1,&prev_s_num,&con_flow,&max_flow));
     EXPECT_EQ(1, prev_s_num);

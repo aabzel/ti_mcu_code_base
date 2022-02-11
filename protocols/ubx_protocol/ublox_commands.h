@@ -13,11 +13,13 @@ extern "C" {
 bool ubx_nav_command(int32_t argc, char* argv[]);
 // bool ubx_print_key_val_command(int32_t argc, char* argv[]);
 bool ubx_diag_command(int32_t argc, char* argv[]);
+bool ubx_diag_base_command(int32_t argc, char* argv[]);
 bool ubx_send_command(int32_t argc, char* argv[]);
 bool ubx_get_key_command(int32_t argc, char* argv[]);
 bool ubx_set_val_command(int32_t argc, char* argv[]);
 
 #define UBLOX_COMMANDS                                                                                                 \
+    SHELL_CMD("ubx_diag_base", "ubb", ubx_diag_base_command, "U-Blox DiagBase"),                                                     \
     SHELL_CMD("ubx_diag", "ubd", ubx_diag_command, "U-Blox diag"),                                                     \
         SHELL_CMD("ubx_set_val", "ubsv", ubx_set_val_command, "U-Blox set Val"),                                       \
         SHELL_CMD("ubx_nav", "ubn", ubx_nav_command, "U-Blox navigation result"),                                      \

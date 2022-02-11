@@ -73,9 +73,6 @@ static bool zed_f9p_proc_base(void) {
     if(task_data[TASK_ID_NMEA].on) {
         task_data[TASK_ID_NMEA].on = false;
     }
-    if(task_data[TASK_ID_UBX].on) {
-        task_data[TASK_ID_UBX].on = false;
-    }
 
     if(IF_CAN == ZedF9P.channel) {
 #ifdef HAS_CLI
@@ -358,7 +355,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
         }
         /*Write base station antenna coordinates*/
         // UBX-CFG-TMODE3 (0x06 0x71)
-        UbxCfgTmode3Data_t_t data;
+        UbxCfgTmode3Data_t data;
         data.version = 0;
         data.svin_min_dur_s = MIN_2_SEC(4);
         data.mode = receiver_mode; /**/

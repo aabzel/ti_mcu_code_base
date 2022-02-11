@@ -10,6 +10,7 @@
 #include "log.h"
 #endif
 #include "uart_drv.h"
+#include "ubx_diag.h"
 #include "ubx_protocol.h"
 #include "ubx_types.h"
 
@@ -34,28 +35,29 @@ bool ubx_driver_init(void) {
 
 bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t len) {
     bool res = false;
-    if((NULL != payload) && (0 < len)) {
-        res = false;
-        static uint8_t tx_array[256] = {0};
-        uint16_t crc16 = 0U;
-        tx_array[0] = UBX_SYN_0;
-        tx_array[1] = UBX_SYN_1;
-        tx_array[2] = class_num;
-        tx_array[3] = id;
-        memcpy(&tx_array[4], &len, 2);
+
+    static uint8_t tx_array[256] = {0};
+    uint16_t crc16 = 0U;
+    tx_array[0] = UBX_SYN_0;
+    tx_array[1] = UBX_SYN_1;
+    tx_array[2] = class_num;
+    tx_array[3] = id;
+    memcpy(&tx_array[4], &len, 2);
+    if((NULL != payload)&&(0 < len)){
         memcpy(&tx_array[6], payload, len);
-        crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
-        UbloxProtocol.ack = false;
-        memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
-#ifdef UBX_UART_NUM
-        uint16_t tx_array_len = 0U;
-        tx_array_len = len + UBX_HEADER_SIZE + UBX_CRC_SIZE;
-        res = uart_send(UBX_UART_NUM, tx_array, tx_array_len, true);
-        if(res) {
-            UbloxProtocol.tx_pkt_cnt++;
-        }
-#endif
     }
+    crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
+    UbloxProtocol.ack = false;
+    memcpy(&tx_array[UBX_HEADER_SIZE + len], &crc16, UBX_CRC_SIZE);
+#ifdef UBX_UART_NUM
+    uint16_t tx_array_len = 0U;
+    tx_array_len = len + UBX_HEADER_SIZE + UBX_CRC_SIZE;
+    res = uart_send(UBX_UART_NUM, tx_array, tx_array_len, true);
+    if(res) {
+        UbloxProtocol.tx_pkt_cnt++;
+    }
+#endif
+
     return res;
 }
 
@@ -104,11 +106,27 @@ static bool ubx_cfg_valget_parse(uint8_t* payload) {
     return res;
 }
 
+static bool ubx_cfg_tmode3_parse(uint8_t* payload) {
+    bool res = false;
+    UbxCfgTmode3Data_t Data = {0};
+    memcpy(&Data, payload, sizeof(UbxCfgTmode3Data_t));
+    if(0x00 == Data.version) {
+        NavInfo.BaseRxMode =(UbxReceiverMode_t) Data.mode;
+        NavInfo.fixedPosAcc_mm = Data.svinAccLimit/10;
+        NavInfo.svin_min_dur_s = Data.svin_min_dur_s;
+        res = true;
+    }
+    return res;
+}
+
 static bool ubx_proc_cfg_frame(void) {
     bool res = false;
     switch(UbloxProtocol.fix_frame[UBX_INDEX_ID]) {
     case UBX_ID_CFG_GET_VAL:
         res = ubx_cfg_valget_parse(&UbloxProtocol.fix_frame[UBX_INDEX_PAYLOAD]);
+        break;
+    case UBX_ID_CFG_TMODE3:
+        res = ubx_cfg_tmode3_parse(&UbloxProtocol.fix_frame[UBX_INDEX_PAYLOAD]);
         break;
     }
     return res;
@@ -180,6 +198,25 @@ static bool ubx_proc_nav_timeutc_frame(uint8_t* payload, uint16_t len) {
     return res;
 }
 
+static bool ubx_proc_nav_pvt_frame(uint8_t* payload, uint16_t len){
+    bool res = false;
+    if(92<=len){
+        NavPvt_t Data = {0};
+        memcpy(&Data, payload, sizeof(NavPvt_t));
+        NavInfo.FixType =(GnssFixType_t) Data.fixType;
+        NavInfo.coordinate.latitude = 1e-7 * Data.lat;
+        NavInfo.coordinate.longitude= 1e-7 * Data.lon;
+        NavInfo.date_time.tm_hour = Data.hour;
+        NavInfo.date_time.tm_mday = Data.day;
+        NavInfo.date_time.tm_mon = Data.month-1;
+        NavInfo.date_time.tm_min = Data.min;
+        NavInfo.date_time.tm_sec = Data.sec;
+        NavInfo.date_time.tm_year = Data.year;
+        res = true;
+    }
+    return res;
+}
+
 static bool ubx_proc_nav_velned_frame(uint8_t* payload, uint16_t len) {
     bool res = false;
     if(36 <= len) {
@@ -219,6 +256,9 @@ static bool ubx_proc_nav_frame(uint8_t* frame, uint16_t len) {
         break;
     case UBX_ID_NAV_ATT:
         res = ubx_proc_nav_att_frame(frame + UBX_INDEX_PAYLOAD);
+        break;
+    case UBX_ID_NAV_PVT:
+        res = ubx_proc_nav_pvt_frame(frame + UBX_INDEX_PAYLOAD, len);
         break;
     default:
 #ifdef HAS_LOG
@@ -323,9 +363,17 @@ bool ubx_proc_frame(UbloxProtocol_t* inst) {
     return res;
 }
 
-static const UbxHeader_t pollLut[] = {
-    {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC}, {UBX_CLA_NAV, UBX_ID_NAV_VELNED},   {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
-    {UBX_CLA_NAV, UBX_ID_NAV_ATT},     {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH}, {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
+static const UbxHeader_t PollLut[] = {
+    {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC},
+    {UBX_CLA_NAV, UBX_ID_NAV_VELNED},
+    {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
+#ifdef HAS_ZED_F9P
+    {UBX_CLA_CFG, UBX_ID_CFG_TMODE3 },
+    {UBX_CLA_NAV, UBX_ID_NAV_PVT},
+    {UBX_CLA_NAV, UBX_ID_NAV_ATT},
+    {UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
+    {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
+#endif
 };
 
 bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers) {
@@ -348,7 +396,9 @@ bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t la
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
         if(false == res) {
 #ifdef HAS_LOG
-            LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", UBX_CLA_CFG, UBX_ID_CFG_SET_VAL);
+            LOG_ERROR(UBX, "Send Class:0x%02x %s ID:0x%02x Error", UBX_CLA_CFG,
+                      class2str(UBX_CLA_CFG),
+                      UBX_ID_CFG_SET_VAL);
 #endif
         }
     }
@@ -372,18 +422,20 @@ bool ubx_cfg_get_val(uint32_t key_id, uint8_t layers) {
 bool ubx_proc(void) {
     bool res = false;
     static uint16_t i = 0;
-    res = ubx_send_message(pollLut[i].class, pollLut[i].id, NULL, 0);
+    res = ubx_send_message(PollLut[i].class, PollLut[i].id, NULL, 0);
     if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(UBX, "Send Class:0x%02x ID:0x%02x Error", pollLut[i].class, pollLut[i].id);
+        LOG_ERROR(UBX, "Send Class:0x%02x %s ID:0x%02x Error", PollLut[i].class,class2str(PollLut[i].class),
+                  PollLut[i].id);
 #endif
     } else {
 #ifdef HAS_LOG
-        LOG_DEBUG(UBX, "Send Class:0x%02x ID:0x%02x OK", pollLut[i].class, pollLut[i].id);
+        LOG_DEBUG(UBX, "Send Class:0x%02x %s ID:0x%02x OK", PollLut[i].class,class2str(PollLut[i].class),
+                  PollLut[i].id);
 #endif
     }
     i++;
-    if(ARRAY_SIZE(pollLut) < i) {
+    if(ARRAY_SIZE(PollLut) < i) {
         i = 0;
     }
     uint32_t cur_time = get_time_ms32();

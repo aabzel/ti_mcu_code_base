@@ -6,6 +6,7 @@
 #define SYS_TASKS           \
   TASKS_BASE                \
   TASK(LORA)                \
+  TASK(TBFP)                \
   TASK(NMEA)                \
   TASK(RS232)               \
   TASK(SX1262)              \

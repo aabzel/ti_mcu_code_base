@@ -109,7 +109,7 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     uint32_t tx_time_diff_ms = 2 * pause_ms;
     tx_time_diff_ms = cur_time_stamp_ms - tx_done_time_stamp_ms;
     uint32_t count = fifo_get_count(&LoRaInterface.FiFoLoRaCharTx);
-    LOG_DEBUG(LORA, "FiFoCnt Len:%u", count);
+    LOG_PARN(LORA, "FiFoCnt Len:%u", count);
     fifo_index_t tx_len = 0;
     uint8_t TxPayload[MAX_LORA_PAYLOAD_SIZE] = {0};
     memset(TxPayload, 0, sizeof(TxPayload));
@@ -117,9 +117,12 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
 #ifdef HAS_SX1262
     is_retx_idle = is_tbfp_retx_idle(&TbfpProtocol[IF_SX1262]);
 #endif
-    if((pause_ms < tx_time_diff_ms) &&
-            (true == is_retx_idle) && (min_tx_unit<=count)) {
 
+    if(     (true==LoRaInterface.flush) || (
+            (pause_ms < tx_time_diff_ms) &&
+            (true == is_retx_idle) && (min_tx_unit<=count)
+            ) ) {
+        LoRaInterface.flush = false;
         res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);
         if(res) {
             if(tx_len!=sizeof(TxPayload)){
@@ -164,6 +167,7 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
                 if(res) {
                     LoRaInterface.tx_ok_cnt++;
                 } else {
+                    TbfpProtocol[IF_SX1262].err_tx++;
                     LoRaInterface.tx_err_cnt++;
                 }
 #endif /*HAS_TBFP*/
@@ -181,7 +185,7 @@ bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
             res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
             if(false == res) {
                 LoRaInterface.ovfl_err_cnt++;
-                LOG_ERROR(LORA, "TxQueueOverFlow");
+                LOG_DEBUG(LORA, "TxQueueOverFlow");
             }
     } else {
         LoRaInterface.err_cnt++;
@@ -194,6 +198,7 @@ bool lora_process(void) {
 #ifdef HAS_TBFP
     /*HeartBeat Lora Frame*/
     res = tbfp_send_ping(FRAME_ID_PONG, IF_LORA);
+    LoRaInterface.flush = true;
 #endif /*HAS_TBFT*/
     return res;
 }

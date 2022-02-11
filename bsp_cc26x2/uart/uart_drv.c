@@ -172,6 +172,7 @@ static uint8_t ch1 = 0;
 static void uart1ReadCallback(UART_Handle handle, char* rx_buf, size_t size) {
     if(NULL != rx_buf) {
         huart[1].rx_byte = *(rx_buf);
+
         bool res = false;
         res = fifo_push(&huart[1].RxFifo, huart[1].rx_byte);
         if(false == res) {

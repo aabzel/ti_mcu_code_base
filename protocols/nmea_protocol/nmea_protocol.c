@@ -351,7 +351,7 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
     }
 
     ptr = strchr(ptr, ',') + 1;
-    try_strl2double(ptr, 5, &rmc->mv) && res;
+    try_strl2double(ptr, 5, &rmc->mv) ;
 
     ptr = strchr(ptr, ',') + 1;
     rmc->mv_ew = ptr[0];
@@ -690,13 +690,17 @@ bool nmea_proc(void) {
                 nmea_update_rtk_fixed_duration();
             }
             if(PM_RTK_FIXED == NmeaProto.pos_mode) {
+#ifdef LED_INDEX_GREEN
                 Led[LED_INDEX_GREEN].mode = LED_MODE_ON;
+#endif
 #ifdef HAS_CLOCK
                 NmeaProto.rtk_fixed_start_ms = get_time_ms32();
 #endif
             } else {
+#ifdef LED_INDEX_GREEN
                 Led[LED_INDEX_GREEN].mode = LED_MODE_PWM;
                 Led[LED_INDEX_GREEN].period_ms = LED_GREEN_PERIOD_MS;
+#endif
             }
         } else if(prev_pos_mode == NmeaProto.pos_mode) {
             if(PM_RTK_FIXED == prev_pos_mode) {

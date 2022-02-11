@@ -21,7 +21,8 @@
 
 bool telematic_sent_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint8_t tx_array[256] = "";
+    char tx_array[256] = "";
+    char suffix[256] = "";
     uint16_t tx_array_len = 0;
     uint32_t timeout_s = 0;
     uint8_t interface = IF_NONE;
@@ -33,10 +34,13 @@ bool telematic_sent_command(int32_t argc, char* argv[]) {
     if(2 <= argc) {
         res = true;
         uint8_t a = 0;
-        snprintf((char*)tx_array, sizeof(tx_array), "%s%s", tx_array, argv[1]);
+        snprintf((char*)suffix, sizeof(suffix), "%s", argv[1]);
+        strncat(tx_array, suffix, sizeof(tx_array));
+
         LOG_INFO(SYS, "arg: [%s]", (char*)tx_array);
         for(a = 2; a < argc; a++) {
-            snprintf((char*)tx_array, sizeof(tx_array), "%s %s", tx_array, argv[a]);
+            snprintf((char*)suffix, sizeof(suffix), " %s", argv[a]);
+            strncat(tx_array, suffix, sizeof(tx_array));
         }
         LOG_INFO(SYS, "arg: [%s]", (char*)tx_array);
         tx_array_len = strlen((char*)tx_array) + 1;
@@ -52,7 +56,7 @@ bool telematic_sent_command(int32_t argc, char* argv[]) {
         res = false;
         (void)tx_array_len;
         (void)timeout_s;
-        res = tbfp_send_cmd(tx_array, tx_array_len, (Interfaces_t)interface);
+        res = tbfp_send_cmd((uint8_t*) tx_array, tx_array_len, (Interfaces_t)interface);
         if(res) {
             LOG_INFO(SYS, "OK");
         }
@@ -93,6 +97,7 @@ bool chat_command(int32_t argc, char* argv[]) {
     uint32_t tx_array_len = 0;
     uint8_t interface = IF_NONE;
     uint8_t lifetime = 0;
+    uint8_t ack = 5;
     if(1 <= argc) {
         res = try_str2array(argv[0], tx_array, sizeof(tx_array), &tx_array_len);
         if(false == res) {
@@ -107,16 +112,22 @@ bool chat_command(int32_t argc, char* argv[]) {
     }
 
     if(3 <= argc) {
-        res = try_str2uint8(argv[1], &interface);
+        res = try_str2uint8(argv[2], &interface);
     }
 
-    if((2 < argc) || (0 == argc)) {
+    if(4 <= argc) {
+        res = try_str2uint8(argv[3], &ack);
+    }
+
+    if( (0 == argc) || (4 < argc) ) {
         LOG_ERROR(SYS, "Usage: char text ttl if");
         res = false;
     }
 
     if(res) {
-        res = tbfp_send_chat(tx_array, tx_array_len, (Interfaces_t)interface, lifetime);
+        res = tbfp_send_chat(tx_array, tx_array_len, (Interfaces_t)interface,
+                             lifetime,
+                             (TbfpAck_t) ack);
         if(res) {
             LOG_INFO(SYS, "ok [%s]", tx_array);
             res = print_mem(tx_array, tx_array_len, false, true, true, false);

@@ -8,6 +8,8 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+char* FixType2Str(uint8_t mode);
+char* ReceiverMode2Str(uint8_t mode);
 char* class2str(uint8_t class_id);
 bool ubx_print_frame(uint8_t* frame);
 

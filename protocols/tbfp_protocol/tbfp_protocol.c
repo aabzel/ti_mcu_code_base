@@ -132,6 +132,7 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
             header.preamble = TbfpProtocol[interface].parser.preamble_val;
 #ifdef HAS_TBFP_FLOW_CONTROL
             header.snum = TbfpProtocol[interface].s_num;
+            TbfpProtocol[interface].ReTxFsm.expected_ser_num = header.snum ;
             TbfpProtocol[interface].s_num++;
 #endif /*HAS_TBFP_FLOW_CONTROL*/
 
@@ -160,6 +161,11 @@ static bool tbfp_make_header(uint8_t* out_array, uint32_t payload_len, Interface
 bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface,
                uint8_t lifetime, TbfpAck_t ack) {
     bool res = false;
+    Retx_t retx = RETX_NO_NEED;
+    if(ACK_NEED==ack){
+       retx = RETX_NEED;
+    }
+
     if(payload && (0 < payload_len)) {
         uint16_t tx_frame_len = payload_len + TBFP_SIZE_OVERHEAD;
         if(tx_frame_len < sizeof(TbfpProtocol[interface].tx_frame)) {
@@ -175,7 +181,7 @@ bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface,
                 LOG_DEBUG(TBFP,"%s Sent SN:%u=0x%04x Len:%u crc8 0x%02x", interface2str(interface),
                           OutHeader.snum,OutHeader.snum,
                           OutHeader.len,TbfpProtocol[interface].tx_frame[frame_len]);
-                res = sys_send_if(TbfpProtocol[interface].tx_frame, frame_len + TBFP_SIZE_CRC, interface);
+                res = sys_send_if(TbfpProtocol[interface].tx_frame, frame_len + TBFP_SIZE_CRC, interface, retx);
             } else {
 #ifdef HAS_LOG
                 LOG_ERROR(TBFP, "TooBigPayload cur: %u max: %u", payload_len, sizeof(TbfpProtocol[interface].tx_frame));
@@ -198,6 +204,9 @@ static bool tbfp_send_ack(uint16_t snum, Interfaces_t interface){
     res = tbfp_send(payload, 3, interface, 0, ACK_NO_NEED);
     if(false==res){
         LOG_ERROR(TBFP, "SendAckErr");
+    }else{
+        TbfpProtocol[interface].ReTxFsm.ack_tx_cnt++;
+        LOG_DEBUG(TBFP, "SendAckOk");
     }
     return res;
 }
@@ -206,6 +215,7 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, 
                            uint8_t lifetime, TbfpAck_t ack) {
     bool res = false;
     uint8_t frame[256] = "";
+    LOG_DEBUG(TBFP, "%s SendText Ack:%u", interface2str(interface),ack);
     if(tx_array && (0 < len) && ((len+TBFP_SIZE_OVERHEAD+TBFP_SIZE_ID)<sizeof(frame))) {
         frame[0] = payload_id;
         memcpy(&frame[1], tx_array, len);
@@ -219,9 +229,11 @@ static bool tbfp_send_text(uint8_t payload_id, uint8_t* tx_array, uint32_t len, 
     return res;
 }
 
-bool tbfp_send_chat(uint8_t* tx_array, uint32_t len, Interfaces_t interface, uint8_t lifetime) {
+bool tbfp_send_chat(uint8_t* tx_array, uint32_t len,
+                    Interfaces_t interface,
+                    uint8_t lifetime, TbfpAck_t ack) {
     bool res = false;
-    res = tbfp_send_text(FRAME_ID_CHAT, tx_array, len, interface, lifetime, ACK_NO_NEED);
+    res = tbfp_send_text(FRAME_ID_CHAT, tx_array, len, interface, lifetime, ack);
     return res;
 }
 
@@ -366,7 +378,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     LOG_DEBUG(TBFP, "%s ProcPayload", interface2str(interface));
     switch(payload[0]) {
     case FRAME_ID_ACK: {
-        LOG_DEBUG(TBFP, "Ack");
+        LOG_DEBUG(TBFP, "RxAck");
         uint16_t ser_num=0;
         memcpy(&ser_num, &payload[1], 2);
         res = tbfp_retx_ack(&TbfpProtocol[interface], ser_num);
@@ -508,8 +520,8 @@ bool tbfp_check_flow_control(
                              Interfaces_t interface,
                              uint16_t snum,
                              uint16_t * const io_prev_s_num,
-                             uint16_t * const io_con_flow,
-                             uint16_t * const io_max_con_flow
+                             uint32_t * const io_con_flow,
+                             uint32_t * const io_max_con_flow
                              ) {
     bool res = false;
     uint16_t prev_s_num=*io_prev_s_num;
@@ -579,7 +591,7 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         if(false == flow_ctrl_ok) {
             TbfpProtocol[interface].err_cnt++;
 #ifdef HAS_LOG
-            LOG_ERROR(TBFP, "FlowErr %s", interface2str(interface));
+            LOG_DEBUG(TBFP, "FlowErr %s", interface2str(interface));
 #endif
         }else{
 
@@ -630,6 +642,39 @@ bool tbfp_generate_frame(uint8_t* buff, uint32_t buff_len, Interfaces_t interfac
         print_mem(buff, frame_len + 1, true, false, true, false);
 
         res = true;
+    }
+    return res;
+}
+
+bool tbfp_check(void){
+    bool res = true;
+    Interfaces_t interface=(Interfaces_t)0;
+    for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
+        if(TbfpProtocol[interface].interface==interface){
+            uint32_t diff =TbfpProtocol[interface].ReTxFsm.silence_cnt-TbfpProtocol[interface].ReTxFsm.silence_cnt_prev ;
+            if(0<diff ){
+                res = false;
+                LOG_ERROR(RETX,"%s LackOfAck %u times",interface2str(interface),diff);
+            }
+            TbfpProtocol[interface].ReTxFsm.silence_cnt_prev = TbfpProtocol[interface].ReTxFsm.silence_cnt ;
+
+            diff=TbfpProtocol[interface].crc_err_cnt-TbfpProtocol[interface].crc_err_cnt_prev;
+            if(0<diff ){
+                res = false;
+                LOG_ERROR(TBFP,"%s CrcErr %u times",interface2str(interface),diff);
+            }
+            TbfpProtocol[interface].crc_err_cnt_prev=TbfpProtocol[interface].crc_err_cnt;
+
+
+            diff=TbfpProtocol[interface].flow_torn_cnt-TbfpProtocol[interface].flow_torn_cnt_prev;
+            if(0<diff ){
+                res = false;
+                LOG_ERROR(TBFP,"%s FlowTorn %u times",interface2str(interface),diff);
+            }
+            TbfpProtocol[interface].flow_torn_cnt_prev=TbfpProtocol[interface].flow_torn_cnt;
+
+
+        }
     }
     return res;
 }

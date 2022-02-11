@@ -13,6 +13,7 @@ extern "C" {
 #include "tbfp_protocol_parser.h"
 #include "tbfp_re_tx_ack_fsm_types.h"
 #include "tbfp_constants.h"
+#include "system.h"
 
 typedef union uTbfpFlags_t{
     uint8_t byte;
@@ -45,7 +46,9 @@ typedef struct xTbfpProtocol_t {
     uint32_t tx_pkt_cnt;
     uint32_t len_err_cnt;
     uint32_t crc_err_cnt;
+    uint32_t crc_err_cnt_prev;
     uint32_t err_cnt;
+    uint32_t err_tx;
     uint32_t lack_frame_in_data;
 #ifdef HAS_DEBUG
     uint32_t preamble_cnt;
@@ -56,10 +59,11 @@ typedef struct xTbfpProtocol_t {
 #ifdef HAS_TBFP_FLOW_CONTROL
     uint32_t lost_rx_frames;
     uint16_t flow_torn_cnt;
+    uint16_t flow_torn_cnt_prev;
     uint16_t prev_s_num;
     uint16_t s_num;
-    uint16_t con_flow;
-    uint16_t max_con_flow;
+    uint32_t con_flow;
+    uint32_t max_con_flow;
 #endif
     TbfpReTxFsm_t ReTxFsm;
     Interfaces_t interface;

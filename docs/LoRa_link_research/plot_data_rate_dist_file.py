@@ -16,7 +16,8 @@ for pos, a_string in enumerate(content):
     map_object = map(float, a_list)
     list_of_integers = list(map_object)
     print(list_of_integers)
-    plt.plot(list_of_integers[0], list_of_integers[1], 'ro')
+    #plt.plot(list_of_integers[0], list_of_integers[1], 'ro')
+    plt.plot(list_of_integers[0], list_of_integers[1], 'r.')
     
 plt.show()
         

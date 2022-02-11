@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define SX1262_MAX_FRAME_SIZE 254U /*TODO Explore*/
-#define PACK_SIZE_BYTES 16
+#define SX1262_MAX_FRAME_SIZE 252U /*TODO Explore*/
+//#define PACK_SIZE_BYTES 16
 
 #define FIFO_SIZE 256
 
@@ -23,7 +23,6 @@
 #define FREQ_DIV 33554432U // 0x02000000 ( double )pow( 2.0, 25.0 )
 #define OPCODE_SIZE 1
 #define MHZ_TO_FRF 1048576 /* ((float)XTAL_FREQ_HZ))*10000000.0f)*/
-
 
 /*LoRa ModParam1- spreading factor */
 typedef enum eSpreadingFactor_t {

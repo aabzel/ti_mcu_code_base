@@ -12,6 +12,14 @@
 #define UART_RX_FIFO_ARRAY_SIZE 100U
 #define UART_TX_ARRAY_SIZE 600U
 
+
+typedef struct xUartCfg_t{
+    int tx_io_num;
+    int rx_io_num;
+}UartCfg_t;
+
+extern UartCfg_t UartCfg[2];
+
 bool uart_init(void);
 bool usart_set_baudrate(uint8_t uart_num, uint16_t baudrate);
 bool uart_read(uint8_t uart_num, uint8_t* out_array, uint16_t array_len);

@@ -57,7 +57,7 @@ bool array_max_cont(uint8_t* arr, size_t size, uint8_t patt, uint32_t *max_cont_
                 cur_cont_pat=0;
             }
             prev_elem  = arr[i];
-            max_cont_pat = rx_max32u(max_cont_pat, cur_cont_pat);
+            max_cont_pat = max32u(max_cont_pat, cur_cont_pat);
         }
         *max_cont_patt=max_cont_pat;
     }
