@@ -91,7 +91,9 @@ bool system_calc_byte_rate(void){
 #ifdef HAS_RTCM3
     rtcm3_calc_byte_rate();
 #endif
+#ifdef HAS_UART
     uart_calc_byte_rate();
+#endif
     return false;
 }
 bool interface_valid(Interfaces_t interface) {
@@ -114,6 +116,7 @@ bool interface_valid(Interfaces_t interface) {
     return res;
 }
 
+#ifdef HAS_SX1262
 static bool sys_sent_sx1262(uint8_t* array, uint32_t len, Retx_t retx){
     bool res = false;
     switch(retx){
@@ -129,6 +132,7 @@ static bool sys_sent_sx1262(uint8_t* array, uint32_t len, Retx_t retx){
     }
     return res;
 }
+#endif /*HAS_SX1262*/
 
 bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface, Retx_t retx) {
     bool res = false;
