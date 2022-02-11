@@ -7,8 +7,10 @@
 #include "data_utils.h"
 #include "tbfp_protocol.h"
 #include "tbfp_retx_diag.h"
+#ifdef HAS_SX1262
 #include "sx1262_constants.h"
 #include "sx1262_drv.h"
+#endif
 #include "system.h"
 
 bool is_tbfp_retx_idle(TbfpProtocol_t *instance){
@@ -25,6 +27,7 @@ bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
     if (instance && array && (0<len)) {
         memcpy(instance->tx_frame, array, len);
         instance->tx_frame_len = len;
+#ifdef HAS_SX1262
         if (IF_SX1262 == instance->interface) {
            instance->ReTxFsm.retx_cnt = TBFP_RETX_TRY_MAX;
            res = sx1262_start_tx(instance->tx_frame,
@@ -42,6 +45,7 @@ bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
         } else {
             LOG_ERROR(RETX, "ReTxOnlyForSX1262_If");
         }
+#endif
     }
     return res;
 }
@@ -158,6 +162,7 @@ static bool tbfp_proc_retx_wait_ack(TbfpProtocol_t *instance, uint32_t time_stam
 static bool tbfp_proc_retx_idle(TbfpProtocol_t *instance){
     bool res = false;
     if(0<instance->ReTxFsm.retx_cnt){
+#ifdef HAS_SX1262
         if (IF_SX1262 == instance->interface) {
            res = sx1262_start_tx(instance->tx_frame,
                                 instance->tx_frame_len, TX_SINGLE_MODE);
@@ -174,6 +179,7 @@ static bool tbfp_proc_retx_idle(TbfpProtocol_t *instance){
         }else{
             LOG_ERROR(RETX, "ReTxOnlyForSX1262_If");
         }
+#endif
     }
     return res;
 }

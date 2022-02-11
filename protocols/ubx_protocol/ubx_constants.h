@@ -45,6 +45,8 @@ extern "C" {
 /*3.10.17 UBX-CFG-RATE (0x06 0x08)*/
 #define UBX_ID_CFG_RATE 0x08
 
+
+#define UBX_ID_NAV_SVIN 0x3b /*Survey-in data*/
 #define UBX_ID_NAV_POSLLH 0x02
 #define UBX_ID_NAV_PVT 0x07
 #define UBX_ID_NAV_STATUS 0x03
@@ -84,6 +86,40 @@ typedef enum eUbxReceiverMode_t {
    RX_MODE_FIXED=2,
    RX_MODE_UNDEF=3,
 } UbxReceiverMode_t;
+
+
+typedef enum eReceiverMode_t {
+    MODE_DISABLED = 0x00,
+    MODE_SURVEY_IN = 0x01,
+    MODE_FIXED = 0x02,
+} ReceiverMode_t;
+
+typedef enum eSatConst_t {
+    SC_GPS = 0,
+    SC_GLONASS = 1,
+    SC_GALILEO = 2,
+    SC_BEI_DOU = 3,
+    SC_NONE = 4,
+} SatConst_t;
+
+
+
+/*UBX data types*/
+typedef enum eUbxType_t {
+    UBX_U1 = 1,
+    UBX_U2 = 2,
+    UBX_U4 = 3,
+    UBX_X1 = 4,
+    UBX_X2 = 5,
+    UBX_X4 = 6,
+    UBX_I1 = 7,
+    UBX_I2 = 8,
+    UBX_I4 = 9,
+    UBX_R4 = 10,
+    UBX_R8 = 11,
+    UBX_CH = 12,
+    UBX_L = 13,
+} UbxType_t;
 
 typedef enum eGnssFixType_t {
     FIX_TYPE_NO_FIX                           =0,

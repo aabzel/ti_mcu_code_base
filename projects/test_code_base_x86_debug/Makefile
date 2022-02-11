@@ -22,7 +22,7 @@ HAS_TEST_CLI=Y
 #  -Wall turns on most, but not all, compiler warnings
 CFLAGS += -g
 CFLAGS += -m32
-CFLAGS += -std=c11
+CFLAGS += -std=c11 -fshort-enums
 #CFLAGS += -Og
 CFLAGS  += -O0
 #CFLAGS  += -Wall

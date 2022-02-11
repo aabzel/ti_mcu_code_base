@@ -66,7 +66,7 @@ typedef struct xUartHandle_t {
 #ifdef HAS_UART
     bool is_uart_fwd[UART_COUNT];
 #endif
-    char name[8];
+    char name[10];
     Fifo_array_t RxFifo;
     Fifo_array_t TxFifo;
 } UartHandle_t;

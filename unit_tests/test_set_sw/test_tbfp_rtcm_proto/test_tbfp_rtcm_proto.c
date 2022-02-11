@@ -5,7 +5,9 @@
 #endif
 
 #include "fifo_char.h"
+#ifdef HAS_LORA
 #include "lora_drv.h"
+#endif
 #include "log.h"
 #include "test_rtcm3_proto.h"
 #include "tbfp_protocol.h"
@@ -15,6 +17,7 @@
 
 bool test_tbfp_tunnel(void){
     LOG_DEBUG(TBFP,"%s():", __FUNCTION__);
+#ifdef HAS_LORA
     set_log_level(RTCM, LOG_LEVEL_INFO);
     uint8_t BigRtcm3Message[60]={};
     EXPECT_TRUE(array_incr(BigRtcm3Message,sizeof(BigRtcm3Message)));
@@ -42,7 +45,11 @@ bool test_tbfp_tunnel(void){
     EXPECT_EQ(number_tx_frame, TbfpProtocol[IF_LORA].rx_pkt_cnt);
     LOG_INFO(TBFP,"OK");
     return true;
+#else
+    return false;
+#endif
 }
+
 
 bool test_tbfp_rtcm_path(void) {
 #ifdef X86_64

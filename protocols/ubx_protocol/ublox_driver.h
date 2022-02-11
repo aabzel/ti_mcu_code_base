@@ -15,6 +15,7 @@ extern "C" {
 #endif
 #include "data_utils.h"
 #include "gnss_utils.h"
+#include "ubx_constants.h"
 #include "ubx_protocol.h"
 
 #if !defined(HAS_UART) && defined(HAS_MCU)
@@ -25,47 +26,16 @@ extern "C" {
 #define UBX_SEND_TRY 15
 #define UBX_SEND_TIME_OUT_MS 2000
 #define UBX_RX_TIME_OUT_MS S_2_MS(15)
+
 #ifdef HAS_UART1
 
 #ifdef UART_NUM_ZED_F9P
 #define UBX_UART_NUM UART_NUM_ZED_F9P
-#endif
-
-#endif
-#ifdef HAS_UART1
+#else
 #define UBX_UART_NUM 1
-#endif
+#endif /*UART_NUM_ZED_F9P*/
 
-typedef enum eReceiverMode_t {
-    MODE_DISABLED = 0x00,
-    MODE_SURVEY_IN = 0x01,
-    MODE_FIXED = 0x02,
-} ReceiverMode_t;
-
-/*UBX data types*/
-typedef enum eUbxType_t {
-    UBX_U1 = 1,
-    UBX_U2 = 2,
-    UBX_U4 = 3,
-    UBX_X1 = 4,
-    UBX_X2 = 5,
-    UBX_X4 = 6,
-    UBX_I1 = 7,
-    UBX_I2 = 8,
-    UBX_I4 = 9,
-    UBX_R4 = 10,
-    UBX_R8 = 11,
-    UBX_CH = 12,
-    UBX_L = 13,
-} UbxType_t;
-
-typedef enum eSatConst_t {
-    SC_GPS = 0,
-    SC_GLONASS = 1,
-    SC_GALILEO = 2,
-    SC_BEI_DOU = 3,
-    SC_NONE = 4,
-} SatConst_t;
+#endif /*HAS_UART1*/
 
 #if 0
 #define UBX_KEY_CNT 1

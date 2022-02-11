@@ -198,6 +198,17 @@ static bool ubx_proc_nav_timeutc_frame(uint8_t* payload, uint16_t len) {
     return res;
 }
 
+static bool ubx_proc_nav_svin_frame(uint8_t* payload, uint16_t len){
+    bool res = false;
+    if( 40 <= len) {
+        NavSvin_t Data = {0};
+        memcpy(&Data, payload, sizeof(NavSvin_t));
+        res = true;
+    }
+    return res;
+}
+
+
 static bool ubx_proc_nav_pvt_frame(uint8_t* payload, uint16_t len){
     bool res = false;
     if(92<=len){
@@ -236,29 +247,33 @@ static bool ubx_proc_nav_velned_frame(uint8_t* payload, uint16_t len) {
     return res;
 }
 
+#define PAYLOAD ( frame + UBX_INDEX_PAYLOAD)
 static bool ubx_proc_nav_frame(uint8_t* frame, uint16_t len) {
     bool res = false;
     uint8_t id = frame[UBX_INDEX_ID];
     switch(id) {
     case UBX_ID_NAV_VELNED:
-        res = ubx_proc_nav_velned_frame(frame + UBX_INDEX_PAYLOAD, len);
+        res = ubx_proc_nav_velned_frame(PAYLOAD, len);
         break;
 
     case UBX_ID_NAV_TIMEUTC:
-        res = ubx_proc_nav_timeutc_frame(frame + UBX_INDEX_PAYLOAD, len);
+        res = ubx_proc_nav_timeutc_frame(PAYLOAD, len);
         break;
 
     case UBX_ID_NAV_POSLLH:
-        res = ubx_proc_nav_posllh_frame(frame + UBX_INDEX_PAYLOAD, len);
+        res = ubx_proc_nav_posllh_frame(PAYLOAD, len);
         break;
     case UBX_ID_NAV_HPPOSLLH:
-        res = ubx_proc_nav_hpposllh_frame(frame + UBX_INDEX_PAYLOAD, len);
+        res = ubx_proc_nav_hpposllh_frame(PAYLOAD, len);
         break;
     case UBX_ID_NAV_ATT:
-        res = ubx_proc_nav_att_frame(frame + UBX_INDEX_PAYLOAD);
+        res = ubx_proc_nav_att_frame(PAYLOAD);
         break;
     case UBX_ID_NAV_PVT:
-        res = ubx_proc_nav_pvt_frame(frame + UBX_INDEX_PAYLOAD, len);
+        res = ubx_proc_nav_pvt_frame(PAYLOAD, len);
+        break;
+    case UBX_ID_NAV_SVIN:
+        res = ubx_proc_nav_svin_frame(PAYLOAD, len);
         break;
     default:
 #ifdef HAS_LOG
@@ -368,6 +383,7 @@ static const UbxHeader_t PollLut[] = {
     {UBX_CLA_NAV, UBX_ID_NAV_VELNED},
     {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
 #ifdef HAS_ZED_F9P
+    {UBX_CLA_NAV, UBX_ID_NAV_SVIN },
     {UBX_CLA_CFG, UBX_ID_CFG_TMODE3 },
     {UBX_CLA_NAV, UBX_ID_NAV_PVT},
     {UBX_CLA_NAV, UBX_ID_NAV_ATT},

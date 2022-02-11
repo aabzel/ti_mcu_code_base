@@ -5,3 +5,4 @@ UBX_PROTO_DIR = $(PROJECT_ROOT)protocols/ubx_protocol
 INCDIR += -I$(UBX_PROTO_DIR)
 
 SOURCES_C += $(UBX_PROTO_DIR)/ubx_protocol.c
+SOURCES_C += $(UBX_PROTO_DIR)/ubx_diag.c

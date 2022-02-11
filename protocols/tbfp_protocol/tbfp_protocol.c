@@ -40,7 +40,9 @@
 #endif
 #include "system.h"
 #include "tbfp_diag.h"
+#ifdef HAS_TBFP_RETX
 #include "tbfp_re_tx_ack_fsm.h"
+#endif
 #ifdef HAS_CLI
 #include "writer_config.h"
 #endif
@@ -73,7 +75,10 @@ bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface, uint8_
         instance->parser.preamble_val=preamble_val; /*For pack tunneling*/
         instance->min_len = 0xFFFF;
         instance->rx_pkt_cnt = 0;
+        res = true;
+#ifdef HAS_TBFP_RETX
         res = tbfp_retx_init(instance);
+#endif
     }
     if(TBFP_SIZE_HEADER != sizeof(TbfHeader_t)) {
 #ifdef HAS_LOG
@@ -377,12 +382,14 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
     bool res = false;
     LOG_DEBUG(TBFP, "%s ProcPayload", interface2str(interface));
     switch(payload[0]) {
+#ifdef HAS_TBFP_RETX
     case FRAME_ID_ACK: {
         LOG_DEBUG(TBFP, "RxAck");
         uint16_t ser_num=0;
         memcpy(&ser_num, &payload[1], 2);
         res = tbfp_retx_ack(&TbfpProtocol[interface], ser_num);
     } break;
+#endif
     case FRAME_ID_TUNNEL: {
         LOG_DEBUG(TBFP, "TBFP in TBFP"); /*matryoshka*/
         res = tbfp_proc(&payload[1], len-1, IF_LORA, false);

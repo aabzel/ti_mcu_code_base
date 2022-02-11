@@ -65,17 +65,19 @@ bool test_ublox_proto_err_len(void) {
   
 bool test_ublox_proto_types(void) {
    LOG_INFO(SYS,"%s()",__FUNCTION__);
-   EXPECT_EQ(92, sizeof(NavPvt_t));
+
+   EXPECT_EQ(40, sizeof(NavSvin_t));
    EXPECT_EQ(1, sizeof(UbxReceiverMode_t));
    EXPECT_EQ(4, sizeof(ConfigurationKeyID_t));
    EXPECT_EQ(13, sizeof(UbxCfgCfg_t));
-   EXPECT_EQ(40, sizeof(UbxCfgTmode3Data_t_t));
+   EXPECT_EQ(40, sizeof(UbxCfgTmode3Data_t));
    EXPECT_EQ(9, sizeof(SecUniqId_t));
    EXPECT_EQ(28, sizeof(NavPosllh_t));
    EXPECT_EQ(36, sizeof(NavHpPosllh_t));
    EXPECT_EQ(20, sizeof(NavTimeUtc_t));
    EXPECT_EQ(1, sizeof(TimeUtcValidityFlags_t));
    EXPECT_EQ(36, sizeof(NavVelNed_t));
+   EXPECT_EQ(92, sizeof(NavPvt_t));
 
    return true;
 }

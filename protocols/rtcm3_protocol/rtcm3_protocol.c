@@ -35,6 +35,10 @@
 #include "uart_drv.h"
 #endif /*HAS_UART*/
 
+#ifndef HAS_LORA
+#define MAX_LORA_PAYLOAD_SIZE 250
+#endif
+
 Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];
 
 bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state) {

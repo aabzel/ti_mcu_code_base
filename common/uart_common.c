@@ -38,7 +38,7 @@ uint32_t calc_uart_transfer_time_ms(uint32_t baudrate, uint32_t bytes) {
     tx_time_us = (uint32_t)(byte_train_duration * 1000.0f);
     return tx_time_us;
 }
-
+#ifdef HAS_MCU
 bool uart_calc_byte_rate(void){
     bool res = false;
     uint8_t uart_num = 0;
@@ -56,6 +56,7 @@ bool uart_calc_byte_rate(void){
     }
     return res;
 }
+#endif
 
 #ifdef HAS_UART
 bool uart_send_banner(uint8_t uart_num, char pattern) {

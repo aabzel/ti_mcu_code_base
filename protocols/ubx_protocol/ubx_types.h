@@ -84,41 +84,60 @@ typedef struct xNavVelNed_t{
 
 // UBX-NAV-PVT (0x01 0x07)
 typedef struct xNavPvt_t{
-    uint32_t iTOW;           /* GPS time of week of the navigation epoch.          */
-    uint16_t year;           /* Year          */
-    uint8_t month;           /* Month, range 1..12          */
-    uint8_t day;             /* Day of month, range 1..31          */
-    uint8_t hour;            /* Hour of day, range 0..23          */
-    uint8_t  min;            /* Minute of hour, range 0..59          */
-    uint8_t  sec;            /* Seconds of minute, range 0..60          */
-    uint8_t  ValidityFlags;  /*           */
-    uint32_t tAcc;           /* Time accuracy estimate          */
-    int32_t nano;            /*           */
+    uint32_t iTOW;           /*0 GPS time of week of the navigation epoch.          */
+    uint16_t year;           /*4 Year          */
+    uint8_t month;           /*6 Month, range 1..12          */
+    uint8_t day;             /*7 Day of month, range 1..31          */
+    uint8_t hour;            /*8 Hour of day, range 0..23          */
+    uint8_t  min;            /*9 Minute of hour, range 0..59          */
+    uint8_t  sec;            /*10 Seconds of minute, range 0..60          */
+    uint8_t  ValidityFlags;  /*11           */
+    uint32_t tAcc;           /*12 Time accuracy estimate          */
+    int32_t nano;            /*16           */
     uint8_t fixType;         /*20 GNSSfix Type          */
-    uint8_t FixStatusFlags;  /*           */
-    uint8_t AdditionalFlags; /*           */
-    uint8_t numSV;           /*           */
-    int32_t lon;             /*           */
-    int32_t lat;             /*           */
-    int32_t height;          /*           */
-    int32_t hMSL;            /*           */
-    uint32_t hAcc;           /*           */
-    uint32_t vAcc;           /*           */
-    int32_t velN;            /*           */
-    int32_t velE;            /*           */
-    int32_t velD;            /*           */
-    int32_t gSpeed;          /*           */
-    int32_t headMot;         /*           */
-    uint32_t sAcc;           /*           */
-    uint32_t headAcc;        /*           */
-    uint32_t pDOP;           /*           */
-    uint8_t flags3;          /*           */
-    uint8_t reserved[5];     /*           */
-    int32_t headVeh;         /*           */
-    int16_t magDec;          /*           */
-    uint16_t magAcc;         /*           */
-}NavPvt_t;
+    uint8_t FixStatusFlags;  /*21           */
+    uint8_t AdditionalFlags; /*22           */
+    uint8_t numSV;           /*23           */
+    int32_t lon;             /*24           */
+    int32_t lat;             /*28           */
+    int32_t height;          /*32           */
+    int32_t hMSL;            /*36           */
+    uint32_t hAcc;           /*40           */
+    uint32_t vAcc;           /*44           */
+    int32_t velN;            /*48           */
+    int32_t velE;            /*52           */
+    int32_t velD;            /*56           */
+    int32_t gSpeed;          /*60           */
+    int32_t headMot;         /*64           */
+    uint32_t sAcc;           /*68           */
+    uint32_t headAcc;        /*72           */
+    uint16_t pDOP;           /*76           */
+    uint16_t flags3;         /*78           */
+    uint8_t reserved0[4];    /*80           */
+    int32_t headVeh;         /*84           */
+    int16_t magDec;          /*88           */
+    uint16_t magAcc;         /*90           */
+}__attribute__((packed)) NavPvt_t;
  
+/*UBX-NAV-SVIN (0x01 0x3b)*/
+typedef struct xNavSvin_t{
+    uint8_t version;     /*0 Message version*/
+    uint8_t reserved0[3];/*1*/
+    uint32_t iTOW;       /*4 GPS time of week of the navigation epoch.*/
+    uint32_t dur;        /*8 Passed survey-in observation time*/
+    int32_t meanX;       /*12*/
+    int32_t meanY;       /*16*/
+    int32_t meanZ;       /*20*/
+    int8_t meanXHP;      /*24*/
+    int8_t meanYHP;      /*25*/
+    int8_t meanZHP;      /*26*/
+    uint8_t reserved1;   /*27*/
+    uint32_t meanAcc;  /*28 0.1_mm Current survey-in mean position accuracy*/
+    uint32_t obs;       /*32 Survey-in position validity flag, 1 = valid, otherwise 0*/
+    uint8_t valid;      /*36 Survey-in in progress flag, 1 = in-progress, otherwise 0*/
+    uint8_t active;     /*37*/
+    uint8_t reserved2[2];/*38*/
+}NavSvin_t;
 
 
 typedef struct xLayers_t {
