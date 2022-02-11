@@ -18,12 +18,41 @@
      id="defs865">
     <marker
        style="overflow:visible;"
-       id="marker2123"
+       id="marker2661"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path2659" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker2164"
        refX="0.0"
        refY="0.0"
        orient="auto"
        inkscape:stockid="Arrow1Lend"
        inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path2162" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker2123"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
       <path
          transform="scale(0.8) rotate(180) translate(12.5,0)"
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
@@ -166,7 +195,8 @@
        refY="0.0"
        orient="auto"
        inkscape:stockid="Arrow1Mend"
-       inkscape:isstock="true">
+       inkscape:isstock="true"
+       inkscape:collect="always">
       <path
          transform="scale(0.4) rotate(180) translate(10,0)"
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
@@ -1175,9 +1205,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="342.39156"
-     inkscape:cy="-30.427317"
+     inkscape:zoom="11.2"
+     inkscape:cx="178.63536"
+     inkscape:cy="315.61627"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
@@ -4621,6 +4651,47 @@
          x="-62.398514"
          y="193.35254"
          style="font-size:1.13378px;stroke-width:0.0850336">IO1</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker2661)"
+       d="m 50.176339,83.202006 h 3.401785"
+       id="path2160" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 50.714391,82.569578 0.359825,1.34288"
+       id="path3162" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.92241px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0480604"
+       x="50.179432"
+       y="85.559647"
+       id="text3166"><tspan
+         sodipodi:role="line"
+         id="tspan3164"
+         x="50.179432"
+         y="85.559647"
+         style="stroke-width:0.0480604">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.76389px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="49.845768"
+       y="82.252205"
+       id="text3170"><tspan
+         sodipodi:role="line"
+         id="tspan3168"
+         x="49.845768"
+         y="82.252205"
+         style="font-size:1.76389px;stroke-width:0.264583">11</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.686484px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.128716"
+       x="49.877861"
+       y="80.644539"
+       id="text3175"><tspan
+         sodipodi:role="line"
+         id="tspan3173"
+         x="49.877861"
+         y="80.644539"
+         style="font-size:0.686483px;stroke-width:0.128716">CFG_COM</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
