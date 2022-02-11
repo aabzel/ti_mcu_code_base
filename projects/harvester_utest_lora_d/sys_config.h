@@ -6,7 +6,7 @@
 #include "sys_config_common.h"
 
 /*Hardware config*/
-#define UART_COUNT 2
+#define UART_COUNT 1
 #define UART_NUM_CLI 0U
 #define UART_NUM_ZED_F9P 1U
 
