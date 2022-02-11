@@ -46,9 +46,7 @@
 #ifdef HAS_CLI
 #include "writer_config.h"
 #endif
-#ifdef HAS_ZED_F9P
-#include "zed_f9p_drv.h"
-#endif
+
 #ifdef HAS_GNSS
 #include "gnss_drv.h"
 #endif
@@ -303,7 +301,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
         if(FRAME_ID_PING == pingFrame.id) {
             res = tbfp_send_ping(FRAME_ID_PONG, interface);
         }
-#ifdef HAS_ZED_F9P
+#ifdef HAS_GNSS
         double cur_dist = 0.0;
         double azimuth = 0.0;
         if(is_valid_gnss_coordinates(pingFrame.coordinate)) {
@@ -323,9 +321,9 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
             LOG_ERROR(TBFP, "InvalidRemoteGNSSDot");
 #endif
         }
-#endif /*HAS_ZED_F9P*/
+#endif /*HAS_GNSS*/
 
-#if defined(HAS_LORA) && defined(HAS_ZED_F9P)
+#if defined(HAS_LORA) && defined(HAS_GNSS)
         uint16_t file_len = 0;
 #if defined(HAS_PARAM) && defined(HAS_FLASH_FS)
         res = mm_get(PAR_ID_LORA_MAX_LINK_DIST, (uint8_t*)&LoRaInterface.max_distance, sizeof(double), &file_len);
@@ -342,7 +340,7 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
             LoRaInterface.max_distance = cur_dist;
         }
 
-#endif /*HAS_LORA HAS_ZED_F9P*/
+#endif /*HAS_LORA HAS_GNSS*/
     }
     return res;
 }
