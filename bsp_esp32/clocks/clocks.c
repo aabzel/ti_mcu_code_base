@@ -7,6 +7,7 @@
 #include "esp_log.h"
 
 gptimer_handle_t gptimer = NULL;
+
 gptimer_config_t timer_config = {
     .clk_src = GPTIMER_CLK_SRC_APB,
     .direction = GPTIMER_COUNT_UP,

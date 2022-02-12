@@ -73,8 +73,11 @@ list(APPEND PATH_INC ${PATH_WORKSPACE}"/bsp_esp32/flash_fs")
 
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_sw")
 list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_sx1262")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_hw/test_sx1262/test_sx1262.c")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_sw/test_ublox_proto")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_sw/test_ublox_proto/test_ublox_proto.c")
 
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/crc/crc8_sae_j1850.c")
 
@@ -127,6 +130,11 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/fifo/fifo_array.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/fifo/fifo_char.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/tbfp_protocol/tbfp_re_tx_ack_fsm.c")
 
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/unit_tests/test_set_sw/test_nmea_proto")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_sw/test_nmea_proto/test_nmea_proto.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/unit_tests/test_set_sw/test_sw_list.c")
+
+
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/fifo/fifo_index.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/io_utils.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/io_utils/log.c")
@@ -152,6 +160,9 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/lora/writer_lora.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/tbfp_protocol/tbfp_retx_diag.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/telematic/telematic_commands.c")
 
+set(NEO_6M -DHAS_NEO_6M)
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/Drivers/neo_6m")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/Drivers/neo_6m/neo_6m_drv.c")
 
 set(UART -DHAS_UART -DHAS_UART_COMMANDS -DHAS_UART0 -DHAS_UART1 )
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/bsp_esp32/uart/uart_drv.c")
@@ -162,12 +173,12 @@ list(APPEND PATH_INC ${PATH_WORKSPACE}"/components/gnss")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/components/gnss/gnss_drv.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/gnss_diag.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/utils/gnss_utils.c")
-#set(NMEA -DHAS_NMEA -DHAS_NMEA_DIAG)
-set(NMEA )
-#list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/nmea_protocol/nmea_diag.c")
-#list(APPEND PATH_INC ${PATH_WORKSPACE}"/protocols/nmea_protocol")
-#list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/nmea_protocol/nmea_protocol.c")
-#list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/nmea_protocol/nmea_commands.c")
+set(NMEA -DHAS_NMEA -DHAS_NMEA_DIAG)
+#set(NMEA )
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/nmea_protocol/nmea_diag.c")
+list(APPEND PATH_INC ${PATH_WORKSPACE}"/protocols/nmea_protocol")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/nmea_protocol/nmea_protocol.c")
+list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/nmea_protocol/nmea_commands.c")
 
 set(UBLOX -DHAS_UBLOX -DHAS_UBX_DEBUG)
 #set(UBLOX )
@@ -177,15 +188,15 @@ list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/ubx_protocol/ubx_diag.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/ubx_protocol/ubx_protocol.c")
 list(APPEND PATH_SRC ${PATH_WORKSPACE}"/protocols/ubx_protocol/ublox_commands.c")
 
-
+set(TESTS -DHAS_HW_TESTS  -DHAS_SW_TESTS -DHAS_TEST_GPIO -DHAS_TEST_SPI -DHAS_TEST_NMEA_PROTO -DHAS_TEST_SUIT_UBLOX_PROTO -DHAS_TEST_SX1262 -DHAS_UNIT_TEST)
 set(TBFP -DTBFP_RETX -DHAS_TBFP_COMMANDS -DHAS_TBFP -DHAS_TBFP_FLOW_CONTROL -DHAS_TELEMATIC_COMMANDS)
+set(KEY_VAL_MAP -DHAS_FLASH_FS -DHAS_PARAM -DHAS_FLASH_FS_COMMANDS -DHAS_PARAM_COMMANDS -DHAS_TEST_PARAM -DHAS_TEST_FLASH_FS) 
 
 #set(CMAKE_CXX_FLAGS "-Wall -Wno-dev -Wl,-rpath=/home/abcd/libs/")
-set(KEY_VAL_MAP -DHAS_FLASH_FS -DHAS_PARAM -DHAS_FLASH_FS_COMMANDS -DHAS_PARAM_COMMANDS -DHAS_TEST_PARAM -DHAS_TEST_FLASH_FS) 
 #target_compile_options(${COMPONENT_TARGET} PUBLIC -DHAS_FLASH_FS -DHAS_PARAM)
-
+#-fshort-enums
 #target_compile_definitions(${COMPONENT_TARGET} PUBLIC "-DHAS_CLI")
 idf_component_register(SRCS "main_thread.c" ${PATH_SRC}
                        INCLUDE_DIRS ${PATH_INC})
 # -DHAS_SX1262_POLL -DHAS_SPI_SW_CHIP_SELECT
-target_compile_options(${COMPONENT_TARGET} PUBLIC -Os  ${NMEA} ${GNSS} ${UART} ${UBLOX}  ${KEY_VAL_MAP} ${TBFP}  -DHAS_CLI_CMD_HISTORY -DHAS_AXP192_COMMANDS -DHAS_AXP192 -DHAS_I2C0 -DHAS_I2C -DHAS_I2C_COMMANDS -DHAS_SPI_SW_CHIP_SELECT -DHAS_LED_COMMANDS  -DconfigSUPPORT_STATIC_ALLOCATION=1 -DHAS_MCU -DHAS_LOG -DHAS_TEST_GPIO -DHAS_TEST_SPI -DHAS_TEST_SX1262 -DHAS_UNIT_TEST -DHAS_HW_TESTS -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SX1262_EX_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI3  -Wno-stringop-overflow)
+target_compile_options(${COMPONENT_TARGET} PUBLIC -Os ${NEO_6M} ${NMEA} ${GNSS} ${UART} ${UBLOX}  ${KEY_VAL_MAP} ${TBFP}  -DHAS_CLI_CMD_HISTORY -DHAS_AXP192_COMMANDS -DHAS_AXP192 -DHAS_I2C0 -DHAS_I2C -DHAS_I2C_COMMANDS -DHAS_SPI_SW_CHIP_SELECT -DHAS_LED_COMMANDS  -DconfigSUPPORT_STATIC_ALLOCATION=1 -DHAS_MCU -DHAS_LOG ${TESTS} -DHAS_SX1262 -DHAS_SPI_COMMANDS -DHAS_SX1262_DEBUG -DHAS_LED -DHAS_CLOCK -DHAS_LORA -DHAS_CLI -DHAS_TASKS -DHAS_GPIO -DHAS_DEBUG -DHAS_SX1262_EX_DEBUG -DHAS_SUPER_LOOP -DHAS_GPIO_COMMANDS -DHAS_UART -DESP32 -DHAS_FREE_RTOS -DHAS_SPI -DHAS_SPI3   -Wno-stringop-overflow)

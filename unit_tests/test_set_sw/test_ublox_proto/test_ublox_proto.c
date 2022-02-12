@@ -67,7 +67,7 @@ bool test_ublox_proto_types(void) {
    LOG_INFO(SYS,"%s()",__FUNCTION__);
    EXPECT_STREQ("CLA:0x01=NAV ID:0x3b=SVIN",ClassId2str(UBX_CLA_NAV,0x3b));
    EXPECT_EQ(40, sizeof(NavSvin_t));
-   EXPECT_EQ(1, sizeof(UbxReceiverMode_t));
+   EXPECT_EQ(3, sizeof(CfgMsg_t));
    EXPECT_EQ(4, sizeof(ConfigurationKeyID_t));
    EXPECT_EQ(13, sizeof(UbxCfgCfg_t));
    EXPECT_EQ(40, sizeof(UbxCfgTmode3Data_t));
@@ -78,6 +78,9 @@ bool test_ublox_proto_types(void) {
    EXPECT_EQ(1, sizeof(TimeUtcValidityFlags_t));
    EXPECT_EQ(36, sizeof(NavVelNed_t));
    EXPECT_EQ(92, sizeof(NavPvt_t));
+   EXPECT_EQ(1, sizeof(UbxReceiverMode_t));
+   EXPECT_EQ(4, sizeof(UbxUartMode_t));
+   EXPECT_EQ(20, sizeof(CfgPrt_t));
 
    return true;
 }

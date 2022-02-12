@@ -1887,7 +1887,7 @@ bool sx1262_init(void) {
 #ifdef ESP32
     Sx1262Instance.proc = true;
     res = set_log_level(LORA, LOG_LEVEL_DEBUG);
-    Sx1262Instance.tx_mute = true;
+    Sx1262Instance.tx_mute = false;
     Sx1262Instance.debug = true;
     Sx1262Instance.show_ascii = false;
     Sx1262Instance.show_bin = true;

@@ -568,16 +568,19 @@ bool try_str2int8(const char s8_str[], int8_t* s8_value) {
 }
 
 bool try_strl2uint8(const char u8l_str[], int32_t u8l_str_len, uint8_t* u8l_value) {
-    uint32_t u8l_result = 0U;
-    bool u8l_success = try_strl2uint32(u8l_str, u8l_str_len, &u8l_result);
+    bool u8l_success = false;
+    if(u8l_str){
+        uint32_t u8l_result = 0U;
+        u8l_success = try_strl2uint32(u8l_str, u8l_str_len, &u8l_result);
 
-    if((u8l_success == true) && (u8l_result <= (uint32_t)UINT8_MAX)) {
-        *u8l_value = (uint8_t)u8l_result;
-    } else {
-        u8l_success = false;
-        *u8l_value = 0U;
+        if((u8l_success == true) && (u8l_result <= (uint32_t)UINT8_MAX)) {
+            *u8l_value = (uint8_t)u8l_result;
+        } else {
+            u8l_success = false;
+            *u8l_value = 0U;
+        }
+
     }
-
     return u8l_success;
 }
 
@@ -864,10 +867,12 @@ bool try_str2double(const char double_str[], double* double_value) {
 
 bool try_strl2double(const char double_str[], int32_t str_len, double* double_value) {
     bool double_success = false;
-    char tempStr[30] = "";
-    memset(tempStr, 0x00, sizeof(tempStr));
-    memcpy(tempStr, double_str, str_len);
-    double_success = try_str2double(tempStr, double_value);
+    if(double_str){
+        char tempStr[30] = "";
+        memset(tempStr, 0x00, sizeof(tempStr));
+        memcpy(tempStr, double_str, str_len);
+        double_success = try_str2double(tempStr, double_value);
+    }
     return double_success;
 }
 

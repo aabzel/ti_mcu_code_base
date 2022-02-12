@@ -121,7 +121,7 @@ static void uart1_rx_thread(void *arg){
         }
 #endif /*HAS_UART1_FWD*/
 #ifdef HAS_NMEA
-                res = nmea_proc_byte(data[i]);
+                res = nmea_proc_byte(data[i]); //Exeption here
                 if(false==res){
                     //LOG_ERROR(NMEA,"ProcByteErr 0x%x",data[i]);
                 }

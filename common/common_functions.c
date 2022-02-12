@@ -178,9 +178,6 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_UART1_FWD, 1, proc_uart1_fwd, loop_start_time_us);
 #endif
 
-#ifdef HAS_UBLOX
-    measure_task_interval(TASK_ID_UBX, UBX_PERIOD_US, ubx_proc, loop_start_time_us);
-#endif /*HAS_UBLOX*/
 
 #ifdef HAS_RF
     measure_task_interval(TASK_ID_RF, 3000, rf_process, loop_start_time_us);
@@ -201,6 +198,9 @@ void super_loop(uint64_t loop_start_time_us) {
 #ifdef HAS_NMEA
     measure_task_interval(TASK_ID_NMEA, NMEA_PERIOD_US, nmea_proc, loop_start_time_us);
 #endif /*HAS_NMEA*/
+#ifdef HAS_UBLOX
+    measure_task_interval(TASK_ID_UBX, UBX_PERIOD_US, ubx_proc, loop_start_time_us);
+#endif /*HAS_UBLOX*/
 
 #ifdef HAS_ZED_F9P
     measure_task_interval(TASK_ID_ZED_F9P, ZED_F9P_PERIOD_US, zed_f9p_proc, loop_start_time_us);

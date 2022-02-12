@@ -97,6 +97,10 @@
 #include "sx1262_drv.h"
 #endif /*HAS_SX1262*/
 
+#ifdef HAS_NEO_6M
+#include "neo_6m_drv.h"
+#endif
+
 #ifdef HAS_AXP192
 #include "axp192_drv.h"
 #endif /*HAS_AXP192*/
@@ -236,5 +240,8 @@ bool hw_init(void) {
   res = try_init(bq25171_q1_init(),"bq251") && res;
 #endif /*HAS_BQ25171_Q1*/
 
+#ifdef HAS_NEO_6M
+  res = try_init(neo_6m_init( ),"neo_6m") && res;
+#endif
   return res;
 }

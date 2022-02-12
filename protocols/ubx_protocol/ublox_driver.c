@@ -96,6 +96,15 @@ static bool ubx_config_data_parse(uint8_t* keys) {
     return res;
 }
 
+static bool ubx_cfg_nmea_parse(uint8_t* payload) {
+    bool res = false;
+    CfgNmea_t Data = {0};
+    memcpy(&Data, payload, sizeof(CfgNmea_t));
+    LOG_DEBUG(UBX, "NmeaVer: 0x%x", Data.version);
+    LOG_DEBUG(UBX, "numSV: %u", Data.numSV);
+    return res;
+}
+
 static bool ubx_cfg_valget_parse(uint8_t* payload) {
     bool res = false;
     CfgValGetHeader_t Header = {0};
@@ -122,6 +131,9 @@ static bool ubx_cfg_tmode3_parse(uint8_t* payload) {
 static bool ubx_proc_cfg_frame(void) {
     bool res = false;
     switch(UbloxProtocol.fix_frame[UBX_INDEX_ID]) {
+    case UBX_ID_CFG_NMEA:
+        res = ubx_cfg_nmea_parse(&UbloxProtocol.fix_frame[UBX_INDEX_PAYLOAD]);
+        break;
     case UBX_ID_CFG_GET_VAL:
         res = ubx_cfg_valget_parse(&UbloxProtocol.fix_frame[UBX_INDEX_PAYLOAD]);
         break;
@@ -384,6 +396,9 @@ static const UbxHeader_t PollLut[] = {
     {UBX_CLA_NAV, UBX_ID_NAV_TIMEUTC},
     {UBX_CLA_NAV, UBX_ID_NAV_VELNED},
     {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
+#ifdef HAS_NEO_6M
+    {UBX_CLA_CFG, UBX_ID_CFG_NMEA },
+#endif
 #ifdef HAS_ZED_F9P
     //{UBX_CLA_NAV, UBX_ID_NAV_SVIN },
     {UBX_CLA_CFG, UBX_ID_CFG_TMODE3 },

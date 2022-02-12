@@ -5,18 +5,20 @@
 #include <stdint.h>
 #include <time.h>
 
+#include "timer_utils.h"
 #include "gnss_utils.h"
 #ifdef HAS_CLOCK
 #include "clocks.h"
 #endif
+
 #ifdef HAS_TASKS
-#define NMEA_PERIOD_US S_2_US(1.5)
-#define NMEA_LACK_FRAME_WARNING_TIME_OUT_MS S_2_MS(6)
-#define NMEA_LACK_FRAME_ERROR_TIME_OUT_MS S_2_MS(12)
+#define NMEA_PERIOD_US SEC_2_US(1.5)
+#define NMEA_LACK_FRAME_WARNING_TIME_OUT_MS SEC_2_US(6)
+#define NMEA_LACK_FRAME_ERROR_TIME_OUT_MS SEC_2_US(12)
 #endif
 
 #define NUM_OF_PARSED_SAT 5
-#define NMEA_MSG_SIZE 100U
+#define NMEA_MSG_SIZE 300U
 #define LED_GREEN_PERIOD_RTK_FIXED_MS 100U
 
 typedef enum eGgaQuality_t {
@@ -145,8 +147,8 @@ typedef struct xGsa_t {
 typedef struct xVtg_t {
     double cogt;   /*Course over ground (true)*/
     double cogm;   /*Course over ground (magnetic)*/
-    double sogn;   /*Speed over ground*/
-    double sogk;   /*Speed over ground*/
+    double sogn;   /*Speed over ground knot/s*/
+    double sogk;   /*Speed over ground km/h*/
     char cogtUnit; /*Course over ground units: T (degrees true, fixed field)*/
     char cogmUnit; /*Course over ground units: M (degrees magnetic, fixed field)*/
     char sognUnit; /*Speed over ground units: N (knots, fixed field)*/

@@ -34,7 +34,11 @@ extern "C" {
 #define UBX_CLA_MGA 0x13
 #define UBX_CLA_SEC 0x27
 
+#define UBX_CLA_NMEA 0xF0
+
 /*3.10.26 UBX-CFG-VALSET (0x06 0x8a)*/
+#define UBX_ID_CFG_PRT 0x00
+#define UBX_ID_CFG_MSG 0x01
 #define UBX_ID_CFG_SET_VAL 0x8A
 /*3.10.25 UBX-CFG-VALGET (0x06 0x8b)*/
 #define UBX_ID_CFG_GET_VAL 0x8B
@@ -44,7 +48,11 @@ extern "C" {
 #define UBX_ID_CFG_CFG 0x09
 /*3.10.17 UBX-CFG-RATE (0x06 0x08)*/
 #define UBX_ID_CFG_RATE 0x08
+#define UBX_ID_CFG_NMEA 0x17
 
+#define UBX_ID_CFG_NMEA_GLL 0x01
+#define UBX_ID_CFG_NMEA_GGA 0x00
+#define UBX_ID_CFG_NMEA_ZDA 0x08
 
 #define UBX_ID_NAV_SVIN 0x3b /*Survey-in data*/
 #define UBX_ID_NAV_POSLLH 0x02
@@ -85,7 +93,7 @@ typedef enum eUbxReceiverMode_t {
    RX_MODE_SURVEY_IN=1,
    RX_MODE_FIXED=2,
    RX_MODE_UNDEF=3,
-} UbxReceiverMode_t;
+}__attribute__((packed))  UbxReceiverMode_t;
 
 
 typedef enum eReceiverMode_t {

@@ -8,6 +8,14 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+/*31.9 CFG-MSG (0x06 0x01)*/
+typedef struct xCfgMsg_t{
+    uint8_t msgClass; //Message Class
+    uint8_t msgID; //Message Identifier
+    uint8_t rate; //Send rate on current Target
+}__attribute__((__packed__)) CfgMsg_t;
+
+
 /*UBX-NAV-POSLLH (0x01 0x02)*/
 typedef struct xNavPosllh_t{
     uint32_t iTOW;          /*0  ms*/
@@ -119,6 +127,65 @@ typedef struct xNavPvt_t{
     uint16_t magAcc;         /*90           */
 }__attribute__((packed)) NavPvt_t;
  
+
+typedef union xNmeaFilter_t{
+    uint8_t byte;
+    struct{
+        uint8_t  posFilt :1;       /*0 disable position filtering */
+        uint8_t mskPosFilt:1;        /*1 disable masked position filtering */
+        uint8_t timeFilt:1;        /*2 disable time filtering*/
+        uint8_t dateFilt:1;     /*3 disable date filtering*/
+        uint8_t sbasFilt:1; /*4 enable SBAS filtering*/
+        uint8_t  trackFilt:1; /*5 disable track filtering*/
+        uint8_t  res:2; /*6-7 */
+    };
+}NmeaFilter_t;
+
+
+typedef union xNmeaFlags_t{
+    uint8_t byte;
+    struct{
+        uint8_t  compat :1;   /*0 enable compatibility mode. */
+        uint8_t consider:1;   /*1 enable considering mode. */
+        uint8_t  res:6; /*2-7 */
+    };
+}NmeaFlags_t;
+
+
+typedef union xUbxUartMode_t{
+    uint32_t dword;
+    struct{
+        uint8_t res1 :6;   /* */
+        uint8_t charLen :2;   /* */
+        uint8_t res2 :1;   /* */
+        uint8_t parity:3;   /* */
+        uint8_t nStopBits:2;   /* */
+        uint32_t res3:18;   /* */
+    };
+}__attribute__((packed)) UbxUartMode_t;
+
+/*31.16 CFG-PRT (0x06 0x00)*/
+typedef struct xCfgPrt_t{
+    uint8_t portID;
+    uint8_t reserved0;
+    uint16_t txReady;
+    UbxUartMode_t UartMode;
+    uint32_t baudRate;
+    uint16_t inProtoMask;
+    uint16_t outProtoMask;
+    uint8_t reserved1[4];
+}__attribute__((__packed__)) CfgPrt_t;
+
+/*31.12 CFG-NMEA (0x06 0x17)*/
+typedef struct xCfgNmea_t{
+    NmeaFilter_t filter;
+    uint8_t version;
+    uint8_t numSV;
+
+    NmeaFlags_t flags;
+}__attribute__((__packed__))CfgNmea_t;
+
+
 /*UBX-NAV-SVIN (0x01 0x3b)*/
 typedef struct xNavSvin_t{
     uint8_t version;     /*0 Message version*/
