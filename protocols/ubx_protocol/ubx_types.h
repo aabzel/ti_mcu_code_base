@@ -151,8 +151,21 @@ typedef union xNmeaFlags_t{
     };
 }NmeaFlags_t;
 
+#if 0
+struct xUbxUartFlags_t{
+    uint8_t res1 :6;   /* */
+    uint8_t charLen :2;   /* */
+    uint8_t res2 :1;   /* */
+    uint8_t parity:3;   /* */
+    uint8_t nStopBits:2;   /* */
+    /*18*/
+    uint8_t res4  :2;   /* */
+    uint8_t res5 ;   /* */
+    uint8_t res6 ;   /* */
+}__attribute__((__packed__)) UbxUartFlags_t;
+#endif
 
-typedef union xUbxUartMode_t{
+typedef union uUbxUartMode_t{
     uint32_t dword;
     struct{
         uint8_t res1 :6;   /* */
@@ -160,9 +173,12 @@ typedef union xUbxUartMode_t{
         uint8_t res2 :1;   /* */
         uint8_t parity:3;   /* */
         uint8_t nStopBits:2;   /* */
-        uint32_t res3:18;   /* */
-    };
-}__attribute__((packed)) UbxUartMode_t;
+        /*18*/
+        uint8_t res4  :2;   /* */
+        uint8_t res5 ;   /* */
+        uint8_t res6 ;   /* */
+    }__attribute__((__packed__));
+}__attribute__((__packed__)) UbxUartMode_t;
 
 /*31.16 CFG-PRT (0x06 0x00)*/
 typedef struct xCfgPrt_t{
