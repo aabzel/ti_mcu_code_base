@@ -210,7 +210,9 @@ bool test_convert_try_str2luint32_hex(void) {
 }
 
 bool test_convert_try_str2luint32(void) {
-    uint32_t value;
+    uint32_t value=0;
+    EXPECT_FALSE(try_strl2uint32("3*4B", 2, &value));
+    EXPECT_EQ(0, value);
     EXPECT_TRUE(try_strl2uint32("140222,,,A,V*1B", 6, &value));
     EXPECT_EQ(140222, value);
 

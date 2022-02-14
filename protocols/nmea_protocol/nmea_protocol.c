@@ -165,59 +165,119 @@ bool gnss_parse_gga(char* nmea_msg, gga_t* gga) {
 #ifdef HAS_NMEA_GSV
 //$GLGSV,3,3,10, 85,46,314,38,
 //               86,04,339,,3*7A
+//"$GBGSV,3,3,09,35,18,108,,3*4B",
 bool gnss_parse_gsv(char* nmea_msg, gsv_t* gsv) {
     bool res = true;
+    LOG_DEBUG(NMEA,"GSV [%s]",nmea_msg);
+    uint8_t cnt=0;
     char* ptr = strchr(nmea_msg, ',') ;
     if(ptr){
-        res = try_strl2uint8(ptr+1, 1, &gsv->numMsg) && res;
+        res = try_strl2uint8(ptr+1, 1, &gsv->numMsg) ;
+        if(res){
+            LOG_DEBUG(NMEA,"numMsg Ok");
+            cnt++;
+        }
     }
-    ptr++;
+    if(ptr){
+       ptr++;
+    }
 
     ptr = strchr(ptr, ',') ;
     if(ptr){
-        res = try_strl2uint8(ptr+1, 1, &gsv->msgNum) && res;
+        res = try_strl2uint8(ptr+1, 1, &gsv->msgNum) ;
+        if(res){
+            cnt++;
+        }
     }
-    ptr++;
+    if(ptr){
+       ptr++;
+    }
 
     ptr = strchr(ptr, ',') ;
     if(ptr){
-        res = try_strl2uint16(ptr+1, 2, &gsv->numSV) && res;
+        res = try_strl2uint16(ptr+1, 2, &gsv->numSV) ;
+        if(res){
+                 cnt++;
+         }
     }
-    ptr++;
+    if(ptr){
+       ptr++;
+    }
     uint8_t i = 0;
+    LOG_DEBUG(NMEA,"Iterations %u",gsv->msgNum - 1);
     for(i = 0; i < (gsv->msgNum - 1); i++) {
         if(i < NUM_OF_PARSED_SAT) {
             ptr = strchr(ptr, ',') ;
             if(ptr){
-                res = try_strl2uint16(ptr+1, 2, &gsv->sat[i].svid) && res;
+                LOG_DEBUG(NMEA,"ParseSatelliteID");
+                res = try_strl2uint16(ptr+1, 2, &gsv->sat[i].svid) ;
+                if(res){
+                     cnt++;
+                }
             }
-            ptr++;
-
-            ptr = strchr(ptr, ',') ;
             if(ptr){
-                res = try_strl2uint8(ptr+1, 2, &gsv->sat[i].elv) && res;
+                LOG_DEBUG(NMEA,"IncrPtr L:%u",__LINE__);
+               ptr++;
             }
-            ptr++;
-
-            ptr = strchr(ptr, ',');
             if(ptr){
-                res = try_strl2uint16(ptr+1, 2, &gsv->sat[i].az) && res;
-            }
-            ptr++;
 
-            ptr = strchr(ptr, ',') ;
-            if(ptr){
-                res = try_strl2uint8(ptr+1, 2, &gsv->sat[i].cno) && res;
+                ptr = strchr(ptr, ',') ;
+                if(ptr){
+                    LOG_DEBUG(NMEA,"ParseElv");
+                    res = try_strl2uint8(ptr+1, 2, &gsv->sat[i].elv) ;
+                    if(res){
+                             cnt++;
+                    }
+                }
             }
-            ptr++;
+            if(ptr){
+               ptr++;
+            }
+
+            if(ptr ){
+                ptr = strchr(ptr, ',');
+                if(ptr){
+                    LOG_DEBUG(NMEA,"ParseAz");
+                    res = try_strl2uint16(ptr+1, 3, &gsv->sat[i].az) ;
+                    if(res){
+                        cnt++;
+                    }
+                }
+            }
+            if(ptr){
+                ptr++;
+            }
+
+            if(ptr){
+                ptr = strchr(ptr, ',') ;
+                if(ptr){
+                    LOG_DEBUG(NMEA,"ParseSignalStrength");
+                    res = try_strl2uint8(ptr+1, 2, &gsv->sat[i].cno) ;
+                    if(res){
+                             cnt++;
+                    }
+                }
+            }
+            if(ptr){
+               ptr++;
+            }
         }
     }
-    ptr = strchr(ptr, ',') ;
     if(ptr){
-        res = try_strl2uint8(ptr+1, 1, &gsv->signalId) && res;
+        ptr = strchr(ptr, ',') ;
+        if(ptr){
+            LOG_DEBUG(NMEA,"ParseSignalID");
+            res = try_strl2uint8(ptr+1, 1, &gsv->signalId) ;
+            if(res){
+               cnt++;
+            }
+        }
     }
 
-
+    res = false;
+    if(cnt){
+        res = true;
+    }
     return res;
 }
 #endif
