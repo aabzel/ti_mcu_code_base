@@ -383,16 +383,16 @@ bool tbfp_parser_reset_rx(TbfpProtocol_t* instance, RxState_t state) {
 
 static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t interface) {
     bool res = false;
-    LOG_DEBUG(TBFP, "%s ProcPayload", interface2str(interface));
+    LOG_DEBUG(TBFP, "%s ProcPayload ID:%s", interface2str(interface), tbfp_id2str(payload[0]));
     switch(payload[0]) {
-#ifdef HAS_TBFP_RETX
     case FRAME_ID_ACK: {
         LOG_DEBUG(TBFP, "RxAck");
         uint16_t ser_num=0;
         memcpy(&ser_num, &payload[1], 2);
+#ifdef HAS_TBFP_RETX
         res = tbfp_retx_ack(&TbfpProtocol[interface], ser_num);
-    } break;
 #endif
+    } break;
     case FRAME_ID_TUNNEL: {
         LOG_DEBUG(TBFP, "TBFP in TBFP"); /*matryoshka*/
         res = tbfp_proc(&payload[1], len-1, IF_LORA, false);
@@ -427,7 +427,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
         break;
     default:
 #ifdef HAS_LOG
-        LOG_ERROR(TBFP, "UndefPayload ID: 0x%02x", payload[0]);
+        LOG_ERROR(TBFP, "%s UndefPayload ID: 0x%02x",interface2str(interface), payload[0]);
 #endif
         res = false;
         break;
@@ -438,7 +438,7 @@ static bool tbfp_proc_payload(uint8_t* payload, uint16_t len, Interfaces_t inter
 /*One arr frame can contain several TBFP frames*/
 bool tbfp_proc(uint8_t* arr, uint16_t len, Interfaces_t interface, bool is_reset_parser) {
 #ifdef HAS_LOG
-    LOG_PARN(TBFP, "%s Len:%u", interface2str(interface), len);
+    LOG_PARN(TBFP, "%s Proc Len:%u", interface2str(interface), len);
 #endif
     bool res = true;
     uint32_t cur_rx_prk = 0;
@@ -583,9 +583,7 @@ bool tbfp_check_flow_control(
 
 bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
-#ifdef X86_64
-    LOG_DEBUG(TBFP, "%s():", __FUNCTION__);
-#endif
+    LOG_INFO(TBFP, "%s ProcFull Len: %u", interface2str(interface), len);
     res = is_tbfp_protocol(arr, len, interface);
     if(res) {
         TbfHeader_t inHeader = {0};
@@ -618,13 +616,14 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         }
 #endif /*HAS_TBFP_RETRANSMIT*/
 
+        if(flow_ctrl_ok){
+            res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
+        }
+        /*Ack After Proc to pass PC unit tests*/
         if(inHeader.flags.ack_need){
             res = tbfp_send_ack( inHeader.snum, interface);
         }
 
-        if(flow_ctrl_ok){
-            res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
-        }
     } else {
 #ifdef HAS_LOG
         LOG_ERROR(TBFP, "NotAframe");

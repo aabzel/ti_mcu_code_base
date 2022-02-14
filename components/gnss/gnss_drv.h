@@ -11,6 +11,10 @@ extern "C" {
 #include "timer_utils.h"
 #include "gnss_utils.h"
 
+#ifndef HAS_GNSS
+#error "It is needed to add HAS_GNSS option"
+#endif
+
 #define GNSS_PERIOD_US SEC_2_US(2)
 
 typedef struct xGnss_t {

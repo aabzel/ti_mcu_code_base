@@ -15,6 +15,9 @@
 #include "time_utils.h"
 #include "time_diag.h"
 
+#ifndef HAS_GNSS
+#error "It is needed to add HAS_GNSS option"
+#endif
 
 Gnss_t Gnss = { 0 };
 

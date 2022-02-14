@@ -138,7 +138,7 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface, Retx_t re
     bool res = false;
     LOG_DEBUG(SYS, "%s Send", interface2str(interface));
     switch(interface) {
-#if defined(HAS_SX1262) ||  defined(X86_64)
+#if defined(HAS_SX1262) || defined(X86_64)
     case IF_SX1262: {
 #ifdef HAS_MCU
         res = sys_sent_sx1262( array,  len,  retx);

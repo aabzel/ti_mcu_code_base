@@ -24,13 +24,13 @@ bool test_tbfp_tunnel(void){
     EXPECT_TRUE(rtcm3_generate_frame(BigRtcm3Message, sizeof(BigRtcm3Message)));
     EXPECT_TRUE( is_rtcm3_frame(BigRtcm3Message, sizeof(BigRtcm3Message)));
     uint32_t i=0;
-    EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_LORA], IF_LORA,0xA5) ) ;
-    EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_SX1262], IF_SX1262,0x1E));
+    EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_LORA], IF_LORA, 0xA5) ) ;
+    EXPECT_TRUE(tbfp_protocol_init(&TbfpProtocol[IF_SX1262], IF_SX1262, 0x1E));
     EXPECT_TRUE(fifo_init(&LoRaInterface.FiFoLoRaCharTx, &LoRaTxBuff[0], sizeof(LoRaTxBuff)));
     set_log_level(TBFP, LOG_LEVEL_DEBUG); /* uncomment in case of test fail*/
     set_log_level(LORA, LOG_LEVEL_DEBUG); /* uncomment in case of test fail*/
     uint8_t number_tx_frame = 11;
-    for(i=0;i<number_tx_frame;i++){
+    for(i=0; i<number_tx_frame; i++){
         LOG_INFO(TBFP,"SendBigFrame %u",i);
         EXPECT_TRUE(tbfp_send(BigRtcm3Message, sizeof(BigRtcm3Message), IF_LORA, 0, ACK_NO_NEED));
         uint32_t count =0, cnt=0;

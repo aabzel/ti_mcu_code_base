@@ -17,6 +17,7 @@
 
 static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
+    LOG_PARN(TBFP, "ParsePre: %s 0x%02x", interface2str(instance->interface), rx_byte);
     if((instance->parser.preamble_val == rx_byte) && (0 == instance->parser.load_len)) {
         instance->parser.rx_frame[0] = rx_byte;
         instance->parser.rx_state = WAIT_RETX_CNT;
@@ -24,7 +25,7 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
 #ifdef HAS_DEBUG
         instance->preamble_cnt++;
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "%s Preamble 0x%x Flow:%u",interface2str(instance->interface), rx_byte, instance->con_flow);
+        LOG_DEBUG(TBFP, "%s SpotPreamble 0x%x Flow:%u",interface2str(instance->interface), rx_byte, instance->con_flow);
 #endif
 #endif
         res = true;
@@ -39,9 +40,7 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
 
 static bool tbfp_parser_proc_retransmit_cnt(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
-#ifdef X86_64
     LOG_PARN(TBFP, "ParseReTx: %u", rx_byte);
-#endif
     if(TBFP_INDEX_RETX == instance->parser.load_len) {
         instance->parser.rx_frame[TBFP_INDEX_RETX] = rx_byte;
         instance->parser.load_len = TBFP_INDEX_RETX + 1;

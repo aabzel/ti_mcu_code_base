@@ -6,5 +6,6 @@ OPT += -DHAS_TBFP_RETRANSMIT
 
 INCDIR += -I$(TBFP_PROTOCOL_DIR)
 
+SOURCES_C +=$(TBFP_PROTOCOL_DIR)/tbfp_diag.c
 SOURCES_C +=$(TBFP_PROTOCOL_DIR)/tbfp_protocol.c
 SOURCES_C +=$(TBFP_PROTOCOL_DIR)/tbfp_protocol_parser.c

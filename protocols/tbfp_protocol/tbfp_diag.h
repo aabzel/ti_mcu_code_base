@@ -10,6 +10,7 @@ extern "C" {
 
 #include "tbfp_protocol.h"
 
+char *tbfp_id2str(uint8_t id);
 bool tbfp_print_ping_frame(TbfPingFrame_t *pingFrame);
 
 #ifdef __cplusplus
