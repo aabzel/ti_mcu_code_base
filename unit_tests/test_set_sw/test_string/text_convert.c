@@ -199,6 +199,7 @@ bool test_convert_try_str2uint32(void) {
 
 bool test_convert_try_str2luint32_hex(void) {
     uint32_t value;
+
     EXPECT_FALSE(try_strl2uint32_hex("0x12345", 7, &value));
     EXPECT_FALSE(try_strl2uint32_hex("12345", 0, &value));
     EXPECT_TRUE(try_strl2uint32_hex("12345", -1, &value));
@@ -210,6 +211,9 @@ bool test_convert_try_str2luint32_hex(void) {
 
 bool test_convert_try_str2luint32(void) {
     uint32_t value;
+    EXPECT_TRUE(try_strl2uint32("140222,,,A,V*1B", 6, &value));
+    EXPECT_EQ(140222, value);
+
     EXPECT_FALSE(try_strl2uint32("12345", 0, &value));
     EXPECT_TRUE(try_strl2uint32("12345", -1, &value));
     EXPECT_EQ(12345U, value);

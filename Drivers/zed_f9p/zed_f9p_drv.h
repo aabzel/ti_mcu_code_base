@@ -37,8 +37,8 @@ typedef struct xGnssCorrections_t{
 typedef struct xZedF9P_t {
     struct tm time_date;
     GnssCoordinate_t coordinate_base; /*Location of RTK base station*/
-    GnssCoordinate_t coordinate_cur;
-    GnssCoordinate_t coordinate_last;
+   // GnssCoordinate_t coordinate_cur;
+   // GnssCoordinate_t coordinate_last;
     double alt_base;
     uint16_t rate_ms;
     GnssCorrections_t corrections;

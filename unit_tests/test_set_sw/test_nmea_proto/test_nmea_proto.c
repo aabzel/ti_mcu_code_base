@@ -4,19 +4,40 @@
 #include <stdio.h>
 #endif /*X86_64*/
 
+#include "log.h"
 #include "gnss_utils.h"
 #include "nmea_protocol.h"
 #include "unit_test_check.h"
 
-const char msg_gnrmc[] = "$GNRMC,072316.27,A,5551.84825,N,03725.60995,E,0.010,,290721,11.73,E,A,V*76";
+const char msg_gnrmc0[] = "$GNRMC,072316.27,A,5551.84825,N,03725.60995,E,0.010,,290721,11.73,E,A,V*76";
 const char msg_gnrmc1[] = "$GPRMC,223047.00,V,,,,,,,120222,,,N*7C";
+const char msg_gnrmc2[] = "$GNRMC,163320.60,A,5540.70459,N,03737.93393,E,0.047,,140222,,,A,V*1B";
 // tsr nmea+
 bool test_nmea_proto_gnrmc(void) {
 #ifdef  X86_64
     LOG_INFO(NMEA,"%s():"CRLF,__FUNCTION__);
 #endif
    rmc_t rmc= {0};
-   EXPECT_TRUE( gnss_parse_rmc((char*)msg_gnrmc, &rmc));
+   set_log_level(NMEA, LOG_LEVEL_DEBUG);
+   set_log_level(SYS, LOG_LEVEL_DEBUG);
+
+   EXPECT_TRUE( gnss_parse_rmc((char*)msg_gnrmc2, &rmc));
+   EXPECT_EQ(16,rmc.time_date.tm_hour);
+   EXPECT_EQ(33,rmc.time_date.tm_min);
+   EXPECT_EQ(20,rmc.time_date.tm_sec);
+   EXPECT_NEAR(5540.70459l,rmc.coordinate_ddmm.latitude, 1e-6);
+   EXPECT_NEAR(3737.93393l,rmc.coordinate_ddmm.longitude, 0.00001f);
+   EXPECT_EQ('N',rmc.lat_dir);
+   EXPECT_EQ('N',rmc.lat_dir);
+   EXPECT_EQ('E',rmc.lon_dir);
+   EXPECT_NEAR(0.047l,rmc.speed_knots,0.00001f);
+   EXPECT_EQ('A',rmc.pos_mode);
+
+   EXPECT_EQ(14,rmc.time_date.tm_mday);
+   EXPECT_EQ(1, rmc.time_date.tm_mon); /*UBlox count from 1 time.h - from 0*/
+   EXPECT_EQ(2022,rmc.time_date.tm_year);
+
+   EXPECT_TRUE( gnss_parse_rmc((char*)msg_gnrmc0, &rmc));
    EXPECT_EQ(7,rmc.time_date.tm_hour);
    EXPECT_EQ(23,rmc.time_date.tm_min);
    EXPECT_EQ(16,rmc.time_date.tm_sec);
@@ -28,13 +49,24 @@ bool test_nmea_proto_gnrmc(void) {
    EXPECT_NEAR(0.010l,rmc.speed_knots,0.00001f);
 
    EXPECT_EQ(29,rmc.time_date.tm_mday);
-   EXPECT_EQ(6, rmc.time_date.tm_mon); /*UBlox count from 1*/
+   EXPECT_EQ(6, rmc.time_date.tm_mon); /*UBlox count from 1 time.h - from 0*/
    EXPECT_EQ(2021,rmc.time_date.tm_year);
 
    EXPECT_NEAR(11.73l, rmc.mv, 0.00001f);
    EXPECT_EQ('E',rmc.mv_ew);
    EXPECT_EQ('A',rmc.pos_mode);
    EXPECT_TRUE( gnss_parse_rmc((char*)msg_gnrmc1, &rmc));
+   EXPECT_EQ(22,rmc.time_date.tm_hour);
+   EXPECT_EQ(30,rmc.time_date.tm_min);
+   EXPECT_EQ(47,rmc.time_date.tm_sec);
+   EXPECT_EQ(12,rmc.time_date.tm_mday);
+   EXPECT_EQ(1, rmc.time_date.tm_mon); /*UBlox count from 1 time.h - from 0*/
+   EXPECT_EQ(2022,rmc.time_date.tm_year);
+
+   EXPECT_TRUE(nmea_parse((char*) msg_gnrmc0,strlen(msg_gnrmc0), &NmeaData));
+
+   set_log_level(NMEA, LOG_LEVEL_INFO);
+   set_log_level(SYS, LOG_LEVEL_INFO);
    return true;
 }
 
@@ -60,16 +92,26 @@ bool test_nmea_proto_gngga(void) {
    EXPECT_NEAR(13.3, gga.geoid_separation, 0.001);
    EXPECT_EQ('M',gga.geoid_unit);
 
+   EXPECT_TRUE(nmea_parse((char*) msg_gnrgga,strlen(msg_gnrgga), &NmeaData));
+
    return true;
 }
 
 const char msg_gnrgll[] = "$GNGLL,5540.70584,N,03737.93404,E,140125.00,A,A*74";
 const char msg_gnrgll2[] = "$GPGLL,,,,,213748.00,V,N*41";
-static bool test_nmea_proto_gngll(void) {
+bool test_nmea_proto_gngll(void) {
 #ifdef  X86_64
     LOG_INFO(NMEA,"%s():"CRLF,__FUNCTION__);
 #endif
     gll_t gll= {0};
+    set_log_level(SYS, LOG_LEVEL_DEBUG);
+    set_log_level(NMEA, LOG_LEVEL_DEBUG);
+    EXPECT_TRUE( gnss_parse_gll((char*)msg_gnrgll2, &gll));
+    EXPECT_EQ(21,gll.time_date.tm_hour);
+    EXPECT_EQ(37,gll.time_date.tm_min);
+    EXPECT_EQ(48,gll.time_date.tm_sec);
+    EXPECT_EQ('N',gll.pos_mode);
+
     EXPECT_TRUE( gnss_parse_gll((char*)msg_gnrgll, &gll));
     EXPECT_EQ(14,gll.time_date.tm_hour);
     EXPECT_EQ(1,gll.time_date.tm_min);
@@ -80,7 +122,10 @@ static bool test_nmea_proto_gngll(void) {
     EXPECT_EQ('E',gll.lon_dir);
     EXPECT_EQ('A',gll.status);
     EXPECT_EQ('A',gll.pos_mode);
-    EXPECT_TRUE( gnss_parse_gll((char*)msg_gnrgll2, &gll));
+    set_log_level(SYS, LOG_LEVEL_INFO);
+    set_log_level(NMEA, LOG_LEVEL_INFO);
+
+    EXPECT_TRUE(nmea_parse((char*) msg_gnrgll,strlen(msg_gnrgll), &NmeaData));
     return true;
 }
 
@@ -126,9 +171,11 @@ bool test_nmea_proto_gnzda(void) {
 
 const char msg_gnrvtg[] = "$GNVTG,,T,,M,0.017,N,0.032,K,A*3A";
 const char msg_gnrvtg1[] = "$GPVTG,,,,,,,,,N*30";
-static bool test_nmea_proto_gnvtg(void) {
+bool test_nmea_proto_gnvtg(void) {
     LOG_INFO(NMEA,"%s():"CRLF,__FUNCTION__);
     vtg_t vtg= {0};
+    set_log_level(SYS, LOG_LEVEL_DEBUG);
+    set_log_level(NMEA, LOG_LEVEL_DEBUG);
     EXPECT_TRUE( gnss_parse_vtg((char*)msg_gnrvtg, &vtg));
     EXPECT_EQ('T',vtg.cogtUnit);
     EXPECT_EQ('M',vtg.cogmUnit);
@@ -137,19 +184,24 @@ static bool test_nmea_proto_gnvtg(void) {
     EXPECT_NEAR(0.032,vtg.sogk,0.00001);
     EXPECT_EQ('K',vtg.sogkUnit);
     EXPECT_EQ('A',vtg.posMode);
-    EXPECT_TRUE( gnss_parse_vtg((char*)msg_gnrvtg1, &vtg));
+    EXPECT_FALSE( gnss_parse_vtg((char*)msg_gnrvtg1, &vtg));
+    set_log_level(SYS, LOG_LEVEL_INFO);
+    set_log_level(NMEA, LOG_LEVEL_INFO);
     return true;
 }
 
 static bool test_nmea_checksum(void){
     LOG_INFO(NMEA,"%s():"CRLF,__FUNCTION__);
-    uint8_t checksum = nmea_calc_checksum((char*)&msg_gnrmc[1], strlen(msg_gnrmc)-4);
+    uint8_t checksum =0;
+    checksum = nmea_calc_checksum((char*)&msg_gnrmc0[1], strlen(msg_gnrmc0)-NMEA_OVERHEAD);
     EXPECT_EQ(0x76, checksum);
+    checksum = nmea_calc_checksum((char*)&msg_gnrmc1[1], strlen(msg_gnrmc1)-NMEA_OVERHEAD);
+    EXPECT_EQ( 0x7C, checksum);
     return true;
 }
 
 const char msg_pubx[] = "$PUBX,00,001417.00,0000.00000,N,00000.00000,E,0.000,NF,5303356,3750039,0.000,0.00,0.000,,99.99,99.99,99.99,0,0,0*21";
-static bool test_nmea_proto_pubx(void) {
+bool test_nmea_proto_pubx(void) {
 
     LOG_INFO(NMEA,"%s():"CRLF,__FUNCTION__);
 
@@ -177,20 +229,17 @@ static bool test_nmea_proto_pubx(void) {
 }
 
 bool test_nmea_proto(void) {
-
   LOG_INFO(NMEA,"%s()",__FUNCTION__);
 
   EXPECT_EQ(16, sizeof(GnssCoordinate_t));
 
-  EXPECT_TRUE(test_nmea_proto_pubx());
-  EXPECT_TRUE(test_nmea_checksum());
-  EXPECT_TRUE(test_nmea_proto_gnvtg());
-  EXPECT_TRUE(test_nmea_proto_gngll());
-  EXPECT_TRUE(nmea_parse((char*) msg_gnrmc,strlen(msg_gnrmc), &NmeaData));
-  EXPECT_TRUE(nmea_parse((char*) msg_gnrgga,strlen(msg_gnrgga), &NmeaData));
-  EXPECT_TRUE(nmea_parse((char*) msg_gnrgll,strlen(msg_gnrgll), &NmeaData));
   EXPECT_TRUE(nmea_parse((char*) msg_gnrgsa,strlen(msg_gnrgsa), &NmeaData));
   EXPECT_TRUE(nmea_init());
+  return true;
+}
+
+bool test_nmea_crc(void){
+  EXPECT_TRUE(test_nmea_checksum());
   return true;
 }
 

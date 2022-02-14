@@ -5,6 +5,7 @@
 #include <limits.h>
 #include <math.h>
 #include <stdlib.h>
+#include "log.h"
 
 #ifdef HAS_CONVERT_DEBUG
 #include <stdio.h>
@@ -258,7 +259,7 @@ bool try_strl2uint64_dec(const char u64_dec_str[], int32_t u64_dec_str_len, uint
                     u64l_dec_success = false;
                 }
             }
-            if(u64l_dec_success == false) {
+            if(false==u64l_dec_success ) {
                 u64l_dec_result = 0U;
                 break;
             }
@@ -337,6 +338,7 @@ bool try_str2int32(const char s32_str[], int32_t* s32_value) {
 
 bool try_strl2uint32(const char u32l_str[], int32_t u32l_str_len, uint32_t* u32l_value) {
     bool u32l_success = true;
+    LOG_DEBUG(SYS,"strl2uint32 [%s] Len:%u",u32l_str,u32l_str_len);
     bool u32l_str_not_empty = true;
     int32_t u32l_len = u32l_str_len;
     if((NULL != u32l_str) && (NULL != u32l_value)) {
@@ -476,7 +478,7 @@ bool try_strl2uint32_dec(const char u32_dec_str[], int32_t u32_dec_str_len, uint
     uint64_t u32l_dec_result = 0U;
     bool u32l_dec_success = try_strl2uint64_dec(u32_dec_str, u32_dec_str_len, &u32l_dec_result);
 
-    if((u32l_dec_success == true) && (u32l_dec_result <= UINT32_MAX)) {
+    if((true==u32l_dec_success ) && (u32l_dec_result <= UINT32_MAX)) {
         *u32_dec_value = (uint32_t)u32l_dec_result;
     } else {
         u32l_dec_success = false;
@@ -867,6 +869,7 @@ bool try_str2double(const char double_str[], double* double_value) {
 
 bool try_strl2double(const char double_str[], int32_t str_len, double* double_value) {
     bool double_success = false;
+    LOG_DEBUG(SYS,"strl2double [%s] %u",double_str,str_len);
     if(double_str){
         char tempStr[30] = "";
         memset(tempStr, 0x00, sizeof(tempStr));

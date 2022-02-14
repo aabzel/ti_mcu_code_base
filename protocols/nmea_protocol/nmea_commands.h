@@ -16,7 +16,7 @@ bool nmea_stat_command(int32_t argc, char* argv[]);
 
 #define NMEA_COMMANDS                                                                                                 \
     SHELL_CMD("nmea_stat", "nms", nmea_stat_command, "NMEA message stat"),                                            \
-    SHELL_CMD("nmea_dat", "nmd", nmea_data_command, "NMEA data"), \
+    SHELL_CMD("nmea_dat", "nmd", nmea_data_command, "NMEA data"),  \
     SHELL_CMD("nmea_mess", "nmm", nmea_messages_command, "NMEA data"),
 
 #ifdef __cplusplus

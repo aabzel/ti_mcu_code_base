@@ -4,4 +4,5 @@ COMPONENTS_DIR = $(PROJECT_ROOT)components
 INCDIR += -I$(COMPONENTS_DIR)
 include $(COMPONENTS_DIR)/calendar/calendar.mk
 include $(COMPONENTS_DIR)/system/system.mk
+include $(COMPONENTS_DIR)/gnss/gnss.mk
 

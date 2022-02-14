@@ -1,4 +1,5 @@
 #include "gnss_drv.h"
+
 /*GNSS receiver invariant component*/
 #include "gnss_utils.h"
 #include "gnss_diag.h"
@@ -42,10 +43,9 @@ static bool gnss_update_from_nmea(void){
         res_time = true;
     } else {
   #ifdef HAS_LOG
-        LOG_DEBUG(NMEA, "InvalNmeaTimeDate");
+        LOG_ERROR(NMEA, "InvalNmeaTimeDate");
   #endif
     }
-
 
     res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
     if(res) {

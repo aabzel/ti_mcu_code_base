@@ -17,10 +17,6 @@ bool zed_f9p_diag_command(int32_t argc, char* argv[]) {
     if(0 == argc) {
         io_printf("UTC %d" CRLF, ZedF9P.time_zone);
         res = print_time_date(&ZedF9P.time_date);
-        io_printf("Current" CRLF);
-        print_coordinate(ZedF9P.coordinate_cur, true);
-        io_printf("Last" CRLF);
-        print_coordinate(ZedF9P.coordinate_last, true);
         res = true;
     } else {
         LOG_ERROR(ZED_F9P, "Usage: zfd");

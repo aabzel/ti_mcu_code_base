@@ -61,15 +61,6 @@ static bool zed_f9p_proc_base(void) {
     Sx1262Instance.sync_reg = false;
 #endif
 
-    res = is_valid_gnss_coordinates(ZedF9P.coordinate_base);
-    if(res) {
-        ZedF9P.coordinate_cur = ZedF9P.coordinate_base;
-    } else {
-#ifdef HAS_LOG
-        LOG_ERROR(ZED_F9P, "InvalGnssBaseDot");
-#endif
-    }
-
     if(task_data[TASK_ID_NMEA].on) {
         task_data[TASK_ID_NMEA].on = false;
     }
@@ -118,56 +109,6 @@ static bool zed_f9p_proc_base(void) {
     return res;
 }
 
-#ifdef HAS_NMEA
-bool zed_f9p_uptate_nmea(void) {
-    bool res = true, res_time = false, res_dot = false;
-    static bool first_time = true;
-    static bool first_gnss = true;
-    res = is_valid_time_date(&NmeaData.time_date);
-    if(res) {
-        if(first_time) {
-#ifdef HAS_LOG
-            LOG_INFO(ZED_F9P, "SpotValidTime!");
-            print_time_date(&NmeaData.time_date);
-#endif
-#ifdef HAS_CALENDAR
-            calendar_settime(&NmeaData.time_date);
-#endif /*HAS_CALENDAR*/
-            first_time = false;
-        }
-        ZedF9P.time_date = NmeaData.time_date;
-        res_time = true;
-    } else {
-#ifdef HAS_LOG
-        LOG_ERROR(ZED_F9P, "InvalNmeaTimeDate");
-#endif
-    }
-
-    res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
-    if(res) {
-        if(first_gnss) {
-#ifdef HAS_LOG
-            LOG_INFO(ZED_F9P, "SpotValidGNSSData!");
-            print_coordinate(NmeaData.coordinate_dd, true);
-#endif
-            first_gnss = false;
-        }
-        ZedF9P.coordinate_cur = NmeaData.coordinate_dd;
-        res_dot = true;
-    } else {
-#ifdef HAS_LOG
-        LOG_ERROR(ZED_F9P, "InvalNmeaGNSSDot");
-#endif
-    }
-
-    if(res_time && res_dot) {
-        res = true;
-    } else {
-        res = false;
-    }
-    return res;
-}
-#endif
 
 static bool zed_f9p_proc_rover(void) {
     bool res = true;
@@ -175,7 +116,6 @@ static bool zed_f9p_proc_rover(void) {
         task_data[TASK_ID_UBX].on = false;
     }
 #ifdef HAS_NMEA
-    res = zed_f9p_uptate_nmea();
     task_data[TASK_ID_NMEA].on = true;
 #endif
 
@@ -213,11 +153,6 @@ static bool zed_f9p_proc_none(void) {
     bool res = false;
     task_data[TASK_ID_NMEA].on = true;
     task_data[TASK_ID_UBX].on = false;
-
-#ifdef HAS_NMEA
-    res = zed_f9p_uptate_nmea();
-
-#endif
     return res;
 }
 
@@ -240,15 +175,6 @@ bool zed_f9p_proc(void) {
     default:
         res = false;
         break;
-    }
-
-    res = is_valid_gnss_coordinates(ZedF9P.coordinate_cur);
-    if(res) {
-        ZedF9P.coordinate_last = ZedF9P.coordinate_cur;
-    } else {
-#ifdef HAS_LOG
-        LOG_ERROR(ZED_F9P, "Inval GNSS cur coordinate");
-#endif
     }
 
     return res;

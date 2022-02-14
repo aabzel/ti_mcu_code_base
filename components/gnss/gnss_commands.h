@@ -5,6 +5,9 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
+#include <stdint.h>
+
 #ifdef HAS_UBLOX
 #include "ublox_commands.h"
 #else
@@ -29,12 +32,16 @@ extern "C" {
 #define ZED_F9P_COMMANDS
 #endif
 
+bool gnss_data_command(int32_t argc, char* argv[]);
+
 #define GNSS_COMMANDS                                                                                                   \
     LORA_COMMANDS                                                                                                       \
     NMEA_COMMANDS                                                                                                       \
     RTCM3_COMMANDS                                                                                                      \
     UBLOX_COMMANDS                                                                                                      \
-    ZED_F9P_COMMANDS
+    ZED_F9P_COMMANDS                                                                                                    \
+    SHELL_CMD("gnss_data", "gnss", gnss_data_command, "GNSS data"),
+
 
 #ifdef __cplusplus
 } /* extern "C" */
