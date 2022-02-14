@@ -12,7 +12,7 @@
 #else
 #define UART_NUM_RS232 0
 #endif
-#define RS232_PERIOD_US S_2_US(5)
+#define RS232_PERIOD_US SEC_2_US(5)
 
 typedef struct xRS232_t {
     bool ping;

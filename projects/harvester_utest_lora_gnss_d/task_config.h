@@ -7,6 +7,7 @@
   TASKS_BASE                \
   TASK(LORA)                \
   TASK(TBFP)                \
+  TASK(GNSS)                \
   TASK(NMEA)                \
   TASK(RS232)               \
   TASK(SX1262)              \

@@ -37,6 +37,10 @@
 #include "lora_drv.h"
 #endif /*HAS_LORA*/
 
+#ifdef HAS_GNSS
+#include "gnss_drv.h"
+#endif /*HAS_GNSS*/
+
 #ifdef HAS_UBLOX
 #include "ublox_driver.h"
 #include "ubx_protocol.h"
@@ -142,6 +146,10 @@ bool sw_init(void) {
 #ifdef HAS_LORA
     res = try_init(lora_init(), "LoRa") && res;
 #endif /*HAS_LORA*/
+
+#ifdef HAS_GNSS
+    res = try_init(gnss_init(), "Gnss") && res;
+#endif /*HAS_GNSS*/
 
 #ifdef HAS_GPIO_PWM
     res = try_init(gpio_pwm_init(), "GPIO_PWM") && res;

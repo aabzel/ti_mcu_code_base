@@ -8,7 +8,7 @@
 
 #include "clocks.h"
 
-#define CAN_PERIOD_US S_2_US(15)
+#define CAN_PERIOD_US SEC_2_US(15)
 
 bool can_send(uint8_t* data, uint16_t len);
 bool can_proc(void);

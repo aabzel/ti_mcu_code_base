@@ -1,6 +1,7 @@
 #ifndef GNSS_DRV_H
 #define GNSS_DRV_H
 
+/*GNSS receiver invariant component*/
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -16,10 +17,13 @@ typedef struct xGnss_t {
     struct tm time_date;
     GnssCoordinate_t coordinate_cur;
     GnssCoordinate_t coordinate_last;
+    bool first_time;
+    bool first_gnss;
 } Gnss_t;
 
 extern Gnss_t Gnss;
 
+bool gnss_init(void);
 bool gnss_proc(void);
 
 #ifdef __cplusplus
