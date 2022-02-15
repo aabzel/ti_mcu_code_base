@@ -11,6 +11,7 @@ extern "C" {
 
 #include "gnss_utils.h"
 
+bool print_wgs84_coordinate(Wgs84Coordinate_t Wgs84Coordinate, bool one_line) ;
 bool print_coordinate(GnssCoordinate_t coordinate, bool one_line);
 bool print_velocity(GnssVelocity_t velocity);
 char* coordinate2str(void* value);

@@ -9,6 +9,24 @@
 #include "io_utils.h"
 #include "log.h"
 
+//Check here
+//https://dominoc925-pages.appspot.com/mapplets/cs_ecef.html
+bool print_wgs84_coordinate(Wgs84Coordinate_t Wgs84Coordinate, bool one_line) {
+    bool res = true;
+    if(false == one_line) {
+        io_printf("x: %f m" CRLF, Wgs84Coordinate.x_cm/100.0);
+        io_printf("y: %f m" CRLF, Wgs84Coordinate.y_cm/100.0);
+        io_printf("z: %f m" CRLF, Wgs84Coordinate.z_cm/100.0);
+        io_printf("acc: %f m" CRLF, Wgs84Coordinate.acc_cm/100.0);
+    }
+    io_printf("XYZ %f %f %f m Acc:%f m" CRLF,
+              Wgs84Coordinate.x_cm/100.0,
+              Wgs84Coordinate.y_cm/100.0,
+              Wgs84Coordinate.z_cm/100.0,
+              Wgs84Coordinate.acc_cm/100.0 );
+
+    return res;
+}
 
 bool print_coordinate(GnssCoordinate_t coordinate, bool one_line) {
     bool res = true;

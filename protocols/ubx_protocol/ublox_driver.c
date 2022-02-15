@@ -192,6 +192,20 @@ static bool ubx_proc_nav_hpposllh_frame(uint8_t* payload, uint16_t len) {
     return res;
 }
 
+static bool ubx_proc_nav_posecef_frame(uint8_t* payload, uint16_t len) {
+    bool res = false;
+    if(20 <= len) {
+        NavPosEcef_t data = {0};
+        memcpy(&data, payload, sizeof(NavPosEcef_t));
+        NavInfo.Wgs84Coordinate.x_cm=data.ecefX;
+        NavInfo.Wgs84Coordinate.y_cm=data.ecefY;
+        NavInfo.Wgs84Coordinate.z_cm=data.ecefZ;
+        NavInfo.Wgs84Coordinate.acc_cm=data.pAcc;
+        res = true;
+    }
+    return res;
+}
+
 static bool ubx_proc_nav_timeutc_frame(uint8_t* payload, uint16_t len) {
     bool res = false;
     if(20 <= len) {
@@ -274,6 +288,9 @@ static bool ubx_proc_nav_frame(uint8_t* frame, uint16_t len) {
         res = ubx_proc_nav_timeutc_frame(PAYLOAD, len);
         break;
 
+    case UBX_ID_NAV_POSECEF:
+        res = ubx_proc_nav_posecef_frame(PAYLOAD, len);
+        break;
     case UBX_ID_NAV_POSLLH:
         res = ubx_proc_nav_posllh_frame(PAYLOAD, len);
         break;
@@ -328,6 +345,37 @@ bool ubx_proc_sec_uniqid_frame(uint8_t* payload, uint16_t len) {
     return res;
 }
 
+bool ubx_proc_mga_ini_frame(uint8_t* payload, uint16_t len) {
+    bool res = false;
+    if(20 <= len) {
+        MgaIniPosXyz_t data = {0};
+        memcpy(&data, payload, sizeof(MgaIniPosXyz_t));
+        NavInfo.Wgs84Coordinate.x_cm = data.ecefX;
+        NavInfo.Wgs84Coordinate.y_cm = data.ecefY;
+        NavInfo.Wgs84Coordinate.z_cm = data.ecefY;
+        NavInfo.Wgs84Coordinate.acc_cm = data.posAcc;
+        res = true;
+    }
+    return res;
+}
+
+static bool ubx_proc_mga_frame(uint8_t* frame, uint16_t len) {
+    bool res = false;
+    uint8_t id = frame[UBX_INDEX_ID];
+    switch(id) {
+    case UBX_ID_MGA_INI:
+        res = ubx_proc_mga_ini_frame(frame + UBX_INDEX_PAYLOAD, len);
+        break;
+    default:
+#ifdef HAS_CLI
+        LOG_ERROR(UBX, "UndefMgaId 0x%x", id);
+#endif
+        break;
+    }
+    return res;
+}
+
+
 static bool ubx_proc_sec_frame(uint8_t* frame, uint16_t len) {
     bool res = false;
     uint8_t id = frame[UBX_INDEX_ID];
@@ -376,6 +424,7 @@ bool ubx_proc_frame(UbloxProtocol_t* inst) {
     case UBX_CLA_ESF:
         break;
     case UBX_CLA_MGA:
+        res = ubx_proc_mga_frame(inst->fix_frame, inst->exp_len);
         break;
     case UBX_CLA_SEC:
         res = ubx_proc_sec_frame(inst->fix_frame, inst->exp_len);
@@ -402,6 +451,7 @@ static const UbxHeader_t PollLut[] = {
 #ifdef HAS_ZED_F9P
     //{UBX_CLA_NAV, UBX_ID_NAV_SVIN },
     {UBX_CLA_CFG, UBX_ID_CFG_TMODE3 },
+    {UBX_CLA_MGA, UBX_ID_MGA_INI},
    // {UBX_CLA_NAV, UBX_ID_NAV_PVT},
     //{UBX_CLA_NAV, UBX_ID_NAV_ATT},
     //{UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},

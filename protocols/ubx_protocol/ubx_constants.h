@@ -54,6 +54,7 @@ extern "C" {
 #define UBX_ID_CFG_NMEA_GGA 0x00
 #define UBX_ID_CFG_NMEA_ZDA 0x08
 
+#define UBX_ID_NAV_POSECEF 0x01 //Position solution in ECEF
 #define UBX_ID_NAV_SVIN 0x3b /*Survey-in data*/
 #define UBX_ID_NAV_POSLLH 0x02
 #define UBX_ID_NAV_PVT 0x07
@@ -69,6 +70,7 @@ extern "C" {
 #define UBX_ID_MON_HW 0x09
 
 #define UBX_ID_SEC_UNIQID 0x03
+#define UBX_ID_MGA_INI 0x40
 
 #define UBX_CLA_CNT 15
 

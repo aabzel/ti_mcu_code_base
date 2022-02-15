@@ -57,6 +57,7 @@ typedef struct xVariable_t{
 typedef struct xNavInfo_t {
     struct tm date_time;
     GnssCoordinate_t coordinate;
+    Wgs84Coordinate_t Wgs84Coordinate;
     GnssVelocity_t velocity;
     uint8_t id[5];
     int32_t hmsl;

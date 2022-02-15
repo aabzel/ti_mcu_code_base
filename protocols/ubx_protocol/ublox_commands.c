@@ -200,6 +200,8 @@ bool ubx_send_command(int32_t argc, char* argv[]) {
 #ifdef HAS_UBX_DEBUG
 static bool ubx_nav(void) {
     bool res = print_coordinate(NavInfo.coordinate, true);
+    res = print_wgs84_coordinate(NavInfo.Wgs84Coordinate, true);
+
     res = print_velocity(NavInfo.velocity) && res;
     res = print_time_date(&NavInfo.date_time) && res;
     io_printf("hmsl: %d mm %d m" CRLF, NavInfo.hmsl, NavInfo.hmsl / 1000);

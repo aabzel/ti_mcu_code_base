@@ -81,6 +81,7 @@ bool test_ublox_proto_types(void) {
    EXPECT_EQ(1, sizeof(UbxReceiverMode_t));
    EXPECT_EQ(4, sizeof(UbxUartMode_t));
    EXPECT_EQ(20, sizeof(CfgPrt_t));
+   EXPECT_EQ(20, sizeof(MgaIniPosXyz_t));
 
    return true;
 }

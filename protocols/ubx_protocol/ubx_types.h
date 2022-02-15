@@ -52,6 +52,19 @@ typedef struct xSecUniqId_t{
     uint8_t UniqueChipId[5]; /*4 Unique chip ID*/
 }SecUniqId_t;
 
+
+//UBX-MGA-INI (0x13 0x40)
+typedef struct xMgaIniPosXyz_t{
+    uint8_t type;       //Message type (0x00 for this type)
+    uint8_t version;    //Message version (0x00 for this version)
+    uint8_t reserved[2];//
+    int32_t ecefX;      //cm WGS84 ECEF X coordinate
+    int32_t ecefY;      //cm WGS84 ECEF Y coordinate
+    int32_t ecefZ;      //cm WGS84 ECEF Z coordinate
+    uint32_t posAcc;    //cm Position accuracy (stddev)
+}__attribute__((__packed__)) MgaIniPosXyz_t;
+
+
 typedef union uTimeUtcValidityFlags_t{
     uint8_t byte;
     struct{
@@ -76,6 +89,14 @@ typedef struct xNavTimeUtc_t{
     TimeUtcValidityFlags_t ValidityFlags;/*19 Validity Flags*/
 }NavTimeUtc_t;
 
+//UBX-NAV-POSECEF (0x01 0x01)
+typedef struct xNavPosEcef_t{
+    uint32_t iTOW;  // GPS time of week of the navigation epoch.
+    int32_t ecefX;  // ECEF X coordinate
+    int32_t ecefY;  // ECEF Y coordinate
+    int32_t ecefZ;  // ECEF Z coordinate
+    uint32_t pAcc;  // Position Accuracy Estimate
+}NavPosEcef_t;
 
 //UBX-NAV-VELNED 0x01 0x12
 typedef struct xNavVelNed_t{

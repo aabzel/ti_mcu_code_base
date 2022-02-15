@@ -18,6 +18,14 @@ typedef struct xGnssCoordinate_t{
 /*} __attribute__((packed)) GnssCoordinate_t; Cause Fault ISR*/
 } GnssCoordinate_t;
 
+
+typedef struct xWgs84Coordinate_t{
+    int32_t x_cm;
+    int32_t y_cm;
+    int32_t z_cm;
+    int32_t acc_cm;
+} Wgs84Coordinate_t;
+
 typedef struct xGnssVelocity_t{
     double velocity_north;
     double velocity_east;
