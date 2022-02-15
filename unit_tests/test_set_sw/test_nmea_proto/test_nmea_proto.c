@@ -230,7 +230,37 @@ bool test_nmea_proto_pubx(void) {
     return true;
 }
 
-static char* NmeaMess[]={
+static char* NmeaMessages[]={
+  //    {0x0d,'b',0},
+      "$GNTXT,01,01,02,u-blox AG - www.u-blox.com*4E",
+      "$GNTXT,01,01,02,EXT CORE 1.00 (61b2dd)*68",
+      "$GNTXT,01,01,02,ROM BASE 0x118B2060*20",
+      "$GNTXT,01,01,02,FWVER=HPG 1.12*5D",
+      "$GNTXT,01,01,02,PROTVER=27.11*1D",
+      "$GNTXT,01,01,02,MOD=ZED-F9P*71",
+      "$GNTXT,01,01,02,GPS;GLO;GAL;BDS*77",
+      "$GNTXT,01,01,02,QZSS*58",
+      "$GNTXT,01,01,02,ANTSUPERV=*22",
+      "$GNTXT,01,01,02,ANTSTATUS=DONTKNOW*2D",
+      "$GNTXT,01,01,02,PF=FDB79*36",
+      "$GNTXT,01,01,02,Starting GNSS*5A",
+      "$GNRMC,,V,,,,,,,,,,N,V*37",
+      "$GNVTG,,,,,,,,,N*2E",
+      "$GNGGA,,,,,,0,00,99.99,,,,,,*56]",
+      "$GNGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99,1*33",
+      "$GNGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99,2*30",
+      "$GNGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99,3*31",
+      "$GNGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99,4*36",
+      "$GPGSV,1,1,00,1*64",
+      "$GPGSV,1,1,00,6*63",
+      "$GLGSV,1,1,00,1*78",
+      "$GLGSV,1,1,00,3*7A",
+      "$GAGSV,1,1,00,7*73",
+      "$GAGSV,1,1,00,2*76",
+      "$GBGSV,1,1,00,1*76",
+      "$GBGSV,1,1,00,3*74",
+      "$GNGLL,,,,,,V,N*7A",
+
      "$GBGSV,3,3,09,35,18,108,,3*4B",
      "$GBGSV,2,1,08,08,31,058,31,12,79,283,39,19,,,40,21,17,171,31,1*4A",
      "$GBGSV,2,2,08,22,46,119,42,23,16,323,39,34,48,284,41,35,18,108,38,1*70",
@@ -310,10 +340,11 @@ bool test_nmea_proto(void) {
   set_log_level(NMEA, LOG_LEVEL_DEBUG);
 
   uint32_t i=0;
-  for(i=0;i<ARRAY_SIZE(NmeaMess);i++){
+  LOG_INFO(NMEA,"Proc: %u Messages",ARRAY_SIZE(NmeaMessages));
+  for(i=0;i<ARRAY_SIZE(NmeaMessages);i++){
       /*Goat to catch HardFault*/
-      LOG_INFO(NMEA,"Try[%s]",NmeaMess[i]);
-      nmea_parse((char*) NmeaMess[i],strlen(NmeaMess[i]), &NmeaData);
+      LOG_INFO(NMEA,"Try[%s]",NmeaMessages[i]);
+      nmea_parse((char*) NmeaMessages[i],strlen(NmeaMessages[i]), &NmeaData);
   }
 
   set_log_level(SYS, LOG_LEVEL_INFO);

@@ -7,7 +7,7 @@
 
 #include "sys_config.h"
 
-#define UART_FIFO_RX_SIZE 2048U
+#define UART_FIFO_RX_SIZE 4096U
 #define UART_FIFO_TX_SIZE 256U
 #define UART_PERIOD_US 1
 

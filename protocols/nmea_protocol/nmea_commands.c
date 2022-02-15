@@ -16,15 +16,37 @@
 #include "writer_generic.h"
 
 static bool nmea_diag(void) {
-    io_printf("msg_cnt     : %u" CRLF, NmeaProto.msg_cnt);
-    io_printf("crc read cnt: %u" CRLF, NmeaProto.crc_read_cnt);
-    io_printf("crc ok cnt  : %u" CRLF, NmeaProto.crc_ok_cnt);
-    io_printf("crc err cnt : %u" CRLF, NmeaProto.crc_err_cnt);
-    io_printf("proc_msg_cnt: %u" CRLF, NmeaProto.proc_msg_cnt);
-    io_printf("err cnt : %u" CRLF, NmeaProto.err_cnt);
-    io_printf("undef messeges: %u" CRLF, NmeaProto.undef_err_cnt);
-    io_printf("undef: %s"CRLF, NmeaProto.undef_message);
-    io_printf("msg: [%s]" CRLF, NmeaProto.fix_message);
+    LOG_INFO(NMEA,"msg_cnt     : %u" , NmeaProto.msg_cnt);
+    LOG_INFO(NMEA,"crc read cnt: %u" , NmeaProto.crc_read_cnt);
+    LOG_INFO(NMEA,"crc ok cnt  : %u" , NmeaProto.crc_ok_cnt);
+    LOG_INFO(NMEA,"proc_msg_cnt: %u" , NmeaProto.proc_msg_cnt);
+    LOG_INFO(NMEA,"lenMin: %u" , NmeaProto.len_min);
+    LOG_INFO(NMEA,"lenMax: %u" , NmeaProto.len_max);
+    LOG_INFO(NMEA,"proc_msg_cnt: %u" , NmeaProto.proc_msg_cnt);
+
+    log_level_t level=LOG_LEVEL_NOTICE;
+    if(NmeaProto.crc_err_cnt){
+        level = LOG_LEVEL_ERROR;
+    }
+    log_write(level,NMEA,"crc err cnt : %u", NmeaProto.crc_err_cnt);
+
+    level=LOG_LEVEL_NOTICE;
+    if(NmeaProto.err_parse){
+        level = LOG_LEVEL_ERROR;
+    }
+    level=LOG_LEVEL_NOTICE;
+    if(NmeaProto.err_parse){
+        level = LOG_LEVEL_ERROR;
+    }
+    log_write(level,NMEA,"ErrParse: %u" , NmeaProto.err_parse);
+    log_write(LOG_LEVEL_NOTICE,NMEA,"err cnt : %u" , NmeaProto.err_cnt);
+    level=LOG_LEVEL_NOTICE;
+    if(NmeaProto.undef_err_cnt){
+        level = LOG_LEVEL_ERROR;
+    }
+    log_write(level,NMEA,"undefMesseCnt: %u", NmeaProto.undef_err_cnt);
+    log_write(LOG_LEVEL_NOTICE,NMEA,"undef: %s", NmeaProto.undef_message);
+    LOG_INFO(NMEA,"msg: [%s]" , NmeaProto.fix_message);
     return true;
 }
 

@@ -18,7 +18,6 @@ static bool try_dec_char_to_u8(uint8_t dec_char, uint8_t* dec_char_to_u8_value);
 static bool is_signed(const char first_str_char, int32_t* first_digit_index);
 static bool get_str_len(const char char_str[], int32_t* str_len);
 // static bool rx_strtod(const char str[], const char** endptr, double* result);
-static bool is_hex_digit(const char character);
 static bool is_true(const char* true_str_to_check);
 static bool is_false(const char* false_str_to_check);
 static void dtoa_normal(double double_data, int32_t double_precision, char double_stringified[]);
@@ -879,6 +878,55 @@ bool try_strl2double(const char double_str[], int32_t str_len, double* double_va
     return double_success;
 }
 
+bool  AsciiChar2HexNibble(char ch, uint8_t *nibble_out){
+    bool res = false;
+    if(nibble_out && is_hex_digit(ch)){
+        res = true;
+        uint8_t nibble = 0x00;
+        switch(ch){
+        case '1':
+            nibble = 0x01; break;
+        case '2':
+            nibble = 0x02; break;
+        case '3':
+            nibble = 0x03; break;
+        case '4':
+            nibble = 0x04; break;
+        case '5':
+            nibble = 0x05; break;
+        case '6':
+            nibble = 0x06; break;
+        case '7':
+            nibble = 0x07; break;
+        case '8':
+            nibble = 0x08; break;
+        case '9':
+            nibble = 0x09; break;
+        case 'A':
+        case 'a':
+            nibble = 0x0A; break;
+        case 'B':
+        case 'b':
+            nibble = 0x0B; break;
+        case 'C':
+        case 'c':
+            nibble = 0x0C; break;
+        case 'D':
+        case 'd':
+            nibble = 0x0D; break;
+        case 'e':
+        case 'E':
+            nibble = 0x0E; break;
+        case 'F':
+        case 'f':nibble = 0x0F; break;
+        default: res = false; break;
+        }
+        *nibble_out = nibble;
+    }
+
+    return res;
+}
+
 const char* ltoa32_(int32_t s32_data, char s32_stringified[], uint8_t s32_base, uint32_t* s32_len) {
     char s32_reverse_str[MAX_INT32_STR_LEN_10 + 1U];
     uint32_t s32_reverse_str_index = 0U;
@@ -1572,7 +1620,7 @@ bool is_dec_str(const char str_to_check[], int32_t str_to_check_len) {
     return is_dec_str_result;
 }
 
-static bool is_hex_digit(const char character) {
+bool is_hex_digit(const char character) {
     bool res = false;
     if((('A' <= character) && (character <= 'F')) || (('a' <= character) && (character <= 'f')) ||
        (('0' <= character) && (character <= '9'))) {

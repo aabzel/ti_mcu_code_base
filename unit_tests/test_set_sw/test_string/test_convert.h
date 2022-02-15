@@ -52,6 +52,7 @@ bool test_convert_ltoa_hex64(void);
 bool test_convert_bool2name(void);
 bool test_convert_utoa_bin32(void);
 bool test_convert_utoa_bin24(void);
+bool test_convert_try_str_ascii2nimble(void);
 bool test_convert_try_str2array(void);
 bool test_convert_utoa_bin16(void);
 bool test_convert_assemble_uint32(void);
@@ -60,7 +61,9 @@ bool test_convert_assemble_uint32(void);
     {"strl2double", test_convert_try_strl2double}, \
     {"str2array", test_convert_try_str2array}, \
     {"str2int8", test_convert_try_str2int8},                            \
-    {"str2uint8_invalid", test_convert_try_str2uint8_invalid}, {"is_dec_str", test_convert_is_dec_str},            \
+    {"str2uint8_invalid", test_convert_try_str2uint8_invalid}, \
+    {"Ascii2nimble", test_convert_try_str_ascii2nimble},\
+{"is_dec_str", test_convert_is_dec_str},            \
     {"is_hex_str", test_convert_is_hex_str}, {"str2uint8", test_convert_try_str2uint8},                            \
         {"strl2uint16_hex", test_convert_try_strl2uint16_hex}, {"strl2uint8_hex", test_convert_try_strl2uint8_hex},    \
         {"str2int16", test_convert_try_str2int16}, {"str2uint16", test_convert_try_str2uint16},                        \

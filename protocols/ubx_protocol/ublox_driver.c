@@ -412,7 +412,7 @@ static const UbxHeader_t PollLut[] = {
 bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t layers) {
     bool res = false;
     if(val && (0 < val_len)) {
-        uint8_t payload[4 + 32];
+        uint8_t payload[4 + 64];
         memset(payload, 0, sizeof(payload));
         uint16_t payload_len = 0;
         payload[0] = 0x00;   /*version*/

@@ -98,6 +98,7 @@ extern bool log_facility_name;
 extern bool log_zero_time;
 #endif
 
+void log_write(log_level_t level, log_facility_t facility, const char* format, ...) ;
 bool log_write_begin(log_level_t level, log_facility_t facility);
 void log_write_end(void);
 bool set_log_level(log_facility_t facility, log_level_t level);

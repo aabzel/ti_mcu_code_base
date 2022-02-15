@@ -6,6 +6,7 @@
 
 #include "nmea_constants.h"
 #include "gnss_utils.h"
+#include "protocol_common.h"
 
 typedef struct xNmeaProtocol_t {
     uint16_t pos;
@@ -14,12 +15,19 @@ typedef struct xNmeaProtocol_t {
     uint32_t crc_err_cnt_prev;
     uint32_t undef_err_cnt;
     uint32_t err_cnt;
+    uint32_t err_parse;
+    RxState_t state;
+    uint32_t err_parse_prev;
+    uint32_t len_min;
+    uint32_t len_max;
     uint32_t crc_read_cnt;
     uint32_t crc_ok_cnt;
     uint32_t overflow;
     uint32_t proc_msg_cnt;
     uint32_t rtk_fixed_start_ms;
     uint32_t rtk_fixed_max_duration_ms;
+    uint8_t crc_nibble;
+    uint8_t crc_read;
     bool got_massege;
     char message[NMEA_MSG_SIZE];
     char fix_message[NMEA_MSG_SIZE];

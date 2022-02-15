@@ -17,7 +17,9 @@
 #include <ti/drivers/uart/UARTCC26XX.h>
 #endif /*DeviceFamily_CC26X2*/
 
+#include "log.h"
 #include "clocks.h"
+#include "io_utils.h"
 
 #ifdef HAS_GPIO
 #include "gpio_drv.h"
@@ -402,6 +404,7 @@ bool proc_uart1(void) {
     while(loop) {
         res = fifo_pull(&huart[1].RxFifo, (char*)&rx_byte);
         if(true == res) {
+            /*io_printf("%c",rx_byte); For Debug only*/
             loop = true;
 #ifdef HAS_RTCM3
             rtcm3_proc_byte(&Rtcm3Protocol[IF_UART1], rx_byte);
