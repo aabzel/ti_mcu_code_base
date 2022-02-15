@@ -102,12 +102,13 @@ static bool nmea_messages(void){
                                        {8, "pCnt"},
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    io_printf(TSEP" GGA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gga.fcnt.h_cnt,NmeaData.gga.fcnt.cnt);
     io_printf(TSEP" GLL "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gll.fcnt.h_cnt,NmeaData.gll.fcnt.cnt);
+    io_printf(TSEP" GSA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gsa.fcnt.h_cnt,NmeaData.gsa.fcnt.cnt);
+    io_printf(TSEP" GSV "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gsv.fcnt.h_cnt,NmeaData.gsv.fcnt.cnt);
+    io_printf(TSEP" PBUX"TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.pbux.fcnt.h_cnt,NmeaData.pbux.fcnt.cnt);
     io_printf(TSEP" RMC "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.rmc.fcnt.h_cnt,NmeaData.rmc.fcnt.cnt);
     io_printf(TSEP" VTG "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.vtg.fcnt.h_cnt,NmeaData.vtg.fcnt.cnt);
-    io_printf(TSEP" GGA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gga.fcnt.h_cnt,NmeaData.gga.fcnt.cnt);
-    io_printf(TSEP" GSV "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gsv.fcnt.h_cnt,NmeaData.gsv.fcnt.cnt);
-    io_printf(TSEP" PBUX"TSEP" %6u "TSEP" %6u "TSEP CRLF,NmeaData.pbux.fcnt.h_cnt,NmeaData.pbux.fcnt.cnt);
     io_printf(TSEP" ZDA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.zda.fcnt.h_cnt,NmeaData.zda.fcnt.cnt);
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 

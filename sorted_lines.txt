@@ -1,21 +1,8 @@
-    BMP180_COMMANDS                                                                                                    \
-    BQ25171_Q1_COMMANDS                                                                                                \
-    COMMON_COMMANDS                                                                                                    \
-    CORTEX_M4_COMMANDS                                                                                                 \
-    EXT_RAM_EMUL_COMMANDS                                                                                              \
-    FLASH_FS_COMMANDS                                                                                                  \
-    FLASH_NVS_COMMANDS                                                                                                 \
-    GNSS_COMMANDS                                                                                                      \
-    HEALTH_MONITOR_COMMANDS                                                                                            \
-    LED_COMMANDS                                                                                                       \
-    LOG_COMMANDS                                                                                                       \
-    LORA_COMMANDS                                                                                                      \
-    MX25L6433_COMMANDS                                                                                                 \
-    PARAM_COMMANDS                                                                                                     \
-    PWR_MUX_COMMANDS                                                                                                   \
-    RF_COMMANDS                                                                                                        \
-    SX1262_COMMANDS                                                                                                    \
-    SYSTEM_COMMANDS                                                                                                    \
-    TBFP_COMMANDS                                                                                                      \
-    TELEMATIC_COMMANDS                                                                                                 \
-    TRNG_COMMANDS
+    io_printf(TSEP" GGA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gga.fcnt.h_cnt,NmeaData.gga.fcnt.cnt);
+    io_printf(TSEP" GLL "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gll.fcnt.h_cnt,NmeaData.gll.fcnt.cnt);
+    io_printf(TSEP" GSA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gsa.fcnt.h_cnt,NmeaData.gsa.fcnt.cnt);
+    io_printf(TSEP" GSV "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.gsv.fcnt.h_cnt,NmeaData.gsv.fcnt.cnt);
+    io_printf(TSEP" PBUX"TSEP" %6u "TSEP" %6u "TSEP CRLF,NmeaData.pbux.fcnt.h_cnt,NmeaData.pbux.fcnt.cnt);
+    io_printf(TSEP" RMC "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.rmc.fcnt.h_cnt,NmeaData.rmc.fcnt.cnt);
+    io_printf(TSEP" VTG "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.vtg.fcnt.h_cnt,NmeaData.vtg.fcnt.cnt);
+    io_printf(TSEP" ZDA "TSEP" %6u "TSEP" %6u "TSEP CRLF, NmeaData.zda.fcnt.h_cnt,NmeaData.zda.fcnt.cnt);
