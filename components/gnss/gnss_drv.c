@@ -31,7 +31,7 @@ static bool gnss_update_from_nmea(void){
     if(res) {
         if(Gnss.first_time) {
   #ifdef HAS_LOG
-            LOG_INFO(NMEA, "SpotValidTime!");
+            LOG_INFO(GNSS, "SpotValidTimeInNmea!");
             print_time_date(&NmeaData.time_date);
   #endif
   #ifdef HAS_CALENDAR
@@ -44,7 +44,7 @@ static bool gnss_update_from_nmea(void){
     } else {
         res_time = false;
   #ifdef HAS_LOG
-        LOG_ERROR(NMEA, "InvalNmeaTimeDate");
+        LOG_DEBUG(GNSS, "InvalNmeaTimeDate");
   #endif
     }
 
@@ -52,7 +52,7 @@ static bool gnss_update_from_nmea(void){
     if(res) {
         if(Gnss.first_gnss) {
 #ifdef HAS_LOG
-            LOG_INFO(NMEA, "SpotValidGNSSData!");
+            LOG_INFO(GNSS, "SpotValidGNSSDotInNmea!");
             print_coordinate(NmeaData.coordinate_dd, true);
 #endif
             Gnss.first_gnss = false;
@@ -62,7 +62,7 @@ static bool gnss_update_from_nmea(void){
     } else {
         res_dot = false;
 #ifdef HAS_LOG
-        LOG_DEBUG(NMEA, "InvalNmeaGNSSDot");
+        LOG_DEBUG(GNSS, "InvalNmeaGNSSDot");
 #endif
     }
 #endif /*HAS_NMEA*/
@@ -84,7 +84,7 @@ static bool gnss_update_from_ubx(void){
     if (res) {
         if (Gnss.first_time) {
 #ifdef HAS_LOG
-                LOG_INFO(UBX, "SpotValidTime");
+                LOG_INFO(GNSS, "SpotValidTimeInUbx");
                 print_time_date(&NavInfo.date_time);
       #endif
 #ifdef HAS_CALENDAR
@@ -97,14 +97,14 @@ static bool gnss_update_from_ubx(void){
     }    else    {
         res_time = false;
 #ifdef HAS_LOG
-            LOG_DEBUG(UBX, "InvalUbxTimeDate");
+            LOG_DEBUG(GNSS, "InvalUbxTimeDateInUbx");
       #endif
     }
     res = is_valid_gnss_coordinates(NavInfo.coordinate);
     if (res)    {
         if (Gnss.first_gnss)        {
 #ifdef HAS_LOG
-                LOG_INFO(UBX, "SpotValidGNSSData!");
+                LOG_INFO(GNSS, "SpotValidGNSSDataInUbx!");
                 print_coordinate(NavInfo.coordinate, true);
 #endif
                 Gnss.first_gnss = false;
@@ -114,7 +114,7 @@ static bool gnss_update_from_ubx(void){
     }    else    {
         res_dot = false;
 #ifdef HAS_LOG
-        LOG_DEBUG(UBX, "InvalUbxGNSSDot");
+        LOG_DEBUG(GNSS, "InvalUbxGNSSDotInUbx");
     #endif
     }
     if(res_dot && res_time){
@@ -144,6 +144,9 @@ bool gnss_proc(void){
 #ifdef HAS_UBLOX
     if(false==res){
        res=gnss_update_from_ubx();
+       if(false==res){
+           LOG_ERROR(GNSS, "LackGnssData");
+       }
     }
 #endif
 
