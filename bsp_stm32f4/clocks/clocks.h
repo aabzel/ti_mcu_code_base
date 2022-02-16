@@ -19,12 +19,6 @@ extern "C" {
 #define COUNTER_TO_US(counter) ((counter) / (COUNTER_FREQ))
 #define COUNTER_TO_MS(counter) ((counter) / ((COUNTER_FREQ)*1000))
 
-#define HOUR_2_MS(HOUR) ((HOUR)*60U * 60U * 1000U)
-#define MIN_2_MS(MIN) ((MIN)*60U * 1000U)
-#define S_2_MS(S) ((S)*1000U)
-#define S_2_US(SEC) ((uint32_t)(1000000.0 * ((float)SEC)))
-#define MS_2_S(ms) ((((double)ms) / 1000.0))
-#define MS_2_MIN(ms) (ms / (1000 * 60))
 
 uint32_t get_time_ms32(void);
 uint64_t get_time_ms64(void);

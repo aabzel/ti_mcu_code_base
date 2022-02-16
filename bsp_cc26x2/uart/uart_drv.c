@@ -18,6 +18,7 @@
 #endif /*DeviceFamily_CC26X2*/
 
 #include "log.h"
+#include "task_info.h"
 #include "clocks.h"
 #include "io_utils.h"
 
