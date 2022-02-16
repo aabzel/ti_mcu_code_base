@@ -72,8 +72,8 @@ static bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
         }
         taskItem->start_time_prev = start;
         if(taskItem->init) {
-            taskItem->start_period_max = rx_max64u(taskItem->start_period_max, period);
-            taskItem->start_period_min = rx_min64u(taskItem->start_period_min, period);
+            taskItem->start_period_max = max64u(taskItem->start_period_max, period);
+            taskItem->start_period_min = min64u(taskItem->start_period_min, period);
         }
         taskItem->init = true;
 #ifdef ESP32
@@ -98,8 +98,8 @@ static bool task_frame(task_data_t* taskItem, bool (*task_func)(void)) {
             res = false;
         }
         taskItem->run_time_total += delta;
-        taskItem->run_time_min = rx_min64u(taskItem->run_time_min, delta);
-        taskItem->run_time_max = rx_max64u(taskItem->run_time_max, delta);
+        taskItem->run_time_min = min64u(taskItem->run_time_min, delta);
+        taskItem->run_time_max = max64u(taskItem->run_time_max, delta);
     }
     return res;
 }

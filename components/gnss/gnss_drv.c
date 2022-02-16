@@ -24,8 +24,8 @@ Gnss_t Gnss = { 0 };
 
 static bool gnss_update_from_nmea(void){
     bool res = true;
-    bool res_time = true;
-    bool res_dot = true;
+    bool res_time = false;
+    bool res_dot = false;
 #ifdef HAS_NMEA
     res = is_valid_time_date(&NmeaData.time_date);
     if(res) {
@@ -42,6 +42,7 @@ static bool gnss_update_from_nmea(void){
         Gnss.time_date = NmeaData.time_date;
         res_time = true;
     } else {
+        res_time = false;
   #ifdef HAS_LOG
         LOG_ERROR(NMEA, "InvalNmeaTimeDate");
   #endif
@@ -59,6 +60,7 @@ static bool gnss_update_from_nmea(void){
         Gnss.coordinate_cur = NmeaData.coordinate_dd;
         res_dot = true;
     } else {
+        res_dot = false;
 #ifdef HAS_LOG
         LOG_DEBUG(NMEA, "InvalNmeaGNSSDot");
 #endif
@@ -75,8 +77,8 @@ static bool gnss_update_from_nmea(void){
 
 #ifdef HAS_UBLOX
 static bool gnss_update_from_ubx(void){
-    bool res_time = true;
-    bool res_dot = true;
+    bool res_time = false;
+    bool res_dot = false;
     bool res = true;
     res = is_valid_time_date(&NavInfo.date_time);
     if (res) {
@@ -93,6 +95,7 @@ static bool gnss_update_from_ubx(void){
         Gnss.time_date = NavInfo.date_time;
         res_time = true;
     }    else    {
+        res_time = false;
 #ifdef HAS_LOG
             LOG_DEBUG(UBX, "InvalUbxTimeDate");
       #endif
@@ -109,6 +112,7 @@ static bool gnss_update_from_ubx(void){
         Gnss.coordinate_cur = NavInfo.coordinate;
         res_dot = true;
     }    else    {
+        res_dot = false;
 #ifdef HAS_LOG
         LOG_DEBUG(UBX, "InvalUbxGNSSDot");
     #endif

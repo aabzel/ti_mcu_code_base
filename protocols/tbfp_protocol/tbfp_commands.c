@@ -100,7 +100,7 @@ static bool tbfp_diag(void) {
     return res;
 }
 
-static bool tbfp_rate(void) {
+bool tbfp_rate_diag(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
@@ -166,7 +166,7 @@ static bool tbfp_error(void) {
             io_printf(" %7u " TSEP, TbfpProtocol[interface].flow_torn_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].lost_rx_frames);
     #endif
-            io_printf(" %7u " TSEP, TbfpProtocol[interface].err_tx);
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].err_tx_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
             io_printf(CRLF);
     #endif /*HAS_DEBUG*/
@@ -243,7 +243,7 @@ bool tbfp_rate_command(int32_t argc, char* argv[]){
         res = true;
     }
     if(res){
-        res = tbfp_rate();
+        res = tbfp_rate_diag();
     }else{
         LOG_ERROR(TBFP, "Usage: tbt");
     }

@@ -54,7 +54,8 @@ typedef struct xTbfpProtocol_t {
     uint32_t crc_err_cnt;
     uint32_t crc_err_cnt_prev;
     uint32_t err_cnt;
-    uint32_t err_tx;
+    uint32_t err_tx_cnt;
+    uint32_t err_tx_cnt_prev;
     U32Value_t tx_rate;
     U32Value_t rx_rate;
     uint32_t lack_frame_in_data;

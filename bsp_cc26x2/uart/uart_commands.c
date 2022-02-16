@@ -123,40 +123,50 @@ bool uart_init_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+
+bool uart_rate_diag(void){
+    bool res = false;
+
+    uint8_t uart_num = 0;
+    uint32_t baud_rate = 0;
+    const table_col_t cols[] = {{5, "Num"},
+                                {10, "baudRate"},
+                                {10, "RxMin"},
+                                {10, "Rx"},
+                                {10, "RxMax"},
+                                {10, "TxMin"},
+                                {10, "Tx"},
+                                {10, "TxMax"},
+                                {10, "name"}};
+    table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+    for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
+        io_printf(TSEP);
+        io_printf(" %2u  " TSEP, uart_num);
+        baud_rate = uart_get_baudrate(uart_num);
+        if(0 < baud_rate) {
+            io_printf(" %7u  " TSEP, baud_rate);
+        } else {
+            io_printf("          " TSEP, baud_rate);
+        }
+        io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.min);
+        io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.cur);
+        io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.max);
+        io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.min);
+        io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.cur);
+        io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.max);
+        io_printf(" %7s  " TSEP, huart[uart_num].name);
+        io_printf(CRLF);
+    }
+    table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+
+    return res;
+
+}
+
 bool uart_rate_command(int32_t argc, char* argv[]){
     bool res = false;
     if(0 == argc) {
-        uint8_t uart_num = 0;
-        uint32_t baud_rate = 0;
-        const table_col_t cols[] = {{5, "Num"},
-                                    {10, "baudRate"},
-                                    {10, "RxMin"},
-                                    {10, "Rx"},
-                                    {10, "RxMax"},
-                                    {10, "TxMin"},
-                                    {10, "Tx"},
-                                    {10, "TxMax"},
-                                    {10, "name"}};
-        table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-        for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
-            io_printf(TSEP);
-            io_printf(" %2u  " TSEP, uart_num);
-            baud_rate = uart_get_baudrate(uart_num);
-            if(0 < baud_rate) {
-                io_printf(" %7u  " TSEP, baud_rate);
-            } else {
-                io_printf("          " TSEP, baud_rate);
-            }
-            io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.min);
-            io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.cur);
-            io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.max);
-            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.min);
-            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.cur);
-            io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.max);
-            io_printf(" %7s  " TSEP, huart[uart_num].name);
-            io_printf(CRLF);
-        }
-        table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+        res=uart_rate_diag();
     } else {
         LOG_ERROR(UART, "Usage: ur");
     }

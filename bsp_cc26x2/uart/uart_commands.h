@@ -10,6 +10,7 @@ extern "C" {
 
 #include "ostream.h"
 
+bool uart_rate_diag(void);
 bool uart_rate_command(int32_t argc, char* argv[]);
 bool diag_page_uarts(ostream_t* stream);
 bool cmd_uarts(int32_t argc, char* argv[]);

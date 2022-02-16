@@ -88,7 +88,7 @@ bool ubx_print_key_val_command(int32_t argc, char* argv[]) {
 bool ubx_diag_base_command(int32_t argc, char* argv[]){
     bool res = false;
     if(0 == argc) {
-        io_printf("FixTipe: %u %s" CRLF, NavInfo.FixType, FixType2Str(NavInfo.FixType));
+        io_printf("FixType: %u %s" CRLF, NavInfo.FixType, FixType2Str(NavInfo.FixType));
         io_printf("SyrveyInAcc: %f m" CRLF, ( (double) NavInfo.survey_in_mean_position_acc_mm )/ 1000.0);
         io_printf("RxMode: %u %s" CRLF, NavInfo.BaseRxMode, ReceiverMode2Str(NavInfo.BaseRxMode));
         io_printf("SvInMinDur: %u s" CRLF, NavInfo.svin_min_dur_s);

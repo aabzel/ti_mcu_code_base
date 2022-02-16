@@ -123,9 +123,9 @@ bool rtcm3_diag_lost_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool rtcm3_rate_command(int32_t argc, char* argv[]){
+bool rtcm3_rate_diag(void){
     bool res = false;
-    if(0 == argc) {
+
         res = true;
         uint8_t interface = 0;
         static const table_col_t cols[] = {{10, "interf"},
@@ -156,6 +156,15 @@ bool rtcm3_rate_command(int32_t argc, char* argv[]){
             }
         }
         table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
+
+    return res;
+}
+
+bool rtcm3_rate_command(int32_t argc, char* argv[]){
+    bool res = false;
+    if(0 == argc) {
+        res = true;
+        res = rtcm3_rate_diag();
     } else {
         LOG_ERROR(SYS, "Usage: rtcmr");
     }

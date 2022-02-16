@@ -10,6 +10,7 @@ extern "C" {
 
 #include "cli_manager.h"
 
+bool tbfp_rate_diag(void);
 bool tbfp_rate_command(int32_t argc, char* argv[]);
 bool tbfp_error_command(int32_t argc, char* argv[]);
 bool tbfp_diag_retx_command(int32_t argc, char* argv[]);

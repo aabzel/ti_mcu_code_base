@@ -242,6 +242,9 @@ static bool ubx_proc_nav_pvt_frame(uint8_t* payload, uint16_t len){
     if(92<=len){
         NavPvt_t Data = {0};
         memcpy(&Data, payload, sizeof(NavPvt_t));
+        if(NavInfo.FixType!=(GnssFixType_t) Data.fixType){
+            LOG_INFO(UBX,"FixType: %u=%s" CRLF, Data.fixType, FixType2Str(Data.fixType));
+        }
         NavInfo.FixType =(GnssFixType_t) Data.fixType;
         NavInfo.coordinate.latitude = 1e-7 * Data.lat;
         NavInfo.coordinate.longitude= 1e-7 * Data.lon;
@@ -544,10 +547,7 @@ bool ubx_reset_to_dflt(void) {
 #ifdef HAS_LOG
     print_mem((uint8_t*)&data, sizeof(data), true, false, true, true);
 #endif
-    res = ubx_send_message(UBX_CLA_CFG, UBX_ID_CFG_CFG, (uint8_t*)&data, sizeof(data));
-    if(res) {
-        res = ubx_wait_ack(2000);
-    }
+    res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_CFG, (uint8_t*)&data, sizeof(data));
     return res;
 }
 

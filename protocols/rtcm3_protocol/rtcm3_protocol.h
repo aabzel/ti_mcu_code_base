@@ -16,7 +16,7 @@ extern "C" {
 #define RTCM3_HEADER_SIZE 3U
 #define RTCM3_CRC24_SIZE 3U
 #define RTCM3_OVERHEAD (RTCM3_CRC24_SIZE + RTCM3_HEADER_SIZE)
-#define RTCM3_RX_MAX_PAYLOAD_SIZE (512U)
+#define RTCM3_RX_MAX_PAYLOAD_SIZE (1030U)
 #define RTCM3_RX_MAX_FRAME_SIZE (RTCM3_RX_MAX_PAYLOAD_SIZE + RTCM3_OVERHEAD)
 #define RTCM_IF_CNT 4 /*LoRa RS232 UART1*/
 
@@ -52,6 +52,8 @@ typedef struct xRtcm3Header_t {
 
 typedef struct xRtcm3Protocol_t {
     uint32_t rx_pkt_cnt;
+    uint32_t err_tx_cnt;
+    uint32_t err_tx_cnt_prev;
     uint32_t rx_rx_pkt_cnt;
     uint32_t lost_pkt_cnt[IF_CNT];
     uint32_t uart_lost_pkt_cnt;

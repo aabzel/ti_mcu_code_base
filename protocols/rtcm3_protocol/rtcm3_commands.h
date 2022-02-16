@@ -10,6 +10,7 @@ extern "C" {
 
 #include "cli_manager.h"
 
+bool rtcm3_rate_diag(void);
 bool rtcm3_rate_command(int32_t argc, char* argv[]);
 bool rtcm3_fwd_command(int32_t argc, char* argv[]);
 bool rtcm3_diag_command(int32_t argc, char* argv[]);

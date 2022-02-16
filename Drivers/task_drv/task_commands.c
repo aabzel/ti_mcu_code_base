@@ -40,9 +40,17 @@ bool diag_page_tasks(ostream_t* stream) {
     oprintf(stream, "up_time  %u ms" CRLF, g_up_time_ms);
     oprintf(stream, "total_time %llu us" CRLF, total_time_us);
     oprintf(stream, "total_time %llu ms" CRLF, total_time_ms);
-    static const table_col_t cols[] = {{4, "id"}, {11, "Task name"}, {8, "Calls/s"},   {7, "CPU[%]"},
-                                       {11, "Tavg[ms]"},  {11, "Tmin[ms]"}, {11, "Tmax[ms]"},
-                                       {11, "Rmin[us]"},  {11, "Rmax[us]"}, {11, "RTtot[us]"},{6, "stat"}};
+    static const table_col_t cols[] = {{4, "id"},
+                                       {11, "Task name"},
+                                       {8, "Calls/s"},
+                                       {7, "CPU[%]"},
+                                       {11, "Tavg[ms]"},
+                                       {11, "Tmin[ms]"},
+                                       {11, "Tmax[ms]"},
+                                       {11, "Rmin[us]"},
+                                       {11, "Rmax[us]"},
+                                       {11, "RTtot[us]"},
+                                       {6, "stat"}};
     float cpu_use = 0.0f;
     table_header(stream, cols, ARRAY_SIZE(cols));
     for(id = 0; id < t_cnt  ; id++) {

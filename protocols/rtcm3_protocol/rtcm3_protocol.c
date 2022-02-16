@@ -134,7 +134,7 @@ static bool rtcm3_proc_wait_len(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
         if(RTCM3_RX_MAX_FRAME_SIZE < (instance->exp_len.field.len + RTCM3_OVERHEAD)) {
             res = false;
             instance->err_cnt++;
-            LOG_ERROR(SYS, "TooBigFrame:%u byte.Max:%u Byte", instance->exp_len.field.len + RTCM3_CRC24_SIZE,
+            LOG_ERROR(RTCM, "TooBigFrame:%u byte.Max:%u Byte", instance->exp_len.field.len + RTCM3_CRC24_SIZE,
                       RTCM3_RX_MAX_FRAME_SIZE);
             rtcm3_reset_rx(instance, WAIT_LEN);
         }
@@ -217,6 +217,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
                         res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, interface, 0, ACK_NO_NEED);
                         if(false == res) {
                             instance->lost_pkt_cnt[interface]++;
+                            TbfpProtocol[interface].err_tx_cnt++;
                         }
 #endif /*HAS_TBFP*/
                     }
@@ -240,7 +241,7 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
             rtcm3_reset_rx(instance, WAIT_CRC);
         } else {
 #if defined(HAS_LOG) && defined(HAS_MCU)
-            LOG_ERROR(RTCM, "%s CrcErr", interface2str(instance->interface));
+            LOG_DEBUG(RTCM, "%s CrcErr", interface2str(instance->interface));
 #endif
             instance->crc_err_cnt++;
             rtcm3_reset_rx(instance, WAIT_CRC);

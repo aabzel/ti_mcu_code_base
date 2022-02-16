@@ -310,8 +310,10 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
             if(is_valid_gnss_coordinates(Gnss.coordinate_cur)) {
                 cur_dist = gnss_calc_distance_m(Gnss.coordinate_cur, pingFrame.coordinate);
                 azimuth = gnss_calc_azimuth_deg(Gnss.coordinate_cur, pingFrame.coordinate);
+                double sec = difftime(pingFrame.time_stamp ,
+                                      mktime(&Gnss.time_date));
 #ifdef HAS_LOG
-                LOG_INFO(TBFP, "LinkDistance %3.3f m %4.1f deg", cur_dist, azimuth);
+                LOG_INFO(TBFP, "LinkDistance %3.3f m %4.1f deg %f s", cur_dist, azimuth, sec);
 #endif
             } else {
 #ifdef HAS_LOG
@@ -684,6 +686,15 @@ bool tbfp_check(void){
                 LOG_ERROR(TBFP,"%s FlowTorn %u times",interface2str(interface),diff);
             }
             TbfpProtocol[interface].flow_torn_cnt_prev=TbfpProtocol[interface].flow_torn_cnt;
+
+
+            diff=TbfpProtocol[interface].err_tx_cnt-TbfpProtocol[interface].err_tx_cnt_prev;
+            if(0<diff ) {
+                res = false;
+                LOG_ERROR(TBFP,"%s TxErr %u times",interface2str(interface),diff);
+            }
+            TbfpProtocol[interface].err_tx_cnt_prev=TbfpProtocol[interface].err_tx_cnt;
+
 
 
         }

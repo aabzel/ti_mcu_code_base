@@ -167,7 +167,7 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
                 if(res) {
                     LoRaInterface.tx_ok_cnt++;
                 } else {
-                    TbfpProtocol[IF_SX1262].err_tx++;
+                    TbfpProtocol[IF_SX1262].err_tx_cnt++;
                     LoRaInterface.tx_err_cnt++;
                 }
 #endif /*HAS_TBFP*/
