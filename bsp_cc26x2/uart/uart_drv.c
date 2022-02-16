@@ -411,11 +411,15 @@ bool proc_uart1(void) {
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_NMEA
-            nmea_proc_byte(rx_byte);
+            if(task_data[TASK_ID_NMEA].on){
+                nmea_proc_byte(rx_byte);
+            }
 #endif /*HAS_NMEA*/
 
 #ifdef HAS_UBLOX
-            ubx_proc_byte(rx_byte);
+            if(task_data[TASK_ID_UBX].on){
+                ubx_proc_byte(rx_byte);
+            }
 #endif /*HAS_UBLOX*/
         } else {
             loop = false;

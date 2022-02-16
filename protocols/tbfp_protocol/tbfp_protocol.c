@@ -8,6 +8,7 @@
 #include "cli_manager.h"
 #endif
 
+#include "data_utils.h"
 #ifdef HAS_LORA
 #include "lora_drv.h"
 #endif
@@ -189,6 +190,7 @@ bool tbfp_send(uint8_t* payload, uint32_t payload_len, Interfaces_t interface,
                 LOG_DEBUG(TBFP,"%s Sent SN:%u=0x%04x Len:%u crc8 0x%02x", interface2str(interface),
                           OutHeader.snum,OutHeader.snum,
                           OutHeader.len,TbfpProtocol[interface].tx_frame[frame_len]);
+                TbfpProtocol[interface].tx_byte += frame_len + TBFP_SIZE_CRC;
                 res = sys_send_if(TbfpProtocol[interface].tx_frame, frame_len + TBFP_SIZE_CRC, interface, retx);
             } else {
 #ifdef HAS_LOG
@@ -586,6 +588,7 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     LOG_INFO(TBFP, "%s ProcFull Len: %u", interface2str(interface), len);
     res = is_tbfp_protocol(arr, len, interface);
     if(res) {
+        TbfpProtocol[interface].rx_byte +=len;
         TbfHeader_t inHeader = {0};
         memcpy(&inHeader, arr, sizeof(TbfHeader_t));
 #ifdef HAS_TBFP_FLOW_CONTROL
@@ -683,6 +686,26 @@ bool tbfp_check(void){
             TbfpProtocol[interface].flow_torn_cnt_prev=TbfpProtocol[interface].flow_torn_cnt;
 
 
+        }
+    }
+    return res;
+}
+
+bool tbfp_calc_byte_rate(void){
+    bool res = true;
+    Interfaces_t interface=(Interfaces_t)0;
+    for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
+        if(TbfpProtocol[interface].interface==interface){
+            TbfpProtocol[interface].rx_rate.cur=TbfpProtocol[interface].rx_byte -TbfpProtocol[interface].rx_byte_prev;
+            TbfpProtocol[interface].rx_rate.min=min32u(TbfpProtocol[interface].rx_rate.cur,TbfpProtocol[interface].rx_rate.min);
+            TbfpProtocol[interface].rx_rate.max=max32u(TbfpProtocol[interface].rx_rate.cur,TbfpProtocol[interface].rx_rate.max);
+            TbfpProtocol[interface].rx_byte_prev = TbfpProtocol[interface].rx_byte;
+
+            TbfpProtocol[interface].tx_rate.cur=TbfpProtocol[interface].tx_byte -TbfpProtocol[interface].tx_byte_prev;
+            TbfpProtocol[interface].tx_rate.min=min32u(TbfpProtocol[interface].tx_rate.cur,TbfpProtocol[interface].tx_rate.min);
+            TbfpProtocol[interface].tx_rate.max=max32u(TbfpProtocol[interface].tx_rate.cur,TbfpProtocol[interface].tx_rate.max);
+            TbfpProtocol[interface].tx_byte_prev = TbfpProtocol[interface].tx_byte;
+            res = true;
         }
     }
     return res;

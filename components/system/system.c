@@ -91,6 +91,9 @@ bool system_calc_byte_rate(void){
 #ifdef HAS_RTCM3
     rtcm3_calc_byte_rate();
 #endif
+#ifdef HAS_TBFP
+    tbfp_calc_byte_rate();
+#endif
 #ifdef HAS_UART
     uart_calc_byte_rate();
 #endif

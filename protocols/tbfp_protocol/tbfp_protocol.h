@@ -39,6 +39,7 @@ bool tbfp_proc_byte(TbfpProtocol_t* instance, uint8_t rx_byte);
 bool is_tbfp_protocol(uint8_t* arr, uint16_t len, Interfaces_t interface);
 bool tbfp_compose_ping(uint8_t* out_frame, uint32_t* tx_frame_len, TbfPingFrame_t* pingFrame, Interfaces_t interface);
 bool tbfp_check(void);
+bool tbfp_calc_byte_rate(void);
 
 #ifdef __cplusplus
 }

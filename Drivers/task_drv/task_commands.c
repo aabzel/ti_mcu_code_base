@@ -6,8 +6,6 @@
 #include "clocks.h"
 #include "convert.h"
 #include "data_utils.h"
-//#include "diag_page_nums.h"
-//#include "diag_report.h"
 #include "log.h"
 #include "sys.h"
 #include "sys_tick.h"
@@ -24,7 +22,6 @@ bool diag_page_tasks(ostream_t* stream) {
     int32_t id = 0;
     total_time_us = get_time_us() - total_time0_us;
     total_time_ms = get_time_ms64() - total_time_ms0;
-
 
     if(0 == total_time_ms) {
         return false;

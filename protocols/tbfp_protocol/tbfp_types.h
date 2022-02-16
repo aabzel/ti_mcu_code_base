@@ -6,9 +6,11 @@
 extern "C" {
 #endif
 
+
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "data_utils.h"
 #include "gnss_utils.h"
 #include "tbfp_protocol_parser.h"
 #include "tbfp_re_tx_ack_fsm_types.h"
@@ -42,6 +44,10 @@ typedef struct xTbfPingFrame_t {
 
 
 typedef struct xTbfpProtocol_t {
+    uint32_t rx_byte;
+    uint32_t tx_byte;
+    uint32_t rx_byte_prev;
+    uint32_t tx_byte_prev;
     uint32_t rx_pkt_cnt;
     uint32_t tx_pkt_cnt;
     uint32_t len_err_cnt;
@@ -49,6 +55,8 @@ typedef struct xTbfpProtocol_t {
     uint32_t crc_err_cnt_prev;
     uint32_t err_cnt;
     uint32_t err_tx;
+    U32Value_t tx_rate;
+    U32Value_t rx_rate;
     uint32_t lack_frame_in_data;
 #ifdef HAS_DEBUG
     uint32_t preamble_cnt;
