@@ -45,18 +45,13 @@ bool sys_rate_command(int32_t argc, char* argv[]){
         io_printf(TSEP);
         io_printf(" %6s " TSEP, huart[uart_num].name);
         io_printf(" ----- " TSEP);
-        io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.min);
-        io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.cur);
-        io_printf(" %7u  " TSEP, huart[uart_num].rx_rate.max);
-        io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.min);
-        io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.cur);
-        io_printf(" %7u  " TSEP, huart[uart_num].tx_rate.max);
+        io_printf(" %7u " TSEP, huart[uart_num].rx_rate.min);
+        io_printf(" %7u " TSEP, huart[uart_num].rx_rate.cur);
+        io_printf(" %7u " TSEP, huart[uart_num].rx_rate.max);
+        io_printf(" %7u " TSEP, huart[uart_num].tx_rate.min);
+        io_printf(" %7u " TSEP, huart[uart_num].tx_rate.cur);
+        io_printf(" %7u " TSEP, huart[uart_num].tx_rate.max);
         baud_rate = uart_get_baudrate(uart_num);
-        if(0 < baud_rate) {
-            io_printf(" %7u  " TSEP, baud_rate);
-        } else {
-            io_printf("          " TSEP, baud_rate);
-        }
         io_printf(CRLF);
     }
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {

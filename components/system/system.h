@@ -17,15 +17,15 @@ typedef __packed  enum eInterfaces_t {
 typedef enum eInterfaces_t {
 #endif
     IF_LORA = 0,/*RTCM3 source*/
-    IF_CAN = 1,/*for Debug*/
-    IF_RS232 = 2,/*for Debug*/
+    IF_SX1262 = 1,
+    IF_UART1 = 2, /*for RTCM3 source*/
     IF_LOOPBACK = 3,/*for self Test*/
-    IF_UART1 = 4, /*for RTCM3 source*/
-    IF_SX1262 = 5,
-    IF_CNT = 7,
-    IF_UART0 = 8,
-    IF_BLE = 9,
-    IF_SPI0 = 10,
+    IF_CNT = 4,
+    IF_CAN = 5,/*for Debug*/
+    IF_RS232 = 6,/*for Debug*/
+    IF_UART0 = 7,
+    IF_BLE = 8,
+    IF_SPI0 = 9,
     IF_NONE = 11,
 #ifdef HAS_IAR
 }  Interfaces_t;

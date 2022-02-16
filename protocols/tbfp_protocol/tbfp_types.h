@@ -77,7 +77,7 @@ typedef struct xTbfpProtocol_t {
     TbfpReTxFsm_t ReTxFsm;
     Interfaces_t interface;
     TBFTparser_t parser;
-    uint8_t tx_frame[TBFP_MAX_FRAME];
+    uint8_t tx_frame[TBFP_MAX_FRAME];/*TODO: Make dynamic memory alloc due to low memory shortage */
     uint32_t tx_frame_len;
 } TbfpProtocol_t;
 

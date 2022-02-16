@@ -61,7 +61,7 @@ bool rtcm3_check(void){
         Rtcm3Protocol[intf].crc_err_cnt_prev = Rtcm3Protocol[intf].crc_err_cnt;
         if (0 < diff) {
             res = false;
-            LOG_ERROR(RTCM, "%s Crc24Err! %u", interface2str(intf), diff);
+            LOG_ERROR(RTCM, "%s Crc24Err! %u times", interface2str(intf), diff);
         }
     }
     return res;

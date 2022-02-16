@@ -62,7 +62,7 @@
 #error "That components needs HAS_TBFP macro define"
 #endif
 
-TbfpProtocol_t TbfpProtocol[IF_CNT] = {0};
+TbfpProtocol_t TbfpProtocol[IF_CNT] = {0};/*TODO: make as linked list due to run-time build*/
 
 bool tbfp_protocol_init(TbfpProtocol_t* instance, Interfaces_t interface, uint8_t preamble_val) {
     bool res = false;
