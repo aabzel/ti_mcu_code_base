@@ -15,7 +15,7 @@ extern "C" {
 #error "It is needed to add HAS_GNSS option"
 #endif
 
-#define GNSS_PERIOD_US SEC_2_US(2)
+#define GNSS_PERIOD_US SEC_2_US(0.9)
 
 typedef struct xGnss_t {
     struct tm time_date;
