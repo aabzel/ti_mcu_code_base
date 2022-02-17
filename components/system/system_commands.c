@@ -40,7 +40,6 @@ bool sys_rate_command(int32_t argc, char* argv[]){
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     uint8_t uart_num = 0;
-    uint32_t baud_rate = 0;
     for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
         io_printf(TSEP);
         io_printf(" %6s " TSEP, huart[uart_num].name);
@@ -51,7 +50,6 @@ bool sys_rate_command(int32_t argc, char* argv[]){
         io_printf(" %7u " TSEP, huart[uart_num].tx_rate.min);
         io_printf(" %7u " TSEP, huart[uart_num].tx_rate.cur);
         io_printf(" %7u " TSEP, huart[uart_num].tx_rate.max);
-        baud_rate = uart_get_baudrate(uart_num);
         io_printf(CRLF);
     }
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {

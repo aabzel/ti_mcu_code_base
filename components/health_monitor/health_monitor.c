@@ -71,7 +71,7 @@ bool health_monotor_init(void) {
     return res;
 }
 
-#define MIM_LORA_THROUGHPUT_BYTE_S 1600
+#define MIM_LORA_THROUGHPUT_BYTE_S 1100
 
 bool health_monotor_proc(void) {
     bool res = false;
@@ -112,7 +112,7 @@ bool health_monotor_proc(void) {
     res = rtcm3_check();
     if((Sx1262Instance.bit_rate / 8) < MIM_LORA_THROUGHPUT_BYTE_S) {
 #ifdef HAS_LOG
-        LOG_ERROR(HMOM, "LoRaByteRate too low %f byte/s", Sx1262Instance.bit_rate / 8);
+        LOG_ERROR(HMOM, "LoRaByteRate too low %f byte/s Need %u byte/s", Sx1262Instance.bit_rate / 8, MIM_LORA_THROUGHPUT_BYTE_S);
 #endif
         res = false;
     }

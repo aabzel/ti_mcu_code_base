@@ -50,11 +50,11 @@
 
 extern ZedF9P_t ZedF9P = {0};
 
-#if(!defined(HAS_GPS_CORRECTION) && !defined(HAS_GLONASS_CORRECTION)) &&                                               \
-    (!defined(HAS_GALILEO_CORRECTION) && !defined(HAS_BEI_DOU_CORRECTION))
+#if ((!defined(HAS_GPS_CORRECTION) && !defined(HAS_GLONASS_CORRECTION)) && defined(HAS_GNSS_RTK)   ) && (!defined(HAS_GALILEO_CORRECTION) && !defined(HAS_BEI_DOU_CORRECTION))
 #error "Some corrections must be included in build"
 #endif
 
+#ifdef HAS_GNSS_RTK
 static bool zed_f9p_proc_base(void) {
     bool res = false;
 #ifdef HAS_SX1262
@@ -108,8 +108,9 @@ static bool zed_f9p_proc_base(void) {
 
     return res;
 }
+#endif /*HAS_GNSS_RTK*/
 
-
+#ifdef HAS_GNSS_RTK
 static bool zed_f9p_proc_rover(void) {
     bool res = true;
     if(task_data[TASK_ID_UBX].on) {
@@ -148,11 +149,12 @@ static bool zed_f9p_proc_rover(void) {
 
     return res;
 }
+#endif
 
 static bool zed_f9p_proc_none(void) {
     bool res = false;
     task_data[TASK_ID_NMEA].on = true;
-    task_data[TASK_ID_UBX].on = false;
+    task_data[TASK_ID_UBX].on = true;
     return res;
 }
 
@@ -161,6 +163,7 @@ bool zed_f9p_proc(void) {
     bool res = false;
 
     switch(ZedF9P.rtk_mode) {
+#ifdef HAS_GNSS_RTK
     case RTK_BASE_SURVEY_IN:
     case RTK_BASE_FIX: {
         res = zed_f9p_proc_base();
@@ -169,6 +172,7 @@ bool zed_f9p_proc(void) {
     case RTK_ROVER: {
         res = zed_f9p_proc_rover();
     } break;
+#endif
     case RTK_NONE: {
         res = zed_f9p_proc_none();
     } break;
@@ -187,12 +191,14 @@ static const keyValItem_t NormCfgLut[] = {
     {CFG_UART1INPROT_NMEA, 0, SC_NONE},
     {CFG_UART1OUTPROT_NMEA, 1, SC_NONE},
     {CFG_UART1OUTPROT_UBX, 1, SC_NONE},
+    {CFG_MSGOUT_NMEA_ID_ZDA_UART1, 1, SC_NONE},
     {CFG_MSGOUT_UBX_NAV_PVT_UART1,1 ,SC_NONE},
     {CFG_MSGOUT_UBX_NAV_PVT_USB, 1, SC_NONE},
     {CFG_MSGOUT_UBX_NAV_POSLLH_UART1,1 ,SC_NONE},
     {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1,1 ,SC_NONE},
 };
 
+#ifdef HAS_GNSS_RTK
 static const keyValItem_t BaseCfgLutMain[] = {
     {CFG_UART1_BAUDRATE, 38400, SC_NONE},
     {CFG_UART1INPROT_NMEA, 0, SC_NONE},
@@ -233,8 +239,10 @@ static const keyValItem_t BaseCfgLutMain[] = {
     {CFG_MSGOUT_UBX_NAV_PVT_USB, 1, SC_NONE},
     {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1, SC_NONE},
 };
+#endif
 
 #if 0
+#ifdef HAS_GNSS_RTK
 static const keyValItem_t BaseCfgLutOpt[] = {
     {CFG_UART1_BAUDRATE, 38400, SC_NONE},
     {CFG_UART1INPROT_NMEA, 0, SC_NONE},
@@ -268,6 +276,7 @@ static const keyValItem_t BaseCfgLutOpt[] = {
     {CFG_MSGOUT_UBX_NAV_PVT_USB, 1, SC_NONE},
     {CFG_MSGOUT_UBX_NAV_SVIN_USB, 1, SC_NONE},
 };
+#endif
 #endif /*0*/
 #endif /*HAS_UBLOX*/
 
@@ -291,6 +300,7 @@ static bool zed_f9p_deploy_norm(void) {
 }
 
 
+#ifdef HAS_GNSS_RTK
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m, RTKmode_t receiver_mode,
                          uint32_t fixed_position_3daccuracy_mm) {
     bool res = false, out_res = true;
@@ -401,7 +411,9 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
     }
     return out_res;
 }
-#ifdef HAS_UBLOX
+#endif
+
+#if defined(HAS_UBLOX) && defined(HAS_GNSS_RTK)
 static const keyValItem_t RoverCfgLut[] = {
     {CFG_UART1_BAUDRATE, 38400, SC_NONE}, 
 	{CFG_UART1INPROT_UBX, 1, SC_NONE}, 
@@ -421,9 +433,9 @@ static const keyValItem_t RoverCfgLut[] = {
     {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1,1 ,SC_NONE},
     {CFG_MSGOUT_NMEA_ID_ZDA_UART1, 1, SC_NONE},
 };
-
 #endif
 
+#ifdef HAS_GNSS_RTK
 bool zed_f9p_deploy_rover(void) {
     bool out_res = true;
 #ifdef HAS_UBLOX
@@ -497,6 +509,8 @@ bool zed_f9p_deploy_rover(void) {
 #endif
     return out_res;
 }
+#endif
+
 #ifdef HAS_LOG
 #define LOAD_PARAM_ZED(PAR_ID, VARIABLE, EXP_LEN, VAR_NAME, DEF_VAL, PARSER_FUNC)                                      \
     do {                                                                                                               \
@@ -538,19 +552,22 @@ bool zed_f9p_load_params(void) {
     ZedF9P.fixed_position_3daccuracy_mm = METER_TO_MM(1);
     ZedF9P.coordinate_base.latitude = 0.0;
     ZedF9P.corrections.gps = true;
-    ZedF9P.corrections.glonass = false;
-    ZedF9P.corrections.galileo = false;
-    ZedF9P.corrections.beidou = false;
+    ZedF9P.corrections.glonass = true;
+    ZedF9P.corrections.galileo = true;
+    ZedF9P.corrections.beidou = true;
+    LOAD_PARAM_ZED(PAR_ID_RTK_MODE, ZedF9P.rtk_mode, 1, "mode", RTK_BASE_SURVEY_IN, rtk_mode2str);
 
+#ifdef HAS_GNSS_RTK
     LOAD_PARAM_ZED(PAR_ID_GPS, ZedF9P.corrections.gps, 1, "GpsCor", 1, OnOff2str);
     LOAD_PARAM_ZED(PAR_ID_GLONASS, ZedF9P.corrections.glonass, 1, "GlonassCor", 0, OnOff2str);
     LOAD_PARAM_ZED(PAR_ID_GALILEO, ZedF9P.corrections.galileo, 1, "GalileoCor", 0, OnOff2str);
     LOAD_PARAM_ZED(PAR_ID_BEI_DOU, ZedF9P.corrections.beidou, 1, "BeiDouCor", 0, OnOff2str);
-    LOAD_PARAM_ZED(PAR_ID_TIME_ZONE, ZedF9P.time_zone, 1, "TimeZone UTC+", 3, uint2str);
     LOAD_PARAM_ZED(PAR_ID_BASE_ACC, ZedF9P.fixed_position_3daccuracy_mm, 4, "BaseAcc", METER_TO_MM(1), mm2str);
     LOAD_PARAM_ZED(PAR_ID_RTK_CHANNEL, ZedF9P.channel, 1, "RTKchannel", IF_LORA, interface2str);
-    LOAD_PARAM_ZED(PAR_ID_RTK_MODE, ZedF9P.rtk_mode, 1, "RTKmode", RTK_BASE_SURVEY_IN, rtk_mode2str);
+#endif
+    LOAD_PARAM_ZED(PAR_ID_TIME_ZONE, ZedF9P.time_zone, 1, "TimeZone UTC+", 3, uint2str);
 
+#ifdef HAS_GNSS_RTK
     switch(ZedF9P.rtk_mode) {
     case RTK_BASE_SURVEY_IN:
     case RTK_BASE_FIX: {
@@ -566,6 +583,7 @@ bool zed_f9p_load_params(void) {
     default:
         break;
     }
+#endif
 
 #endif /*HAS_FLASH_FS && HAS_PARAM*/
     if(out_res) {
@@ -587,6 +605,7 @@ bool zed_f9p_init(void) {
         case RTK_NONE:
             res = zed_f9p_deploy_norm();
             break;
+#ifdef HAS_GNSS_RTK
         case RTK_BASE_SURVEY_IN:
         case RTK_BASE_FIX:
             res = zed_f9p_deploy_base(ZedF9P.coordinate_base, ZedF9P.alt_base, ZedF9P.rtk_mode,
@@ -595,6 +614,7 @@ bool zed_f9p_init(void) {
         case RTK_ROVER:
             res = zed_f9p_deploy_rover();
             break;
+#endif
         default:
 #ifdef HAS_LOG
             LOG_ERROR(ZED_F9P, "rtkMode:%u=%s", ZedF9P.rtk_mode, rtk_mode2str(ZedF9P.rtk_mode));

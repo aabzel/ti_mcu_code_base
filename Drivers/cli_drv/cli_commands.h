@@ -62,7 +62,7 @@ extern "C" {
 #define FLASH_FS_COMMANDS
 #endif
 
-#ifdef HAS_FLASH_NVS
+#ifdef HAS_FLASH_NVS_COMMANDS
 #include "flash_nvs_commands.h"
 #else
 #define FLASH_NVS_COMMANDS

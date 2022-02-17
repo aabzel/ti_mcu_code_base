@@ -661,7 +661,7 @@ bool sx1262_set_modulation_command(int32_t argc, char* argv[]) {
     modParams.band_width = LORA_BW_41;
     modParams.coding_rate = LORA_CR_4_5;
     modParams.spreading_factor = SF5;
-    modParams.low_data_rate_optimization = 0;
+    modParams.low_data_rate_optimization = LDRO_OFF;
     if(0 == argc) {
         res = true;
         modParams.band_width = LORA_BW_41;
@@ -945,9 +945,9 @@ bool sx1262_set_standby_command(int32_t argc, char* argv[]) {
     if(res) {
         res = sx1262_set_standby((StandbyMode_t)stdby_config);
         if(res) {
-            LOG_INFO(LORA, "Set %s Ok",Standby2Str(stdby_config));
+            LOG_INFO(LORA, "Set %s Ok",Standby2Str((StandbyMode_t)stdby_config));
         }else{
-            LOG_ERROR(LORA, "Set %s Err",Standby2Str(stdby_config));
+            LOG_ERROR(LORA, "Set %s Err",Standby2Str((StandbyMode_t)stdby_config));
         }
     } else {
         LOG_ERROR(LORA, "Usage: sxss mode");

@@ -27,7 +27,16 @@
 #ifdef HAS_ZED_F9P
 #include "gnss_diag.h"
 #include "zed_f9p_diag.h"
+#include "zed_f9p_params.h"
+#else
+#define PARAMS_ZED_F9P
 #endif /*HAS_ZED_F9P*/
+
+#ifdef HAS_GNSS_RTK
+#include "rtk_params.h"
+#else
+#define PARAMS_RTK
+#endif /*HAS_GNSS_RTK*/
 
 #ifdef HAS_SX1262
 #include "sx1262_diag.h"
@@ -44,49 +53,14 @@ const ParamItem_t ParamArray[] = {
     /**/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},          /*Power Source*/
 #endif
     PARAMS_SX1262
-#if 0
-    /**/ {PAR_ID_LORA_FREQ, 4, UINT32, "LoRaFreq"},   /*Hz*/
-    /**/ {PAR_ID_LORA_SF, 1, UINT8, "SF"},            /*Chips / Symbol*/
-    /*4*/ {PAR_ID_LORA_CR, 1, UINT8, "CR"},           /*in raw bits/total bits*/
-    /**/ {PAR_ID_LORA_BW, 1, UINT8, "BW"},            /*Hz*/
-    /*10*/ {PAR_ID_HEADER_TYPE, 1, UINT8, "HEAD_TYPE"},
-    /**/ {PAR_ID_PACKET_TYPE, 1, UINT8, "PktType"},               /* GFSK / LoRa*/
-    /**/ {PAR_ID_LORA_SYNC_WORD, 2, UINT16, "LoRaSyncWord"},
-    /**/ {PAR_ID_SYNC_WORD, 8, UINT64, "SyncWord"},
-    /**/ {PAR_ID_LORA_OUT_POWER, 1, INT8, "outPower"}, /*loRa output power*/
-    /**/ {PAR_ID_LOW_DATA_RATE, 1, UINT8, "LowDataRate"},
-    /**/ {PAR_ID_PREAMBLE_LENGTH, 2, UINT16, "PRE_LEN"}, /*bytes*/
-    /**/ {PAR_ID_LORA_CRC_INIT, 2, UINT16, "CrcInit"},   /*CRC Initial Value*/
-    /**/ {PAR_ID_LORA_CRC_POLY, 2, UINT16, "CrcPoly"},   /*CRC Polynomial*/
-    /**/ {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/
-    /**/ {PAR_ID_CRC_TYPE, 1, UINT8, "CRC_T"},
-    /**/ {PAR_ID_IQ_SETUP, 1, UINT8, "IQSetUp"},
-    /*19*/ {PAR_ID_LORA_MAX_LINK_DIST, 8, DOUBLE, "MaxLinkDist"}, /*Max Link Distance*/
-    /**/ {PAR_ID_LORA_MAX_BIT_RATE, 8, DOUBLE, "MaxBitRate"}, /*Max LoRa bit/rate*/
-    /**/ {PAR_ID_RETX_CNT, 1, UINT8, "ReTxCnt"},
-#endif
-
 #ifdef HAS_BOOT
     /**/ {PAR_ID_BOOT_CNT, 1, UINT8, "BootCnt"},        /*num*/
     /**/ {PAR_ID_BOOT_CMD, 1, UINT8, "BootCmd"},        /*1-stay in boot 0-launch App*/
     /**/ {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"}, /*Flash Addr*/
     /**/ {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},    /*Flash Addr*/
 #endif
-#ifdef HAS_ZED_F9P
-    /**/ {PAR_ID_TIME_ZONE, 1, INT8, "TimeZone"},       /*Time Zone*/
-    /**/ {PAR_ID_BASE_LOCATION, 16, STRUCT, "BaseLocat"},
-    /**/ {PAR_ID_RTK_FIX_LONG, 4, UINT32, "FTKFixedTime"}, /*RTK fixed max duration*/
-    /**/ {PAR_ID_RTK_MODE, 1, UINT8, "RTKmode"},
-    /**/ {PAR_ID_BASE_ACC, 4, UINT32, "BaseAcc"},
-    {PAR_ID_GPS, 1, BOOL, "GpsCpr"},
-    {PAR_ID_GLONASS, 1, BOOL, "GlonassCor"},
-    {PAR_ID_GALILEO, 1, BOOL, "GalileoCor"},
-    {PAR_ID_BEI_DOU, 1, BOOL, "BeiDouCor"},
-    /*25*/ {PAR_ID_RTK_CHANNEL, 1, UINT8, "RTKchannel"},
-    /**/ {PAR_ID_GNSS_PERIOD, 2, UINT16, "GnssPer"},
-    /**/ {PAR_ID_BASE_ALT, 8, DOUBLE, "BaseAlt"},
-#endif
-
+    PARAMS_ZED_F9P
+    PARAMS_RTK
 };
 
 uint32_t param_get_cnt(void) {

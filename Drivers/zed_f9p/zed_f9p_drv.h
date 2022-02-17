@@ -55,10 +55,11 @@ extern ZedF9P_t ZedF9P;
 bool zed_f9p_init(void);
 bool zed_f9p_load_params(void);
 bool zed_f9p_proc(void);
+#ifdef HAS_GNSS_RTK
 bool zed_f9p_deploy_rover(void);
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base,
                          double altitude_sea_lev_m,
                          RTKmode_t receiver_mode,
                          uint32_t fixed_position_3daccuracy_mm);
-
+#endif
 #endif /* ZED_F9P_DRV_H  */

@@ -12,7 +12,7 @@ extern "C" {
 #include "clocks.h"
 #endif
 
-#define HEAL_MON_PERIOD_US (SEC_2_US(2))
+#define HEAL_MON_PERIOD_US (SEC_2_US(4))
 #define KL30_UNDERVOL_ERRPR_THRESHOLD_V 4.0f
 #define KL30_UNDERVOL_WARNING_THRESHOLD_V 8.0f
 

@@ -24,6 +24,7 @@ bool zed_f9p_diag_command(int32_t argc, char* argv[]) {
     return res;
 }
 
+#ifdef HAS_GNSS_RTK
 bool zed_f9p_base_dot_command(int32_t argc, char* argv[]) {
     bool res = false;
     GnssCoordinate_t coordinate_base;
@@ -74,7 +75,10 @@ bool zed_f9p_base_dot_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif
 
+
+#ifdef HAS_GNSS_RTK
 bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     bool res = false;
 
@@ -98,7 +102,10 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif
 
+
+#ifdef HAS_GNSS_RTK
 bool zed_f9p_rover_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
@@ -112,3 +119,4 @@ bool zed_f9p_rover_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
+#endif

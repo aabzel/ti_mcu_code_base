@@ -383,7 +383,7 @@ static bool proc_uart0(void) {
     while(loop) {
         res = fifo_pull(&huart[0].RxFifo, (char*)&rx_byte);
         if(true == res) {
-#ifdef HAS_TBFP
+#ifdef HAS_TBFP_RS232
             tbfp_proc_byte(&TbfpProtocol[IF_RS232], rx_byte);
 #endif /*HAS_TBFP*/
         } else {
