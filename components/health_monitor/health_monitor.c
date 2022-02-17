@@ -95,6 +95,10 @@ bool health_monotor_proc(void) {
     }
 #endif /*HAS_ADC*/
 
+#ifdef HAS_NMEA
+    res = nmea_check();
+#endif
+
 #ifdef HAS_TBFP
     res = tbfp_check();
 #endif

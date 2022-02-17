@@ -587,7 +587,7 @@ bool tbfp_check_flow_control(
 
 bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
     bool res = true;
-    LOG_INFO(TBFP, "%s ProcFull Len: %u", interface2str(interface), len);
+    LOG_DEBUG(TBFP, "%s ProcFull Len: %u", interface2str(interface), len);
     res = is_tbfp_protocol(arr, len, interface);
     if(res) {
         TbfpProtocol[interface].rx_byte +=len;
@@ -621,12 +621,14 @@ bool tbfp_proc_full(uint8_t* arr, uint16_t len, Interfaces_t interface) {
         }
 #endif /*HAS_TBFP_RETRANSMIT*/
 
-        if(flow_ctrl_ok){
-            res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
-        }
+#ifdef HAS_MCU
         /*Ack After Proc to pass PC unit tests*/
         if(inHeader.flags.ack_need){
             res = tbfp_send_ack( inHeader.snum, interface);
+        }
+#endif
+        if(flow_ctrl_ok){
+            res = tbfp_proc_payload(&arr[TBFP_INDEX_PAYLOAD], inHeader.len, interface);
         }
 
     } else {
@@ -694,9 +696,6 @@ bool tbfp_check(void){
                 LOG_ERROR(TBFP,"%s TxErr %u times",interface2str(interface),diff);
             }
             TbfpProtocol[interface].err_tx_cnt_prev=TbfpProtocol[interface].err_tx_cnt;
-
-
-
         }
     }
     return res;
