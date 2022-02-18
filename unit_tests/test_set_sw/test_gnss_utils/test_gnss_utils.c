@@ -4,14 +4,13 @@
 #include <stdio.h>
 #endif
 
+#include "log.h"
 #include "gnss_utils.h"
 #include "float_utils.h"
 #include "unit_test_check.h"
 
 bool test_gnss_azimuth(void) {
-#ifdef X86_64
-   printf("\n%s()",__FUNCTION__);
-#endif
+   LOG_INFO(GNSS,"%s()",__FUNCTION__);
     double azimuth = 0.0;
 	GnssCoordinate_t rover={0.0, 0.0};
 	GnssCoordinate_t beacon_north={40.0, 0.0};

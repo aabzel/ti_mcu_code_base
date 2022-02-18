@@ -68,7 +68,10 @@ GnssCoordinate_t gnss_encode_deg2mm(GnssCoordinate_t dot_dd){
 
     return ret_dot_mm;
 }
-
+/*
+chrck here:
+https://www.sunearthtools.com/tools/distance.php
+*/
 static double gnss_calc_azimuth_rad(GnssCoordinate_t rover,
                          GnssCoordinate_t point_of_interest){
     double longitudinal_diff = point_of_interest.longitude - rover.longitude;

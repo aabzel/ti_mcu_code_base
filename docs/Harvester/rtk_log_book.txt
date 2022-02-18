@@ -7,7 +7,6 @@ https://en.wikipedia.org/wiki/Real-time_kinematic_positioning
 
 https://habr.com/ru/company/intel/blog/258779/
   
-https://habr.com/ru/post/244475/
   
 https://en.wikipedia.org/wiki/Precise_Point_Positioning
   

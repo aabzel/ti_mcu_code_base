@@ -59,6 +59,7 @@ bool nmea_init(void) {
 /*$GNZDA,122013.00,29,11,2021,00,00*71*/
 bool gnss_parse_zda(char* nmea_msg, zda_t* zda) {
     bool res = true;
+    uint8_t cnt = 0;
     char* ptr = strchr(nmea_msg, ',') ;
     // 122013.00,29,11,2021,00,00*71*/
     if(ptr){
@@ -66,6 +67,9 @@ bool gnss_parse_zda(char* nmea_msg, zda_t* zda) {
         res = try_strl2uint32(ptr+1, 6, &utc_time) && res;
         if(res) {
             res = parse_time_from_val(utc_time, &zda->time_date);
+            if(res){
+                cnt++;
+            }
         }
     }
     ptr++;
@@ -73,14 +77,20 @@ bool gnss_parse_zda(char* nmea_msg, zda_t* zda) {
     ptr = strchr(ptr, ',') ;
     if(ptr){
         /*29,11,2021,00,00*71*/
-        res = try_strl2int32(ptr+1, 2, &zda->time_date.tm_mday) && res;
+        res = try_strl2int32(ptr+1, 2, &zda->time_date.tm_mday);
+        if(res){
+            cnt++;
+        }
     }
     ptr++;
 
     ptr = strchr(ptr, ',');
     if(ptr){
         /*11,2021,00,00*71*/
-        res = try_strl2int32(ptr+1, 2, &zda->time_date.tm_mon) && res;
+        res = try_strl2int32(ptr+1, 2, &zda->time_date.tm_mon);
+        if(res){
+            cnt++;
+        }
     }
     ptr++;
 
@@ -88,21 +98,37 @@ bool gnss_parse_zda(char* nmea_msg, zda_t* zda) {
     ptr = strchr(ptr, ',');
     if(ptr){
         /*2021,00,00*71*/
-        res = try_strl2int32(ptr+1, 4, &zda->time_date.tm_year) && res;
+        res = try_strl2int32(ptr+1, 4, &zda->time_date.tm_year);
+        if(res){
+            cnt++;
+        }
     }
     ptr++;
 
     ptr = strchr(ptr, ',') ;
     /*00,00*71*/
     if(ptr){
-        res = try_strl2uint8(ptr+1, 2, &zda->ltzh) && res;
+        res = try_strl2uint8(ptr+1, 2, &zda->ltzh);
+        if(res){
+            cnt++;
+        }
     }
     ptr++;
 
 
     ptr = strchr(ptr, ',') ;
     /*00*71*/
-    res = try_strl2uint8(ptr+1, 2, &zda->ltzn) && res;
+    if(ptr) {
+        res = try_strl2uint8(ptr+1, 2, &zda->ltzn) ;
+        if(res){
+            cnt++;
+        }
+    }
+    if(cnt){
+        res = true;
+    }else{
+        res = false;
+    }
     return res;
 }
 
@@ -335,8 +361,11 @@ bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg) {
     ptr = strchr(ptr, ',') ;
     // T,,M,0.019,N,0.036,K,A*30  Course over ground units
     if(ptr){
-       vtg->cogtUnit = ptr[1];
-       LOG_DEBUG(NMEA,"%c",ptr[1]);
+        if(','!=ptr[1]){
+            vtg->cogtUnit = ptr[1];
+            LOG_DEBUG(NMEA,"%c",ptr[1]);
+            cnt++;
+        }
     }
     ptr++;
 
@@ -351,8 +380,12 @@ bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg) {
     ptr = strchr(ptr, ',');
     // M,0.019,N,0.036,K,A*30   Course over ground units
     if(ptr){
-        vtg->cogmUnit = ptr[1];
-        LOG_DEBUG(NMEA,"%c",ptr[1]);
+        if(','!=ptr[1]){
+            cnt++;
+            vtg->cogmUnit = ptr[1];
+            LOG_DEBUG(NMEA,"%c",ptr[1]);
+            cnt++;
+        }
     }
     ptr++;
 
@@ -369,8 +402,11 @@ bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg) {
     ptr = strchr(ptr, ',') ;
     // N,0.036,K,A*30  Speed over ground  Speed over ground units
     if(ptr){
-        vtg->sognUnit = ptr[1];
-        LOG_DEBUG(NMEA,"%c",ptr[1]);
+        if(','!=ptr[1]){
+            vtg->sognUnit = ptr[1];
+            LOG_DEBUG(NMEA,"%c",ptr[1]);
+            cnt++;
+        }
     }
     ptr++;
 
@@ -387,16 +423,22 @@ bool gnss_parse_vtg(char* nmea_msg, vtg_t* vtg) {
     ptr = strchr(ptr, ',') ;
     // K,A*30     Speed over ground units
     if(ptr){
-       vtg->sogkUnit = ptr[1];
-       LOG_DEBUG(NMEA,"%c",ptr[1]);
+        if(','!=ptr[1]){
+           vtg->sogkUnit = ptr[1];
+           LOG_DEBUG(NMEA,"%c",ptr[1]);
+           cnt++;
+        }
     }
     ptr++;
 
     ptr = strchr(ptr, ',') ;
     // A*30
     if(ptr){
-        vtg->posMode = ptr[1];
-        LOG_DEBUG(NMEA,"%c",ptr[1]);
+        if(','!=ptr[1]){
+            vtg->posMode = ptr[1];
+            LOG_DEBUG(NMEA,"%c",ptr[1]);
+            cnt++;
+        }
     }
 
     if(cnt){
@@ -492,8 +534,8 @@ bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
             // 03737.93396,E,140121.00,A,A*70
             res = try_strl2double(ptr+1, 11, &gll->coordinate_ddmm.longitude) ;
             if(res){
-                         cnt++;
-                     }
+                cnt++;
+            }
         }
         ptr++;
 
@@ -501,7 +543,10 @@ bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
         cur_pos = (uint32_t)(ptr - nmea_msg);
         if((cur_pos < NMEA_MSG_SIZE) && (ptr)) {
             // E,140121.00,A,A*70
-            gll->lon_dir = ptr[1];
+            if (','!=ptr[1]) {
+                gll->lon_dir = ptr[1];
+                cnt++;
+            }
         }
         ptr++;
 
@@ -513,7 +558,7 @@ bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
             res = try_strl2uint32(ptr+1, 6, &utc_time) ;
             if(res) {
                 res = parse_time_from_val(utc_time, &gll->time_date);
-                if(res){
+                if (res) {
                     cnt++;
                 }
             }
@@ -524,7 +569,10 @@ bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
         cur_pos = (uint32_t)(ptr - nmea_msg);
         if((cur_pos < NMEA_MSG_SIZE) && (ptr)) {
             // A,A*70
-            gll->status = ptr[1];
+            if(','!=ptr[1]){
+                gll->status = ptr[1];
+                cnt++;
+            }
         }
         ptr++;
 
@@ -532,7 +580,10 @@ bool gnss_parse_gll(char* nmea_msg, gll_t* gll) {
         cur_pos = (uint32_t)(ptr - nmea_msg);
         if((cur_pos < NMEA_MSG_SIZE) && (ptr)) {
             // A*70
-            gll->pos_mode = ptr[1];
+            if(','!=ptr[1]){
+                gll->pos_mode = ptr[1];
+                cnt++;
+            }
         }
         ptr++;
 
@@ -590,7 +641,10 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
 
     ptr = strchr(ptr, ',') ;
     if(ptr){
-        rmc->data_valid = ptr[1];
+        if(','!=ptr[1]){
+            rmc->data_valid = ptr[1];
+            parse_cnt++;
+        }
     }
     ptr++;
 
@@ -607,7 +661,10 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
 
     ptr = strchr(ptr, ',') ;
     if(ptr){
-        rmc->lat_dir = ptr[1];
+        if(','!=ptr[1]){
+            rmc->lat_dir = ptr[1];
+            parse_cnt++;
+        }
     }
     ptr++;
 
@@ -624,7 +681,9 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
 
     ptr = strchr(ptr, ',') ;
     if(ptr){
-        rmc->lon_dir = ptr[1];
+        if(','!=ptr[1]){
+            rmc->lon_dir = ptr[1];
+        }
     }
     ptr++;
 
@@ -674,19 +733,25 @@ bool gnss_parse_rmc(char* nmea_msg, rmc_t* rmc) {
 
     ptr = strchr(ptr, ',') ;
     if(ptr){
-        rmc->mv_ew = ptr[1];
+        if(','!=ptr[1]){
+            rmc->mv_ew = ptr[1];
+        }
     }
     ptr++;
 
     ptr = strchr(ptr, ',') ;
     if(ptr){
-        rmc->pos_mode = ptr[1];
+        if(','!=ptr[1]){
+            rmc->pos_mode = ptr[1];
+        }
     }
     ptr++;
 
     ptr = strchr(ptr, ',') ;
     if(ptr){
-        rmc->nav_status = ptr[1];
+        if(','!=ptr[1]){
+            rmc->nav_status = ptr[1];
+        }
     }
 
     if(0<parse_cnt){
@@ -1070,7 +1135,7 @@ bool nmea_proc(void) {
             NmeaData.time_date = NmeaData.zda.time_date;
         } else {
 #ifdef HAS_LOG
-            LOG_ERROR(NMEA, "InvalZdaTimeDate");
+            LOG_DEBUG(NMEA, "InvalZdaTimeDate");
 #endif
         }
     }
@@ -1156,20 +1221,20 @@ bool nmea_proc(void) {
     return res;
 }
 
-bool nmea_check(void){
+bool nmea_check(void) {
     bool res = false;
     uint32_t diff =0;
-    diff = NmeaProto.crc_err_cnt-NmeaProto.crc_err_cnt_prev;
+    diff = NmeaProto.crc_err_cnt - NmeaProto.crc_err_cnt_prev;
     if(0<diff ){
-        LOG_ERROR(NMEA, "CrcErr %u times", diff);
+        LOG_DEBUG(HMON, "NmeaCrcErr %u times", diff);
     }
-    NmeaProto.crc_err_cnt_prev=NmeaProto.crc_err_cnt;
+    NmeaProto.crc_err_cnt_prev = NmeaProto.crc_err_cnt;
 
-    diff = NmeaProto.err_parse-NmeaProto.err_parse_prev;
+    diff = NmeaProto.err_parse - NmeaProto.err_parse_prev;
     if(0<diff ){
-        LOG_ERROR(NMEA, "ParseErr %u times", diff);
+        LOG_DEBUG(HMON, "NmeaParseErr %u times", diff);
     }
-    NmeaProto.err_parse_prev=NmeaProto.err_parse;
+    NmeaProto.err_parse_prev = NmeaProto.err_parse;
 
 
 

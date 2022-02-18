@@ -134,7 +134,7 @@ bool gnss_proc(void){
         Gnss.coordinate_last = Gnss.coordinate_cur;
     }    else    {
 #ifdef HAS_LOG
-        LOG_ERROR(GNSS, "InvalGnssCurCoordinate");
+        LOG_DEBUG(GNSS, "InvalGnssCurCoordinate");
 #endif
     }
 
@@ -145,7 +145,7 @@ bool gnss_proc(void){
     if(false==res){
        res=gnss_update_from_ubx();
        if(false==res){
-           LOG_ERROR(GNSS, "LackGnssData");
+           LOG_DEBUG(GNSS, "LackGnssData");
        }
     }
 #endif

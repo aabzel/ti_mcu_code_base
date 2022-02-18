@@ -53,7 +53,7 @@ typedef enum eLog_facility_t {
     CRC8,
     DIAG,
     FLASH_FS,
-    HMOM,
+    HMON,
     GNSS,
     I2C,
     LED,

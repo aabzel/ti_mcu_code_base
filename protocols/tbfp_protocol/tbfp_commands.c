@@ -24,7 +24,7 @@ static bool tbfp_diag_retx(void) {
         {8, "interf"},
         {9, "spinCnt"},
         {9, "state"},
-        {9, "input"},
+        {9, "LackTxDone"},
         {9, "AckRx"},
         {9, "AckTx"},
         {9, "ReTx"},
@@ -38,7 +38,7 @@ static bool tbfp_diag_retx(void) {
             io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.spin_cnt);
             io_printf(" %7s " TSEP, tbfp_retx_state2str(TbfpProtocol[interface].ReTxFsm.state));
-            io_printf(" %7s " TSEP, tbfp_retx_in2str(TbfpProtocol[interface].ReTxFsm.input));
+            io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.err_tx_done);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.ack_rx_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.ack_tx_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.retx_cnt);

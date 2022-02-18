@@ -54,11 +54,11 @@ bool health_monotor_init(void) {
     memset(&HealthMon, 0x00, sizeof(HealthMon));
 #if defined(HAS_RTCM3) && defined(HAS_TBFP)
     if(TBFP_MAX_PAYLOAD < RTCM3_RX_MAX_FRAME_SIZE) {
-        LOG_ERROR(HMOM, "TBFPFrameMustBeBigEnoughToStoreRTCM3Frame TBFP:%u<RTCM3:%u", TBFP_MAX_PAYLOAD,
+        LOG_ERROR(HMON, "TBFPFrameMustBeBigEnoughToStoreRTCM3Frame TBFP:%u<RTCM3:%u", TBFP_MAX_PAYLOAD,
                   RTCM3_RX_MAX_FRAME_SIZE);
         res = false;
     } else {
-        LOG_INFO(HMOM, "TbfpRtcmFramesSizesOk RTCM3:%u<TBFP:%u", RTCM3_RX_MAX_FRAME_SIZE, TBFP_MAX_PAYLOAD);
+        LOG_INFO(HMON, "TbfpRtcmFramesSizesOk RTCM3:%u<TBFP:%u", RTCM3_RX_MAX_FRAME_SIZE, TBFP_MAX_PAYLOAD);
     }
 #endif
 #ifdef HAS_RELAESE
@@ -81,13 +81,13 @@ bool health_monotor_proc(void) {
         vKl30 = adc_get_value_by_dio(DIO_KL30_ADC, true);
         if(vKl30 < KL30_UNDERVOL_ERRPR_THRESHOLD_V) {
 #ifdef HAS_LOG
-            LOG_ERROR(HMOM, "vKl30 %7.3f<%7.3f too low", vKl30, KL30_UNDERVOL_ERRPR_THRESHOLD_V);
+            LOG_ERROR(HMON, "vKl30 %7.3f<%7.3f too low", vKl30, KL30_UNDERVOL_ERRPR_THRESHOLD_V);
 #endif
             res = false;
         } else {
             if(vKl30 < KL30_UNDERVOL_WARNING_THRESHOLD_V) {
 #ifdef HAS_LOG
-                LOG_WARNING(HMOM, "vKl30 %7.3f<%7.3f low", vKl30, KL30_UNDERVOL_WARNING_THRESHOLD_V);
+                LOG_WARNING(HMON, "vKl30 %7.3f<%7.3f low", vKl30, KL30_UNDERVOL_WARNING_THRESHOLD_V);
 #endif
             }
             res = true;
@@ -112,7 +112,7 @@ bool health_monotor_proc(void) {
     res = rtcm3_check();
     if((Sx1262Instance.bit_rate / 8) < MIM_LORA_THROUGHPUT_BYTE_S) {
 #ifdef HAS_LOG
-        LOG_ERROR(HMOM, "LoRaByteRate too low %f byte/s Need %u byte/s", Sx1262Instance.bit_rate / 8, MIM_LORA_THROUGHPUT_BYTE_S);
+        LOG_ERROR(HMON, "LoRaByteRate too low %f byte/s Need %u byte/s", Sx1262Instance.bit_rate / 8, MIM_LORA_THROUGHPUT_BYTE_S);
 #endif
         res = false;
     }
@@ -121,14 +121,14 @@ bool health_monotor_proc(void) {
 
     if(HealthMon.init_error) {
 #ifdef HAS_LOG
-        LOG_ERROR(HMOM, "InitError");
+        LOG_ERROR(HMON, "InitError");
 #endif
     }
 
 #ifdef HAS_LORA
     if(LoRaInterface.tx_err_cnt) {
 #ifdef HAS_LOG
-        LOG_DEBUG(HMOM, "LoRaTxError %u", LoRaInterface.tx_err_cnt);
+        LOG_DEBUG(HMON, "LoRaTxError %u", LoRaInterface.tx_err_cnt);
 #endif
     }
 #endif
@@ -142,11 +142,11 @@ bool health_monotor_proc(void) {
     float stack_precent = stack_used();
     if(50.0 < stack_precent) {
 #ifdef HAS_LOG
-        LOG_WARNING(HMOM, "StackUsed:%f %%", stack_precent);
+        LOG_WARNING(HMON, "StackUsed:%f %%", stack_precent);
 #endif
         if(75.0 < stack_precent) {
 #ifdef HAS_LOG
-            LOG_ERROR(HMOM, "StackUsed:%f %%", stack_precent);
+            LOG_ERROR(HMON, "StackUsed:%f %%", stack_precent);
 #endif
         }
     }
@@ -167,7 +167,7 @@ bool health_monotor_proc(void) {
     lora_lost_pkt_cnt_diff = Rtcm3Protocol[IF_UART1].lost_pkt_cnt[IF_LORA] - lora_lost_pkt_cnt_prev;
     if(0 < lora_lost_pkt_cnt_diff) {
 #ifdef HAS_LOG
-        LOG_WARNING(HMOM, "RTCM3 UART1 lost %u", lora_lost_pkt_cnt_diff);
+        LOG_WARNING(HMON, "RTCM3 UART1 lost %u", lora_lost_pkt_cnt_diff);
 #endif
     }
     lora_lost_pkt_cnt_prev = Rtcm3Protocol[IF_UART1].lost_pkt_cnt[IF_LORA];
@@ -180,10 +180,10 @@ bool health_monotor_proc(void) {
     bool res_ub = is_valid_time_date(&NavInfo.date_time);
     if((false == res_eq) && res_nm && res_nm) {
 #ifdef HAS_LOG
-        LOG_ERROR(HMOM, "Nmea and UBX Time different");
-        LOG_INFO(HMOM, "Nmea:");
+        LOG_ERROR(HMON, "Nmea and UBX Time different");
+        LOG_INFO(HMON, "Nmea:");
         print_time_date(&NmeaData.time_date);
-        LOG_INFO(HMOM, "UBX:");
+        LOG_INFO(HMON, "UBX:");
         print_time_date(&NavInfo.date_time);
 #endif
     }

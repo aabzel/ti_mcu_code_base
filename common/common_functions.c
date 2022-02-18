@@ -275,11 +275,11 @@ _Noreturn void super_main_loop(void) {
 bool try_init(bool status, char* message) {
     if(false == status) {
 #ifdef HAS_LOG
-        LOG_ERROR(HMOM, "init %s error", message);
+        LOG_ERROR(HMON, "init %s error", message);
 #endif
     } else {
 #ifdef HAS_LOG
-        LOG_INFO(HMOM, "init %s OK", message);
+        LOG_INFO(HMON, "init %s OK", message);
 #endif
     }
     return status;

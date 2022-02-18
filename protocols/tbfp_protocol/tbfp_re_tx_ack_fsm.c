@@ -10,7 +10,8 @@
 #ifdef HAS_SX1262
 #include "sx1262_constants.h"
 #include "sx1262_drv.h"
-#endif
+#endif /*HAS_SX1262*/
+
 #include "system.h"
 
 bool is_tbfp_retx_idle(TbfpProtocol_t *instance){
@@ -22,6 +23,7 @@ bool is_tbfp_retx_idle(TbfpProtocol_t *instance){
     return res;
 }
 
+#define TX_DONE_EXTRA_TIME_MS 10
 bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
     bool res = false;
     if (instance && array && (0<len)) {
@@ -29,6 +31,16 @@ bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
         instance->tx_frame_len = len;
 #ifdef HAS_SX1262
         if (IF_SX1262 == instance->interface) {
+            float t_frame = lora_calc_max_frame_tx_time(
+                                  Sx1262Instance.mod_params.spreading_factor,
+                                  Sx1262Instance.mod_params.band_width,
+                                  Sx1262Instance.mod_params.coding_rate,
+                                  Sx1262Instance.packet_param.proto.lora.preamble_length,
+                                  Sx1262Instance.packet_param.proto.lora.header_type,
+                                  Sx1262Instance.mod_params.low_data_rate_optimization,
+                                  NULL, NULL);
+           instance->ReTxFsm.tx_done_time_out_ms =(uint32_t) (t_frame*1000.0)+TX_DONE_EXTRA_TIME_MS;
+           LOG_DEBUG(RETX, "ExpectTxDoneTimeOut: %u ms",(uint32_t) (t_frame*1000.0));
            instance->ReTxFsm.retx_cnt = TBFP_RETX_TRY_MAX;
            res = sx1262_start_tx(instance->tx_frame,
                                 instance->tx_frame_len, TX_SINGLE_MODE);
@@ -73,6 +85,7 @@ static bool tbfp_proc_retx_wait_tx_done(TbfpProtocol_t *instance,
             LOG_DEBUG(RETX,"%s TxDoneOk after %u ms", interface2str(instance->interface),time_stamp_diff);
             instance->ReTxFsm.state= TBFP_WAIT_ACK;
             instance->ReTxFsm.time_stamp_start_ms = time_stamp_cur;
+            time_stamp_diff=0;
             res = true;
             break;
         case TBFP_IN_TX_DONE_TIME_OUT:
@@ -92,8 +105,9 @@ static bool tbfp_proc_retx_wait_tx_done(TbfpProtocol_t *instance,
             break;
     }
 
-    if(WAIT_TX_DONE_TIME_OUT_MS < time_stamp_diff){
-        instance->ReTxFsm.input=TBFP_IN_TX_DONE_TIME_OUT;
+    if(instance->ReTxFsm.tx_done_time_out_ms < time_stamp_diff){
+        instance->ReTxFsm.input = TBFP_IN_TX_DONE_TIME_OUT;
+        instance->ReTxFsm.err_tx_done++;
         LOG_DEBUG(RETX,"%s State:%s InPut:%s",
                         interface2str(instance->interface),
                         tbfp_retx_state2str(instance->ReTxFsm.state),
@@ -149,7 +163,7 @@ static bool tbfp_proc_retx_wait_ack(TbfpProtocol_t *instance, uint32_t time_stam
             break;
     }
 
-    if(WAIT_ACK_TIME_OUT_MS < time_stamp_diff){
+    if((instance->ReTxFsm.tx_done_time_out_ms+TX_DONE_EXTRA_TIME_MS) < time_stamp_diff){
         instance->ReTxFsm.input  = TBFP_IN_RX_ACK_TIME_OUT;
         LOG_DEBUG(RETX,"%s State:%s InPut:%s",
                         interface2str(instance->interface),
@@ -164,6 +178,8 @@ static bool tbfp_proc_retx_idle(TbfpProtocol_t *instance){
     if(0<instance->ReTxFsm.retx_cnt){
 #ifdef HAS_SX1262
         if (IF_SX1262 == instance->interface) {
+           LOG_DEBUG(RETX, "ExpectTxDoneTimeOut: %u ms",instance->ReTxFsm.tx_done_time_out_ms-TX_DONE_EXTRA_TIME_MS);
+
            res = sx1262_start_tx(instance->tx_frame,
                                 instance->tx_frame_len, TX_SINGLE_MODE);
            if(res) {

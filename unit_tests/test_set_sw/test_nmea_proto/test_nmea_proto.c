@@ -186,7 +186,7 @@ bool test_nmea_proto_gnvtg(void) {
     EXPECT_NEAR(0.032,vtg.sogk,0.00001);
     EXPECT_EQ('K',vtg.sogkUnit);
     EXPECT_EQ('A',vtg.posMode);
-    EXPECT_FALSE( gnss_parse_vtg((char*)msg_gnrvtg1, &vtg));
+    EXPECT_TRUE( gnss_parse_vtg((char*)msg_gnrvtg1, &vtg));
     set_log_level(SYS, LOG_LEVEL_INFO);
     set_log_level(NMEA, LOG_LEVEL_INFO);
     return true;

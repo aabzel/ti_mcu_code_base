@@ -2060,18 +2060,28 @@ float lora_calc_data_rate(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code) {
  * n_preamble -  Number of symbols in preamble
  * */
 float lora_calc_max_frame_tx_time(uint8_t sf_code, uint8_t bw_code, uint8_t cr_code, uint16_t n_preamble,
-                                  uint8_t header, uint8_t low_data_rate_opt, float* Tsym, float* t_preamble) {
+                                  uint8_t header, uint8_t low_data_rate_opt, float* out_t_sym,
+                                  float* out_t_preamble) {
     float t_frame = 0.0f;
     float t_payload = 0.0f;
     uint16_t pl = 256;
-    *Tsym = powf(2.0f, (float)sf_code) / ((float)bandwidth2num((BandWidth_t)bw_code));
-    *t_preamble = (((float)n_preamble) + 4.25f) * (*Tsym);
+    float Tsym = 0.0;
+    float t_preamble = 0.0;
+    Tsym = powf(2.0f, (float)sf_code) / ((float)bandwidth2num((BandWidth_t)bw_code));
+    t_preamble = (((float)n_preamble) + 4.25f) * (Tsym);
     float payloadSymbNb =
         8.0f + float_max(((float)(cr_code + 4)) * ceilf(((float)(8 * pl - 4 * sf_code + 44 + 20 * header)) /
                                                         ((float)(4 * (sf_code - 2 * low_data_rate_opt)))),
                          0.0f);
-    t_payload = payloadSymbNb * (*Tsym);
-    t_frame = *t_preamble + t_payload;
+    t_payload = payloadSymbNb * Tsym;
+    t_frame = t_preamble + t_payload;
+
+    if(out_t_sym){
+        (*out_t_sym) = Tsym;
+    }
+    if(out_t_preamble){
+        (*out_t_preamble) = t_preamble;
+    }
     return t_frame;
 }
 #endif

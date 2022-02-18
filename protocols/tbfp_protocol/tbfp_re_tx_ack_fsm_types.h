@@ -14,9 +14,7 @@ extern "C" {
 
 #define TBFP_RETX_TRY_MAX 3
 
-#define TBFP_PERIOD_US  MSEC_2_US(20)
-#define WAIT_TX_DONE_TIME_OUT_MS 300
-#define WAIT_ACK_TIME_OUT_MS ((WAIT_TX_DONE_TIME_OUT_MS)+10)
+#define TBFP_PERIOD_US  MSEC_2_US(15)
 
 typedef enum eTbfpAck_t{
   ACK_NO_NEED= 0,
@@ -39,8 +37,10 @@ typedef enum eTbfpReTxState_t {
 }TbfpReTxState_t;
 
 typedef struct xTbfpReTxFsm_t{
+    uint32_t tx_done_time_out_ms;
     uint32_t time_stamp_start_ms;
     uint32_t err_cnt;
+    uint32_t err_tx_done;
     uint32_t ack_rx_cnt;
     uint32_t ack_tx_cnt;
     uint32_t silence_cnt;

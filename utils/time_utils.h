@@ -21,6 +21,7 @@ bool time_get_time_str(char* str, uint32_t size);
 bool time_data_parse(struct tm* date_time, char* str);
 bool time_parse(struct tm* date_time, char* str);
 bool date_parse(struct tm* date_time, char* str);
+
 #ifdef __cplusplus
 }
 #endif
