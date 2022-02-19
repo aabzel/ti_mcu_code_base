@@ -29,12 +29,12 @@ typedef struct xSx1262Reg_t {
     char* reg_name;
 } xSx1262Reg_t;
 
-typedef struct xModulationParams_t {
+typedef struct xLoRaModulationParams_t {
     BandWidth_t band_width;
     SpreadingFactor_t spreading_factor;
     LoRaCodingRate_t coding_rate;
     LowDataRateOpt_t low_data_rate_optimization; //(LDRO)
-} ModulationParams_t;
+} LoRaModulationParams_t;
 
 
 typedef struct xLoRaPacketParam_t {
@@ -155,7 +155,8 @@ typedef struct xSx1262_t {
     PaketStat_t gfsk;
     PaketStat_t lora;
     Sx1262IrqCnt_t irq_cnt;
-    ModulationParams_t mod_params;
+    LoRaModulationParams_t lora_mod_params;
+    GfskModulationParams_t gfsk_mod_params;
     PacketParam_t packet_param;
     RadioPacketType_t packet_type;
 #ifdef HAS_FREE_RTOS

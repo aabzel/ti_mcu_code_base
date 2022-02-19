@@ -469,8 +469,9 @@ bool sx1262_set_packet_params(PacketParam_t* packParam) {
     bool res = false;
     uint8_t tx_array[9];
     memset(tx_array, 0xFF, sizeof(tx_array));
+    uint16_t preamble_length_be = 0;
     if(PACKET_TYPE_LORA == packParam->packet_type) {
-        uint16_t preamble_length_be = reverse_byte_order_uint16(packParam->proto.lora.preamble_length);
+        preamble_length_be = reverse_byte_order_uint16(packParam->proto.lora.preamble_length);
         memcpy(tx_array, &preamble_length_be, 2);
         tx_array[2] = packParam->proto.lora.header_type;
         tx_array[3] = packParam->proto.lora.payload_length;
@@ -478,6 +479,20 @@ bool sx1262_set_packet_params(PacketParam_t* packParam) {
         tx_array[5] = packParam->proto.lora.invert_iq;
         res = sx1262_send_opcode(OPCODE_SET_PACKET_PARAMS, tx_array, 6, NULL, 0);
     } else if(PACKET_TYPE_GFSK == packParam->packet_type) {
+#ifdef HAS_GFSK
+        preamble_length_be = reverse_byte_order_uint16(packParam->proto.gfsk.preamble_length);
+        memcpy(tx_array, &preamble_length_be, 2);
+        tx_array[2] = packParam->proto.gfsk.preamble_detector_length;
+        tx_array[3] = packParam->proto.gfsk.syncword_length;
+        tx_array[4] = packParam->proto.gfsk.addr_comp;
+        tx_array[5] = packParam->proto.gfsk.packet_type;
+        tx_array[6] = packParam->proto.gfsk.payload_length;
+        tx_array[7] = packParam->proto.gfsk.crc_type;
+        tx_array[8] = packParam->proto.gfsk.whitening;
+        res = sx1262_send_opcode(OPCODE_SET_PACKET_PARAMS, tx_array, 9, NULL, 0);
+        res = false;
+#endif
+    }else{
         res = false;
     }
     return res;
@@ -750,13 +765,8 @@ static bool sx1262_set_modulation_quality_workaround(BandWidth_t band_width) {
     }
     return res;
 }
-/*
 
-  The command SetModulationParams(...) is used to configure the modulation parameters of the radio.
-  Depending on the packet type selected prior to calling this function, the parameters will
-  be interpreted differently by the chip.
-*/
-bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
+static bool sx1262_set_lora_modulation_params(LoRaModulationParams_t* modParams) {
     bool res = false, res1 = false, res2 = false, res3 = false;
     res1 = is_valid_bandwidth(modParams->band_width);
     if(false == res1) {
@@ -791,6 +801,50 @@ bool sx1262_set_modulation_params(ModulationParams_t* modParams) {
     }
     return res;
 }
+#ifdef HAS_GFSK
+static bool sx1262_set_gfsk_modulation_params(GfskModulationParams_t* modParams) {
+    bool res = false;
+    if(modParams){
+        uint8_t tx_array[8]; /**/
+        memset(tx_array, 0x00, sizeof(tx_array));
+        uint32_t br=32*XTAL_FREQ_HZ/modParams->bit_rate;
+        memcpy(tx_array, &br, 3);
+        tx_array[4]=modParams->pulse_shape;
+        tx_array[5]=modParams->bandwidth;
+        uint32_t fdev = (modParams->frequency_deviation*XTAL_FREQ_HZ)/FREQ_DIV;
+        memcpy(&tx_array[6], &fdev, 3);
+        res = sx1262_send_opcode(OPCODE_SET_MODULATION_PARAMS, tx_array, sizeof(tx_array), NULL, 0);
+    }
+
+    return res;
+}
+#endif
+
+/*
+
+  The command SetModulationParams(...) is used to configure the modulation parameters of the radio.
+  Depending on the packet type selected prior to calling this function, the parameters will
+  be interpreted differently by the chip.
+*/
+bool sx1262_set_modulation_params(Sx1262_t* instance) {
+    bool res = false;
+    switch(instance->packet_param.packet_type){
+    case PACKET_TYPE_LORA:
+        res = sx1262_set_lora_modulation_params(&instance->lora_mod_params);
+        break;
+#ifdef HAS_GFSK
+    case PACKET_TYPE_GFSK:
+        res = sx1262_set_gfsk_modulation_params(&instance->gfsk_mod_params);
+        break;
+#endif /*HAS_GFSK*/
+    default:
+        res = false;
+        break;
+    }
+
+    return res;
+}
+
 
 /*
   SetSleep
@@ -1008,10 +1062,10 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->crc_init = 0x1D0F;
     sx1262Instance->crc_poly = 0x1021;
     sx1262Instance->ReTxFsm.retx_cnt_max= RETX_TRY_CNT_DFLT;
-    sx1262Instance->mod_params.band_width = DFLT_LORA_BW;
-    sx1262Instance->mod_params.coding_rate = DFLT_LORA_CR;
-    sx1262Instance->mod_params.spreading_factor = DFLT_SF;
-    sx1262Instance->mod_params.low_data_rate_optimization = LDRO_OFF;
+    sx1262Instance->lora_mod_params.band_width = DFLT_LORA_BW;
+    sx1262Instance->lora_mod_params.coding_rate = DFLT_LORA_CR;
+    sx1262Instance->lora_mod_params.spreading_factor = DFLT_SF;
+    sx1262Instance->lora_mod_params.low_data_rate_optimization = LDRO_OFF;
     sx1262Instance->packet_param.packet_type = PACKET_TYPE_LORA;
     sx1262Instance->packet_param.proto.lora.header_type = LORA_VAR_LEN_PACT;
     sx1262Instance->packet_param.proto.lora.crc_type = LORA_CRC_ON;
@@ -1027,36 +1081,40 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
 
 #ifdef HAS_FLASH_FS
     bool res = true;
+
+#ifdef HAS_LORA
+    LOAD_PARAM(LORA, PAR_ID_LORA_CR, sx1262Instance->lora_mod_params.coding_rate, 1, "CodingRate", DFLT_LORA_CR,
+               coding_rate2str);
+    LOAD_PARAM(LORA, PAR_ID_LORA_BW, sx1262Instance->lora_mod_params.band_width, 1, "BandWidth", DFLT_LORA_BW,
+               bandwidth2str);
+    LOAD_PARAM(LORA, PAR_ID_LORA_SF, sx1262Instance->lora_mod_params.spreading_factor, 1, "SpreadingFactor", DFLT_SF,
+               spreading_factor2str);
+    LOAD_PARAM(LORA, PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD,
+               HexWord2Str);
+    LOAD_PARAM(LORA, PAR_ID_LORA_HEADER_TYPE, sx1262Instance->packet_param.proto.lora.header_type, 1, "HeaderType",
+               LORA_VAR_LEN_PACT, LoraHeaderType2Str);
+#endif
     LOAD_PARAM(LORA, PAR_ID_RETX_CNT, sx1262Instance->ReTxFsm.retx_cnt_max, 1, "ReTxMax", RETX_TRY_CNT_DFLT, Byte2Str);
     LOAD_PARAM(LORA, PAR_ID_LORA_CRC_INIT, sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
     LOAD_PARAM(LORA, PAR_ID_LORA_CRC_POLY, sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
 
-    LOAD_PARAM(LORA, PAR_ID_LOW_DATA_RATE, sx1262Instance->mod_params.low_data_rate_optimization, 1, "LowDataRateOpt",
+    LOAD_PARAM(LORA, PAR_ID_LOW_DATA_RATE, sx1262Instance->lora_mod_params.low_data_rate_optimization, 1, "LowDataRateOpt",
                LDRO_OFF, LowDataRateOpt2Str);
     LOAD_PARAM(LORA, PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen", 255,
                PayloadLen2Str);
     LOAD_PARAM(LORA, PAR_ID_PACKET_TYPE, sx1262Instance->packet_param.packet_type, 1, "PktType", PACKET_TYPE_LORA,
                PacketType2Str);
-    LOAD_PARAM(LORA, PAR_ID_HEADER_TYPE, sx1262Instance->packet_param.proto.lora.header_type, 1, "HeaderType",
-               LORA_VAR_LEN_PACT, LoraHeaderType2Str);
     LOAD_PARAM(LORA, PAR_ID_CRC_TYPE, sx1262Instance->packet_param.proto.lora.crc_type, 1, "CrcType", LORA_CRC_ON,
                LoraCrcType2Str);
     LOAD_PARAM(LORA, PAR_ID_PREAMBLE_LENGTH, sx1262Instance->packet_param.proto.lora.preamble_length, 2, "PreamLen",
                DFLT_PREAMBLE_LEN, PreambleLen2Str);
-    LOAD_PARAM(LORA, PAR_ID_LORA_SYNC_WORD, sx1262Instance->lora_sync_word_set, 2, "LoRaSyncWord", DFLT_LORA_SYNC_WORD,
-               HexWord2Str);
     LOAD_PARAM(LORA, PAR_ID_IQ_SETUP, sx1262Instance->packet_param.proto.lora.invert_iq, 1, "IQSetUp",
                IQ_SETUP_STANDARD, IqSetUp2Str);
-    LOAD_PARAM(LORA, PAR_ID_LORA_CR, sx1262Instance->mod_params.coding_rate, 1, "CodingRate", DFLT_LORA_CR,
-               coding_rate2str);
-    LOAD_PARAM(LORA, PAR_ID_LORA_BW, sx1262Instance->mod_params.band_width, 1, "BandWidth", DFLT_LORA_BW,
-               bandwidth2str);
-    LOAD_PARAM(LORA, PAR_ID_LORA_SF, sx1262Instance->mod_params.spreading_factor, 1, "SpreadingFactor", DFLT_SF,
-               spreading_factor2str);
     LOAD_PARAM(LORA, PAR_ID_LORA_FREQ, sx1262Instance->rf_frequency_hz, 4, "RfFreq", DFLT_FREQ_MHZ, RfFreq2Str);
     LOAD_PARAM(LORA, PAR_ID_LORA_OUT_POWER, sx1262Instance->output_power, 1, "OutputPwr", DFLT_OUT_POWER, dbm2wattsStr);
     // LOAD_PARAM(PAR_ID_SYNC_WORD, sx1262Instance->set_sync_word, 8, "SyncWord" ,DFLT_SYNC_WORD, SyncWord2Str);
     uint16_t file_len = 0;
+#ifdef HAS_GFSK
     res = mm_get(PAR_ID_SYNC_WORD, (uint8_t*)&sx1262Instance->set_sync_word, sizeof(sx1262Instance->set_sync_word),
                  &file_len);
     if((true == res) && ((8) == file_len)) {
@@ -1072,6 +1130,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
         res = false;
         out_res = false;
     }
+#endif /*HAS_GFSK*/
 
 #ifdef HAS_SX1262_BIT_RATE
     // LOAD_PARAM(PAR_ID_LORA_MAX_BIT_RATE, sx1262Instance->tx_max_bit_rate, 8, "BitRate" ,0.0, BitRate2Str);
@@ -1922,14 +1981,14 @@ bool sx1262_init(void) {
         LOG_WARNING(LORA, "txClampConfigErr");
     }
     Sx1262Instance.bit_rate =
-        lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
-                            Sx1262Instance.mod_params.coding_rate);
+        lora_calc_data_rate(Sx1262Instance.lora_mod_params.spreading_factor, Sx1262Instance.lora_mod_params.band_width,
+                            Sx1262Instance.lora_mod_params.coding_rate);
 #ifdef HAS_LOG
     LOG_INFO(LORA, "data rate %f bit/s %f byte/s", Sx1262Instance.bit_rate, Sx1262Instance.bit_rate / 8);
 #endif
 
 #ifdef HAS_LEGAL_BAND_CHECK
-    uint32_t bandwidth_hz = bandwidth2num(Sx1262Instance.mod_params.band_width);
+    uint32_t bandwidth_hz = bandwidth2num(Sx1262Instance.lora_mod_params.band_width);
     res = is_band_legal(Sx1262Instance.rf_frequency_hz, bandwidth_hz);
     if(false == res) {
 #ifdef HAS_LOG
@@ -1994,7 +2053,7 @@ bool sx1262_init(void) {
         }
 #endif
 
-        res = sx1262_set_modulation_params(&Sx1262Instance.mod_params) && res;
+        res = sx1262_set_modulation_params(&Sx1262Instance) && res;
 #ifdef HAS_LOG
         if(false == res) {
             LOG_ERROR(LORA, "SX1262SetModParErr");

@@ -284,7 +284,7 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         case PAR_ID_IQ_SETUP: {
             name = IqSetUp2Str((uint8_t)*value);
         } break;
-        case PAR_ID_HEADER_TYPE: {
+        case PAR_ID_LORA_HEADER_TYPE: {
             name = LoraHeaderType2Str((uint8_t)*value);
         } break;
         case PAR_ID_CRC_TYPE: {

@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 #include <time.h>
 
+int32_t time_date_cmp(struct tm* date_time1, struct tm* date_time2);
 uint32_t time_calc_diff(struct tm* date_time1, struct tm* date_time2);
 bool is_time_date_equal(struct tm* date_time1, struct tm* date_time2);
 bool is_valid_time_date(struct tm* date_time);

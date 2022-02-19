@@ -32,12 +32,12 @@ bool tbfp_retx_start(TbfpProtocol_t *instance, uint8_t *array, uint32_t len){
 #ifdef HAS_SX1262
         if (IF_SX1262 == instance->interface) {
             float t_frame = lora_calc_max_frame_tx_time(
-                                  Sx1262Instance.mod_params.spreading_factor,
-                                  Sx1262Instance.mod_params.band_width,
-                                  Sx1262Instance.mod_params.coding_rate,
+                                  Sx1262Instance.lora_mod_params.spreading_factor,
+                                  Sx1262Instance.lora_mod_params.band_width,
+                                  Sx1262Instance.lora_mod_params.coding_rate,
                                   Sx1262Instance.packet_param.proto.lora.preamble_length,
                                   Sx1262Instance.packet_param.proto.lora.header_type,
-                                  Sx1262Instance.mod_params.low_data_rate_optimization,
+                                  Sx1262Instance.lora_mod_params.low_data_rate_optimization,
                                   NULL, NULL);
            instance->ReTxFsm.tx_done_time_out_ms =(uint32_t) (t_frame*1000.0)+TX_DONE_EXTRA_TIME_MS;
            LOG_DEBUG(RETX, "ExpectTxDoneTimeOut: %u ms",(uint32_t) (t_frame*1000.0));

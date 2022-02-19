@@ -412,7 +412,9 @@ bool date_parse(struct tm* date_time, char* str) {
     return res;
 }
 
-uint32_t time_calc_diff(struct tm* date_time_start, struct tm* date_time_end){
-    uint32_t diff = 0;
-    return diff;
+int32_t time_date_cmp(struct tm* date_time1, struct tm* date_time2){
+    int32_t diff_sec = 0;
+    double sec = difftime(mktime(date_time1), mktime(date_time2));
+    diff_sec = (double ) sec;
+    return diff_sec;
 }

@@ -121,9 +121,9 @@ bool gnss_update_link_info(GnssCoordinate_t coordinate_local,
 
     uint16_t id_modulation = 0;
 #ifdef HAS_SX1262
-    id_modulation = param_calc_modulation_id(Sx1262Instance.mod_params.band_width,
-                                             Sx1262Instance.mod_params.spreading_factor,
-                                             Sx1262Instance.mod_params.coding_rate );
+    id_modulation = param_calc_modulation_id(Sx1262Instance.lora_mod_params.band_width,
+                                             Sx1262Instance.lora_mod_params.spreading_factor,
+                                             Sx1262Instance.lora_mod_params.coding_rate );
 #endif
 
     LinkInfoPayload_t LinkInfoPayloadRead;

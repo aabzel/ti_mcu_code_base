@@ -23,17 +23,19 @@ typedef enum wParamType_t {
 
 typedef enum eId_t {
     PAR_ID_REBOOT_CNT = 1,
-    PAR_ID_LORA_FREQ = 2,       /*Hz*/
+#ifdef HAS_LORA
     PAR_ID_LORA_SF = 3,         /*Chips / Symbol*/
     PAR_ID_LORA_CR = 4,         /*in raw bits / total bits*/
     PAR_ID_LORA_BW = 5,         /*Hz*/
+    PAR_ID_CRC_TYPE = 8,        /*On Off*/
+    PAR_ID_IQ_SETUP = 10,
+    PAR_ID_LORA_HEADER_TYPE = 9,     /*0-Variable length packet / 1-Fixed length packet*/
+#endif
+    PAR_ID_LORA_FREQ = 2,       /*Hz*/
     PAR_ID_PREAMBLE_LENGTH = 6, /*byte*/
     PAR_ID_PAYLOAD_LENGTH = 7,  /*byte*/
-    PAR_ID_CRC_TYPE = 8,        /*On Off*/
     PAR_ID_PACKET_TYPE = 28,    /* GFSK / LoRa*/
-    PAR_ID_HEADER_TYPE = 9,     /*Variable length packet / Fixed length packet*/
     PAR_ID_APP_START = 11,      /*Flash address*/
-    PAR_ID_IQ_SETUP = 10,
     PAR_ID_BOOT_CMD = 12,
     PAR_ID_BOOT_CNT = 13, /*To spot hangs on in App*/
     PAR_ID_APP_STATUS = 14,
@@ -62,6 +64,18 @@ typedef enum eId_t {
     PAR_ID_RETX_CNT = 38,
     PAR_ID_TEST_START = 100,
     PAR_ID_TEST_END = 200,
+#ifdef HAS_GFSK
+    PAR_ID_SYNC_WORD=39,
+    PAR_ID_PRE_DET_LEN=40,
+    PAR_ID_ADDR_COMP=41,
+    PAR_ID_NODE_ADDR=42,
+    PAR_ID_BROADCAST_ADDR=43,
+    PAR_ID_GFSK_CRC_TYPE=44,
+    PAR_ID_WHITENING=45,
+    PAR_ID_WHITENING_INIT_VALUE=46,
+#endif
+
+
     PAR_ID_CNT
 } Id_t;
 

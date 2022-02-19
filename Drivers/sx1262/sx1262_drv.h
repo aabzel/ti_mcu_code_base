@@ -94,7 +94,7 @@ bool sx1262_set_cad_params(CadNunSym_t cad_symbol_num, uint8_t cad_det_peak, /*S
 bool sx1262_set_crc_polynomial(uint16_t polynomial);
 bool sx1262_set_crc_seed(uint16_t seed);
 bool sx1262_set_dio_irq_params(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask);
-bool sx1262_set_modulation_params(ModulationParams_t* modParams);
+bool sx1262_set_modulation_params(Sx1262_t* instance);
 bool sx1262_set_pa_config(uint8_t pa_duty_cycle, uint8_t hp_max, uint8_t device_sel, uint8_t pa_lut);
 bool sx1262_set_packet_params(PacketParam_t* packParam);
 bool sx1262_set_packet_type(RadioPacketType_t packet_type);

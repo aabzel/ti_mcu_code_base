@@ -111,14 +111,14 @@ bool sx1262_diag_command(int32_t argc, char* argv[]) {
         res = true;
 #ifdef HAS_DEBUG
         float data_rate =
-            lora_calc_data_rate(Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
-                                Sx1262Instance.mod_params.coding_rate);
+            lora_calc_data_rate(Sx1262Instance.lora_mod_params.spreading_factor, Sx1262Instance.lora_mod_params.band_width,
+                                Sx1262Instance.lora_mod_params.coding_rate);
         float t_preamble = 0.0f;
         float Tsym = 0.0;
         float t_frame = lora_calc_max_frame_tx_time(
-            Sx1262Instance.mod_params.spreading_factor, Sx1262Instance.mod_params.band_width,
-            Sx1262Instance.mod_params.coding_rate, Sx1262Instance.packet_param.proto.lora.preamble_length,
-            Sx1262Instance.packet_param.proto.lora.header_type, Sx1262Instance.mod_params.low_data_rate_optimization,
+            Sx1262Instance.lora_mod_params.spreading_factor, Sx1262Instance.lora_mod_params.band_width,
+            Sx1262Instance.lora_mod_params.coding_rate, Sx1262Instance.packet_param.proto.lora.preamble_length,
+            Sx1262Instance.packet_param.proto.lora.header_type, Sx1262Instance.lora_mod_params.low_data_rate_optimization,
             &Tsym, &t_preamble);
         LOG_INFO(LORA, "data rate %f bit/s %f byte/s", data_rate, data_rate / 8);
         LOG_INFO(LORA, "Tframe %f s", t_frame);
@@ -657,7 +657,7 @@ bool sx1262_clear_fifo_command(int32_t argc, char* argv[]) {
 #ifdef HAS_SX1262_EX_DEBUG
 bool sx1262_set_modulation_command(int32_t argc, char* argv[]) {
     bool res = false;
-    ModulationParams_t modParams;
+    LoRaModulationParams_t modParams;
     modParams.band_width = LORA_BW_41;
     modParams.coding_rate = LORA_CR_4_5;
     modParams.spreading_factor = SF5;
@@ -891,7 +891,7 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                     t_frame = lora_calc_max_frame_tx_time(
                         sf, bw, cr, Sx1262Instance.packet_param.proto.lora.preamble_length,
                         Sx1262Instance.packet_param.proto.lora.header_type,
-                        Sx1262Instance.mod_params.low_data_rate_optimization, &Tsym, &t_preamble);
+                        Sx1262Instance.lora_mod_params.low_data_rate_optimization, &Tsym, &t_preamble);
                     strcpy(temp_str, TSEP);
                     snprintf(suffix_str, sizeof(suffix_str), "%5u " TSEP, (uint32_t)powf(2.0f, (float)sf));
                     strncat(temp_str, suffix_str, sizeof(temp_str));
