@@ -27,6 +27,8 @@ typedef struct xFlashFsPage_t {
 typedef struct xFlashFs_t {
     FlashPageFs_t page1;
     FlashPageFs_t page2;
+    uint32_t err_set_cnt;
+    uint32_t err_get_cnt;
 } FlashFs_t;
 
 struct xMMitem_t {

@@ -7,9 +7,12 @@ extern "C" {
 
 #include <stdbool.h>
 
+bool test_param_types(void);
 bool test_params(void);
 
-#define TEST_SUIT_PARAM {"params", test_params},
+#define TEST_SUIT_PARAM  \
+           {"params", test_params}, \
+           {"param_types", test_param_types},
 
 #ifdef __cplusplus
 }

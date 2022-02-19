@@ -9,9 +9,10 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <time.h>
 
 #include "data_utils.h"
-#include "gnss_utils.h"
+#include "gnss_types.h"
 #include "tbfp_protocol_parser.h"
 #include "tbfp_re_tx_ack_fsm_types.h"
 #include "tbfp_constants.h"

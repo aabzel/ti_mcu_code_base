@@ -310,10 +310,11 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
             if(is_valid_gnss_coordinates(Gnss.coordinate_cur)) {
                 cur_dist = gnss_calc_distance_m(Gnss.coordinate_cur, pingFrame.coordinate);
                 azimuth = gnss_calc_azimuth_deg(Gnss.coordinate_cur, pingFrame.coordinate);
-                double sec = difftime(pingFrame.time_stamp ,
+                double sec = difftime(pingFrame.time_stamp,
                                       mktime(&Gnss.time_date));
 #ifdef HAS_LOG
                 LOG_INFO(TBFP, "LinkDistance %3.3f m %4.1f deg %f s", cur_dist, azimuth, sec);
+                gnss_update_link_info(Gnss.coordinate_cur, pingFrame.coordinate);
 #endif
             } else {
 #ifdef HAS_LOG

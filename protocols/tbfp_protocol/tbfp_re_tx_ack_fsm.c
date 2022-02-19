@@ -91,6 +91,8 @@ static bool tbfp_proc_retx_wait_tx_done(TbfpProtocol_t *instance,
         case TBFP_IN_TX_DONE_TIME_OUT:
             instance->ReTxFsm.state = TBFP_IDLE;
             instance->ReTxFsm.err_cnt++;
+            instance->ReTxFsm.err_tx_done++;
+            instance->ReTxFsm.time_stamp_start_ms = time_stamp_cur;
             LOG_ERROR(RETX,"%s LackTxDone after %u ms", interface2str(instance->interface) ,time_stamp_diff);
             time_stamp_diff=0;
             break;
@@ -98,7 +100,7 @@ static bool tbfp_proc_retx_wait_tx_done(TbfpProtocol_t *instance,
         case TBFP_IN_RX_ACK:
         case TBFP_IN_NONE:
         case TBFP_IN_RX_ACK_TIME_OUT:
-            res = true;
+            res = false;
             break;
         default:
             res = false;
@@ -107,7 +109,6 @@ static bool tbfp_proc_retx_wait_tx_done(TbfpProtocol_t *instance,
 
     if(instance->ReTxFsm.tx_done_time_out_ms < time_stamp_diff){
         instance->ReTxFsm.input = TBFP_IN_TX_DONE_TIME_OUT;
-        instance->ReTxFsm.err_tx_done++;
         LOG_DEBUG(RETX,"%s State:%s InPut:%s",
                         interface2str(instance->interface),
                         tbfp_retx_state2str(instance->ReTxFsm.state),

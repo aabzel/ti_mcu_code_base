@@ -7,10 +7,12 @@ extern "C" {
 
 #include <stdbool.h>
 
+bool test_gnss_types(void);
 bool test_gnss_utils(void);
 bool test_gnss_azimuth(void);
 
 #define TEST_SUIT_UTILS_GNSS             \
+    {"gnss_types", test_gnss_types},     \
     {"gnss_utils", test_gnss_utils},     \
 	{"gnss_azimuth", test_gnss_azimuth},
 

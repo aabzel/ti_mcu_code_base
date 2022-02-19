@@ -9,34 +9,17 @@ extern "C" {
 #include <stdint.h>
 #include <time.h>
 
+#include "gnss_types.h"
+
+#ifdef HAS_SX1262
+#include "sx1262_drv.h"
+#endif
+
 #define METER_TO_MM(METER) ((METER) * 1000)
 #define MM_TO_METER(MM) ( (MM)/1000.0 )
 
-typedef struct xGnssCoordinate_t{
-    double latitude;    /* Latitude (degrees and minutes) широта*/
-    double longitude;    /* Longitude (degrees and minutes) долгота*/
-/*} __attribute__((packed)) GnssCoordinate_t; Cause Fault ISR*/
-} GnssCoordinate_t;
-
-
-typedef struct xWgs84Coordinate_t{
-    int32_t x_cm;
-    int32_t y_cm;
-    int32_t z_cm;
-    int32_t acc_cm;
-} Wgs84Coordinate_t;
-
-typedef struct xGnssVelocity_t{
-    double velocity_north;
-    double velocity_east;
-    double velocity_down;
-    double speed;
-    double speed_ground;
-    double heading;
-    double accuracy_speed;
-    double accuracy_course;
-} GnssVelocity_t;
-
+bool gnss_update_link_info(GnssCoordinate_t coordinate_local,
+                           GnssCoordinate_t coordinate_remote);
 GnssCoordinate_t gnss_encode_deg2mm(GnssCoordinate_t dot_dd);
 bool is_valid_gnss_coordinates(GnssCoordinate_t dot);
 double gnss_calc_distance_m(GnssCoordinate_t dot1, GnssCoordinate_t  dot2);

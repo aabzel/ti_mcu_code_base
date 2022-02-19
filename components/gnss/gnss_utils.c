@@ -2,11 +2,18 @@
 
 #include <math.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <time.h>
 
+#include "param_types.h"
+
 #ifdef HAS_LOG
 #include "io_utils.h"
+#endif
+
+#ifdef HAS_FLASH_FS
+#include "flash_fs.h"
 #endif
 
 #ifndef M_PI
@@ -86,11 +93,59 @@ static double gnss_calc_azimuth_rad(GnssCoordinate_t rover,
     return azimuth;
 }
 
-
 double gnss_calc_azimuth_deg(GnssCoordinate_t rover,
                          GnssCoordinate_t point_of_interest){
-    double azimuth_deg =R2D*gnss_calc_azimuth_rad(rover,point_of_interest);
+    double azimuth_deg = R2D * gnss_calc_azimuth_rad(rover, point_of_interest);
 
     return azimuth_deg;
 }
 
+static uint16_t param_calc_modulation_id(BandWidth_t band_width,
+                                         SpreadingFactor_t spreading_factor,
+                                         LoRaCodingRate_t coding_rate){
+    LinkInfoId_t LinkInfoId;
+    LinkInfoId.spreading_factor=spreading_factor;
+    LinkInfoId.band_width = band_width;
+    LinkInfoId.coding_rate = coding_rate;
+    LinkInfoId.type = ID_TYPE_LINK_INFO;
+
+    return LinkInfoId.id;
+}
+
+bool gnss_update_link_info(GnssCoordinate_t coordinate_local,
+                           GnssCoordinate_t coordinate_remote){
+    bool res = false;
+    double dist_cur = 0.0;
+    double dist_prev = 0.0;
+    dist_cur = gnss_calc_distance_m( coordinate_local,  coordinate_remote);
+
+    uint16_t id_modulation = 0;
+#ifdef HAS_SX1262
+    id_modulation = param_calc_modulation_id(Sx1262Instance.mod_params.band_width,
+                                             Sx1262Instance.mod_params.spreading_factor,
+                                             Sx1262Instance.mod_params.coding_rate );
+#endif
+
+    LinkInfoPayload_t LinkInfoPayloadRead;
+    uint16_t file_len=0;
+    res= mm_get(id_modulation,
+                (uint8_t*) &LinkInfoPayloadRead,
+                sizeof(LinkInfoPayload_t),
+                &file_len);
+    if(res && (sizeof(LinkInfoPayload_t)==file_len)){
+        dist_prev = gnss_calc_distance_m( LinkInfoPayloadRead.coordinate_local,
+                                          LinkInfoPayloadRead.coordinate_remote);
+    }
+
+    if (dist_prev < dist_cur) {
+        LinkInfoPayload_t LinkInfoPayload;
+        LinkInfoPayload.coordinate_local = coordinate_local;
+        LinkInfoPayload.coordinate_remote = coordinate_remote;
+        res = mm_set(id_modulation, (uint8_t*) &LinkInfoPayload, sizeof(LinkInfoPayload_t));
+        if(false==res){
+            FlashFs.err_set_cnt++;
+        }
+    }
+
+    return res;
+}

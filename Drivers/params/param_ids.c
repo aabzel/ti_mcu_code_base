@@ -24,8 +24,12 @@
 #endif
 #include "system.h"
 
-#ifdef HAS_ZED_F9P
+#ifdef HAS_GNSS
 #include "gnss_diag.h"
+#include "gnss_utils.h"
+#endif /*HAS_GNSS*/
+
+#ifdef HAS_ZED_F9P
 #include "zed_f9p_diag.h"
 #include "zed_f9p_params.h"
 #else

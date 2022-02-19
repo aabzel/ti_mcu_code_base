@@ -20,4 +20,10 @@ bool test_params(void) {
     return true;
 }
 
+
+bool test_param_types(void){
+    EXPECT_EQ(2,sizeof(LinkInfoId_t));
+
+    return true;
+}
  
