@@ -20,9 +20,11 @@
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
 #endif /*HAS_ZED_F9P*/
+
 #ifdef HAS_LOG
 #include "log.h"
 #endif
+
 #include "convert.h"
 #include "data_utils.h"
 // UTC hour in hhmmss format
@@ -414,7 +416,14 @@ bool date_parse(struct tm* date_time, char* str) {
 
 int32_t time_date_cmp(struct tm* date_time1, struct tm* date_time2){
     int32_t diff_sec = 0;
-    double sec = difftime(mktime(date_time1), mktime(date_time2));
-    diff_sec = (double ) sec;
+    time_t time_stamp1=mktime(date_time1);
+    time_t time_stamp2=mktime(date_time2);
+    if((0<time_stamp1) && (0<time_stamp2)){
+        LOG_DEBUG(SYS, "\n1:%u \n2:%u", time_stamp1,time_stamp2);
+        double sec = difftime(time_stamp2,time_stamp1);
+        diff_sec = (double ) sec;
+    }else{
+        LOG_ERROR(SYS, "1:%u 2:%u", time_stamp1,time_stamp2);
+    }
     return diff_sec;
 }

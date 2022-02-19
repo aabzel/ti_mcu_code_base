@@ -6,7 +6,9 @@
 #include <stdio.h>
 #include <time.h>
 
+#ifdef HAS_PARAM
 #include "param_types.h"
+#endif
 
 #ifdef HAS_LOG
 #include "io_utils.h"
@@ -100,6 +102,7 @@ double gnss_calc_azimuth_deg(GnssCoordinate_t rover,
     return azimuth_deg;
 }
 
+#ifdef HAS_SX1262
 static uint16_t param_calc_modulation_id(BandWidth_t band_width,
                                          SpreadingFactor_t spreading_factor,
                                          LoRaCodingRate_t coding_rate){
@@ -111,7 +114,9 @@ static uint16_t param_calc_modulation_id(BandWidth_t band_width,
 
     return LinkInfoId.id;
 }
+#endif
 
+#ifdef HAS_PARAM
 bool gnss_update_link_info(GnssCoordinate_t coordinate_local,
                            GnssCoordinate_t coordinate_remote){
     bool res = false;
@@ -149,3 +154,4 @@ bool gnss_update_link_info(GnssCoordinate_t coordinate_local,
 
     return res;
 }
+#endif

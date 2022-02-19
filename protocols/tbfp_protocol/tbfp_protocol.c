@@ -314,7 +314,9 @@ static bool tbfp_proc_ping(uint8_t* ping_payload, uint16_t len, Interfaces_t int
                                       mktime(&Gnss.time_date));
 #ifdef HAS_LOG
                 LOG_INFO(TBFP, "LinkDistance %3.3f m %4.1f deg %f s", cur_dist, azimuth, sec);
+#ifdef HAS_PARAM
                 gnss_update_link_info(Gnss.coordinate_cur, pingFrame.coordinate);
+#endif
 #endif
             } else {
 #ifdef HAS_LOG

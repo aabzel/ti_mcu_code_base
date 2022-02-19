@@ -71,10 +71,19 @@ bool test_time_utils(void) {
 }
 
 bool test_time_cmp(void){
-    struct tm date_time1={.tm_sec=30, .tm_min=27, .tm_hour=23, .tm_mday=20, .tm_mon=1, .tm_year=2022};
-    struct tm date_time2={.tm_sec=31, .tm_min=27, .tm_hour=23, .tm_mday=20, .tm_mon=1, .tm_year=2022};
+    set_log_level(SYS, LOG_LEVEL_DEBUG);
+    struct tm date_time1={.tm_sec=30, .tm_min=27,
+                          .tm_hour=23, .tm_mday=20,
+                          .tm_mon=1, .tm_year=122
+    };
+
+    struct tm date_time2={.tm_sec=32, .tm_min=27,
+                          .tm_hour=23, .tm_mday=20,
+                          .tm_mon=1, .tm_year=122
+    };
     EXPECT_GR(0, time_date_cmp(&date_time1, &date_time2));
     EXPECT_GR( time_date_cmp(&date_time2, &date_time1),0);
+    set_log_level(SYS, LOG_LEVEL_INFO);
     return true;
 }
 /*
