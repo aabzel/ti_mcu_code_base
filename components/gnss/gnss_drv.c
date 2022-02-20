@@ -102,7 +102,7 @@ static bool gnss_update_from_ubx(void){
     }
     res = is_valid_gnss_coordinates(NavInfo.coordinate);
     if (res)    {
-        if (Gnss.first_gnss)        {
+        if (Gnss.first_gnss) {
 #ifdef HAS_LOG
                 LOG_INFO(GNSS, "SpotValidGNSSDataInUbx!");
                 print_coordinate(NavInfo.coordinate, true);
@@ -155,7 +155,7 @@ bool gnss_proc(void){
 
 bool gnss_init(void){
     bool res = true;
-    Gnss.first_gnss=true;
-    Gnss.first_time=true;
+    Gnss.first_gnss = true;
+    Gnss.first_time = true;
     return res;
 }

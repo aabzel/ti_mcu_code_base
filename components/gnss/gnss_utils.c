@@ -103,7 +103,7 @@ double gnss_calc_azimuth_deg(GnssCoordinate_t rover,
 }
 
 #ifdef HAS_SX1262
-static uint16_t param_calc_modulation_id(BandWidth_t band_width,
+uint16_t param_calc_modulation_id(BandWidth_t band_width,
                                          SpreadingFactor_t spreading_factor,
                                          LoRaCodingRate_t coding_rate){
     LinkInfoId_t LinkInfoId;

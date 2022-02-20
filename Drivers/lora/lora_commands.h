@@ -16,6 +16,7 @@ bool lora_diag_command(int32_t argc, char* argv[]);
 #define LORA_COMMANDS_BASE \
     SHELL_CMD("lora_diag", "ld", lora_diag_command, "LoRa diag"),
 
+
 #ifdef HAS_DEBUG
 bool lora_horizon_command(int32_t argc, char* argv[]);
 
