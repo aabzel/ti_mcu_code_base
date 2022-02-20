@@ -20,6 +20,7 @@
     PARAMS_SX1262_LORA      \
     PARAMS_SX1262_GFSK      \
     {PAR_ID_LORA_FREQ, 4, UINT32, "Freq"},   /*Hz*/                              \
+    {PAR_ID_TX_MUTE, 1, UINT8, "TxMute"},                                        \
     {PAR_ID_PAYLOAD_LENGTH, 1, UINT8, "PAY_LEN"},   /*bytes*/                    \
     {PAR_ID_LORA_CRC_INIT, 2, UINT16, "CrcInit"},   /*CRC Initial Value*/        \
     {PAR_ID_LORA_CRC_POLY, 2, UINT16, "CrcPoly"},   /*CRC Polynomial*/           \

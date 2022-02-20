@@ -74,8 +74,7 @@ typedef enum eId_t {
     PAR_ID_WHITENING=45,
     PAR_ID_WHITENING_INIT_VALUE=46,
 #endif
-
-
+    PAR_ID_TX_MUTE = 47,
     PAR_ID_CNT
 } Id_t;
 

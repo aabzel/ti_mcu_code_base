@@ -12,7 +12,9 @@ extern "C" {
 
 #include "tbfp_constants.h"
 #include "tbfp_types.h"
+#ifdef HAS_GNSS
 #include "gnss_utils.h"
+#endif
 #include "system.h"
 
 extern TbfpProtocol_t TbfpProtocol[IF_CNT]; /*RS232 LoRa*/

@@ -27,7 +27,9 @@
 #include "flash_fs.h"
 #endif
 #include "float_utils.h"
+#ifdef HAS_GNSS
 #include "gnss_utils.h"
+#endif
 #include "protocol_diag.h"
 
 #ifdef HAS_PARAM
@@ -268,9 +270,9 @@ bool tbfp_send_ping(uint8_t frame_id, Interfaces_t interface) {
 #ifdef CC26XX
     pingFrame.mac = get_ble_mac();
 #endif
+#ifdef HAS_GNSS
     pingFrame.coordinate.latitude = 99999.0;
     pingFrame.coordinate.longitude = 9999.0;
-#ifdef HAS_GNSS
     pingFrame.time_stamp = mktime(&Gnss.time_date);
 
     res = is_valid_gnss_coordinates(Gnss.coordinate_cur);

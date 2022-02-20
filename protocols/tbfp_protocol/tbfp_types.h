@@ -12,7 +12,9 @@ extern "C" {
 #include <time.h>
 
 #include "data_utils.h"
+#ifdef HAS_GNSS
 #include "gnss_types.h"
+#endif
 #include "tbfp_protocol_parser.h"
 #include "tbfp_re_tx_ack_fsm_types.h"
 #include "tbfp_constants.h"
@@ -40,7 +42,9 @@ typedef struct xTbfPingFrame_t {
     uint8_t id;
     uint64_t mac;
     time_t time_stamp;
+#ifdef HAS_GNSS
     GnssCoordinate_t coordinate;
+#endif
 } __attribute__((packed)) TbfPingFrame_t;
 
 

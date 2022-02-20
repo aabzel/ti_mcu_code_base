@@ -11,6 +11,7 @@ extern "C" {
 #include "lora_constants.h"
 #include "sx1262_drv.h"
 
+const char* OnOff2Str(uint8_t status);
 char* Byte2Str(uint8_t byte);
 const char* Standby2Str(StandbyMode_t standby_mode);
 char* OpCode2Str(uint8_t op_code);

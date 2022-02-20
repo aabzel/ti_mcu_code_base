@@ -122,7 +122,6 @@ typedef struct xSx1262_t {
     Sx1262IRQs_t irq_stat;
     uint8_t status;
     Sx1262Status_t dev_status;
-   // uint8_t com_stat;
     uint8_t rx_payload_len;
     uint8_t rx_buffer_pointer;
     uint8_t rx_status;

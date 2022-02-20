@@ -141,7 +141,7 @@ bool chat_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
-
+#ifdef HAS_GNSS
 bool link_info_diag(void){
     bool res = false;
     SpreadingFactor_t sf;
@@ -188,7 +188,9 @@ bool link_info_diag(void){
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;
 }
+#endif /*HAS_GNSS*/
 
+#ifdef HAS_GNSS
 bool link_info_command(int32_t argc, char* argv[]){
     bool res = false;
     if(0 == argc) {
@@ -198,3 +200,4 @@ bool link_info_command(int32_t argc, char* argv[]){
     }
     return res;
 }
+#endif /*HAS_GNSS*/

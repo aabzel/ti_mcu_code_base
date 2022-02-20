@@ -252,6 +252,7 @@ static const keyValItem_t BaseCfgLutOpt[] = {
     {CFG_UART1OUTPROT_RTCM3X, 1, SC_NONE},
     {CFG_UART1OUTPROT_UBX, 1, SC_NONE},
     // sparkfun Output rate of the RTCM-3X-TYPE1005 Stationary RTK  reference station ARP (Input/output)
+    {CFG_MSGOUT_UBX_RXM_RTCM_USB, 1, SC_NONE},
     {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1, SC_NONE},
 #ifdef HAS_GPS_CORRECTION
     // Output rate of the RTCM-3X-TYPE1077 GPS MSM7 (Input/output)
@@ -431,6 +432,7 @@ static const keyValItem_t RoverCfgLut[] = {
 	{CFG_MSGOUT_UBX_NAV_POSECEF_UART1, 1, SC_NONE},
     {CFG_MSGOUT_UBX_NAV_POSLLH_UART1,1 ,SC_NONE},
     {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1,1 ,SC_NONE},
+	{CFG_MSGOUT_UBX_RXM_RTCM_USB, 1, SC_NONE},
     {CFG_MSGOUT_NMEA_ID_ZDA_UART1, 1, SC_NONE},
 };
 #endif

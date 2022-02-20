@@ -10,7 +10,9 @@
 #include "debug_info.h"
 #include "time_diag.h"
 #include "time_utils.h"
+#ifdef HAS_GNSS
 #include "gnss_diag.h"
+#endif
 #include "io_utils.h"
 #include "tbfp_protocol.h"
 

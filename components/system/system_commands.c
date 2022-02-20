@@ -2,7 +2,9 @@
 
 #include "log.h"
 #include "tbfp_protocol.h"
+#ifdef HAS_RTCM
 #include "rtcm3_protocol.h"
+#endif
 #include "uart_common.h"
 #include "io_utils.h"
 #include "system.h"
@@ -52,6 +54,7 @@ bool sys_rate_command(int32_t argc, char* argv[]){
         io_printf(" %7u " TSEP, huart[uart_num].tx_rate.max);
         io_printf(CRLF);
     }
+#ifdef HAS_RTCM
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
         if(interface==Rtcm3Protocol[interface].interface){
             io_printf(TSEP);
@@ -67,6 +70,7 @@ bool sys_rate_command(int32_t argc, char* argv[]){
             res = true;
         }
     }
+#endif
     for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
         if(TbfpProtocol[interface].interface==interface){
             io_printf(TSEP);

@@ -1074,6 +1074,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     sx1262Instance->packet_param.proto.lora.payload_length = 255;
     sx1262Instance->output_power = DFLT_OUT_POWER;
     sx1262Instance->rf_frequency_hz = DFLT_FREQ_MHZ;
+    sx1262Instance->tx_mute = false;
     sx1262Instance->set_sync_word = DFLT_SYNC_WORD;
 #ifdef HAS_SX1262_BIT_RATE
     sx1262Instance->tx_max_bit_rate = 0.0;
@@ -1097,7 +1098,7 @@ static bool sx1262_load_params(Sx1262_t* sx1262Instance) {
     LOAD_PARAM(LORA, PAR_ID_RETX_CNT, sx1262Instance->ReTxFsm.retx_cnt_max, 1, "ReTxMax", RETX_TRY_CNT_DFLT, Byte2Str);
     LOAD_PARAM(LORA, PAR_ID_LORA_CRC_INIT, sx1262Instance->crc_init, 2, "CrcInit", 0x1D0F, HexWord2Str);
     LOAD_PARAM(LORA, PAR_ID_LORA_CRC_POLY, sx1262Instance->crc_poly, 2, "CRCPoly", 0x1021, HexWord2Str);
-
+    LOAD_PARAM(LORA, PAR_ID_TX_MUTE, sx1262Instance->tx_mute, 1, "TxMute", false, OnOff2Str);
     LOAD_PARAM(LORA, PAR_ID_LOW_DATA_RATE, sx1262Instance->lora_mod_params.low_data_rate_optimization, 1, "LowDataRateOpt",
                LDRO_OFF, LowDataRateOpt2Str);
     LOAD_PARAM(LORA, PAR_ID_PAYLOAD_LENGTH, sx1262Instance->packet_param.proto.lora.payload_length, 1, "PayLen", 255,

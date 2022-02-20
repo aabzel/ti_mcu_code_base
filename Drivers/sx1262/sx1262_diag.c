@@ -446,6 +446,23 @@ const char* LoraCrcType2Str(uint8_t crc_type) {
     return name;
 }
 
+
+const char* OnOff2Str(uint8_t status) {
+    const char* name = "?";
+    switch(status) {
+    case false:
+        name = "Off";
+        break;
+    case true:
+        name = "On";
+        break;
+    default:
+        name = "Err";
+        break;
+    }
+    return name;
+}
+
 const char* coding_rate2str(LoRaCodingRate_t coding_rate) {
     const char* name = "undef";
     switch(coding_rate) {

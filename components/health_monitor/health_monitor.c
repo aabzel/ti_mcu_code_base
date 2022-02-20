@@ -9,8 +9,11 @@
 #include "cli_manager.h"
 #endif
 #include "core_utils.h"
+#ifdef HAS_GNSS
 #include "gnss_diag.h"
 #include "gnss_utils.h"
+#endif
+
 #ifdef HAS_LOG
 #include "log.h"
 #endif
