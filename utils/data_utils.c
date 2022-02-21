@@ -174,8 +174,6 @@ bool hex2ascii(uint8_t* in_hex, uint32_t hex_len, uint8_t* out_ascii, uint32_t a
     return res;
 }
 
-
-
 uint32_t ipow(uint32_t base, uint32_t exponenta) {
     uint32_t ret = 1, i = 0;
     if(0 != exponenta) {

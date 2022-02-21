@@ -85,7 +85,7 @@ static bool counter_to_struct(uint32_t sec, struct tm* t) {
 bool calendar_gettime(struct tm* date_time) {
     uint32_t cur_sec = 0;
 #ifdef X86_64
-    cur_sec = g_sec; /*For tests on PC */
+    cur_sec = g_sec;                           /*For tests on PC */
     LOG_DEBUG(LG_CAL, "GetCounter %u", g_sec); /*Call too frequently*/
 #endif
 #ifdef HAS_RTC
@@ -167,7 +167,7 @@ uint32_t calendar_settime(struct tm* date_time) {
 #ifdef HAS_RTC
         SwRtc.raw_sec = g_sec;
 #endif
-    }else{
+    } else {
         LOG_ERROR(LG_CAL, "DateTimeErr");
     }
 

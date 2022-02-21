@@ -14,7 +14,7 @@ extern "C" {
 bool link_info_command(int32_t argc, char* argv[]);
 
 #define TELEMATIC__LINK_INFO_COMMANDS                                               \
-    SHELL_CMD("lora_cmd", "tcm", telematic_sent_command, "CmdOnRemote"),
+    SHELL_CMD("LinkInfo", "li", link_info_command, "LinkInfo"),
 #else
 #define TELEMATIC__LINK_INFO_COMMANDS
 #endif

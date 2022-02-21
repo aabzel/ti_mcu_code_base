@@ -25,7 +25,8 @@ static bool tbfp_parser_proc_wait_preamble(TbfpProtocol_t* instance, uint8_t rx_
 #ifdef HAS_DEBUG
         instance->preamble_cnt++;
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "%s SpotPreamble 0x%x Flow:%u",interface2str(instance->interface), rx_byte, instance->con_flow);
+        LOG_DEBUG(TBFP, "%s SpotPreamble 0x%x Flow:%u", interface2str(instance->interface), rx_byte,
+                  instance->con_flow);
 #endif
 #endif
         res = true;
@@ -70,7 +71,8 @@ static bool tbfp_parser_proc_wait_serial_num(TbfpProtocol_t* instance, uint8_t r
         memcpy(&instance->parser.s_num, &instance->parser.rx_frame[TBFP_INDEX_SER_NUM], TBFP_SIZE_SN);
         instance->parser.load_len = TBFP_INDEX_SER_NUM + 2;
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "%s SN:%u=0x%04x",  interface2str(instance->interface), instance->parser.s_num, instance->parser.s_num);
+        LOG_DEBUG(TBFP, "%s SN:%u=0x%04x", interface2str(instance->interface), instance->parser.s_num,
+                  instance->parser.s_num);
 #endif
         instance->parser.rx_state = WAIT_LEN;
         res = true;
@@ -104,7 +106,8 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
         instance->parser.load_len = TBFP_INDEX_LEN + TBFP_SIZE_LEN;
         memcpy(&(instance->parser.exp_payload_len), &(instance->parser.rx_frame[TBFP_INDEX_LEN]), TBFP_SIZE_LEN);
 #ifdef HAS_LOG
-        LOG_DEBUG(TBFP, "%s Len: %u=0x%04x",interface2str(instance->interface), instance->parser.exp_payload_len, instance->parser.exp_payload_len);
+        LOG_DEBUG(TBFP, "%s Len: %u=0x%04x", interface2str(instance->interface), instance->parser.exp_payload_len,
+                  instance->parser.exp_payload_len);
 #endif
         if(0 < instance->parser.exp_payload_len) {
             if(instance->parser.exp_payload_len <= TBFP_MAX_PAYLOAD) {
@@ -136,8 +139,7 @@ static bool tbfp_parser_proc_wait_len(TbfpProtocol_t* instance, uint8_t rx_byte)
 static bool tbfp_parser_proc_wait_payload(TbfpProtocol_t* instance, uint8_t rx_byte) {
     bool res = false;
     LOG_PARN(TBFP, "%s ParsePayLoad Data[%u]=%u=0x%02x", interface2str(instance->interface),
-              instance->parser.load_len - TBFP_SIZE_HEADER,
-              rx_byte,rx_byte);
+             instance->parser.load_len - TBFP_SIZE_HEADER, rx_byte, rx_byte);
     if((TBFP_SIZE_HEADER + instance->parser.exp_payload_len) <= instance->parser.load_len) {
         res = tbfp_parser_reset_rx(instance, WAIT_PAYLOAD);
     } else {
@@ -175,13 +177,8 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
         res = crc8_sae_j1850_check(&instance->parser.rx_frame[0], frame_len, instance->parser.read_crc8);
         if(res) {
 #ifdef HAS_LOG
-            LOG_DEBUG(TBFP, "%s SN:%u=0x%04x Crc8=0x02x Ok! Flow %u",
-                      interface2str(instance->interface),
-                      instance->parser.s_num,
-                      instance->parser.s_num,
-                      instance->parser.read_crc8,
-                      instance->con_flow
-                      );
+            LOG_DEBUG(TBFP, "%s SN:%u=0x%04x Crc8=0x02x Ok! Flow %u", interface2str(instance->interface),
+                      instance->parser.s_num, instance->parser.s_num, instance->parser.read_crc8, instance->con_flow);
             // led_blink(&Led[LED_INDEX_RED], 10);
 #endif
 #ifdef HAS_DEBUG
@@ -196,10 +193,8 @@ static bool tbfp_parser_proc_wait_crc8(TbfpProtocol_t* instance, uint8_t rx_byte
         } else {
             instance->crc_err_cnt++;
 #ifdef HAS_LOG
-            LOG_DEBUG(TBFP, "%s SN:%u=0x%04x Crc8Err read:0x%02x RxPayLen:%u",interface2str(instance->interface),
-                      instance->parser.s_num,
-                      instance->parser.s_num,
-                      instance->parser.read_crc8,
+            LOG_DEBUG(TBFP, "%s SN:%u=0x%04x Crc8Err read:0x%02x RxPayLen:%u", interface2str(instance->interface),
+                      instance->parser.s_num, instance->parser.s_num, instance->parser.read_crc8,
                       instance->parser.exp_payload_len);
 #endif
             res = false; // errors

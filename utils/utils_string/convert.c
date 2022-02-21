@@ -1,11 +1,11 @@
 #include "convert.h"
 
+#include "log.h"
 #include <ctype.h>
 #include <float.h>
 #include <limits.h>
 #include <math.h>
 #include <stdlib.h>
-#include "log.h"
 
 #ifdef HAS_CONVERT_DEBUG
 #include <stdio.h>
@@ -258,7 +258,7 @@ bool try_strl2uint64_dec(const char u64_dec_str[], int32_t u64_dec_str_len, uint
                     u64l_dec_success = false;
                 }
             }
-            if(false==u64l_dec_success ) {
+            if(false == u64l_dec_success) {
                 u64l_dec_result = 0U;
                 break;
             }
@@ -337,7 +337,7 @@ bool try_str2int32(const char s32_str[], int32_t* s32_value) {
 
 bool try_strl2uint32(const char u32l_str[], int32_t u32l_str_len, uint32_t* u32l_value) {
     bool u32l_success = true;
-    LOG_DEBUG(SYS,"strl2uint32 [%s] Len:%u",u32l_str,u32l_str_len);
+    LOG_DEBUG(SYS, "strl2uint32 [%s] Len:%u", u32l_str, u32l_str_len);
     bool u32l_str_not_empty = true;
     int32_t u32l_len = u32l_str_len;
     if((NULL != u32l_str) && (NULL != u32l_value)) {
@@ -477,7 +477,7 @@ bool try_strl2uint32_dec(const char u32_dec_str[], int32_t u32_dec_str_len, uint
     uint64_t u32l_dec_result = 0U;
     bool u32l_dec_success = try_strl2uint64_dec(u32_dec_str, u32_dec_str_len, &u32l_dec_result);
 
-    if((true==u32l_dec_success ) && (u32l_dec_result <= UINT32_MAX)) {
+    if((true == u32l_dec_success) && (u32l_dec_result <= UINT32_MAX)) {
         *u32_dec_value = (uint32_t)u32l_dec_result;
     } else {
         u32l_dec_success = false;
@@ -570,7 +570,7 @@ bool try_str2int8(const char s8_str[], int8_t* s8_value) {
 
 bool try_strl2uint8(const char u8l_str[], int32_t u8l_str_len, uint8_t* u8l_value) {
     bool u8l_success = false;
-    if(u8l_str){
+    if(u8l_str) {
         uint32_t u8l_result = 0U;
         u8l_success = try_strl2uint32(u8l_str, u8l_str_len, &u8l_result);
 
@@ -580,7 +580,6 @@ bool try_strl2uint8(const char u8l_str[], int32_t u8l_str_len, uint8_t* u8l_valu
             u8l_success = false;
             *u8l_value = 0U;
         }
-
     }
     return u8l_success;
 }
@@ -868,8 +867,8 @@ bool try_str2double(const char double_str[], double* double_value) {
 
 bool try_strl2double(const char double_str[], int32_t str_len, double* double_value) {
     bool double_success = false;
-    LOG_DEBUG(SYS,"strl2double [%s] %u",double_str,str_len);
-    if(double_str){
+    LOG_DEBUG(SYS, "strl2double [%s] %u", double_str, str_len);
+    if(double_str) {
         char tempStr[30] = "";
         memset(tempStr, 0x00, sizeof(tempStr));
         memcpy(tempStr, double_str, str_len);
@@ -878,48 +877,66 @@ bool try_strl2double(const char double_str[], int32_t str_len, double* double_va
     return double_success;
 }
 
-bool  AsciiChar2HexNibble(char ch, uint8_t *nibble_out){
+bool AsciiChar2HexNibble(char ch, uint8_t* nibble_out) {
     bool res = false;
-    if(nibble_out && is_hex_digit(ch)){
+    if(nibble_out && is_hex_digit(ch)) {
         res = true;
         uint8_t nibble = 0x00;
-        switch(ch){
+        switch(ch) {
         case '1':
-            nibble = 0x01; break;
+            nibble = 0x01;
+            break;
         case '2':
-            nibble = 0x02; break;
+            nibble = 0x02;
+            break;
         case '3':
-            nibble = 0x03; break;
+            nibble = 0x03;
+            break;
         case '4':
-            nibble = 0x04; break;
+            nibble = 0x04;
+            break;
         case '5':
-            nibble = 0x05; break;
+            nibble = 0x05;
+            break;
         case '6':
-            nibble = 0x06; break;
+            nibble = 0x06;
+            break;
         case '7':
-            nibble = 0x07; break;
+            nibble = 0x07;
+            break;
         case '8':
-            nibble = 0x08; break;
+            nibble = 0x08;
+            break;
         case '9':
-            nibble = 0x09; break;
+            nibble = 0x09;
+            break;
         case 'A':
         case 'a':
-            nibble = 0x0A; break;
+            nibble = 0x0A;
+            break;
         case 'B':
         case 'b':
-            nibble = 0x0B; break;
+            nibble = 0x0B;
+            break;
         case 'C':
         case 'c':
-            nibble = 0x0C; break;
+            nibble = 0x0C;
+            break;
         case 'D':
         case 'd':
-            nibble = 0x0D; break;
+            nibble = 0x0D;
+            break;
         case 'e':
         case 'E':
-            nibble = 0x0E; break;
+            nibble = 0x0E;
+            break;
         case 'F':
-        case 'f':nibble = 0x0F; break;
-        default: res = false; break;
+        case 'f':
+            nibble = 0x0F;
+            break;
+        default:
+            res = false;
+            break;
         }
         *nibble_out = nibble;
     }

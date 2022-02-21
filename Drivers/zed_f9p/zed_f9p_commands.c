@@ -77,7 +77,6 @@ bool zed_f9p_base_dot_command(int32_t argc, char* argv[]) {
 }
 #endif
 
-
 #ifdef HAS_GNSS_RTK
 bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -103,7 +102,6 @@ bool zed_f9p_base_command(int32_t argc, char* argv[]) {
     return res;
 }
 #endif
-
 
 #ifdef HAS_GNSS_RTK
 bool zed_f9p_rover_command(int32_t argc, char* argv[]) {

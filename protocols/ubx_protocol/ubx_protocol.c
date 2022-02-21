@@ -15,8 +15,8 @@
 #include "io_utils.h"
 #include "log.h"
 #endif
-#include "ubx_diag.h"
 #include "ublox_driver.h"
+#include "ubx_diag.h"
 
 UbloxProtocol_t UbloxProtocol = {0};
 StatClass_t tableRxClass[UBX_CLA_CNT] = {0};
@@ -167,9 +167,7 @@ static bool proc_ublox_wait_crc(uint8_t rx_byte) {
 #endif /*HAS_MCU*/
 #ifdef HAS_LOG
             LOG_DEBUG(UBX, "RxFrameClassId: %s len:%u Crc16 Ok!",
-                       ClassId2str(UbloxProtocol.fix_frame[UBX_INDEX_CLS],
-                                  UbloxProtocol.fix_frame[UBX_INDEX_ID]),
-                      len);
+                      ClassId2str(UbloxProtocol.fix_frame[UBX_INDEX_CLS], UbloxProtocol.fix_frame[UBX_INDEX_ID]), len);
 #endif
 #ifdef HAS_MCU
             res = ubx_proc_frame(&UbloxProtocol);

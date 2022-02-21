@@ -68,12 +68,18 @@ char* OpCode2Str(uint8_t op_code) {
     return name;
 }
 
-const char* Standby2Str(StandbyMode_t standby_mode){
+const char* Standby2Str(StandbyMode_t standby_mode) {
     const char* name = "?";
-    switch(standby_mode){
-       case STDBY_RC: name = "RC";break;
-       case STDBY_XOSC:name = "XOSC"; break;
-       default: name = "??";break;
+    switch(standby_mode) {
+    case STDBY_RC:
+        name = "RC";
+        break;
+    case STDBY_XOSC:
+        name = "XOSC";
+        break;
+    default:
+        name = "??";
+        break;
     }
     return name;
 }
@@ -445,7 +451,6 @@ const char* LoraCrcType2Str(uint8_t crc_type) {
     }
     return name;
 }
-
 
 const char* OnOff2Str(uint8_t status) {
     const char* name = "?";

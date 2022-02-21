@@ -10,8 +10,8 @@
 #include <string.h>
 
 #include <esp_system.h>
-#include <nvs_flash.h>
 #include <nvs.h>
+#include <nvs_flash.h>
 
 #include "crc8_autosar.h"
 #include "data_utils.h"
@@ -23,8 +23,6 @@
 
 nvs_handle_t FsHandle;
 
-
-
 /**
  *    @brief    flash memory is not mapped yet, remap it
  */
@@ -33,8 +31,6 @@ bool mm_flash_format(void) {
 
     return res;
 }
-
-
 
 bool flash_fs_proc(void) {
     bool res = false;
@@ -57,15 +53,15 @@ bool flash_fs_proc(void) {
 bool mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
     bool res = false;
     esp_err_t ret;
-    char key[NVS_KEY_NAME_MAX_SIZE-1];
-    snprintf(key,sizeof(key),"%u",data_id);
-    ret = nvs_set_blob(FsHandle, key, (const void *)new_file, (size_t) new_file_len);
-    if(ESP_OK==ret){
+    char key[NVS_KEY_NAME_MAX_SIZE - 1];
+    snprintf(key, sizeof(key), "%u", data_id);
+    ret = nvs_set_blob(FsHandle, key, (const void*)new_file, (size_t)new_file_len);
+    if(ESP_OK == ret) {
         ret = nvs_commit(FsHandle);
-        if(ESP_OK==ret) {
+        if(ESP_OK == ret) {
             res = true;
         }
-    }else{
+    } else {
         res = false;
     }
     return res;
@@ -83,23 +79,20 @@ bool mm_set(uint16_t data_id, uint8_t* new_file, uint16_t new_file_len) {
 bool mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* file_len) {
     esp_err_t ret;
     bool res = false;
-    char key[NVS_KEY_NAME_MAX_SIZE-1];
-    snprintf(key,sizeof(key),"%u",data_id);
-    size_t length = (size_t) maxValueLen;
-    ret = nvs_get_blob(FsHandle , key, (void *)file, &length);
-    if(ESP_OK==ret){
-        if(length<=maxValueLen){
+    char key[NVS_KEY_NAME_MAX_SIZE - 1];
+    snprintf(key, sizeof(key), "%u", data_id);
+    size_t length = (size_t)maxValueLen;
+    ret = nvs_get_blob(FsHandle, key, (void*)file, &length);
+    if(ESP_OK == ret) {
+        if(length <= maxValueLen) {
             res = true;
             (*file_len) = length;
-        }else{
-            LOG_DEBUG(FLASH_FS,"GetLenErr Cur:%u Max:%u",
-                      *file_len,
-                      maxValueLen
-                      );
+        } else {
+            LOG_DEBUG(FLASH_FS, "GetLenErr Cur:%u Max:%u", *file_len, maxValueLen);
         }
     } else {
         res = false;
-        LOG_DEBUG(FLASH_FS,"GetBlobErr %u %x", ret, ret);// 4364
+        LOG_DEBUG(FLASH_FS, "GetBlobErr %u %x", ret, ret); // 4364
     }
     return res;
 }
@@ -115,12 +108,12 @@ bool mm_get(uint16_t data_id, uint8_t* file, uint16_t maxValueLen, uint16_t* fil
  */
 bool mm_invalidate(uint16_t data_id) {
     bool res = false;
-    char key[NVS_KEY_NAME_MAX_SIZE-1];
-    snprintf(key,sizeof(key),"%u",data_id);
-    esp_err_t ret=nvs_erase_key(FsHandle, key);
-    if(ESP_OK==ret){
+    char key[NVS_KEY_NAME_MAX_SIZE - 1];
+    snprintf(key, sizeof(key), "%u", data_id);
+    esp_err_t ret = nvs_erase_key(FsHandle, key);
+    if(ESP_OK == ret) {
         res = true;
-    }else{
+    } else {
         res = false;
     }
 
@@ -132,8 +125,8 @@ bool mm_invalidate(uint16_t data_id) {
  */
 bool mm_flash_erase(void) {
     bool res = false;
-    esp_err_t ret=nvs_flash_erase();
-    if(ESP_OK ==ret){
+    esp_err_t ret = nvs_flash_erase();
+    if(ESP_OK == ret) {
         res = true;
     }
     return res;
@@ -143,15 +136,15 @@ bool flash_fs_init(void) {
     bool res = false;
     esp_err_t ret;
     ret = nvs_flash_init();
-    if((ESP_ERR_NVS_NO_FREE_PAGES==ret) || (ESP_ERR_NVS_NEW_VERSION_FOUND==ret)){
-        ret=nvs_flash_erase();
+    if((ESP_ERR_NVS_NO_FREE_PAGES == ret) || (ESP_ERR_NVS_NEW_VERSION_FOUND == ret)) {
+        ret = nvs_flash_erase();
         ret = nvs_flash_init();
     }
-    nvs_open_mode_t open_mode= NVS_READWRITE;
-    ret=nvs_open(STORAGE_NAMESPACE, open_mode, &FsHandle);
-    if(ESP_OK==ret){
+    nvs_open_mode_t open_mode = NVS_READWRITE;
+    ret = nvs_open(STORAGE_NAMESPACE, open_mode, &FsHandle);
+    if(ESP_OK == ret) {
         res = true;
-    }else{
+    } else {
         res = false;
     }
 
@@ -183,5 +176,3 @@ bool flash_fs_init(void) {
     }
     return res;
 }
-
-

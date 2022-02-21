@@ -53,13 +53,13 @@ bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state) {
     return res;
 }
 
-bool rtcm3_check(void){
+bool rtcm3_check(void) {
     bool res = true;
     Interfaces_t intf;
-    for(intf =(Interfaces_t) 0; intf<IF_CNT; intf++){
-        uint32_t diff = Rtcm3Protocol[intf].crc_err_cnt- Rtcm3Protocol[intf].crc_err_cnt_prev;
+    for(intf = (Interfaces_t)0; intf < IF_CNT; intf++) {
+        uint32_t diff = Rtcm3Protocol[intf].crc_err_cnt - Rtcm3Protocol[intf].crc_err_cnt_prev;
         Rtcm3Protocol[intf].crc_err_cnt_prev = Rtcm3Protocol[intf].crc_err_cnt;
-        if (0 < diff) {
+        if(0 < diff) {
             res = false;
             LOG_ERROR(RTCM, "%s Crc24Err! %u times", interface2str(intf), diff);
         }
@@ -164,7 +164,7 @@ bool rtcm3_proc_wait_payload(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 
 static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #ifdef X86_64
-    LOG_PARN(RTCM,"ProcWaitCRC24 0x%02x", rx_byte);
+    LOG_PARN(RTCM, "ProcWaitCRC24 0x%02x", rx_byte);
 #endif
     bool res = false;
     uint16_t crc24_index = RTCM3_HEADER_SIZE + instance->exp_len.field.len;
@@ -200,11 +200,11 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
 #ifdef HAS_LED
             led_blink(&Led[LED_INDEX_RED], 30);
 #endif
-            uint16_t packet_length = frame_length+RTCM3_CRC24_SIZE;
-            instance->rx_byte +=  packet_length;
-            if(MAX_LORA_PAYLOAD_SIZE < packet_length ){
+            uint16_t packet_length = frame_length + RTCM3_CRC24_SIZE;
+            instance->rx_byte += packet_length;
+            if(MAX_LORA_PAYLOAD_SIZE < packet_length) {
                 instance->jumbo_frame_cnt++;
-                LOG_DEBUG(RTCM, "TooBigFrame %u byte",packet_length,MAX_LORA_PAYLOAD_SIZE);
+                LOG_DEBUG(RTCM, "TooBigFrame %u byte", packet_length, MAX_LORA_PAYLOAD_SIZE);
             }
             switch(instance->interface) {
             case IF_UART1: {
@@ -214,7 +214,8 @@ static bool rtcm3_proc_wait_crc24(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
                     if(instance->forwarding[interface]) {
 #ifdef HAS_TBFP
                         /*Wrap to TBFP*/
-                        res = tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, interface, 0, ACK_NO_NEED);
+                        res =
+                            tbfp_send(instance->fix_frame, frame_length + RTCM3_CRC24_SIZE, interface, 0, ACK_NO_NEED);
                         if(false == res) {
                             instance->lost_pkt_cnt[interface]++;
                             TbfpProtocol[interface].err_tx_cnt++;
@@ -274,28 +275,28 @@ bool rtcm3_proc_byte(Rtcm3Protocol_t* instance, uint8_t rx_byte) {
     return res;
 }
 
-bool rtcm3_generate_frame(uint8_t *arr, uint32_t size){
+bool rtcm3_generate_frame(uint8_t* arr, uint32_t size) {
     bool res = true;
-    LOG_INFO(RTCM,"%s():", __FUNCTION__);
+    LOG_INFO(RTCM, "%s():", __FUNCTION__);
     Rtcm3Len_t ex_len;
     arr[0] = RTCM3_PREAMBLE;
-    ex_len.field.len = size-RTCM3_CRC24_SIZE-RTCM3_HEADER_SIZE;
-    arr[1]=ex_len.len8[1];
-    arr[2]=ex_len.len8[0];
-    uint16_t frame_length = size-RTCM3_CRC24_SIZE;
+    ex_len.field.len = size - RTCM3_CRC24_SIZE - RTCM3_HEADER_SIZE;
+    arr[1] = ex_len.len8[1];
+    arr[2] = ex_len.len8[0];
+    uint16_t frame_length = size - RTCM3_CRC24_SIZE;
     Type32Union_t u32val;
     u32val.u32 = calc_crc24_q(arr, frame_length);
-    LOG_INFO(RTCM,"CRC24 0x%x", u32val.u32 );
-    arr[size-RTCM3_CRC24_SIZE]=u32val.u8[2];
-    arr[size-RTCM3_CRC24_SIZE+1]=u32val.u8[1];
-    arr[size-RTCM3_CRC24_SIZE+2]=u32val.u8[0];
-    LOG_INFO(RTCM,"%s()Done:", __FUNCTION__);
+    LOG_INFO(RTCM, "CRC24 0x%x", u32val.u32);
+    arr[size - RTCM3_CRC24_SIZE] = u32val.u8[2];
+    arr[size - RTCM3_CRC24_SIZE + 1] = u32val.u8[1];
+    arr[size - RTCM3_CRC24_SIZE + 2] = u32val.u8[0];
+    LOG_INFO(RTCM, "%s()Done:", __FUNCTION__);
     return res;
 }
 
 bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
     bool res = true;
-    LOG_DEBUG(RTCM,"IsRtcm3");
+    LOG_DEBUG(RTCM, "IsRtcm3");
     Rtcm3Len_t ex_len;
     ex_len.len16 = 0;
     uint32_t read_crc24 = 0;
@@ -307,7 +308,7 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
 
     if(res) {
         if(RTCM3_PREAMBLE != arr[0]) {
-            LOG_DEBUG(RTCM,"PreErr");
+            LOG_DEBUG(RTCM, "PreErr");
             res = false;
         }
     }
@@ -318,7 +319,7 @@ bool is_rtcm3_frame(uint8_t* arr, uint16_t len) {
             res = false;
         } else {
             frame_length = ex_len.field.len + RTCM3_HEADER_SIZE;
-            LOG_DEBUG(RTCM,"PayLoadLen %u",ex_len.field.len);
+            LOG_DEBUG(RTCM, "PayLoadLen %u", ex_len.field.len);
         }
     }
 
@@ -352,19 +353,25 @@ bool rtcm3_proc_array(uint8_t* const payload, uint32_t size, Interfaces_t interf
     return res;
 }
 
-bool rtcm3_calc_byte_rate(void){
+bool rtcm3_calc_byte_rate(void) {
     bool res = false;
-    Interfaces_t  interface;
+    Interfaces_t interface;
     for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
-        if(interface==Rtcm3Protocol[interface].interface){
-            Rtcm3Protocol[interface].rx_rate.cur=Rtcm3Protocol[interface].rx_byte -Rtcm3Protocol[interface].rx_byte_prev;
-            Rtcm3Protocol[interface].rx_rate.min=min32u(Rtcm3Protocol[interface].rx_rate.cur,Rtcm3Protocol[interface].rx_rate.min);
-            Rtcm3Protocol[interface].rx_rate.max=max32u(Rtcm3Protocol[interface].rx_rate.cur,Rtcm3Protocol[interface].rx_rate.max);
+        if(interface == Rtcm3Protocol[interface].interface) {
+            Rtcm3Protocol[interface].rx_rate.cur =
+                Rtcm3Protocol[interface].rx_byte - Rtcm3Protocol[interface].rx_byte_prev;
+            Rtcm3Protocol[interface].rx_rate.min =
+                min32u(Rtcm3Protocol[interface].rx_rate.cur, Rtcm3Protocol[interface].rx_rate.min);
+            Rtcm3Protocol[interface].rx_rate.max =
+                max32u(Rtcm3Protocol[interface].rx_rate.cur, Rtcm3Protocol[interface].rx_rate.max);
             Rtcm3Protocol[interface].rx_byte_prev = Rtcm3Protocol[interface].rx_byte;
 
-            Rtcm3Protocol[interface].tx_rate.cur=Rtcm3Protocol[interface].tx_byte -Rtcm3Protocol[interface].tx_byte_prev;
-            Rtcm3Protocol[interface].tx_rate.min=min32u(Rtcm3Protocol[interface].tx_rate.cur,Rtcm3Protocol[interface].tx_rate.min);
-            Rtcm3Protocol[interface].tx_rate.max=max32u(Rtcm3Protocol[interface].tx_rate.cur,Rtcm3Protocol[interface].tx_rate.max);
+            Rtcm3Protocol[interface].tx_rate.cur =
+                Rtcm3Protocol[interface].tx_byte - Rtcm3Protocol[interface].tx_byte_prev;
+            Rtcm3Protocol[interface].tx_rate.min =
+                min32u(Rtcm3Protocol[interface].tx_rate.cur, Rtcm3Protocol[interface].tx_rate.min);
+            Rtcm3Protocol[interface].tx_rate.max =
+                max32u(Rtcm3Protocol[interface].tx_rate.cur, Rtcm3Protocol[interface].tx_rate.max);
             Rtcm3Protocol[interface].tx_byte_prev = Rtcm3Protocol[interface].tx_byte;
             res = true;
         }

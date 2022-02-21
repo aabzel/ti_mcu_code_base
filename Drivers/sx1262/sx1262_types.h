@@ -12,6 +12,16 @@
 #include "lora_constants.h"
 #include "gfsk_types.h"
 
+typedef union uModeInfoId_t {
+    uint16_t id;
+    struct {
+        uint8_t spreading_factor : 4; /**/
+        uint8_t band_width : 4;       /**/
+        uint8_t coding_rate : 4;      /**/
+        uint8_t type : 4;             /**/
+    };
+} ModeInfoId_t;
+
 typedef struct xOpCode_t{
 	uint8_t op_code;
 	char * name;

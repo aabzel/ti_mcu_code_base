@@ -8,9 +8,9 @@
 #ifndef FLASH_FS_NOR_FLASH_H
 #define FLASH_FS_NOR_FLASH_H
 
+#include <nvs.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <nvs.h>
 
 #include "flash_drv.h"
 #include "timer_utils.h"

@@ -20,9 +20,9 @@ bool tbfp_send_hi_load_command(int32_t argc, char* argv[]);
 
 #define TBFP_COMMANDS                                                                                                  \
     SHELL_CMD("tbfp_diag", "tbd", tbfp_diag_command, "TBFP Diag"),                                                     \
-    SHELL_CMD("tbfp_rate", "tbt", tbfp_rate_command, "TBFP Rate"),                                                     \
-    SHELL_CMD("tbfp_retx", "tbr", tbfp_diag_retx_command, "TBFP DiagRetx"),                                            \
-    SHELL_CMD("tbfp_error", "tbe", tbfp_error_command, "TBFP Error"),                                                  \
+        SHELL_CMD("tbfp_rate", "tbt", tbfp_rate_command, "TBFP Rate"),                                                 \
+        SHELL_CMD("tbfp_retx", "tbr", tbfp_diag_retx_command, "TBFP DiagRetx"),                                        \
+        SHELL_CMD("tbfp_error", "tbe", tbfp_error_command, "TBFP Error"),                                              \
         SHELL_CMD("tbfp_send_h", "tbsh", tbfp_send_hi_load_command, "TBFP SendHiLoad"),                                \
         SHELL_CMD("tbfp_send", "tbs", tbfp_send_command, "TBFP Send"),
 

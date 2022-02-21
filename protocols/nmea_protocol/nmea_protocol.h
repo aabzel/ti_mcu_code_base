@@ -5,9 +5,9 @@
 #include <stdint.h>
 #include <time.h>
 
-#include "timer_utils.h"
 #include "gnss_utils.h"
 #include "nmea_types.h"
+#include "timer_utils.h"
 #ifdef HAS_CLOCK
 #include "clocks.h"
 #endif

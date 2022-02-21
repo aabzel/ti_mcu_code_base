@@ -90,7 +90,7 @@
     const char* bool2name(bool val);
     const char* bool2test_status(bool val);
     bool is_hex_digit(const char character);
-    bool  AsciiChar2HexNibble(char ch, uint8_t *nibble_out);
+    bool AsciiChar2HexNibble(char ch, uint8_t* nibble_out);
 
 #ifdef __cplusplus
 }

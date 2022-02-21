@@ -104,7 +104,8 @@ bool lora_send_array_queue(uint8_t* const tx_payload, uint32_t len) {
 #endif
 
 #ifdef HAS_TBFP
-bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms, uint32_t pause_ms, uint32_t min_tx_unit) {
+bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms, uint32_t pause_ms,
+                              uint32_t min_tx_unit) {
     bool res = false;
     uint32_t tx_time_diff_ms = 2 * pause_ms;
     tx_time_diff_ms = cur_time_stamp_ms - tx_done_time_stamp_ms;
@@ -118,27 +119,24 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     is_retx_idle = is_tbfp_retx_idle(&TbfpProtocol[IF_SX1262]);
 #endif
 
-    if(      (
-            (pause_ms < tx_time_diff_ms) &&
-            (true == is_retx_idle) && ((true==LoRaInterface.flush) || (min_tx_unit<=count))
-            ) ) {
+    if(((pause_ms < tx_time_diff_ms) && (true == is_retx_idle) &&
+        ((true == LoRaInterface.flush) || (min_tx_unit <= count)))) {
         LoRaInterface.flush = false;
         res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);
         if(res) {
-            if(tx_len!=sizeof(TxPayload)){
+            if(tx_len != sizeof(TxPayload)) {
 #ifdef HAS_LOG
-                LOG_DEBUG(LORA, "FiFoPullLenErr Len:%u %u", tx_len,sizeof(TxPayload));
+                LOG_DEBUG(LORA, "FiFoPullLenErr Len:%u %u", tx_len, sizeof(TxPayload));
 #endif
             }
 #ifdef HAS_LOG
             LOG_DEBUG(LORA, "FiFoPull Len:%u", tx_len);
 #endif
-        }else{
+        } else {
 #ifdef HAS_LOG
             LOG_ERROR(LORA, "FiFoPullErr Len:%u", tx_len);
 #endif
         }
-
 
 #ifdef HAS_LORA_FIFO_ARRAYS
         Array_t Node = {.size = 0, .pArr = NULL};
@@ -162,16 +160,15 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     if(res) {
         if((0 < tx_len) && (tx_len <= sizeof(TxPayload))) {
 #ifdef HAS_TBFP
-                LOG_DEBUG(LORA, " Tunnel Len:%u bytes", tx_len);
-                res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262, ACK_NEED);
-                if(res) {
-                    LoRaInterface.tx_ok_cnt++;
-                } else {
-                    TbfpProtocol[IF_SX1262].err_tx_cnt++;
-                    LoRaInterface.tx_err_cnt++;
-                }
+            LOG_DEBUG(LORA, " Tunnel Len:%u bytes", tx_len);
+            res = tbfp_send_tunnel(TxPayload, tx_len, IF_SX1262, ACK_NEED);
+            if(res) {
+                LoRaInterface.tx_ok_cnt++;
+            } else {
+                TbfpProtocol[IF_SX1262].err_tx_cnt++;
+                LoRaInterface.tx_err_cnt++;
+            }
 #endif /*HAS_TBFP*/
-
         }
     }
     return res;
@@ -180,13 +177,13 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
 
 bool lora_send_queue(uint8_t* tx_payload, uint32_t len) {
     bool res = false;
-    LOG_DEBUG(TBFP,"%s(): Len %u", __FUNCTION__, len);
+    LOG_DEBUG(TBFP, "%s(): Len %u", __FUNCTION__, len);
     if((NULL != tx_payload) && (0 < len)) {
-            res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
-            if(false == res) {
-                LoRaInterface.ovfl_err_cnt++;
-                LOG_DEBUG(LORA, "TxQueueOverFlow");
-            }
+        res = fifo_push_array(&LoRaInterface.FiFoLoRaCharTx, (char*)tx_payload, (fifo_index_t)len);
+        if(false == res) {
+            LoRaInterface.ovfl_err_cnt++;
+            LOG_DEBUG(LORA, "TxQueueOverFlow");
+        }
     } else {
         LoRaInterface.err_cnt++;
     }

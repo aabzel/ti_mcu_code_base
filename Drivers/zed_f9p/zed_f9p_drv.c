@@ -50,7 +50,8 @@
 
 extern ZedF9P_t ZedF9P = {0};
 
-#if ((!defined(HAS_GPS_CORRECTION) && !defined(HAS_GLONASS_CORRECTION)) && defined(HAS_GNSS_RTK)   ) && (!defined(HAS_GALILEO_CORRECTION) && !defined(HAS_BEI_DOU_CORRECTION))
+#if((!defined(HAS_GPS_CORRECTION) && !defined(HAS_GLONASS_CORRECTION)) && defined(HAS_GNSS_RTK)) &&                    \
+    (!defined(HAS_GALILEO_CORRECTION) && !defined(HAS_BEI_DOU_CORRECTION))
 #error "Some corrections must be included in build"
 #endif
 
@@ -192,10 +193,10 @@ static const keyValItem_t NormCfgLut[] = {
     {CFG_UART1OUTPROT_NMEA, 1, SC_NONE},
     {CFG_UART1OUTPROT_UBX, 1, SC_NONE},
     {CFG_MSGOUT_NMEA_ID_ZDA_UART1, 1, SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_PVT_UART1,1 ,SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_PVT_UART1, 1, SC_NONE},
     {CFG_MSGOUT_UBX_NAV_PVT_USB, 1, SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_POSLLH_UART1,1 ,SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1,1 ,SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_POSLLH_UART1, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1, 1, SC_NONE},
 };
 
 #ifdef HAS_GNSS_RTK
@@ -207,23 +208,23 @@ static const keyValItem_t BaseCfgLutMain[] = {
     {CFG_UART1OUTPROT_NMEA, 0, SC_NONE},
     {CFG_UART1OUTPROT_RTCM3X, 1, SC_NONE},
     {CFG_UART1OUTPROT_UBX, 1, SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_PVT_UART1,1 ,SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_POSLLH_UART1,1 ,SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1,1 ,SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_SVIN_UART1,1 ,SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_PVT_UART1, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_POSLLH_UART1, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_SVIN_UART1, 1, SC_NONE},
     // sparkfun Output rate of the RTCM-3X-TYPE1005 Stationary RTK  reference station ARP (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1005_UART1, 1, SC_NONE},
     {CFG_MSGOUT_RTCM_3X_TYPE1005_USB, 1, SC_NONE},
 #ifdef HAS_GPS_CORRECTION
-     // sparkfun Output rate of the RTCM-3X-TYPE1074 GPS MSM4 (Input/output)
+    // sparkfun Output rate of the RTCM-3X-TYPE1074 GPS MSM4 (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1074_UART1, 1, SC_GPS},
     {CFG_MSGOUT_RTCM_3X_TYPE1074_USB, 1, SC_GPS},
 #endif
 #ifdef HAS_GLONASS_CORRECTION
-     // sparkfun Output rate of the RTCM-3X-TYPE1084 GLONASS MSM4 (Input/output)
+    // sparkfun Output rate of the RTCM-3X-TYPE1084 GLONASS MSM4 (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1084_UART1, 1, SC_GLONASS},
     {CFG_MSGOUT_RTCM_3X_TYPE1084_USB, 1, SC_GLONASS},
-     // sparkfun Output rate of the RTCM-3X-TYPE1230 GLONASS L1 and L2 code-phase biases (Input/output)
+    // sparkfun Output rate of the RTCM-3X-TYPE1230 GLONASS L1 and L2 code-phase biases (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1230_UART1, 5, SC_GLONASS},
     // GLONASS L1 and L2 code-phase biases (Input/output)
     {CFG_MSGOUT_RTCM_3X_TYPE1230_USB, 5, SC_GLONASS},
@@ -285,8 +286,7 @@ static bool zed_f9p_deploy_norm(void) {
     bool res = false, out_res = true;
     uint32_t i = 0;
     for(i = 0; i < ARRAY_SIZE(NormCfgLut); i++) {
-        res = ubx_cfg_set_val(NormCfgLut[i].key_id,
-                              (uint8_t*)&NormCfgLut[i].u_value.u8[0],
+        res = ubx_cfg_set_val(NormCfgLut[i].key_id, (uint8_t*)&NormCfgLut[i].u_value.u8[0],
                               ubx_keyid_2len(NormCfgLut[i].key_id), LAYER_MASK_RAM);
         if(false == res) {
 #ifdef HAS_LOG
@@ -299,7 +299,6 @@ static bool zed_f9p_deploy_norm(void) {
     task_data[TASK_ID_NMEA].on = true;
     return out_res;
 }
-
 
 #ifdef HAS_GNSS_RTK
 bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_lev_m, RTKmode_t receiver_mode,
@@ -345,8 +344,7 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
             }
 
             if(res) {
-                res = ubx_cfg_set_val(BaseCfgLutMain[i].key_id,
-                                      (uint8_t*)&BaseCfgLutMain[i].u_value.u8[0],
+                res = ubx_cfg_set_val(BaseCfgLutMain[i].key_id, (uint8_t*)&BaseCfgLutMain[i].u_value.u8[0],
                                       ubx_keyid_2len(BaseCfgLutMain[i].key_id), LAYER_MASK_RAM);
                 if(false == res) {
 #ifdef HAS_LOG
@@ -416,23 +414,23 @@ bool zed_f9p_deploy_base(GnssCoordinate_t coordinate_base, double altitude_sea_l
 
 #if defined(HAS_UBLOX) && defined(HAS_GNSS_RTK)
 static const keyValItem_t RoverCfgLut[] = {
-    {CFG_UART1_BAUDRATE, 38400, SC_NONE}, 
-	{CFG_UART1INPROT_UBX, 1, SC_NONE}, 
-	{CFG_UART1INPROT_NMEA, 0, SC_NONE},
-    {CFG_UART1INPROT_RTCM3X, 1, SC_NONE}, 
-	{CFG_UART1OUTPROT_UBX, 1, SC_NONE}, 
-	{CFG_UART1OUTPROT_NMEA, 1, SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_PVT_UART1,1 ,SC_NONE},
+    {CFG_UART1_BAUDRATE, 38400, SC_NONE},
+    {CFG_UART1INPROT_UBX, 1, SC_NONE},
+    {CFG_UART1INPROT_NMEA, 0, SC_NONE},
+    {CFG_UART1INPROT_RTCM3X, 1, SC_NONE},
+    {CFG_UART1OUTPROT_UBX, 1, SC_NONE},
+    {CFG_UART1OUTPROT_NMEA, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_PVT_UART1, 1, SC_NONE},
     {CFG_UART1OUTPROT_RTCM3X, 0, SC_NONE},
-	{CFG_USBINPROT_UBX, 1, SC_NONE},    
-	{CFG_USBINPROT_NMEA, 1, SC_NONE},
-    {CFG_USBINPROT_RTCM3X, 1, SC_NONE}, 
-	{CFG_USBOUTPROT_UBX, 1, SC_NONE},  
-	{CFG_USBOUTPROT_RTCM3X, 0, SC_NONE},
-	{CFG_MSGOUT_UBX_NAV_POSECEF_UART1, 1, SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_POSLLH_UART1,1 ,SC_NONE},
-    {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1,1 ,SC_NONE},
-	{CFG_MSGOUT_UBX_RXM_RTCM_USB, 1, SC_NONE},
+    {CFG_USBINPROT_UBX, 1, SC_NONE},
+    {CFG_USBINPROT_NMEA, 1, SC_NONE},
+    {CFG_USBINPROT_RTCM3X, 1, SC_NONE},
+    {CFG_USBOUTPROT_UBX, 1, SC_NONE},
+    {CFG_USBOUTPROT_RTCM3X, 0, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_POSECEF_UART1, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_POSLLH_UART1, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_NAV_HPPOSLLH_UART1, 1, SC_NONE},
+    {CFG_MSGOUT_UBX_RXM_RTCM_USB, 1, SC_NONE},
     {CFG_MSGOUT_NMEA_ID_ZDA_UART1, 1, SC_NONE},
 };
 #endif
@@ -557,7 +555,7 @@ bool zed_f9p_load_params(void) {
     ZedF9P.corrections.glonass = true;
     ZedF9P.corrections.galileo = true;
     ZedF9P.corrections.beidou = true;
-    LOAD_PARAM_ZED(PAR_ID_RTK_MODE, ZedF9P.rtk_mode, 1, "mode", RTK_BASE_SURVEY_IN, rtk_mode2str);
+    LOAD_PARAM_ZED(PAR_ID_GNSS_MODE, ZedF9P.rtk_mode, 1, "mode", RTK_BASE_SURVEY_IN, rtk_mode2str);
 
 #ifdef HAS_GNSS_RTK
     LOAD_PARAM_ZED(PAR_ID_GPS, ZedF9P.corrections.gps, 1, "GpsCor", 1, OnOff2str);

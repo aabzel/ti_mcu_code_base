@@ -293,7 +293,6 @@ void log_write_end(void) {
 #endif
 }
 
-
 void log_write(log_level_t level, log_facility_t facility, const char* format, ...) {
     if(log_write_begin(level, facility)) {
         va_list va;
@@ -303,7 +302,6 @@ void log_write(log_level_t level, log_facility_t facility, const char* format, .
         log_write_end();
     }
 }
-
 
 void LOG_PARN(log_facility_t facility, const char* format, ...) {
     if(log_write_begin(LOG_LEVEL_PARANOID, facility)) {

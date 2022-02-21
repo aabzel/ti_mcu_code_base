@@ -30,7 +30,6 @@ typedef struct xflowCnt_t {
     uint32_t byte_tx;
 } flowCnt_t;
 
-
 typedef struct xUartHandle_t {
     volatile bool tx_int;
     volatile bool in_progress;
@@ -41,12 +40,12 @@ typedef struct xUartHandle_t {
     volatile uint8_t* rx_buff;
     U32Value_t tx_rate;
     U32Value_t rx_rate;
- //   uint32_t rx_byte_rate;
- //   uint32_t tx_byte_rate;
- ///   uint32_t rx_byte_rate_min;
- //   uint32_t tx_byte_rate_min;
- //   uint32_t rx_byte_rate_max;
- //   uint32_t tx_byte_rate_max;
+    //   uint32_t rx_byte_rate;
+    //   uint32_t tx_byte_rate;
+    ///   uint32_t rx_byte_rate_min;
+    //   uint32_t tx_byte_rate_min;
+    //   uint32_t rx_byte_rate_max;
+    //   uint32_t tx_byte_rate_max;
     volatile flowCnt_t cnt;
     flowCnt_t cnt_prev;
     uint32_t rx_buff_size;

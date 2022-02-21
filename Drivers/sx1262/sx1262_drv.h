@@ -102,7 +102,7 @@ bool sx1262_set_payload(uint8_t* payload, uint8_t size);
 bool sx1262_set_regulator_mode(uint8_t reg_mode_param);
 bool sx1262_set_rf_frequency(uint32_t rf_frequency_hz, uint32_t freq_xtal_hz);
 bool sx1262_set_sleep(uint8_t sleep_config);
-
+bool sx1262_set_modulation(uint16_t modulation);
 bool sx1262_set_standby(StandbyMode_t stdby_config);
 bool sx1262_set_sync_word(uint64_t sync_word);
 bool sx1262_set_lora_sync_word(uint16_t sync_word);

@@ -24,6 +24,7 @@ bool test_sx1262_types(void);
 bool test_sx1262_packet_type(void);
 
 #define TEST_SUIT_SX1262                                                                                               \
+    {"sx1262_types", test_sx1262_types}, \
     {"sx1262_connect", test_sx1262_connected},   \
     {"sx1262_lora_sync_word", test_sx1262_lora_sync_word},           \
     {"sx1262_tx", test_sx1262_tx},           \
@@ -36,7 +37,6 @@ bool test_sx1262_packet_type(void);
     {"sx1262_sync_word", test_sx1262_sync_word},           \
     {"sx1262_rx_addr", test_sx1262_rx_addr}, /*fails*/                                                             \
     {"sx1262_fifo", test_sx1262_fifo}, \
-    {"sx1262_types", test_sx1262_types}, \
     {"sx1262_packet_type", test_sx1262_packet_type},
 
 #ifdef __cplusplus

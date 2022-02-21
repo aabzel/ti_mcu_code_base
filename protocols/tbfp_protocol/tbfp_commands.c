@@ -16,24 +16,16 @@
 #include "writer_config.h"
 #include "writer_generic.h"
 
-
 static bool tbfp_diag_retx(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
-        {8, "interf"},
-        {9, "spinCnt"},
-        {9, "state"},
-        {9, "LackTxDone"},
-        {9, "AckRx"},
-        {9, "AckTx"},
-        {9, "ReTx"},
-        {9, "NoRepl"},
-        {7, "Err"},
+        {8, "interf"}, {9, "spinCnt"}, {9, "state"},  {9, "LackTxDone"}, {9, "AckRx"},
+        {9, "AckTx"},  {9, "ReTx"},    {9, "NoRepl"}, {7, "Err"},
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
-        if(TbfpProtocol[interface].interface==interface){
+        if(TbfpProtocol[interface].interface == interface) {
             io_printf(TSEP);
             io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
             io_printf(" %7u " TSEP, TbfpProtocol[interface].ReTxFsm.spin_cnt);
@@ -57,23 +49,18 @@ static bool tbfp_diag(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
-        {8, "interf"},
-        {9, "rxCnt"},
-        {9, "txCnt"},
+        {8, "interf"},  {9, "rxCnt"},   {9, "txCnt"},
 
 #ifdef HAS_DEBUG
 #ifdef HAS_TBFP_FLOW_CONTROL
-        {9, "maxFlow"},
-        {9, "curFlow"},
+        {9, "maxFlow"}, {9, "curFlow"},
 #endif
-        {9, "preCnt"},
-        {9, "minLen"},
-        {9, "maxLen"},
+        {9, "preCnt"},  {9, "minLen"},  {9, "maxLen"},
 #endif /*HAS_DEBUG*/
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
-        if(TbfpProtocol[interface].interface==interface){
+        if(TbfpProtocol[interface].interface == interface) {
 
             io_printf(TSEP);
 
@@ -81,17 +68,16 @@ static bool tbfp_diag(void) {
             io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_pkt_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].tx_pkt_cnt);
 
-
-    #ifdef HAS_DEBUG
-    #ifdef HAS_TBFP_FLOW_CONTROL
+#ifdef HAS_DEBUG
+#ifdef HAS_TBFP_FLOW_CONTROL
             io_printf(" %7u " TSEP, TbfpProtocol[interface].max_con_flow);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].con_flow);
-    #endif
+#endif
             io_printf(" %7u " TSEP, TbfpProtocol[interface].preamble_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].min_len);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].max_len);
             io_printf(CRLF);
-    #endif /*HAS_DEBUG*/
+#endif /*HAS_DEBUG*/
             res = true;
         }
     }
@@ -103,19 +89,12 @@ static bool tbfp_diag(void) {
 bool tbfp_rate_diag(void) {
     bool res = false;
     Interfaces_t interface;
-    static const table_col_t cols[] = {
-        {8, "interf"},
-        {9, "rxMin"},
-        {9, "rxCur"},
-        {9, "rxMax"},
+    static const table_col_t cols[] = {{8, "interf"}, {9, "rxMin"}, {9, "rxCur"}, {9, "rxMax"},
 
-        {9, "txMin"},
-        {9, "txCur"},
-        {9, "txMax"}
-    };
+                                       {9, "txMin"},  {9, "txCur"}, {9, "txMax"}};
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
-        if(TbfpProtocol[interface].interface==interface){
+        if(TbfpProtocol[interface].interface == interface) {
             io_printf(TSEP);
             io_printf(" %6s " TSEP, interface2str(TbfpProtocol[interface].interface));
             io_printf(" %7u " TSEP, TbfpProtocol[interface].rx_rate.min);
@@ -133,27 +112,21 @@ bool tbfp_rate_diag(void) {
     return res;
 }
 
-
 static bool tbfp_error(void) {
     bool res = false;
     Interfaces_t interface;
     static const table_col_t cols[] = {
-        {8, "interf"},
-        {9, "LackFrame"},
-        {9, "LenErCnt"},
-        {9, "crcErCnt"},
+        {8, "interf"},   {9, "LackFrame"}, {9, "LenErCnt"}, {9, "crcErCnt"},
 #ifdef HAS_DEBUG
 #ifdef HAS_TBFP_FLOW_CONTROL
-        {9, "TornFlow"},
-        {9, "LostRx"},
+        {9, "TornFlow"}, {9, "LostRx"},
 #endif
-        {9, "TxErCnt"},
-         {9, "ErCnt"},
+        {9, "TxErCnt"},  {9, "ErCnt"},
 #endif /*HAS_DEBUG*/
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
-        if(TbfpProtocol[interface].interface==interface){
+        if(TbfpProtocol[interface].interface == interface) {
 
             io_printf(TSEP);
 
@@ -161,15 +134,15 @@ static bool tbfp_error(void) {
             io_printf(" %7u " TSEP, TbfpProtocol[interface].lack_frame_in_data);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].len_err_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].crc_err_cnt);
-    #ifdef HAS_DEBUG
-    #ifdef HAS_TBFP_FLOW_CONTROL
+#ifdef HAS_DEBUG
+#ifdef HAS_TBFP_FLOW_CONTROL
             io_printf(" %7u " TSEP, TbfpProtocol[interface].flow_torn_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].lost_rx_frames);
-    #endif
+#endif
             io_printf(" %7u " TSEP, TbfpProtocol[interface].err_tx_cnt);
             io_printf(" %7u " TSEP, TbfpProtocol[interface].err_cnt);
             io_printf(CRLF);
-    #endif /*HAS_DEBUG*/
+#endif /*HAS_DEBUG*/
             res = true;
         }
     }
@@ -188,8 +161,6 @@ bool tbfp_diag_retx_command(int32_t argc, char* argv[]) {
     }
     return res;
 }
-
-
 
 bool tbfp_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
@@ -223,28 +194,28 @@ bool tbfp_diag_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-bool tbfp_error_command(int32_t argc, char* argv[]){
+bool tbfp_error_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
     }
-    if(res){
+    if(res) {
         res = tbfp_error();
-    }else{
+    } else {
         LOG_ERROR(TBFP, "Usage: tbfpd if debug");
     }
 
     return res;
 }
 
-bool tbfp_rate_command(int32_t argc, char* argv[]){
+bool tbfp_rate_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
     }
-    if(res){
+    if(res) {
         res = tbfp_rate_diag();
-    }else{
+    } else {
         LOG_ERROR(TBFP, "Usage: tbt");
     }
     return res;
@@ -283,10 +254,7 @@ bool tbfp_send_command(int32_t argc, char* argv[]) {
     }
 
     if(res) {
-        res = tbfp_send(array, array_len,
-                        (Interfaces_t)interface,
-                        livetime,
-                        (TbfpAck_t)ack);
+        res = tbfp_send(array, array_len, (Interfaces_t)interface, livetime, (TbfpAck_t)ack);
         if(res) {
             LOG_INFO(TBFP, "Ok!");
         } else {

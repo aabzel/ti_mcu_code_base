@@ -86,8 +86,7 @@ const char* interface2str(Interfaces_t interface) {
     return name;
 }
 
-
-bool system_calc_byte_rate(void){
+bool system_calc_byte_rate(void) {
 #ifdef HAS_RTCM3
     rtcm3_calc_byte_rate();
 #endif
@@ -120,9 +119,9 @@ bool interface_valid(Interfaces_t interface) {
 }
 
 #ifdef HAS_SX1262
-static bool sys_sent_sx1262(uint8_t* array, uint32_t len, Retx_t retx){
+static bool sys_sent_sx1262(uint8_t* array, uint32_t len, Retx_t retx) {
     bool res = false;
-    switch(retx){
+    switch(retx) {
     case RETX_NEED:
 #ifdef HAS_TBFP
         res = tbfp_retx_start(&TbfpProtocol[IF_SX1262], array, len);
@@ -146,9 +145,8 @@ bool sys_send_if(uint8_t* array, uint32_t len, Interfaces_t interface, Retx_t re
 #if defined(HAS_SX1262) || defined(X86_64)
     case IF_SX1262: {
 #ifdef HAS_MCU
-        res = sys_sent_sx1262( array,  len,  retx);
-        if(false==res){
-
+        res = sys_sent_sx1262(array, len, retx);
+        if(false == res) {
         }
 #else
         /*ForUnitTest on PC*/

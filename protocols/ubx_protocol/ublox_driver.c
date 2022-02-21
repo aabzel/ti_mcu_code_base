@@ -43,7 +43,7 @@ bool ubx_send_message(uint8_t class_num, uint8_t id, uint8_t* payload, uint16_t 
     tx_array[2] = class_num;
     tx_array[3] = id;
     memcpy(&tx_array[4], &len, 2);
-    if((NULL != payload)&&(0 < len)){
+    if((NULL != payload) && (0 < len)) {
         memcpy(&tx_array[6], payload, len);
     }
     crc16 = ubx_calc_crc16(&tx_array[2], len + 4);
@@ -120,8 +120,8 @@ static bool ubx_cfg_tmode3_parse(uint8_t* payload) {
     UbxCfgTmode3Data_t Data = {0};
     memcpy(&Data, payload, sizeof(UbxCfgTmode3Data_t));
     if(0x00 == Data.version) {
-        NavInfo.BaseRxMode =(UbxReceiverMode_t) Data.mode;
-        NavInfo.fixedPosAcc_mm = Data.svinAccLimit/10;
+        NavInfo.BaseRxMode = (UbxReceiverMode_t)Data.mode;
+        NavInfo.fixedPosAcc_mm = Data.svinAccLimit / 10;
         NavInfo.svin_min_dur_s = Data.svin_min_dur_s;
         res = true;
     }
@@ -197,10 +197,10 @@ static bool ubx_proc_nav_posecef_frame(uint8_t* payload, uint16_t len) {
     if(20 <= len) {
         NavPosEcef_t data = {0};
         memcpy(&data, payload, sizeof(NavPosEcef_t));
-        NavInfo.Wgs84Coordinate.x_cm=data.ecefX;
-        NavInfo.Wgs84Coordinate.y_cm=data.ecefY;
-        NavInfo.Wgs84Coordinate.z_cm=data.ecefZ;
-        NavInfo.Wgs84Coordinate.acc_cm=data.pAcc;
+        NavInfo.Wgs84Coordinate.x_cm = data.ecefX;
+        NavInfo.Wgs84Coordinate.y_cm = data.ecefY;
+        NavInfo.Wgs84Coordinate.z_cm = data.ecefZ;
+        NavInfo.Wgs84Coordinate.acc_cm = data.pAcc;
         res = true;
     }
     return res;
@@ -224,33 +224,32 @@ static bool ubx_proc_nav_timeutc_frame(uint8_t* payload, uint16_t len) {
     return res;
 }
 
-static bool ubx_proc_nav_svin_frame(uint8_t* payload, uint16_t len){
+static bool ubx_proc_nav_svin_frame(uint8_t* payload, uint16_t len) {
     bool res = false;
-    if( 40 <= len) {
+    if(40 <= len) {
         NavSvin_t Data = {0};
         memcpy(&Data, payload, sizeof(NavSvin_t));
-        NavInfo.survey_in_mean_position_acc_mm =  Data.meanAcc/10;
-        NavInfo.survey_in_observation_time= Data.dur;/*Passed survey-in observation time*/
+        NavInfo.survey_in_mean_position_acc_mm = Data.meanAcc / 10;
+        NavInfo.survey_in_observation_time = Data.dur; /*Passed survey-in observation time*/
         res = true;
     }
     return res;
 }
 
-
-static bool ubx_proc_nav_pvt_frame(uint8_t* payload, uint16_t len){
+static bool ubx_proc_nav_pvt_frame(uint8_t* payload, uint16_t len) {
     bool res = false;
-    if(92<=len){
+    if(92 <= len) {
         NavPvt_t Data = {0};
         memcpy(&Data, payload, sizeof(NavPvt_t));
-        if(NavInfo.FixType!=(GnssFixType_t) Data.fixType){
-            LOG_INFO(UBX,"FixType: %u=%s" CRLF, Data.fixType, FixType2Str(Data.fixType));
+        if(NavInfo.FixType != (GnssFixType_t)Data.fixType) {
+            LOG_INFO(UBX, "FixType: %u=%s" CRLF, Data.fixType, FixType2Str(Data.fixType));
         }
-        NavInfo.FixType =(GnssFixType_t) Data.fixType;
+        NavInfo.FixType = (GnssFixType_t)Data.fixType;
         NavInfo.coordinate.latitude = 1e-7 * Data.lat;
-        NavInfo.coordinate.longitude= 1e-7 * Data.lon;
+        NavInfo.coordinate.longitude = 1e-7 * Data.lon;
         NavInfo.date_time.tm_hour = Data.hour;
         NavInfo.date_time.tm_mday = Data.day;
-        NavInfo.date_time.tm_mon = Data.month-1;
+        NavInfo.date_time.tm_mon = Data.month - 1;
         NavInfo.date_time.tm_min = Data.min;
         NavInfo.date_time.tm_sec = Data.sec;
         NavInfo.date_time.tm_year = Data.year;
@@ -278,7 +277,7 @@ static bool ubx_proc_nav_velned_frame(uint8_t* payload, uint16_t len) {
     return res;
 }
 
-#define PAYLOAD ( frame + UBX_INDEX_PAYLOAD)
+#define PAYLOAD (frame + UBX_INDEX_PAYLOAD)
 static bool ubx_proc_nav_frame(uint8_t* frame, uint16_t len) {
     bool res = false;
     uint8_t id = frame[UBX_INDEX_ID];
@@ -378,7 +377,6 @@ static bool ubx_proc_mga_frame(uint8_t* frame, uint16_t len) {
     return res;
 }
 
-
 static bool ubx_proc_sec_frame(uint8_t* frame, uint16_t len) {
     bool res = false;
     uint8_t id = frame[UBX_INDEX_ID];
@@ -449,13 +447,13 @@ static const UbxHeader_t PollLut[] = {
     {UBX_CLA_NAV, UBX_ID_NAV_VELNED},
     {UBX_CLA_NAV, UBX_ID_NAV_POSLLH},
 #ifdef HAS_NEO_6M
-    {UBX_CLA_CFG, UBX_ID_CFG_NMEA },
+    {UBX_CLA_CFG, UBX_ID_CFG_NMEA},
 #endif
 #ifdef HAS_ZED_F9P
     //{UBX_CLA_NAV, UBX_ID_NAV_SVIN },
-    {UBX_CLA_CFG, UBX_ID_CFG_TMODE3 },
+    {UBX_CLA_CFG, UBX_ID_CFG_TMODE3},
     {UBX_CLA_MGA, UBX_ID_MGA_INI},
-   // {UBX_CLA_NAV, UBX_ID_NAV_PVT},
+    // {UBX_CLA_NAV, UBX_ID_NAV_PVT},
     //{UBX_CLA_NAV, UBX_ID_NAV_ATT},
     //{UBX_CLA_NAV, UBX_ID_NAV_HPPOSLLH},
     {UBX_CLA_SEC, UBX_ID_SEC_UNIQID},
@@ -482,8 +480,7 @@ bool ubx_cfg_set_val(uint32_t key_id, uint8_t* val, uint16_t val_len, uint8_t la
         res = ubx_send_message_ack(UBX_CLA_CFG, UBX_ID_CFG_SET_VAL, payload, payload_len);
         if(false == res) {
 #ifdef HAS_LOG
-            LOG_ERROR(UBX, "Send Class:0x%02x %s ID:0x%02x Error", UBX_CLA_CFG,
-                      class2str(UBX_CLA_CFG),
+            LOG_ERROR(UBX, "Send Class:0x%02x %s ID:0x%02x Error", UBX_CLA_CFG, class2str(UBX_CLA_CFG),
                       UBX_ID_CFG_SET_VAL);
 #endif
         }
@@ -511,12 +508,12 @@ bool ubx_proc(void) {
     res = ubx_send_message(PollLut[i].class, PollLut[i].id, NULL, 0);
     if(false == res) {
 #ifdef HAS_LOG
-        LOG_ERROR(UBX, "Send Class:0x%02x %s ID:0x%02x Error", PollLut[i].class,class2str(PollLut[i].class),
+        LOG_ERROR(UBX, "Send Class:0x%02x %s ID:0x%02x Error", PollLut[i].class, class2str(PollLut[i].class),
                   PollLut[i].id);
 #endif
     } else {
 #ifdef HAS_LOG
-        LOG_DEBUG(UBX, "Send Class:0x%02x %s ID:0x%02x OK", PollLut[i].class,class2str(PollLut[i].class),
+        LOG_DEBUG(UBX, "Send Class:0x%02x %s ID:0x%02x OK", PollLut[i].class, class2str(PollLut[i].class),
                   PollLut[i].id);
 #endif
     }

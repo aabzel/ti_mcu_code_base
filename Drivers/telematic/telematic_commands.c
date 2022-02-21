@@ -17,10 +17,10 @@
 #include "lora_drv.h"
 #endif
 #include "flash_fs.h"
-#include "system.h"
 #include "none_blocking_pause.h"
-#include "tbfp_protocol.h"
+#include "system.h"
 #include "table_utils.h"
+#include "tbfp_protocol.h"
 #include "writer_config.h"
 #ifdef HAS_ZED_F9P
 #include "zed_f9p_drv.h"
@@ -63,7 +63,7 @@ bool telematic_sent_command(int32_t argc, char* argv[]) {
         res = false;
         (void)tx_array_len;
         (void)timeout_s;
-        res = tbfp_send_cmd((uint8_t*) tx_array, tx_array_len, (Interfaces_t)interface);
+        res = tbfp_send_cmd((uint8_t*)tx_array, tx_array_len, (Interfaces_t)interface);
         if(res) {
             LOG_INFO(SYS, "OK");
         }
@@ -75,9 +75,9 @@ bool telematic_sent_command(int32_t argc, char* argv[]) {
 bool ping_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t interface = IF_NONE;
-	uint32_t ping_ok_cnt=0;
-	uint32_t trys = 1;
-	uint32_t time_out_ms = 1000;
+    uint32_t ping_ok_cnt = 0;
+    uint32_t trys = 1;
+    uint32_t time_out_ms = 1000;
     if(0 <= argc) {
         res = true;
         interface = IF_LORA;
@@ -89,26 +89,26 @@ bool ping_command(int32_t argc, char* argv[]) {
     if(2 <= argc) {
         res = try_str2uint32(argv[1], &trys);
     }
-	
-	if(3 <= time_out_ms) {
+
+    if(3 <= time_out_ms) {
         res = try_str2uint32(argv[2], &time_out_ms);
     }
-	
+
     if(res) {
         uint32_t i = 0;
-		for(i=0;i<trys;i++){			
-		    LOG_INFO(SYS, "Ping: %u/%u",i,trys);
+        for(i = 0; i < trys; i++) {
+            LOG_INFO(SYS, "Ping: %u/%u", i, trys);
             res = tbfp_send_ping(FRAME_ID_PING, (Interfaces_t)interface);
             LoRaInterface.flush = true;
             if(res) {
-	            ping_ok_cnt++;
+                ping_ok_cnt++;
                 LOG_INFO(SYS, "PingOk");
             } else {
                 LOG_ERROR(SYS, "Err");
             }
-			wait_in_loop_ms(time_out_ms);
-		}
-		LOG_INFO(SYS, "PingOk %u/%u",ping_ok_cnt,trys);
+            wait_in_loop_ms(time_out_ms);
+        }
+        LOG_INFO(SYS, "PingOk %u/%u", ping_ok_cnt, trys);
     } else {
         LOG_ERROR(SYS, "Usage: ping if");
     }
@@ -144,15 +144,13 @@ bool chat_command(int32_t argc, char* argv[]) {
         res = try_str2uint8(argv[3], &ack);
     }
 
-    if( (0 == argc) || (4 < argc) ) {
+    if((0 == argc) || (4 < argc)) {
         LOG_ERROR(SYS, "Usage: char text ttl if");
         res = false;
     }
 
     if(res) {
-        res = tbfp_send_chat(tx_array, tx_array_len, (Interfaces_t)interface,
-                             lifetime,
-                             (TbfpAck_t) ack);
+        res = tbfp_send_chat(tx_array, tx_array_len, (Interfaces_t)interface, lifetime, (TbfpAck_t)ack);
         if(res) {
             LOG_INFO(SYS, "ok [%s]", tx_array);
             res = print_mem(tx_array, tx_array_len, false, true, true, false);
@@ -163,7 +161,7 @@ bool chat_command(int32_t argc, char* argv[]) {
     return res;
 }
 #ifdef HAS_GNSS
-bool link_info_diag(void){
+bool link_info_diag(void) {
     bool res = false;
     SpreadingFactor_t sf;
     BandWidth_t bw;
@@ -174,32 +172,25 @@ bool link_info_diag(void){
     double dist_prev = 0.0;
     double data_rate = 0.0;
     static const table_col_t cols[] = {
-        {8, "SF"},
-        {9, "BW"},
-        {9, "CR"},
-        {9, "Byte/s"},
-        {9, "Dist"},
+        {8, "SF"}, {8, "BW"}, {9, "CR"}, {9, "Byte/s"}, {9, "Dist"},
     };
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
-    for(sf=SF5; sf<=SF12; sf++){
-        for(bw=LORA_BW_7; bw<=0x0A; bw++){
-            for(cr=LORA_CR_4_5; cr<=LORA_CR_4_8; cr++){
+    for(sf = SF5; sf <= SF12; sf++) {
+        for(bw = LORA_BW_7; bw <= 0x0A; bw++) {
+            for(cr = LORA_CR_4_5; cr <= LORA_CR_4_8; cr++) {
                 data_rate = lora_calc_data_rate(sf, bw, cr);
-                id_modulation = param_calc_modulation_id(bw,sf,cr);
-                res = mm_get(id_modulation,
-                             (uint8_t*) &LinkInfoPayloadRead,
-                             sizeof(LinkInfoPayload_t),
-                             &file_len);
-                if(res && (sizeof(LinkInfoPayload_t)==file_len) ){
-                    dist_prev = gnss_calc_distance_m( LinkInfoPayloadRead.coordinate_local,
-                                                      LinkInfoPayloadRead.coordinate_remote);
+                id_modulation = param_calc_modulation_id(bw, sf, cr);
+                res = mm_get(id_modulation, (uint8_t*)&LinkInfoPayloadRead, sizeof(LinkInfoPayload_t), &file_len);
+                if(res && (sizeof(LinkInfoPayload_t) == file_len)) {
+                    dist_prev = gnss_calc_distance_m(LinkInfoPayloadRead.coordinate_local,
+                                                     LinkInfoPayloadRead.coordinate_remote);
                     io_printf(TSEP);
-                    io_printf(" %6s " TSEP, spreading_factor2str(sf));
-                    io_printf(" %7s " TSEP, bandwidth2str(bw));
+                    io_printf(" %6u " TSEP, spreading_factor2num(sf));
+                    io_printf(" %6u " TSEP, bandwidth2num(bw));
                     io_printf(" %7s " TSEP, coding_rate2str(cr));
-                    io_printf(" %7.1f " TSEP, data_rate/8);
-                    io_printf(" %5u " TSEP, dist_prev);
+                    io_printf(" %7.1f " TSEP, data_rate / 8);
+                    io_printf(" %7.1f " TSEP, dist_prev);
                     io_printf(CRLF);
                 }
             }
@@ -211,11 +202,11 @@ bool link_info_diag(void){
 #endif /*HAS_GNSS*/
 
 #ifdef HAS_GNSS
-bool link_info_command(int32_t argc, char* argv[]){
+bool link_info_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = link_info_diag();
-    }else{
+    } else {
         LOG_ERROR(SYS, "Usage: li");
     }
     return res;

@@ -8,8 +8,8 @@ extern "C" {
 
 #include <stdbool.h>
 
-#include "timer_utils.h"
 #include "gnss_utils.h"
+#include "timer_utils.h"
 
 #ifndef HAS_GNSS
 #error "It is needed to add HAS_GNSS option"
@@ -33,6 +33,5 @@ bool gnss_proc(void);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
-
 
 #endif /*GNSS_DRV_H*/

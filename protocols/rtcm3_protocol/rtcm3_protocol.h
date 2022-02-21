@@ -8,9 +8,9 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "data_utils.h"
 #include "protocol_common.h"
 #include "system.h"
-#include "data_utils.h"
 
 #define RTCM3_PREAMBLE 0xD3
 #define RTCM3_HEADER_SIZE 3U
@@ -89,7 +89,7 @@ extern Rtcm3Protocol_t Rtcm3Protocol[IF_CNT];
 
 bool rtcm3_check(void);
 bool rtcm3_calc_byte_rate(void);
-bool rtcm3_generate_frame(uint8_t *arr, uint32_t size);
+bool rtcm3_generate_frame(uint8_t* arr, uint32_t size);
 bool rtcm3_reset_rx(Rtcm3Protocol_t* instance, RxState_t rx_state);
 bool rtcm3_protocol_init(Rtcm3Protocol_t* instance, Interfaces_t interface, bool lora_fwd);
 bool rtcm3_proc_byte(Rtcm3Protocol_t* instance, uint8_t rx_byte);

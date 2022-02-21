@@ -123,21 +123,13 @@ bool uart_init_command(int32_t argc, char* argv[]) {
     return res;
 }
 
-
-bool uart_rate_diag(void){
+bool uart_rate_diag(void) {
     bool res = false;
 
     uint8_t uart_num = 0;
     uint32_t baud_rate = 0;
-    const table_col_t cols[] = {{5, "Num"},
-                                {10, "baudRate"},
-                                {10, "RxMin"},
-                                {10, "Rx"},
-                                {10, "RxMax"},
-                                {10, "TxMin"},
-                                {10, "Tx"},
-                                {10, "TxMax"},
-                                {10, "name"}};
+    const table_col_t cols[] = {{5, "Num"},    {10, "baudRate"}, {10, "RxMin"}, {10, "Rx"},  {10, "RxMax"},
+                                {10, "TxMin"}, {10, "Tx"},       {10, "TxMax"}, {10, "name"}};
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
         io_printf(TSEP);
@@ -160,18 +152,16 @@ bool uart_rate_diag(void){
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
 
     return res;
-
 }
 
-bool uart_rate_command(int32_t argc, char* argv[]){
+bool uart_rate_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
-        res=uart_rate_diag();
+        res = uart_rate_diag();
     } else {
         LOG_ERROR(UART, "Usage: ur");
     }
     return res;
-
 }
 
 /*TODO: calculate baud_rate*/
@@ -179,15 +169,8 @@ bool uart_diag_command(int32_t argc, char* argv[]) {
     bool res = false;
     if(0 == argc) {
         res = true;
-        const table_col_t cols[] = {{5, "Num"},
-                                    {10, "baudRate"},
-                                    {17, "rx"},
-                                    {17, "tx"},
-                                    {7, "rFiCnt"},
-                                    {7, "tFiCnt"},
-                                    {6, "StErr"},
-                                    {6, "rErr"},
-                                    {10, "name"}};
+        const table_col_t cols[] = {{5, "Num"},    {10, "baudRate"}, {17, "rx"},  {17, "tx"},  {7, "rFiCnt"},
+                                    {7, "tFiCnt"}, {6, "StErr"},     {6, "rErr"}, {10, "name"}};
         uint32_t baud_rate = 0, uart_error = 0;
         uint8_t uart_num = 0;
         table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));

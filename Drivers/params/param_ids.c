@@ -52,9 +52,9 @@
 /*TODO: Sort by index for bin search in future*/
 const ParamItem_t ParamArray[] = {
     /**/ {PAR_ID_REBOOT_CNT, 2, UINT16, "ReBootCnt"}, /*num*/
-    /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"},      /**/
+    /**/ {PAR_ID_SERIAL_NUM, 4, UINT32, "SerialNum"}, /**/
 #ifdef HAS_HARVESTER
-    /**/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"},          /*Power Source*/
+    /**/ {PAR_ID_PWR_SRC, 1, UINT8, "PwrSrc"}, /*Power Source*/
 #endif
     PARAMS_SX1262
 #ifdef HAS_BOOT
@@ -63,9 +63,7 @@ const ParamItem_t ParamArray[] = {
     /**/ {PAR_ID_APP_START, 4, UINT32_HEX, "StartApp"}, /*Flash Addr*/
     /**/ {PAR_ID_APP_STATUS, 1, UINT8, "AppStatus"},    /*Flash Addr*/
 #endif
-    PARAMS_ZED_F9P
-    PARAMS_RTK
-};
+    PARAMS_ZED_F9P PARAMS_RTK};
 
 uint32_t param_get_cnt(void) {
     uint32_t cnt = ARRAY_SIZE(ParamArray);
@@ -320,7 +318,7 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
         } break;
 #endif /*HAS_PWR_MUX*/
 
-#ifdef HAS_ZED_F9P
+#ifdef HAS_GNSS_RTK
         case PAR_ID_GPS:
         case PAR_ID_GLONASS:
         case PAR_ID_GALILEO:
@@ -354,5 +352,75 @@ const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size) {
 bool param_proc(void) {
     bool res = false;
     /*Syn params between flash and RAM*/
+    return res;
+}
+
+
+bool param_set(uint16_t param_id, uint8_t* wrData) {
+    bool res = false;
+
+        uint16_t write_len = 0;
+
+        // determine param type
+        ParamType_t par_type = param_get_type((Id_t)param_id);
+        // get data
+        if(UNDEF != par_type) {
+            res = false;
+            switch(par_type) {
+            case BOOL:
+            case UINT8:
+                    write_len = 1;
+                break;
+            case INT8:
+                    write_len = 1;
+                break;
+            case UINT16:
+                    write_len = 2;
+                break;
+            case INT16:
+                    write_len = 2;
+                break;
+            case UINT32:
+            case UINT32_HEX:
+                    write_len = 4;
+                break;
+            case INT32:
+                    write_len = 4;
+                break;
+            case UINT64:
+                    write_len = 8;
+                break;
+            case INT64:
+                    write_len = 8;
+                break;
+            case STRING:
+                    write_len = strlen((char*)wrData)+ 1;
+                break;
+            case FLOAT:
+                    write_len = 4;
+                break;
+            case DOUBLE:
+                    write_len = 8;
+                break;
+            default:
+                res = false;
+                break;
+            }
+        } else {
+            LOG_ERROR(PARAM, "UndefParamId %u", param_id);
+            res = false;
+        }
+        if((true == res) && (0 < write_len)) {
+            /* write data to flash FS*/
+            res = mm_set(param_id, wrData, write_len);
+            if(true == res) {
+                LOG_INFO(PARAM, "Write param_id %u, %u byte OK", param_id, write_len);
+            } else {
+                LOG_ERROR(PARAM, "Unable to write param_id %u", param_id);
+            }
+        } else {
+            LOG_ERROR(PARAM, "LenError");
+        }
+
     return res;
 }

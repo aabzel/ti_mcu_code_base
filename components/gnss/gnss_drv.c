@@ -1,8 +1,8 @@
 #include "gnss_drv.h"
 
 /*GNSS receiver invariant component*/
-#include "gnss_utils.h"
 #include "gnss_diag.h"
+#include "gnss_utils.h"
 #ifdef HAS_CALENDAR
 #include "calendar.h"
 #endif
@@ -13,16 +13,16 @@
 #include "ublox_driver.h"
 #endif
 #include "log.h"
-#include "time_utils.h"
 #include "time_diag.h"
+#include "time_utils.h"
 
 #ifndef HAS_GNSS
 #error "It is needed to add HAS_GNSS option"
 #endif
 
-Gnss_t Gnss = { 0 };
+Gnss_t Gnss = {0};
 
-static bool gnss_update_from_nmea(void){
+static bool gnss_update_from_nmea(void) {
     bool res = true;
     bool res_time = false;
     bool res_dot = false;
@@ -30,22 +30,22 @@ static bool gnss_update_from_nmea(void){
     res = is_valid_time_date(&NmeaData.time_date);
     if(res) {
         if(Gnss.first_time) {
-  #ifdef HAS_LOG
+#ifdef HAS_LOG
             LOG_INFO(GNSS, "SpotValidTimeInNmea!");
             print_time_date(&NmeaData.time_date);
-  #endif
-  #ifdef HAS_CALENDAR
+#endif
+#ifdef HAS_CALENDAR
             calendar_settime(&NmeaData.time_date);
-  #endif /*HAS_CALENDAR*/
+#endif /*HAS_CALENDAR*/
             Gnss.first_time = false;
         }
         Gnss.time_date = NmeaData.time_date;
         res_time = true;
     } else {
         res_time = false;
-  #ifdef HAS_LOG
+#ifdef HAS_LOG
         LOG_DEBUG(GNSS, "InvalNmeaTimeDate");
-  #endif
+#endif
     }
 
     res = is_valid_gnss_coordinates(NmeaData.coordinate_dd);
@@ -67,72 +67,72 @@ static bool gnss_update_from_nmea(void){
     }
 #endif /*HAS_NMEA*/
 
-    if(res_dot && res_time){
+    if(res_dot && res_time) {
         res = true;
-    }else{
+    } else {
         res = false;
     }
     return res;
 }
 
 #ifdef HAS_UBLOX
-static bool gnss_update_from_ubx(void){
+static bool gnss_update_from_ubx(void) {
     bool res_time = false;
     bool res_dot = false;
     bool res = true;
     res = is_valid_time_date(&NavInfo.date_time);
-    if (res) {
-        if (Gnss.first_time) {
+    if(res) {
+        if(Gnss.first_time) {
 #ifdef HAS_LOG
-                LOG_INFO(GNSS, "SpotValidTimeInUbx");
-                print_time_date(&NavInfo.date_time);
-      #endif
+            LOG_INFO(GNSS, "SpotValidTimeInUbx");
+            print_time_date(&NavInfo.date_time);
+#endif
 #ifdef HAS_CALENDAR
-                calendar_settime(&NavInfo.date_time);
-      #endif /*HAS_CALENDAR*/
-                Gnss.first_time = false;
+            calendar_settime(&NavInfo.date_time);
+#endif /*HAS_CALENDAR*/
+            Gnss.first_time = false;
         }
         Gnss.time_date = NavInfo.date_time;
         res_time = true;
-    }    else    {
+    } else {
         res_time = false;
 #ifdef HAS_LOG
-            LOG_DEBUG(GNSS, "InvalUbxTimeDateInUbx");
-      #endif
+        LOG_DEBUG(GNSS, "InvalUbxTimeDateInUbx");
+#endif
     }
     res = is_valid_gnss_coordinates(NavInfo.coordinate);
-    if (res)    {
-        if (Gnss.first_gnss) {
+    if(res) {
+        if(Gnss.first_gnss) {
 #ifdef HAS_LOG
-                LOG_INFO(GNSS, "SpotValidGNSSDataInUbx!");
-                print_coordinate(NavInfo.coordinate, true);
+            LOG_INFO(GNSS, "SpotValidGNSSDataInUbx!");
+            print_coordinate(NavInfo.coordinate, true);
 #endif
-                Gnss.first_gnss = false;
+            Gnss.first_gnss = false;
         }
         Gnss.coordinate_cur = NavInfo.coordinate;
         res_dot = true;
-    }    else    {
+    } else {
         res_dot = false;
 #ifdef HAS_LOG
         LOG_DEBUG(GNSS, "InvalUbxGNSSDotInUbx");
-    #endif
+#endif
     }
-    if(res_dot && res_time){
+    if(res_dot && res_time) {
         res = true;
-    }else{
+    } else {
         res = false;
     }
     return res;
 }
 #endif
 
-bool gnss_proc(void){
+bool gnss_proc(void) {
     bool res = true;
 
     res = is_valid_gnss_coordinates(Gnss.coordinate_cur);
-    if (res)    {
+    if(res) {
         Gnss.coordinate_last = Gnss.coordinate_cur;
-    }    else    {
+    } else {
 #ifdef HAS_LOG
         LOG_DEBUG(GNSS, "InvalGnssCurCoordinate");
 #endif
@@ -142,18 +142,18 @@ bool gnss_proc(void){
     res = gnss_update_from_nmea();
 #endif
 #ifdef HAS_UBLOX
-    if(false==res){
-       res =gnss_update_from_ubx();
-       if(false==res){
-           LOG_DEBUG(GNSS, "LackGnssData");
-       }
+    if(false == res) {
+        res = gnss_update_from_ubx();
+        if(false == res) {
+            LOG_DEBUG(GNSS, "LackGnssData");
+        }
     }
 #endif
 
     return res;
 }
 
-bool gnss_init(void){
+bool gnss_init(void) {
     bool res = true;
     Gnss.first_gnss = true;
     Gnss.first_time = true;

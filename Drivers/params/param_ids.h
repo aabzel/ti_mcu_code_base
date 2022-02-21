@@ -41,6 +41,7 @@ extern const ParamItem_t ParamArray[];
 bool param_init(void);
 bool param_proc(void);
 bool raw_val_2str(uint8_t* value, uint32_t value_len, ParamType_t type, char* out_str, uint32_t str_size);
+bool param_set(uint16_t param_id, uint8_t* wrData);
 ParamType_t param_get_type(Id_t id);
 uint32_t param_get_cnt(void);
 const char* param_val2str(uint16_t id, uint8_t* value, uint32_t size);

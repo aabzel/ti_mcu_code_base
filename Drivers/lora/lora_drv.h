@@ -18,12 +18,12 @@
 #if HAS_LORA_FIFO_ARRAYS
 #define LORA_TX_QUEUE_SIZE 60
 #endif
-#define LORA_PERIOD_US SEC_2_US(15)
+#define LORA_PERIOD_US SEC_2_US(5)
 
 #ifdef HAS_SX1262
-#define MAX_LORA_PAYLOAD_SIZE  (SX1262_MAX_PAYLOAD_SIZE -3)
+#define MAX_LORA_PAYLOAD_SIZE (SX1262_MAX_PAYLOAD_SIZE - 3)
 #else
-#define MAX_LORA_PAYLOAD_SIZE  30
+#define MAX_LORA_PAYLOAD_SIZE 30
 #endif
 
 extern FifoArray_t FiFoLoRaTx;
@@ -45,7 +45,8 @@ typedef struct xLoRaIf_t {
 extern char LoRaTxBuff[LORA_TX_BUFF_SIZE];
 extern LoRaIf_t LoRaInterface;
 
-bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms,uint32_t  pause_ms, uint32_t min_tx_unit) ;
+bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_stamp_ms, uint32_t pause_ms,
+                              uint32_t min_tx_unit);
 bool lora_init(void);
 bool lora_proc_payload(uint8_t* rx_payload, uint32_t rx_size);
 bool lora_send_queue(uint8_t* const tx_payload, uint32_t len);

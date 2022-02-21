@@ -178,7 +178,6 @@ void super_loop(uint64_t loop_start_time_us) {
     measure_task_interval(TASK_ID_UART1_FWD, 1, proc_uart1_fwd, loop_start_time_us);
 #endif
 
-
 #ifdef HAS_RF
     measure_task_interval(TASK_ID_RF, 3000, rf_process, loop_start_time_us);
 #endif /*HAS_RF*/
@@ -233,7 +232,7 @@ _Noreturn void super_main_loop(void) {
 #ifdef HAS_CLOCK
 #ifdef HAS_LOG
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
-#endif/*HAS_LOG*/
+#endif /*HAS_LOG*/
 #else
 #ifdef HAS_LOG
     io_printf("Main Task started" CRLF);

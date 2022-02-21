@@ -17,10 +17,10 @@
 #include <ti/drivers/uart/UARTCC26XX.h>
 #endif /*DeviceFamily_CC26X2*/
 
-#include "log.h"
-#include "task_info.h"
 #include "clocks.h"
 #include "io_utils.h"
+#include "log.h"
+#include "task_info.h"
 
 #ifdef HAS_GPIO
 #include "gpio_drv.h"
@@ -412,13 +412,13 @@ bool proc_uart1(void) {
 #endif /*HAS_RTCM3*/
 
 #ifdef HAS_NMEA
-            if(task_data[TASK_ID_NMEA].on){
-               nmea_proc_byte(rx_byte);
+            if(task_data[TASK_ID_NMEA].on) {
+                nmea_proc_byte(rx_byte);
             }
 #endif /*HAS_NMEA*/
 
 #ifdef HAS_UBLOX
-            if(task_data[TASK_ID_UBX].on){
+            if(task_data[TASK_ID_UBX].on) {
                 ubx_proc_byte(rx_byte);
             }
 #endif /*HAS_UBLOX*/
@@ -588,6 +588,3 @@ bool uart_deinit(uint8_t uart_num) {
 
     return res;
 }
-
-
-
