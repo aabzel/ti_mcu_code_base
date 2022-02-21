@@ -99,6 +99,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/calendar"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/gnss"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/system"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/health_monitor"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/mcu"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/protocols/nmea_protocol"/>

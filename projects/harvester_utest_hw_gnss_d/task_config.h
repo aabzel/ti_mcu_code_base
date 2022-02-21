@@ -7,6 +7,7 @@
   TASKS_BASE                \
   TASK(NMEA)                \
   TASK(TBFP)                \
+  TASK(GNSS)                \
   TASK(RS232)               \
   TASK(UART0_FWD)               \
   TASK(UART1_FWD)               \

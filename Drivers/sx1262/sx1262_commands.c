@@ -893,7 +893,7 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                         Sx1262Instance.packet_param.proto.lora.header_type,
                         Sx1262Instance.lora_mod_params.low_data_rate_optimization, &Tsym, &t_preamble);
 
-                    dist = (  ((double)cr)* (powf(2.0f, (float)sf))/((double)bandwidth2num((BandWidth_t)bw)));
+                    dist = (  (powf(2.0f, (float)sf))/((double)bandwidth2num((BandWidth_t)bw)));
                     strcpy(temp_str, TSEP);
                     snprintf(suffix_str, sizeof(suffix_str), " %5u " TSEP, (uint32_t)powf(2.0f, (float)sf));
                     strncat(temp_str, suffix_str, sizeof(temp_str));
@@ -905,22 +905,22 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                     snprintf(suffix_str, sizeof(suffix_str), " %3s " TSEP, coding_rate2str((LoRaCodingRate_t)cr));
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, data_rate);
+                    snprintf(suffix_str, sizeof(suffix_str), " %7.1f " TSEP, data_rate);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, data_rate / 8);
+                    snprintf(suffix_str, sizeof(suffix_str), " %7.1f " TSEP, data_rate / 8);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, Tsym * 1000.0f);
+                    snprintf(suffix_str, sizeof(suffix_str), " %7.1f " TSEP, Tsym * 1000.0f);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, t_preamble * 1000.0f);
+                    snprintf(suffix_str, sizeof(suffix_str), " %7.1f " TSEP, t_preamble * 1000.0f);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, t_frame * 1000.0f);
+                    snprintf(suffix_str, sizeof(suffix_str), " %7.1f " TSEP, t_frame * 1000.0f);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%f " TSEP, dist*100.0);
+                    snprintf(suffix_str, sizeof(suffix_str), " %7.1f " TSEP, dist*10000.0);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     if(is_contain(temp_str, key_word1, key_word2)) {

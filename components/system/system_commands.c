@@ -39,7 +39,9 @@ bool sys_rate_command(int32_t argc, char* argv[]){
     };
 
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
-
+#if defined(HAS_RTCM)|| defined(HAS_TBFP)
+    uint8_t interface = 0;
+#endif
     uint8_t uart_num = 0;
     for(uart_num = 0; uart_num < UART_COUNT; uart_num++) {
         io_printf(TSEP);
@@ -54,7 +56,6 @@ bool sys_rate_command(int32_t argc, char* argv[]){
         io_printf(CRLF);
     }
 #ifdef HAS_RTCM
-    uint8_t interface = 0;
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
         if(interface==Rtcm3Protocol[interface].interface){
             io_printf(TSEP);

@@ -27,9 +27,11 @@ double gnss_encoding_2_degrees(double in_ddmm_mmmmm);
 GnssCoordinate_t encode_gnss_coordinates(GnssCoordinate_t dot_ddmm);
 double gnss_calc_azimuth_deg(GnssCoordinate_t rover,
                          GnssCoordinate_t beacon);
+#ifdef HAS_SX1262
 uint16_t param_calc_modulation_id(BandWidth_t band_width,
                                   SpreadingFactor_t spreading_factor,
                                   LoRaCodingRate_t coding_rate);
+#endif
 #ifdef __cplusplus
 }
 #endif
