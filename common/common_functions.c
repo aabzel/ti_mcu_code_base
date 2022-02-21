@@ -196,7 +196,7 @@ void super_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_TBFP*/
 
 #ifdef HAS_NMEA
-    measure_task_interval(TASK_ID_NMEA, NMEA_PERIOD_US, nmea_proc, loop_start_time_us);
+    //measure_task_interval(TASK_ID_NMEA, NMEA_PERIOD_US, nmea_proc, loop_start_time_us);
 #endif /*HAS_NMEA*/
 #ifdef HAS_UBLOX
     measure_task_interval(TASK_ID_UBX, UBX_PERIOD_US, ubx_proc, loop_start_time_us);

@@ -18,6 +18,7 @@
 #endif
 #include "flash_fs.h"
 #include "system.h"
+#include "none_blocking_pause.h"
 #include "tbfp_protocol.h"
 #include "table_utils.h"
 #include "writer_config.h"
@@ -74,6 +75,9 @@ bool telematic_sent_command(int32_t argc, char* argv[]) {
 bool ping_command(int32_t argc, char* argv[]) {
     bool res = false;
     uint8_t interface = IF_NONE;
+	uint32_t ping_ok_cnt=0;
+	uint32_t trys = 1;
+	uint32_t time_out_ms = 1000;
     if(0 <= argc) {
         res = true;
         interface = IF_LORA;
@@ -82,14 +86,28 @@ bool ping_command(int32_t argc, char* argv[]) {
     if(1 <= argc) {
         res = try_str2uint8(argv[0], &interface);
     }
-
+    if(2 <= argc) {
+        res = try_str2uint32(argv[1], &trys);
+    }
+	
+	if(3 <= time_out_ms) {
+        res = try_str2uint32(argv[2], &time_out_ms);
+    }
+	
     if(res) {
-        res = tbfp_send_ping(FRAME_ID_PING, (Interfaces_t)interface);
-        if(res) {
-            LOG_INFO(SYS, "OK");
-        } else {
-            LOG_ERROR(SYS, "Err");
-        }
+        uint32_t i = 0;
+		for(i=0;i<trys;i++){			
+		    LOG_INFO(SYS, "Ping: %u/%u",i,trys);
+            res = tbfp_send_ping(FRAME_ID_PING, (Interfaces_t)interface);
+            if(res) {
+	            ping_ok_cnt++;
+                LOG_INFO(SYS, "PingOk");
+            } else {
+                LOG_ERROR(SYS, "Err");
+            }
+			wait_in_loop_ms(time_out_ms);
+		}
+		LOG_INFO(SYS, "PingOk %u/%u",ping_ok_cnt,trys);
     } else {
         LOG_ERROR(SYS, "Usage: ping if");
     }

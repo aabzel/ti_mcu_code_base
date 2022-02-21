@@ -413,13 +413,13 @@ bool proc_uart1(void) {
 
 #ifdef HAS_NMEA
             if(task_data[TASK_ID_NMEA].on){
-                nmea_proc_byte(rx_byte);
+               // nmea_proc_byte(rx_byte);
             }
 #endif /*HAS_NMEA*/
 
 #ifdef HAS_UBLOX
             if(task_data[TASK_ID_UBX].on){
-                ubx_proc_byte(rx_byte);
+                //ubx_proc_byte(rx_byte);
             }
 #endif /*HAS_UBLOX*/
         } else {
