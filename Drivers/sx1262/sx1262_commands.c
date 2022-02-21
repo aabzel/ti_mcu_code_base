@@ -657,23 +657,22 @@ bool sx1262_clear_fifo_command(int32_t argc, char* argv[]) {
 #ifdef HAS_SX1262_EX_DEBUG
 bool sx1262_set_modulation_command(int32_t argc, char* argv[]) {
     bool res = false;
-    LoRaModulationParams_t modParams;
-    modParams.band_width = LORA_BW_41;
-    modParams.coding_rate = LORA_CR_4_5;
-    modParams.spreading_factor = SF5;
-    modParams.low_data_rate_optimization = LDRO_OFF;
+    Sx1262Instance.lora_mod_params.band_width = LORA_BW_41;
+    Sx1262Instance.lora_mod_params.coding_rate = LORA_CR_4_5;
+    Sx1262Instance.lora_mod_params.spreading_factor = SF5;
+    Sx1262Instance.lora_mod_params.low_data_rate_optimization = LDRO_OFF;
     if(0 == argc) {
         res = true;
-        modParams.band_width = LORA_BW_41;
-        modParams.coding_rate = LORA_CR_4_5;
-        modParams.spreading_factor = SF5;
+        Sx1262Instance.lora_mod_params.band_width = LORA_BW_41;
+        Sx1262Instance.lora_mod_params.coding_rate = LORA_CR_4_5;
+        Sx1262Instance.lora_mod_params.spreading_factor = SF5;
     }
 
     if(0 < argc) {
         LOG_ERROR(LORA, "Usage: sxsmd band_width coding_rate spreading_factor");
     }
     if(res) {
-        res = sx1262_set_modulation_params(&modParams);
+        res = sx1262_set_modulation_params(&Sx1262Instance);
         if(res) {
             LOG_INFO(LORA, "Set modulation OK");
         } else {
@@ -874,8 +873,9 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
     bool res = false;
     uint8_t sf = 0, cr = 0, bw = 0;
     static const table_col_t cols[] = {{5, "No"},     {7, "SF,Ch/s"}, {8, "BW,kHz"},    {5, "CR"},       {9, "bit/s"},
-                                       {9, "Byte/s"}, {9, "Tsym,ms"}, {9, "Tpream,ms"}, {9, "Tframe,ms"}};
+                                       {9, "Byte/s"}, {9, "Tsym,ms"}, {9, "Tpream,ms"}, {9, "Tframe,ms"}, {9, "dist"}};
     uint16_t num = 1;
+    double dist = 0;
     float data_rate = 0.0f, t_frame;
     table_header(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     char temp_str[200];
@@ -892,15 +892,17 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                         sf, bw, cr, Sx1262Instance.packet_param.proto.lora.preamble_length,
                         Sx1262Instance.packet_param.proto.lora.header_type,
                         Sx1262Instance.lora_mod_params.low_data_rate_optimization, &Tsym, &t_preamble);
+
+                    dist = (  ((double)cr)* (powf(2.0f, (float)sf))/((double)bandwidth2num((BandWidth_t)bw)));
                     strcpy(temp_str, TSEP);
-                    snprintf(suffix_str, sizeof(suffix_str), "%5u " TSEP, (uint32_t)powf(2.0f, (float)sf));
+                    snprintf(suffix_str, sizeof(suffix_str), " %5u " TSEP, (uint32_t)powf(2.0f, (float)sf));
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%6.2f " TSEP,
+                    snprintf(suffix_str, sizeof(suffix_str), " %6.2f " TSEP,
                              ((float)bandwidth2num((BandWidth_t)bw)) / 1000.0f);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    snprintf(suffix_str, sizeof(suffix_str), "%3s " TSEP, coding_rate2str((LoRaCodingRate_t)cr));
+                    snprintf(suffix_str, sizeof(suffix_str), " %3s " TSEP, coding_rate2str((LoRaCodingRate_t)cr));
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, data_rate);
@@ -916,6 +918,9 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     snprintf(suffix_str, sizeof(suffix_str), "%7.1f " TSEP, t_frame * 1000.0f);
+                    strncat(temp_str, suffix_str, sizeof(temp_str));
+
+                    snprintf(suffix_str, sizeof(suffix_str), "%f " TSEP, dist*100.0);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
                     if(is_contain(temp_str, key_word1, key_word2)) {

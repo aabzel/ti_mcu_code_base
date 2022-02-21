@@ -28,7 +28,6 @@ bool sys_bypass_nmea_rs232_command(int32_t argc, char* argv[]){
 
 bool sys_rate_command(int32_t argc, char* argv[]){
     bool res = true;
-    uint8_t interface = 0;
     static const table_col_t cols[] = {{8, "interf"},
                                        {7, "proto"},
                                        {9, "rxMin"},
@@ -55,6 +54,7 @@ bool sys_rate_command(int32_t argc, char* argv[]){
         io_printf(CRLF);
     }
 #ifdef HAS_RTCM
+    uint8_t interface = 0;
     for(interface = 0; interface < ARRAY_SIZE(Rtcm3Protocol); interface++) {
         if(interface==Rtcm3Protocol[interface].interface){
             io_printf(TSEP);
@@ -71,6 +71,7 @@ bool sys_rate_command(int32_t argc, char* argv[]){
         }
     }
 #endif
+#ifdef HAS_TBFP
     for(interface = (Interfaces_t)0; interface < ARRAY_SIZE(TbfpProtocol); interface++) {
         if(TbfpProtocol[interface].interface==interface){
             io_printf(TSEP);
@@ -86,6 +87,7 @@ bool sys_rate_command(int32_t argc, char* argv[]){
             res = true;
         }
     }
+#endif /*HAS_TBFP*/
 
     table_row_bottom(&(curWriterPtr->s), cols, ARRAY_SIZE(cols));
     return res;

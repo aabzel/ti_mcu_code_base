@@ -12,9 +12,11 @@
 
 #include "convert.h"
 #include "core_driver.h"
+#include "sx1262_diag.h"
 #ifdef HAS_LORA
 #include "lora_drv.h"
 #endif
+#include "flash_fs.h"
 #include "system.h"
 #include "tbfp_protocol.h"
 #include "table_utils.h"
@@ -166,7 +168,6 @@ bool link_info_diag(void){
             for(cr=LORA_CR_4_5; cr<=LORA_CR_4_8; cr++){
                 data_rate = lora_calc_data_rate(sf, bw, cr);
                 id_modulation = param_calc_modulation_id(bw,sf,cr);
-                uint16_t file_len=0;
                 res = mm_get(id_modulation,
                              (uint8_t*) &LinkInfoPayloadRead,
                              sizeof(LinkInfoPayload_t),

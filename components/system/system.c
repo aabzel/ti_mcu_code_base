@@ -124,7 +124,9 @@ static bool sys_sent_sx1262(uint8_t* array, uint32_t len, Retx_t retx){
     bool res = false;
     switch(retx){
     case RETX_NEED:
+#ifdef HAS_TBFP
         res = tbfp_retx_start(&TbfpProtocol[IF_SX1262], array, len);
+#endif
         break;
     case RETX_NO_NEED:
         res = sx1262_start_tx(array, len, TX_SINGLE_MODE);
