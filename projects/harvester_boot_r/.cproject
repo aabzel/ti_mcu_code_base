@@ -89,6 +89,7 @@
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/com_utils"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/common"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils"/>
+									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/components/health_monitor"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/mcu"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/crc"/>
 									<listOptionValue builtIn="false" value="${WORKSPACE_LOC}/utils/io_utils"/>

@@ -196,7 +196,7 @@ void super_loop(uint64_t loop_start_time_us) {
 #endif /*HAS_TBFP*/
 
 #ifdef HAS_NMEA
-    //measure_task_interval(TASK_ID_NMEA, NMEA_PERIOD_US, nmea_proc, loop_start_time_us);
+    measure_task_interval(TASK_ID_NMEA, NMEA_PERIOD_US, nmea_proc, loop_start_time_us);
 #endif /*HAS_NMEA*/
 #ifdef HAS_UBLOX
     measure_task_interval(TASK_ID_UBX, UBX_PERIOD_US, ubx_proc, loop_start_time_us);
@@ -233,15 +233,16 @@ _Noreturn void super_main_loop(void) {
 #ifdef HAS_CLOCK
 #ifdef HAS_LOG
     io_printf("Main Task started, up time: %u ms" CRLF, get_time_ms32());
-#endif
+#endif/*HAS_LOG*/
 #else
 #ifdef HAS_LOG
     io_printf("Main Task started" CRLF);
-#endif
-#endif
+#endif /*HAS_LOG*/
+#endif /*HAS_CLOCK*/
+
 #ifdef HAS_CLOCK
     uint64_t loop_start_time_us = 0;
-#endif
+#endif /*HAS_CLOCK*/
 #ifdef HAS_DEBUG
     uint64_t prev_loop_start_time_us = 0;
 #endif /*HAS_DEBUG*/

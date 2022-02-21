@@ -118,9 +118,9 @@ bool lora_transmit_from_queue(uint32_t cur_time_stamp_ms, uint32_t tx_done_time_
     is_retx_idle = is_tbfp_retx_idle(&TbfpProtocol[IF_SX1262]);
 #endif
 
-    if(     (true==LoRaInterface.flush) || (
+    if(      (
             (pause_ms < tx_time_diff_ms) &&
-            (true == is_retx_idle) && (min_tx_unit<=count)
+            (true == is_retx_idle) && ((true==LoRaInterface.flush) || (min_tx_unit<=count))
             ) ) {
         LoRaInterface.flush = false;
         res = fifo_pull_array(&LoRaInterface.FiFoLoRaCharTx, (char*)TxPayload, sizeof(TxPayload), &tx_len);

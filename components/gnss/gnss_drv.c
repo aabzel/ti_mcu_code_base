@@ -143,7 +143,7 @@ bool gnss_proc(void){
 #endif
 #ifdef HAS_UBLOX
     if(false==res){
-       res=gnss_update_from_ubx();
+       res =gnss_update_from_ubx();
        if(false==res){
            LOG_DEBUG(GNSS, "LackGnssData");
        }

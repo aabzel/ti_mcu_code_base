@@ -521,7 +521,7 @@ bool ubx_proc(void) {
 #endif
     }
     i++;
-    if(ARRAY_SIZE(PollLut) < i) {
+    if(ARRAY_SIZE(PollLut) <= i) {
         i = 0;
     }
     uint32_t cur_time = get_time_ms32();

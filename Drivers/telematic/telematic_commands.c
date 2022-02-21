@@ -99,6 +99,7 @@ bool ping_command(int32_t argc, char* argv[]) {
 		for(i=0;i<trys;i++){			
 		    LOG_INFO(SYS, "Ping: %u/%u",i,trys);
             res = tbfp_send_ping(FRAME_ID_PING, (Interfaces_t)interface);
+            LoRaInterface.flush = true;
             if(res) {
 	            ping_ok_cnt++;
                 LOG_INFO(SYS, "PingOk");
