@@ -2163,7 +2163,7 @@ bool sx1262_set_modulation(uint16_t modulation){
         val=LinkInfoId.spreading_factor;
         res = param_set(  PAR_ID_LORA_SF, (uint8_t*) &val);
         if(res){
-            SET_BIT_NUM(ok_flag, 1);
+            SET_BIT_NUM(ok_flag, 0);
         }
     }
 
@@ -2173,7 +2173,7 @@ bool sx1262_set_modulation(uint16_t modulation){
         val=LinkInfoId.band_width;
         res = param_set(  PAR_ID_LORA_BW, (uint8_t*) &val);
         if(res){
-            SET_BIT_NUM(ok_flag, 2);
+            SET_BIT_NUM(ok_flag, 1);
         }
     }
 
@@ -2182,14 +2182,14 @@ bool sx1262_set_modulation(uint16_t modulation){
         val=LinkInfoId.coding_rate;
         res = param_set(  PAR_ID_LORA_CR, (uint8_t*) &val);
         if(res){
-            SET_BIT_NUM(ok_flag, 3);
+            SET_BIT_NUM(ok_flag, 2);
         }
     }
 
-    if(0x03==ok_flag){
+    if(0x07==ok_flag){
         res= sx1262_init( );
         if(res){
-            SET_BIT_NUM(ok_flag, 4);
+            SET_BIT_NUM(ok_flag, 3);
         }
     }
 

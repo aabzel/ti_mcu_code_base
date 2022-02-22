@@ -74,7 +74,7 @@ bool telematic_sent_command(int32_t argc, char* argv[]) {
 
 bool ping_command(int32_t argc, char* argv[]) {
     bool res = false;
-    uint8_t interface = IF_NONE;
+    uint8_t interface = IF_LORA;
     uint32_t ping_ok_cnt = 0;
     uint32_t trys = 1;
     uint32_t time_out_ms = 1000;

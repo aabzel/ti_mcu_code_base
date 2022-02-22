@@ -365,7 +365,7 @@ bool param_set(uint16_t param_id, uint8_t* wrData) {
         ParamType_t par_type = param_get_type((Id_t)param_id);
         // get data
         if(UNDEF != par_type) {
-            res = false;
+            res = true;
             switch(par_type) {
             case BOOL:
             case UINT8:

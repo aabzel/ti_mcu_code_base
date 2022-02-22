@@ -122,25 +122,25 @@ bool cmd_param_diag(int32_t argc, char* argv[]) {
 
     char keyWord1[20] = "";
     char keyWord2[20] = "";
-    if(0 == argc) {
-        if(0 <= argc) {
-            strncpy(keyWord1, "", sizeof(keyWord1));
-            strncpy(keyWord2, "", sizeof(keyWord2));
-            res = true;
-        }
-        if(1 <= argc) {
-            strncpy(keyWord1, argv[0], sizeof(keyWord1));
-            res = true;
-        }
-        if(2 <= argc) {
-            strncpy(keyWord2, argv[1], sizeof(keyWord2));
-            res = true;
-        }
 
-        if(2 < argc) {
-            LOG_ERROR(PARAM, "Usage: pg keyWord1 keyWord2");
-        }
+    if(0 <= argc) {
+        strncpy(keyWord1, "", sizeof(keyWord1));
+        strncpy(keyWord2, "", sizeof(keyWord2));
+        res = true;
     }
+    if(1 <= argc) {
+        strncpy(keyWord1, argv[0], sizeof(keyWord1));
+        res = true;
+    }
+    if(2 <= argc) {
+        strncpy(keyWord2, argv[1], sizeof(keyWord2));
+        res = true;
+    }
+
+    if(2 < argc) {
+        LOG_ERROR(PARAM, "Usage: pg keyWord1 keyWord2");
+    }
+
     if(res) {
         res = param_diag(keyWord1, keyWord2);
     } else {

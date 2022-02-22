@@ -860,7 +860,7 @@ bool sx1262_statistic_command(int32_t argc, char* argv[]) {
 }
 
 #ifdef HAS_SX1262_EX_DEBUG
-static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
+static bool sx1262_calc_diag(char* key_word1, char* key_word2, char* key_word3) {
     bool res = false;
     uint8_t sf = 0, cr = 0, bw = 0;
     static const table_col_t cols[] = {{5, "No"},     {7, "SF,Ch/s"}, {8, "BW,kHz"},    {5, "CR"},
@@ -925,7 +925,7 @@ static bool sx1262_calc_diag(char* key_word1, char* key_word2) {
                     snprintf(suffix_str, sizeof(suffix_str), " %7.1f " TSEP, dist * 10000.0);
                     strncat(temp_str, suffix_str, sizeof(temp_str));
 
-                    if(is_contain(temp_str, key_word1, key_word2)) {
+                    if(is_contain(temp_str, key_word1, key_word2) && is_contain(temp_str, key_word1, key_word3)) {
                         io_printf(TSEP " %3u ", num);
                         io_printf("%s" CRLF, temp_str);
                         num++;
@@ -980,6 +980,7 @@ bool sx1262_calc_command(int32_t argc, char* argv[]) {
     bool res = false;
     char keyWord1[20] = "";
     char keyWord2[20] = "";
+    char keyWord3[20] = "";
     if(0 <= argc) {
         strncpy(keyWord1, "", sizeof(keyWord1));
         strncpy(keyWord2, "", sizeof(keyWord2));
@@ -993,9 +994,12 @@ bool sx1262_calc_command(int32_t argc, char* argv[]) {
         strncpy(keyWord2, argv[1], sizeof(keyWord2));
         res = true;
     }
-
+    if(3 <= argc) {
+        strncpy(keyWord3, argv[2], sizeof(keyWord3));
+        res = true;
+    }
     if(res) {
-        res = sx1262_calc_diag(keyWord1, keyWord2);
+        res = sx1262_calc_diag(keyWord1, keyWord2, keyWord3);
     } else {
         LOG_ERROR(LORA, "Usage: sxc");
     }
